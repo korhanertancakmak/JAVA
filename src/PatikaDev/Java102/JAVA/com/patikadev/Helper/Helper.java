@@ -33,4 +33,41 @@ public class Helper {
         }
         return point;
     }
+
+    public static boolean isFieldEmpty(JTextField field) {
+        return field.getText().trim().isEmpty();
+    }
+
+    public static void showMsg(String str) {
+        String msg;
+        String title;
+        switch (str) {
+            case "fill":
+                msg = "Please fill all fields!";
+                title = "Error!";
+                optionPageEng(false);
+                break;
+            case "done":
+                msg = "Operation is successful";
+                title = "Result";
+                optionPageEng(true);
+                break;
+            case "error":
+                msg = "Something goes wrong...";
+                title = "Error";
+                break;
+            default:
+                msg = str;
+                title = "Message!";
+        }
+        JOptionPane.showMessageDialog(null, msg, title, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public static void optionPageEng(boolean isDone) {
+        if (isDone) {
+            UIManager.put("OptionPane.okButtonText", "EXIT");
+        } else {
+            UIManager.put("OptionPane.okButtonText", "OKAY");
+        }
+    }
 }
