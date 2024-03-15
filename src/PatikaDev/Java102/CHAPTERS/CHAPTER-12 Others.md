@@ -229,7 +229,7 @@ We will use the same list in all of these methods.
 Let's create this list first:
 
 ```java  
-ArrayList<Integer> list = new ArrayList<>(); 
+ArrayList<Integer> list = new ArrayList<>();
 list.add(25); 
 list.add(12); 
 list.add(3); 

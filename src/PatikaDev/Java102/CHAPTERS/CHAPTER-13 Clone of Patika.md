@@ -545,32 +545,134 @@ the last view of our frame is:
 
 ![Step-19](https://i.ibb.co/SRLFRCC/Step19.png)
 
+### Connecting to this Database to Print the User List
+
 So now, we can list our users.
 To be able to do this, we have to add a user to the database,
 and then we have to look for the output of them.
 Firstly, we need to connect to the database.
+To be able to connect this database :
+1. Since We used phpMyAdmin to create a database,
+we have to download [this](https://dev.mysql.com/downloads/file/?id=525082)
+and copy the jar file in our src file of the project in IntelliJ.
+2. We have to add this path to the project library from Project Structure in the File Section.
+3. Since we will repeatedly use this connection, first we can add our database url,
+username and password into the Config java file.
+
+   ```java  
+   public static final String DB_URL = "jdbc:mysql://localhost/patika";
+   public static final String DB_USERNAME = "root";
+   public static final String DB_PASSWORD = "58265826";
+   ```
+
+4. And secondly, since we have to use getConnection static method in DriverManager class, 
+we can create a DBConnector class for this purpose in Helper package.
+
+   ```java  
+   package PatikaDev.Java102.JAVA.com.patikadev.Helper;
+   import java.sql.Connection;
+   import java.sql.DriverManager;
+   import java.sql.SQLException;
+   public class DBConnector {
+       private Connection connect = null;
+       public Connection connectDB() {
+           try {
+               this.connect = DriverManager.getConnection(Config.DB_URL, 
+                            Config.DB_USERNAME, Config.DB_PASSWORD);
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+           return this.connect;
+       }
+       public static Connection getInstance() {
+           DBConnector db = new DBConnector();
+           return db.connectDB();
+       }
+   }
+   ```
+
+5. Since we want an arrayList in return to be able to see a list on the out frame,
+we can place this method in the User class as static.
+
+    ```java  
+    public static ArrayList<User> getUserList() {
+        ArrayList<User> userList = new ArrayList<>();
+        String query = "SELECT * FROM user";
+        User obj;
+        try (Statement st = DBConnector.getInstance().createStatement()) {
+            ResultSet rs = st.executeQuery(query);
+            while(rs.next()) {
+                obj = new User();
+                obj.setId(rs.getInt("id"));
+                obj.setName(rs.getString("name"));
+                obj.setUname(rs.getString("uname"));
+                obj.setPass(rs.getString("pass"));
+                obj.setType(rs.getString("type"));
+                userList.add(obj);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+    ```
+6. We are ready to get the list, but first we should get the front end ready.
+We will use JTable named "tbl_userList" in a JScrollPane named "scrl_userList"
+in the OperatorGUI form file.
+
+7. These tables are working with models named "DefaultTableModel."
+There are two parameters for this model class.
+One is for row, and another is for column.
+We will use its constructor, which is taking in Object type.
+We can keep our lists as row and column in an Object array.
+So first we add mdl_user_list field for the model class,
+and then we add the Object array field into Operator GUI class's constructor.
+And secondly, we will add the coming information from the database like this:
+
+   ```java  
+   // ModelUserList
+   mdl_user_list = new DefaultTableModel();
+   Object[] col_userList = {"ID", "Name Surname", "User Name", "Password", "User Type"};
+   mdl_user_list.setColumnIdentifiers(col_userList);
+   for (User obj: User.getUserList()) {
+       Object[] row = new Object[col_userList.length];
+       row[0] = obj.getId();
+       row[1] = obj.getName();
+       row[2] = obj.getUname();
+       row[3] = obj.getPass();
+       row[4] = obj.getType();
+       mdl_user_list.addRow(row);
+   }
+   tbl_userList.setModel(mdl_user_list);
+   tbl_userList.getTableHeader().setReorderingAllowed(false);
+   ```
+8. First, we define the column identifiers by getting the information 
+we get from the database.
+Second, we use the static method that makes the query in the database
+and gets the information of our userList.
+Third, by using a for each loop, we bury the users into the table.
+Lastly, we can turn reordering between the columns disabled for future purposes.
+
+9. If we want to reflect a new row to this list frame,
+then we can simply use addRow static method of our model.
+
+   ```java  
+   Object[] firstRow = {"1", "korhan cakmak", "kcakmak", "58265826", "operator"};
+   mdl_user_list.addRow(firstRow);
+   ```
+
+10. Let's add a new user to the database, and then run the application.
+
+![Step-20](https://i.ibb.co/HDJZSRC/Step20.png)
+
+## Database Operations
+
+We can insert and subtract users into the form that we created in the last section.
 
 ![Step-3]()
 ![Step-3]()
 ![Step-3]()
-![Step-3]()
 
-
-```java  
-
-```
-
-```java  
-
-```
-
-```java  
-
-```
-
-```java  
-
-```
 
 ```java  
 
