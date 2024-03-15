@@ -1,4 +1,4 @@
-package JAVA.AdventureGame;
+package PatikaDev.Java102.JAVA.AdventureGame;
 
 import java.util.Scanner;
 

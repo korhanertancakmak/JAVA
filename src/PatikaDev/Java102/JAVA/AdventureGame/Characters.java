@@ -1,4 +1,4 @@
-package JAVA.AdventureGame;
+package PatikaDev.Java102.JAVA.AdventureGame;
 public abstract class Characters {
     private final int charID;
     private final String charName;

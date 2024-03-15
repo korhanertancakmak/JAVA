@@ -1,4 +1,4 @@
-package InsuranceManagementSystem.InsuranceCompany;
+package PatikaDev.Java102.JAVA.InsuranceManagementSystem.InsuranceCompany;
 
 /**
  Design a class called "Codes.InsuranceManagementSystem.AddressManager" that is responsible for adding and

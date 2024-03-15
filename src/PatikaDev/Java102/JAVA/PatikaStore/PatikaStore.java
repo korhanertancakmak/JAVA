@@ -1,4 +1,4 @@
-package JAVA.PatikaStore;
+package PatikaDev.Java102.JAVA.PatikaStore;
 
 import java.util.ArrayList;
 

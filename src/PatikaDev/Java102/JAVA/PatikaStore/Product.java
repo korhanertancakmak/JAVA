@@ -1,4 +1,4 @@
-package JAVA.PatikaStore;
+package PatikaDev.Java102.JAVA.PatikaStore;
 
 public abstract class Product {
     private final int productID;

@@ -1,4 +1,4 @@
-package JAVA.InterfaceJava;
+package PatikaDev.Java102.JAVA.InterfaceJava;
 
 public class Calculator implements AdvancedArithmetic {
     @Override

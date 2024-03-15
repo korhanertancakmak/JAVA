@@ -1,6 +1,6 @@
-package InsuranceManagementSystem;
+package PatikaDev.Java102.JAVA.InsuranceManagementSystem;
 
-import InsuranceManagementSystem.InsuranceCompany.*;
+import PatikaDev.Java102.JAVA.InsuranceManagementSystem.InsuranceCompany.*;
 import java.util.ArrayList;
 
 public class Main {

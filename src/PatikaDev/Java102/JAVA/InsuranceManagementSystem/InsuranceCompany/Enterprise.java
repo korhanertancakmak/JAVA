@@ -1,4 +1,4 @@
-package InsuranceManagementSystem.InsuranceCompany;
+package PatikaDev.Java102.JAVA.InsuranceManagementSystem.InsuranceCompany;
 
 import java.time.LocalDate;
 

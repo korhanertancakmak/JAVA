@@ -1,4 +1,4 @@
-package JAVA.BookList;
+package PatikaDev.Java102.JAVA.BookList;
 
 public class Book {
 

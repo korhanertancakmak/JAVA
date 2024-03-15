@@ -1,7 +1,7 @@
-package com.patikadev.Model;
+package PatikaDev.Java102.JAVA.com.patikadev.Model;
 
-import com.patikadev.Helper.DBConnector;
 
+import PatikaDev.Java102.JAVA.com.patikadev.Helper.DBConnector;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;

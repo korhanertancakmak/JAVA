@@ -1,4 +1,4 @@
-package InsuranceManagementSystem.InsuranceCompany;
+package PatikaDev.Java102.JAVA.InsuranceManagementSystem.InsuranceCompany;
 
 /**
  Codes.InsuranceManagementSystem.Address information is of two types.

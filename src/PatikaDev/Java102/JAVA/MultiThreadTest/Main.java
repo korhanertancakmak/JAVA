@@ -1,4 +1,4 @@
-package JAVA.MultiThreadTest;
+package PatikaDev.Java102.JAVA.MultiThreadTest;
 
 import java.util.ArrayList;
 import java.util.List;

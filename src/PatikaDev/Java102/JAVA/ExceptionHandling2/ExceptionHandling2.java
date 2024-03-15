@@ -1,4 +1,4 @@
-package JAVA.ExceptionHandling2;
+package PatikaDev.Java102.JAVA.ExceptionHandling2;
 
 import java.util.Scanner;
 

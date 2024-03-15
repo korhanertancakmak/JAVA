@@ -1,9 +1,8 @@
-package com.patikadev.View;
+package PatikaDev.Java102.JAVA.com.patikadev.View;
 
-import com.patikadev.Helper.*;
-import com.patikadev.Model.Operator;
-import com.patikadev.Model.User;
 
+import PatikaDev.Java102.JAVA.com.patikadev.Helper.*;
+import PatikaDev.Java102.JAVA.com.patikadev.Model.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 

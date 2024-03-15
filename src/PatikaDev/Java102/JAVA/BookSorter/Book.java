@@ -1,4 +1,4 @@
-package JAVA.BookSorter;
+package PatikaDev.Java102.JAVA.BookSorter;
 import java.util.*;
 class Book implements Comparable<Book> {
 

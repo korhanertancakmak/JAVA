@@ -1,4 +1,4 @@
-package JAVA.AdventureGame;
+package PatikaDev.Java102.JAVA.AdventureGame;
 
 public class Weapon extends Inventory {
     private final int weaponID;

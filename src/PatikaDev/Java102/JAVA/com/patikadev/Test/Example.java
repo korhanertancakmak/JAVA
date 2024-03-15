@@ -1,4 +1,4 @@
-package com.patikadev.Test;
+package PatikaDev.Java102.JAVA.com.patikadev.Test;
 
 import javax.swing.*;
 import java.awt.*;
