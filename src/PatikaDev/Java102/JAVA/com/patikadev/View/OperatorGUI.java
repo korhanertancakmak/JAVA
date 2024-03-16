@@ -1,14 +1,13 @@
 package PatikaDev.Java102.JAVA.com.patikadev.View;
 
-
 import PatikaDev.Java102.JAVA.com.patikadev.Helper.*;
 import PatikaDev.Java102.JAVA.com.patikadev.Model.*;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class OperatorGUI extends JFrame{
     private JPanel wrapper;
@@ -27,6 +26,11 @@ public class OperatorGUI extends JFrame{
     private JButton btn_userAdd;
     private JTextField fld_userID;
     private JButton btn_userDelete;
+    private JTextField fld_shUserName;
+    private JTextField fld_shUserUName;
+    private JComboBox cmb_shUserType;
+    private JButton btn_userSearch;
+    private JPanel sh_user;
     private DefaultTableModel mdl_user_list;
     private Object[] row_userList;
 
@@ -34,12 +38,13 @@ public class OperatorGUI extends JFrame{
 
     public OperatorGUI(Operator operator) {
         this.operator = operator;
-
+        Helper.setLayout();
         add(wrapper);
         setSize(1000, 500);
         setLocation(Helper.screenCenterPoint("x", getSize()), Helper.screenCenterPoint("y", getSize()));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle(Config.PROJECT_TITLE);
+
         setVisible(true);
 
         lbl_welcome.setText("Welcome : " + operator.getName());
@@ -56,12 +61,14 @@ public class OperatorGUI extends JFrame{
         };
         Object[] col_userList = {"ID", "Name Surname", "User Name", "Password", "User Type"};
         mdl_user_list.setColumnIdentifiers(col_userList);
-        row_userList = new Object[col_userList.length];
 
+        row_userList = new Object[col_userList.length];
         loadUserModel();
+
         tbl_userList.setModel(mdl_user_list);
         tbl_userList.getTableHeader().setReorderingAllowed(false);
 
+        // Adding table list into the model
         tbl_userList.getSelectionModel().addListSelectionListener(e -> {
             try {
                 String selectUserID = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 0).toString();
@@ -71,18 +78,36 @@ public class OperatorGUI extends JFrame{
             }
         });
 
+        // Table cells Listener
+        tbl_userList.getModel().addTableModelListener(e -> {
+            if (e.getType() == TableModelEvent.UPDATE) {
+                int user_id = Integer.parseInt(tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 0).toString());
+                String name = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 1).toString();
+                String userName = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 2).toString();
+                String userPass = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 3).toString();
+                String userType = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 4).toString();
+
+                if (User.update(user_id, name, userName, userPass, userType)) {
+                    Helper.showMsg("done", null);
+                }
+
+                loadUserModel();
+            }
+        });
+
+        // Add button Listener
         btn_userAdd.addActionListener(e -> {
             if (Helper.isFieldEmpty(fld_userName) ||
                     Helper.isFieldEmpty(fld_userUName) ||
                     Helper.isFieldEmpty(fld_userPassword)) {
-                Helper.showMsg("fill");
+                Helper.showMsg("empty field", null);
             } else {
                 String name = fld_userName.getText();
                 String uname = fld_userUName.getText();
                 String pass = fld_userPassword.getText();
                 String type = cmb_userType.getSelectedItem().toString();
                 if (User.add(name, uname, pass, type)) {
-                    Helper.showMsg("done");
+                    Helper.showMsg("done", null);
                     loadUserModel();
                     fld_userName.setText(null);
                     fld_userUName.setText(null);
@@ -90,18 +115,33 @@ public class OperatorGUI extends JFrame{
                 }
             }
         });
+
+        // Delete button Listener
         btn_userDelete.addActionListener(e -> {
             if (Helper.isFieldEmpty(fld_userID)) {
-                Helper.showMsg("fill");
+                Helper.showMsg("empty field", null);
             } else {
                 int userID = Integer.parseInt(fld_userID.getText());
                 if (User.delete(userID)) {
-                    Helper.showMsg("done");
+                    Helper.showMsg("done", null);
                     loadUserModel();
                 } else {
-                    Helper.showMsg("error");
+                    Helper.showMsg("error", "Delete operation is unsuccessful");
                 }
             }
+        });
+
+        // Search button Listener
+        btn_userSearch.addActionListener(e -> {
+            String name = fld_shUserName.getText();
+            String uname = fld_shUserUName.getText();
+            String type = cmb_shUserType.getSelectedItem().toString();
+            String query = User.searchQuery(name, uname, type);
+            loadUserModel(User.searchUserList(query));
+        });
+
+        btn_logout.addActionListener(e -> {
+            dispose();
         });
     }
 
@@ -119,16 +159,27 @@ public class OperatorGUI extends JFrame{
         }
     }
 
+    public void loadUserModel(ArrayList<User> list) {
+        DefaultTableModel clearModel = (DefaultTableModel) tbl_userList.getModel();
+        clearModel.setRowCount(0);
+        for (User obj: list) {
+            int i = 0;
+            row_userList[i++] = obj.getId();
+            row_userList[i++] = obj.getName();
+            row_userList[i++] = obj.getUname();
+            row_userList[i++] = obj.getPass();
+            row_userList[i++] = obj.getType();
+            mdl_user_list.addRow(row_userList);
+        }
+    }
+
     public static void main(String[] args) {
-        Helper.setLayout();
         Operator op = new Operator();
         op.setId(1);
         op.setName("Korhan Çakmak");
         op.setPass("123");
         op.setType("operator");
         op.setUname("kcakmak");
-
-
 
         OperatorGUI opGUI = new OperatorGUI(op);
     }

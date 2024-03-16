@@ -4,10 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Helper {
+    private static String msg;
 
     public static void setLayout() {
         for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-            if ("Nimbus".equals(info.getName())) {
+            if ("CDE/Motif".equals(info.getName())) {
                 try {
                     UIManager.setLookAndFeel(info.getClassName());
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
@@ -15,7 +16,6 @@ public class Helper {
                     throw new RuntimeException(e);
                 }
             }
-            break;
         }
     }
 
@@ -38,22 +38,28 @@ public class Helper {
         return field.getText().trim().isEmpty();
     }
 
-    public static void showMsg(String str) {
-        String msg;
+    public static void showMsg(String str, String message) {
+        msg = message;
         String title;
         switch (str) {
-            case "fill":
-                msg = "Please fill all fields!";
+            case "empty field":
+                if (msg == null) {
+                    msg = "Please fill all fields!";
+                }
                 title = "Error!";
                 optionPageEng(false);
                 break;
             case "done":
-                msg = "Operation is successful";
+                if (msg == null) {
+                    msg = "Operation is successful";
+                }
                 title = "Result";
                 optionPageEng(true);
                 break;
             case "error":
-                msg = "Something goes wrong...";
+                if (msg == null) {
+                    msg = "Something goes wrong...";
+                }
                 title = "Error";
                 break;
             default:
@@ -65,9 +71,9 @@ public class Helper {
 
     public static void optionPageEng(boolean isDone) {
         if (isDone) {
-            UIManager.put("OptionPane.okButtonText", "EXIT");
+            UIManager.put("OptionPane.okButtonText", "DONE");
         } else {
-            UIManager.put("OptionPane.okButtonText", "OKAY");
+            UIManager.put("OptionPane.okButtonText", "TRY AGAIN");
         }
     }
 }

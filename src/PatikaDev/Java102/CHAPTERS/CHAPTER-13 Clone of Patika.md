@@ -667,12 +667,583 @@ then we can simply use addRow static method of our model.
 
 ## Database Operations
 
+### Redesigning GUI Form File
+
 We can insert and subtract users into the form that we created in the last section.
+What we need to change in the OperatorGUI.form:
+
+1. Add a new JPanel named "pnl_user_form."
+2. This JPanel will have 4 JLabels named "Name Surname," "User Name," 
+"Password," "User Type" respectively.
+3. Below each JPanel except the last one, we must have a JTextField named
+"fld_userName," "fld_userUName," "fld_userPassword," and a JComboBox named
+"cmb_userType." Right below this combo box, we add a button named "btn_userAdd."
+4. Only JComboBox is not one of what we have seen so far. This is a dropdown list.
+We can add objects in this combo box by clicking to the model from the property section.
+Since this is a user type, we have operator, teacher and student options.
+5. Right below this button, we add another JLabel-JTextField-JButton with names
+"User ID," "fld_userID," and "btn_userDelete."
+
+Eventually, our OperatorGUI form file will look like:
+
+![Step-21](https://i.ibb.co/7R5wSQ2/Step21.png)
+
+Our front end is done.
+Now, we need to write methods into the java files that write the data to or
+delete it from the database. 
+But first, we need to add some helper methods into the Helper class for messages 
+that we get from adding or deleting. 
+These are the methods we will use maybe for a million times.
+
+### Reflecting New Data on GUI
+
+First, we add the "isFieldEmpty" method:
+
+```java  
+public static boolean isFieldEmpty(JTextField field) {
+   return field.getText().trim().isEmpty();
+}
+```
+
+This method checks the fields in the add-delete Panel, and returns if they are
+empty as boolean.
+And we can write a result pane method:
+
+```java  
+public static void optionPageEng(boolean isDone) {
+   if (isDone) {
+      UIManager.put("OptionPane.okButtonText", "DONE");
+   } else {
+      UIManager.put("OptionPane.okButtonText", "TRY AGAIN");
+   }
+}
+```
+
+This will be the button text coming after we add or delete the data.
+If our operation is successful, we write "DONE" into the button, otherwise
+we write "TRY AGAIN."
+Actually, there can be 4 cases that we can have here. 
+1. One of the fields might be empty.
+This is one "error" case.
+2. Operation can be successful.
+This is the "done" case.
+3. There can be an undesired case.
+This is another "error" case.
+4. And by default, we can pop out what we want in other cases, such as
+adding a data which is already added before.
+
+```java  
+public static void showMsg(String str) {
+   String msg;
+   String title;
+   switch (str) {
+      case "fill":
+         msg = "Please fill all fields!";
+         title = "Error!";
+         optionPageEng(false);
+         break;
+      case "done":
+         msg = "Operation is successful";
+         title = "Result";
+         optionPageEng(true);
+         break;
+      case "error":
+         msg = "Something goes wrong...";
+         title = "Error";
+         break;
+      default:
+         msg = str;
+         title = "Message!";
+   }
+   JOptionPane.showMessageDialog(null, msg, title, JOptionPane.INFORMATION_MESSAGE);
+}
+```
+
+Now, we need to define fetch method in the user class, 
+because we want the new list we get from the database every time 
+after we add or delete data on the database.
+
+```java  
+public static User getFetch(String uname) {
+    User obj = null;
+    String query = "SELECT * FROM user WHERE uname = ?";     
+    try (PreparedStatement pr = DBConnector.getInstance().prepareStatement(query)) {
+        pr.setString(1, uname);
+        ResultSet rs = pr.executeQuery();
+        if (rs.next()) {
+            obj = new User();
+            obj.setId(rs.getInt("id"));
+            obj.setName(rs.getString("name"));
+            obj.setUname(rs.getString("uname"));
+            obj.setPass(rs.getString("pass"));
+            obj.setType(rs.getString("type"));
+        }
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+    return obj;
+}
+```
+
+This method creates a new user, and then taking the user matches the uname that is passed to it.
+And checking the result set has a next or not.
+If it has, it adds the user's data into the user's object, and finally returns it.
+It's time to insert "add" and "delete" methods into the User class.
+
+```java  
+public static boolean add(String name, String uname, String pass, String type) {
+    String query = "INSERT INTO user (name, uname, pass, type) VALUES (?,?,?,?)";
+    User findUser = User.getFetch(uname);
+    if (findUser != null) {
+        Helper.showMsg("This user is already added before. Please enter different user name!");
+        return false;
+    }
+    try (PreparedStatement pr = DBConnector.getInstance().prepareStatement(query)) {
+        pr.setString(1, name);
+        pr.setString(2, uname);
+        pr.setString(3, pass);
+        pr.setString(4, type);
+        int response = pr.executeUpdate();
+        if (response == -1) {
+            Helper.showMsg("error");
+        }
+        return response != -1;
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+    return true;
+}
+```
+
+This method first calls the getFetch method with the new user to be added.
+If the returning user object is null, then it means we already have this user,
+so it opens an error pane.
+Otherwise, it creates a preparedStatement to update the database with this user.
+If the response from the update is a failure, then it creates an error pane.
+If the response from the update is a success, then it adds and returns true.
+
+```java  
+public static boolean delete(int id) {
+    String query = "DELETE FROM user WHERE id = ?";
+    try (PreparedStatement pr = DBConnector.getInstance().prepareStatement(query)) {
+        pr.setInt(1, id);
+        return pr.executeUpdate() != -1;
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+    return true;
+}
+```
+
+Similarly, "delete" method creates a PreparedStatement and updates by deleting the user id
+that we passed to it.
+
+The first of the things we need to do for calling these methods in OperatorGUI java file is 
+to rewrite ModelUserList part of the constructor. 
+Because we will use it and its for-loop for filling the list every time we call it.
+
+```java  
+// ModelUserList
+mdl_user_list = (DefaultTableModel) isCellEditable(row, column) -> {
+    if (column == 0) {
+        return false;
+    }
+    return super.isCellEditable(row, column);
+};
+Object[] col_userList = {"ID", "Name Surname", "User Name", "Password", "User Type"};
+mdl_user_list.setColumnIdentifiers(col_userList);
+row_userList = new Object[col_userList.length];
+
+loadUserModel();
+tbl_userList.setModel(mdl_user_list);
+tbl_userList.getTableHeader().setReorderingAllowed(false);
+```
+
+Since all the columns are editable, and we will make the changes with respect to the
+first column, we need to disable the ability of being edited for that column.
+This is done by casting it as DefaultTableModel.
+Instead of the for-loop that we used before, now we have a new static method in 
+OperatorGUI java file. 
+The name of the method is loadUserModel:
+
+```java  
+public void loadUserModel() {
+    DefaultTableModel clearModel = (DefaultTableModel) tbl_userList.getModel();
+    clearModel.setRowCount(0);
+    for (User obj: User.getUserList()) {
+        int i = 0;
+        row_userList[i++] = obj.getId();
+        row_userList[i++] = obj.getName();
+        row_userList[i++] = obj.getUname();
+        row_userList[i++] = obj.getPass();
+        row_userList[i++] = obj.getType();
+        mdl_user_list.addRow(row_userList);
+    }
+}
+```
+
+This method will be adding the new rows to the frame each time that is called.
+We can add a couple lines of code to be able to get the id into the UserID field
+of the frame by selecting it from the list.
+
+```java  
+tbl_userList.getSelectionModel().addListSelectionListener(e -> {
+    try {
+        String selectUserID = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 0).toString();
+        fld_userID.setText(selectUserID);
+    } catch (Exception ex) {
+        System.out.println(ex.getMessage());
+    }
+});
+```
+
+This code will listen to our table on the frame, and when we click on any users on the list,
+it will set the text of the userID's field to the user's id that we selected.
+Now we can call the add and delete methods in the User class.
+Firstly, we write for adding an user:
+
+```java  
+btn_userAdd.addActionListener(e -> {
+    if (Helper.isFieldEmpty(fld_userName) ||
+            Helper.isFieldEmpty(fld_userUName) ||
+            Helper.isFieldEmpty(fld_userPassword)) {
+        Helper.showMsg("fill");
+    } else {
+        String name = fld_userName.getText();
+        String uname = fld_userUName.getText();
+        String pass = fld_userPassword.getText();
+        String type = cmb_userType.getSelectedItem().toString();
+        if (User.add(name, uname, pass, type)) {
+            Helper.showMsg("done");
+            loadUserModel();
+            fld_userName.setText(null);
+            fld_userUName.setText(null);
+            fld_userPassword.setText(null);
+        }
+    }
+});
+```
+
+This code will listen to the "Add" button, and if it's clicked firstly, 
+it will look for the texts whether they are empty or not. 
+If they are empty, it will throw an error pane.
+If they are filled, it will take the data and pass it to the "add" method,
+and if it's been added, it will call the "operation is done" pane message.
+After that, it will delete the texts from the fields that are already added.
+
+Now we can call the delete method: 
+
+```java  
+btn_userDelete.addActionListener(e -> {
+    if (Helper.isFieldEmpty(fld_userID)) {
+        Helper.showMsg("fill");
+    } else {
+        int userID = Integer.parseInt(fld_userID.getText());
+        if (User.delete(userID)) {
+            Helper.showMsg("done");
+            loadUserModel();
+        } else {
+            Helper.showMsg("error");
+        }
+    }
+});
+```
+
+Similarly, this code will listen to the "Delete" button, and if it's clicked firstly,
+it will look for the userID field whether it's empty or not.
+If it's empty, it will throw an error pane.
+If it's filled, it will take the data and pass it to the "delete" method,
+and if it's been deleted, it will call the "operation is done" pane message.
+If it couldn't be found in the list, the "delete" method will fail, and we
+will throw another error message here.
+
+When it is added or deleted, this code calls "loadUserModel" method to refresh
+the list on the frame once again.
+Let's give a try now what we can get from the application. 
+When we run it: 
+
+![Step-22](https://i.ibb.co/0MJKs3v/Step22.png)
+
+We see that we have three users in the database.
+Let's first add a new user to the database with this information:  
+
+Name Surname : Albert Einstein
+User Name    : emc2
+Password     : relativity
+User Type    : educator
+
+and then press "Add":
+
+![Step-23](https://i.ibb.co/Sy5shQ2/Step23.png)
+
+After we click on the "DONE" button, the pane closes and our new list of users
+takes place on the frame.
+
+![Step-24](https://i.ibb.co/yfzCVzX/Step24.png)
+
+As you can see, we have done adding successfully.
+Let's try now deleting one of the users from the list.
+We try to delete the userID = 3 by clicking on it.
+
+![Step-25](https://i.ibb.co/Kxn4vC2/Step25.png)
+
+We see its user id is written directly into the text box to delete.
+We click on the "delete" button:
+
+![Step-26](https://i.ibb.co/xCHN85c/Step26.png)
+
+It seems our operation is successful.
+Let's click on the "Done" button:
+
+![Step-27](https://i.ibb.co/WkfMKjW/Step25.png)
+
+And yeah, our data is gone!
+
+## Searching for Data in Tables
+
+We have done adding and deleting user data from the list. 
+Now, we will look for updating it on the database by just editing on the frame.
+To be able to do that, we need to listen to any changes on the table.
+This time, let's write the calling code first.
+
+```java  
+tbl_userList.getModel().addTableModelListener(e -> {
+    if (e.getType() == TableModelEvent.UPDATE) {
+        int user_id = Integer.parseInt(tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 0).toString());
+        String name = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 1).toString();
+        String userName = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 2).toString();
+        String userPass = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 3).toString();
+        String userType = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 4).toString();
+        
+        if (User.update(user_id, name, userName, userPass, userType)) {
+            Helper.showMsg("done");
+        } else {
+            Helper.showMsg("error");
+        }
+        loadUserModel();
+    }
+});
+```
+
+This code listens to the table if the operation on the table is an update operation,
+then it assigns the changes to data variables such as name, userName, userPass and userType.
+It calls the update method that we will write below by passing these parameters into it.
+If return is true, it opens a pane as done.
+Otherwise, it opens an error pane.
+The update method in the User class is below:
+
+```java  
+public static boolean update(int id, String name, String uname, String pass, String type) {
+    String query = "UPDATE user SET name=?, uname=?, pass=?, type=? WHERE id = ?";
+    try (PreparedStatement pr = DBConnector.getInstance().prepareStatement(query)) {
+        pr.setString(1, name);
+        pr.setString(2, uname);
+        pr.setString(3, pass);
+        pr.setString(4, type);
+        pr.setInt(5, id);
+        return pr.executeUpdate() != -1;
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+    return true;
+}
+```
+
+This method creates an update query that new id, name, username, password, and type parameters
+into the database.
+However, like we did in "add" method, if we enter the same data here that already is in the table,
+it does not give any errors for now.
+We can add this feature to the application by getting the same codes from the beginning of "add" method
+and paste it on the "update" method.
+This code is:
+
+```java  
+User findUser = User.getFetch(uname);
+ArrayList<String> possibleTypes = new ArrayList<>();
+possibleTypes.add("operator");
+possibleTypes.add("educator");
+possibleTypes.add("student");
+if (findUser != null && findUser.getId() != id || !possibleTypes.contains(type)) {
+    Helper.showMsg("This user is already added before. Please enter different user name!");
+    return false;
+}
+```
+
+This blocks the "update" method if the change matches one data which is already in the table.
+But this "getFetch" method checks only the username if we want to change the name of the user,
+we won't be able to do this change. 
+So we need to add another condition into the if condition which is second condition.
+
+The Next problem is here, changing the type parameter.
+If we change the type into a type that is not in our enum variables of the database which are
+operator, educator and student, we will need to throw another error box.
+This is the third condition in the if statement.
+
+Now we can add search bar into the GUI frame.
+
+![Step-28](https://i.ibb.co/5L4MDZt/Step28.png)
+
+Here we added another JPanel into the panel of userList.
+It includes 3 JLabel that have named as "Name Surname," "User Name," "User Type."
+Each has their own JTextField right below it.
+User Type has a JComboBox instead of JTextField.
+And there is another button for "Search" to be clicked.
+
+We add a Listener by right-clicking onto the "Search" button,
+and we write this code into the OperatorGUI java file.
+
+```java  
+// Search button Listener
+btn_userSearch.addActionListener(e -> {
+    String name = fld_shUserName.getText();
+    String uname = fld_shUserUName.getText();
+    String type = cmb_shUserType.getSelectedItem().toString();
+    String query = User.searchQuery(name, uname, type);
+    loadUserModel(User.searchUserList(query));
+});
+```
+
+We need to add three more methods, two into User class and another into OperatorGUI 
+class as we can see from here. 
+These are searchQuery, searchUserList, and overloaded loadUserModel methods.
+
+Let's begin searchQuery method :
+
+```java  
+public static String searchQuery(String name, String uname, String type){
+    String query = "SELECT * FROM user WHERE uname LIKE '%{uname}' OR name LIKE '%{name}'";
+    query = uname.isEmpty() ? query.replace("{uname}", " ") : query.replace("{uname}", uname);
+    query = name.isEmpty() ? query.replace("{name}", " ") : query.replace("{name}", name);
+    if (!type.isEmpty()) {
+        query += " OR type='{type}'";
+        query = query.replace("{type}", type);
+    }
+    return query;
+}
+```
+
+This method takes three parameters and creates a query with respect to them.
+This method is also very functional to use for future purposes.
+
+Next, we can write a similar method to the getUserList method in User class,
+which is searchUserList:
+
+```java  
+public static ArrayList<User> searchUserList(String query){
+   ArrayList<User> userList = new ArrayList<>();
+   User obj;
+   try (Statement st = DBConnector.getInstance().createStatement()) {
+      ResultSet rs = st.executeQuery(query);
+      while(rs.next()) {
+         obj = new User();
+         obj.setId(rs.getInt("id"));
+         obj.setName(rs.getString("name"));
+         obj.setUname(rs.getString("uname"));
+         obj.setPass(rs.getString("pass"));
+         obj.setType(rs.getString("type"));
+         userList.add(obj);
+      }
+      rs.close();
+   } catch (SQLException e) {
+      e.printStackTrace();
+   }
+   return userList;
+}
+```
+
+This method creates a user list as an ArrayList by using the query, 
+that is created by the searchQuery method.
+This list will be the list that we search for.
+
+And lastly, we write the overloaded loadUserModel method:
+
+```java  
+public void loadUserModel(ArrayList<User> list) {
+   DefaultTableModel clearModel = (DefaultTableModel) tbl_userList.getModel();
+   clearModel.setRowCount(0);
+   for (User obj: list) {
+      int i = 0;
+      row_userList[i++] = obj.getId();
+      row_userList[i++] = obj.getName();
+      row_userList[i++] = obj.getUname();
+      row_userList[i++] = obj.getPass();
+      row_userList[i++] = obj.getType();
+      mdl_user_list.addRow(row_userList);
+   }
+}
+```
+
+This method takes the list coming from searchUserList method and creates a
+new list that we want.
+
+Let's give a try this, now.
+Initially, we have 3 data in the database.
+
+![Step-29](https://i.ibb.co/zmhgfgB/Step29.png)
+
+When we directly click to the Search button:
+
+![Step-30](https://i.ibb.co/Sfv596L/Step30.png)
+
+We get nothing, because there is no such data in our database.
+However, if we try the ones in the database firstly giving name and surname:
+
+![Step-31](https://i.ibb.co/wJVnyxY/Step31.png)
+
+and by giving its username :
+
+![Step-32](https://i.ibb.co/BLg13jG/Step32.png)
+
+and by setting the type :
+
+![Step-33](https://i.ibb.co/MRXygBH/Step33.png)
+
+These works as we desired.
+Finally, we want to write 1-line code to get logout button functional.
+We simply add another listener to that button:
+
+```java  
+btn_logout.addActionListener(e -> {
+    dispose();
+});
+```
+
+This code disposes the JFrame totally.
+
 
 ![Step-3]()
 ![Step-3]()
 ![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
 
+
+```java  
+
+```
+
+```java  
+
+```
+
+```java  
+
+```
+
+```java  
+
+```
+
+```java  
+
+```
+
+```java  
+
+```
 
 ```java  
 
