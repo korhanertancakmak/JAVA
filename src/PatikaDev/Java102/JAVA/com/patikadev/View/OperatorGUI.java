@@ -83,6 +83,11 @@ public class OperatorGUI extends JFrame{
         patikaMenu.add(updateMenu);
         patikaMenu.add(deleteMenu);                                         // ## Patika Popup Menu
 
+        updateMenu.addActionListener(e -> {
+            int selectID = Integer.parseInt(tbl_patikaList.getValueAt(tbl_patikaList.getSelectedRow(), 0).toString());
+            UpdatePatikaGUI updateGUI = new UpdatePatikaGUI(Patika.getFetch(selectID));
+        });
+
         mdl_patikaList = new DefaultTableModel();
         Object[] col_patikaList = {"ID", "Patika Name"};
         mdl_patikaList.setColumnIdentifiers(col_patikaList);

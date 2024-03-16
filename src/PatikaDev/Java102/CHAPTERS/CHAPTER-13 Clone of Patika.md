@@ -1504,26 +1504,81 @@ And we can check whether it works :
 
 ![Step-44](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step44.png?raw=true)
 
-Of course, we can see the result in the database.
+Of course, we can see the result in the database, 
+since we don't have a window that shows the database list for now.
 
 ![Step-45](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step45.png?raw=true)
 
+### Transition between 2 GUI forms
+
+First, we need to write getFetch method for Patika class.
+
+```java  
+public static Patika getFetch() {
+   Patika obj = null;
+   String query = "SELECT * FROM patika WHERE id = ?"
+   try (PreparedStatement pr = DBConnector.getInstance().prepareStatement(query)) {
+      pr.setInt(1, id);
+      ResultSet rs = pr.executeQuery(query);
+      if (rs.next()) {
+         obj = new Patika(rs.getInt("id"), rs.getString("name"));
+      }
+   } catch (SQLException e) {
+      System.out.println(e.getMessage());
+   }
+   return obj;
+}
+```
+
+This method gets the data from the database and returns it in type of Patika,
+as we did for User.
+
+Right after adding the Patika Update Item into the Patika Menu in the 
+OperatorGUI java file's constructor, we can add another action listener
+for the update item this time.
+
+```java  
+updateMenu.addActionListener(e -> {
+    int selectID = Integer.parseInt(tbl_patikaList.getValueAt(tbl_patikaList.getSelectedRow(), 0).toString());
+    UpdatePatikaGUI updateGUI = new UpdatePatikaGUI(Patika.getFetch(selectID));
+});
+```
+
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
 
 
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
+```java  
 
+```
+```java  
 
+```
+```java  
+
+```
+```java  
+
+```
+```java  
+
+```
+```java  
+
+```
+```java  
+
+```
 ```java  
 
 ```
