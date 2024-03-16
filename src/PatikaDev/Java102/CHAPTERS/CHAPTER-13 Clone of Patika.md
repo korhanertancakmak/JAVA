@@ -1412,17 +1412,43 @@ This method gives us the location of the mouse is in which row.
 And simply, we give a selection on the list.
 This makes :
 
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
+![Step-41](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step41.png?raw=true)
+
+As you can see, now the first row is highlighted as white,
+since we chose it.
+
+Now we want to open a new window when we click on the "delete" from the pop-up menu.
+This means that we will create a new GUI form file named as "UpdatePatikaGUI" in the View package.
+After just creating a wrapper JPanel, we directly fill the UpdatePatikaGUI java file with this:
 
 ```java  
+private JPanel wrapper;
+private Patika patika; // This is the selected patika object in here
 
+public UpdatePatikaGUI(Patika patika) {     
+    this.patika = patika;
+    add(wrapper);
+    setSize(300, 150);
+    setLocation(Helper.screenCenterPoint("x", getSize()), Helper.screenCenterPoint("y", getSize()));
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    setTitle(Config.PROJECT_TITLE);
+    setVisible(true);
+}
 ```
+
+Since this is totally the same with the other GUI form file that we created,
+I don't write details about it here again.
+After this, we can design our new GUI form file.
+
+
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+
+
 ```java  
 
 ```
