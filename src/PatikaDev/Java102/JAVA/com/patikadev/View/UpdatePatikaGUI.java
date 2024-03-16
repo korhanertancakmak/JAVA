@@ -5,6 +5,8 @@ import PatikaDev.Java102.JAVA.com.patikadev.Helper.Helper;
 import PatikaDev.Java102.JAVA.com.patikadev.Model.Patika;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class UpdatePatikaGUI extends JFrame {
     private JPanel wrapper;
@@ -20,9 +22,23 @@ public class UpdatePatikaGUI extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle(Config.PROJECT_TITLE);
         setVisible(true);
+
+        fld_patikaName.setText(patika.getName());
+
+        btn_update.addActionListener(e -> {
+            if (Helper.isFieldEmpty(fld_patikaName)) {
+                Helper.showMsg("fill", null);
+            } else {
+                if (Patika.update(patika.getId(), fld_patikaName.getText())) {
+                    Helper.showMsg("done", null);
+                }
+                dispose();
+            }
+        });
     }
 
     public static void main(String[] args) {
+        Helper.setLayout();
         Patika p = new Patika(1, "Frontend");
         UpdatePatikaGUI up = new UpdatePatikaGUI(p);
     }

@@ -1454,26 +1454,76 @@ public static void main(String[] args) {
 
 When we run it:
 
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
+![Step-43](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step43.png?raw=true)
 
-
+We can change its layout in the main method:
 
 ```java  
-
+Helper.setLayout();
 ```
+
+We can set the text field of the patika name by calling the selected patika in the constructor:
+
 ```java  
-
+fld_patikaName.setText(patika.getName());
 ```
+
+And we can create a new method in the patika class for adding:
+
 ```java  
-
+public static boolean update(int id, String name) {
+    String query = "UPDATE patika SET name = ? WHERE id = ?";
+    try (PreparedStatement pr = DBConnector.getInstance().prepareStatement(query)) {
+        pr.setString(1, name);
+        pr.setInt(2, id);
+        return pr.executeUpdate() != -1;
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+    return true;
+}
 ```
+
+Now we can create the action listener for the update button in the constructor of UpdatePatikaGUI
+java file:
+
 ```java  
-
+btn_update.addActionListener(e -> {
+    if (Helper.isFieldEmpty(fld_patikaName)) {
+        Helper.showMsg("fill", null);
+    } else {
+        if (Patika.update(patika.getId(), fld_patikaName.getText())) {
+            Helper.showMsg("done", null);
+        }
+        dispose();
+    }
+});
 ```
+
+And we can check whether it works :
+
+![Step-44](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step44.png?raw=true)
+
+Of course, we can see the result in the database.
+
+![Step-45](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step45.png?raw=true)
+
+
+
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+
+
 ```java  
 
 ```

@@ -71,4 +71,16 @@ public class Patika {
         }
         return true;
     }
+
+    public static boolean update(int id, String name) {
+        String query = "UPDATE patika SET name = ? WHERE id = ?";
+        try (PreparedStatement pr = DBConnector.getInstance().prepareStatement(query)) {
+            pr.setString(1, name);
+            pr.setInt(2, id);
+            return pr.executeUpdate() != -1;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return true;
+    }
 }
