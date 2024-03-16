@@ -21,4 +21,9 @@ public class UpdatePatikaGUI extends JFrame {
         setTitle(Config.PROJECT_TITLE);
         setVisible(true);
     }
+
+    public static void main(String[] args) {
+        Patika p = new Patika(1, "Frontend");
+        UpdatePatikaGUI up = new UpdatePatikaGUI(p);
+    }
 }

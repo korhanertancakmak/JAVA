@@ -1437,21 +1437,31 @@ public UpdatePatikaGUI(Patika patika) {
 ```
 
 Since this is totally the same with the other GUI form file that we created,
-I don't write details about it here again.
+I don't write the details about it here again.
 After this, we can design our new GUI form file.
 
+![Step-42](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step42.png?raw=true)
 
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-
+Just to be able to test this, we create a new main method into the UpdatePatikaGUI java file.
+Since we need a Patika to be able to call this window, we create one in it:
 
 ```java  
-
+public static void main(String[] args) {
+    Patika p = new Patika(1, "Frontend");
+    UpdatePatikaGUI up = new UpdatePatikaGUI(p);
+}
 ```
+
+When we run it:
+
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+
+
+
 ```java  
 
 ```
