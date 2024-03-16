@@ -25,11 +25,11 @@ we create a GUI.
 We right-click on the package, choose new, choose "Swing UI Desinger",
 and choose "GUI Form" just like below.
 
-![Step-1](https://i.ibb.co/jVG6gmX/Ekran-g-r-nt-s-2024-03-14-102202.png)
+![Step-1](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step1.png?raw=true)
 
 After this, we will have here:
 
-![Step-2](https://i.ibb.co/MsF08HV/Ekran-g-r-nt-s-2024-03-14-102939.png)
+![Step-2](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step2.png?raw=true)
 
 You should choose GridLayoutManager from here. 
 Others are too old, that's why they are not responsive for any screen, any more.
@@ -50,7 +50,7 @@ We can place panels on the JFrame.
 Jpanel is just one component. 
 And these have properties just like below:
 
-![Step-3](https://i.ibb.co/WDh433m/Step3.png)
+![Step-3](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step3.png?raw=true)
 
 Let's say field name of the main JPanel as "wrapper."
 When we write its name, our java file is updates as:
@@ -146,7 +146,7 @@ public class Main {
 
 Now, when we run this Main class, we will have:
 
-![Step-4](https://i.ibb.co/QMX3GgQ/Step4.png)
+![Step-4](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step4.png?raw=true)
 
 ### Designing GUI
 
@@ -154,7 +154,7 @@ Here, we created our first app.
 We can change background by clicking background on the property section,
 and then choosing the color and copying it on the JFrame:
 
-![Step-5](https://i.ibb.co/44FXRWx/Step5.png)
+![Step-5](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step5.png?raw=true)
 
 We run the app, but the app is still working without an end.
 To stop the app, we can write this:
@@ -185,11 +185,11 @@ We name it as "wTop."
 We add another and name it as "wBottom."
 The final view of our app is :
 
-![Step-6](https://i.ibb.co/3Tf8RwG/Step6.png)
+![Step-6](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step6.png?raw=true)
 
 We can add any texts by adding JLabel component.
 
-![Step-7](https://i.ibb.co/s6J41bk/Step7.png)
+![Step-7](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step7.png?raw=true)
 
 Also, we can change the text from the text on property section.
 Automatically, we have a "vertical spacer" component in the first JPanel, now.
@@ -202,11 +202,11 @@ for the text can take place at the center of the frame.
 We can change its Font from font property.
 Let's choose it as Arial, its Style as "Bold.", and its Size as "20."
 
-![Step-8](https://i.ibb.co/ncb4kzQ/Step8.png)
+![Step-8](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step8.png?raw=true)
 
 When we run the app :
 
-![Step-9](https://i.ibb.co/129WLtm/Step9.png)
+![Step-9](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step9.png?raw=true)
 
 We can add another JLabel for texting as "User Login."
 First, we remove the vertical spacer. 
@@ -214,14 +214,14 @@ And then, align the grid with parent.
 And then, choose vertical align of two JLabels in wTop as "Top."
 And then, choose horizontal align of them as "Center."
 
-![Step-10](https://i.ibb.co/PcNNRzV/Step10.png)
+![Step-10](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step10.png?raw=true)
 
 We can also play with margins for this top wrapper by 10 into
 the first element of margins[topMarg,leftMarg,bottomMarg,rightMarg].
 This is also a method to get to center the label by margins.
 And we run it again:
 
-![Step-11](https://i.ibb.co/Jq3ssgR/Step11.png)
+![Step-11](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step11.png?raw=true)
 
 Next, we will play with the bottom wrapper.
 First, we add a JLabel on it with a vertical spacer named username,
@@ -233,7 +233,7 @@ for the input of the user password, named "fld_password."
 And lastly, we add a JButton at bottom.
 When we run this:
 
-![Step-12](https://i.ibb.co/GsnX59D/Step12.png)
+![Step-12](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step12.png?raw=true)
 
 All panels in wBottom can be aligned to be at center,
 and this can look like better than now it is.
@@ -241,7 +241,7 @@ We can do this by adding two HSpacer on the two sides of
 JPanels in the wBottom. 
 And now we run it again:
 
-![Step-13](https://i.ibb.co/Vxv6wdW/Step13.png)
+![Step-13](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step13.png?raw=true)
 
 We can turn the resizable feature off if we want:
 
@@ -316,7 +316,7 @@ for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 
 When we run it again:
 
-![Step-14](https://i.ibb.co/60Gq2qS/Step14.png)
+![Step-14](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step14.png?raw=true)
 
 Now, we have a better button theme.
 
@@ -327,7 +327,7 @@ All the components in our Palette have their specified listeners.
 If we right-click on the button object, we can choose "Create Listener."
 When we click on it, all available listeners will be listed on the screen.
 
-![Step-15](https://i.ibb.co/ySy8599/Step15.png)
+![Step-15](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step15.png?raw=true)
 
 These are some of the commonly used listener interfaces in the context of JButton 
 components in Java Swing:
@@ -360,7 +360,7 @@ Here, "btn_login" is the object of our button.
 This code calls "addActionListener" method by a new ActionListener object, 
 which is actually an interface, with an overridden method "actionPerformed."
 
-![Step-16](https://i.ibb.co/F7nPwNn/Step16.png)
+![Step-16](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step16.png?raw=true)
 
 We can use lambda expression in the code above.
 
@@ -381,7 +381,7 @@ a message that says "Please fill all the fields!" with a title as "Error."
 Otherwise, we will print the username text to the console.
 Let's see this :
 
-![Step-17](https://i.ibb.co/2PXJdwv/Step17.png)
+![Step-17](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step17.png?raw=true)
 
 ## Project Files and Management of User
 
@@ -410,7 +410,7 @@ After we created the table, we add a data as:
 
 For now, it will show as:
 
-![Step-18](https://i.ibb.co/25GtN7G/Step18.png)
+![Step-18](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step18.png?raw=true)
 
 Now, we need to call this from the application.
 We will create two package focuses in "com.patikadev."
@@ -543,7 +543,7 @@ We want to create a tab menu by using JTabledPane.
 After the things, which we learned from the first section, we have done
 the last view of our frame is:
 
-![Step-19](https://i.ibb.co/SRLFRCC/Step19.png)
+![Step-19](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step19.png?raw=true)
 
 ### Connecting to this Database to Print the User List
 
@@ -663,7 +663,7 @@ then we can simply use addRow static method of our model.
 
 10. Let's add a new user to the database, and then run the application.
 
-![Step-20](https://i.ibb.co/HDJZSRC/Step20.png)
+![Step-20](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step20.png?raw=true)
 
 ## Database Operations
 
@@ -686,7 +686,7 @@ Since this is a user type, we have operator, teacher and student options.
 
 Eventually, our OperatorGUI form file will look like:
 
-![Step-21](https://i.ibb.co/7R5wSQ2/Step21.png)
+![Step-21](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step21.png?raw=true)
 
 Our front end is done.
 Now, we need to write methods into the java files that write the data to or
@@ -962,7 +962,7 @@ the list on the frame once again.
 Let's give a try now what we can get from the application. 
 When we run it: 
 
-![Step-22](https://i.ibb.co/0MJKs3v/Step22.png)
+![Step-22](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step22.png?raw=true)
 
 We see that we have three users in the database.
 Let's first add a new user to the database with this information:  
@@ -974,28 +974,28 @@ User Type    : educator
 
 and then press "Add":
 
-![Step-23](https://i.ibb.co/Sy5shQ2/Step23.png)
+![Step-23](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step23.png?raw=true)
 
 After we click on the "DONE" button, the pane closes and our new list of users
 takes place on the frame.
 
-![Step-24](https://i.ibb.co/yfzCVzX/Step24.png)
+![Step-24](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step24.png?raw=true)
 
 As you can see, we have done adding successfully.
 Let's try now deleting one of the users from the list.
 We try to delete the userID = 3 by clicking on it.
 
-![Step-25](https://i.ibb.co/Kxn4vC2/Step25.png)
+![Step-25](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step25.png?raw=true)
 
 We see its user id is written directly into the text box to delete.
 We click on the "delete" button:
 
-![Step-26](https://i.ibb.co/xCHN85c/Step26.png)
+![Step-26](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step26.png?raw=true)
 
 It seems our operation is successful.
 Let's click on the "Done" button:
 
-![Step-27](https://i.ibb.co/WkfMKjW/Step25.png)
+![Step-27](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step27.png?raw=true)
 
 And yeah, our data is gone!
 
@@ -1081,7 +1081,7 @@ This is the third condition in the if statement.
 
 Now we can add search bar into the GUI frame.
 
-![Step-28](https://i.ibb.co/5L4MDZt/Step28.png)
+![Step-28](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step28.png?raw=true)
 
 Here we added another JPanel into the panel of userList.
 It includes 3 JLabel that have named as "Name Surname," "User Name," "User Type."
@@ -1179,24 +1179,24 @@ new list that we want.
 Let's give a try this, now.
 Initially, we have 3 data in the database.
 
-![Step-29](https://i.ibb.co/zmhgfgB/Step29.png)
+![Step-29](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step29.png?raw=true)
 
 When we directly click to the Search button:
 
-![Step-30](https://i.ibb.co/Sfv596L/Step30.png)
+![Step-30](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step30.png?raw=true)
 
 We get nothing, because there is no such data in our database.
 However, if we try the ones in the database firstly giving name and surname:
 
-![Step-31](https://i.ibb.co/wJVnyxY/Step31.png)
+![Step-31](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step31.png?raw=true)
 
 and by giving its username :
 
-![Step-32](https://i.ibb.co/BLg13jG/Step32.png)
+![Step-32](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step32.png?raw=true)
 
 and by setting the type :
 
-![Step-33](https://i.ibb.co/MRXygBH/Step33.png)
+![Step-33](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step33.png?raw=true)
 
 These works as we desired.
 Finally, we want to write 1-line code to get logout button functional.
