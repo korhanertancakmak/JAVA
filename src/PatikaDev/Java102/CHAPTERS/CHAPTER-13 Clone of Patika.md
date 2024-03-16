@@ -1544,23 +1544,52 @@ updateMenu.addActionListener(e -> {
 });
 ```
 
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
+When we run it and click update from the menu :
 
+![Step-46](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step46.png?raw=true)
+
+We see the path name in the text box field. 
+When we click the "Update" button :
+
+![Step-47](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step47.png?raw=true)
+
+The operation works.
+However, we don't see the updated new list on the Operator GUI window.
+As we listen to the updateMenu, we can listen to this UpdatePatikaGUI JFrame if it closes.
+So we add this listener inside the updateMenu listener:
 
 ```java  
-
+updateMenu.addActionListener(e -> {
+    int selectID = Integer.parseInt(tbl_patikaList.getValueAt(tbl_patikaList.getSelectedRow(), 0).toString());
+    UpdatePatikaGUI updateGUI = new UpdatePatikaGUI(Patika.getFetch(selectID));
+    updateGUI.addWindowListener(new WindowAdapter() {
+        @Override
+        public void windowClosed(WindowEvent e) {
+            loadPatikaModel();
+        }
+    });
+});
 ```
+
+This added code listens to the Update window. 
+When it closes, it just refreshes the Patika table.
+When we test this by changing the first path into a "test" path:
+
+![Step-48]()
+
+
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+
+
+
 ```java  
 
 ```

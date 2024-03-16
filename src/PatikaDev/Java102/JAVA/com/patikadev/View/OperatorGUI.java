@@ -6,10 +6,7 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class OperatorGUI extends JFrame{
@@ -86,6 +83,12 @@ public class OperatorGUI extends JFrame{
         updateMenu.addActionListener(e -> {
             int selectID = Integer.parseInt(tbl_patikaList.getValueAt(tbl_patikaList.getSelectedRow(), 0).toString());
             UpdatePatikaGUI updateGUI = new UpdatePatikaGUI(Patika.getFetch(selectID));
+            updateGUI.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadPatikaModel();
+                }
+            });
         });
 
         mdl_patikaList = new DefaultTableModel();
