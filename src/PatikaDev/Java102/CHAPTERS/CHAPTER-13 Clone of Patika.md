@@ -1210,6 +1210,184 @@ btn_logout.addActionListener(e -> {
 
 This code disposes the JFrame totally.
 
+## Management of Patika
+
+In this section, we will create patikas, in each patika we will create courses, and
+each course has its own content.
+
+We add another table into our database named as "Patika."
+For now, it has two columns that are id and name.
+The first data in our Patika table is "Java Backend Path."
+Now, we should add this into our GUI form.
+We simply add pnl_patikaList into our tab_operator JTabbedPane as shown below.
+
+![Step-34](https://i.ibb.co/zQjHwtm/Step34.png)
+
+We need to create a model of these patikas in our Model package.
+So, we create a Class named as "Patika."
+After creating its fields, constructor, and its getter & setter methods,
+we get back to the GUI form file to create JScrollPane into the pnl_patikaList 
+just as we have done in the last section.
+Because we want the screen to be scrollable.
+And then, we add another JTable onto it.
+
+![Step-35](https://i.ibb.co/09sCk1c/Step35.png)
+
+We can now create the fields we need in our OperatorGUI java file.
+
+```java  
+private DefaultTableModel mdl_patikaList;
+private final Object[] row_patikaList;
+```
+
+And we model our patika list same as we did for the user list.
+
+```java  
+// Model patika list
+mdl_patikaList = new DefaultTableModel(); 
+Object[] col_patikaList = {"ID", "Patika Name"};
+mdl_patikaList.setColumnIdentifiers(col_patikaList);
+row_patikaList = new Object[col_patikaList.length];
+loadPatikaModel();
+tbl_patikaList.setModel(mdl_patikaList);
+tbl_patikaList.getTableHeader().setReorderingAllowed(false);
+```
+
+Here we need to write loadPatikaModel() method, 
+but first let's write getList method in the Patika java file:
+
+```java  
+public static ArrayList<Patika> getList() {
+    ArrayList<Patika> patikaList = new ArrayList<>();
+    String query = "SELECT * FROM patika";
+    Patika obj;
+    try (Statement st = DBConnector.getInstance().createStatement()) {
+        ResultSet rs = st.executeQuery(query);
+        while(rs.next()) {
+            obj = new Patika(rs.getInt("id"), rs.getString("name"));
+            patikaList.add(obj);
+        }
+        rs.close();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return patikaList;
+}
+```
+
+This method is very similar to the getUserList method in the user class.
+It creates a statement to get all the paths from the patika table in the same database.
+And then, it adds the Patika objects into the patikaList arrayList, and returns it.
+Now, we can write loadPatikaModel() method in OperatorGUI class:
+
+```java  
+private void loadPatikaModel() {
+    DefaultTableModel clearModel = (DefaultTableModel) tbl_patikaList.getModel();
+    clearModel.setRowCount(0);
+    int i;
+    for (Patika obj: Patika.getList()) {
+        i = 0;
+        row_patikaList[i++] = obj.getId();
+        row_patikaList[i++] = obj.getName();
+        mdl_patikaList.addRow(row_patikaList);
+    }
+}
+```
+
+This is also very similar to the loadUserModel() method.
+And it sets the rows coming from the arrayList into the DefaultTableModel,
+which is mdl_patikaList field.
+When we check it whether it works :
+
+![Step-36](https://i.ibb.co/WcXSDrz/Step36.png)
+
+As you can see, the size of these two columns is too big with respect to the columns
+in the user table.
+We can set the size of the first column, which is patika id, by this :
+
+```java  
+tbl_patikaList.getColumnModel().getColumn(0).setMaxWidth(75);
+```
+
+When we check :
+
+![Step-37](https://i.ibb.co/rbrRkk6/Step37.png)
+
+Now we can add new paths to the patika list.
+Again, first we need to design GUI form file.
+We add a new JPanel, JLabel, JTextField and button for adding.
+
+![Step-38](https://i.ibb.co/zffsLJP/Step38.png)
+
+We will create an action listener for the "Add" button.
+But, we need to create an add() method in the Patika class.
+
+```java  
+public static boolean add(String name) {
+    String query = "INSERT INTO patika (name) VALUES (?)";
+    try (PreparedStatement pr = DBConnector.getInstance().prepareStatement(query)) {
+        pr.setString(1, name);
+        int response = pr.executeUpdate();
+        if (response == -1) {
+            Helper.showMsg("error", "Something goes wrong...");
+        }
+        return response != -1;
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+    return true;
+}
+```
+
+Similarly, we create add method into the Patika class this time.
+So, we need to write the action listener code now:
+
+```java  
+btn_patikaAdd.addActionListener(e -> {
+    if (Helper.isFieldEmpty(fld_patikaName)) {
+        Helper.showMsg("fill", null);
+    } else {
+        if (Patika.add(fld_patikaName.getText())) {
+            Helper.showMsg("done", null);
+            loadPatikaModel();
+            fld_patikaName.setText(null);
+        } else {
+            Helper.showMsg("error", null);
+        }
+    }
+});
+```
+
+After we run it and add "Front-end Path," we get :
+
+![Step-39](https://i.ibb.co/wrdtJmB/Step39.png)
+
+Now, we want to be able to right-click on the paths in the table to update or delete it.
+This can be done with the components called as "JPopUpMenu" and "JMenuItem."
+
+```java  
+private JPopupMenu patikaMenu;
+```
+
+After adding this patikaMenu field into the OperatorGUI java file,
+we create JPopupMenu and its 2 items that are update and delete:
+
+```java  
+patikaMenu = new JPopupMenu();
+JMenuItem updateMenu = new JMenuItem("Update"); 
+JMenuItem deleteMenu = new JMenuItem("Delete"); 
+patikaMenu.add(updateMenu); 
+patikaMenu.add(deleteMenu);
+         
+tbl_patikaList.setComponentPopupMenu(patikaMenu);
+```
+
+And then we add this menu into the table by using setComponentPopupMenu static method.
+When we check it whether it works or not:
+
+![Step-40](https://i.ibb.co/8YBZsQ4/Step40.png)
+
+
 
 ![Step-3]()
 ![Step-3]()
@@ -1218,37 +1396,31 @@ This code disposes the JFrame totally.
 ![Step-3]()
 ![Step-3]()
 ![Step-3]()
-![Step-3]()
-
 
 ```java  
 
 ```
-
 ```java  
 
 ```
-
 ```java  
 
 ```
-
 ```java  
 
 ```
-
 ```java  
 
 ```
-
 ```java  
 
 ```
-
 ```java  
 
 ```
+```java  
 
+```
 ```java  
 
 ```

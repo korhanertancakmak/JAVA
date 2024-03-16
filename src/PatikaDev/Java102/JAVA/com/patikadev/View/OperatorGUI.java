@@ -31,13 +31,19 @@ public class OperatorGUI extends JFrame{
     private JComboBox cmb_shUserType;
     private JButton btn_userSearch;
     private JPanel sh_user;
-    private DefaultTableModel mdl_user_list;
-    private Object[] row_userList;
-
-    private final Operator operator;
+    private JPanel pnl_patikaList;
+    private JScrollPane scrl_patikaList;
+    private JTable tbl_patikaList;
+    private JPanel pnl_patikaAdd;
+    private JTextField fld_patikaName;
+    private JButton btn_patikaAdd;
+    private final DefaultTableModel mdl_userList;
+    private final Object[] row_userList;
+    private DefaultTableModel mdl_patikaList;
+    private final Object[] row_patikaList;
+    private JPopupMenu patikaMenu;
 
     public OperatorGUI(Operator operator) {
-        this.operator = operator;
         Helper.setLayout();
         add(wrapper);
         setSize(1000, 500);
@@ -49,8 +55,8 @@ public class OperatorGUI extends JFrame{
 
         lbl_welcome.setText("Welcome : " + operator.getName());
 
-        // ModelUserList
-        mdl_user_list = new DefaultTableModel() {
+        // Model user list
+        mdl_userList = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column){
                 if (column == 0) {
@@ -60,13 +66,30 @@ public class OperatorGUI extends JFrame{
             }
         };
         Object[] col_userList = {"ID", "Name Surname", "User Name", "Password", "User Type"};
-        mdl_user_list.setColumnIdentifiers(col_userList);
+        mdl_userList.setColumnIdentifiers(col_userList);
 
         row_userList = new Object[col_userList.length];
         loadUserModel();
 
-        tbl_userList.setModel(mdl_user_list);
+        tbl_userList.setModel(mdl_userList);
         tbl_userList.getTableHeader().setReorderingAllowed(false);
+
+        // Model patika list
+        patikaMenu = new JPopupMenu();
+        JMenuItem updateMenu = new JMenuItem("Update");
+        JMenuItem deleteMenu = new JMenuItem("Delete");
+        patikaMenu.add(updateMenu);
+        patikaMenu.add(deleteMenu);
+
+        mdl_patikaList = new DefaultTableModel();
+        Object[] col_patikaList = {"ID", "Patika Name"};
+        mdl_patikaList.setColumnIdentifiers(col_patikaList);
+        row_patikaList = new Object[col_patikaList.length];
+        loadPatikaModel();
+        tbl_patikaList.setModel(mdl_patikaList);
+        tbl_patikaList.setComponentPopupMenu(patikaMenu);
+        tbl_patikaList.getTableHeader().setReorderingAllowed(false);
+        tbl_patikaList.getColumnModel().getColumn(0).setMaxWidth(75);
 
         // Adding table list into the model
         tbl_userList.getSelectionModel().addListSelectionListener(e -> {
@@ -143,19 +166,46 @@ public class OperatorGUI extends JFrame{
         btn_logout.addActionListener(e -> {
             dispose();
         });
+
+        btn_patikaAdd.addActionListener(e -> {
+            if (Helper.isFieldEmpty(fld_patikaName)) {
+                Helper.showMsg("fill", null);
+            } else {
+                if (Patika.add(fld_patikaName.getText())) {
+                    Helper.showMsg("done", null);
+                    loadPatikaModel();
+                    fld_patikaName.setText(null);
+                } else {
+                    Helper.showMsg("error", null);
+                }
+            }
+        });
+    }
+
+    private void loadPatikaModel() {
+        DefaultTableModel clearModel = (DefaultTableModel) tbl_patikaList.getModel();
+        clearModel.setRowCount(0);
+        int i;
+        for (Patika obj: Patika.getList()) {
+            i = 0;
+            row_patikaList[i++] = obj.getId();
+            row_patikaList[i++] = obj.getName();
+            mdl_patikaList.addRow(row_patikaList);
+        }
     }
 
     public void loadUserModel() {
         DefaultTableModel clearModel = (DefaultTableModel) tbl_userList.getModel();
         clearModel.setRowCount(0);
+        int i;
         for (User obj: User.getUserList()) {
-            int i = 0;
+            i = 0;
             row_userList[i++] = obj.getId();
             row_userList[i++] = obj.getName();
             row_userList[i++] = obj.getUname();
             row_userList[i++] = obj.getPass();
             row_userList[i++] = obj.getType();
-            mdl_user_list.addRow(row_userList);
+            mdl_userList.addRow(row_userList);
         }
     }
 
@@ -169,7 +219,7 @@ public class OperatorGUI extends JFrame{
             row_userList[i++] = obj.getUname();
             row_userList[i++] = obj.getPass();
             row_userList[i++] = obj.getType();
-            mdl_user_list.addRow(row_userList);
+            mdl_userList.addRow(row_userList);
         }
     }
 
