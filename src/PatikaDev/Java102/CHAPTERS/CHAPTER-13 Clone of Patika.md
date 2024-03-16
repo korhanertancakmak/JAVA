@@ -1221,7 +1221,7 @@ The first data in our Patika table is "Java Backend Path."
 Now, we should add this into our GUI form.
 We simply add pnl_patikaList into our tab_operator JTabbedPane as shown below.
 
-![Step-34](https://i.ibb.co/zQjHwtm/Step34.png)
+![Step-34](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step34.png?raw=true)
 
 We need to create a model of these patikas in our Model package.
 So, we create a Class named as "Patika."
@@ -1231,7 +1231,7 @@ just as we have done in the last section.
 Because we want the screen to be scrollable.
 And then, we add another JTable onto it.
 
-![Step-35](https://i.ibb.co/09sCk1c/Step35.png)
+![Step-35](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step35.png?raw=true)
 
 We can now create the fields we need in our OperatorGUI java file.
 
@@ -1299,7 +1299,7 @@ And it sets the rows coming from the arrayList into the DefaultTableModel,
 which is mdl_patikaList field.
 When we check it whether it works :
 
-![Step-36](https://i.ibb.co/WcXSDrz/Step36.png)
+![Step-36](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step36.png?raw=true)
 
 As you can see, the size of these two columns is too big with respect to the columns
 in the user table.
@@ -1311,13 +1311,13 @@ tbl_patikaList.getColumnModel().getColumn(0).setMaxWidth(75);
 
 When we check :
 
-![Step-37](https://i.ibb.co/rbrRkk6/Step37.png)
+![Step-37](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step37.png?raw=true)
 
 Now we can add new paths to the patika list.
 Again, first we need to design GUI form file.
 We add a new JPanel, JLabel, JTextField and button for adding.
 
-![Step-38](https://i.ibb.co/zffsLJP/Step38.png)
+![Step-38](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step38.png?raw=true)
 
 We will create an action listener for the "Add" button.
 But, we need to create an add() method in the Patika class.
@@ -1360,7 +1360,7 @@ btn_patikaAdd.addActionListener(e -> {
 
 After we run it and add "Front-end Path," we get :
 
-![Step-39](https://i.ibb.co/wrdtJmB/Step39.png)
+![Step-39](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step39.png?raw=true)
 
 Now, we want to be able to right-click on the paths in the table to update or delete it.
 This can be done with the components called as "JPopUpMenu" and "JMenuItem."
@@ -1385,9 +1385,32 @@ tbl_patikaList.setComponentPopupMenu(patikaMenu);
 And then we add this menu into the table by using setComponentPopupMenu static method.
 When we check it whether it works or not:
 
-![Step-40](https://i.ibb.co/8YBZsQ4/Step40.png)
+![Step-40](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step40.png?raw=true)
 
+As you can see when we select one and right-click, it pops up the menu,
+but it doesn't select what we select.
+So it looks like we click on the table completely.
+We need a mouse listener to get the mouse's position.
 
+```java  
+tbl_patikaList.addMouseListener(new MouseAdapter() {
+    @Override
+    public void mousePressed(MouseEvent e) {
+        Point point = e.getPoint();
+        int selected_row = tbl_patikaList.rowAtPoint(point);
+        tbl_patikaList.setRowSelectionInterval(selected_row, selected_row);
+    }
+});
+```
+
+There are many listeners for the mouse,
+but we want MousePressed to override it.
+Here it takes a Point object.
+This is the mouse location, when we click on it.
+We can take this location and pass into the rowAtPoint method.
+This method gives us the location of the mouse is in which row.
+And simply, we give a selection on the list.
+This makes :
 
 ![Step-3]()
 ![Step-3]()

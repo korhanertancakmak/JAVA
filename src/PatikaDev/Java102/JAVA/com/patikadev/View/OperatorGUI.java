@@ -5,8 +5,11 @@ import PatikaDev.Java102.JAVA.com.patikadev.Model.*;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class OperatorGUI extends JFrame{
@@ -67,29 +70,39 @@ public class OperatorGUI extends JFrame{
         };
         Object[] col_userList = {"ID", "Name Surname", "User Name", "Password", "User Type"};
         mdl_userList.setColumnIdentifiers(col_userList);
-
         row_userList = new Object[col_userList.length];
         loadUserModel();
-
         tbl_userList.setModel(mdl_userList);
         tbl_userList.getTableHeader().setReorderingAllowed(false);
+        // ## Model user list
 
         // Model patika list
-        patikaMenu = new JPopupMenu();
+        patikaMenu = new JPopupMenu();                                      // Patika Popup Menu
         JMenuItem updateMenu = new JMenuItem("Update");
         JMenuItem deleteMenu = new JMenuItem("Delete");
         patikaMenu.add(updateMenu);
-        patikaMenu.add(deleteMenu);
+        patikaMenu.add(deleteMenu);                                         // ## Patika Popup Menu
 
         mdl_patikaList = new DefaultTableModel();
         Object[] col_patikaList = {"ID", "Patika Name"};
         mdl_patikaList.setColumnIdentifiers(col_patikaList);
         row_patikaList = new Object[col_patikaList.length];
         loadPatikaModel();
+
         tbl_patikaList.setModel(mdl_patikaList);
         tbl_patikaList.setComponentPopupMenu(patikaMenu);
         tbl_patikaList.getTableHeader().setReorderingAllowed(false);
         tbl_patikaList.getColumnModel().getColumn(0).setMaxWidth(75);
+
+        tbl_patikaList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Point point = e.getPoint();
+                int selected_row = tbl_patikaList.rowAtPoint(point);
+                tbl_patikaList.setRowSelectionInterval(selected_row, selected_row);
+            }
+        });
+        // ## Model patika list
 
         // Adding table list into the model
         tbl_userList.getSelectionModel().addListSelectionListener(e -> {

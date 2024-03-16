@@ -272,7 +272,7 @@
                       <font name="Arial" size="12" style="1"/>
                       <foreground color="-16777216"/>
                       <gridColor color="-16777216"/>
-                      <selectionBackground color="-16777216"/>
+                      <selectionBackground color="-1"/>
                       <selectionForeground color="-16777216"/>
                     </properties>
                   </component>
