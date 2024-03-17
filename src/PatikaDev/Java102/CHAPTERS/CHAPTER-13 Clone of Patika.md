@@ -1575,27 +1575,72 @@ This added code listens to the Update window.
 When it closes, it just refreshes the Patika table.
 When we test this by changing the first path into a "test" path:
 
-![Step-48]()
+![Step-48](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step48.png?raw=true)
 
+When we click "DONE" button :
 
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
+![Step-49](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step49.png?raw=true)
 
+As you can see, we have the updated list in the window.
 
+We remove the main method from the UpdatePatikaGUI java file,
+since we don't need it to test anymore.
+
+Before our last operation, which is to delete, we can add a functionality
+that is to ask "Are you sure to delete?" window that can pop up.
+We haven't yet added this functionality to userList.
 
 ```java  
-
+// Delete button Listener
+btn_userDelete.addActionListener(e -> {
+    if (Helper.isFieldEmpty(fld_userID)) {
+        Helper.showMsg("empty field", null);
+    } else {
+        if (Helper.confirm("sure")) {
+            int userID = Integer.parseInt(fld_userID.getText());
+            if (User.delete(userID)) {
+                Helper.showMsg("done", null);
+                loadUserModel();
+            } else {
+                Helper.showMsg("error", "Delete operation is unsuccessful");
+            }
+        }
+    }
+});
 ```
+
+The only thing we added here is the if statement that has Helper.confirm() in it.
+The confirm method will do the confirmation whether the operation is not buy an accident.
+
 ```java  
-
+public static boolean confirm(String str) {
+    String msg;
+    switch (str) {
+        case "sure":
+            msg = "Are you sure for this operation?";
+            break; 
+        default:
+            msg = str;
+    }
+    return JOptionPane.showConfirmDialog(null, msg, "Last Decision?", JOptionPane.YES_NO_OPTION) == 0;
+}
 ```
+
+Here we create a conditional switch statement for the string we want to print.
+And then, we pop out another JOptionPane, which asks "Yes" or "No," if its value
+is "yes" then it returns true, otherwise false.
+
+![Step-50]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+
+
+
 ```java  
 
 ```

@@ -91,6 +91,10 @@ public class OperatorGUI extends JFrame{
             });
         });
 
+        deleteMenu.addActionListener(e -> {
+
+        });
+
         mdl_patikaList = new DefaultTableModel();
         Object[] col_patikaList = {"ID", "Patika Name"};
         mdl_patikaList.setColumnIdentifiers(col_patikaList);
@@ -165,12 +169,14 @@ public class OperatorGUI extends JFrame{
             if (Helper.isFieldEmpty(fld_userID)) {
                 Helper.showMsg("empty field", null);
             } else {
-                int userID = Integer.parseInt(fld_userID.getText());
-                if (User.delete(userID)) {
-                    Helper.showMsg("done", null);
-                    loadUserModel();
-                } else {
-                    Helper.showMsg("error", "Delete operation is unsuccessful");
+                if (Helper.confirm("sure")) {
+                    int userID = Integer.parseInt(fld_userID.getText());
+                    if (User.delete(userID)) {
+                        Helper.showMsg("done", null);
+                        loadUserModel();
+                    } else {
+                        Helper.showMsg("error", "Delete operation is unsuccessful");
+                    }
                 }
             }
         });

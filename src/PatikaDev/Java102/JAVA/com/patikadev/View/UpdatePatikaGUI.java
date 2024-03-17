@@ -5,8 +5,6 @@ import PatikaDev.Java102.JAVA.com.patikadev.Helper.Helper;
 import PatikaDev.Java102.JAVA.com.patikadev.Model.Patika;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class UpdatePatikaGUI extends JFrame {
     private JPanel wrapper;
@@ -37,9 +35,4 @@ public class UpdatePatikaGUI extends JFrame {
         });
     }
 
-    public static void main(String[] args) {
-        Helper.setLayout();
-        Patika p = new Patika(1, "Frontend");
-        UpdatePatikaGUI up = new UpdatePatikaGUI(p);
-    }
 }
