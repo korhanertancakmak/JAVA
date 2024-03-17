@@ -1828,24 +1828,45 @@ public void loadCourseModel() {
 }
 ```
 
+When we run the OperatorGUI java file again :
 
+![Step-54](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step54.png?raw=true)
 
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-
-
-
-
-
-```java  
-
-```
+As you can see, we can get the data from the database.
+On the right side, we have the "add course" panel.
+However, we have 2 combo boxes for Patika and Educator.
+For now, inside them are empty.
+We have to get the id values from the patika and user classes.
+To do that, we need a class named Item in the Helper package.
 
 ```java  
-
+private int key;
+private String value;
 ```
+
+These are the fields of Item class.
+And we need a toString method for this class to be able to
+see names of the patikas instead of their class names in the text box.
+Also, we need to write another method in OperatorGUI java file:
+
+```java  
+public void loadPatikaCombo() {
+    cmb_coursePatika.removeAllItems();
+    for (Patika obj : Patika.getPatikaList()) {
+        cmb_coursePatika.addItem(new Item(obj.getId(), obj.getName()));
+    }
+}
+```
+
+Here, we set "cmb_coursePatika" field with Items 
+that are actually my patikas in the database.
+
+
+
+![Step-3]()
+![Step-3]()
+![Step-3]()
+
 
 ```java  
 

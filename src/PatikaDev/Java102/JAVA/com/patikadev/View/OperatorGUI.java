@@ -67,7 +67,6 @@ public class OperatorGUI extends JFrame{
         lbl_welcome.setText("Welcome : " + operator.getName());
 
 //>>> USERS
-
         // Model user list
         mdl_userList = new DefaultTableModel() {
             @Override
@@ -242,6 +241,8 @@ public class OperatorGUI extends JFrame{
         tbl_courseList.getColumnModel().getColumn(0).setMaxWidth(75);
         tbl_courseList.getTableHeader().setReorderingAllowed(false);
 
+        loadPatikaCombo();
+
 
         // Logout Listener
         btn_logout.addActionListener(e -> {
@@ -302,6 +303,13 @@ public class OperatorGUI extends JFrame{
             row_userList[i++] = obj.getPass();
             row_userList[i++] = obj.getType();
             mdl_userList.addRow(row_userList);
+        }
+    }
+
+    public void loadPatikaCombo() {
+        cmb_coursePatika.removeAllItems();
+        for (Patika obj : Patika.getPatikaList()) {
+            cmb_coursePatika.addItem(new Item(obj.getId(), obj.getName()));
         }
     }
 
