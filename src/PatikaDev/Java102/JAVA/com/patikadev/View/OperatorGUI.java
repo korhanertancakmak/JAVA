@@ -51,6 +51,8 @@ public class OperatorGUI extends JFrame{
     private DefaultTableModel mdl_patikaList;
     private final Object[] row_patikaList;
     private JPopupMenu patikaMenu;
+    private DefaultTableModel mdl_courseList;
+    private Object[] row_courseList;
 
     public OperatorGUI(Operator operator) {
         Helper.setLayout();
@@ -63,6 +65,8 @@ public class OperatorGUI extends JFrame{
         setVisible(true);
 
         lbl_welcome.setText("Welcome : " + operator.getName());
+
+//>>> USERS
 
         // Model user list
         mdl_userList = new DefaultTableModel() {
@@ -82,6 +86,99 @@ public class OperatorGUI extends JFrame{
         tbl_userList.getTableHeader().setReorderingAllowed(false);
         // ## Model user list
 
+        // Adding table list into the user List
+        tbl_userList.getSelectionModel().addListSelectionListener(e -> {
+            try {
+                String selectUserID = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 0).toString();
+                fld_userID.setText(selectUserID);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+        });
+
+        // Table cells Listener for user List
+        tbl_userList.getModel().addTableModelListener(e -> {
+            if (e.getType() == TableModelEvent.UPDATE) {
+                int user_id = Integer.parseInt(tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 0).toString());
+                String name = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 1).toString();
+                String userName = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 2).toString();
+                String userPass = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 3).toString();
+                String userType = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 4).toString();
+
+                if (User.update(user_id, name, userName, userPass, userType)) {
+                    Helper.showMsg("done", null);
+                }
+
+                loadUserModel();
+            }
+        });
+
+        // Add button Listener for user List
+        btn_userAdd.addActionListener(e -> {
+            if (Helper.isFieldEmpty(fld_userName) ||
+                    Helper.isFieldEmpty(fld_userUName) ||
+                    Helper.isFieldEmpty(fld_userPassword)) {
+                Helper.showMsg("empty field", null);
+            } else {
+                String name = fld_userName.getText();
+                String uname = fld_userUName.getText();
+                String pass = fld_userPassword.getText();
+                String type = cmb_userType.getSelectedItem().toString();
+                if (User.add(name, uname, pass, type)) {
+                    Helper.showMsg("done", null);
+                    loadUserModel();
+                    fld_userName.setText(null);
+                    fld_userUName.setText(null);
+                    fld_userPassword.setText(null);
+                }
+            }
+        });
+
+        // Delete button Listener for user List
+        btn_userDelete.addActionListener(e -> {
+            if (Helper.isFieldEmpty(fld_userID)) {
+                Helper.showMsg("empty field", null);
+            } else {
+                if (Helper.confirm("sure")) {
+                    int userID = Integer.parseInt(fld_userID.getText());
+                    if (User.delete(userID)) {
+                        Helper.showMsg("done", null);
+                        loadUserModel();
+                    } else {
+                        Helper.showMsg("error", "Delete operation is unsuccessful");
+                    }
+                }
+            }
+        });
+
+        // Search button Listener for user List
+        btn_userSearch.addActionListener(e -> {
+            String name = fld_shUserName.getText();
+            String uname = fld_shUserUName.getText();
+            String type = cmb_shUserType.getSelectedItem().toString();
+            String query = User.searchQuery(name, uname, type);
+            loadUserModel(User.searchUserList(query));
+        });
+
+
+        // Add button Listener for patika List
+        btn_patikaAdd.addActionListener(e -> {
+            if (Helper.isFieldEmpty(fld_patikaName)) {
+                Helper.showMsg("fill", null);
+            } else {
+                if (Patika.add(fld_patikaName.getText())) {
+                    Helper.showMsg("done", null);
+                    loadPatikaModel();
+                    fld_patikaName.setText(null);
+                } else {
+                    Helper.showMsg("error", null);
+                }
+            }
+        });
+//<<< USERS
+
+
+//>>> PATIKAS
         // Model patika list
         patikaMenu = new JPopupMenu();                                      // Patika Popup Menu
         JMenuItem updateMenu = new JMenuItem("Update");
@@ -132,105 +229,46 @@ public class OperatorGUI extends JFrame{
             }
         });
         // ## Model patika list
+//<<< PATIKAS
 
-        // Adding table list into the model
-        tbl_userList.getSelectionModel().addListSelectionListener(e -> {
-            try {
-                String selectUserID = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 0).toString();
-                fld_userID.setText(selectUserID);
-            } catch (Exception ex) {
-                System.out.println(ex.getMessage());
-            }
-        });
 
-        // Table cells Listener
-        tbl_userList.getModel().addTableModelListener(e -> {
-            if (e.getType() == TableModelEvent.UPDATE) {
-                int user_id = Integer.parseInt(tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 0).toString());
-                String name = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 1).toString();
-                String userName = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 2).toString();
-                String userPass = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 3).toString();
-                String userType = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 4).toString();
+//>>> COURSES
+        mdl_courseList = new DefaultTableModel();
+        Object[] col_courseList = {"ID", "Course Name", "Programming Language", "Patika", "Educator"};
+        mdl_courseList.setColumnIdentifiers(col_courseList);
+        row_courseList = new Object[col_courseList.length];
+        loadCourseModel();
+        tbl_courseList.setModel(mdl_courseList);
+        tbl_courseList.getColumnModel().getColumn(0).setMaxWidth(75);
+        tbl_courseList.getTableHeader().setReorderingAllowed(false);
 
-                if (User.update(user_id, name, userName, userPass, userType)) {
-                    Helper.showMsg("done", null);
-                }
 
-                loadUserModel();
-            }
-        });
-
-        // Add button Listener
-        btn_userAdd.addActionListener(e -> {
-            if (Helper.isFieldEmpty(fld_userName) ||
-                    Helper.isFieldEmpty(fld_userUName) ||
-                    Helper.isFieldEmpty(fld_userPassword)) {
-                Helper.showMsg("empty field", null);
-            } else {
-                String name = fld_userName.getText();
-                String uname = fld_userUName.getText();
-                String pass = fld_userPassword.getText();
-                String type = cmb_userType.getSelectedItem().toString();
-                if (User.add(name, uname, pass, type)) {
-                    Helper.showMsg("done", null);
-                    loadUserModel();
-                    fld_userName.setText(null);
-                    fld_userUName.setText(null);
-                    fld_userPassword.setText(null);
-                }
-            }
-        });
-
-        // Delete button Listener
-        btn_userDelete.addActionListener(e -> {
-            if (Helper.isFieldEmpty(fld_userID)) {
-                Helper.showMsg("empty field", null);
-            } else {
-                if (Helper.confirm("sure")) {
-                    int userID = Integer.parseInt(fld_userID.getText());
-                    if (User.delete(userID)) {
-                        Helper.showMsg("done", null);
-                        loadUserModel();
-                    } else {
-                        Helper.showMsg("error", "Delete operation is unsuccessful");
-                    }
-                }
-            }
-        });
-
-        // Search button Listener
-        btn_userSearch.addActionListener(e -> {
-            String name = fld_shUserName.getText();
-            String uname = fld_shUserUName.getText();
-            String type = cmb_shUserType.getSelectedItem().toString();
-            String query = User.searchQuery(name, uname, type);
-            loadUserModel(User.searchUserList(query));
-        });
-
+        // Logout Listener
         btn_logout.addActionListener(e -> {
             dispose();
         });
+    }
 
-        btn_patikaAdd.addActionListener(e -> {
-            if (Helper.isFieldEmpty(fld_patikaName)) {
-                Helper.showMsg("fill", null);
-            } else {
-                if (Patika.add(fld_patikaName.getText())) {
-                    Helper.showMsg("done", null);
-                    loadPatikaModel();
-                    fld_patikaName.setText(null);
-                } else {
-                    Helper.showMsg("error", null);
-                }
-            }
-        });
+    public void loadCourseModel() {
+        DefaultTableModel clearModel = (DefaultTableModel) tbl_courseList.getModel();
+        clearModel.setRowCount(0);
+        int i;
+        for (Course obj: Course.getCourseList()) {
+            i = 0;
+            row_courseList[i++] = obj.getId();
+            row_courseList[i++] = obj.getName();
+            row_courseList[i++] = obj.getLang();
+            row_courseList[i++] = obj.getPatika().getName();
+            row_courseList[i++] = obj.getEducator().getName();
+            mdl_courseList.addRow(row_courseList);
+        }
     }
 
     private void loadPatikaModel() {
         DefaultTableModel clearModel = (DefaultTableModel) tbl_patikaList.getModel();
         clearModel.setRowCount(0);
         int i;
-        for (Patika obj: Patika.getList()) {
+        for (Patika obj: Patika.getPatikaList()) {
             i = 0;
             row_patikaList[i++] = obj.getId();
             row_patikaList[i++] = obj.getName();

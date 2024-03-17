@@ -49,8 +49,8 @@
                       <font name="Arial" size="12" style="1"/>
                       <foreground color="-16777216"/>
                       <gridColor color="-16777216"/>
-                      <selectionBackground color="-1"/>
-                      <selectionForeground color="-16777216"/>
+                      <selectionBackground color="-1536"/>
+                      <selectionForeground color="-65536"/>
                     </properties>
                   </component>
                 </children>
@@ -272,8 +272,8 @@
                       <font name="Arial" size="12" style="1"/>
                       <foreground color="-16777216"/>
                       <gridColor color="-16777216"/>
-                      <selectionBackground color="-1"/>
-                      <selectionForeground color="-16777216"/>
+                      <selectionBackground color="-1536"/>
+                      <selectionForeground color="-65536"/>
                     </properties>
                   </component>
                 </children>
@@ -331,7 +331,14 @@
                 <children>
                   <component id="4a7f8" class="javax.swing.JTable" binding="tbl_courseList">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <background color="-4473925"/>
+                      <font name="Arial" size="12" style="1"/>
+                      <foreground color="-16777216"/>
+                      <gridColor color="-16777216"/>
+                      <selectionBackground color="-1536"/>
+                      <selectionForeground color="-65536"/>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>

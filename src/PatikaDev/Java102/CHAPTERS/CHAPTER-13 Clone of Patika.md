@@ -1740,20 +1740,125 @@ public static User getFetch(int id) {
 The only change is in the parameter type and at which it's been used.
 We added getter & setter methods into the Course class.
 
+Now we can prepare our GUI form :
+
+![Step-53](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step53.png?raw=true)
+
+Simply we create a new tab panel named as Courses.
+And we create another table onto it named as tbl_courseList.
+And we create Add panel right side of the tab.
+
+Now, we can create this table in the database.
+We add initially only 1 course which is Java102 with this information into the database:
+
+* id : 1
+* user_id : 3
+* patika_id : 1
+* name : Java102 Courses
+* lang : Java
+
+Let's get this data from OperatorGUI java file to fetch it onto the Courses tab.
+First, we create fields:
+
+```java  
+private DefaultTableModel mdl_courseList;
+private Object[] row_courseList;
+```
+
+Actually, we are doing the same things with the things we have done for other tabs.
+This model and row list object array will be initialized in the constructor.
+
+```java  
+mdl_courseList = new DefaultTableModel();
+Object[] col_courseList = {"ID", "Course Name", "Programming Language", "Patika", "Educator"};
+mdl_courseList.setColumnIdentifiers(col_courseList);
+row_courseList = new Object[col_courseList.length];
+loadCourseModel();
+tbl_courseList.setModel(mdl_courseList);
+tbl_courseList.getColumnModel().getColumn(0).setMaxWidth(75);
+tbl_courseList.getTableHeader().setReorderingAllowed(false);
+```
+
+Here, we initialize them with the information in the database.
+And we set the table's components with these identifiers as we did before.
+Here, we need to create loadCourseModel() method. 
+But first, we need to create getCourseList() method in Course class.
+
+```java  
+public static ArrayList<Course> getCourseList() {
+    ArrayList<Course> courseList = new ArrayList<>();
+    String query = "SELECT * FROM course";
+    Course obj;
+    try (Statement st = DBConnector.getInstance().createStatement()) {
+        ResultSet rs = st.executeQuery(query);
+        while(rs.next()) {
+            int id = rs.getInt("id");
+            int user_id = rs.getInt("user_id");
+            int patika_id = rs.getInt("patika_id");
+            String name = rs.getString("name");
+            String lang = rs.getString("lang");
+            obj = new Course(id, user_id, patika_id, name, lang);
+            courseList.add(obj);
+        }
+        rs.close();
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());;
+    }
+    return courseList;
+}
+```
+
+Now, we have the data as an arraylist from the database.
+We can load it onto the GUI frame by loadCourseModel() method:
+
+```java  
+public void loadCourseModel() {
+    DefaultTableModel clearModel = (DefaultTableModel) tbl_courseList.getModel();
+    clearModel.setRowCount(0);
+    int i;
+    for (Course obj: Course.getCourseList()) {
+        i = 0;
+        row_courseList[i++] = obj.getId();
+        row_courseList[i++] = obj.getName();
+        row_courseList[i++] = obj.getLang();
+        row_courseList[i++] = obj.getPatika().getName();
+        row_courseList[i++] = obj.getEducator().getName();
+        mdl_courseList.addRow(row_courseList);
+    }
+}
+```
+
+
 
 ![Step-3]()
 ![Step-3]()
 ![Step-3]()
 ![Step-3]()
-![Step-3]()
+
+
+
 
 
 ```java  
 
 ```
+
 ```java  
 
 ```
+
+```java  
+
+```
+
+```java  
+
+```
+
+```java  
+
+```
+
 ```java  
 
 ```

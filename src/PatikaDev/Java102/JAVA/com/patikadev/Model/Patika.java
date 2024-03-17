@@ -34,7 +34,7 @@ public class Patika {
         this.name = name;
     }
 
-    public static ArrayList<Patika> getList() {
+    public static ArrayList<Patika> getPatikaList() {
         ArrayList<Patika> patikaList = new ArrayList<>();
         String query = "SELECT * FROM patika";
         Patika obj;
