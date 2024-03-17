@@ -1630,23 +1630,56 @@ Here we create a conditional switch statement for the string we want to print.
 And then, we pop out another JOptionPane, which asks "Yes" or "No," if its value
 is "yes" then it returns true, otherwise false.
 
-![Step-50]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
+![Step-50](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step50.png?raw=true)
 
+Here, we tried to delete the third user, and after we click on the "delete" button, we have another
+pane that pops up asking yes or no.
 
+Now, we can deal with our last operation, which is to delete listener for the "delete menu item" 
+in the patikas tab.
+Firstly, we need to create the "delete" method in Patika class:
 
 ```java  
-
+public static boolean delete(int id) {
+    String query = "DELETE FROM patika WHERE id = ?";
+    try (PreparedStatement pr = DBConnector.getInstance().prepareStatement(query)) {
+        pr.setInt(1, id);
+        return pr.executeUpdate() != -1;
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+    return true;
+}
 ```
+
+And we call this method from the action listener in OperatorGUI java file:
+
 ```java  
-
+deleteMenu.addActionListener(e -> {
+    if(Helper.confirm("sure")) {
+        int select_id = Integer.parseInt(tbl_patikaList.getValueAt(tbl_patikaList.getSelectedRow(), 0).toString());
+        if (Patika.delete(select_id)) {
+            Helper.showMsg("done", null);
+            loadPatikaModel();
+        } else {
+            Helper.showMsg("error", null);
+        }
+    }
+});
 ```
+
+After we test it by deleting the third path:
+
+![Step-51]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+
+
+
 ```java  
 
 ```

@@ -93,4 +93,15 @@ public class Patika {
         }
         return obj;
     }
+
+    public static boolean delete(int id) {
+        String query = "DELETE FROM patika WHERE id = ?";
+        try (PreparedStatement pr = DBConnector.getInstance().prepareStatement(query)) {
+            pr.setInt(1, id);
+            return pr.executeUpdate() != -1;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return true;
+    }
 }

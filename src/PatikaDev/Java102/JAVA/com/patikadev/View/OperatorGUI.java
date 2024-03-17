@@ -92,7 +92,15 @@ public class OperatorGUI extends JFrame{
         });
 
         deleteMenu.addActionListener(e -> {
-
+            if(Helper.confirm("sure")) {
+                int select_id = Integer.parseInt(tbl_patikaList.getValueAt(tbl_patikaList.getSelectedRow(), 0).toString());
+                if (Patika.delete(select_id)) {
+                    Helper.showMsg("done", null);
+                    loadPatikaModel();
+                } else {
+                    Helper.showMsg("error", null);
+                }
+            }
         });
 
         mdl_patikaList = new DefaultTableModel();
