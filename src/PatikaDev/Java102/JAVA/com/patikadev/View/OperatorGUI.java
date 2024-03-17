@@ -37,6 +37,15 @@ public class OperatorGUI extends JFrame{
     private JPanel pnl_patikaAdd;
     private JTextField fld_patikaName;
     private JButton btn_patikaAdd;
+    private JPanel pnl_courseList;
+    private JScrollPane scrl_courseList;
+    private JTable tbl_courseList;
+    private JPanel pnl_courseAdd;
+    private JTextField fld_courseName;
+    private JTextField fld_courseLang;
+    private JComboBox cmb_coursePatika;
+    private JComboBox cmb_courseUser;
+    private JButton btn_courseAdd;
     private final DefaultTableModel mdl_userList;
     private final Object[] row_userList;
     private DefaultTableModel mdl_patikaList;

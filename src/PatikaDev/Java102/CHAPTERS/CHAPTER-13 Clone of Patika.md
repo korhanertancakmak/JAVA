@@ -1670,22 +1670,84 @@ deleteMenu.addActionListener(e -> {
 
 After we test it by deleting the third path:
 
-![Step-51]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
+![Step-51](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step51.png?raw=true)
 
+and after we look at our new updated list:
 
+![Step-52](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step52.png?raw=true)
+
+we see that the operation is successful.
+
+## Dynmaic Forms and Management of Courses
+
+In this section, we will be managing courses in the patikas.
+First, we create a new table in the database named "course."
+This table has id, user_id, patika_id, name, and lang variables.
+Now we need to create its Model class. 
 
 ```java  
+package PatikaDev.Java102.JAVA.com.patikadev.Model;
+public class Course {
+    private int id;
+    private int user_id;
+    private int patika_id;
+    private String name;
+    private String lang;
 
+    private Patika patika;
+    private User educator;
+
+    public Course(int id, int user_id, int patika_id, String name, String lang) {
+        this.id = id;
+        this.user_id = user_id;
+        this.patika_id = patika_id;
+        this.name = name;
+        this.lang = lang;
+        this.patika = Patika.getFetch(patika_id);
+        this.educator = User.getFetch(user_id);
+    }
+}
 ```
+
+Additionally, we create Patika and User objects, but we don't take it into the constructor.
+Instead, we can use their class's getFetch methods. 
+However, User class's getFetch method does not take id, it takes username.
+Let's overload it:
+
 ```java  
+public static User getFetch(int id) {
+    User obj = null;
+    String query = "SELECT * FROM user WHERE id = ?";
 
+    try (PreparedStatement pr = DBConnector.getInstance().prepareStatement(query)) {
+        pr.setInt(1, id);
+        ResultSet rs = pr.executeQuery();
+        if (rs.next()) {
+            obj = new User();
+            obj.setId(rs.getInt("id"));
+            obj.setName(rs.getString("name"));
+            obj.setUname(rs.getString("uname"));
+            obj.setPass(rs.getString("pass"));
+            obj.setType(rs.getString("type"));
+        }
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+    return obj;
+}
 ```
+
+The only change is in the parameter type and at which it's been used.
+We added getter & setter methods into the Course class.
+
+
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+
+
 ```java  
 
 ```
