@@ -1957,22 +1957,71 @@ Because we can update any users or patikas, but the recorded data for courses mu
 We need to create a new GUI form for the login screen.
 This screen should call our OperatorGUI screen :
 
-![Step-56]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
+![Step-56](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step56.png?raw=true)
+
+The fields in login java file:
 
 ```java  
-
+private JPanel wrapper;
+private JPanel wtop;
+private JPanel wbottom;
+private JTextField fld_userUName;
+private JTextField fld_userPass;
+private JButton btn_login;
+private JLabel lbl_patikaIcon;
 ```
+
+The constructor of login java file:
+
 ```java  
-
+Helper.setLayout();
+add(wrapper);
+setSize(400, 400);
+Helper.screenCenterPoint(1, this);
+setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+setTitle(Config.PROJECT_TITLE);
+setResizable(false); 
+setVisible(true);
+btn_login.addActionListener(e -> {
+    if (Helper.isFieldEmpty(fld_userUName) || Helper.isFieldEmpty(fld_userPass)) {
+        Helper.showMsg("empty field", null, this);
+    } else {
+        User u = User.getFetch(fld_userUName.getText(), fld_userPass.getText());
+        if (u == null) {
+            Helper.showMsg("error", "The user cannot be found!", this);
+        } else {
+            Helper.showMsg("done", "Welcome! " + u.getName(), this);
+            switch (u.getType()) {
+                case "operator":
+                    OperatorGUI opGUI = new OperatorGUI((Operator) u);
+                    break;
+                case "educator":
+                    EducatorGUI edGUI = new EducatorGUI();
+                    break;
+                case "student":
+                    StudentGUI stGUI = new StudentGUI();
+                    break;
+            }
+            dispose();
+        }
+    }
+});
 ```
+
+So we don't need to test Operator GUI anymore.
+That's why we can remove or comment the main method in its java file.
+When we run this login java file and pass an operator as an input:
+
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+
+
 ```java  
 
 ```

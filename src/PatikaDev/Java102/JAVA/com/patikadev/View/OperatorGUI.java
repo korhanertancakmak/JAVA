@@ -357,7 +357,7 @@ public class OperatorGUI extends JFrame{
         }
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Operator op = new Operator();
         op.setId(1);
         op.setName("Korhan Çakmak");
@@ -366,5 +366,5 @@ public class OperatorGUI extends JFrame{
         op.setUname("kcakmak");
 
         OperatorGUI opGUI = new OperatorGUI(op);
-    }
+    }*/
 }
