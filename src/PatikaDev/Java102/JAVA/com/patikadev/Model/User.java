@@ -3,7 +3,10 @@ package PatikaDev.Java102.JAVA.com.patikadev.Model;
 
 import PatikaDev.Java102.JAVA.com.patikadev.Helper.DBConnector;
 import PatikaDev.Java102.JAVA.com.patikadev.Helper.Helper;
+import PatikaDev.Java102.JAVA.com.patikadev.View.OperatorGUI;
 
+import javax.swing.*;
+import java.awt.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -90,12 +93,12 @@ public class User {
         return userList;
     }
 
-    public static boolean add(String name, String uname, String pass, String type) {
+    public static boolean add(String name, String uname, String pass, String type, JFrame frame) {
         String query = "INSERT INTO user (name, uname, pass, type) VALUES (?,?,?,?)";
         User findUser = User.getFetch(uname);
 
         if (findUser != null) {
-            Helper.showMsg("error", "This user is already added before. Please enter different user name!");
+            Helper.showMsg("error", "This user is already added before. Please enter different user name!", frame);
             return false;
         }
         try (PreparedStatement pr = DBConnector.getInstance().prepareStatement(query)) {
@@ -105,7 +108,7 @@ public class User {
             pr.setString(4, type);
             int response = pr.executeUpdate();
             if (response == -1) {
-                Helper.showMsg("error", "Something goes wrong...");
+                Helper.showMsg("error", "Something goes wrong...", frame);
             }
             return response != -1;
         } catch (SQLException e) {
@@ -123,6 +126,34 @@ public class User {
             ResultSet rs = pr.executeQuery();
             if (rs.next()) {
                 obj = new User();
+                obj.setId(rs.getInt("id"));
+                obj.setName(rs.getString("name"));
+                obj.setUname(rs.getString("uname"));
+                obj.setPass(rs.getString("pass"));
+                obj.setType(rs.getString("type"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return obj;
+    }
+
+    public static User getFetch(String uname, String pass) {
+        User obj = null;
+        String query = "SELECT * FROM user WHERE uname = ? AND pass = ?";
+
+        try (PreparedStatement pr = DBConnector.getInstance().prepareStatement(query)) {
+            pr.setString(1, uname);
+            pr.setString(2, pass);
+            ResultSet rs = pr.executeQuery();
+            if (rs.next()) {
+                switch (rs.getString("type")) {
+                    case "operator":
+                        obj = new Operator();
+                        break;
+                    default:
+                        obj = new User();
+                }
                 obj.setId(rs.getInt("id"));
                 obj.setName(rs.getString("name"));
                 obj.setUname(rs.getString("uname"));
@@ -158,6 +189,10 @@ public class User {
 
     public static boolean delete(int id) {
         String query = "DELETE FROM user WHERE id = ?";
+        ArrayList<Course> courseList = Course.getCourseList(id);
+        for (Course c : courseList) {
+            Course.delete(c.getId());
+        }
         try (PreparedStatement pr = DBConnector.getInstance().prepareStatement(query)) {
             pr.setInt(1, id);
             return pr.executeUpdate() != -1;
@@ -167,14 +202,14 @@ public class User {
         return true;
     }
 
-    public static boolean update(int id, String name, String uname, String pass, String type) {
+    public static boolean update(int id, String name, String uname, String pass, String type, JFrame frame) {
         User findUser = User.getFetch(uname);
         ArrayList<String> possibleTypes = new ArrayList<>();
         possibleTypes.add("operator");
         possibleTypes.add("educator");
         possibleTypes.add("student");
         if (findUser != null && findUser.getId() != id || !possibleTypes.contains(type)) {
-            Helper.showMsg("error", "Not a valid type");
+            Helper.showMsg("error", "Not a valid type", frame);
             return false;
         }
         String query = "UPDATE user SET name=?, uname=?, pass=?, type=? WHERE id = ?";
@@ -223,4 +258,5 @@ public class User {
 
         return query;
     }
+
 }

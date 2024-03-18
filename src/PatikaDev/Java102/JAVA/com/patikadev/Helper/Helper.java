@@ -1,5 +1,7 @@
 package PatikaDev.Java102.JAVA.com.patikadev.Helper;
 
+import PatikaDev.Java102.JAVA.com.patikadev.View.OperatorGUI;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,7 +10,7 @@ public class Helper {
 
     public static void setLayout() {
         for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-            if ("CDE/Motif".equals(info.getName())) {
+            if ("Nimbus".equals(info.getName())) {
                 try {
                     UIManager.setLookAndFeel(info.getClassName());
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
@@ -19,26 +21,28 @@ public class Helper {
         }
     }
 
-    public static int screenCenterPoint(String axis, Dimension size) {
-        int point = 0;
-        switch (axis) {
-            case "x" :
-                point = (Toolkit.getDefaultToolkit().getScreenSize().width - size.width) / 2;
-                break;
-            case "y" :
-                point = (Toolkit.getDefaultToolkit().getScreenSize().height - size.height) / 2;
-                break;
-            default:
-                point = 0;
+    public static void screenCenterPoint(int screenID, Frame frame) {
+        GraphicsDevice[] gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+
+        if (screenID > gd.length && gd.length > 0) {
+            screenID = 0;
+        } else if (gd.length == 0){
+            throw new RuntimeException( "No Screens Found" );
         }
-        return point;
+
+        int width = gd[screenID].getDefaultConfiguration().getBounds().width;
+        int height = gd[screenID].getDefaultConfiguration().getBounds().height;
+        frame.setLocation(
+                ((width / 2) - (frame.getSize().width / 2)) + gd[screenID].getDefaultConfiguration().getBounds().x,
+                ((height / 2) - (frame.getSize().height / 2)) + gd[screenID].getDefaultConfiguration().getBounds().y
+        );
     }
 
     public static boolean isFieldEmpty(JTextField field) {
         return field.getText().trim().isEmpty();
     }
 
-    public static void showMsg(String str, String message) {
+    public static void showMsg(String str, String message, JFrame frame) {
         msg = message;
         String title;
         switch (str) {
@@ -66,10 +70,10 @@ public class Helper {
                 msg = str;
                 title = "Message!";
         }
-        JOptionPane.showMessageDialog(null, msg, title, JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(frame, msg, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public static boolean confirm(String str) {
+    public static boolean confirm(String str, JFrame frame) {
         String msg;
         switch (str) {
             case "sure":
@@ -79,7 +83,7 @@ public class Helper {
                 msg = str;
         }
 
-        return JOptionPane.showConfirmDialog(null, msg, "Last Decision?", JOptionPane.YES_NO_OPTION) == 0;
+        return JOptionPane.showConfirmDialog(frame, msg, "Last Decision?", JOptionPane.YES_NO_OPTION) == 0;
     }
 
     public static void optionPageEng(boolean isDone) {

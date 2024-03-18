@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="wrapper" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="20" y="20" width="553" height="552"/>
+      <xy x="20" y="20" width="585" height="552"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -65,9 +65,13 @@
                 <children>
                   <component id="9f28" class="javax.swing.JLabel">
                     <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="125" height="-1"/>
+                      </grid>
                     </constraints>
                     <properties>
+                      <horizontalAlignment value="10"/>
+                      <horizontalTextPosition value="11"/>
                       <text value="Name Surname"/>
                     </properties>
                   </component>
@@ -86,7 +90,9 @@
                   </component>
                   <component id="92688" class="javax.swing.JLabel">
                     <constraints>
-                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="125" height="-1"/>
+                      </grid>
                     </constraints>
                     <properties>
                       <text value="User Name"/>
@@ -102,7 +108,9 @@
                   </component>
                   <component id="c7f93" class="javax.swing.JLabel">
                     <constraints>
-                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="125" height="-1"/>
+                      </grid>
                     </constraints>
                     <properties>
                       <text value="Password"/>
@@ -118,7 +126,9 @@
                   </component>
                   <component id="a3c09" class="javax.swing.JLabel">
                     <constraints>
-                      <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="125" height="-1"/>
+                      </grid>
                     </constraints>
                     <properties>
                       <text value="User Type"/>
@@ -182,7 +192,9 @@
                 <children>
                   <component id="7cc05" class="javax.swing.JLabel">
                     <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="125" height="-1"/>
+                      </grid>
                     </constraints>
                     <properties>
                       <text value="Name Surname"/>
@@ -203,7 +215,9 @@
                   </component>
                   <component id="bf4eb" class="javax.swing.JLabel">
                     <constraints>
-                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="125" height="-1"/>
+                      </grid>
                     </constraints>
                     <properties>
                       <text value="User Name"/>
@@ -219,7 +233,9 @@
                   </component>
                   <component id="7c8a7" class="javax.swing.JLabel">
                     <constraints>
-                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="125" height="-1"/>
+                      </grid>
                     </constraints>
                     <properties>
                       <text value="User Type"/>
@@ -288,7 +304,9 @@
                 <children>
                   <component id="a1a42" class="javax.swing.JLabel">
                     <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="75" height="-1"/>
+                      </grid>
                     </constraints>
                     <properties>
                       <text value="Path Name"/>
@@ -327,7 +345,9 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
-                <border type="none"/>
+                <border type="none">
+                  <font/>
+                </border>
                 <children>
                   <component id="4a7f8" class="javax.swing.JTable" binding="tbl_courseList">
                     <constraints/>
@@ -352,7 +372,9 @@
                 <children>
                   <component id="aad20" class="javax.swing.JLabel">
                     <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="125" height="-1"/>
+                      </grid>
                     </constraints>
                     <properties>
                       <text value="Course Name"/>
@@ -373,7 +395,9 @@
                   </component>
                   <component id="24303" class="javax.swing.JLabel">
                     <constraints>
-                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="125" height="-1"/>
+                      </grid>
                     </constraints>
                     <properties>
                       <text value="Programming Language"/>
@@ -389,7 +413,9 @@
                   </component>
                   <component id="8fe8b" class="javax.swing.JLabel">
                     <constraints>
-                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="125" height="-1"/>
+                      </grid>
                     </constraints>
                     <properties>
                       <text value="Patika"/>
@@ -403,7 +429,9 @@
                   </component>
                   <component id="5b0ab" class="javax.swing.JLabel">
                     <constraints>
-                      <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="125" height="-1"/>
+                      </grid>
                     </constraints>
                     <properties>
                       <text value="Educator"/>

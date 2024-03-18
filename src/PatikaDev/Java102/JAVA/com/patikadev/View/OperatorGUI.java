@@ -57,8 +57,9 @@ public class OperatorGUI extends JFrame{
     public OperatorGUI(Operator operator) {
         Helper.setLayout();
         add(wrapper);
-        setSize(1000, 500);
-        setLocation(Helper.screenCenterPoint("x", getSize()), Helper.screenCenterPoint("y", getSize()));
+        setSize(1250, 750);
+        Dimension frameSize = getSize();
+        Helper.screenCenterPoint(1, this);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle(Config.PROJECT_TITLE);
 
@@ -82,6 +83,7 @@ public class OperatorGUI extends JFrame{
         row_userList = new Object[col_userList.length];
         loadUserModel();
         tbl_userList.setModel(mdl_userList);
+        tbl_userList.getTableHeader().setFont(new Font("Arial Black", Font.BOLD, 14));
         tbl_userList.getTableHeader().setReorderingAllowed(false);
         // ## Model user list
 
@@ -95,7 +97,7 @@ public class OperatorGUI extends JFrame{
             }
         });
 
-        // Table cells Listener for user List
+        // Table cells Listener for user List to UPDATE
         tbl_userList.getModel().addTableModelListener(e -> {
             if (e.getType() == TableModelEvent.UPDATE) {
                 int user_id = Integer.parseInt(tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 0).toString());
@@ -104,11 +106,13 @@ public class OperatorGUI extends JFrame{
                 String userPass = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 3).toString();
                 String userType = tbl_userList.getValueAt(tbl_userList.getSelectedRow(), 4).toString();
 
-                if (User.update(user_id, name, userName, userPass, userType)) {
-                    Helper.showMsg("done", null);
+                if (User.update(user_id, name, userName, userPass, userType, this)) {
+                    Helper.showMsg("done", null, this);
                 }
 
                 loadUserModel();
+                loadEducatorCombo();
+                loadCourseModel();
             }
         });
 
@@ -117,15 +121,16 @@ public class OperatorGUI extends JFrame{
             if (Helper.isFieldEmpty(fld_userName) ||
                     Helper.isFieldEmpty(fld_userUName) ||
                     Helper.isFieldEmpty(fld_userPassword)) {
-                Helper.showMsg("empty field", null);
+                Helper.showMsg("empty field", null, this);
             } else {
                 String name = fld_userName.getText();
                 String uname = fld_userUName.getText();
                 String pass = fld_userPassword.getText();
                 String type = cmb_userType.getSelectedItem().toString();
-                if (User.add(name, uname, pass, type)) {
-                    Helper.showMsg("done", null);
+                if (User.add(name, uname, pass, type, this)) {
+                    Helper.showMsg("done", null, this);
                     loadUserModel();
+                    loadEducatorCombo();
                     fld_userName.setText(null);
                     fld_userUName.setText(null);
                     fld_userPassword.setText(null);
@@ -136,15 +141,18 @@ public class OperatorGUI extends JFrame{
         // Delete button Listener for user List
         btn_userDelete.addActionListener(e -> {
             if (Helper.isFieldEmpty(fld_userID)) {
-                Helper.showMsg("empty field", null);
+                Helper.showMsg("empty field", null, this);
             } else {
-                if (Helper.confirm("sure")) {
+                if (Helper.confirm("sure", this)) {
                     int userID = Integer.parseInt(fld_userID.getText());
                     if (User.delete(userID)) {
-                        Helper.showMsg("done", null);
+                        Helper.showMsg("done", null, this);
                         loadUserModel();
+                        loadEducatorCombo();
+                        loadCourseModel();
+                        fld_userID.setText(null);
                     } else {
-                        Helper.showMsg("error", "Delete operation is unsuccessful");
+                        Helper.showMsg("error", "Delete operation is unsuccessful", this);
                     }
                 }
             }
@@ -163,14 +171,15 @@ public class OperatorGUI extends JFrame{
         // Add button Listener for patika List
         btn_patikaAdd.addActionListener(e -> {
             if (Helper.isFieldEmpty(fld_patikaName)) {
-                Helper.showMsg("fill", null);
+                Helper.showMsg("empty field", null, this);
             } else {
-                if (Patika.add(fld_patikaName.getText())) {
-                    Helper.showMsg("done", null);
+                if (Patika.add(fld_patikaName.getText(), this)) {
+                    Helper.showMsg("done", null, this);
                     loadPatikaModel();
+                    loadPatikaCombo();
                     fld_patikaName.setText(null);
                 } else {
-                    Helper.showMsg("error", null);
+                    Helper.showMsg("error", null, this);
                 }
             }
         });
@@ -192,18 +201,22 @@ public class OperatorGUI extends JFrame{
                 @Override
                 public void windowClosed(WindowEvent e) {
                     loadPatikaModel();
+                    loadPatikaCombo();
+                    loadCourseModel();
                 }
             });
         });
 
         deleteMenu.addActionListener(e -> {
-            if(Helper.confirm("sure")) {
+            if(Helper.confirm("sure", this)) {
                 int select_id = Integer.parseInt(tbl_patikaList.getValueAt(tbl_patikaList.getSelectedRow(), 0).toString());
                 if (Patika.delete(select_id)) {
-                    Helper.showMsg("done", null);
+                    Helper.showMsg("done", null, this);
                     loadPatikaModel();
+                    loadPatikaCombo();
+                    loadCourseModel();
                 } else {
-                    Helper.showMsg("error", null);
+                    Helper.showMsg("error", null, this);
                 }
             }
         });
@@ -217,6 +230,7 @@ public class OperatorGUI extends JFrame{
         tbl_patikaList.setModel(mdl_patikaList);
         tbl_patikaList.setComponentPopupMenu(patikaMenu);
         tbl_patikaList.getTableHeader().setReorderingAllowed(false);
+        tbl_patikaList.getTableHeader().setFont(new Font("Arial Black", Font.BOLD, 14));
         tbl_patikaList.getColumnModel().getColumn(0).setMaxWidth(75);
 
         tbl_patikaList.addMouseListener(new MouseAdapter() {
@@ -239,14 +253,35 @@ public class OperatorGUI extends JFrame{
         loadCourseModel();
         tbl_courseList.setModel(mdl_courseList);
         tbl_courseList.getColumnModel().getColumn(0).setMaxWidth(75);
+        tbl_courseList.getTableHeader().setFont(new Font("Arial Black", Font.BOLD, 14));
         tbl_courseList.getTableHeader().setReorderingAllowed(false);
-
         loadPatikaCombo();
+        loadEducatorCombo();
 
+        btn_courseAdd.addActionListener(e -> {
+            Item patikaItem = (Item) cmb_coursePatika.getSelectedItem();
+            Item userItem = (Item) cmb_courseUser.getSelectedItem();
+            if (Helper.isFieldEmpty(fld_courseName) || Helper.isFieldEmpty(fld_courseLang)) {
+                Helper.showMsg("empty field", null, this);
+            } else {
+                if (Course.add(userItem.getKey(), patikaItem.getKey(), fld_courseName.getText(), fld_courseLang.getText())) {
+                    Helper.showMsg("done", null, this);
+                    loadCourseModel();
+                    fld_courseLang.setText(null);
+                    fld_courseName.setText(null);
+                } else {
+                    Helper.showMsg("error", null, this);
+                }
+            }
+        });
+
+
+//<<< COURSES
 
         // Logout Listener
         btn_logout.addActionListener(e -> {
             dispose();
+            LoginGUI login = new LoginGUI();
         });
     }
 
@@ -310,6 +345,15 @@ public class OperatorGUI extends JFrame{
         cmb_coursePatika.removeAllItems();
         for (Patika obj : Patika.getPatikaList()) {
             cmb_coursePatika.addItem(new Item(obj.getId(), obj.getName()));
+        }
+    }
+
+    public void loadEducatorCombo() {
+        cmb_courseUser.removeAllItems();
+        for (User obj : User.getUserList()) {
+            if (obj.getType().equals("educator")) {
+                cmb_courseUser.addItem(new Item(obj.getId(), obj.getName()));
+            }
         }
     }
 

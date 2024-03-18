@@ -16,7 +16,7 @@ public class UpdatePatikaGUI extends JFrame {
         this.patika = patika;
         add(wrapper);
         setSize(300, 150);
-        setLocation(Helper.screenCenterPoint("x", getSize()), Helper.screenCenterPoint("y", getSize()));
+        Helper.screenCenterPoint(1, this);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle(Config.PROJECT_TITLE);
         setVisible(true);
@@ -25,10 +25,10 @@ public class UpdatePatikaGUI extends JFrame {
 
         btn_update.addActionListener(e -> {
             if (Helper.isFieldEmpty(fld_patikaName)) {
-                Helper.showMsg("fill", null);
+                Helper.showMsg("fill", null, this);
             } else {
                 if (Patika.update(patika.getId(), fld_patikaName.getText())) {
-                    Helper.showMsg("done", null);
+                    Helper.showMsg("done", null, this);
                 }
                 dispose();
             }

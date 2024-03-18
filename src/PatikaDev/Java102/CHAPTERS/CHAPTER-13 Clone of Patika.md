@@ -1860,26 +1860,128 @@ public void loadPatikaCombo() {
 
 Here, we set "cmb_coursePatika" field with Items 
 that are actually my patikas in the database.
+When we test this:
 
+![Step-55](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step55.png?raw=true)
 
+We can see the patikas in the combo box of add panel's combo box.
+However, if we add a new patika, we will not be able to see the reflection here.
+To add this functionality, we should go to the listener of adding a new patika,
+and have to call once more loadPatikaCombo method here.
+Actually, we can call loadPatikaCombo method at wherever we delete and add patikas.
 
+We need to do the same thing for educator combo box.
+First, we need to create a new method:
+
+```java  
+public void loadEducatorCombo() {
+    cmb_courseUser.removeAllItems();
+    for (User obj : User.getUserList()) {
+        if (obj.getType().equals("educator")) {
+            cmb_courseUser.addItem(new Item(obj.getId(), obj.getName()));
+        }
+    }
+}
+```
+
+Again, we need to call this at every update we do for the user list to be able to get
+the right educator list.
+
+After we added loadEducatorCombo() method everywhere we need, 
+we create add method in the Course class:
+
+```java  
+public static boolean add(int user_id, int patika_id, String name, String lang) {
+    String query = "INSERT INTO course (user_id, patika_id, name, lang) VALUES (?,?,?,?)";
+    try (PreparedStatement pr = DBConnector.getInstance().prepareStatement(query)) {
+        pr.setInt(1, user_id);
+        pr.setInt(2, patika_id);
+        pr.setString(3, name);
+        pr.setString(4, lang);
+        return pr.executeUpdate() != -1;
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+    return true;
+}
+```
+
+Now, we create an action listener for adding button:
+
+```java  
+btn_courseAdd.addActionListener(e -> {
+    Item patikaItem = (Item) cmb_coursePatika.getSelectedItem();
+    Item userItem = (Item) cmb_courseUser.getSelectedItem();
+    if (Helper.isFieldEmpty(fld_courseName) || Helper.isFieldEmpty(fld_courseLang)) {
+        Helper.showMsg("fill", null);
+    } else {
+        if (Course.add(userItem.getKey(), patikaItem.getKey(), fld_courseName.getText(), fld_courseLang.getText())) {
+            Helper.showMsg("done", null);
+            loadCourseModel();
+            fld_courseLang.setText(null);
+            fld_courseName.setText(null);
+        } else {
+            Helper.showMsg("error", null);
+        }
+    }
+});
+```
+
+Lastly, we add loadEducatorCombo() method for educator label.
+
+```java  
+public void loadEducatorCombo() {
+    cmb_courseUser.removeAllItems();
+    for (User obj : User.getUserList()) {
+        if (obj.getType().equals("educator")) {
+            cmb_courseUser.addItem(new Item(obj.getId(), obj.getName()));
+        }
+    }
+}
+```
+
+We need to use this in every listener that we update in the users and patikas.
+Because our Patika and Educator combo box must be updated afterward.
+
+Now, we got a problem that if we add a course by assigning a patika and an educator to it,
+there will be an error case when we delete that patika or educator from the database.
+Because that patika or educator(user) will be deleted but that course will not be deleted with them.
+And the same patika or educator will still be assigned to that course, which is a problem.
+This is valid for updates, as well.
+Because we can update any users or patikas, but the recorded data for courses must be updated, as well.
+
+***NOTE***: This solution will not be included here, but you can find it in the corresponding java files.
+
+## Login Screen and Other Requirements
+
+We need to create a new GUI form for the login screen.
+This screen should call our OperatorGUI screen :
+
+![Step-56]()
 ![Step-3]()
 ![Step-3]()
 ![Step-3]()
-
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
+![Step-3]()
 
 ```java  
 
 ```
-
 ```java  
 
 ```
-
 ```java  
 
 ```
+```java  
 
+```
+```java  
+
+```
 ```java  
 
 ```

@@ -2,7 +2,9 @@ package PatikaDev.Java102.JAVA.com.patikadev.Model;
 
 import PatikaDev.Java102.JAVA.com.patikadev.Helper.DBConnector;
 import PatikaDev.Java102.JAVA.com.patikadev.Helper.Helper;
+import com.sun.jdi.ArrayReference;
 
+import javax.swing.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,13 +53,13 @@ public class Patika {
         return patikaList;
     }
 
-    public static boolean add(String name) {
+    public static boolean add(String name, JFrame frame) {
         String query = "INSERT INTO patika (name) VALUES (?)";
         try (PreparedStatement pr = DBConnector.getInstance().prepareStatement(query)) {
             pr.setString(1, name);
             int response = pr.executeUpdate();
             if (response == -1) {
-                Helper.showMsg("error", "Something goes wrong...");
+                Helper.showMsg("error", "Something goes wrong...", frame);
             }
             return response != -1;
         } catch (SQLException e) {
@@ -96,6 +98,12 @@ public class Patika {
 
     public static boolean delete(int id) {
         String query = "DELETE FROM patika WHERE id = ?";
+        ArrayList<Course> coruseList = Course.getCourseList();
+        for (Course obj : coruseList) {
+            if (obj.getPatika().getId() == id) {
+                Course.delete(obj.getId());
+            }
+        }
         try (PreparedStatement pr = DBConnector.getInstance().prepareStatement(query)) {
             pr.setInt(1, id);
             return pr.executeUpdate() != -1;
