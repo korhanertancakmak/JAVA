@@ -2012,25 +2012,73 @@ So we don't need to test Operator GUI anymore.
 That's why we can remove or comment the main method in its java file.
 When we run this login java file and pass an operator as an input:
 
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
-![Step-3]()
+![Step-57](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step57.png?raw=true)
 
+When we log in:
 
-```java  
+![Step-58](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step58.png?raw=true)
 
-```
-```java  
+The confirmation screen pops out, and we click to "Done" button :
 
-```
-```java  
+![Step-59](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/Images/CHAPTER13/Step59.png?raw=true)
 
-```
-```java  
+Our operator screen pops out, correctly.
 
-```
+## Future Developments
+
+1. ***Instructor Monitor***
+
+   When instructors log in to the system, a screen should be designed where they can perform their duties.
+
+   * Instructors can view and list the courses assigned to them by Operators.
+   They do not have the authority to edit or delete courses. 
+   They cannot see courses of other instructors.
+
+   * The instructors' task will be to add content to the courses. (See: Java 102 course on Path.dev system)
+
+   * Instructors can add content, edit, delete and list their own content.
+
+   * Features of the contents:
+
+      * Content Title
+      * Content Description
+      * Content Youtube Link
+      * Content Quiz Questions
+      * Course information to which the content belongs
+      * Quiz questions 
+
+     will be added from the instructor panel and when adding the questions, 
+     the content it belongs to must be selected.
+
+   * On the content listing screen, filtering by courses and content title should be possible.
+
+   * The instructor must do all this work through the interface.
+
+2. ***Student Monitor***
+
+   When students log in to the system, they should access the courses via pathways, just like you do.
+
+   * Students can list the pathways in the system.
+
+   * Students must register for a course through the pathways.
+
+   * Students can access and view the content of the course they are registered for. 
+   (There is no need to embed the YouTube video into the project, only a link can be provided)
+
+   * Students can evaluate and comment on the content of the courses.
+
+   * Students can solve course quizzes.
+
+   * Students must do all this work through the interface.
+
+3. ***Adding to the Operator Panel***
+
+   Operators have the authority to delete and edit all paths, trainings, contents and quizzes in the system.
+
+4. ***Adding to the Login Screen***
+
+   * Students can register to the system if they do not have a membership during the login screen.
+
+   * The sign-up screen should be designed, and only students should be able to register to the system.
+
+   * The software developer (that is, you) should add the operators in the system, and the trainers should only be able to add operators.
