@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_09_LambdaExpressionsAndFunctions.Course06_Functions;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_09_LambdaExpressionsAndFunctions.Course06_Functions;
 
 public class Employee {
     private String name;

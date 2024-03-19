@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course18_MapInterfaceAndFunctionality;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course18_MapInterfaceAndFunctionality;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_02_ExpressionsStatementsMore.Course06_CodingExercise;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_02_ExpressionsStatementsMore.Course06_CodingExercise;
 
 public class Main {
 

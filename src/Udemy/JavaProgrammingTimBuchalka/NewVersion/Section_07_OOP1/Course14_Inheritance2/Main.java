@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_07_OOP1.Course14_Inheritance2;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_07_OOP1.Course14_Inheritance2;
 
 /*
 Course-44

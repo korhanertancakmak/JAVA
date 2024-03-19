@@ -1,7 +1,8 @@
-package CourseCodes.OldSections.Section_05_OOP2.Course01_Composition;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_05_OOP2.Course01_Composition;
 
-import CourseCodes.OldSections.Section_05_OOP2.Course01_Composition.BuildingAHouse.*;
-import CourseCodes.OldSections.Section_05_OOP2.Course01_Composition.BuildingAPC.*;
+
+import Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_05_OOP2.Course01_Composition.BuildingAHouse.*;
+import Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_05_OOP2.Course01_Composition.BuildingAPC.*;
 
 public class Main {
 

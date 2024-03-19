@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_08_OOP2.Course10_OOPMasterChallenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_08_OOP2.Course10_OOPMasterChallenge;
 
 public class Burger extends Item{
 

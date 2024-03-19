@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0034_CarpetCostCalculator;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0034_CarpetCostCalculator;
 
 public class Calculator {
 

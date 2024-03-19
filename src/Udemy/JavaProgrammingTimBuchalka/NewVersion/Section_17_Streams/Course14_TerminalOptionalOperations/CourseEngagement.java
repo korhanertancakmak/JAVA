@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course14_TerminalOptionalOperations;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Streams.Course14_TerminalOptionalOperations;
 
 import java.time.LocalDate;
 import java.time.Period;

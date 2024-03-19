@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0038_Composition;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0038_Composition;
 
 public class Wall {
     private String direction;

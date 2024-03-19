@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_14_LambdaExpressionsAndFunctionalInterfaces.Course03_LambdaExpressions_Part3;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_14_LambdaExpressionsAndFunctionalInterfaces.Course03_LambdaExpressions_Part3;
 
 
 import java.util.ArrayList;

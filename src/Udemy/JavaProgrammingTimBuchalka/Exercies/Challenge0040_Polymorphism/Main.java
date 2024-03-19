@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0040_Polymorphism;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0040_Polymorphism;
 
 /*
 Challenge-40

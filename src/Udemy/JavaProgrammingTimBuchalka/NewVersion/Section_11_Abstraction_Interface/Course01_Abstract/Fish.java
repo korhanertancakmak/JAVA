@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_11_Abstraction_Interface.Course01_Abstract;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_11_Abstraction_Interface.Course01_Abstract;
 //Part-12
 /*
         We now have a Fish class that extends Animal, and it's just copied over the move and makeNoise method, which I

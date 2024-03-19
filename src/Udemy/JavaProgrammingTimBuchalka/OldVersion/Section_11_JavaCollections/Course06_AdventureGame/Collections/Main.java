@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_11_JavaCollections.Course06_AdventureGame.Collections;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_11_JavaCollections.Course06_AdventureGame.Collections;
 
 import java.util.ArrayList;
 import java.util.Collections;

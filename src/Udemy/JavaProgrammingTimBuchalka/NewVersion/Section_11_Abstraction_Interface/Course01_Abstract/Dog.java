@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_11_Abstraction_Interface.Course01_Abstract;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_11_Abstraction_Interface.Course01_Abstract;
 //Part-6
 /*
         And I'll add extends Animal there, meaning Dog inherits from Animal, or Dog is an Animal.

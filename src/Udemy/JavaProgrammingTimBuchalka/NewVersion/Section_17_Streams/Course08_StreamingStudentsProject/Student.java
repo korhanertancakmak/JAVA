@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course08_StreamingStudentsProject;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Streams.Course08_StreamingStudentsProject;
 
 import java.time.LocalDate;
 import java.util.HashMap;

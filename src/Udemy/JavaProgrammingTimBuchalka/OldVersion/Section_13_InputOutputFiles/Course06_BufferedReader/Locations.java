@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_13_InputOutputFiles.Course06_BufferedReader;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_13_InputOutputFiles.Course06_BufferedReader;
 
 import java.io.*;
 import java.util.*;

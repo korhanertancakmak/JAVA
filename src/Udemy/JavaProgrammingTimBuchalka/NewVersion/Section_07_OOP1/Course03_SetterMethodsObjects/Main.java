@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_07_OOP1.Course03_SetterMethodsObjects;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_07_OOP1.Course03_SetterMethodsObjects;
 
 /*
 Course-33

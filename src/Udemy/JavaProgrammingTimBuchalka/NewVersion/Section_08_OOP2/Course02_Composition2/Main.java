@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_08_OOP2.Course02_Composition2;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_08_OOP2.Course02_Composition2;
 
 /*
 Course-53

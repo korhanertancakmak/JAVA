@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_07_InterfacesAndInnerAbstractClasses.Course02_InterfaceChallenge;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_07_InterfacesAndInnerAbstractClasses.Course02_InterfaceChallenge;
 
 import java.util.ArrayList;
 import java.util.List;

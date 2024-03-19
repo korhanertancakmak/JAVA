@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course02_ThreadCreationExecution;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_19_Concurrency.Course02_ThreadCreationExecution;
 
 public class CustomThread extends Thread {
 

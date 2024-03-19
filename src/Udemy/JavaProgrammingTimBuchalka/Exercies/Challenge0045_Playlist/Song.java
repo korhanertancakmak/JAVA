@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0045_Playlist;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0045_Playlist;
 
 public class Song {
 /*

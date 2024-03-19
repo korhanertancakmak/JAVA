@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_11_JavaCollections.Course05_Maps;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_11_JavaCollections.Course05_Maps;
 
 import java.util.ArrayList;
 import java.util.Collections;

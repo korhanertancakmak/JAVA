@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course21_ThreadSafeListQueues;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_19_Concurrency.Course21_ThreadSafeListQueues;
 
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Stream;

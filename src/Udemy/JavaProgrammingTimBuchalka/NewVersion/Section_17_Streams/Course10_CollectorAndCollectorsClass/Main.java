@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course10_CollectorAndCollectorsClass;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Streams.Course10_CollectorAndCollectorsClass;
 
 import java.util.Arrays;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_09_LambdaExpressionsAndFunctions.Course05_PredicatesAndSuppliers;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_09_LambdaExpressionsAndFunctions.Course05_PredicatesAndSuppliers;
 
 import java.util.ArrayList;
 import java.util.List;

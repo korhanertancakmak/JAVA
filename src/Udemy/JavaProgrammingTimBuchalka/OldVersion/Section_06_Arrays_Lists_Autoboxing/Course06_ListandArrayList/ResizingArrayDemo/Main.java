@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_06_Arrays_Lists_Autoboxing.Course06_ListandArrayList.ResizingArrayDemo;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_06_Arrays_Lists_Autoboxing.Course06_ListandArrayList.ResizingArrayDemo;
 
 import java.util.Scanner;
 

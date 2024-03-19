@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_07_OOP1.Course04_ClassesChallenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_07_OOP1.Course04_ClassesChallenge;
 
 /*
 Course-34

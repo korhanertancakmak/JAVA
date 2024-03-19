@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course13_SealedClasses.pirate;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course13_SealedClasses.pirate;
 
 import java.util.ArrayList;
 import java.util.EnumSet;

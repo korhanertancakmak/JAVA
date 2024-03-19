@@ -1,6 +1,6 @@
-package CourseCodes.NewSections.Section_12_Generics.Course09_StaticMethodsMultipleUpperBounds.model;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course09_StaticMethodsMultipleUpperBounds.model;
 
-import CourseCodes.NewSections.Section_12_Generics.Course09_StaticMethodsMultipleUpperBounds.util.QueryItem;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course09_StaticMethodsMultipleUpperBounds.util.QueryItem;
 
 import java.util.Random;
 

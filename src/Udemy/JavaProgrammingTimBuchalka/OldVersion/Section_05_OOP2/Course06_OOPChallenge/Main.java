@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_05_OOP2.Course06_OOPChallenge;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_05_OOP2.Course06_OOPChallenge;
 
 public class Main {
 

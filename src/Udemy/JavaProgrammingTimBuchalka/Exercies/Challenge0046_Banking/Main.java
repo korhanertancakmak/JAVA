@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0046_Banking;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0046_Banking;
 
 public class Main {
     public static void main(String[] args) {

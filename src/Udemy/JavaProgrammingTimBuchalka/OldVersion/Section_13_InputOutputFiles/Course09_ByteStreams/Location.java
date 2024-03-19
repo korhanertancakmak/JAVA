@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_13_InputOutputFiles.Course09_ByteStreams;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_13_InputOutputFiles.Course09_ByteStreams;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

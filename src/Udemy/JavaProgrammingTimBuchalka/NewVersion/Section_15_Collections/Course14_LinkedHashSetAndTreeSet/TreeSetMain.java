@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course14_LinkedHashSetAndTreeSet;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course14_LinkedHashSetAndTreeSet;
 
 import java.util.*;
 

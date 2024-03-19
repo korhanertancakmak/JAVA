@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_08_OOP2.Course08_InstanceOfOperator;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_08_OOP2.Course08_InstanceOfOperator;
 
 public class Main {
     public static void main(String[] args) {

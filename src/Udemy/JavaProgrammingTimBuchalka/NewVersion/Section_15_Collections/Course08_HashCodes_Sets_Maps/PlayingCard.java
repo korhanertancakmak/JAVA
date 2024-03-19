@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course08_HashCodes_Sets_Maps;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course08_HashCodes_Sets_Maps;
 
 //Part-7
 /*

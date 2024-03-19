@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_07_InterfacesAndInnerAbstractClasses.Course04_InnerClassesChallenge;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_07_InterfacesAndInnerAbstractClasses.Course04_InnerClassesChallenge;
 
 import java.util.*;
 

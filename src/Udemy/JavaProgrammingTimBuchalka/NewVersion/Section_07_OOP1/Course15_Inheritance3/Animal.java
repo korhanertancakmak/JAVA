@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_07_OOP1.Course15_Inheritance3;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_07_OOP1.Course15_Inheritance3;
 
 public class Animal {
 

@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_05_OOP2.Course01_Composition.BuildingAPC;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_05_OOP2.Course01_Composition.BuildingAPC;
 
 public class Case {
     private String model;

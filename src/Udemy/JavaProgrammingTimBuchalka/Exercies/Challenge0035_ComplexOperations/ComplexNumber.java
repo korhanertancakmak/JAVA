@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0035_ComplexOperations;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0035_ComplexOperations;
 
 public class ComplexNumber {
 

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_13_NestedClassesAndTypes.Course03_InnerClassBillsBurgerChallengeRecover.burger;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndTypes.Course03_InnerClassBillsBurgerChallengeRecover.burger;
 
 //Part-1
 /*

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course11_SetOperations_SymmetricAsymmetricResults;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course11_SetOperations_SymmetricAsymmetricResults;
 
 import java.util.ArrayList;
 import java.util.Arrays;

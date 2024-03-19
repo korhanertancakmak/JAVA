@@ -1,8 +1,7 @@
-package CourseCodes.NewSections.Section_12_Generics.Course10_StudentChallenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course10_StudentChallenge;
 
-import CourseCodes.NewSections.Section_12_Generics.Course10_StudentChallenge.model.LPAStudent;
-import CourseCodes.NewSections.Section_12_Generics.Course10_StudentChallenge.model.LPAStudentComparator;
-import CourseCodes.NewSections.Section_12_Generics.Course10_StudentChallenge.util.QueryList;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course10_StudentChallenge.model.*;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course10_StudentChallenge.util.*;
 
 import java.util.Comparator;
 import java.util.List;

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_11_Abstraction_Interface.Course03_Interfaces;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_11_Abstraction_Interface.Course03_Interfaces;
 //Part-17
 /*
         I'll add implements Trackable. The class doesn't compile, because we have to implement the track method on it.

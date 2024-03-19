@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_11_JavaCollections.Course09_ImmutableClasses;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_11_JavaCollections.Course09_ImmutableClasses;
 
 import java.util.HashMap;
 import java.util.Map;

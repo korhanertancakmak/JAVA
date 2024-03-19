@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0041_SortedArray;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0041_SortedArray;
 
 /*
 Challenge-42

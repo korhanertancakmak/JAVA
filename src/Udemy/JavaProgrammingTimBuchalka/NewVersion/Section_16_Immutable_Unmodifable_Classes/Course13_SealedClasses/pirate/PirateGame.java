@@ -1,7 +1,7 @@
-package CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course13_SealedClasses.pirate;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course13_SealedClasses.pirate;
 
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course13_SealedClasses.game.Game;
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course13_SealedClasses.game.GameAction;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course13_SealedClasses.game.Game;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course13_SealedClasses.game.GameAction;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

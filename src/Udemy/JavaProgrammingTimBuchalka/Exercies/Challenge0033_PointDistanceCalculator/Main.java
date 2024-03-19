@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0033_PointDistanceCalculator;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0033_PointDistanceCalculator;
 
 /*
 Challenge-33

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_08_OOP2.Course01_Composition1;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_08_OOP2.Course01_Composition1;
 
 public class PersonalComputer extends Product{
 

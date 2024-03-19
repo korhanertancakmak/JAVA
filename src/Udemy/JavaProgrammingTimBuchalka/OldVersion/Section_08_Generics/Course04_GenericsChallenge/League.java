@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_08_Generics.Course04_GenericsChallenge;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_08_Generics.Course04_GenericsChallenge;
 
 import java.util.ArrayList;
 import java.util.Collections;

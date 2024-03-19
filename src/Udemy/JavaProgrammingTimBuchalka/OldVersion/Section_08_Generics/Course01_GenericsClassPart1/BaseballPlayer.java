@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_08_Generics.Course01_GenericsClassPart1;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_08_Generics.Course01_GenericsClassPart1;
 
 
 public class BaseballPlayer extends Player {

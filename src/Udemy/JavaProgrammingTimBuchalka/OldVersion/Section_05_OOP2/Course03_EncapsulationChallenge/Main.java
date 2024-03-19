@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_05_OOP2.Course03_EncapsulationChallenge;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_05_OOP2.Course03_EncapsulationChallenge;
 
 public class Main {
 

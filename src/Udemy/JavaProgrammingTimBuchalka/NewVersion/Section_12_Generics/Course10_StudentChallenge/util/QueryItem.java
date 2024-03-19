@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_12_Generics.Course10_StudentChallenge.util;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course10_StudentChallenge.util;
 
 public interface QueryItem {
 

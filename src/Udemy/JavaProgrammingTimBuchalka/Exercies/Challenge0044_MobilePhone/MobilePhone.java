@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0044_MobilePhone;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0044_MobilePhone;
 
 import java.util.ArrayList;
 

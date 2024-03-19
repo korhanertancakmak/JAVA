@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course12_TaskAndTaskDataCodeSetup;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course12_TaskAndTaskDataCodeSetup;
 
 //Part-2
 /*

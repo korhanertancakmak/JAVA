@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course14_TerminalOptionalOperations;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Streams.Course14_TerminalOptionalOperations;
 
 import java.util.ArrayList;
 import java.util.List;

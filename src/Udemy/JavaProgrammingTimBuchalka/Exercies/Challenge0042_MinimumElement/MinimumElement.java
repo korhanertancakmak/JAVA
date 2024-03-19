@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0042_MinimumElement;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0042_MinimumElement;
 
 import java.util.Arrays;
 import java.util.Scanner;

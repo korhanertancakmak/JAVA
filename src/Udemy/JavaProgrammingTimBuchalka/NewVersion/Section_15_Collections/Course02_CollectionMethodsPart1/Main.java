@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course02_CollectionMethodsPart1;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course02_CollectionMethodsPart1;
 
 import java.util.List;
 

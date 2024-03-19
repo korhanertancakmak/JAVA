@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course10_SynchronizationChallenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_19_Concurrency.Course10_SynchronizationChallenge;
 
 import java.util.Random;
 

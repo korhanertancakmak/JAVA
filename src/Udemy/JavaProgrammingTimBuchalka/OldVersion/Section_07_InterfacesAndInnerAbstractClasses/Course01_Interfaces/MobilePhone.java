@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_07_InterfacesAndInnerAbstractClasses.Course01_Interfaces;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_07_InterfacesAndInnerAbstractClasses.Course01_Interfaces;
 
 public class MobilePhone implements ITelephone {
 

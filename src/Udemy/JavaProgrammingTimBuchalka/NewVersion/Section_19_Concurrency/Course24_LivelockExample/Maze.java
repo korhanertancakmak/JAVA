@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course24_LivelockExample;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_19_Concurrency.Course24_LivelockExample;
 
 import java.util.Arrays;
 

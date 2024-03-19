@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_11_JavaCollections.Course03_CollectionsListMethods;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_11_JavaCollections.Course03_CollectionsListMethods;
 
 import java.util.ArrayList;
 import java.util.Collections;

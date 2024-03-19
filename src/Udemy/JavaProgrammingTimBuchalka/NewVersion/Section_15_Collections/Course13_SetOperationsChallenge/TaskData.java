@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course13_SetOperationsChallenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course13_SetOperationsChallenge;
 
 import java.util.Arrays;
 import java.util.HashSet;

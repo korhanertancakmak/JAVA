@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_13_InputOutputFiles.Course07_LoadBigLocationExitsFiles;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_13_InputOutputFiles.Course07_LoadBigLocationExitsFiles;
 
 import java.io.*;
 import java.util.*;

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_11_Abstraction_Interface.Course05_PublicStaticMethodsOnInterface;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_11_Abstraction_Interface.Course05_PublicStaticMethodsOnInterface;
 
 enum FlightStages implements Trackable {GROUNDED, LAUNCH, CRUISE, DATA_COLLECTION;
 

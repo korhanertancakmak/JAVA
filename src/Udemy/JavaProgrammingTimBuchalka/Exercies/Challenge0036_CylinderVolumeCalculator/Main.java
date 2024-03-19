@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0036_CylinderVolumeCalculator;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0036_CylinderVolumeCalculator;
 
 
 /*

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_13_NestedClassesAndTypes.Course07_LocalAnonymousClassChallenge.domain;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndTypes.Course07_LocalAnonymousClassChallenge.domain;
 
 //Part-2
 /*

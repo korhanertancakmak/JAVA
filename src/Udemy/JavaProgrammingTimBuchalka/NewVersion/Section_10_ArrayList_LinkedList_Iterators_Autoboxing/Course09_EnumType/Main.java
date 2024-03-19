@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_10_ArrayList_LinkedList_Iterators_Autoboxing.Course09_EnumType;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_10_ArrayList_LinkedList_Iterators_Autoboxing.Course09_EnumType;
 
 /*
 Part-1

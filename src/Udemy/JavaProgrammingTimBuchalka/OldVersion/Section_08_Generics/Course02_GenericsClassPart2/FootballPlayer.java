@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_08_Generics.Course02_GenericsClassPart2;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_08_Generics.Course02_GenericsClassPart2;
 
 public class FootballPlayer extends Player {
 

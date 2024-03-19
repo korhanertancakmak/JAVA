@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_13_InputOutputFiles.Course15_WritingObjectsWithJavaNIO;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_13_InputOutputFiles.Course15_WritingObjectsWithJavaNIO;
 
 /**
  * Created by timbuchalka on 19/05/2016.

@@ -1,7 +1,6 @@
-package CourseCodes.NewSections.Section_13_NestedClassesAndTypes.Course06_AnonymousClasses;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndTypes.Course06_AnonymousClasses;
 
-import CourseCodes.NewSections.Section_13_NestedClassesAndTypes.Course06_AnonymousClasses.domain.Employee;
-import CourseCodes.NewSections.Section_13_NestedClassesAndTypes.Course06_AnonymousClasses.domain.StoreEmployee;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndTypes.Course06_AnonymousClasses.domain.*;
 import java.util.ArrayList;
 import java.util.List;
 

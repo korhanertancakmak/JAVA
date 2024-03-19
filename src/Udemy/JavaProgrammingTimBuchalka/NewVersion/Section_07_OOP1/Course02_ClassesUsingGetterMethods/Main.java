@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_07_OOP1.Course02_ClassesUsingGetterMethods;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_07_OOP1.Course02_ClassesUsingGetterMethods;
 
 /*
 Course-32

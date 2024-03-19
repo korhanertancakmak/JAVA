@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_12_Generics.Course10_StudentChallenge.model;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course10_StudentChallenge.model;
 
 //Part-16
 /*

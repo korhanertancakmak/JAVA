@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_07_OOP1.Course05_Constructors1;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_07_OOP1.Course05_Constructors1;
 
 /*
 Course-35

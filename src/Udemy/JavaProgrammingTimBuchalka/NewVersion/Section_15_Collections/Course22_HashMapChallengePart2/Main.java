@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course22_HashMapChallengePart2;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course22_HashMapChallengePart2;
 
 import java.util.Scanner;
 

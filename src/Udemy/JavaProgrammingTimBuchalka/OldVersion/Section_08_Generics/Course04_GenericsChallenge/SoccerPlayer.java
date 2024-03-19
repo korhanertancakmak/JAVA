@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_08_Generics.Course04_GenericsChallenge;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_08_Generics.Course04_GenericsChallenge;
 
 public class SoccerPlayer extends Player {
 

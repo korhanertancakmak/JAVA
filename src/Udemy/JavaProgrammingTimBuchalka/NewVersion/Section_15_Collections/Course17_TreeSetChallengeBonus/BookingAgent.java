@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course17_TreeSetChallengeBonus;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course17_TreeSetChallengeBonus;
 
 //Part-1
 /*

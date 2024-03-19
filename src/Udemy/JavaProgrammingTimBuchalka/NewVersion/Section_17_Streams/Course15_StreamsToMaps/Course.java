@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course15_StreamsToMaps;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Streams.Course15_StreamsToMaps;
 
 public record Course(String courseCode, String title, int lectureCount) {
 

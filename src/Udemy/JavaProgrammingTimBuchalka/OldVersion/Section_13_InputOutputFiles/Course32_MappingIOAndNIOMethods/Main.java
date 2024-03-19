@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_13_InputOutputFiles.Course32_MappingIOAndNIOMethods;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_13_InputOutputFiles.Course32_MappingIOAndNIOMethods;
 
 import java.io.File;
 import java.io.IOException;

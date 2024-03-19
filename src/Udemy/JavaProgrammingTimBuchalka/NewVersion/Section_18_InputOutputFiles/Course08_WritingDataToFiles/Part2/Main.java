@@ -1,7 +1,7 @@
-package CourseCodes.NewSections.Section_18_InputOutputFiles.Course08_WritingDataToFiles.Part2;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_InputOutputFiles.Course08_WritingDataToFiles.Part2;
 
-import CourseCodes.NewSections.Section_18_InputOutputFiles.Course08_WritingDataToFiles.Part2.student.Course;
-import CourseCodes.NewSections.Section_18_InputOutputFiles.Course08_WritingDataToFiles.Part2.student.Student;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_InputOutputFiles.Course08_WritingDataToFiles.Part2.student.Course;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_InputOutputFiles.Course08_WritingDataToFiles.Part2.student.Student;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

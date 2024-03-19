@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_11_Abstraction_Interface.Course02_Abstract_Challenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_11_Abstraction_Interface.Course02_Abstract_Challenge;
 
 public class Furniture extends ProductForSale{
 

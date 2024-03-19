@@ -1,6 +1,6 @@
-package CourseCodes.NewSections.Section_15_Collections.Course06_CollectionsChallenge_CardGamePart1.games.poker;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course06_CollectionsChallenge_CardGamePart1.games.poker;
 
-import CourseCodes.NewSections.Section_15_Collections.Course06_CollectionsChallenge_CardGamePart1.Card;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course06_CollectionsChallenge_CardGamePart1.Card;
 import java.util.ArrayList;
 import java.util.List;
 

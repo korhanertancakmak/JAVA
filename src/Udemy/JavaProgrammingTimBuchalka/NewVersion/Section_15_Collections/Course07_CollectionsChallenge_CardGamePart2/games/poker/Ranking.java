@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course07_CollectionsChallenge_CardGamePart2.games.poker;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course07_CollectionsChallenge_CardGamePart2.games.poker;
 
 public enum Ranking {
 

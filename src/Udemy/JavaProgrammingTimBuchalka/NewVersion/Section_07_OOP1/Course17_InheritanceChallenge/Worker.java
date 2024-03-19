@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_07_OOP1.Course17_InheritanceChallenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_07_OOP1.Course17_InheritanceChallenge;
 
 public class Worker {
 

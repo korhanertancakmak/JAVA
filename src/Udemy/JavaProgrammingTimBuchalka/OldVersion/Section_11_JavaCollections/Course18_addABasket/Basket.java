@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_11_JavaCollections.Course18_addABasket;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_11_JavaCollections.Course18_addABasket;
 
 import java.util.Collections;
 import java.util.HashMap;

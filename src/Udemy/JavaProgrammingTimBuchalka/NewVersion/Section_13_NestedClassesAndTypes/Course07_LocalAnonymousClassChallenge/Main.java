@@ -1,6 +1,6 @@
-package CourseCodes.NewSections.Section_13_NestedClassesAndTypes.Course07_LocalAnonymousClassChallenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndTypes.Course07_LocalAnonymousClassChallenge;
 
-import CourseCodes.NewSections.Section_13_NestedClassesAndTypes.Course07_LocalAnonymousClassChallenge.domain.*;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndTypes.Course07_LocalAnonymousClassChallenge.domain.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;

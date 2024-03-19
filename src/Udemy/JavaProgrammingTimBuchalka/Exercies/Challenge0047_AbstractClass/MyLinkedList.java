@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0047_AbstractClass;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0047_AbstractClass;
 /*
     MyLinkedList (concrete class) :
             - It implements NodeList.

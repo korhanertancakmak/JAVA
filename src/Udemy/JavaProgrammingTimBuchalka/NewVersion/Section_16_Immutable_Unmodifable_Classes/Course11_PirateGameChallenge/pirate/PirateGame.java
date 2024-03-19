@@ -1,8 +1,8 @@
-package CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course11_PirateGameChallenge.pirate;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course11_PirateGameChallenge.pirate;
 
 
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course11_PirateGameChallenge.game.Game;
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course11_PirateGameChallenge.game.GameAction;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course11_PirateGameChallenge.game.Game;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course11_PirateGameChallenge.game.GameAction;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

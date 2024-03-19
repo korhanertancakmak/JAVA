@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course25_StarvationFairLocks;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_19_Concurrency.Course25_StarvationFairLocks;
 
 import java.io.File;
 

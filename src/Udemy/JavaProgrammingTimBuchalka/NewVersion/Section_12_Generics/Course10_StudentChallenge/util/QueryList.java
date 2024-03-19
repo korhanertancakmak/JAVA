@@ -1,6 +1,6 @@
-package CourseCodes.NewSections.Section_12_Generics.Course10_StudentChallenge.util;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course10_StudentChallenge.util;
 
-import CourseCodes.NewSections.Section_12_Generics.Course10_StudentChallenge.model.Student;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course10_StudentChallenge.model.Student;
 
 import java.util.ArrayList;
 import java.util.List;

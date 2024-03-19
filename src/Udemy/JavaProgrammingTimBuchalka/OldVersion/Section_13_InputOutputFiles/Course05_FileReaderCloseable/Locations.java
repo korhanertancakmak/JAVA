@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_13_InputOutputFiles.Course05_FileReaderCloseable;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_13_InputOutputFiles.Course05_FileReaderCloseable;
 
 import java.io.File;
 import java.io.FileReader;

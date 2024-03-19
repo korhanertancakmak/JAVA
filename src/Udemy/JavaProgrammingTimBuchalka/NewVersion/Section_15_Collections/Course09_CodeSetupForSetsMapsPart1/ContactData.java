@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course09_CodeSetupForSetsMapsPart1;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course09_CodeSetupForSetsMapsPart1;
 
 import java.util.ArrayList;
 import java.util.Arrays;

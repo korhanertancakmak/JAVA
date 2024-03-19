@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_13_NestedClassesAndTypes.Course05_LocalClasses.domain;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndTypes.Course05_LocalClasses.domain;
 
 import java.util.Comparator;
 

@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_13_InputOutputFiles.Course13_RandomAccessFile;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_13_InputOutputFiles.Course13_RandomAccessFile;
 
 public class IndexRecord {
     private int startByte;

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course19_MapFunctionalityMore;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course19_MapFunctionalityMore;
 
 import java.util.Collection;
 import java.util.HashSet;

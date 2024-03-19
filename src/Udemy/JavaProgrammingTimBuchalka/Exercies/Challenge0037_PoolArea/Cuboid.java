@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0037_PoolArea;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0037_PoolArea;
 
 public class Cuboid extends Rectangle{
 

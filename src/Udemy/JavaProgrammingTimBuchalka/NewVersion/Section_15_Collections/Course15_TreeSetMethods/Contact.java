@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course15_TreeSetMethods;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course15_TreeSetMethods;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0030_SumCalculator;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0030_SumCalculator;
 /*
 Challenge-30
 

@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_13_InputOutputFiles.Course14_StaticBlockWithRandomAccess;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_13_InputOutputFiles.Course14_StaticBlockWithRandomAccess;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;

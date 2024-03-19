@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course22_ArrayBlockingQueueConsumerTasks;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_19_Concurrency.Course22_ArrayBlockingQueueConsumerTasks;
 
 import java.io.IOException;
 import java.nio.file.Files;

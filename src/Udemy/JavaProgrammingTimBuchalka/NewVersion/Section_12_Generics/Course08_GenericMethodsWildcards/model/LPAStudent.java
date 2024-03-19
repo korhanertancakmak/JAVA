@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_12_Generics.Course08_GenericMethodsWildcards.model;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course08_GenericMethodsWildcards.model;
 
 public class LPAStudent extends Student {
 

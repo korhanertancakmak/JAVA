@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_18_InputOutputFiles.Course08_WritingDataToFiles.Part2.student;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_InputOutputFiles.Course08_WritingDataToFiles.Part2.student;
 
 public record Course(String courseCode, String title) {
 

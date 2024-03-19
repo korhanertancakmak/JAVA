@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course06_CollectionsChallenge_CardGamePart1;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course06_CollectionsChallenge_CardGamePart1;
 
 import java.util.ArrayList;
 import java.util.Comparator;

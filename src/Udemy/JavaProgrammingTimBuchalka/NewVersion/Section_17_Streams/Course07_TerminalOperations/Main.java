@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course07_TerminalOperations;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Streams.Course07_TerminalOperations;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;

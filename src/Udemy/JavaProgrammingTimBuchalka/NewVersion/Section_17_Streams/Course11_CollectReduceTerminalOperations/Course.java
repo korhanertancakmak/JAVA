@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course11_CollectReduceTerminalOperations;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Streams.Course11_CollectReduceTerminalOperations;
 
 public record Course(String courseCode, String title, int lectureCount) {
 

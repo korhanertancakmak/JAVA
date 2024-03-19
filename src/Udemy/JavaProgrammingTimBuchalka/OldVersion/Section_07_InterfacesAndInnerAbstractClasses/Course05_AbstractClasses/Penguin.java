@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_07_InterfacesAndInnerAbstractClasses.Course05_AbstractClasses;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_07_InterfacesAndInnerAbstractClasses.Course05_AbstractClasses;
 
 public class Penguin extends Bird {
     public Penguin(String name) {

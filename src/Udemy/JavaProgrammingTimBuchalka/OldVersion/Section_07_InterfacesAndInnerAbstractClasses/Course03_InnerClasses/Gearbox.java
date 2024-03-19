@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_07_InterfacesAndInnerAbstractClasses.Course03_InnerClasses;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_07_InterfacesAndInnerAbstractClasses.Course03_InnerClasses;
 
 import java.util.ArrayList;
 

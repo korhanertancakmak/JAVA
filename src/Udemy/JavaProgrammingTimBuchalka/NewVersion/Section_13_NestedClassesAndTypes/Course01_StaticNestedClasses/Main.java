@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_13_NestedClassesAndTypes.Course01_StaticNestedClasses;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndTypes.Course01_StaticNestedClasses;
 
 //Part-1
 /*

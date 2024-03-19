@@ -1,6 +1,6 @@
-package CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course09_ConstructorReviews.Rev3_EnumConstructor;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course09_ConstructorReviews.Rev3_EnumConstructor;
 
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course09_ConstructorReviews.Rev3_EnumConstructor.external.Child;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course09_ConstructorReviews.Rev3_EnumConstructor.external.Child;
 
 //Part-1
 /*

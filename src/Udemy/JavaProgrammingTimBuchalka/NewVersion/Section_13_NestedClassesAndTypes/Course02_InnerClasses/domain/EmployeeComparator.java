@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_13_NestedClassesAndTypes.Course02_InnerClasses.domain;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndTypes.Course02_InnerClasses.domain;
 
 import java.util.Comparator;
 

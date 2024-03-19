@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_07_OOP1.Course06_Constructor2;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_07_OOP1.Course06_Constructor2;
 
 public class Account {
     private int number;

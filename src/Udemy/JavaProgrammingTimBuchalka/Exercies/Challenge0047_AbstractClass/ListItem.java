@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0047_AbstractClass;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0047_AbstractClass;
 /*
     ListItem (abstract class) :
             - It has three protected fields. Two ListItems called rightLink and leftLink, and an Object called value.

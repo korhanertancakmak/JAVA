@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_06_Arrays_Lists_Autoboxing.Course07_ArrayListChallenge;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_06_Arrays_Lists_Autoboxing.Course07_ArrayListChallenge;
 
 public class Contact {
     private String name;

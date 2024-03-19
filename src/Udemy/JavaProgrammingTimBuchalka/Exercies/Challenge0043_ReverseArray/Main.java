@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0043_ReverseArray;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0043_ReverseArray;
 
 /*
 Challenge-43

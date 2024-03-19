@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_08_Generics.Course03_GenericsClassPart3;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_08_Generics.Course03_GenericsClassPart3;
 
 public abstract class Player {
     private String name;

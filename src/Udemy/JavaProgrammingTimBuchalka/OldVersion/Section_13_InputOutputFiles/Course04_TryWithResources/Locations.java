@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_13_InputOutputFiles.Course04_TryWithResources;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_13_InputOutputFiles.Course04_TryWithResources;
 
 import java.io.FileWriter;
 import java.io.IOException;

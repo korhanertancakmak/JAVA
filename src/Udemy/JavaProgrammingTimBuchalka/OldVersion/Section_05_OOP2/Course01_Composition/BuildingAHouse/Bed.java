@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_05_OOP2.Course01_Composition.BuildingAHouse;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_05_OOP2.Course01_Composition.BuildingAHouse;
 
 public class Bed {
     private String style;

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_12_Generics.Course04_Generics_Challenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course04_Generics_Challenge;
 
 public class Main {
 

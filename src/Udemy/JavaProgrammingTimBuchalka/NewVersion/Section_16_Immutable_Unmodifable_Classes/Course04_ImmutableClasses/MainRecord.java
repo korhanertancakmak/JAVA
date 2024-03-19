@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses;
 
 public class MainRecord {
 

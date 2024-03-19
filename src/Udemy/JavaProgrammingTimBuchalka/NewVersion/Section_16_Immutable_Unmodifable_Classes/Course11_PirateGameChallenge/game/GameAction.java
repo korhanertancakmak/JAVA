@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course11_PirateGameChallenge.game;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course11_PirateGameChallenge.game;
 
 import java.util.function.Predicate;
 

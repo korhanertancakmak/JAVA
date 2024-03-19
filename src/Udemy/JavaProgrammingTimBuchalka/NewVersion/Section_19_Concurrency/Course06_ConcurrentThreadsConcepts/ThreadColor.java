@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course06_ConcurrentThreadsConcepts;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_19_Concurrency.Course06_ConcurrentThreadsConcepts;
 
 public enum ThreadColor {
 

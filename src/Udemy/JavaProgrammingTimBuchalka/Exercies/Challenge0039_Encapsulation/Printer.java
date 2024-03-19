@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0039_Encapsulation;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0039_Encapsulation;
 
 public class Printer {
 

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course06_IntermediateOperationsPart2;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Streams.Course06_IntermediateOperationsPart2;
 
 //Part-2
 /*

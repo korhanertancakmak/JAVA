@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_08_OOP2.Course04_Encapsulation;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_08_OOP2.Course04_Encapsulation;
 
 public class EnhancedPlayer {
 

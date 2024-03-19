@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0040_Polymorphism;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0040_Polymorphism;
 
 public class Ford extends Car {
     public Ford(int cylinders, String name) {

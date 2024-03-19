@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_11_JavaCollections.Course17_StockListClassWithMaps;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_11_JavaCollections.Course17_StockListClassWithMaps;
 
 import java.util.Collections;
 import java.util.HashMap;

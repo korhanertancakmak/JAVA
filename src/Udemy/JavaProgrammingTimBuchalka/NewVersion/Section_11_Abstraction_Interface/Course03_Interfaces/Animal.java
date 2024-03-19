@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_11_Abstraction_Interface.Course03_Interfaces;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_11_Abstraction_Interface.Course03_Interfaces;
 //Part-22
 /*
         Ok, so we've created the OrbitEarth interface, which extends FlightEnabled, and we have one abstract method declared

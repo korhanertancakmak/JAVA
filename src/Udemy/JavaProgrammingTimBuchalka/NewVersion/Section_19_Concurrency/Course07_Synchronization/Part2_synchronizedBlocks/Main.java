@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course07_Synchronization.Part2_synchronizedBlocks;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_19_Concurrency.Course07_Synchronization.Part2_synchronizedBlocks;
 
 //Part-1
 /**

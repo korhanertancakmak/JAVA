@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_11_Abstraction_Interface.Course01_Abstract;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_11_Abstraction_Interface.Course01_Abstract;
 //Part-2
 /*
         But I'm going to add the abstract modifier in this case, after the public access modifier. You don't have to declare

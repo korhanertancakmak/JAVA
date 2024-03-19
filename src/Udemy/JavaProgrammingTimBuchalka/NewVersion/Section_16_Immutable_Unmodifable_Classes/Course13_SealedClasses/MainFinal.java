@@ -1,7 +1,7 @@
-package CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course13_SealedClasses;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course13_SealedClasses;
 
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course13_SealedClasses.game.GameConsole;
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course13_SealedClasses.pirate.PirateGame;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course13_SealedClasses.game.GameConsole;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course13_SealedClasses.pirate.PirateGame;
 
 public class MainFinal {
 

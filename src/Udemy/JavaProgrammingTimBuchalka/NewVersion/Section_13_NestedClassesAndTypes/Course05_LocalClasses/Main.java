@@ -1,7 +1,6 @@
-package CourseCodes.NewSections.Section_13_NestedClassesAndTypes.Course05_LocalClasses;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndTypes.Course05_LocalClasses;
 
-import CourseCodes.NewSections.Section_13_NestedClassesAndTypes.Course05_LocalClasses.domain.Employee;
-import CourseCodes.NewSections.Section_13_NestedClassesAndTypes.Course05_LocalClasses.domain.StoreEmployee;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndTypes.Course05_LocalClasses.domain.*;
 
 import java.util.ArrayList;
 import java.util.List;

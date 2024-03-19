@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_06_Arrays_Lists_Autoboxing.Course06_ListandArrayList;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_06_Arrays_Lists_Autoboxing.Course06_ListandArrayList;
 
 import java.util.ArrayList;
 

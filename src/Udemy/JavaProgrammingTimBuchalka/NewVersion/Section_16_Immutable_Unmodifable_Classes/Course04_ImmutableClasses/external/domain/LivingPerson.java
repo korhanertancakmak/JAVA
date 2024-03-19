@@ -1,5 +1,6 @@
-package CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.external.domain;
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.PersonImmutable;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.external.domain;
+
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.PersonImmutable;
 import java.util.Arrays;
 
 //Part-22

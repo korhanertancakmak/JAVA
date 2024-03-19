@@ -1,7 +1,7 @@
-package CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course12_FinalClasses;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course12_FinalClasses;
 
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course12_FinalClasses.game.GameConsole;
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course12_FinalClasses.pirate.PirateGame;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course12_FinalClasses.game.GameConsole;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course12_FinalClasses.pirate.PirateGame;
 
 
 /*

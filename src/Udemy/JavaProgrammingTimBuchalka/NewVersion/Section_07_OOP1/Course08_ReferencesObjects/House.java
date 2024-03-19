@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_07_OOP1.Course08_ReferencesObjects;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_07_OOP1.Course08_ReferencesObjects;
 
 public class House {
 

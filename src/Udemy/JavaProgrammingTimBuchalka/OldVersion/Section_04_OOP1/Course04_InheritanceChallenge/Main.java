@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_04_OOP1.Course04_InheritanceChallenge;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_04_OOP1.Course04_InheritanceChallenge;
 
 public class Main {
 

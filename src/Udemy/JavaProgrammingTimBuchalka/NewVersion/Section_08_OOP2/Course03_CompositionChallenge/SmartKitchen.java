@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_08_OOP2.Course03_CompositionChallenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_08_OOP2.Course03_CompositionChallenge;
 
 public class SmartKitchen {
 

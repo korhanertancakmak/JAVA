@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_12_Generics.Course09_StaticMethodsMultipleUpperBounds.model;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course09_StaticMethodsMultipleUpperBounds.model;
 
 public class LPAStudent extends Student {
 

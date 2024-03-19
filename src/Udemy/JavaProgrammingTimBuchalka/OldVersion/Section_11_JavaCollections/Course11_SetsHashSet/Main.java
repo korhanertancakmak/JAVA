@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_11_JavaCollections.Course11_SetsHashSet;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_11_JavaCollections.Course11_SetsHashSet;
 
 import java.util.HashMap;
 import java.util.HashSet;

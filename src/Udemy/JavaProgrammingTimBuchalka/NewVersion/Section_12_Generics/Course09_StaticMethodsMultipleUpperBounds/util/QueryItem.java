@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_12_Generics.Course09_StaticMethodsMultipleUpperBounds.util;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course09_StaticMethodsMultipleUpperBounds.util;
 
 //Part-2
 /*

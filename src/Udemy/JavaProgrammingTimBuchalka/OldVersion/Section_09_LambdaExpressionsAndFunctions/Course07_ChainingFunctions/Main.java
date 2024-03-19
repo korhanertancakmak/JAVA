@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_09_LambdaExpressionsAndFunctions.Course07_ChainingFunctions;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_09_LambdaExpressionsAndFunctions.Course07_ChainingFunctions;
 
 import java.util.ArrayList;
 import java.util.List;

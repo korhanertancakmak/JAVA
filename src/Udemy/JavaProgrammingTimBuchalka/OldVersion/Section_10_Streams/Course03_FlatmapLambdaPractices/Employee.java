@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_10_Streams.Course03_FlatmapLambdaPractices;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_10_Streams.Course03_FlatmapLambdaPractices;
 
 
 public class Employee {

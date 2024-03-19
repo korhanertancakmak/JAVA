@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course23_LinkedHashMapAndTreeMap;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course23_LinkedHashMapAndTreeMap;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

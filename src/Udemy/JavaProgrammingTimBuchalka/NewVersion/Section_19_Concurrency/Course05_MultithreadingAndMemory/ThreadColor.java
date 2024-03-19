@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course05_MultithreadingAndMemory;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_19_Concurrency.Course05_MultithreadingAndMemory;
 
 public enum ThreadColor {
 

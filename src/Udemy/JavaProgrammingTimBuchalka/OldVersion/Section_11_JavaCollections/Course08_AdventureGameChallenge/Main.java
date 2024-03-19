@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_11_JavaCollections.Course08_AdventureGameChallenge;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_11_JavaCollections.Course08_AdventureGameChallenge;
 
 import java.util.HashMap;
 import java.util.Map;

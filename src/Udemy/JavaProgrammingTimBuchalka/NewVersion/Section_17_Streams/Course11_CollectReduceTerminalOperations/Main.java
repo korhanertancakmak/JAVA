@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course11_CollectReduceTerminalOperations;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Streams.Course11_CollectReduceTerminalOperations;
 
 import java.util.Arrays;
 import java.util.Collections;

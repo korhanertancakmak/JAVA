@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_04_OOP1.Course03_Inheritance;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_04_OOP1.Course03_Inheritance;
 
 public class Fish extends Animal {
 

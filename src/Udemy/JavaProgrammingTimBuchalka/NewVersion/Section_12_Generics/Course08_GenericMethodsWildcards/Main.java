@@ -1,7 +1,6 @@
-package CourseCodes.NewSections.Section_12_Generics.Course08_GenericMethodsWildcards;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course08_GenericMethodsWildcards;
 
-import CourseCodes.NewSections.Section_12_Generics.Course08_GenericMethodsWildcards.model.LPAStudent;
-import CourseCodes.NewSections.Section_12_Generics.Course08_GenericMethodsWildcards.model.Student;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course08_GenericMethodsWildcards.model.*;
 
 import java.util.ArrayList;
 import java.util.List;

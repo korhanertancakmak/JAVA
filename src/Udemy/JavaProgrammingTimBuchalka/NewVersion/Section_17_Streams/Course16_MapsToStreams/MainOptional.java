@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course16_MapsToStreams;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Streams.Course16_MapsToStreams;
 
 import java.util.ArrayList;
 import java.util.List;

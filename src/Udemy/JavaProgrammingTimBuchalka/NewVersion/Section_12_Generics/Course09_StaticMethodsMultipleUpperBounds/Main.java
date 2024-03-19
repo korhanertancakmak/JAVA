@@ -1,9 +1,7 @@
-package CourseCodes.NewSections.Section_12_Generics.Course09_StaticMethodsMultipleUpperBounds;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course09_StaticMethodsMultipleUpperBounds;
 
-import CourseCodes.NewSections.Section_12_Generics.Course09_StaticMethodsMultipleUpperBounds.model.LPAStudent;
-import CourseCodes.NewSections.Section_12_Generics.Course09_StaticMethodsMultipleUpperBounds.model.Student;
-import CourseCodes.NewSections.Section_12_Generics.Course09_StaticMethodsMultipleUpperBounds.util.QueryItem;
-import CourseCodes.NewSections.Section_12_Generics.Course09_StaticMethodsMultipleUpperBounds.util.QueryList;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course09_StaticMethodsMultipleUpperBounds.model.*;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course09_StaticMethodsMultipleUpperBounds.util.*;
 
 import java.util.ArrayList;
 import java.util.List;

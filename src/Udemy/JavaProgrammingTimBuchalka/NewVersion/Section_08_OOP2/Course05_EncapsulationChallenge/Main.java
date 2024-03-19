@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_08_OOP2.Course05_EncapsulationChallenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_08_OOP2.Course05_EncapsulationChallenge;
 
 /*
 Course-56

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course09_TerminalOperationsChallenge1;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Streams.Course09_TerminalOperationsChallenge1;
 
 public record Course(String courseCode, String title, int lectureCount) {
 

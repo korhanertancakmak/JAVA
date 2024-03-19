@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_11_JavaCollections.Course20_Challenge;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_11_JavaCollections.Course20_Challenge;
 
 public class StockItem implements Comparable<StockItem> {
     private final String name;

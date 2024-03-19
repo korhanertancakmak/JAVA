@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course10_GameConsoleChallenge.game;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course10_GameConsoleChallenge.game;
 
 import java.util.function.Predicate;
 

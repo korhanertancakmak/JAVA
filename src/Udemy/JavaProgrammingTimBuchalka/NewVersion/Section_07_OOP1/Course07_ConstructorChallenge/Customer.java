@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_07_OOP1.Course07_ConstructorChallenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_07_OOP1.Course07_ConstructorChallenge;
 
 public class Customer {
     private String customerName;

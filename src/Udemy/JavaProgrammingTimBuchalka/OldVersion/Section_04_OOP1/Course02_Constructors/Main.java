@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_04_OOP1.Course02_Constructors;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_04_OOP1.Course02_Constructors;
 
 public class Main {
 

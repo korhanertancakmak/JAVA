@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_11_JavaCollections.Course18_addABasket;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_11_JavaCollections.Course18_addABasket;
 
 public class Main {
     private static StockList stockList = new StockList();

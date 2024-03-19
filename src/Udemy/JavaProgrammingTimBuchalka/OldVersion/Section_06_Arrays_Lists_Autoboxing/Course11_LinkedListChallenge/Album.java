@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_06_Arrays_Lists_Autoboxing.Course11_LinkedListChallenge;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_06_Arrays_Lists_Autoboxing.Course11_LinkedListChallenge;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

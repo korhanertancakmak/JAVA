@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_13_NestedClassesAndTypes.Course06_AnonymousClasses.domain;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndTypes.Course06_AnonymousClasses.domain;
 
 import java.util.Comparator;
 

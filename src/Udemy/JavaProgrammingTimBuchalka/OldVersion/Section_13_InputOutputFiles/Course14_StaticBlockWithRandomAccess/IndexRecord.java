@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_13_InputOutputFiles.Course14_StaticBlockWithRandomAccess;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_13_InputOutputFiles.Course14_StaticBlockWithRandomAccess;
 
 /**
  * Created by timbuchalka on 22/2/17.

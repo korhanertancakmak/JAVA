@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_09_LambdaExpressionsAndFunctions.Course04_FunctionalInterfacesAndPredicates;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_09_LambdaExpressionsAndFunctions.Course04_FunctionalInterfacesAndPredicates;
 
 public class Employee {
     private String name;

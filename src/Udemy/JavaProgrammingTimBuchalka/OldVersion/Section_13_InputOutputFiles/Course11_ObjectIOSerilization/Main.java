@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_13_InputOutputFiles.Course11_ObjectIOSerilization;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_13_InputOutputFiles.Course11_ObjectIOSerilization;
 
 import java.util.HashMap;
 import java.util.Map;

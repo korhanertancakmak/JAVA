@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Exercises0030To0049.Challenge0031_Person;
+package Udemy.JavaProgrammingTimBuchalka.Exercies.Challenge0031_Person;
 
 /*
 Challenge-31

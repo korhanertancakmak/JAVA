@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_12_Generics.Course03_Generics_Part3;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course03_Generics_Part3;
 
 //Part-1
 /*

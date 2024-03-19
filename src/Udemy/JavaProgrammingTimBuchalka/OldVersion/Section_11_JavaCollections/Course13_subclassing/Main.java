@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_11_JavaCollections.Course13_subclassing;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_11_JavaCollections.Course13_subclassing;
 
 import java.util.HashMap;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course24_WorkingWithTreeMapMethods;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course24_WorkingWithTreeMapMethods;
 
 import java.time.LocalDate;
 import java.util.*;

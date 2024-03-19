@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_13_InputOutputFiles.Course02_IntroductionToIO;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_13_InputOutputFiles.Course02_IntroductionToIO;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_13_InputOutputFiles.Course30_WalkFileTree;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_13_InputOutputFiles.Course30_WalkFileTree;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;

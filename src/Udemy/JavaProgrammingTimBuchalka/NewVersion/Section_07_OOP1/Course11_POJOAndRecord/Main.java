@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_07_OOP1.Course11_POJOAndRecord;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_07_OOP1.Course11_POJOAndRecord;
 
 /*
 Course-42

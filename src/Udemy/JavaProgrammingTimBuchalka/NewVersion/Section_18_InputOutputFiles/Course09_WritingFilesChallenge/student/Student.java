@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_18_InputOutputFiles.Course09_WritingFilesChallenge.student;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_InputOutputFiles.Course09_WritingFilesChallenge.student;
 
 import java.time.LocalDate;
 import java.util.*;

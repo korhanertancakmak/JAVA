@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course20_SynchronizedConcurrentCollections;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_19_Concurrency.Course20_SynchronizedConcurrentCollections;
 
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Stream;

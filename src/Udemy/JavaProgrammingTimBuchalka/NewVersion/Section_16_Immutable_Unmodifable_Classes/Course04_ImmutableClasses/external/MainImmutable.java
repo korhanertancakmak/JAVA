@@ -1,8 +1,6 @@
-package CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.external;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.external;
 
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.*;
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.hacker.PersonOfInterest;
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.external.domain.LivingPerson;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.*;
 
 //Part-20
 /*
@@ -32,7 +30,7 @@ import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course04
 
 public class MainImmutable {
 
-    public static void main(String[] args) {
+    public static <LivingPerson> void main(String[] args) {
 
         PersonImmutable jane = new PersonImmutable("Jane", "01/01/1930");
         PersonImmutable jim = new PersonImmutable("Jim", "02/02/1932");

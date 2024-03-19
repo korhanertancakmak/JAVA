@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course15_StreamsToMaps;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Streams.Course15_StreamsToMaps;
 
 import java.util.Comparator;
 import java.util.List;

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course16_TreeSetChallenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course16_TreeSetChallenge;
 
 import java.util.HashSet;
 import java.util.NavigableSet;

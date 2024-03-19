@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_11_JavaCollections.Course15_SetsChallenge;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_11_JavaCollections.Course15_SetsChallenge;
 
 public class DwarfPlanet extends HeavenlyBody {
 

@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_13_InputOutputFiles.Course03_FileWriteClassFinallyBlock;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_13_InputOutputFiles.Course03_FileWriteClassFinallyBlock;
 
 import java.io.FileWriter;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_08_OOP2.Course07_CastingClassesVarReference;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_08_OOP2.Course07_CastingClassesVarReference;
 
 public class Movie {
 

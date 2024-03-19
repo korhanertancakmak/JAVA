@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_07_InterfacesAndInnerAbstractClasses.Course06_AbstractClassChallenge;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_07_InterfacesAndInnerAbstractClasses.Course06_AbstractClassChallenge;
 
 public abstract class ListItem {
     protected ListItem rightLink = null;

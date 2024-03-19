@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_11_JavaCollections.Course19_TreeMapUnmodifiableMaps;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_11_JavaCollections.Course19_TreeMapUnmodifiableMaps;
 
 public class StockItem implements Comparable<StockItem> {
     private final String name;

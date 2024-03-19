@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course09_TerminalOperationsChallenge1;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Streams.Course09_TerminalOperationsChallenge1;
 
 import java.time.LocalDate;
 import java.util.HashMap;

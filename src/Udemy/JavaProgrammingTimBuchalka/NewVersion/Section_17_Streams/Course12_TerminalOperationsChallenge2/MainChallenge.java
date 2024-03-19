@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course12_TerminalOperationsChallenge2;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Streams.Course12_TerminalOperationsChallenge2;
 
 import java.util.Comparator;
 import java.util.List;

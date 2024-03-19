@@ -1,4 +1,4 @@
-package CourseCodes.OldSections.Section_05_OOP2.Course02_Encapsulation;
+package Udemy.JavaProgrammingTimBuchalka.OldVersion.Section_05_OOP2.Course02_Encapsulation;
 
 public class EnhancedPlayer {
     private String name;

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_11_Abstraction_Interface.Course03_Interfaces;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_11_Abstraction_Interface.Course03_Interfaces;
 //Part-15
 /*
         I'll have that class implement the same 2 interfaces. Now, I think you'd agree with me that a bird and jet, have
