@@ -105,6 +105,3 @@
     g. Login Screen and Other Requirements
     h. Project Completion Assignment
 
-## [14. Graduation Project—Tourism Agency System](https://github.com/korhanertancakmak/JAVA/blob/master/src/PatikaDev/Java102/CHAPTERS/CHAPTER-14%20Graduation%20Project-Tourism%20Agency%20System.md)
-
-## [15. Coderbyte Challenge]()
