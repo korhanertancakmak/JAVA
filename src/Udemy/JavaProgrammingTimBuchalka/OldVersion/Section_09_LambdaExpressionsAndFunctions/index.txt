@@ -1,0 +1,23 @@
+Directory Contents: 
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course01_LambdaExpressions
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course01_LambdaExpressions\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course02_LambdaNestedBlocks
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course02_LambdaNestedBlocks\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course03_ScopeAndFunctionalProgramming
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course03_ScopeAndFunctionalProgramming\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course04_FunctionalInterfacesAndPredicates
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course04_FunctionalInterfacesAndPredicates\Employee.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course04_FunctionalInterfacesAndPredicates\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course05_PredicatesAndSuppliers
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course05_PredicatesAndSuppliers\Employee.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course05_PredicatesAndSuppliers\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course06_Functions
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course06_Functions\Employee.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course06_Functions\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course07_ChainingFunctions
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course07_ChainingFunctions\Employee.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course07_ChainingFunctions\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course08_LambdaChallenge
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_09_LambdaExpressionsAndFunctions\Course08_LambdaChallenge\Main.java
+Generated: 2023-12-15T21:55:27.024155900

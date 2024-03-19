@@ -1,0 +1,12 @@
+Directory Contents: 
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_17_Streams\Course15_StreamsToMaps
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_17_Streams\Course15_StreamsToMaps\Course.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_17_Streams\Course15_StreamsToMaps\CourseEngagement.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_17_Streams\Course15_StreamsToMaps\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_17_Streams\Course15_StreamsToMaps\MainChallenge.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_17_Streams\Course15_StreamsToMaps\MainCollect.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_17_Streams\Course15_StreamsToMaps\MainMapping.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_17_Streams\Course15_StreamsToMaps\MainOptional.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_17_Streams\Course15_StreamsToMaps\MainTerminalOptional.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_17_Streams\Course15_StreamsToMaps\Student.java
+Generated: 2023-12-15T21:55:26.922563400

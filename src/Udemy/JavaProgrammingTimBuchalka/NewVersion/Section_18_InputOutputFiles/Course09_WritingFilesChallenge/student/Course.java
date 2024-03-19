@@ -1,0 +1,28 @@
+package CourseCodes.NewSections.Section_18_InputOutputFiles.Course09_WritingFilesChallenge.student;
+
+import java.util.StringJoiner;
+
+public record Course(String courseCode, String title) {
+
+    public int getLectureCount() {
+        return 15;
+    }
+
+    @Override
+    public String toString() {
+        return "%s %s".formatted(courseCode, title);
+    }
+
+    public String toJSON() {
+        return new StringJoiner(", ", "{", "}")
+                .add("\"courseCode\":\"" + courseCode + "\"")
+                .add("\"title\":\"" + title + "\"")
+                .toString();
+    }
+
+//Part-7
+/**
+        And add the toJSON method to it. I'll go to the CourseEngagement class,
+**/
+//End-Part-7
+}

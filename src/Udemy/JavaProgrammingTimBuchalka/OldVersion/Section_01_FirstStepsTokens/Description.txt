@@ -1,0 +1,16 @@
+Tokens: The smallest significant particle in a programming language are tokens.
+
+1.Keywords(Reserved Words) :  Any kind of reserved words that have a predefined meaning in the JAVA language.
+                            Examples: public, if, while, int, etc.
+
+2.Variables(Identifiers)   : They are the tokens whose names are determined by a certain rule by the programmer.
+
+3.Operators                : Tokens that cause a process and produce a value as a result of the operation.
+                            Examples: In the expression of "a * b", "*" is an operator token.
+
+4.Literals(Constants)      : The numbers are directly written or represented in the source code.
+                            Examples: 8 is a literal token in the expression of "a*8".
+
+5.String literal           : The text in the double quotation with its quotation marks is a string token.
+
+6.Delimiters(Punctuators)  : Other tokens excluded from the groups above are the delimiters tokens.

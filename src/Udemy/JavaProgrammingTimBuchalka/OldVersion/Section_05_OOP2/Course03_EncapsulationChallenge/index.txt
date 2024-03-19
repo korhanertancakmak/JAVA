@@ -1,0 +1,6 @@
+Directory Contents: 
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_05_OOP2\Course03_EncapsulationChallenge
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_05_OOP2\Course03_EncapsulationChallenge\EncapsulationChallenge.txt
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_05_OOP2\Course03_EncapsulationChallenge\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_05_OOP2\Course03_EncapsulationChallenge\Printer.java
+Generated: 2023-12-15T21:55:26.999768500

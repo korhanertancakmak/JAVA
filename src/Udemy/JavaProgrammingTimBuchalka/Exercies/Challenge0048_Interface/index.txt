@@ -1,0 +1,7 @@
+Directory Contents: 
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Exercises0030To0049\Challenge0048_Interface
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Exercises0030To0049\Challenge0048_Interface\Description.txt
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Exercises0030To0049\Challenge0048_Interface\ISaveable.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Exercises0030To0049\Challenge0048_Interface\Monster.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Exercises0030To0049\Challenge0048_Interface\Player.java
+Generated: 2023-12-15T21:55:26.716066600

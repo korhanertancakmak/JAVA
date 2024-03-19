@@ -1,0 +1,14 @@
+Directory Contents: 
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course06_ReadingTextFromInputFiles
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course06_ReadingTextFromInputFiles\Part1_ReadingFiles
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course06_ReadingTextFromInputFiles\Part1_ReadingFiles\file.txt
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course06_ReadingTextFromInputFiles\Part1_ReadingFiles\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course06_ReadingTextFromInputFiles\Part1_ReadingFiles\numbers.txt
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course06_ReadingTextFromInputFiles\Part2_ScannerProject
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course06_ReadingTextFromInputFiles\Part2_ScannerProject\file.txt
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course06_ReadingTextFromInputFiles\Part2_ScannerProject\fixedWidth.txt
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course06_ReadingTextFromInputFiles\Part2_ScannerProject\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course06_ReadingTextFromInputFiles\Part3_ReadingWithNIO2
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course06_ReadingTextFromInputFiles\Part3_ReadingWithNIO2\fixedWidth.txt
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course06_ReadingTextFromInputFiles\Part3_ReadingWithNIO2\Main.java
+Generated: 2023-12-15T21:55:26.936225300

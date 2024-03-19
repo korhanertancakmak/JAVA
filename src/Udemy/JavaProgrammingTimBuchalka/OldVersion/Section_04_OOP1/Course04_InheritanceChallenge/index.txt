@@ -1,0 +1,7 @@
+Directory Contents: 
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_04_OOP1\Course04_InheritanceChallenge
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_04_OOP1\Course04_InheritanceChallenge\Car.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_04_OOP1\Course04_InheritanceChallenge\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_04_OOP1\Course04_InheritanceChallenge\Outlander.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_04_OOP1\Course04_InheritanceChallenge\Vehicle.java
+Generated: 2023-12-15T21:55:26.994855600

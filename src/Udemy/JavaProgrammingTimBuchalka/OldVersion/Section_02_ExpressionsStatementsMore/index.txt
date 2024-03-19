@@ -1,0 +1,22 @@
+Directory Contents: 
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course01_KeywordsAndExpressions
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course01_KeywordsAndExpressions\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course02_Statements
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course02_Statements\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course03_CodeBlocksAndControlFlowStatements
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course03_CodeBlocksAndControlFlowStatements\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course04_Methods
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course04_Methods\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course05_MethodsChallenge
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course05_MethodsChallenge\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course06_CodingExercise
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course06_CodingExercise\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course06_CodingExercise\SpeedConverter.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course07_MethodOverloading
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course07_MethodOverloading\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course08_SecondsMinutesChallenge
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course08_SecondsMinutesChallenge\Challenge-Text-Seconds-and-Minutes-Challenge.txt
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Course08_SecondsMinutesChallenge\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\OldSections\Section_02_ExpressionsStatementsMore\Description.txt
+Generated: 2023-12-15T21:55:26.978478100

@@ -1,0 +1,7 @@
+Directory Contents: 
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Exercises0030To0049\Challenge0049_InnerClass_Playlist
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Exercises0030To0049\Challenge0049_InnerClass_Playlist\Album.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Exercises0030To0049\Challenge0049_InnerClass_Playlist\Description.txt
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Exercises0030To0049\Challenge0049_InnerClass_Playlist\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Exercises0030To0049\Challenge0049_InnerClass_Playlist\Song.java
+Generated: 2023-12-15T21:55:26.716066600

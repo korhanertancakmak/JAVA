@@ -1,0 +1,8 @@
+Directory Contents: 
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_11_Abstraction_Interface\Course05_PublicStaticMethodsOnInterface
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_11_Abstraction_Interface\Course05_PublicStaticMethodsOnInterface\Animal.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_11_Abstraction_Interface\Course05_PublicStaticMethodsOnInterface\Bird.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_11_Abstraction_Interface\Course05_PublicStaticMethodsOnInterface\Jet.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_11_Abstraction_Interface\Course05_PublicStaticMethodsOnInterface\Test.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_11_Abstraction_Interface\Course05_PublicStaticMethodsOnInterface\Truck.java
+Generated: 2023-12-15T21:55:26.794701300

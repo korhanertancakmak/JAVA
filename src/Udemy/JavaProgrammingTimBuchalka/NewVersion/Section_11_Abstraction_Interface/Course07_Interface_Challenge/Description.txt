@@ -1,0 +1,99 @@
+                                            Interface Challenge
+
+        In this challenge, we'll be working on creating some mappable output. In the past decade or so, maps have become
+    part of so many applications. Everything it seems can be described on a map, and you may need to provide this support
+    for existing classes. Most things, when drawn on a map, fall into three categories, a point, a line, or a polygon or
+    geometric shape. The result of your code, will be text that could be printed out to a file, for exchanging data with
+    a mapping application. One such file is a specially formatted file, called geojson, which is a JSON file extended for
+    geographical elements. You don't have to know JSON or geojson to be successful at this challenge.
+
+        For this challenge, you'll simply create a String for every feature that will be mapped. An example of such a String
+    is shown below.
+
+                "properties": { "name": "Sydney Opera House", "usage": "Entertainment"}
+
+    Notice that data is represented in name-value pairs. The property name, and its corresponding value is separated by
+    a colon, Pairs are separated by commas. Values can be String values or a list of values. You can see properties is
+    the name, and the values is a nested list of name value pairs in curly brackets.
+
+        First, Create a "Mappable" Interface. The interface should "force classes to implement three methods."
+  - One method should return a "label" (how the item will be described on the map).
+  - One should return a "geometry type" (POINT or LINE) which is what the type will look like on the map.
+  - The last should return an "icon type" (sometimes called a map marker). This could be a black push pin for a point of
+    interest, or a red solid line for a highway for example.
+
+        In addition to the three methods described, the interface should also include:
+  - A constant String value called JSON_PROPERTY, which is equal to: "properties":{%s}. A hint here, using a text block
+    will help maintain quotation marks in your output.
+  - Include a default method called toJSON() that prints out the type, label, and marker. I'll show examples shortly.
+  - A "static method", that takes a Mappable instance as an argument. This method should print out the properties for each
+    mappable type, including those mentioned above, but also any other fields on the business classes.
+
+        You'll also want to create two classes that implement this interface, a "Building" and "UtilityLine".
+  - One class, in my case the Building, should have a geometry type of POINT, and One class should have a geometry type
+    of Line. The UtilityLine class will be my example for a class that will be a LINE on a map.
+  - When these items are mapped, the Building will be shown on a city map, as a point with the icon and label specified,
+    and the Utility Line will be a line on the map.
+
+        We aren't actually going to map it, we'd need quite a bit more time for that, but we'll have some of the data
+    elements that a mapping system would need, and in one format that it could use. Your final output should look something
+    like I show below.
+
+    "properties": {"type": "POINT", "label": "Sydney Town Hall (GOVERNMENT)", "marker": "RED STAR", "name": "Sydney Town Hall", "usage": "GOVERNMENT"}
+
+    You should output the geometry type, the icon information, and the label. Here is an example for a building, including
+    type, label, and marker, but also the building name and usage, which are fields on building. And here is an example
+    for a fiber optic Utility line, so a LINE, a green dotted line, would get drawn for a fiber optic cable on College
+    Street.
+
+    "properties": {"type": "LINE", "label": "College St (FIBER_OPTIC)", "marker": "GREEN DOTTED", "name": "College St", "utility": "FIBER_OPTIC"}
+
+    You can see that the properties are a comma delimited list, in curly braces, with the property or field name in quotes,
+    then a colon, followed by the property value or field value, and that's also in double quotes.
+
+                                                The Class Diagram
+                ____________________________________________        __________________________      ___________________________
+                | <<Interface>> Mappable =>                |        |<<Enum>> Geometry =>    |      |<<Enum>> PointMarkers => |
+                |------------------------------------------|        |------------------------|      |-------------------------|
+                |JSON_PROPERTY: String = "properties".{%s} |        |LINE,POINT,POLYGON      |      |CIRCLE, DIAMOND, ...     |
+                |------------------------------------------|        |________________________|      |_________________________|
+                |static void mapIt(Mappable mappable)      |
+                |default toJSON(): String                  |        _______________________     ___________________________
+                |getLabel(): String                        |        |<<Enum>> Color =>    |     |<<Enum>> LineMarkers =>  |
+                |getMarker(): String                       |        |---------------------|     |-------------------------|
+                |getShape(): Geometry                      |        |BLACK,BLUE,GREEN, ...|     |DASHED, DOTTED, SOLID    |
+                |__________________________________________|        |_____________________|     |_________________________|
+                                    ↑
+                                    ↑ (Implements)
+                    ↑¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯↑
+                    ↑                                          ↑
+         _____________________                          _____________________
+         | Building =>       |                          | UtilityLine =>    |
+         |-------------------|                          |-------------------|
+         |name: String       |                          |name: String       |
+         |type: BuildingType |                          |type: UtilityType  |
+         |___________________|                          |___________________|
+
+         _______________________________                                _______________________________
+         |<<Enum>> UsageType =>        |                                |<<Enum>> UtilityType =>      |
+         |-----------------------------|                                |-----------------------------|
+         |BUSINESS, ENTERTAINMENT, ... |                                |ELECTRICAL, FIBER_OPTIC, ... |
+         |_____________________________|                                |_____________________________|
+
+        On the Mappable interface, I have one constant, JSON_PROPERTY, and 3 abstract methods, getLabel, getMarker, and
+    getShape. I'm also including a default method, toJSON, which is going to return a String. This will be a combination
+    of the geometry type, the icon and the labels printed appropriately for the JSON format. This is the attribute "name"
+    followed by a ":" followed by the attribute "value". This method will get called from the static mapIt() method, which
+    takes a Mappable argument.
+
+        Notice that the getShape method returns an enum type, Geometry, and the valid types on this enum are LINE, POINT,
+    and POLYGON, although I'll only show classes with Line and a Point examples. I'm going to be using a lot of enums in
+    this example, just to make the code a little more interesting, as well as simpler and easier to read. I'm also going
+    to use enums for Color, and the PointMarker and LineMarker types(or icons).
+
+        I have 2 business classes to be mapped, Building and UtilityLine with a couple of fields, name and type or usage.
+    For building, I'll use an enum to describe the building type or how the building's used, for example if it's residential
+    or business, and so on. For the UtilityLine, I'll use another enum to describe the type of utility it is, like electrical
+    or water.
+
+        The first thing, I'll do is, create the interface, and of course, I'm calling that Mappable.

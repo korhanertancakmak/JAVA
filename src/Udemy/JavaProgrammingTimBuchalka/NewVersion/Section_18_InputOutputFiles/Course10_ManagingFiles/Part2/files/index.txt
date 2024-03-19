@@ -1,0 +1,8 @@
+Directory Contents: 
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course10_ManagingFiles\Part2\files
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course10_ManagingFiles\Part2\files\data
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course10_ManagingFiles\Part2\files\data\newdata
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course10_ManagingFiles\Part2\files\data\sloppy.txt
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course10_ManagingFiles\Part2\files\student-activity.json
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_18_InputOutputFiles\Course10_ManagingFiles\Part2\files\students-backup.json
+Generated: 2023-12-15T21:55:26.949516300

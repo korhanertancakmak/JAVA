@@ -1,0 +1,11 @@
+Directory Contents: 
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_16_Immutable_Unmodifable_Classes\Course13_SealedClasses\sealed
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_16_Immutable_Unmodifable_Classes\Course13_SealedClasses\sealed\BetterInterface.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_16_Immutable_Unmodifable_Classes\Course13_SealedClasses\sealed\FinalKid.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_16_Immutable_Unmodifable_Classes\Course13_SealedClasses\sealed\FreeGrandKid.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_16_Immutable_Unmodifable_Classes\Course13_SealedClasses\sealed\NonSealedKid.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_16_Immutable_Unmodifable_Classes\Course13_SealedClasses\sealed\SealedInterface.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_16_Immutable_Unmodifable_Classes\Course13_SealedClasses\sealed\SealedKid.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_16_Immutable_Unmodifable_Classes\Course13_SealedClasses\sealed\SpecialAbstractClass.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_16_Immutable_Unmodifable_Classes\Course13_SealedClasses\sealed\StringChecker.java
+Generated: 2023-12-15T21:55:26.900805800

@@ -1,0 +1,5 @@
+
+1.Composition
+2.Encapsulation
+3.Polymorphism
+

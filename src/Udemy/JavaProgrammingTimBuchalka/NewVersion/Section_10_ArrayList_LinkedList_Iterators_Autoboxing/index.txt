@@ -1,0 +1,25 @@
+Directory Contents: 
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course01_CollectionsArrayLists
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course01_CollectionsArrayLists\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course01_CollectionsArrayLists\MoreLists.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course02_ArrayListChallenge
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course02_ArrayListChallenge\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course03_BigONotation
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course03_BigONotation\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course04_LinkedList
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course04_LinkedList\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course05_Iterators
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course05_Iterators\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course06_LinkedListChallenge
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course06_LinkedListChallenge\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course06_LinkedListChallenge\MyAnswerToLinkedListChallenge.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course07_AutoboxingUnboxing
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course07_AutoboxingUnboxing\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course08_AutoboxingUnboxing_Challenge
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course08_AutoboxingUnboxing_Challenge\Main.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course08_AutoboxingUnboxing_Challenge\MyAnswer.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course09_EnumType
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course09_EnumType\DayOfTheWeek.java
+D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_10_ArrayList_LinkedList_Iterators_Autoboxing\Course09_EnumType\Main.java
+Generated: 2023-12-15T21:55:26.782858800
