@@ -1,7 +1,7 @@
 package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndTypes.Course02_InnerClasses;
 
-import CourseCodes.NewSections.Section_13_NestedClassesAndTypes.Course02_InnerClasses.domain.Employee;
-import CourseCodes.NewSections.Section_13_NestedClassesAndTypes.Course02_InnerClasses.domain.StoreEmployee;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndTypes.Course02_InnerClasses.domain.Employee;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndTypes.Course02_InnerClasses.domain.StoreEmployee;
 
 import java.util.ArrayList;
 import java.util.List;

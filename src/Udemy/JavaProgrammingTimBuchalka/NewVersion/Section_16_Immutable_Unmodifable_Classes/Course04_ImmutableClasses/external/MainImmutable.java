@@ -1,6 +1,8 @@
 package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.external;
 
 import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.*;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.external.domain.LivingPerson;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.hacker.PersonOfInterest;
 
 //Part-20
 /*
@@ -28,7 +30,7 @@ import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifa
 */
 //End-Part-20
 
-public class MainImmutable {
+class MainImmutable {
 
     public static <LivingPerson> void main(String[] args) {
 
@@ -74,10 +76,11 @@ public class MainImmutable {
 */
 //End-Part-25
 
-        LivingPerson johnLiving = new LivingPerson(john.getName(), john.getKids());
+        Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.external.domain.LivingPerson johnLiving = new Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.external.domain.LivingPerson(
+                john.getName(), john.getKids());
         System.out.println(johnLiving);
 
-        LivingPerson anne = new LivingPerson("Ann", null);
+        Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.external.domain.LivingPerson anne = new Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.external.domain.LivingPerson("Ann", null);
         johnLiving.addKid(anne);
         System.out.println(johnLiving);
 

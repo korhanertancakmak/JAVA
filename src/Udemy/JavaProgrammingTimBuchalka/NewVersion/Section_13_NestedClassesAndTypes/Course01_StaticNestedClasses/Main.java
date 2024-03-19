@@ -1,5 +1,7 @@
 package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndTypes.Course01_StaticNestedClasses;
 
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndTypes.Course01_StaticNestedClasses.domain.Employee;
+
 //Part-1
 /*
                               Nesting Classes(or Types) Within Another Class(or Type)
@@ -37,7 +39,6 @@ package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_NestedClassesAndT
 */
 //End-Part-1
 
-import CourseCodes.NewSections.Section_13_NestedClassesAndTypes.Course01_StaticNestedClasses.domain.Employee;
 
 import java.util.ArrayList;
 import java.util.List;

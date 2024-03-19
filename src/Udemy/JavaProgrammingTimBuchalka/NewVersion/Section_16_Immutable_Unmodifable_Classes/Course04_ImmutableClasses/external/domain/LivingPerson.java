@@ -1,6 +1,7 @@
 package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.external.domain;
 
 import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course04_ImmutableClasses.PersonImmutable;
+
 import java.util.Arrays;
 
 //Part-22
@@ -26,8 +27,7 @@ public class LivingPerson extends PersonImmutable {
 //End-Part-23
 
     public LivingPerson(String name, PersonImmutable[] kids) {
-        super(name, null, kids == null ? new PersonImmutable[10] :
-                Arrays.copyOf(kids, 10));
+        super(name, null, kids == null ? new PersonImmutable[10] : Arrays.copyOf(kids, 10));
     }
 
     public LivingPerson(PersonImmutable person) {

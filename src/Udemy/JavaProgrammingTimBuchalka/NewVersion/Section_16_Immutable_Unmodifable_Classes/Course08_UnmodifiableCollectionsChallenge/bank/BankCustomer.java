@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course08_UnmodifiableCollectionsChallenge.bank;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course08_UnmodifiableCollectionsChallenge.bank;
 
 import java.util.ArrayList;
 import java.util.Arrays;

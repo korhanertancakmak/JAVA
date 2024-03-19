@@ -1,5 +1,6 @@
-package CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course08_UnmodifiableCollectionsChallenge.bank;
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course08_UnmodifiableCollectionsChallenge.dto.Transaction;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course08_UnmodifiableCollectionsChallenge.bank;
+
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course08_UnmodifiableCollectionsChallenge.dto.Transaction;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

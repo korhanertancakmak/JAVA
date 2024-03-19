@@ -1,6 +1,6 @@
 package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course07_CollectionsChallenge_CardGamePart2.games;
 
-import CourseCodes.NewSections.Section_15_Collections.Course07_CollectionsChallenge_CardGamePart2.games.poker.PokerGame;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_15_Collections.Course07_CollectionsChallenge_CardGamePart2.games.poker.PokerGame;
 
 public class GameController {
 

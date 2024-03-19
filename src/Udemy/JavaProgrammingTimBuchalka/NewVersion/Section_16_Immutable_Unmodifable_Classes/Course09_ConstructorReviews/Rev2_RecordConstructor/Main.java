@@ -1,6 +1,6 @@
-package CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course09_ConstructorReviews.Rev2_RecordConstructor;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course09_ConstructorReviews.Rev2_RecordConstructor;
 
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course09_ConstructorReviews.Rev2_RecordConstructor.external.Child;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course09_ConstructorReviews.Rev2_RecordConstructor.external.Child;
 
 //Part-1
 /*

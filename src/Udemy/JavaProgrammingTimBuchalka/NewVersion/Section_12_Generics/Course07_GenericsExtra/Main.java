@@ -1,5 +1,8 @@
 package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course07_GenericsExtra;
 
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course07_GenericsExtra.model.LPAStudent;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course07_GenericsExtra.model.Student;
+
 //Part-1
 /*
         You might be wondering what's left to understand about generics. Well, quite a bit actually. I wasn't sure this
@@ -23,8 +26,7 @@ package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Generics.Course07
 //End-Part-1
 
 
-import CourseCodes.NewSections.Section_12_Generics.Course07_GenericsExtra.model.LPAStudent;
-import CourseCodes.NewSections.Section_12_Generics.Course07_GenericsExtra.model.Student;
+
 
 import java.util.ArrayList;
 import java.util.List;

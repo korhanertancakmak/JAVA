@@ -1,5 +1,6 @@
 package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_07_OOP1.Course11_POJOAndRecord;
 
+
 /*
 Course-42
 
@@ -207,7 +208,6 @@ Course-42
 
 */
 
-import CourseCodes.NewSections.Section_07_OOP1.Course12_POJOAndOverriddenMethods.LPAStudent;
 
 public class Main {
     public static void main(String[] args) {
