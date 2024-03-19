@@ -387,7 +387,8 @@ Let's see this :
 
 We will use a database for operators in this part.
 So, to be able to demonstrate a database, we will be using [this](https://www.appserv.org/en/)
-application, because it helps me to create databases on php.
+application, because it helps me to create databases on php, by
+using an explorer with [this](http://localhost:82) link.
 
 ### Creating a Database
 
