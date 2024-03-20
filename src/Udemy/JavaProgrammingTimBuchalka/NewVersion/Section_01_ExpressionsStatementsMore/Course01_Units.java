@@ -1,15 +1,4 @@
-package CourseCodes.NewSections.Section_05_ExpressionsStatementsMore;/*
-Course-7
-
-                                                Java's Code Units
-    Writing code is similar to writing a document. It consists of special hierarchical units, which together form a
-    whole. These are:
-
-    The Expressions - An expression computes to a single value.
-    The Statement   - Statements are stand alone units of work.
-    Code Block      - A code block is a set of zero, one, or more statements, usually grouped together in some way to
-    achieve a single goal.
- */
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_01_ExpressionsStatementsMore;
 
 public class Course01_Units {
 
