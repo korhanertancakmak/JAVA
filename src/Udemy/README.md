@@ -12,7 +12,7 @@ Java EE, Android development and more.
 * Obtain proficiency in Java 17, as well as older versions including Java 11 
 and Java 8.
 
-## ![1. Expressions, Statements and More]()
+## ![1. Expressions, Statements and More](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore)
 
     * Keywords and Expressions
     * Statements, Whitespaces, and Indentation (Code Organization)
@@ -35,7 +35,7 @@ and Java 8.
         * Challenge-11: Equality Printer
         * Challenge-12: Playing Cat
 
-## ![2. Control Flow]()
+## ![2. Control Flow](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow)
 
     * The Switch Statement
         * Challenge-13: Number In Word
