@@ -12,7 +12,7 @@ What we will learn from this Path:
 * Obtain proficiency in Java 17, as well as older versions including Java 11
   and Java 8.
 
-## [1. Expressions, Statements and More](#section-1-expressions-statements-and-more)
+## [1. Expressions, Statements and More]()
 
 ### [a. Statements, Keywords, Variables, Primitive Data Types](#a-statements-keywords-variables-primitive-data-types)
 ### [b. Wrapper Classes](#b-wrapper-classes)
