@@ -1017,32 +1017,3 @@ what you have for a minimum number, and if it is, you'll set that to the current
 You'll do the same check for the maximum number. 
 For example, after one valid numeric entry, minimum and maximum numbers 
 should be the same number.
-
-![Step-3]()
-
-![Step-3]()
-
-![Step-3]()
-
-
-```java  
-
-```
-```java  
-
-```
-```java  
-
-```
-```java  
-
-```
-```java  
-
-```
-```java  
-
-```
-```java  
-
-```

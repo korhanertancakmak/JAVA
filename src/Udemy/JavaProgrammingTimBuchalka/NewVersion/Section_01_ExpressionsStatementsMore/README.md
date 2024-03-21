@@ -20,11 +20,11 @@ Then in the search bar, you can type in the Terminal and hit entering.
 
 You could use a simple text editor to write Java code.
 
-![Step-1]()
+![Step-1](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/Images/01codeInNotepad.png?raw=true)
 
 Most likely, you'll be using an integrated development environment, or IDE, to develop your Java code.
 
-![Step-2]()
+![Step-2](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/Images/02HelloWorld.png?raw=true)
 
 JShell became a standard component of the Java Developers Kit in Java 9.
 It is what is known as a Read-Eval-Print-Loop interactive program (or REPL for short) 
@@ -486,7 +486,7 @@ that clearly define what condition is being tested:
 | isMarried                      |
 | hasChildren                    |
 
-![Step-3]()
+![Step-3](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/Images/03HandlingData.png?raw=true)
 
 This schema demonstrates that most Java programs use some combination of the data 
 types shown in this diagram.
