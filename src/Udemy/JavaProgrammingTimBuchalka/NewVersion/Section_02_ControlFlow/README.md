@@ -1,4 +1,4 @@
-# [Section-2: ControlFlow Statements](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow)
+# [Section-2: ControlFlow Statements]()
 
 In this section, we'll be learning about the switch statement which, 
 like the if then else statement, 
@@ -109,7 +109,7 @@ in each case block, to prevent accidental fall through.
 On the new version, where the arrow (->) token replaces the colon (:) in the case label, 
 the break statement is part of the new syntax, and you shouldn't use it.
 
-### Traditional Switch Challenge
+### [Traditional Switch Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/Course02_TraditionalSwitchChallenge.java)
 
 In this challenge, we'll be using the NATO alphabet to replace a character or letter 
 with NATO's standardized word for that letter.
@@ -135,7 +135,7 @@ tests the value in the variable from Step-1.
    * Display a message in each case block, with the letter and the NATO word, then break.
    * Add a default block, which displays the letter with a message saying not found.
 
-### Another Switch Challenge
+### [Another Switch Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/Course03_DayOfWeekChallenge.java)
 
 In this next challenge, we're going to use the enhanced switch expression. 
 Let's look at these statements again, but this time, 
@@ -265,7 +265,7 @@ public static void main(String[] args) {
     }
 ```
 
-### The for Statement Challenge Exercise
+### [The for Statement Challenge Exercise](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/Course05_ForStatementChallenge.java)
 
 This challenge will use prime numbers, which is not a composite number, 
 and which are the numbers we "canNOT" make them by multiplying other whole numbers. 
@@ -291,7 +291,7 @@ I want you to exit the for loop, and as a hint, use the break statement to exit.
 So you need to use an if statement to check the count, and use break to get out of the loop, 
 even before it completes processing all the numbers in the range you picked.
 
-### Sum 3 and 5 Challenge
+### [Sum 3 and 5 Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/Course06_Sum35Challenge.java)
 
 Create a for loop using a range of numbers from 1 to 1000 inclusive. 
 Sum all the numbers that can be divided by both 3 and 5. 
@@ -381,7 +381,7 @@ public static void main(String[] args) {
     }
 ```
 
-### The while loop challenge
+### [The while loop challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/Course08_WhileLoopChallenge.java)
 
 Create a method called isEvenNumber, that takes a parameter of type int. 
 Its purpose is to determine if the argument passed to the method is an even number or not. 
@@ -409,7 +409,7 @@ it has found.
 Break out of the loop, once 5 even numbers are found. 
 Finally, display the total number of odd and even numbers found.
 
-### Digit Sum challenge
+### [Digit Sum challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/Course09_DigitSumChallenge.java)
 
 In this challenge, your task is to write a method, with the name sumDigits, 
 that has a single parameter named number, of type int, and it should return an int. 
@@ -961,7 +961,7 @@ public static void main(String[] args) {
     }
 ```
 
-### Reading User Input Challenge
+### [Reading User Input Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/Course14_ReadingUserInputChallenge.java)
 
 In this challenge, you'll read five valid numbers from the console, 
 entered by the user, and print the sum of those five numbers. 

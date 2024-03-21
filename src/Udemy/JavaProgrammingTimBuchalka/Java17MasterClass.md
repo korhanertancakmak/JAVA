@@ -23,12 +23,12 @@ What we will learn from this Path:
 
 ## [2. ControlFlow Statements](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow)
 
-### [a. The switch statement]()
-### [b. The For Statement]()
-### [c. The while and do while statements]()
-### [d. Local Variables And Scope]()
-### [e. The object, static & instance fields and methods]()
-### [f. Reading data from the console]()
+### [a. The switch statement](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow#a-the-switch-statement)
+### [b. The For Statement](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow#b-the-for-statement)
+### [c. The while and do while statements](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow#c-the-while-and-do-while-statements)
+### [d. Local Variables And Scope](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow#d-local-variables-and-scope)
+### [e. The object, static & instance fields and methods](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow#e-the-object-static--instance-fields-and-methods)
+### [f. Reading data from the console](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow#f-reading-data-from-the-console)
 
 ## [Section-3: Object-Oriented Programming (PART-I)]()
 
