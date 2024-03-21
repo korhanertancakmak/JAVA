@@ -1,4 +1,4 @@
-# [Section-1: Expressions, Statements, and More](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#expressions-statements-and-more)
+# [Section-1: Expressions, Statements, and More]()
 
 Java Development Kit (JDK): is used to create Java programs.
 After we have Java installed on our machines, 
@@ -42,7 +42,7 @@ JShell does not replace the need for an IDE.
 It's just a handy tool to quickly get started with Java. 
 We will be transitioning to an IDE later in the course.
 
-## [a. Statements, Keywords, Variables, Primitive Data Types](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#a-statements-keywords-variables-primitive-data-types)
+## [a. Statements, Keywords, Variables, Primitive Data Types]()
 
 ### Statements
 
@@ -162,7 +162,7 @@ Whatever follows the plus sign in System.out.print here,
 is converted to a String by Java, and concatenated to the String before it.
 This is a perfectly valid syntax in Java.
 
-## [b. Wrapper Classes](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#b-wrapper-classes)
+## [b. Wrapper Classes]()
 
 A class is a building block for object-oriented programming, 
 and allows us to build custom data types.
