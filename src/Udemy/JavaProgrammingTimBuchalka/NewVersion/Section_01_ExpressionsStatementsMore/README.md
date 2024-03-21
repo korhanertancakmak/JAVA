@@ -42,7 +42,7 @@ JShell does not replace the need for an IDE.
 It's just a handy tool to quickly get started with Java. 
 We will be transitioning to an IDE later in the course.
 
-## [a. Statements, Keywords, Variables, Primitive Data Types]()
+## [a. Statements, Keywords, Variables, Primitive Data Types](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#a-statements-keywords-variables-primitive-data-types)
 
 ### Statements
 
@@ -162,7 +162,7 @@ Whatever follows the plus sign in System.out.print here,
 is converted to a String by Java, and concatenated to the String before it.
 This is a perfectly valid syntax in Java.
 
-## [b. Wrapper Classes]()
+## [b. Wrapper Classes](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#b-wrapper-classes)
 
 A class is a building block for object-oriented programming, 
 and allows us to build custom data types.
@@ -307,7 +307,7 @@ A numeric literal that exceeds Integer.MAX_VALUE must use the 'L' suffix.
 We cannot create a numeric literal in Java that exceeds Integer.MAX_VALUE, 
 without using the 'L' suffix, we'll always get the error 'integer number too large.'
 
-## [c. Casting in Java]()
+## [c. Casting in Java](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#c-casting-in-java)
 
 Casting means to treat or convert a number from one type to another. 
 We put the type we want the number to be, in parentheses like this:
@@ -543,7 +543,7 @@ Both are classes, but the String class is in a special category in the Java lang
 The String is so intrinsic to the Java language, it can be used like a ninth primitive type.
 But it's not a primitive type at all, it's a class.
 
-## [d. Operators]()
+## [d. Operators](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#d-operators)
 
 So what are operators?
 Operators in Java are special symbols that perform specific operations on one, 
@@ -748,7 +748,7 @@ and to execute it.
 It also has a debugger, and we'll be seeing what that is and how to use it  
 when we've written a program to debug.
 
-## [e. Access Modifiers, Classes, Methods]()
+## [e. Access Modifiers, Classes, Methods](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#e-access-modifiers-classes-methods)
 
 ### Access Modifiers
 
@@ -1270,7 +1270,7 @@ public static void main(String[] args) {
 }
 ```
 
-## [f. Method Overloading]()
+## [f. Method Overloading](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#f-method-overloading)
 
 Method overloading occurs when a class has multiple methods with the same name, 
 but the methods are declared with different parameters. 
