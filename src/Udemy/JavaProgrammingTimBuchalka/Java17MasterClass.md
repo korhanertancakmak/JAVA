@@ -16,7 +16,7 @@ What we will learn from this Path:
 
 ### [a. Statements, Keywords, Variables, Primitive Data Types](#a-statements-keywords-variables-primitive-data-types)
 ### [b. Wrapper Classes](#b-wrapper-classes)
-### [c. Casting in Java](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#c-casting-in-java)
+### [c. Casting in Java](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore:c%20casting%20in%20java)
 ### [d. Operators](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#d-operators)
 ### [e. Access Modifiers, Classes, Methods](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#e-access-modifiers-classes-methods)
 ### [f. Method Overloading](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#f-method-overloading)
