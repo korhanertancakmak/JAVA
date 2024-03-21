@@ -12,64 +12,32 @@ What we will learn from this Path:
 * Obtain proficiency in Java 17, as well as older versions including Java 11
   and Java 8.
 
-## ![1. Expressions, Statements and More](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore)
+## [1. Expressions, Statements and More](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#expressions-statements-and-more)
 
-    * Keywords and Expressions
-    * Statements, Whitespaces, and Indentation (Code Organization)
-    * Code Blocks and The If-Then-Else Control Statement
-    * Methods in Java
-    * More on Method
-    * Methods Recap
-    * Code Comparison in IntelliJ
-        * Challenge-1: Positive, Negative or Zero
-        * Challenge-2: Speed Converter
-        * Challenge-3: MegaBytes Converter
-        * Challenge-4: Barking Dog
-        * Challenge-5: Leap Year Calculator
-        * Challenge-6: Decimal Comparator
-        * Challenge-7: Equal Sum Checker
-        * Challenge-8: Teen Number Checker
-    * Method Overloading
-        * Challenge-9: Area Calculator
-        * Challenge-10: Minutes to Years and Days Calculator
-        * Challenge-11: Equality Printer
-        * Challenge-12: Playing Cat
+### [a. Statements, Keywords, Variables, Primitive Data Types]()
+### [b. Wrapper Classes]()
+### [c. Casting in Java]()
+### [d. Operators]()
+### [e. Access Modifiers, Classes, Methods]()
+### [f. Method Overloading]()
 
-## ![2. Control Flow](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow)
+## [2. ControlFlow Statements](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow)
 
-    * The Switch Statement
-        * Challenge-13: Number In Word
-        * Challenge-14: Number of Days In Month
-    * The for Statement
-        * Challenge-15: Sum Odd
-    * The while and do while Statements
-    * Local Variables and Scope
-    * class, object, static & instance fields and methods
-        * Challenge-16: Number Palindrome
-        * Challenge-17: First And Last Digit Sum
-        * Challenge-18: Even Digit Sum
-        * Challenge-19: Shared Digit
-        * Challenge-20: Last Digit Checker
-        * Challenge-21: All Factors
-        * Challenge-22: Greatest Common Divisor
-        * Challenge-23: Perfect Number
-        * Challenge-24: Number To Words
-        * Challenge-25: Flour Pack Problem
-        * Challenge-26: Largest Prime
-        * Challenge-27: Diagonal Star
-    * Parsing Values and Reading Input using System.console()
-    * Exception Handling
-    * Reading Input with Scanner
-        * Challenge-28: Input Calculator
-        * Challenge-29: Paint Job
+### [a. The switch statement]()
+### [b. The For Statement]()
+### [c. The while and do while statements]()
+### [d. Local Variables And Scope]()
+### [e. The object, static & instance fields and methods]()
+### [f. Reading data from the console]()
 
-## ![3. OOP Part-1 Inheritance]()
+## [Section-3: Object-Oriented Programming (PART-I)]()
 
-    * Classes and Objects
-    * Using Getter & Setter Methods and Creating Objects
-        * Challenge-30: Sum Calculator
-        * Challenge-31: Person
-    * Constructors
+### [a. What is Object-Oriented Programming?]()
+### [b. Organizing classes]()
+### [c. Encapsulation]()
+### [d. Getter & Setter Methods]()
+### [e. Constructors]()
+
     * Reference vs Object vs Intance vs Class
     * Static vs Instance Variables
     * Static vs Instance Methods

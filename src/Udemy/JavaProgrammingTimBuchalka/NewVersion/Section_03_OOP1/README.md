@@ -1,4 +1,4 @@
-# Object-Oriented Programming (PART-I)
+# [Section-3: Object-Oriented Programming (PART-I)]()
 
 In this part of OOP, you're going to learn about the fundamentals of object-oriented programming, 
 starting first with the structures we'll be using, specifically Classes, Objects, 
@@ -8,7 +8,7 @@ Polymorphism, and Composition, which are all fundamentals features of OOP.
 
 Part-I covers only Inheritance, Part-II covers the others.
 
-## What is Object-Oriented Programming?
+## [a. What is Object-Oriented Programming?]()
 
 Object-oriented programming is a way to model real world objects, 
 as software objects, which contain both data and code. 
@@ -19,7 +19,7 @@ and other languages for that matter.
 It's sometimes called Class-based programming. 
 Class-based programming starts with classes, which become the blueprints for objects.
 
-## Real World Object Exercise
+### Real World Object Exercise
 
 Just have a look around, in the area you're sitting in right now. 
 And if you do that, you'll find that there are many examples of real world objects. 
@@ -79,7 +79,7 @@ So where does a class fit in?
 Well, think of a class as a template, or a blueprint for creating objects. 
 Let's take another look at the class.
 
-## The Class as the blueprint
+### The Class as the blueprint
 
 The class describes the data (fields), and the behavior (methods), 
 that are relevant to the real world object we want to describe. 
@@ -131,7 +131,7 @@ When you're creating classes in Java, the first letter should be an upper case l
 We haven't talked about how classes are organized, so let's look at that briefly, 
 before we talk about access.
 
-## Organizing classes
+## [b. Organizing classes]()
 
 Classes can be organized into logical groupings, which are called packages. 
 You declare a package name in the class using the package statement. 
@@ -201,7 +201,7 @@ Doesn't this mean that nobody can access them?
 This practice has a name, encapsulation, and it's a key 
 fundamental rule of Object-Oriented Programming.
 
-## Encapsulation
+## [c. Encapsulation]()
 
 Encapsulation in OOP usually has two meanings. 
 One is the bundling of behavior and attributes on a single object. 
@@ -262,7 +262,7 @@ This method is not static because we're accessing instance fields in the class.
 Methods, unlike fields, will often be public because we want to give users
 a way to interact with the object.
 
-## Classes, Using Setter and Creating Objects
+## [d. Getter & Setter Methods]()
 
 So best practices for fields, that in general, fields on classes should be private, 
 and a getter method should be created to access those fields. 
@@ -537,7 +537,7 @@ public class Main {
 }
 ```
 
-## Classes Challenge Exercise
+### Classes Challenge Exercise
 
 I want to challenge your understanding of the previous classes. 
 So here, what I want you to do:
@@ -570,7 +570,7 @@ and withdrawing money from the account.
 And you may also want to add some System.out.println statements, 
 to the two methods above as well, to confirm how much was deposited or withdrawn.
 
-## Constructors (Part-I)
+## [e. Constructors]()
 
 A constructor is used in the creation of an object, that's an instance of a class. 
 It is a special type of code block that has a specific name and parameters, much like a method. 

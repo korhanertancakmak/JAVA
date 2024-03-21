@@ -1,4 +1,4 @@
-# Expressions, Statements, and More
+# [Section-1: Expressions, Statements, and More](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#expressions-statements-and-more)
 
 Java Development Kit (JDK): is used to create Java programs.
 After we have Java installed on our machines, 
@@ -42,7 +42,9 @@ JShell does not replace the need for an IDE.
 It's just a handy tool to quickly get started with Java. 
 We will be transitioning to an IDE later in the course.
 
-## Statement
+## [a. Statements, Keywords, Variables, Primitive Data Types]()
+
+### Statements
 
 It's a complete command to be executed. 
 It can include one or more expressions, and I'll be talking about expressions and related topics, 
@@ -65,7 +67,7 @@ Typing forward slash and the word 'exit,'
 or forward slash with the shortcut text ex will end your JShell session if you get stuck.
 An example would be /exit or /ex.
 
-## Keywords
+### Keywords
 
 A keyword is **any one of a number of reserved words 
 that have a predefined meaning in the Java language.**
@@ -75,7 +77,7 @@ As we'll soon see, an **int**, all in lowercase is not the same as **Int**,
 with a capital I. 
 Here, an **int**, (all in lowercase) is a keyword in Java.
 
-## Variables
+### Variables
 
 They are a way to store information in our computer 
 that we define in a program, 
@@ -84,7 +86,7 @@ and the computer does the hard work
 of figuring out where they get stored 
 in the computer's ***random access memory***, or RAM.
 
-## Data Type
+### Java's Primitive Types
 
 There are lots of different types of data 
 that we can define for our variables, 
@@ -128,8 +130,6 @@ And variables will always be exactly as you declare them, including capitalizati
 Remember that case matters in Java code!
 The /vars command in JShell can help you identify any misspellings you may have made.
 
-## Java's Primitive Types
-
 The eight primitive data types in Java are shown in the table below, 
 listed by the type of data stored for each:
 
@@ -162,12 +162,10 @@ Whatever follows the plus sign in System.out.print here,
 is converted to a String by Java, and concatenated to the String before it.
 This is a perfectly valid syntax in Java.
 
-## Classes
+## [b. Wrapper Classes]()
 
 A class is a building block for object-oriented programming, 
 and allows us to build custom data types.
-
-## Wrapper Classes
 
 Java uses the concept of a wrapper class for all of its eight primitive data types.
 A wrapper class provides simple operations, as well as some basic information about 
@@ -210,7 +208,7 @@ as we saw when we printed out these values previously:
 Integer Value Range (-2147483648 to 2147483647)
 ```
 
-## Overflow and Underflow in Java
+### Overflow and Underflow in Java
 
 If you try and put a value larger than the maximum value into an int, 
 you'll create something called an Overflow situation.
@@ -264,7 +262,7 @@ int myMaxIntTest = 2_147_483_647;
 You can put the underscore anywhere you might want a comma, 
 but you can't use an underscore at the start or end of the numeric literal.
 
-## Size of Primitive Types and Width
+### Size of Primitive Types and Width
 
 The minimum value of a byte is -128.
 The maximum value of a byte is 127.   
@@ -309,7 +307,7 @@ A numeric literal that exceeds Integer.MAX_VALUE must use the 'L' suffix.
 We cannot create a numeric literal in Java that exceeds Integer.MAX_VALUE, 
 without using the 'L' suffix, we'll always get the error 'integer number too large.'
 
-## Casting in Java
+## [c. Casting in Java]()
 
 Casting means to treat or convert a number from one type to another. 
 We put the type we want the number to be, in parentheses like this:
@@ -346,7 +344,7 @@ we're doing by using this cast, and the compiler doesn't give an error.
 short myNewShortValue = (short) (myNewShortValue / 2);
 ```
 
-## Floating-Point Numbers
+### Floating-Point Numbers
 
 Unlike whole numbers, floating-point numbers have fractional parts that 
 we express with a decimal point.
@@ -403,7 +401,7 @@ This is due to a limitation with how floating point numbers are stored,
 and not a Java problem as such.
 Java has a class called BigDecimal that overcomes this.
 
-## String Literal Example
+### String Literal Example
 
 If you recall, we've used literal strings before, and that's 
 where we've typed some text in double quotes.
@@ -426,7 +424,7 @@ Why would you want to use a variable that only allows you to store one character
 One example might be to store the last key pressed by a user in a game.
 Another example might be to loop programmatically through the letters in an alphabet.
 
-## char Data Type
+### char Data Type
 
 A char occupies two bytes of memory, or 16 bits, and thus has a width of 16.
 The reason it's not just a single byte is that a char is stored as a 2-byte number, 
@@ -437,7 +435,7 @@ and not the representative number.
 And you can use single quotes and a character literal to assign a value to a char, 
 which is much simpler than looking up the representative number.
 
-## Unicode
+### Unicode
 
 Unicode is an international encoding standard for use with different languages 
 and scripts by which each letter, digit, or symbol is assigned a unique numeric value 
@@ -464,7 +462,7 @@ I point it out here, in case you are being adventurous, and do encounter this pr
 Again, this is only a problem with JShell and Windows users.
 This won't be a problem in Java or IntelliJ, or if you're using MAC or Linux.
 
-## Boolean Primitive Type
+### Boolean Primitive Type
 
 A boolean value allows for two opposite choices, true or false, yes or no, one or zero.
 In Java terms, we've got a boolean primitive type, and it can be set to two values only, 
@@ -512,7 +510,7 @@ There are two ways to execute multiple statements in JShell:
 * Put your statements on a single line.
 * Or, enclose your statements in a set of curly braces {}.
 
-## String Concatenation
+### String Concatenation
 
 In Java, the + symbol is an operator that can mean addition if used for numbers.
 But it also means concatenation when applied to a String.
@@ -536,7 +534,7 @@ The net result is that our variable, **lastString**, has the concatenated value.
 However, Java created a new String in the process, 
 and the old one will get discarded from memory automatically.
 
-## String vs StringBuilder
+### String vs StringBuilder
 
 The String class is immutable, but can be used much like a primitive data type.
 The StringBuilder class is mutable, but does not share the String's special features, 
@@ -545,7 +543,7 @@ Both are classes, but the String class is in a special category in the Java lang
 The String is so intrinsic to the Java language, it can be used like a ninth primitive type.
 But it's not a primitive type at all, it's a class.
 
-## Operators
+## [d. Operators]()
 
 So what are operators?
 Operators in Java are special symbols that perform specific operations on one, 
@@ -571,7 +569,7 @@ Variables used instead of literals can also be operands.
 In the previous example above, byteValue, shortValue and intValue are operands, 
 as are the numeric literals.
 
-## Expressions
+### Expressions
 
 What's an expression?
 An expression is formed by combining variables, literals, method return values, 
@@ -592,7 +590,7 @@ Well, we've actually got two, the equal operator, and the plus operator.
 int result = 1 + 2; // 1 + 2 = 3
 ```
 
-## Comments
+### Comments
 
 Comments are ignored by the computer, and are added to a program 
 to help describe something. 
@@ -616,13 +614,13 @@ and then we changed the value of "**result**".
 But did this also change the value in "**previousResult**"? 
 That is a good question.
 
-## "+" Operator on char
+### "+" Operator on char
 
 You might remember that we said chars are stored as two byte numbers in memory.
 When you use the plus operator with chars, it is these numbers in memory that get added together.
 The character values don't get concatenated.
 
-## "%" Remainder Operator
+### "%" Remainder Operator
 
 The % sign represents the remainder operator in Java.
 The remainder operator goes by several other names: modulus, modulo or just plain mod for short.
@@ -636,7 +634,7 @@ If there is no remaining value, the result is 0.
 | 10 / 3 = 3      | 10 % 3 = 1       | 10 can be divided evenly by 3, but we get 3 from the division which gives us 9 with 1 remaining. |
 | 10 / 1 = 10     | 10 % 1 = 0       | Using 1 on the right side of the remainder operate will always give a result of 0.               |
 
-## Abbreviating Operators
+### Abbreviating Operators
 
 So, why use multiple statements in curly braces?
 * First, it's a way to group statements together before executing them.
@@ -718,7 +716,7 @@ The abbreviating operators we've discussed so far are:
 | Multiplication Compound Assignment  | result *= 5; |
 | Division Compound Assignment        | result /= 5; |
 
-## Why do we need an Integrated Development Environment (IDE)?
+### Why do we need an Integrated Development Environment (IDE)?
 
 An IDE is the easiest, least error-prone way to develop, 
 manage and deploy Java classes. 
@@ -737,7 +735,7 @@ I like to think that the jump from JShell to an IDE is like the jump from a type
 to a word processing program on a modern computer.
 It's unlikely that you will want to go back once you have experienced the benefits.
 
-## What's IntelliJ?
+### What's IntelliJ?
 
 IntelliJ IDEA is one of several IDEs available for Java.
 It's also written in Java, developed by JetBrains, and simply known as IntelliJ.
@@ -750,13 +748,15 @@ and to execute it.
 It also has a debugger, and we'll be seeing what that is and how to use it  
 when we've written a program to debug.
 
-## Access Modifiers
+## [e. Access Modifiers, Classes, Methods]()
+
+### Access Modifiers
 
 The public Java keyword is what's called an access modifier.
 An access modifier allows us to define which parts of our code, 
 or even someone else's code, can access a particular element.
 
-## "class" Keyword
+### "class" Keyword
 
 The **class** keyword is used to define a class. 
 The class name will be the text following the keyword, so **FirstClass** in this case.
@@ -771,7 +771,7 @@ public class FirstClass {
 }
 ```
 
-## What is a Method?
+### What is a Method?
 
 A method is a collection of statements that perform an operation.
 We'll be using a special method called the main method, 
@@ -780,7 +780,7 @@ It's the entry point for any Java code, and Java looks for the main method
 to start and run the program when we use it.
 You can also create your own methods, as you'll see later.
 
-## If-then Statement
+### If-then Statement
 
 The **if-then** statement is the most basic of all the control flow statements.  
 It tells your program to execute a certain section of code, only if particular 
@@ -816,7 +816,7 @@ if (isAlien == false)
     System.out.println("And I am scared of aliens");
 ```
 
-## Code Block
+### Code Block
 
 A code block allows more than one statement to be executed, in other words, a block of code.  
 The format is:
@@ -827,7 +827,7 @@ if (expression) {
 }
 ```
 
-## Logical "AND" and "OR" Operators
+### Logical "AND" and "OR" Operators
 
 The **and** operator comes in two flavors in Java, as does the **or** operator.
 **&&** is the Logical **and** which operates on **boolean** operands, 
@@ -863,7 +863,7 @@ if (newValue == 50) {
 We're not assigning a value here, instead we want to test 
 if the values are equal to each other.
 
-## The "NOT"(!) Operator
+### The "NOT"(!) Operator
 
 The exclamation mark (!), or **NOT** operator, is also known as the Logical Complement Operator.
 It can be used with a boolean variable, to test for the opposite value.
@@ -889,7 +889,7 @@ so the only way you'll know you made this common mistake
 is by discovering the output from your code isn't what you expected.
 Secondly, the code is more concise, and more concise code can often be more readable code.
 
-## Ternary(?) Operator
+### Ternary(?) Operator
 
 Java officially calls it the Conditional Operator, has three operands, 
 the only operator currently in Java that does have three.
@@ -947,7 +947,7 @@ boolean isDomestic = (makeOfCar != "Volkswagen");
 
 You can see that this code has the same effect and is quite a bit easier to read.
 
-## Java's Code Units
+### Java's Code Units
 
 Writing code is similar to writing a document. 
 It consists of special hierarchical units, which together form a whole.
@@ -958,7 +958,7 @@ These are:
 * **Code Blocks** : A code block is a set of zero, one, or more statements, 
 usually grouped together in some way to achieve a single goal.
 
-## Whitespaces
+### Whitespaces
 
 * It is any extra spacing, horizontally or vertically, placed around Java source code.
 * It's usually added for human readability purposes.
@@ -983,7 +983,7 @@ The Google Java Style Guide, which was seen previously in this course,
 has a section on whitespace, so refer to that for more information, 
 and the link to that is again in the resources section of this video.
 
-## Methods
+### Methods
 
 Java's description of the method is:
 A method declares executable code that can be invoked, 
@@ -1270,7 +1270,7 @@ public static void main(String[] args) {
 }
 ```
 
-## Method Overloading
+## [f. Method Overloading]()
 
 Method overloading occurs when a class has multiple methods with the same name, 
 but the methods are declared with different parameters. 

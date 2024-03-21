@@ -1,4 +1,4 @@
-# ControlFlow Statements
+# [Section-2: ControlFlow Statements](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow)
 
 In this section, we'll be learning about the switch statement which, 
 like the if then else statement, 
@@ -11,7 +11,7 @@ Also, we'll be looking at 4 additional statements:
 
 which are used to repeat code segments based on conditions.
 
-## The switch statement
+## [a. The switch statement]()
 
 The syntax for the switch statement is quite a bit different from it is for the if statement.
 
@@ -205,7 +205,7 @@ but doesn't return any values.
 3. Bonus: Create a second method called printWeekDay, that uses an if-then-else statement, 
 instead of a switch, to produce the same output.
 
-## The For Statement
+## [b. The For Statement]()
                                                      
 Looping lets us execute the code a multiple number of times. 
 Java supports several statements for looping, or executing code repetitively.
@@ -238,7 +238,7 @@ usually declaring and initializing a loop variable, before the loop begins proce
 * The increment section is executed after the expression is tested, 
 and is generally the place where the loop variable is incremented.
 
-## The Break Statement
+### The Break Statement
 
 A break statement transfers control out of an enclosing statement. 
 We've seen the break statement in the switch statement, but it can also be used in any loop.
@@ -265,7 +265,7 @@ public static void main(String[] args) {
     }
 ```
 
-## The for Statement Challenge Exercise
+### The for Statement Challenge Exercise
 
 This challenge will use prime numbers, which is not a composite number, 
 and which are the numbers we "canNOT" make them by multiplying other whole numbers. 
@@ -291,7 +291,7 @@ I want you to exit the for loop, and as a hint, use the break statement to exit.
 So you need to use an if statement to check the count, and use break to get out of the loop, 
 even before it completes processing all the numbers in the range you picked.
 
-## Sum 3 and 5 Challenge
+### Sum 3 and 5 Challenge
 
 Create a for loop using a range of numbers from 1 to 1000 inclusive. 
 Sum all the numbers that can be divided by both 3 and 5. 
@@ -301,7 +301,7 @@ After breaking out of the loop, print the sum of the numbers that met the condit
 
 Note: type all code in the main method
 
-## The while and do while statements
+## [c. The while and do while statements]()
 
 What if you want to loop until some condition is met, 
 that's not associated with a known range of values? 
@@ -321,7 +321,7 @@ But looking at the while loop in comparison:
 | // block of statements            | // block of statement | // block of statements |
 | }                                 | }                     | } while (expression);  | 
 
-## The Continue Statement
+### The Continue Statement
 
 There's another statement that's important to all of these loops, 
 and that's the continue statement. 
@@ -381,7 +381,7 @@ public static void main(String[] args) {
     }
 ```
 
-## The while loop challenge
+### The while loop challenge
 
 Create a method called isEvenNumber, that takes a parameter of type int. 
 Its purpose is to determine if the argument passed to the method is an even number or not. 
@@ -409,7 +409,7 @@ it has found.
 Break out of the loop, once 5 even numbers are found. 
 Finally, display the total number of odd and even numbers found.
 
-## Digit Sum challenge
+### Digit Sum challenge
 
 In this challenge, your task is to write a method, with the name sumDigits, 
 that has a single parameter named number, of type int, and it should return an int. 
@@ -423,7 +423,7 @@ And another example, if the value is 1000, the code should sum each digit,
 1 + 0 + 0 + 0, and return 1 as a value. 
 If the number is a single digit number, simply return the number itself as the result.
 
-## Local Variables And Scope
+## [d. Local Variables And Scope]()
 
 In the past couple of courses, we've looked at many of Java's flow statements, 
 the switch statement, the for statement, the while statement, as well as the do-while statement. 
@@ -500,7 +500,7 @@ Another example that we've seen, if you're using a variable only in a loop code 
 like iteration variable, and won't be using it outside the loop block, 
 declare it in the loop code, or in the for loop initialization block.
 
-## Local Variables and the For Statement
+### Local Variables and the For Statement
 
 In this "for" statement, as part of the declaration, there is an initialization part, 
 as we've described. 
@@ -526,7 +526,7 @@ In the switch statement, a variable declared in one case label code block,
 can be accessed in another case label code block, but only if that block is 
 after the declaration, and initialization of the variable.
 
-## The class, the object, static & instance fields and methods
+## [e. The object, static & instance fields and methods]()
 
 Local variables are a way to store and manipulate temporary data. 
 In addition to local variables, we can set up data to be defined, 
@@ -646,7 +646,7 @@ so the result of this call would be a new String, with the value "HELLO," all in
 The most important difference to remember right now is that to use an instance method, 
 you have to create an instance, or object, first.
 
-## Parsing Values and Reading Input using System.console()
+### Parsing Values and Reading Input using System.console()
 
 We're going to create an interactive application, where a user will enter their name, 
 and year of birth, and then the application will calculate the current age of the user. 
@@ -674,7 +674,7 @@ and extract the numeric value from it.
 Since this is so common, Java provides ways to parse a String into a number. 
 This is done using the Wrapper classes we've seen before.
 
-## Wrapper methods to parse string to numeric values
+### Wrapper methods to parse string to numeric values
 
 You'll remember, we used the wrapper classes to get min and max values. In this case, 
 we're going to use a static method, on the wrapper class, 
@@ -714,7 +714,7 @@ This is often in the form of an input file, a console, or some kind of user inte
 
 When reading data from the console, we have some different options.
 
-## Reading data from the console
+## [f. Reading data from the console]()
 
 * **System.in**: Like "System.out," Java provides System.in which can read input 
 from the console or terminal. 
@@ -760,7 +760,7 @@ And unfortunately, we can't get this to work in IntelliJ's IDE.
 But what we can do is program our code, so that we handle this situation. 
 This is done by what's called, "catching and handling this exception."
 
-## What's an exception?
+### What's an exception?
 
 An exception is an error that happens in code. 
 Some types of errors can be predicted and named. 
@@ -817,7 +817,7 @@ Which, of course, we haven't yet implemented or built out.
 
 So now, we're ready to code the second method, and use the Scanner class.
 
-## The Scanner Class
+### The Scanner Class
 
 The Scanner class is described as a simple text scanner, 
 which can parse primitive types and strings. 
@@ -961,7 +961,7 @@ public static void main(String[] args) {
     }
 ```
 
-## Reading User Input Challenge
+### Reading User Input Challenge
 
 In this challenge, you'll read five valid numbers from the console, 
 entered by the user, and print the sum of those five numbers. 
@@ -991,7 +991,7 @@ And so on. The hints for doing this are:
 * You'll need some local variables to keep track of the count of valid integers, 
 as well as the sum of the integers.
 
-## Min and Max Challenge
+### Min and Max Challenge
 
 This is the minimum and maximum challenge.
 This challenge is similar to the last one in some ways. You'll be using an endless loop which:
