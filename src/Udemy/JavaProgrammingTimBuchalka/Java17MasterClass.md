@@ -14,25 +14,25 @@ What we will learn from this Path:
 
 ## [1. Expressions, Statements and More](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#section-1-expressions-statements-and-more)
 
-### [a. Statements, Keywords, Variables, Primitive Data Types](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#a-statements-keywords-variables-primitive-data-types)
+### [a. Statements, Keywords, Variables, Primitive Data Types](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#a-statements-keywords-variables-primitive-data-types)
 ### [b. Wrapper Classes](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#b-wrapper-classes)
 ### [c. Casting in Java](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#c-casting-in-java)
-### [d. Operators](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#d-operators)
-### [e. Access Modifiers, Classes, Methods](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#e-access-modifiers-classes-methods)
-### [f. Method Overloading](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#f-method-overloading)
+### [d. Operators](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#d-operators)
+### [e. Access Modifiers, Classes, Methods](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#e-access-modifiers-classes-methods)
+### [f. Method Overloading](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#f-method-overloading)
 
-## [2. ControlFlow Statements](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow)
+## [2. ControlFlow Statements](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/README.md#section-2-controlflow-statements)
 
-### [a. The switch statement](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow#a-the-switch-statement)
-### [b. The For Statement](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow#b-the-for-statement)
-### [c. The while and do while statements](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow#c-the-while-and-do-while-statements)
-### [d. Local Variables And Scope](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow#d-local-variables-and-scope)
-### [e. The object, static & instance fields and methods](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow#e-the-object-static--instance-fields-and-methods)
-### [f. Reading data from the console](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow#f-reading-data-from-the-console)
+### [a. The switch statement](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/README.md#a-the-switch-statement)
+### [b. The For Statement](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/README.md#b-the-for-statement)
+### [c. The while and do while statements](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/README.md#c-the-while-and-do-while-statements)
+### [d. Local Variables And Scope](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/README.md#d-local-variables-and-scope)
+### [e. The object, static & instance fields and methods](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/README.md#e-the-object-static--instance-fields-and-methods)
+### [f. Reading data from the console](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/README.md#f-reading-data-from-the-console)
 
-## [Section-3: Object-Oriented Programming (PART-I)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1#section-3-object-oriented-programming-part-i)
+## [Section-3: Object-Oriented Programming (PART-I)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#section-3-object-oriented-programming-part-i)
 
-### [a. What is Object-Oriented Programming?](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1#a-what-is-object-oriented-programming)
+### [a. What is Object-Oriented Programming?](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#a-what-is-object-oriented-programming)
 ### [b. Organizing Classes](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#b-organizing-classes)
 ### [c. Encapsulation](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#c-encapsulation)
 ### [d. Getter & Setter Methods](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#d-getter--setter-methods)
