@@ -12,10 +12,10 @@ What we will learn from this Path:
 * Obtain proficiency in Java 17, as well as older versions including Java 11
   and Java 8.
 
-## [1. Expressions, Statements and More](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#expressions-statements-and-more)
+## [1. Expressions, Statements and More](#section-1-expressions-statements-and-more)
 
-### [a. Statements, Keywords, Variables, Primitive Data Types](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#section-1-expressions-statements-and-more)
-### [b. Wrapper Classes](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#b-wrapper-classes)
+### [a. Statements, Keywords, Variables, Primitive Data Types](#a-statements-keywords-variables-primitive-data-types)
+### [b. Wrapper Classes](#b-wrapper-classes)
 ### [c. Casting in Java](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#c-casting-in-java)
 ### [d. Operators](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#d-operators)
 ### [e. Access Modifiers, Classes, Methods](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#e-access-modifiers-classes-methods)
