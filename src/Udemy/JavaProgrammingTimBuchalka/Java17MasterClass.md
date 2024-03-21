@@ -30,12 +30,12 @@ What we will learn from this Path:
 ### [e. The object, static & instance fields and methods](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow#e-the-object-static--instance-fields-and-methods)
 ### [f. Reading data from the console](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow#f-reading-data-from-the-console)
 
-## [Section-3: Object-Oriented Programming (PART-I)](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#section-3-object-oriented-programming-part-i)
+## [Section-3: Object-Oriented Programming (PART-I)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1#section-3-object-oriented-programming-part-i)
 
-### [a. What is Object-Oriented Programming?](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#a-what-is-object-oriented-programming)
-### [b. Organizing Classes](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#b-organizing-classes)
-### [c. Encapsulation](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#c-encapsulation)
-### [d. Getter & Setter Methods](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#d-getter--setter-methods)
+### [a. What is Object-Oriented Programming?](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1#a-what-is-object-oriented-programming)
+### [b. Organizing Classes](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#b-organizing-classes)
+### [c. Encapsulation](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#c-encapsulation)
+### [d. Getter & Setter Methods](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#d-getter--setter-methods)
 ### [e. Constructors]()
 
     * Reference vs Object vs Intance vs Class
