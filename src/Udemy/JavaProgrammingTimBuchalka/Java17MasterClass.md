@@ -41,7 +41,7 @@ What we will learn from this Path:
 ### [g. Static vs Instance Variables]()
 ### [h. Static vs Instance Methods]()
 ### [i. The POJO vs. The Record]()
-### [Plain Old Java Object (The POJO) and Overridden Methods]()
+### [j. Plain Old Java Object (The POJO) and Overridden Methods]()
 
         * Challenge-32: Wall Area
         * Challenge-33: Point
