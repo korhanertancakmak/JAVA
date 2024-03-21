@@ -1976,91 +1976,111 @@ We can look at Inheritance as a form of code re-use.
 It's a way to organize classes into a parent-child hierarchy, which lets the child inherit (re-use), 
 fields and methods from its parent.
 
+![Step-2](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/images/02Inheritance1.png?raw=true)
+
+The animal kingdom, with its many classifications, is a pretty good place to start 
+looking at hierarchical relationships. 
+On this scheme, we show a small part of the Animal classification chart. 
+Each word on this diagram represents a Class. 
+The most generic, or base class, starts at the top of the hierarchy, **Animal**. 
+Every class below it is a subclass. 
+So the **Animal** is the base class. 
+All the other classes can be said to be subclasses of **Animal**.
+A parent can have multiple children, as we see with **Mammal** which is the parent of Dog and Cat. 
+A child can only have one direct parent in Java. 
+But it will inherit from its parent class's parent, and so on.
+
+Let's actually start working through some scenarios in code, so that I can show 
+you what inheritance looks like in Java. 
+First, let's start with an animal example. 
+We'll create the animal base class, and define all the attributes 
+and behaviors that animals have in common. 
+We know that any animal would have characteristics, like size and weight. 
+And animals move and make noise. 
+Though animals move and make noise in unique ways, we declare the methods on the base class.
+Let's see what this class might look like on a class diagram. 
+This is just a drawing of the class, showing its fields first, 
+and methods or behaviors in the section below that.
+
+A class diagram, allows us to design our classes before we build them. 
+This diagram shows the Animal class, with the attributes we think that every kind of animal has. 
+All animals have a type (what kind of animal it is). 
+All animals have a size and a weight. 
+Below the fields, we have the behavior that animals have in common, move, and makeNoise. 
+The move method will include a speed, fast or slow, as an argument.
+
+Let's create this Animal class now. 
+After we have the class in the editor, we'll add the fields from our diagram:
+
+```java  
+private String type;
+private String size;
+private double weight;
+```
+
+Okay, those are the fields, so now let's add a constructor. 
+We'll use IntelliJ's code generation tool to do this:
+
+```java  
+public Animal(String type, String size, double weight) {
+    this.type = type;
+    this.size = size;
+    this.weight = weight;
+}
+```
+
+Now we've got the first constructor. 
+Let's keep this code simple, so we'll leave the getters and setters out. 
+But we do want a method to print the fields out, so again using IntelliJ's generation tool, 
+we'll pick Code, Generate, and this time, we'll select toString. 
+And again, pick all the fields, and hit OK.
+
+```java  
+@Override
+public String toString() {
+    return "Animal{" +
+            "type='" + type + '\'' +
+            ", size='" + size + '\'' +
+            ", weight=" + weight +
+            '}';
+}
+```
+
+And there's our toString method, with all the fields in it. 
+Ok, so we have attributes, a constructor, and a way to print out information about the animal, 
+but we haven't implemented any behavior on Animal. 
+Now, we'll add two methods on Animal, move and makeNoise. 
+For move, we'll take a speed, which will just be a String for fast or slow, 
+and then we'll print the animal type and the speed at which it's moving:
+
+```java  
+public void move(String speed) {
+    System.out.println(type + " moves " + speed);
+}
+```
+
+And now we'll add makeNoise, that doesn't have any parameters:
+
+```java  
+public void makeNoise() {
+    System.out.println(type + " makes some kind of noise");
+}
+```
+
+There you have it, we have our base class, the Animal, with its attributes, 
+type, size and weight, and we have three methods on this class, toString, 
+as well as move and makeNoise. 
+Next, we want to create a more specific type of Animal, and for this, 
+we're going to create a Dog class. 
+Let's look at a class diagram that includes the Dog class.
+
+```java  
+public void makeNoise() {
+    System.out.println(type + " makes some kind of noise");
+}
+```
 
 
-                                                    Animal
-                                                      ↓
-                                         |--------Vertebrates-------|
-                                         ↓                          ↓
-                             |------Warm-blooded----|           |---Cold-blooded---|
-                             ↓                      ↓           ↓                  ↓
-                      |----Mammal---|              Bird     |--Fish--|             Reptiles
-                      ↓             ↓                       ↓        ↓
-                     Dog           Cat                   Salmon    Goldfish
-
-    The animal kingdom, with its many classifications, is a pretty good place to start looking at hierarchical relationships.
-    On this scheme, we show a small part of the Animal classification chart. Each word on this diagram represents a Class.
-    The most generic, or base class, starts at the top of the hierarchy, "Animal". Every class below it is a subclass. So
-    the "Animal" is the base class. All the other classes can be said to be subclasses of "Animal". A parent can have multiple
-    children, as we see with "Mammal", which is the parent of Dog and Cat. A child can only have 1 direct parent, in Java.
-    But it will inherit from its parent class's parent, and so on.
-
-        Let's actually start working through some scenarios in code, so that i can show you what inheritance looks like
-    in Java. First, let's start with an animal example. We'll create the animal base class, and define all the attributes
-    and behaviors that animals have in common. We know that any animal would have characteristics, like size and weight.
-    And animals move and make noise. Though animals move and make noise in very unique ways, we declare the methods on the
-    base class. Let's see what this class might look like on a class diagram. This is just a drawing of the class, showing
-    its fields first, and methods or behaviors in the section below that.
-
-        A class diagram, allows us to design our classes before we build them. This diagram shows the Animal class, with
-    the attributes we think that every kind of animal has. All animals have a type(what kind of animal it is). All animals
-    have a size, and a weight. Below the fields, we have the behavior that animals have in common, move, and makeNoise.
-    The move method will include a speed, fast or slow, as an argument.
-
-        Let's create this Animal class now. After we have the class in the editor, we'll add the fields from our diagram:
-
-                                private String type;
-                                private String size;
-                                private double weight;
-
-    Okay, those are the fields, so now let's add a constructor. We'll use IntelliJ's code generation tool to do this:
-
-                                public Animal(String type, String size, double weight) {
-                                    this.type = type;
-                                    this.size = size;
-                                    this.weight = weight;
-                                }
-
-    Now we've got the first constructor. Let's keep this code simple, so we'll leave the getters and setters out. But we
-    do want a method to print the fields out, so again using IntelliJ's generation tool, we'll pick Code, Generate, and
-    this time, we'll select toString. And again, pick all the fields, and hit OK.
-
-                                @Override
-                                public String toString() {
-                                    return "Animal{" +
-                                            "type='" + type + '\'' +
-                                            ", size='" + size + '\'' +
-                                            ", weight=" + weight +
-                                            '}';
-                                }
-
-    And there's our toString method, with all the fields in it. Ok, so we have attributes, a constructor, and a way to print
-    out information about the animal, but we haven't implemented any behavior on Animal. Now, we'll add 2 methods on Animal,
-    move and makeNoise. For move, we'll take a speed, which will just be a String for fast or slow, and then we'll print
-    the animal type and the speed at which it's moving:
-
-                                public void move(String speed) {
-                                    System.out.println(type + " moves " + speed);
-                                }
-
-    And now we'll add makeNoise, that doesn't have any parameters:
-
-                                public void makeNoise() {
-                                    System.out.println(type + " makes some kind of noise");
-                                }
-
-    There you have it, we have our base class, the Animal, with its attributes, type, size and weight, and we have 3 methods
-    on this class, toString, as well as move and makeNoise. Next, we want to create a more specific type of Animal, and
-    for this, we're going to create a Dog class. Let's look at a class diagram that includes the Dog class.
-
-                        Dog =>
-                              earShape   : String
-                              tailShape  : String
-                              -------------------
-                              bark()
-                              run()
-                              walk()
-                              wagTail()
 
         So, here we show a Dog class above, but connected to Animal. This means Dog inherits from Animal. We can also say
     Dog, is, a type of Animal when we create a Dog object, it'll inherit type, size, and weight fields from the Animal
