@@ -12,7 +12,7 @@ What we will learn from this Path:
 * Obtain proficiency in Java 17, as well as older versions including Java 11
   and Java 8.
 
-## [1. Expressions, Statements and More](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/%20%Section_01_ExpressionsStatementsMore#section-1-expressions-statements-and-more)
+## [1. Expressions, Statements and More](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore:section%201%20expressions%20statements%20and%20more)
 
 ### [a. Statements, Keywords, Variables, Primitive Data Types](#a-statements-keywords-variables-primitive-data-types)
 ### [b. Wrapper Classes](#b-wrapper-classes)
