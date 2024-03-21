@@ -14,7 +14,7 @@ What we will learn from this Path:
 
 ## [1. Expressions, Statements and More](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#expressions-statements-and-more)
 
-### [a. Statements, Keywords, Variables, Primitive Data Types](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#a-statements-keywords-variables-primitive-data-types)
+### [a. Statements, Keywords, Variables, Primitive Data Types](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#section-1-expressions-statements-and-more)
 ### [b. Wrapper Classes](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#b-wrapper-classes)
 ### [c. Casting in Java](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#c-casting-in-java)
 ### [d. Operators](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore#d-operators)
