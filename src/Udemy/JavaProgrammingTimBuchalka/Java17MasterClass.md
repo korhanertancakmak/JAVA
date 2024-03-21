@@ -40,11 +40,9 @@ What we will learn from this Path:
 ### [f. Reference vs Object vs Instance vs Class]()
 ### [g. Static vs Instance Variables]()
 ### [h. Static vs Instance Methods]()
-    * Reference vs Object vs Intance vs Class
-    * Static vs Instance Variables
-    * Static vs Instance Methods
-    * The POJO
-    * Java's Implicit POJO Type, The Record
+### [i. The POJO vs. The Record]()
+### [Plain Old Java Object (The POJO) and Overridden Methods]()
+
         * Challenge-32: Wall Area
         * Challenge-33: Point
         * Challenge-34: Carpet Cost Calculator

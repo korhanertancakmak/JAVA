@@ -270,14 +270,14 @@ This provides encapsulation of the internals of our class,
 and supports maintenance of a public interface that doesn't have to change, 
 even though our class might.
 
-In this course, we're going to be setting up, and talking about setter methods, 
+In this course, we're going to be setting up and talking about setter methods, 
 which set data on the objects. 
 We'll end this course by creating more objects out of the Car class, 
 and talking more about that process. 
 We'll be using the code from the last code, where we ended it, 
 with the Main and Car classes.
 
-So now, let's add the setter methods, in the Car class:
+So now, let's add the setter methods in the Car class:
 
 ```java  
 public void setMake(String make) {
@@ -342,7 +342,7 @@ car.setConvertible(true);
 car.setColor("black");
 ```
                                             
-We get the values we set on the car; and not the defaults.
+We get the values we set on the car and not the defaults.
 
 So let's talk about why we'd want to use getters and setters?
 What's the advantage of setMake? 
@@ -384,7 +384,7 @@ These are holden, porsche, and tesla.
 If the make matches one of those, we'll set the make field to the argument passed. 
 But if it doesn't, we use the default case, and set the make field to "Unsupported."
 
-So now we've built a rule, that we're supporting only three manufacturers. 
+So now we've built a rule that we're supporting only three manufacturers. 
 And we'll enforce that rule, so that if anything else is passed, 
 we set make to "Unsupported." 
 But the argument is null, we set it to "Unknown." 
@@ -393,7 +393,7 @@ And after running the code, you can see that "Unsupported" not "Maserati."
 
 So you can see how it's very useful to have this type of functionality, 
 the validation. 
-So what you can do with the setter methods, is you can set up all the rules, 
+So what you can do with the setter methods is you can set up all the rules 
 related to that class, what is valid, and what is not valid. 
 You can have all that functionality set up within the Car class itself,
 so that these rules are in place as we're creating the objects. 
@@ -420,12 +420,13 @@ So comment that out and just define the variable so that we've not initialized i
 Car car; // = new Car();
 ```
 
-We haven't included the rest (= new Car();) part. 
+We haven't included the rest (= new Car();)
+Part. 
 Already, IntelliJ is saying, "Variable car may not have been initialized," 
 where we are attempting to call the setter method, on the car variable. 
 You can't use an uninitialized variable, which car is, 
 because we haven't assigned any object reference to it. 
-But now, consider what happens, if we instead assign null, to a car:
+But now, consider what happens, if we instead assign null to a car:
 
 ```java  
 Car car = null; // = new Car();
@@ -550,8 +551,8 @@ Create a new class for a bank account. Crate fields for account characteristics 
 * customer name
 * email
 * phone number
- 
-Create getters and setters for each field. Create 2 additional methods:
+
+Create getters and setters for each field. Create two additional methods:
 * one for depositing funds into the account
 * one for withdrawing funds from the account
 
@@ -643,8 +644,8 @@ acc.setEmail("korhanertancakmak@gmail.com");
 acc.setPhoneNumber(3424241);
 ```
 
-We've done here to set the initial parameters, or the initial values of the fields. 
-And you can include any other initialization code, you want to perform, in the constructor. 
+We've done here to set the initial parameters or the initial values of the fields. 
+And you can include any other initialization code you want to perform in the constructor. 
 So let's see whether we can replace all this code.
 
 First, we'll edit our Account.java class, and add a constructor. 
@@ -700,7 +701,7 @@ So it's only ever called once, at the start, when we're creating the object.
 A class can have one or many constructors, one of which can be a No Args constructor. 
 So now we'll add another constructor, and this time we'll declare some parameters. 
 Doing this will let us pass values to the constructor. 
-We can then use these values, to assign data to our fields, 
+We can then use these values to assign data to our fields, 
 instead of calling a bunch of setters. 
 This time, it will have five parameters, one for each of the fields on the Account class.
 
@@ -740,7 +741,7 @@ Account acc = new Account(1234567,1000d, "Korhan Çakmak","korhanertancakmak@gma
 ```
 
 And running this, we can confirm that we executed the new constructor. 
-You can see the first statement, in the output, "Account constructor with parameters called." 
+You can see the first statement in the output, "Account constructor with parameters called." 
 Running with some System.out.println statements:
 
 ```java  
@@ -750,7 +751,7 @@ System.out.println("Account balance = $" + acc.getBalance());
 
 This shows us that the number account number printed, as well as the initial deposit amount, 
 which we set to $1000. 
-So having multiple constructors as we've done here, 
+So having multiple constructors as we've done here 
 is called "constructor overloading." 
 It looks a lot like method overloading, doesn't it?
 
@@ -790,9 +791,9 @@ public Account(int number, double balance, String customerName, String email, St
 ```
 
 First, we'll use the default constructor to instantiate an object, and pass it some default values. 
-In other words, from the constructor with no parameters, we'll call the one with 5 parameters, 
+In other words, from the constructor with no parameters, we'll call the one with five parameters, 
 and pass in literal values. 
-So to do that, we type, this, followed by parentheses. 
+So to do that, we type this, followed by parentheses. 
 Which constructor is called is determined by the values we pass. 
 So we'll add a call to this in the no args constructor, and we'll just pass some literals as arguments. 
 The type and number of arguments we pass must match one of our constructors. 
@@ -808,7 +809,7 @@ public Account() {
 }
 ```
 
-So what we're doing there with the **this()**, is a special use of this, 
+So what we're doing there with **this()**, is a special use of this, 
 which you won't see used anywhere else. 
 This is calling another constructor within a constructor. 
 So what we're saying here is "look if you try and create an object from this class, 
@@ -845,7 +846,7 @@ Account balance = $2.5
 
 As you can see, that we get the System.out.println statement from both constructors. 
 So they're actually both called as you can see there. 
-The reason why you see it in that order, makes sense if you think about it. 
+The reason why you see it in that order makes sense if you think about it. 
 If you come back here to the Account.java, you see
 the very first line of the "no arguments" account constructor, 
 called the other constructor with five arguments. 
@@ -871,7 +872,7 @@ public Account(int number, double balance, String customerName, String email, St
 
 You may have noticed, looking at this code, is that we've actually updated the fields directly. 
 We didn't call the setter methods from the constructors. 
-So there's an alternative, we could have done, is we actually could have 
+So there's an alternative we could have done, is we actually could have 
 done something like "setNumber(number)". 
 If we had some validation in that setter, that was testing for valid numbers, 
 and those types of things, we could actually execute that code as well.
@@ -915,7 +916,7 @@ after a couple of additional empty lines.
 Next, we'll click on "Code" on the menu, and select "Generate" as the menu option. 
 Then we'll select the first option which is constructor, 
 and it asks which field you want to include in the constructor? 
-So which ones are we going to have passed to us. 
+So which ones are we going to have passed to us? 
 In other words, which fields do we want the constructor to set? 
 Let's pick 3 we talked about, customer name, email address, and the phone number.
 
@@ -932,7 +933,7 @@ setting the instance fields to the parameters passed.
 So there's our third constructor. 
 And you can see, it's only setting three of five instance fields. 
 So that's one way of doing it, buf of course, the disadvantage here  
-is that our account number and our balance, aren't included. 
+is that our account number and our balance aren't included. 
 But we could call the five argument constructors, and pass a couple of default values, 
 so let's do that. 
 We'll also comment out the initialization code 
@@ -973,7 +974,7 @@ passing default values or null references, as arguments.
 That's a good way of doing things, and it often leads to perfect coding, 
 because you're not having to duplicate code, or duplicating initialization in more than one place.
 
-So how do we call this new constructor, when creating an account? 
+So how do we call this new constructor when creating an account? 
 We would call that very much the same, as we've been doing before. 
 Let's create a new object here, using these three argument constructors. 
 So, going back to the Main class in Description.txt, 
@@ -1043,7 +1044,7 @@ These new concepts may well be confusing at first, so let's talk about them.
 Let's use the analogy of building a house to understand classes. 
 Now a class is basically a blueprint for the house. 
 Using the blueprint, we can build as many houses as we like, based on those plans. 
-So thinking back to the physical world, we use the plans for the house, 
+So thinking back to the physical world, we use the plans for the house 
 to build many houses that have the same floor plan. 
 Each house we build (in other words, going back to programming terms, 
 each house we instantiate using the new operator) is an object. 
@@ -1082,7 +1083,7 @@ public class House {
 
 So, we've got the class House, with an instance variable, also known as a field called color. 
 Now also we have got a main method in a Main class (all the way below). 
-Now this code in the main method. is creating instances of the house class, 
+Now this code in the main method is creating instances of the house class, 
 changing the color, and printing out the result. 
 So let's actually go through line by line, and see what happens when this code is executed.
 Line-1 is :
@@ -1182,7 +1183,7 @@ to the object in memory that has the "yellow" color,
 while the next two lines will print "green" since both 
 anotherHouse and greenHouse point to the same object in memory.
 
-So keep in mind, that in Java, you always have a reference to an object in memory. 
+So keep in mind that in Java, you always have a reference to an object in memory. 
 There's no way to access an object directly, everything is done using that reference.
 
 Finally, consider the code below for a moment:
@@ -1231,7 +1232,7 @@ creating a reference to communicate with it.
 
 ## [g. Static vs Instance Variables]()
 
-Let's discuss the differences now between static variables, and instance variables. 
+Let's discuss the differences now between static variables and instance variables. 
 So firstly, a static variable is declared by using the keyword "static." 
 Static variables are also known as static member variables. 
 Every instance of the class shares the same static variable. 
@@ -1274,7 +1275,7 @@ They can be used for:
 * Storing counters.
 * Generating unique ids.
 * Storing a constant value that doesn't change, like PI, for example.
-* Creating, and controlling access, to a shared resource.
+* Creating and controlling access to a shared resource.
 
 Some examples of shared resources might include a log file, a database, 
 or some other type of input or output stream.
@@ -1385,7 +1386,7 @@ Static methods are declared using a static modifier.
 Static methods can't access instance methods and instant variables directly. 
 They're usually used for operations that don't require any data from 
 an instance of the class (from "this"). 
-if you remember, the "this" keyword is the current instance of a class. 
+If you remember, the "this" keyword is the current instance of a class. 
 So inside a static method, we can't use the "this" keyword. 
 Whenever you see a method that doesn't use instance variables, 
 that method should probably be declared as a static method. 
@@ -1420,7 +1421,7 @@ we can just type the method name with parentheses,
 which will automatically call the printHello static method, 
 because it's being invoked from a static method itself. 
 So static methods don't require an instance to be created. 
-We can just type the class name, and use the dot notation, with the method name to access them.
+We can just type the class name and use the dot notation with the method name to access them.
 
 ### Instance Methods
 
@@ -1458,22 +1459,518 @@ After we've got the instance, we can call the instance method bark, in this case
 by typing "rex.bark."
 So the hard part here could be deciding when to create an instance, 
 or when to create a static method. 
-So let's see some basic rules, that should help you decide.
+So let's see some basic rules that should help you decide.
+
+![Step-1](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/images/01StaticMethod.png?raw=true)
+
+So here, we've got a small diagram that should help us decide
+whether we need an instance or a static method. 
+Now instance methods are created more often than static methods, 
+but let's see how to follow this diagram. 
+So the first question we'd ask ourselves is, should the method be static? 
+After that question, the next question would be; does it use any fields? 
+Instance variables in other words, or instance methods of this object? 
+And remember, we're asking these questions about the proposed method we plan to write, 
+so if that's true, in other words, it does use some fields and/or instance methods. 
+Then we'd want to make it an instance method. 
+In another scenario, if the method doesn't use, or is not proposed to use, 
+any instance variables or instance methods, in that case, 
+then we'd probably consider writing it as a static method.
+
+So generally speaking, if we're not using any fields, or instance methods, 
+with the new proposed method, we should consider making that method static, 
+instead of a regular instance method. 
+So that's the main differences between static and instance methods.
+
+## [i. The POJO vs. The Record]()
+
+In the last video, we talked about the Plain Old Java Object, 
+and we showed you how it comes with a lot of what we call boilerplate code. 
+It's code that's repetitive and follows certain rules. 
+In our case, we had a constructor with parameters for every field on our class, 
+as well as getters and setters for each field. 
+We also set up a toString method on this class, 
+so we could print out all the fields on our class in a nicely formatted way. 
+This is code repeated over and over, for every POJO, or for every JavaBean, 
+if you're using JavaBeans to leverage Java frameworks that use them. 
+Once created, this code is rarely looked at or modified. 
+In fact, there are tools that'll just regenerate all of this code 
+if your underlying data or domain model changes. 
+Even better though, Java introduced a new type, the record, 
+which became part of the official language, in JDK 16.
+
+### The Record Type
+
+The record was introduced in JDK 14, and became officially part of Java in JDK 16. 
+Its purpose is to replace the boilerplate code of the POJO, but to be more restrictive. 
+Java calls them "plain data carriers. 
+The word carrier is an important term 
+because it means the record has more rules built-in than a POJO would. 
+The record is a special class that contains data, that's not meant to be altered. 
+In other words, it seeks to achieve immutability for the data in its members. 
+It contains only the most fundamentals methods, such as constructors and accessors (or getters). 
+Best of all, you the developer, don't have to write or generate any of this code.
+
+We're back to our last course. 
+In that course, we created a Student class with a constructor and some getters and setters, 
+then we used a for loop to create five students. 
+Let's create a record now. 
+As we create a default class, but at this time, I'm going to pick Record, 
+instead of the default Class, we've been using all along up until now. 
+You'll see there are others, like Interface, Enum and Annotation, 
+but don't worry, we'll be talking about those eventually. 
+Right now, we care about the Record type. 
+And I'll give it a name, LPAStudent, LPA stands for my own company name, 
+Learn Programming Academy, and then Student.
+
+```java  
+public record LPAStudent() {
+}
+```
+
+Now you can see this (LPAStudent.java file) looks like a class, 
+it starts with a public access modifier, but instead of the "class" keyword, 
+it's using the "record" keyword. 
+Where's the magic you ask? 
+It's hard to see at first. 
+But, different from a class, you'll notice that, in this code, 
+there are a set of parentheses after the name of this record, LPAStudent. 
+Similar to a constructor, we can set up some parameters within those parentheses, 
+so let's set some up, so that the parameters are the same as our Student class parameters. 
+In fact, let me copy that parameter list from the Student class constructor. 
+I'll pop over to Student.java, copy the parameter list I've set up in that first constructor, 
+"String id, String name, String dateOfBirth, String classList," then 
+I'll come back over to LPAStudent.java, and paste those parameters in the parentheses. 
+And that's it! 
+We're ready to use this record now, in our code. 
+It's really that simple. 
+Let's go to Description.txt, and show you.
+
+Before we make any changes, let's run the main code as it is, and you'll remember we get the output
+from the toString() method we'd generated in the Student class.
+
+```java  
+Student{id='S923001', name='Mary', dateOfBirth='05/11/1985', classList='Java MasterClass'}
+Student{id='S923002', name='Carol', dateOfBirth='05/11/1985', classList='Java MasterClass'}
+Student{id='S923003', name='Korhan', dateOfBirth='05/11/1985', classList='Java MasterClass'}
+Student{id='S923004', name='Harry', dateOfBirth='05/11/1985', classList='Java MasterClass'}
+Student{id='S923005', name='Lisa', dateOfBirth='05/11/1985', classList='Java MasterClass'}
+```
+
+Now let's use our new record. 
+I'm simply going to use LPAStudent, in place of Student in the code here. 
+Where I have "Student," I'll modify it to be LPAStudent, the name of our record. 
+I'll use LPAStudent as the variable, or reference type.
+And on the same line, I'll use LPAStudent after the new keyword, instead of Student.
+
+```java  
+for (int i = 1; i <= 5; i++) {
+    LPAStudent s = new LPAStudent("S92300" + i, 
+            switch  (i) {
+            case 1 -> "Mary";
+            case 2 -> "Carol";
+            case 3 -> "Korhan";
+            case 4 -> "Harry";
+            case 5 -> "Lisa";
+            default -> "Anonymous";
+        },
+        "05/11/1985",
+        "Java MasterClass");
+    System.out.println(s);
+}
+```
+
+This code compiles, and if we run it:
+
+```java  
+LPAStudent[id=S923001, name=Mary, dateOfBirth=05/11/1985, classList=Java MasterClass]
+LPAStudent[id=S923002, name=Carol, dateOfBirth=05/11/1985, classList=Java MasterClass]
+LPAStudent[id=S923003, name=Korhan, dateOfBirth=05/11/1985, classList=Java MasterClass]
+LPAStudent[id=S923004, name=Harry, dateOfBirth=05/11/1985, classList=Java MasterClass]
+LPAStudent[id=S923005, name=Lisa, dateOfBirth=05/11/1985, classList=Java MasterClass]
+```
+
+We get output, that's very similar to the output we got before. 
+The bracket type is different. 
+We've replaced the 58 lines of code that we have in Student.java, 
+with these 4 lines of code in LPAStudent.java. 
+Now, the truth is, the record, LPAStudent doesn't have or support setter methods, 
+but the other functionality, calling the constructor with four parameters, 
+and printing the data out, is implicitly part of the record. 
+What's really happening here?
+
+### Implicit or Generated Code that Java provides
+
+What does Java tell us about what is implicitly created 
+when we declare a record as we did in this code?
+
+```java  
+public record LPAStudent(String id, String name, String dateOfBirth, String classList) {}
+```
+
+First, it's important to understand that the part that's in parentheses; 
+this entire part is called the record header. 
+The record header consists of components, a comma-delimited list of components. 
+For each component in the header, Java generates:
+
+* A field with the same name and declared a type as the record component. 
+So for example, it sets up fields for us, as we have them in the parentheses. 
+These become the fields of the record.
+* The field is declared private and final. 
+We'll be talking about "final" more later, but simply put, it means the field can't be modified.
+* The field is sometimes referred to as a component field.
+
+Java generates a toString() method that prints out each attribute in a formatted String. 
+In addition to creating a private final field for each component, 
+Java generates a public accessor method for each component. 
+This method has the same name and type of the component, 
+but it doesn't have any kind of special prefix, no get, or is, for example. 
+The accessor method, for id in this example, is simply id(). 
+This is easier to show you in the code. 
+Let's create two Students, in the main method, one will use our POJO class, 
+and one will use our record:
+
+```java  
+Student pojoStudent = new Student("S923006", "Ann",
+        "05/11/1985", "Java MAsterclass");
+LPAStudent recordStudent = new LPAStudent("S923007", "Bill",
+        "05/11/1985", "Java Masterclass");
+```
+
+Now let's print some information out about each of these students:
+
+```java  
+System.out.println(pojoStudent);
+System.out.println(recordStudent);
+```
+
+And if we run that:
+
+```java  
+LPAStudent[id=S923001, name=Mary, dateOfBirth=05/11/1985, classList=Java MasterClass]
+LPAStudent[id=S923002, name=Carol, dateOfBirth=05/11/1985, classList=Java MasterClass]
+LPAStudent[id=S923003, name=Korhan, dateOfBirth=05/11/1985, classList=Java MasterClass]
+LPAStudent[id=S923004, name=Harry, dateOfBirth=05/11/1985, classList=Java MasterClass]
+LPAStudent[id=S923005, name=Lisa, dateOfBirth=05/11/1985, classList=Java MasterClass]
+Student{id='S923006', name='Ann', dateOfBirth='05/11/1985', classList='Java Masterclass'}
+LPAStudent[id=S923007, name=Bill, dateOfBirth=05/11/1985, classList=Java Masterclass]
+```
+
+We can see our two new students at the end of the output, 
+and notice the minor difference in the output. 
+This shows us that like IntelliJ's generated method, toString, 
+the record is printing information out similarly, 
+though it doesn't include single quotes around Strings, 
+and the brackets are different.
+
+Now let's just print out a couple of the attributes ourselves, 
+using the accessor (or getter) methods. 
+We'll do this first for our POJO student:
+
+```java  
+System.out.println(pojoStudent.getName() + " is taking " +
+        pojoStudent.getClassList());
+        System.out.println(recordStudent.getName() + " is taking " +
+        recordStudent.getClassList());
+```
+
+Now, you can see we have compiler errors for getName and getClassList, 
+on that new line of code. 
+We stated that Java's implicit code does not include the prefix get, 
+and simply uses the same name as the component or field. 
+Let's remove the prefix, and change the case of Name and ClassList, to use lower camel case:
+
+```java  
+System.out.println(pojoStudent.getName() + " is taking " +
+        pojoStudent.getClassList());
+        System.out.println(recordStudent.name() + " is taking " +
+        recordStudent.classList());
+```
+
+And we can run that:
+
+```java  
+LPAStudent[id=S923001, name=Mary, dateOfBirth=05/11/1985, classList=Java MasterClass]
+LPAStudent[id=S923002, name=Carol, dateOfBirth=05/11/1985, classList=Java MasterClass]
+LPAStudent[id=S923003, name=Korhan, dateOfBirth=05/11/1985, classList=Java MasterClass]
+LPAStudent[id=S923004, name=Harry, dateOfBirth=05/11/1985, classList=Java MasterClass]
+LPAStudent[id=S923005, name=Lisa, dateOfBirth=05/11/1985, classList=Java MasterClass]
+Student{id='S923006', name='Ann', dateOfBirth='05/11/1985', classList='Java MAsterclass'}
+LPAStudent[id=S923007, name=Bill, dateOfBirth=05/11/1985, classList=Java Masterclass]
+Ann is taking Java Masterclass
+Bill is taking Java Masterclass
+```
+
+And we get the output Anne is taking Java Masterclass, and Bill is taking Java Masterclass. 
+That's how we use accessor methods, which we've called getters up until now, 
+because traditionally, the prefix get was used for the accessor method. 
+And finally, let's see what happens if we try to set data on these two types of students. 
+Let's say they've both added a class, my Java OCP Exam 829 course, for example.
+
+```java  
+pojoStudent.setClassList(pojoStudent.getClassList() + ", Java OCP Exam 829");
+recordStudent.setClassList(recordStudent.classList() + ", Java OCP Exam 829");
+System.out.println(pojoStudent.getName() + " is taking " + pojoStudent.getClassList());
+System.out.println(recordStudent.name() + " is taking " + recordStudent.classList());
+```
+
+And here, you can see the line for "recordStudent" doesn't compile. 
+It doesn't have a setter named setClassList. 
+In fact, it doesn't have a setter at all. 
+There is no way to set the class list, other than by passing the value in on the record header, 
+or through the use of constructors. 
+This is by design because a record's goal is to be immutable. 
+Let's comment out that last line of code, and run our Description.txt class again.
+
+```java  
+LPAStudent[id=S923001, name=Mary, dateOfBirth=05/11/1985, classList=Java MasterClass]
+LPAStudent[id=S923002, name=Carol, dateOfBirth=05/11/1985, classList=Java MasterClass]
+LPAStudent[id=S923003, name=Korhan, dateOfBirth=05/11/1985, classList=Java MasterClass]
+LPAStudent[id=S923004, name=Harry, dateOfBirth=05/11/1985, classList=Java MasterClass]
+LPAStudent[id=S923005, name=Lisa, dateOfBirth=05/11/1985, classList=Java MasterClass]
+Student{id='S923006', name='Ann', dateOfBirth='05/11/1985', classList='Java Masterclass'}
+LPAStudent[id=S923007, name=Bill, dateOfBirth=05/11/1985, classList=Java Masterclass]
+Ann is taking Java Masterclass, Java OCP Exam 829
+Bill is taking Java Masterclass
+```
+
+And here you can see, for our POJO student, we could modify the class list.
+
+Why have an immutable record?
+There are more use cases for immutable data transfer objects, 
+and keeping them well encapsulated. 
+You want to protect the data from unintended mutations.
+
+### POJO vs. Record
+
+If you want to modify data in your class, you won't be using the record. 
+You can use the code generation options for the POJO, as we showed in the earlier. 
+But if you're reading a lot of records from a database or file source, 
+and simply passing this data around, then the record is a big improvement.
+
+We've only touched on some features of the record to give you an introduction. 
+When we do talk more about the "final" keyword and immutability of data, 
+especially as it may be affected by concurrent threads, we'll be revisiting this type. 
+We'll also be showing it to you in action when we get to the Database and I/O sections of this course.
+
+## [Plain Old Java Object (The POJO) and Overridden Methods]()
+
+A plain old Java object (whose acronym is POJO) is a class that generally only has instance fields. 
+It's used to house data and pass data between functional classes. 
+It usually has few methods other than getters and setters. 
+Many database frameworks use POJO's to read data from, or to write data to, 
+databases, files or streams. 
+You'll remember, we have said several times that a class can be thought of as a super data type. 
+A POJO is really just that. 
+It lets you extend, and combine, your definition of data types.
+
+A POJO also might be called a bean, or a JavaBean. 
+Maybe you've heard of the term JavaBean. 
+A JavaBean is just a POJO, with some extra rules applied to it. 
+These rules are in place, so that Java frameworks have a standard way to manipulate
+and manage these objects. 
+A POJO is sometimes called an Entity, because it mirrors database entities. 
+Another acronym is DTO, for Data Transfer Object. 
+It's a description of an object that can be modeled as just data.
+
+There are many generation tools that will run a data model into generated POJO's or JavaBeans. 
+You've seen an example of similar code generation in IntelliJ, 
+which allowed us to generate getters, setters, and constructors in a uniform way, 
+based on our class's fields.
+
+Let's make an example of a POJO code that helps us to read data out of a database
+that has a table of Student records. 
+So, we need four fields: id, name, date of birth, and class list. 
+We're going to make all of these Strings for this exercise. 
+Later in the course, we'll make this a lot more interesting, with dates, arrays, and custom types.
+
+```java  
+public class Student {
+    private String id;
+    private String name;
+    private String dateOfBirth;
+    private String classList;
+}
+```
+
+So now, let's make this a Plain Old Java Object. 
+A POJO, in its simple form, requires a way to populate data, 
+and we can do this with a constructor. 
+We'll use IntelliJ's code generation tool 
+to create a constructor first with all of these fields. 
+Select 'Code' from menu, select 'Generate' next, and select 'Constructor,' 
+and select all the fields, then press OK:
+
+```java  
+public Student(String id, String name, String dateOfBirth, String classList) {
+    this.id = id;
+    this.name = name;
+    this.dateOfBirth = dateOfBirth;
+    this.classList = classList;
+}
+```
+
+So, this class, even without getters and setters, 
+lets us create and populate new Student objects, using just this constructor. 
+And let's really do that now, in the main method of the Main class. 
+Let's have some fun with this exercise, and put some of the Java skills
+we've learnt to date to work. 
+We'll create five students in a loop. 
+We'll use the loop variable to create a unique id. 
+At first, we'll hard code the name as Mary, as well as set dateOfBirth, 
+and classList, to some literal values.
+
+```java  
+for (int i = 1; i <= 5; i++) {
+Student s = new Student("S92300" + i,
+        "Mary",
+        "05/11/1985",
+        "Java MasterClass");
+}
+```
+
+Okay, so here, we create five student objects, we pass an id that starts with S92300, 
+then appends the loop index("i"), so each student has different id, 
+and the rest of the values are literals. 
+Let's now replace Mary. 
+We're going to put a switch expression, that'll give us a different name, 
+based on the value of the loop index i:
+
+```java  
+for (int i = 1; i <= 5; i++) {
+Student s = new Student("S92300" + i,
+        switch  (i) {
+            case 1 -> "Mary";
+            case 2 -> "Carol";
+            case 3 -> "Korhan";
+            case 4 -> "Harry";
+            case 5 -> "Lisa";
+            default -> "Anonymous";
+        },
+        "05/11/1985",
+        "Java MasterClass");
+}
+```
+
+So we're using a switch expression as a parameter to a constructor, 
+which is pretty neat, you have to admit. 
+Maybe you noticed that I have a default case label defined, although in this loop, 
+it won't ever be true. 
+This is actually a requirement for the switch expression 
+when it's used with a numeric switch value. 
+It requires that all possible values be resolved, and with a numeric switch value, 
+the only way to really do this is to use a default label, 
+like we did here. 
+The last two parameters are simply hard-coded to the same birthdate, 
+and the class name "Java Masterclass." 
+So, we can run this, but since there's no output, it's not terribly interesting. 
+I want to show you another generation option on IntelliJ, this one to print out data. 
+When we get to inheritance, I'll explain how this method actually works, 
+but for now, let's use it, because it really makes life a lot easier.
+
+So, back to our Student POJO, put your cursor before the last closing brace of the class. 
+We'll pick Code, and Generate, and now look for the option that says "toString()", 
+and select that. 
+Select all fields, then press OK.
+
+```java  
+@Override
+public String toString() {
+    return "Student{" +
+            "id='" + id + '\'' +
+            ", name='" + name + '\'' +
+            ", dateOfBirth='" + dateOfBirth + '\'' +
+            ", classList='" + classList + '\'' +
+            '}';
+}
+```
+
+And now you see, we have the method called toString, 
+which will print out all the attributes in our class, in a nicely formatted way. 
+So the "toString()" method is a special method in Java. 
+We can implement this method in any class we create, 
+and doing this lets us print out the current state of our object. 
+IntelliJ, when it generates this code, adds a special statement, 
+as you can see, "@override" displayed above the method.
+
+### Annotations
+
+Anytime, you see a statement like this, which starts with an at symbol; 
+this is called an "annotation." 
+Annotations are a type of metadata. 
+Metadata is a way of formally describing additional information about our code. 
+Annotations are more structured and have more meaning than comments. 
+This is because they can be used by the compiler, 
+or other types of pre-processing functions, 
+to get information about the code. 
+And don't worry, we'll be covering the annotations in a later section of the course, 
+as well as introducing you to the most commonly used. 
+Metadata doesn't affect how the code runs, so this code will still run, 
+with or without the annotation.
+
+This particular annotation we see in our code, @Override, 
+is one of the most common annotations in Java that you'll use. 
+It tells the compiler that this is a special type of method in Java, an overridden method.
+
+### Overridden Method
+
+An overridden method is not the same thing as an overloaded method. 
+And overridden method is a special method in Java, 
+that other classes can implement if they use a specified method signature. 
+So, similar to how we create the main method, with its special signature, 
+we have to create the toString method a certain way. 
+When we do that, we have access to special Java processing, which I'll show you next.
+
+Popping back over to the Main class, and main method, 
+we can simply print out each one of our student objects, using the System.out.println statement:
+
+```java  
+System.out.println(s);
+```
+
+You might notice that we didn't even call the toString method on the Student, 
+the s variable in this loop, in the System.out.println statement. 
+We didn't have to. 
+This is another built-in feature from Java. 
+Every object, when passed to System.out.println, will have the toString method implicitly executed, 
+if you've created such a method in your class. 
+And now, running this code, we get output:
+
+```java  
+Student{id='S923001', name='Mary', dateOfBirth='05/11/1985', classList='Java MasterClass'}
+Student{id='S923002', name='Carol', dateOfBirth='05/11/1985', classList='Java MasterClass'}
+Student{id='S923003', name='Korhan', dateOfBirth='05/11/1985', classList='Java MasterClass'}
+Student{id='S923004', name='Harry', dateOfBirth='05/11/1985', classList='Java MasterClass'}
+Student{id='S923005', name='Lisa', dateOfBirth='05/11/1985', classList='Java MasterClass'}
+```
+                            
+And we can see the data in our five Student objects, or records. 
+That's another pretty handy code generation tool to know we can use. 
+So, this was contrived. 
+However, you can imagine, if you were reading data from a database, 
+or a comma-delimited file, how you could create a whole set of POJO's,
+to collect all the data elements, in all your records. 
+Once you have all this information in the POJO, 
+you can pass these objects to whatever code would process it, 
+that would need to do something with it, perhaps generate a mailing list or whatever.
+
+So, for good measure, let's add the setters and getters to the POJO. 
+Going back to the Student class, we'll generate these. 
+I think you may know how to do it. 
+And now, our code has all we need to manipulate data, setting, updating and retrieving data. 
+So, we're lucky we have IntelliJ's code generation tool
+to do so much of this work for us. 
+This kind of code has a name, it's called boilerplate code. 
+It's code that's repetitive and follows a pattern, 
+which is why code generation tools can create it for us. 
+But it's still a lot of code to look at, and we only have four fields in our POJO. 
+Wouldn't it be nice if we had a type that did all this for us, 
+and we didn't have to put all this code in our class? 
+Well, we do! 
+Java introduced a new type called the "record," 
+which officially became part of Java, in JDK 16. 
 
 
-
-    So here, we've got a small diagram, that should help us decide, whether we need an instance or a static method. Now
-    instance methods are created more often than static methods, but let's see how to follow this diagram. So the first
-    question we'd ask ourselves is, should the method be static? After that question, the next question would be, does it
-    use any fields? Instance variables in other words, or instance methods of this object? And remember, we're asking
-    these questions about the proposed method we plan to write, so if that's true, in other words, it does use some fields
-    and/or instance methods. Then we'd want to make it an instance method. In other scenario if the method doesn't use,
-    or is not proposed to use, any instance variables or instance methods, in that case, then we'd probably consider writing
-    it, as a static method.
-
-        So generally speaking, if we're not using any fields, or instance methods, with the new proposed method, we should
-    consider making that method static, instead of a regular instance method. So that's the main differences between static
-    and instance methods.
 
 ```java  
 
