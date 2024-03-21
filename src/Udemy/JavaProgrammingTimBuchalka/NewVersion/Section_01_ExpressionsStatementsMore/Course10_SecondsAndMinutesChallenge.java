@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_05_ExpressionsStatementsMore;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_01_ExpressionsStatementsMore;
 
 /*
 Course-16

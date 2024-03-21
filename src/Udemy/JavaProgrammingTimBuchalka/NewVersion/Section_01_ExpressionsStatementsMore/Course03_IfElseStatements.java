@@ -1,42 +1,5 @@
-package CourseCodes.NewSections.Section_05_ExpressionsStatementsMore;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_01_ExpressionsStatementsMore;
 
-/*
-Course-9
-
-                                          If-then, Else,Control Statements
-    Syntax for an "if-else statement" is;
-
-                if (condition) {
-                    // Code in block will execute only if
-                    // condition is true
-                } else {
-
-                    // Code in block will execute only if
-                    // condition is false
-                }
-
-    Syntax for an "if-else if-else statement" is;
-
-                if (firstCondition) {
-                    // Code in block will execute only if
-                    // firstCondition is true
-
-                } else if (secondCondition) {
-
-                    // Code in block will execute if firstCondition is false
-                    // and secondCondition is true
-                    // There is no limit to the number of conditions that can be tested
-
-                } else {
-
-                    // Code in block will execute only if
-                    // all conditions are false
-                    // The else block must be last but is optional
-                }
-
-
-
- */
 public class Course03_IfElseStatements {
 
     public static void main(String[] args) {
