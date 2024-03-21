@@ -37,7 +37,9 @@ What we will learn from this Path:
 ### [c. Encapsulation](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#c-encapsulation)
 ### [d. Getter & Setter Methods](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#d-getter--setter-methods)
 ### [e. Constructors]()
-
+### [f. Reference vs Object vs Instance vs Class]()
+### [g. Static vs Instance Variables]()
+### [h. Static vs Instance Methods]()
     * Reference vs Object vs Intance vs Class
     * Static vs Instance Variables
     * Static vs Instance Methods

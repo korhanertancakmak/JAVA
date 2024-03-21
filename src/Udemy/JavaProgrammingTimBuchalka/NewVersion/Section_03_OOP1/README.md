@@ -593,6 +593,7 @@ public class Account { // This is the class declaration
         System.out.println("Empty constructor called");
     }
 
+    // Constructor Overloading
     public Account(int number, double balance, String customerName, String email, int phone) {
         System.out.println("Account constructor with parameters called");
         this.number = number;
@@ -760,7 +761,719 @@ The number of parameters can be different between constructors.
 Or if the number of parameters is the same between two constructors, 
 their types or order of the types must differ.
 
+### Constructor Chaining
 
+The concept of constructor chaining is the process of calling one overloaded constructor from another.
+Constructor chaining is when one constructor explicitly calls another overloaded constructor. 
+You can call a constructor only from another constructor. 
+You must use the special statement **this()** to execute another constructor, 
+passing it arguments if required. 
+And **this()** must be the first executable statement if it's used from another constructor.
+
+Let's look at another example, and this time we'll use constructor chaining, 
+which we've said is, calling one constructor, from another constructor. 
+That may sound a little bit confusing, but we'll cover some reasons why you would want to do this next.
+
+```java  
+public Account() {
+    System.out.println("Empty constructor called");
+}
+
+public Account(int number, double balance, String customerName, String email, String phone) {
+    System.out.println("Account constructor with parameters called");
+    this.number = number;
+    this.balance = balance;
+    this.customerName = customerName;
+    customerEmail = email;
+    customerPhone = phone;
+}
+```
+
+First, we'll use the default constructor to instantiate an object, and pass it some default values. 
+In other words, from the constructor with no parameters, we'll call the one with 5 parameters, 
+and pass in literal values. 
+So to do that, we type, this, followed by parentheses. 
+Which constructor is called is determined by the values we pass. 
+So we'll add a call to this in the no args constructor, and we'll just pass some literals as arguments. 
+The type and number of arguments we pass must match one of our constructors. 
+Since we only have another constructor declared, and it only has five parameters, 
+we'll pass five arguments. 
+But the types must match the order of the types that were declared in the constructor. 
+So, the parameters are strings in the second constructor, customerName, email and phone:
+
+```java  
+public Account() {
+    this(1234567, 2.5, "Default name", "Default address", "Default phone");
+    System.out.println("Empty constructor called");
+}
+```
+
+So what we're doing there with the **this()**, is a special use of this, 
+which you won't see used anywhere else. 
+This is calling another constructor within a constructor. 
+So what we're saying here is "look if you try and create an object from this class, 
+and you don't give me any parameters, set this new object up with these values, 
+by calling this other (second) constructor." 
+Constructor chaining is optional, meaning it's not something you have to do, 
+but there can be situations where you want to do this.
+
+Now one other thing to keep in mind is, using **this**, to call another constructor, 
+is that you have to be sure that it's a very first line that's executed. 
+In other words, we couldn't have System.out.println, as the first line in the constructor. 
+If we try that, we will have a compiler error, which says, 
+"Call to **this()* must be first statement in constructor body". 
+So the rules are pretty strict, using **this()** statement with parameters, 
+can only be called in a constructor, and it has to be the very first line that's called.
+
+Let's go back to our Main class, and we'll change the code to just call the empty constructor. 
+And running that:
+
+```java  
+Account acc = new Account();
+System.out.println("Account number = " + acc.getNumber()); 
+System.out.println("Account balance = $" + acc.getBalance());
+```
+
+gives:
+
+```java  
+Account constructor with parameters called
+Empty constructor called
+Account number = 1234567
+Account balance = $2.5
+```
+
+As you can see, that we get the System.out.println statement from both constructors. 
+So they're actually both called as you can see there. 
+The reason why you see it in that order, makes sense if you think about it. 
+If you come back here to the Account.java, you see
+the very first line of the "no arguments" account constructor, 
+called the other constructor with five arguments. 
+So the statement in the five argument constructor was printed first. 
+The fields were set to the values passed, and then the code returned to the no-args constructor. 
+It then executed the line following the call to this, which printed out, "Empty constructor called." 
+So as you can see, 1234567 and 2.5 were actually passed, and these are printed out. 
+So it's obviously working, the default constructor is making a call to the five argument constructors,
+which sets the fields to the values we specified.
+
+Let's look again at the second constructor with five parameters:
+
+```java  
+public Account(int number, double balance, String customerName, String email, String phone) {
+    System.out.println("Account constructor with parameters called");
+    this.number = number;
+    this.balance = balance;
+    this.customerName = customerName;
+    customerEmail = email;
+    customerPhone = phone;
+}
+```
+
+You may have noticed, looking at this code, is that we've actually updated the fields directly. 
+We didn't call the setter methods from the constructors. 
+So there's an alternative, we could have done, is we actually could have 
+done something like "setNumber(number)". 
+If we had some validation in that setter, that was testing for valid numbers, 
+and those types of things, we could actually execute that code as well.
+
+Now in Java, there are conflicting opinions as to which is the best approach. 
+Because you'll find out in the following courses, when we start talking about inheritance, 
+and creating subclasses, these calls to setter methods might not work. 
+So the general rule of thumb is, it's always better to assign the values directly to the field, 
+rather than calling the setter, in a constructor. 
+Because as you'll see in the next course, there can be scenarios where this code:
+
+```java  
+public void setNumber(int number) {
+    this.number = number;
+}
+```
+
+That's in this setter isn't executed. 
+So by going back and actually coding it directly, in other words, going back and 
+setting it to **this**, and whatever the field name is, 
+you're guaranteed that the field values will be initialized. 
+So my general rule of thumb is, with constructors:
+
+**DO NOT call setters or any other method, other than another constructor within those constructors.**
+
+And the other reason for that is, this is the point in the code where the object is being created. 
+So consequently, some aspects of the initialization may not have been finished while 
+you're in the constructor. 
+And that's the other reason that there's an opinion out there
+that suggests that you shouldn't be calling other methods, or even the setters 
+within the constructor code. 
+But we can talk more about that later if needed.
+
+Let's now assume that we wanted to create another constructor, 
+and for this one, we only want to pass the customer name, email address, and phone number. 
+So we could do that by creating another constructor, by cutting and pasting 
+and editing an existing constructor. 
+But IntelliJ gives us yet another code generation tool, this one for constructors. 
+So let's position our cursor after the second constructor, 
+after a couple of additional empty lines. 
+Next, we'll click on "Code" on the menu, and select "Generate" as the menu option. 
+Then we'll select the first option which is constructor, 
+and it asks which field you want to include in the constructor? 
+So which ones are we going to have passed to us. 
+In other words, which fields do we want the constructor to set? 
+Let's pick 3 we talked about, customer name, email address, and the phone number.
+
+```java  
+public Account(String customerName, String customerEmail, String customerPhone) {
+    this.customerName = customerName;
+    this.customerEmail = customerEmail;
+    this.customerPhone = customerPhone;
+}
+```
+
+When we hit ok, we get a new constructor, as above, generated for us, 
+setting the instance fields to the parameters passed. 
+So there's our third constructor. 
+And you can see, it's only setting three of five instance fields. 
+So that's one way of doing it, buf of course, the disadvantage here  
+is that our account number and our balance, aren't included. 
+But we could call the five argument constructors, and pass a couple of default values, 
+so let's do that. 
+We'll also comment out the initialization code 
+because we'll be initializing them in the constructor with five parameters:
+
+```java  
+public Account(String customerName, String customerEmail, String customerPhone) {
+    this(99999, 100.55, customerName, customerEmail, customerPhone);
+    // this.customerName = customerName;
+    // this.customerEmail = customerEmail;
+    // this.customerPhone = customerPhone;
+}
+```
+
+So you can see what we've done there is, we've defaulted 2 parameters, 
+the account number to be 99999, and the default balance to $100.55. 
+So we've come up with what the default is, because they weren't specified. 
+And we've still gone back and called our major constructor. 
+This is the one that actually updates all the fields. 
+So you'll find, as you start creating and writing more complex code, 
+It's not unusual to see multiple constructors like this. 
+And in that situation, often you do all your initialization in the one constructor,
+like you can see here:
+
+```java  
+public Account(int number, double balance, String customerName, String email, String phone) {
+    System.out.println("Account constructor with parameters called");
+    this.number = number;
+    this.balance = balance;
+    this.customerName = customerName;
+    customerEmail = email;
+    customerPhone = phone;
+}
+```
+
+All other constructors can call this major constructor, 
+passing default values or null references, as arguments. 
+That's a good way of doing things, and it often leads to perfect coding, 
+because you're not having to duplicate code, or duplicating initialization in more than one place.
+
+So how do we call this new constructor, when creating an account? 
+We would call that very much the same, as we've been doing before. 
+Let's create a new object here, using these three argument constructors. 
+So, going back to the Main class in Description.txt, 
+and adding our code just before the last bracket of the main method block:
+
+```java  
+Account korhansAccount = new Account("Korhan",
+        "korhanertancakmak@gmail.com", "12345");
+                            System.out.println("AccountNo: " + korhansAccount.getNumber() +
+        "; name " + korhansAccount.getCustomerName());
+```
+                            
+Let's run that to make sure that it's working.
+
+```java  
+Account constructor with parameters called
+Empty constructor called
+Account number = 1234567
+Account balance = $2.5
+Account constructor with parameters called
+AccountNo: 99999; name Korhan
+```
+                            
+And you can see the last line in the output is from our new Account, korhan's Account. 
+99999 was the default account number that we used in three argument constructor, 
+in the Account class, as you can see. 
+And the name was Korhan, which was what we passed here.
+
+So that's constructors. 
+You'll see those used extensively in Java. 
+And we'll be using them a lot in this course as we move forward, 
+because they're a crucial part of creating objects from classes.
+
+### [Constructor Challenge Exercise](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/Course07_ConstructorChallenge)
+
+For this challenge, you'll want to:
+1. Create a new class, called Customer, with three fields:
+   * name
+   * credit limit
+   * email address
+   * 
+2. Create the getter methods only for each field. 
+You don't need to create the setters.
+
+3. Create three constructors for this class:
+   * First, create a constructor for all three fields 
+   that should assign the arguments directly to the instance fields.
+   * Second, create a no args constructor that calls another constructor, 
+   passing some literal values for each argument.
+   * And lastly, create a constructor with just the name and email parameters, 
+   which also calls another constructor.
+
+## [f. Reference vs Object vs Instance vs Class]()
+
+In this course, we'll talk about references, objects, instances, and classes. 
+By now, you've probably noticed that we use the words, reference, object, instance and class, 
+quite a lot when talking about Java code. 
+These new concepts may well be confusing at first. 
+So we're going to try and go through the process, 
+and show you exactly what each of these words means, in the context of Java programming.
+
+You might remember from an earlier section of the course, 
+we said that Object and Instance are interchangeable, 
+and that we create an instance or object using a class. 
+These new concepts may well be confusing at first, so let's talk about them.
+
+Let's use the analogy of building a house to understand classes. 
+Now a class is basically a blueprint for the house. 
+Using the blueprint, we can build as many houses as we like, based on those plans. 
+So thinking back to the physical world, we use the plans for the house, 
+to build many houses that have the same floor plan. 
+Each house we build (in other words, going back to programming terms, 
+each house we instantiate using the new operator) is an object. 
+This object can also be known as an instance, often we'll say it's an instance of the class. 
+So we would have an instance of house in this example. 
+Getting back to the physical world, each house we build has an address (a physical location). 
+In other words, if we want to tell someone where we live, 
+we give them our address (perhaps written on a piece of paper). 
+This is known as a reference.
+
+So that piece of paper, with the address on it, this is known as a reference. 
+Now, we can copy that reference as many times as we like, 
+but there is still just one house that we're referring to. 
+In other words, we're copying the paper that has the address on it, 
+not the house itself. 
+Or we're copying the paper that has the address on it, not the house itself. 
+Now back to programming terms, we can pass references as parameters to constructors and methods.
+
+Let's now go a bit deeper, to make this a little bit clearer. 
+We've got some code below:
+
+```java  
+public class House {
+    private String color;
+    public House(String color) {
+        this.color = color;
+    }
+    public String getColor() {
+        return color;
+    }
+    public void setColor(String color) {
+        this.color = color;
+    }
+}
+```
+
+So, we've got the class House, with an instance variable, also known as a field called color. 
+Now also we have got a main method in a Main class (all the way below). 
+Now this code in the main method. is creating instances of the house class, 
+changing the color, and printing out the result. 
+So let's actually go through line by line, and see what happens when this code is executed.
+Line-1 is :
+
+```java  
+House blueHouse = new House("blue");
+```
+
+Alright, this code creates a new instance of the House class. 
+Remember House is a blueprint, and we are assigning it to the blueHouse variable. 
+In other words, it is a reference to the object in memory. 
+"blueHouse" is the variable, we're creating a new instance of the House class, 
+and assigning it the color blue.
+Line-2 is :
+
+```java  
+House anotherHouse = blueHouse;
+```
+
+Alright, so this next line, that we've got, creates another reference  
+to the same object in memory. 
+Here we have two references pointing to the same object in memory. 
+There is still one house, but two references to that one object. 
+In other words, we have two pieces of paper with the physical 
+address of where the house is built (going back to our real world example), 
+written down (if we came back to a real-world example to make that clearer).
+Line-3 and Line-4 are :
+
+```java  
+System.out.println(blueHouse.getColor());       // prints blueSystem.out.println(anotherHouse.getColor());    // blue
+```
+
+So next on the right-hand side, I've got two println statements highlighted. 
+So they print the value of the color variable, for blueHouse and also anotherHouse. 
+Now in this scenario, both will print "blue" since we have two references to the same object.
+Line-5 is :
+
+```java  
+anotherHouse.setColor("yellow");
+```
+
+Alright, the next line is calling the method setColor, and setting the color to yellow. 
+Now both blueHouse and anotherHouse have the same color. 
+Why? 
+Remember, we have two references that point to the same object in memory. 
+Once we change the color of one, both references still point to the same object. 
+So consequently, they've both got the same value of yellow, in this example. 
+In our real world example, there is still just one physical house at that one address, 
+even though we have written the same address on two pieces of paper. 
+So if we went ahead and painted the house yellow, 
+then both references to the physical house still point to a house that is now yellow.
+Line-6 and Line-7 are :
+
+```java  
+System.out.println(blueHouse.getColor());       // yellow
+System.out.println(anotherHouse.getColor());    // yellow
+```
+
+Now, we've got a couple more println statements here. 
+So these two println statements are printing the same color. 
+Both now print "yellow" since we still have two references that point to the same object in memory.
+Line-8 is :
+
+```java  
+House greenHouse = new House("green");
+```
+
+Here we are creating another new instance of the House class with the color set to "green." 
+Now we have two objects in memory, but we have three references which are blueHouse, 
+anotherHouse and greenHouse. The variable (reference) greenHouse points to a different 
+object in memory, but blueHouse and "anotherHouse" point to the same object in memory.
+Line-9 is :
+
+```java  
+anotherHouse = greenHouse;
+```
+
+Here we assign "greenHouse" to "anotherHouse."
+In other words, we are referencing anotherHouse. 
+It will now point to a different object in memory. 
+Before it was pointing to a house that had the "yellow" color, 
+now it points to the house that has the "green" color. 
+In this scenario, we still have three references and two objects in memory, 
+but blueHouse points to one object while anotherHouse 
+and greenHouse point to the same object in memory.
+Line-10-11-12 are :
+
+```java  
+System.out.println(blueHouse.getColor());       // yellow
+System.out.println(greenHouse.getColor());      // green
+System.out.println(anotherHouse.getColor());    // green
+```
+
+And finally, we have three println statements. 
+The first will print "yellow" since the blueHouse variable(reference) points 
+to the object in memory that has the "yellow" color, 
+while the next two lines will print "green" since both 
+anotherHouse and greenHouse point to the same object in memory.
+
+So keep in mind, that in Java, you always have a reference to an object in memory. 
+There's no way to access an object directly, everything is done using that reference.
+
+Finally, consider the code below for a moment:
+
+```java  
+new House("red);                        // house object gets created in memory
+House myHouse = new House("beige");     // house object gets created in memory
+// and its location (reference) is assigned to myHouse
+House redHouse = new House("red");      // House object gets created in memory
+// and its location (reference) is assigned to redHouse
+```
+
+On the first line, we create a new House, and make it red. 
+But we aren't assigning this to any variable. 
+This compiles fine, and you can do this. 
+This object is created in memory, but after that statement completes, 
+our code has no way to access it. 
+The object exists in memory, but we can't communicate with it
+after that statement is executed. 
+That's because we did not create a reference to it.
+
+On the second line, we do create a reference to the house object we created. 
+Our reference, the variable we call myHouse, 
+let's have access to that beige house, as long as our variable, myHouse, stays in scope, 
+or until it gets reassigned to reference a different object.
+
+On the third line, we're creating a red house again, 
+but this is a different object altogether, from the red house we created on line 1. 
+This third statement is creating yet another house object in memory, 
+which has no relationship to the one we created on the first line.
+
+So this code has three instances of a house, but only two references. 
+That first object will stay in memory, with no reference to it, 
+until Java's automatic process (appropriately called garbage collection), 
+figures out there is no running code with a reference to that object, 
+and deletes it. 
+In fact, that first object is said to be eligible for garbage collection, 
+immediately after that first statement. 
+It's useless to the code because it's no longer accessible. 
+There are times we might want to instantiate an object, 
+and immediately call a method on it, and not assign the object to a variable reference, 
+and we'll show you some reasons later on in the course. 
+But 99% of the time, we'll want to reference the objects we create. 
+So we'll immediately assign our new instance to a variable, 
+creating a reference to communicate with it.
+
+## [g. Static vs Instance Variables]()
+
+Let's discuss the differences now between static variables, and instance variables. 
+So firstly, a static variable is declared by using the keyword "static." 
+Static variables are also known as static member variables. 
+Every instance of the class shares the same static variable. 
+So if changes are made to that variable, all other instances of that 
+class will see the effect of that change.
+
+It is considered best practice to use the Class name, 
+and not a reference variable to access a static variable.
+
+```java  
+class Dog {
+    static String genus = "Canis";
+    void printData() {
+        Dog d = new Dog();
+        System.out.println(d.genus);      // Confusing!
+        System.out.println(Dog.genus);    // Clearer!
+    }
+}
+```
+
+This makes it clearer that the variable is associated with the Class and therefore shared, 
+and the value is not stored with the instance. 
+An instance isn't required to exist to access the value of a static variable.
+
+```java  
+class Dog {
+    static String genus = "Canis";
+}
+class Main {
+    public static void main(String[] args) {
+        System.out.println(Dog.genus);       // No instance of Dog needs to exist, in order to access
+        // a static variable
+    }
+}
+```
+
+Static variables aren't used very often, but can sometimes be beneficial. 
+They can be used for:
+
+* Storing counters.
+* Generating unique ids.
+* Storing a constant value that doesn't change, like PI, for example.
+* Creating, and controlling access, to a shared resource.
+
+Some examples of shared resources might include a log file, a database, 
+or some other type of input or output stream.
+
+```java  
+class Dog {
+    private static String name;
+    public Dog(String name) {
+        Dog.name = name;
+    }
+    public void printName() {
+        System.out.println("name = " + name); // Using Dog.name would have made this code less confusing.
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Dog rex = new Dog("rex");               // create instance (rex)
+        Dog fluffy = new Dog("fluffy");         // create instance (fluffy)
+        rex.printName();                        // prints fluffy
+        fluffy.printName();                     // prints fluffy
+    }
+}
+```
+
+In this example, we've got a class called Dog, and it's got a static variable called "name."
+Now, there's a constructor that sets the static variable
+to the parameter value passed to the constructor. 
+And we've got a method there, called printName, which isn't static. 
+So that's a pretty simple class, and inside Main, we're creating two instances of the Dog class, 
+with the line, Dog rex = new Dog("rex"). 
+We're creating an instance of the Dog class, and then we're passing the String rex, 
+as a parameter, and that'll be the name of the dog. 
+In the next line, we've got a similar situation, just passing the parameter, 
+which will be used as the name, fluffy. 
+So then we call the printName method, on both of the instances. 
+So they're just regular instance methods, because they aren't defined using static. 
+So both method calls will print fluffy. 
+You might be wondering, why is that the case? 
+Why would both methods here print fluffy?
+
+Well, remember that static variables are shared between instances. 
+So in other words, once we change the static variable, 
+all instances will see that change we made. 
+So, when we called the constructor with parameter "fluffy," 
+it modified the static variable name, because both instances are sharing that variable. 
+That's why it prints fluffy twice. 
+So you could also say that all dogs have the same name, 
+but that's logically incorrect. 
+So hopefully, now you can see how static variables can be used inappropriately sometimes, 
+as in this example. 
+Probably, you were assuming that the dog's name would be associated with each instance of the Dog, 
+and therefore would be different for each one.
+One Dog would be named Fluffy, and the other would be Rex.
+
+So this is a scenario where using a static variable probably wouldn't be a good idea, 
+and using a regular instance variable would make a lot more sense, 
+in this particular example. 
+Alright, so let's move on now to instance variables.
+
+### Instance Variables
+
+They don't use the static keyword when you're defining them. 
+They're also known as fields, or member variables. 
+Unlike a static variable, Instance variables belong to a specific instance of a class. 
+Each instance has its own copy of an instance variable. 
+Every instance can have a different value. 
+Instance variables represent the state of a specific instance of a class.
+
+```java  
+class Dog {
+    private String name;
+    public Dog(String name) {
+        this.name = name;
+    }
+    public void printName() {
+        System.out.println("name = " + name);
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Dog rex = new Dog("rex");               // create instance (rex)
+        Dog fluffy = new Dog("fluffy");         // create instance (fluffy)
+        rex.printName();                        // prints rex
+        fluffy.printName();                     // prints fluffy
+    }
+}
+```
+
+So in this example, we've again got very similar code to what we looked at earlier, 
+but this time, the variable "name" in the dog class isn't static. 
+So it's just a regular instance variable. 
+So once again, the constructor is setting the value, from the parameter passed, 
+to that instance variable. 
+But now the code will print rex, and on the next line fluffy, 
+and that's because we're using instance variables. 
+Each instance of the class has its own state, or its own values, 
+for any variables that have been defined. 
+So in other words, now every dog has got its own copy of the name field. 
+We can also say that it's basically not shared like it was before, 
+in the earlier example, which was using a static variable.
+
+So in most cases, you'd probably want to use instance variables, 
+but there'll be scenarios when it can be useful to use a static variable like in the earlier examples.
+
+## [h. Static vs Instance Methods]()
+
+Static methods are declared using a static modifier. 
+Static methods can't access instance methods and instant variables directly. 
+They're usually used for operations that don't require any data from 
+an instance of the class (from "this"). 
+if you remember, the "this" keyword is the current instance of a class. 
+So inside a static method, we can't use the "this" keyword. 
+Whenever you see a method that doesn't use instance variables, 
+that method should probably be declared as a static method. 
+For example, main is a static method, and it's called by the Java virtual machine 
+when it starts the Java application.
+
+```java  
+class Calculator {
+    public static void printSum(int a, int b) {
+        System.out.println("sum= " + (a + b));
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Calculator.printSum(5, 10);
+        printHello();                           // shorter from of Main.printHello();
+    }
+}
+public static void printHello() {
+    System.out.println("Hello");
+}
+```
+
+In this example above, we've got a class called Calculator, with a static method called print sum. 
+And it just prints the sum of two integer numbers. 
+Then we've got the main class with two static methods, main and printHello.
+Now inside main, we're calling the method printSum from the calculator class. 
+So as you can see, to call the printSum method, we just need to type the class name, 
+in this case, Calculator, and then the method name, printSum. 
+Or in the second example, in the case of printHello,
+we can just type the method name with parentheses, 
+which will automatically call the printHello static method, 
+because it's being invoked from a static method itself. 
+So static methods don't require an instance to be created. 
+We can just type the class name, and use the dot notation, with the method name to access them.
+
+### Instance Methods
+
+Instance methods belong to an instance(a specific instance), of a class. 
+To use an instance method, we have to instantiate the class first, usually by using the "new" keyword. 
+Instance methods can access instance methods and instance variables directly. 
+Instance methods can also access static methods and static variables directly. 
+What I mean by directly, is that we don't usually have to use the keyword "this,"
+to use them. 
+And we don't have to use the ClassName.StaticVariables to access static variables, 
+though that can help with clarity.
+
+```java  
+class Dog {
+    public void bark() {
+        System.out.println("woof");
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Dog rex = new Dog();               // create instance
+        rex.bark();                        // call instance method
+    }
+}
+```
+
+So in this example, we've got a class called Dog, with a method bark. 
+So notice here, how the method bark is not using the static keyword this time. 
+So in other words, that method is just a standard instance method. 
+Then we've got our main class with a method main. 
+Now inside main, the main method, we first need to create an instance of the dog class, 
+and that's done with the line, Dog rex = new Dog(). 
+As you can see, we're using the "new" keyword to create an instance of that class. 
+After we've got the instance, we can call the instance method bark, in this case, 
+by typing "rex.bark."
+So the hard part here could be deciding when to create an instance, 
+or when to create a static method. 
+So let's see some basic rules, that should help you decide.
+
+
+
+    So here, we've got a small diagram, that should help us decide, whether we need an instance or a static method. Now
+    instance methods are created more often than static methods, but let's see how to follow this diagram. So the first
+    question we'd ask ourselves is, should the method be static? After that question, the next question would be, does it
+    use any fields? Instance variables in other words, or instance methods of this object? And remember, we're asking
+    these questions about the proposed method we plan to write, so if that's true, in other words, it does use some fields
+    and/or instance methods. Then we'd want to make it an instance method. In other scenario if the method doesn't use,
+    or is not proposed to use, any instance variables or instance methods, in that case, then we'd probably consider writing
+    it, as a static method.
+
+        So generally speaking, if we're not using any fields, or instance methods, with the new proposed method, we should
+    consider making that method static, instead of a regular instance method. So that's the main differences between static
+    and instance methods.
 
 ```java  
 
