@@ -12,14 +12,14 @@ What we will learn from this Path:
 * Obtain proficiency in Java 17, as well as older versions including Java 11
   and Java 8.
 
-## [1. Expressions, Statements and More](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#section-1-expressions-statements-and-more)
+## [1. Expressions, Statements and More](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#section-1-expressions-statements-and-more)
 
-### [a. Statements, Keywords, Variables, Primitive Data Types](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#a-statements-keywords-variables-primitive-data-types)
-### [b. Wrapper Classes](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#b-wrapper-classes)
-### [c. Casting in Java](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#c-casting-in-java)
-### [d. Operators](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#d-operators)
-### [e. Access Modifiers, Classes, Methods](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#e-access-modifiers-classes-methods)
-### [f. Method Overloading](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#f-method-overloading)
+### [a. Statements, Keywords, Variables, Primitive Data Types](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#a-statements-keywords-variables-primitive-data-types)
+### [b. Wrapper Classes](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#b-wrapper-classes)
+### [c. Casting in Java](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#c-casting-in-java)
+### [d. Operators](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#d-operators)
+### [e. Access Modifiers, Classes, Methods](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#e-access-modifiers-classes-methods)
+### [f. Method Overloading](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#f-method-overloading)
 
 ## [2. ControlFlow Statements](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/README.md#section-2-controlflow-statements)
 
