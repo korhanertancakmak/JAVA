@@ -4012,7 +4012,7 @@ In the table below, we show the indices above each character for the String, "He
 We can say the character, 'H,' is at index "0," and "W," is at index "6."
 The length of this String is 11, but its last index is "10."
 
-We can split String methods up into 3 basic categories:
+We can split String methods up into three basic categories:
 
 1. String Inspection Methods: These provide some information about the string, 
 with methods like length(), isEmpty(), and isBlank().
@@ -4177,7 +4177,7 @@ And running that,
 index of World = 6
 ```
 
-Hopefully, there are no surprises with those 2 overloaded versions. 
+Hopefully, there are no surprises with those two overloaded versions. 
 What happens if we use this method with letter 'l'?
 
 ```java  
@@ -4281,7 +4281,7 @@ if (helloWorld.contains("World")) {
 }
 ```
 
-Ok, so we have 3 new tests, and running this code shows us the results we'd expect.
+Ok, so we have three new tests, and running this code shows us the results we'd expect.
 
 ```java  
 String starts with Hello
@@ -4304,7 +4304,7 @@ Values match exactly
 ```
 
 You might be wondering why Java has both the equals method, and the contentEquals method.
-The contentEquals method isn't limited, to just comparing String objects. 
+The contentEquals method isn't limited to just comparing String objects. 
 It can be used to compare a StringBuilder's value, which the equals method doesn't support. 
 We'll talk about this more when we look at StringBuilder.
 
@@ -4329,7 +4329,7 @@ and return a String with a different meaning, than the original String.
 | Method                                  | Description                                                                                                           |
 |-----------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
 | concat                                  | Similar to the plus operator for strings, it concatenates text to the String and returns a new String as the results. |
-| join                                    | Allows multiple strings to be concatenated together in a sinle method, specifying a delimiter.                        |
+| join                                    | Allows multiple strings to be concatenated together in a single method, specifying a delimiter.                       |
 | repeat                                  | Returns the String repeated by the number of times specified in the argument.                                         |
 | replace<br/>replaceAll<br/>replaceFirst | These methods replace characters or strings in the string, returning a new String with replacements made.             |
 | substring<br/>subSequence               | These return a part of the String, its range defined by the start and end index specified.                            |
@@ -4597,7 +4597,7 @@ This is the StringBuilder class.
 We've already talked about creating Strings, and the preferred way, the most efficient way, 
 is simply to assign a literal, or concatenated literals to a variable. 
 We show this on the left above.
-Let's compare that to the StringBuilder, which has 4 overloaded constructors.
+Let's compare that to the StringBuilder, which has four overloaded constructors.
 These are shown on the right above.
 
 There are four ways to create a new StringBuilder object, using the new keyword:
@@ -4620,7 +4620,7 @@ public static void printInformation(String string) {
 }
 ```
 
-Here, we're printing out the String, and the length of the String, passed as the argument.
+Here, we're printing out the String, and the length of the String passed as the argument.
 We'll create the same method by changing parameter type and name for StringBuilder:
 
 ```java  
@@ -4899,7 +4899,7 @@ System.out.println(builderPlus);
 ```
 
 The reverse method will reverse all the characters and then call the setLength method, 
-with the number 7, meaning we're truncating the StringBuilder text value, to seven characters.
+with the number 7, meaning we're truncating the StringBuilder text value to seven characters.
 And running that:
 
 ```java  
@@ -4907,5 +4907,3 @@ eybdooG
 ```
 
 And we see the result of that, Goodbye spelled backwards.
-
-
