@@ -48,17 +48,9 @@ What we will learn from this Path:
 ### [n. What is Java.lang.Object?]()
 ### [o. Inheritance Challenge]()
 ### [p. The Text Block and other Formatting Options]()
+### [r. Another Look at the String]()
+### [q. String Manipulation Methods]()
 
-        * Challenge-32: Wall Area
-        * Challenge-33: Point
-        * Challenge-34: Carpet Cost Calculator
-        * Challenge-35: Complex Operations
-    * Inheritance
-    * What is java.lang.Object?
-    * this vs super
-    * Method Overloading vs Overriding 
-    * The The Text Block and other Formatting Options
-    * String Manipulation Methods
     * StringBuilder class
         * Challenge-36: Cylinder
         * Challenge-37: Pool Area

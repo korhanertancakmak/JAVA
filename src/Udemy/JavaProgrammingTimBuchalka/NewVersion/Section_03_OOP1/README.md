@@ -3678,244 +3678,1227 @@ I want to revisit Strings, because they are so intrinsic to Java,
 it's important to talk about them a bit more. 
 But before we do that, let's take a look at a fairly new feature in Java, the Text Block.
 
-        A Text Block is just a special format for multi-line String literals. It's simply a "String" with a new representation
-    in the source code. It became part of the official language as of JDK 15. To start with, let's look at an example in
-    code of handling multiple lines of text:
+A Text Block is just a special format for multi-line String literals.
+It's simply a "String" with a new representation in the source code.
+It became part of the official language as of JDK 15.
+To start with, let's look at an example in code of handling multiple lines of text:
 
-                    String bulletIt = "Print a Bulleted List:" +
-                            "\u2022 First Point" +
-                            "\u2022 Sub Point";
-
-                    System.out.println(bulletIt);
-
-    Ok, so in "bulletIt" we're using the concatenation operator, the plus sign, to add several Strings together. And we're
-    using the unicode character, "\u2022", to include a bullet point character, on these 2 lines. And if we print that out,
-
-                    Print a Bulleted List:• First Point• Sub Point
-
-    we get a single line of text. That's not what I really wanted, because I wanted some formatting, and these Strings on
-    multiple lines. I can do this with some special combinations of characters, called escape sequences.
-
-                                        Some Common Escape Sequences
-
-        An escape sequence starts with a "\". Java has several, but the most common ones, are shown below. These can insert
-    a tab, a newline, a double quote character, or a backslash character if you need it, in your text.
-
-                            Escape Sequence                     Description
-                                  \t                            Insert a tab character
-                                  \n                            Insert a new line character
-                                  \"                            Insert a double quote character
-                                  \\                            Insert a backslash character
-
-    Let's add some of these characters to our multi-line String in this code:
-
-                    String bulletIt = "Print a Bulleted List:\n" +
-                            "\t\u2022 First Point\n" +
-                            "\t\t\u2022 Sub Point";
-
-                    System.out.println(bulletIt);
-
-    and if we run it:
-
-                    Print a Bulleted List:
-                        • First Point
-                            • Sub Point
-
-    we get a formatted bulleted list. That looks pretty good. Now let's use a text block, to reproduce this output.
-
-                    String textBlock = """
-                            Print a Bulleted List:
-                                    \u2022 First Point
-                                        \u2022 Sub Point""";
-
-                    System.out.println(textBlock);
-
-    You can see right at the start, we're creating a String variable, and assigning it something. This something is the
-    new format, called a "text block", for creating a multi-line formatted String. You'll notice that we start with 3 double
-    quote there("""). This is required, and they must be on their own line. The text that follows, is the text that's part
-    of the String. And we end with another triple quotes, which close, or complete, the text block. Everything between the 2
-    sets of triple quotes, is the text block itself, and you can see we didn't include any additional quotes, or plus signs.
-    And we also got rid of the tab, and newline escape sequences. The text block lets us format text in the source code,
-    the same way we want to see it in the output. Let's run it and we get,
-
-                    Print a Bulleted List:
-                        • First Point
-                            • Sub Point
-                    Print a Bulleted List:
-                            • First Point
-                                • Sub Point
-
-    And, you can see, we get the exact the same output, as we did when we concatenated several strings, and used escape
-    sequences. That's really it. The text block makes outputting many lines of text, using indents and new lines, a lot
-    easier, as I hope you can see.
-
-        We've looked at formatting text over multiple lines in 2 different way. Next, let's look at formatting numbers in
-    text, that we'll output. There are several ways to do this. Up until now, we've used System.out.println, and System.out.
-    print, but there are 2 other methods, we haven't yet discussed. These are System.out.printf, and System.out.format.
-    These methods behave the same, so for our examples, we'll just use System.out.printf, but be aware you can change printf
-    to format, with the same results. Let's start with a simple example, then we'll explain how this works.
-
-                    int age = 35;
-                    System.out.printf("Your age is %d\n", age);
-
-    You'll notice we're using printf, in place of print or println, on System.out. Printf is like print, in that it doesn't
-    end with a newline character. But this method has multiple arguments, the first is a String which will be printed to
-    the console, and the following arguments are values, that'll be used in the String. First, you'll notice our String
-    contains "%d" in it. This is a special indicator, called a format specifier. This is a placeholder for other data,
-    which should replace this specifier in the text. In this example, we're going to replace "%d" with "age", and that's
-    why we pass age as the second argument to this method. Now running this code,
-
-                    Your age is 35
-
-    we see we get the output. Let's try another example. This time, we'll pass age, and year of birth, which we'll try to
-    calculate using the year 2023 as the current year. Before we do that, we'll first add an escape sequence in the first
-    String, so we have a newline printed between statements.
-
-                    int yearOfBirth = 2023 - age;
-                    System.out.printf("Age = %d, Birth year = %d", age, yearOfBirth);
-
-    In this last statement, we have 2 instances of percent d, so we should pass 2 arguments, age and year of birth. And
-    running that we see the result,
-
-                    Your age is 35Age = 35, Birth year = 1988
-
-    Let's take a moment, and look more closely at this format specifier, "%d". At their most complex, format specifiers
-    take the form shown here.
-
-                    %[argument_index$][flags][width][.precision]conversion
-
-    They start with a "%" sign, and end with a conversion symbol, and have lots of options in between. We've looked at one
-    conversion type, "d", which is the symbol used for a decimal integer value. Let's go to Java's API documentation from
-    oracle website for a class called Formatter, which is the basis for many of the formatting methods we'll be talking
-    about.
-
-        Conversion      Argument Category       Description
-        ----------      -----------------       ---------------------------------------------
-            'd'	        integral	            The result is formatted as a decimal integer
-            'f'	        floating point	        The result is formatted as a decimal number
-            'n'	        line separator	        The result is the platform-specific line separator
-
-    The ones you'll be using the most are above for 2 different numeric types, 'd' and 'f'. 'd', formats a decimal integer,
-    as we've said, and would be used for any of Java's whole number primitive types, like short, int, and long. 'f' formats
-    a decimal number, so it can be used for floating point numbers, a double, or float. But you can see there are many
-    others, at the website, for different types of numbers, dates and time, as well as general specifiers. And look at the
-    last one, the letter n, called the line separator, so this would print a newline character. The difference between
-    the escape sequence, "\n", and this format specifier, "%n", is that "%n" outputs the platform's specific line separator,
-    so it's preferred.
-
-        From that documentation, we learned that we can replace our escape sequence, "\n", with a format specifier, "%n",
-    so let's do that in our current code. And we'll also add it to the end of our second statement.
-
-                    int age = 35;
-                    System.out.printf("Your age is %d%n", age);
-
-                    int yearOfBirth = 2023 - age;
-                    System.out.printf("Age = %d, Birth year = %d%n", age, yearOfBirth);
-
-                    System.out.printf("Your age is %f%n", age);
-
-    Now, let's see what happens if we replace "%d", with "%f". We'll copy the first System.out.printf line, which prints
-    out age only, and paste it, and we'll replace "d" with "f". This compiles, but if we run it, we get an exception,
-    IllegalFormatConversionException. This is because it was expecting a float or double, and we passed an integer. Let's
-    actually cast age to a float then, now, the code runs, and look at the output:
-
-                    Your age is 35
-                    Age = 35, Birth year = 1988
-                    Your age is 35,000000
-
-    We see age is printed, with a decimal point, and 6 zeros following it. This is the default format, for the floating
-    point number specifier.
-
-        What's nice about using this method, actually the reason it exists, is we can configure the specifier, so that we
-    can output this number, in any way we want. Let's say we want 2 decimal places, and not 6, we do this by specifying
-    the number of decimal places, called precision, between the "%" sign and the conversion symbol, f. We add the decimal,
-    and then 2, and that tells the formatter, we only want 2 decimal places, for the number printed.
-
-                    System.out.printf("Your age is %.2f%n", (float) age);
-
-    now running this,
-
-                    Your age is 35,00
-
-    Ok, so that's how we specify precision, but now let's consider formatting the width of numbers, which is a separate
-    option. Let's create a quick loop, that'll print out a series of numbers:
-
-                    for (int i = 1; i <= 100000; i *= 10) {
-                        System.out.printf("Printing %d %n", i);
-                    }
-
-    This loop just prints out numbers, multiplying by 10 each time. And running that,
-
-                    Printing 1
-                    Printing 10
-                    Printing 100
-                    Printing 1000
-                    Printing 10000
-                    Printing 100000
-
-    we get output for 6 numbers, 1 through 100 thousand. What's important to notice are the numbers are all aligned on the
-    left. We can change this by specifying the width of the number, in the specifier. First we'll set a width for the number.
-    Our largest number in the output is 100000, so let's make the width, 6, so we'll add 6 in the specifier.
-
-                    for (int i = 1; i <= 100000; i *= 10) {
-                        System.out.printf("Printing %6d %n", i);
-                    }
-
-    And running that:
-
-                    Printing      1
-                    Printing     10
-                    Printing    100
-                    Printing   1000
-                    Printing  10000
-                    Printing 100000
-
-    we get the numbers aligned on the right, because we said each number will fill up 6 spaces. Those are some of the most
-    common things you'd do with formatting. We used System.out.printf, and remember System.out.format, can be used anywhere
-    System.out.printf is used. But there'll be times you want to format Strings, and output them to a file, or error log
-    for example, or maybe to a database. The String class itself has 2 methods, to support this type of formatting as well.
-    One is a static method, called format. Let's see what that one looks like in code:
-
-                    String formattedString = String.format("Your age is %d", age);
-                    System.out.printf(formattedString);
-
-    Here, we're creating a String variable, and assigning it the output of the call, to String.format, a static method.
-    Like System.out.printf, this method has a String as its first argument, followed by arguments that match the specifiers
-    in the String. And running that,
-
-                    Your age is 35
-
-    we get the same as before. And we could also have done that with the String instance method, "formatted". This method
-    works the same as String.format, except you don't need to pass the formatString as an argument. The String itself is
-    format String. Let's code that one next:
-
-                    formattedString = "Your age is %d".formatted(age);
-                    System.out.printf(formattedString);
-
-    When you use this method, you just pass the arguments that match the specifiers in the current String, and the result
-    is a formattedString. Running this output gives us the same output as before: "Your age is 35".
-
-        Ok, so those are some of your formatting options. There was a time, when some of these formatting options were
-    much slower, than simply using the concatenate operator, the "+" sign. But Java continues to make performance enhancements
-    on these methods. The argument for using them, is that they make the code easier to read and maintain, and you have
-    many options for outputting different specifier types.
 ```java  
+String bulletIt = "Print a Bulleted List:" +
+        "\u2022 First Point" +
+        "\u2022 Sub Point";
 
-```
-```java  
-
-```
-```java  
-
-```
-```java  
-
-```
-```java  
-
+System.out.println(bulletIt);
 ```
 
+Ok, so in "bulletIt" we're using the concatenation operator, 
+the plus sign, to add several Strings together.
+And we're using the unicode character, "\u2022," 
+to include a bullet point character, on these two lines.
+And if we print that out:
 
-![Step-3]()
-![Step-3]()
-![Step-3]()
+```java  
+Print a Bulleted List:• First Point• Sub Point
+```
+
+We get a single line of text. 
+That's not what I really wanted, because I wanted some formatting, 
+and these Strings on multiple lines. 
+I can do this with some special combinations of characters, called escape sequences.
+
+### Some Common Escape Sequences
+
+An escape sequence starts with a "\."
+Java has several, but the most common ones are shown below.
+These can insert a tab, a newline, a double quote character, 
+or a backslash character if you need it, in your text.
+
+| Escape Sequence | Description                     |
+|-----------------|---------------------------------|
+| \t              | Insert a tab character          |
+| \n              | Insert a new line character     |
+| \\"             | Insert a double quote character |
+| \\              | Insert a backslash character    |
+
+Let's add some of these characters to our multi-line String in this code:
+
+```java  
+String bulletIt = "Print a Bulleted List:\n" +
+        "\t\u2022 First Point\n" +
+        "\t\t\u2022 Sub Point";
+
+System.out.println(bulletIt);
+```
+
+And if we run it:
+
+```java  
+Print a Bulleted List:
+        • First Point
+            • Sub Point
+```
+
+We get a formatted bulleted list. 
+That looks pretty good.
+Now let's use a text block to reproduce this output.
+
+```java  
+String textBlock = """
+        Print a Bulleted List:
+                \u2022 First Point
+                    \u2022 Sub Point""";
+
+System.out.println(textBlock);
+```
+
+You can see right at the start, we're creating a String variable, and assigning it something. 
+This something is the new format, called a "text block," for creating a multi-line formatted String. 
+You'll notice that we start with three double quotes there(""").
+This is required, and they must be on their own line.
+The text that follows is the text that's part of the String.
+And we end with other triple quotes, which close, or complete, the text block.
+Everything between the two sets of triple quotes is the text block itself,
+and you can see we didn't include any additional quotes or plus signs. 
+And we also got rid of the tab and newline escape sequences.
+The text block lets us format text in the source code, 
+the same way we want to see it in the output.
+Let's run it and we get,
+
+```java  
+Print a Bulleted List:
+        • First Point
+            • Sub Point
+Print a Bulleted List:
+        • First Point
+            • Sub Point
+```
+
+And, you can see, we get the exact same output, as we did when we concatenated several strings, 
+and used escape sequences.
+That's really it.
+The text block makes outputting many lines of text, using indents and new lines, 
+a lot easier, as I hope you can see.
+
+We've looked at formatting text over multiple lines in two different ways.
+Next, let's look at formatting numbers in text, that we'll output.
+There are several ways to do this.
+Up until now, we've used System.out.println, and System.out.
+Print, but there are two other methods we haven't yet discussed.
+These are System.out.printf, and System.out.format.
+These methods behave the same, so for our examples, we'll just use System.out.printf, 
+but be aware you can change printf to format with the same results.
+Let's start with a simple example, then we'll explain how this works.
+
+```java  
+int age = 35;
+System.out.printf("Your age is %d\n", age);
+```
+
+You'll notice we're using printf, in place of print or println, on System.out.
+Printf is like print, in that it doesn't end with a newline character. 
+But this method has multiple arguments, the first is a String that will be printed to the console, 
+and the following arguments are values; that'll be used in the String.
+First, you'll notice our String contains "%d" in it.
+This is a special indicator, called a format specifier.
+This is a placeholder for other data, which should replace this specifier in the text.
+In this example, we're going to replace "%d" with "age,"
+and that's why we pass age as the second argument to this method.
+Now running this code,
+
+```java  
+Your age is 35
+```
+
+We see we get the output.
+Let's try another example. 
+This time, we'll pass age
+and year of birth, which we'll try to calculate using the year 2023 as the current year.
+Before we do that, we'll first add an escape sequence in the first String,
+so we have a newline printed between statements.
+
+```java  
+int yearOfBirth = 2023 - age;
+System.out.printf("Age = %d, Birth year = %d", age, yearOfBirth);
+```
+
+In this last statement, we have two instances of percent d, so we should pass two arguments, 
+age and year of birth.
+And running that we see the result,
+
+```java  
+Your age is 35Age = 35, Birth year = 1988
+```
+
+Let's take a moment and look more closely at this format specifier, "%d."
+At their most complex, format specifiers take the form shown here.
+
+```java  
+%[argument_index$][flags][width][.precision]conversion
+```
+
+They start with a "%" sign, and end with a conversion symbol, and have lots of options in between.
+We've looked at one conversion type, "d," which is the symbol used for a decimal integer value.
+Let's go to Java's API documentation from oracle website for a class called Formatter, 
+which is the basis for many of the formatting methods we'll be talking about.
+
+| Conversion | Argument Category | Description                                        |
+|------------|-------------------|----------------------------------------------------|
+| "d"        | integral          | The result is formatted as a decimal integer       |
+| "f"        | floating point    | The result is formatted as a decimal number        |
+| "n"        | line separator    | The result is the platform-specific line separator |
+
+
+The ones you'll be using the most are above for two different numeric types, "d" and "f."
+"d," formats a decimal integer, as we've said,
+and would be used for any of Java's whole number of primitive types, like short, int, and long.
+"F" formats a decimal number, so it can be used for floating point numbers, a double, or float.
+But you can see there are many others, at the website, for different types of numbers, 
+dates and time, as well as general specifiers.
+And look at the last one, the letter n, called the line separator, 
+so this would print a newline character.
+The difference between the escape sequence, "\n," and this format specifier,
+"%n," is that "%n" outputs the platform's specific line separator, so it's preferred.
+
+From that documentation, we learned that we can replace our escape sequence, 
+"\n," with a format specifier, "%n," so let's do that in our current code.
+And we'll also add it to the end of our second statement.
+
+```java  
+int age = 35;
+System.out.printf("Your age is %d%n", age);
+int yearOfBirth = 2023 - age;
+System.out.printf("Age = %d, Birth year = %d%n", age, yearOfBirth);
+System.out.printf("Your age is %f%n", age);
+```
+
+Now, let's see what happens if we replace "%d," with "%f." 
+We'll copy the first System.out.printf line, which prints out age only, and paste it, 
+and we'll replace "d" with "f."
+This compiles, but if we run it, we get an exception, IllegalFormatConversionException.
+This is because it was expecting a float or double, and we passed an integer.
+Let's actually cast age to a float then, now, the code runs, and look at the output:
+
+```java  
+Your age is 35
+Age = 35, Birth year = 1988
+Your age is 35,000000
+```
+
+We see age is printed, with a decimal point, and six zeros following it.
+This is the default format for the floating point number specifier.
+
+What's nice about using this method, actually the reason it exists, 
+is we can configure the specifier, so that we can output this number, in any way we want.
+Let's say we want 2 decimal places, and not 6, 
+we do this by specifying the number of decimal places, called precision, 
+between the "%" sign and the conversion symbol, f. 
+We add the decimal, and then 2, and that tells the formatter, 
+we only want 2 decimal places, for the number printed.
+
+```java  
+System.out.printf("Your age is %.2f%n", (float) age);
+```
+
+Now running this,
+
+```java  
+Your age is 35,00
+```
+
+Ok, so that's how we specify precision, but now let's consider formatting the width of numbers, 
+which is a separate option.
+Let's create a quick loop, that'll print out a series of numbers:
+
+```java  
+for (int i = 1; i <= 100000; i *= 10) {
+    System.out.printf("Printing %d %n", i);
+}
+```
+
+This loop just prints out numbers, multiplying by 10 each time. And running that,
+
+```java  
+Printing 1
+Printing 10
+Printing 100
+Printing 1000
+Printing 10000
+Printing 100000
+```
+
+We get output for six numbers, 1 through 100 thousand. 
+What's important to notice are the numbers are all aligned on the left.
+We can change this by specifying the width of the number in the specifier. 
+First, we'll set a width for the number.
+Our largest number in the output is 100000, so let's make the width, 6, so we'll add 6 in the specifier.
+
+```java  
+for (int i = 1; i <= 100000; i *= 10) {
+    System.out.printf("Printing %6d %n", i);
+}
+```
+
+And running that:
+
+```java  
+Printing      1
+Printing     10
+Printing    100
+Printing   1000
+Printing  10000
+Printing 100000
+```
+
+We get the numbers aligned on the right, because we said each number will fill up six spaces.
+Those are some of the most common things you'd do with formatting.
+We used System.out.printf, and remember System.out.format, can be used anywhere System.out.printf is used.
+But there'll be times you want to format Strings and output them to a file, 
+or error log, for example, or maybe to a database.
+The String class itself has two methods to support this type of formatting as well.
+One is a static method, called format.
+Let's see what that one looks like in code:
+
+```java  
+String formattedString = String.format("Your age is %d", age);
+System.out.printf(formattedString);
+```
+
+Here, we're creating a String variable, and assigning it the output of the call, 
+to String.format, a static method. 
+Like System.out.printf, this method has a String as its first argument, 
+followed by arguments that match the specifiers in the String. 
+And running that,
+
+```java  
+Your age is 35
+```
+
+We get the same as before.
+And we could also have done that with the String instance method, "formatted."
+This method works the same as String.format, 
+except you don't need to pass the formatString as an argument.
+The String itself is format String.
+Let's code that one next:
+
+```java  
+formattedString = "Your age is %d".formatted(age);
+System.out.printf(formattedString);
+```
+
+When you use this method, you pass the arguments that match the specifiers in the current String, 
+and the result is a formattedString.
+Running this output gives us the same output as before: "Your age is 35"
+
+Ok, so those are some of your formatting options.
+There was a time when some of these formatting options were much slower than
+simply using the concatenate operator, the "+" sign.
+But Java continues to make performance enhancements on these methods.
+The argument for using them is that they make the code easier to read and maintain, 
+and you have many options for outputting different specifier types.
+
+## [r. Another Look at the String]()
+
+The String has over 60 methods available.
+We won't cover them all here, but we'll cover the ones you'll probably use the most.
+The String is a sequence of characters, meaning its characters are ordered and indexed.
+
+| Index     | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|-----------|---|---|---|---|---|---|---|---|---|---|----|
+| Character | H | e | l | l | o |   | W | o | r | l | d  |
+
+The index starts at 0, and not 1.
+This is important to know if you're going to operate on Strings successfully.
+In the table below, we show the indices above each character for the String, "Hello World."
+We can say the character, 'H,' is at index "0," and "W," is at index "6."
+The length of this String is 11, but its last index is "10."
+
+We can split String methods up into 3 basic categories:
+
+1. String Inspection Methods: These provide some information about the string, 
+with methods like length(), isEmpty(), and isBlank().
+2. Methods for Comparing String values: These usually return a boolean value 
+(String values are equal or not).
+3. String Manipulation Methods: These transform one String value into another.
+
+Let's start with a look at some of the String Inspection Methods.
+
+| Method      | Description                                                                                                                   |
+|-------------|-------------------------------------------------------------------------------------------------------------------------------|
+| length      | Returns the number of characters in the String                                                                                |
+| charAt      | Returns the character at the index that's passed                                                                              |
+| indexOf     | Returns an integer, representing the index in the sequence where the String or character passed, can be located in the String |
+| lastIndexOf | Returns an integer, representing the index in the sequence where the String or character passed, can be located in the String |
+| isEmpty     | Returns if length is zero                                                                                                     |
+| isBlank     | Returns true if length is zero OR the string only contains whitespace characters                                              |
+
+The method length tells us the number of characters in a sequence.
+The method charAt will return a character if we specify an index position.
+There are two methods, indexOf, and lastIndexOf, that can tell us if the 
+String value contains a specified character, or substring.
+The method isEmpty() and isBlank() tell us whether the sequence is empty, or contains just white space characters.
+ 
+Let's start with another method, that will print some String information, 
+using a couple of the inspection methods:
+
+```java  
+public static void printInformation(String string) {
+    int length = string.length();
+    System.out.printf("Length = %d %n", length);
+    System.out.printf("First char = %c %n", string.charAt(0));
+}
+```
+
+First, with this code, we're creating a variable called length, and setting it to the length method.
+Then we print that out using printf, to reinforce what we learned in the last course.
+We also want to print the first character, and for this, we use the method charAt(), and pass it 0, 
+which gets the first character in the string.
+And notice this additional specifier, %c, that we're using, we haven't used this before, 
+but it just prints a single character.
+Let's call this method from the main method, and we'll pass it "Hello World."
+
+```java  
+printInformation("Hello World");
+```
+
+And if we run that:
+
+```java  
+Length = 11
+First char = H
+```
+
+We see the length of the String is 11, and the first character of the String is "H."
+Let's add some more functionality to the printInformation method, and now get the last character.
+For character sequences in Java, the position starts with zero, and the last character
+is one less than the String length.
+Let's add that code:
+
+```java  
+System.out.printf("Last char = %c %n", string.charAt(length - 1));
+```
+
+And running that,
+
+```java  
+Length = 11
+First char = H
+Last char = d
+```
+
+You can use the method charAt() with any index from 0 to the length—1,
+to retrieve the character at that index. 
+Passing any other index, that's not valid, will cause a runtime exception when the code runs.
+
+Now, let's look at the difference between isEmpty() and isBlank() next.
+First of all, if a String is empty, its length will be zero. 
+We don't want to pass a bad index to the charAt method, so if the string is empty, 
+we'll return from the method before those statements. Let's add that code:
+
+```java  
+if (string.isEmpty()) {
+    System.out.println("String is Empty");
+    return;
+}
+```
+
+Let's test an empty String, by calling this from the main method:
+
+```java  
+printInformation("");
+```
+
+And running that,
+
+```java  
+Length = 11
+First char = H
+Last char = d
+Length = 0
+String is Empty
+```
+
+We see the last two lines, that length is 0, and that "String is Empty."
+But if the String is blank, this means there are still characters, 
+but they're just white space characters, like tabs, new lines, spaces, etc. 
+We can still check the length and use the charAt method, for the first and last character, 
+so we won't return from the method in this if statement:
+
+```java  
+if (string.isBlank()) {
+    System.out.printf("String is Blank");
+}
+```
+
+Now, we'll add another call to our print method, in the main method:
+
+```java  
+printInformation("\t   \n");
+```
+
+And when we run that,
+
+```java  
+Length = 5
+String is BlankFirst char =
+Last char =
+```
+
+We can see there are five characters in the String where isBlank was true,
+and the first and the last characters are white space of some sort. 
+That's the difference between isEmpty() and isBlank().
+
+Now lastly, let's talk about the indexOf() and lastIndexOf() methods.
+First, these methods have several overloaded varieties. 
+You can search for a single character, or a String.
+Let's look for the letter "R," in the "Hello World" String.
+
+```java  
+String helloWorld = "Hello World";
+System.out.printf("index of r = %d %n", helloWorld.indexOf('r'));
+```
+
+And running this,
+
+```java  
+index of r = 8
+```
+
+Now, let's call that same method, but this time we'll search for a String, 
+and not just a letter.
+Let's also look for String "World," in "Hello World."
+
+```java  
+System.out.printf("index of World = %d %n", helloWorld.indexOf("World"));
+```
+
+And running that,
+
+```java  
+index of World = 6
+```
+
+Hopefully, there are no surprises with those 2 overloaded versions. 
+What happens if we use this method with letter 'l'?
+
+```java  
+System.out.printf("index of l = %d %n", helloWorld.indexOf('l'));
+System.out.printf("index of l = %d %n", helloWorld.lastIndexOf('l'));
+```
+
+And running that,
+
+```java  
+index of l = 2
+index of l = 9
+```
+
+The first method, indexOf, gave us the position of the first "l," in "Hello World."
+And the second method, lastIndexOf, gave us the position of the last "l," in "HelloWorld."
+That's the difference between those two methods.
+But what if we wanted to get the position of the section "l?"
+Well, both of these methods each have a second parameter, an integer.
+Passing this argument, tells the code where to start searching for a match. 
+We found the first "l" at position 2. 
+If we wanted to start looking for the next "l," we'd start looking after that, 
+at index 3. We can pass 3 as the second argument to the indexOf method.
+And we can do something similar with the lastIndexOf method.
+We said the last "l" was at index 9, and since this method searches forward for the character, 
+and not backwards, we'll use 8 as the second argument.
+
+```java  
+System.out.printf("index of l = %d %n", helloWorld.indexOf('l', 3));
+System.out.printf("index of l = %d %n", helloWorld.lastIndexOf('l', 8));
+```
+
+If we now run this:
+
+```java  
+index of l = 3
+index of l = 3
+```
+
+Both of these calls find the second "l" in the string, using different methods.
+The indexOf method found it looking forward, starting at index 3, and searching towards the end of the String.
+The lastIndexOf method found it looking backwards, starting from index 8,
+and searching towards the beginning of the String.
+
+Now, let's look at the next set, the String Comparison Methods.
+Some of the string comparison methods will check for equality of the String values,
+like equals, equalsIgnoreCase, and contentEquals.
+
+| Method           | Description                                                                                                                                                                          |
+|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| contentEquals    | Returns a boolean if the String's value is equal to the value of the argument passed. This method allows for arguments other than String, for any type that is a character sequence. |
+| equals           | Return a boolean if the String's value is equal to the value of the argument passed.                                                                                                 |
+| equalsIgnoreCase | Return a boolean if the String's value is equal(ignoring case), to the value of the argument passed.                                                                                 |
+| contains         | Returns a boolean if the String contains the argument passed.                                                                                                                        |
+| endsWith         | These return a boolean, and are much like the contains method, but more specific to the placement of the argument in the String.                                                     |
+| startsWith       | These return a boolean, and are much like the contains method, but more specific to the placement of the argument in the String.                                                     |
+| regionMatches    | Returns a boolean, if defined sub-regions are matched.                                                                                                                               |
+
+Others test whether a substring is part of a String value,
+like the contains method, as well as the endsWith and StartsWith methods.
+The regionMatches methods also do this, but it lets you specify regions of the strings to test for matches. 
+There are 2 others that fit into this category, but not shown here, 
+because we'll be talking about the compareTo(), and the matches methods, 
+later in the course for more advanced topics, in the context of sorting, and using regular expressions.
+Most of these methods are pretty straightforward.
+
+Let's create a variable called helloWorld lower, and assign that, to the result of the toLowerCase method, 
+from helloWorld variable.
+Then we'll use the equals method, and test if helloWorld, equals helloWorldLower.
+
+```java  
+String helloWorldLower = helloWorld.toLowerCase();
+if (helloWorld.equals(helloWorldLower)) {
+    System.out.println("Values match exactly");
+}
+if (helloWorld.equalsIgnoreCase(helloWorldLower)) {
+    System.out.println("Values match ignoring case");
+}
+```
+
+And if we run that,
+
+```java  
+Values match ignoring case
+```
+
+We don't get any output from the first if statement, because the cases of the text values aren't equal.
+But we do get output from the second if statement, that the String values match, if we do ignore a case.
+Let's quickly look at a couple of the others.
+We'll add a test using the startsWith, endsWith, and lastly contains methods.
+
+```java  
+if (helloWorld.startsWith("Hello")) {
+    System.out.println("String starts with Hello");
+}
+if (helloWorld.endsWith("World")) {
+    System.out.println("String ends with World");
+}
+if (helloWorld.contains("World")) {
+    System.out.println("String contains World");
+}
+```
+
+Ok, so we have 3 new tests, and running this code shows us the results we'd expect.
+
+```java  
+String starts with Hello
+String ends with World
+String contains World
+```
+
+Ok, so there's one more we haven't yet tested, and that's contentEquals().
+
+```java  
+if (helloWorld.contentEquals("Hello World")) {
+    System.out.println("Values match exactly");
+}
+```
+
+And we run that:
+
+```java  
+Values match exactly
+```
+
+You might be wondering why Java has both the equals method, and the contentEquals method.
+The contentEquals method isn't limited, to just comparing String objects. 
+It can be used to compare a StringBuilder's value, which the equals method doesn't support. 
+We'll talk about this more when we look at StringBuilder.
+
+## [q. String Manipulation Methods]()
+
+The first set of methods doesn't change the underlying meaning of the text value, 
+but performs some kind of clean up.
+
+| Method                                            | Description                                                                           |
+|---------------------------------------------------|---------------------------------------------------------------------------------------|
+| indent                                            | This method adds or removes spaces from the beginning of lines in multi-line text.    |
+| strip<br/>stripLeading<br/>stripTrailing<br/>trim | The differences between the strip method and trim method is that the strip() supports |
+| toLowerCase<br/>toUpperCase                       | Returns a new String, either in a lower case or in upper case                         |
+
+For example, the methods remove unnecessary white space, or they change the case of the text, 
+or they add, or remove white space, for indenting purposes.
+We have a method named indent, strip, trim, toLowerCase, and toUpperCase.
+
+The second set of string manipulation methods, transform the String value, 
+and return a String with a different meaning, than the original String.
+
+| Method                                  | Description                                                                                                           |
+|-----------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| concat                                  | Similar to the plus operator for strings, it concatenates text to the String and returns a new String as the results. |
+| join                                    | Allows multiple strings to be concatenated together in a sinle method, specifying a delimiter.                        |
+| repeat                                  | Returns the String repeated by the number of times specified in the argument.                                         |
+| replace<br/>replaceAll<br/>replaceFirst | These methods replace characters or strings in the string, returning a new String with replacements made.             |
+| substring<br/>subSequence               | These return a part of the String, its range defined by the start and end index specified.                            |
+
+These include methods for creating strings, from other strings, with such methods as concat, join, and repeat. 
+There are methods to replace characters in the String,
+or replace some parts of the text with a different set of characters, with replace, 
+replaceFirst and replaceAll.
+And lastly, we have methods to get parts of the String value, with the substring, and subSequence.
+
+And now, let's get going, by reviewing a method we looked at briefly in a previous challenge, 
+the substring method.
+Let's type this out, then we'll talk about it.
+
+```java  
+String birthDate = "02/09/1990";
+int startingIndex = birthDate.indexOf("1990");
+System.out.println("startingIndex = " + startingIndex);
+System.out.println("Birth year = " + birthDate.substring(startingIndex));
+```
+
+Ok, so here we have a birthdate as a String.
+Java has classes for dealing with dates, but for now, we'll make this date a String, 
+to explore some of the String methods.
+And next, we call the indexOf method we talked about, passing the String "1990."
+This will tell us where, in the String, the year 1990 can be found.
+We print that out, then we print out the Birth year,
+which was extracted from the birthDate variable, with the substring method, using that index we just got.
+Now running that code,
+
+```java  
+startingIndex = 6
+Birth year = 1990
+```
+
+We see that the startIndex was 6, meaning the String "1990" was found starting at index 6, 
+in the sequence of characters. 
+And we were able to extract the year from the birthdate variable successfully, Birth year = 1990.
+The substring method that has one argument will retrieve a string starting at the index passed,
+and retrieving the remaining String.
+But the method substring has an overloaded version
+that takes an ending index as well, 
+which will get the String starting at the specified start position.
+Instead of returning the rest of the String, this version of substring returns the part of the string,
+up to but not including, the character at the end position we specify.
+
+Ok, let's extract the month from this date, which is in the format, DD for day, MM, for month, and YYYY for year.
+
+```java  
+0 1 2 3 4 5 6 7 8 9
+D D / M M / Y Y Y Y
+```
+
+For this date String, the month is starting at position 3 
+if we start counting at 0. 
+And because we only want two characters in the result, we need to use 5, 
+as the second argument to this method.
+This method will get the characters, starting at index 3 and include the characters, 
+up to but excluding, index 5.
+In other words, it gets the characters at position 3 and 4.
+
+```java  
+System.out.println("Month = " + birthDate.substring(3,5));
+```
+
+And the result of that is Month = 09.
+That's substring, which you'll most likely be using a lot.
+Let's look at another beneficial method, and that's join, a static method on String.
+This joins a series of Strings together, with some delimiter. 
+In fact, we can build a date string here, using this method:
+
+```java  
+String newDate = String.join("/", "02", "09", "1990");
+System.out.println("newDate = " + newDate);
+```
+
+And if we run that:
+
+```java  
+Month = 09
+newDate = 02/09/1990
+```
+
+You see we built a date String, with the same date as before, using this method.
+This is a good method to use if you need to create a comma-delimited String, as an example.
+That's a useful method, but we could also do this, using the concat method. 
+It would be a little tedious, but let's do it.
+
+```java  
+newDate = "02";
+newDate = newDate.concat("/");
+newDate = newDate.concat("09");
+newDate = newDate.concat("/");
+newDate = newDate.concat("1990");
+System.out.println("newDate = " + newDate);
+```
+
+First of all, let me discourage you from writing code like this. 
+Although it's perfectly valid, it's pretty inefficient.
+Each call is a new creation of a String object. 
+But if we run this,
+
+```java  
+newDate = 02/09/1990
+```
+
+We get the same result as we got with join.
+The concat method does what the plus operator does, when used with Strings, but actually less efficiently, 
+when it's used with String literals.
+There are two other ways to write this code.
+Let's look at the first, which is just using the plus operator on a bunch of String literals:
+
+```java  
+newDate = "02" + "/"  + "09" + "/" + "1990";
+System.out.println("newDate = " + newDate);
+```
+
+Again, it's unlikely you'd write code like this, but it's more efficient than the previous code.
+This is because Java's compiler recognizes this statement as a single string,
+because of the use of literals and the plus operator.
+The full string, in other words, the full date string, will be used in the generated bytecode.
+
+And let's look at another way to do this:
+
+```java  
+newDate = "02".concat("/").concat("09").concat("/").concat("1990");
+System.out.println("newDate = " + newDate);
+```
+
+What about this code?
+This coding style has a special name, and it's called method chaining.
+You can write String methods this way because they return Strings.
+But again, this is just like writing the concat statements, each on its own line.
+Each call to the concat method is still a new String object being created, 
+but instead of assigning that result to a variable, we chain it to another method result.
+Ok, so that was the concat method.
+
+        
+For replace method:
+
+```java  
+System.out.println(newDate.replace('/', '-'));
+```
+
+And running that:
+
+```java  
+02-09-1990
+```
+
+You can see it replaces every "/" with "-".
+
+```java  
+System.out.println(newDate.replace("2", "00"));
+```
+
+And running that:
+
+```java  
+000/09/1990
+```
+
+We get every 2, replaced by 2 sets of zeros. 
+Let's look at replaceFirst and replaceAll methods:
+
+```java  
+System.out.println(newDate.replaceFirst("/", "-"));
+System.out.println(newDate.replaceAll("/", "---"));
+```
+
+And if we run that:
+
+```java  
+02-09/1990 
+02---09---1990
+```
+
+The replaceFirst method just replaces the first instance, where there's a match, 
+so only the first "/" was replaced with a "-".
+In contrast, the replaceAll method, replaced all occurrences.
+
+There's another important difference between these two methods, and the replace method.
+The first argument for these last two methods is really a regular expression String,
+which is a special syntax; that looks for patterns in a String. 
+We'll look at regular expressions later in the course, but in general, 
+you can use replaceFirst with basic strings to replace the first instance.
+But if you want to replace all occurrences of one string with another, 
+use the replace method, rather than the replaceAll method.
+
+Ok, so lastly, we can talk about repeat() and indent() methods. 
+Firstly for repeat:
+
+```java  
+System.out.println("ABC\n".repeat(3));
+System.out.println("-".repeat(20));
+```
+
+The second statement was added, so the output will be easier to compare, so let's run this:
+
+```java  
+ABC
+ABC
+ABC
+
+--------------------
+```
+
+The repeat code produced three lines, all having "ABC" in them, plus an empty line in the first case, 
+and a separating line of dashes in the second case.
+That's the repeat method, but now let's use the indent method:
+
+```java  
+System.out.println("ABC\n".repeat(3).indent(8));
+System.out.println("-".repeat(20));
+```
+
+Let's run this:
+
+```java  
+--------------------
+        ABC
+        ABC
+        ABC
+
+--------------------
+```
+
+And you can see the output; compared to the previous output, 
+eight spaces indented every line of text in this String.
+And this method, the indent, can also be used to remove some leading spaces, so let's try that next.
+
+```java  
+System.out.println("    ABC\n".repeat(3).indent(-2));
+System.out.println("-".repeat(20));
+```
+
+And running that:
+
+```java  
+--------------------
+  ABC 
+  ABC
+  ABC
+  
+--------------------
+```
+
+You can see that the multiple line String wasn't outputted with four spaces, 
+which we had in the first String, but only two spaces, at the start of each line.
+Using indent with a negative number, is a way to remove spaces from each line, in a multi-line text value.
+
+## [s. The StringBuilder Class]()
+
+Because String is immutable, each method all returns a new instance of a String. 
+As an alternative, Java provides a mutable class that lets us change its text value, 
+or character sequence.
+This is the StringBuilder class.
+
+### Creating Instances
+
+| Instantiating String Objects                                                                                                                | Instantiating StringBuilder Objects                                                                                                                                                                                                      |
+|---------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| String hello = "Hello";<br/>String helloWorld = "Hello" + " World";<br/>String badHello = new String("Hello"); // Valid code, but redundant | StringBuilder helloBuilder = new StringBuilder("Hello");<br/>StringBuilder emptyBuilder = new StringBuilder();<br/>StringBuilder emptyBuilder5 = new StringBuilder(5);<br/>StringBuilder emptyBuilder = new StringBuilder(helloBuilder); |
+
+We've already talked about creating Strings, and the preferred way, the most efficient way, 
+is simply to assign a literal, or concatenated literals to a variable. 
+We show this on the left above.
+Let's compare that to the StringBuilder, which has 4 overloaded constructors.
+These are shown on the right above.
+
+There are four ways to create a new StringBuilder object, using the new keyword:
+
+* Pass a String.
+* Pass no arguments at all.
+* Pass an integer value.
+* Pass some other type of character sequence (like StringBuilder)
+
+Getting back to the code, let's compare the String and StringBuilder classes a bit.
+First, we'll create a couple of overloaded methods, one that will take a String,
+and the other will take a StringBuilder.
+Both of these will print the argument that's passed,
+and both will call the length method, which is a method on both String and StringBuilder.
+
+```java  
+public static void printInformation(String string) {
+    System.out.println("String = "+ string);
+    System.out.println("length = " + string.length());
+}
+```
+
+Here, we're printing out the String, and the length of the String, passed as the argument.
+We'll create the same method by changing parameter type and name for StringBuilder:
+
+```java  
+public static void printInformation(StringBuilder builder) {
+    System.out.println("StringBuilder = "+ builder);
+    System.out.println("length = " + builder.length());
+}
+```
+
+And that all compiles, so now, in the main method, let's create some objects:
+
+```java  
+String helloWorld = "Hello" + " World";
+
+StringBuilder helloWorldBuilder = "Hello" + " World";
+```
+
+What I wanted to show you with this code, this second statement doesn't compile. 
+This is an important difference between the String and the StringBuilder,
+you can't assign a String literal to a StringBuilder variable.
+We have to use one of the constructors, so let's do that.
+
+```java  
+StringBuilder helloWorldBuilder = new StringBuilder("Hello" + " World");
+```
+
+We've created two types of objects, which have the same set of characters in them.
+Let's make a call to our printInformation methods for each of these objects:
+
+```java  
+printInformation(helloWorld);
+printInformation(helloWorldBuilder);
+```
+
+And if we run that,
+
+```java  
+String = Hello World
+length = 11
+StringBuilder = Hello World
+length = 11
+```
+
+We see that the sequences have the same length, as you'd expect, since the values are the same.
+Ok, so now, let's examine what we mean, when we say the StringBuilder's text value is mutable, 
+but the String isn't.
+
+First, we'll use the concat method on String, which is a lot like using the plus operator on String.
+The result:
+
+* it is a new String object, with the argument value concatenated to the existing text.
+For StringBuilder, a similar method 
+* it is called "append," so we'll use that:
+
+```java  
+helloWorld.concat(" and Goodbye");
+
+helloWorldBuilder.append(" and Goodbye");
+```
+
+And running the code now:
+
+```java  
+String = Hello World
+length = 11
+StringBuilder = Hello World and Goodbye
+length = 23
+```
+
+Look carefully at the results. 
+String is still "Hello World," but StringBuilder is "Hello World and Goodbye," 
+and its length is increased.
+Let's talk about what happened, by looking at a quick diagram:
+
+
+
+                            Memory before executing helloWorld.concat method
+
+                                      |¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯|
+                                      |        Heap Memory      |
+                                      |                         |
+                      helloWorld ==========>  "Hello World"     |
+                                      |                         |
+                                      |                         |
+                                      |_________________________|
+
+                            Memory after executing helloWorld.concat method
+
+                                      |¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯|
+                                      |        Heap Memory      |
+                                      |                         |
+                      helloWorld ==========>  "Hello World"     |
+                                      |                         |
+                                      |      " and Goodbye"     |
+                                      |                         |
+                                      |"Hello World and Goodbye"|
+                                      |                         |
+                                      |_________________________|
+
+  When we passed the String literal, "and Goodbye", to the concat method, this created an Object in memory for that literal,
+  " and Goodbye". It also created the result of the concat method, the object, the String, that has the value, "Hello
+  World and Goodbye". But our code has a mistake in it, because we didn't assign the result of the method, the concat
+  method, to a variable. This is actually a common mistake to make.
+
+      It's important to remember to assign the result, of any String manipulation method you call on a String, to a variable.
+  These methods don't change the internals of the existing String object, as we show at the second diagram above. The
+  String referenced by the helloWorld variable never changed, instead a new String was created by the method call. Now,
+  let's compare that to what happened with the StringBuilder:
+
+                            Memory before executing helloWorldBuilder.append method
+
+                                      |¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯|
+                                      |        Heap Memory      |
+                                      |                         |
+               helloWorldBuilder ===  |       "Hello World"     |
+                                   ∥  |                         |
+                                   ∥  |                         |
+                                   ========>  'Hello World'     |
+                                      |                         |
+                                      |_________________________|
+
+                            Memory after executing helloWorldBuilder.append method
+
+                                      |¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯|
+                                      |        Heap Memory      |
+                                      |                         |
+               helloWorldBuilder ===  | "Hello World"           |
+                                   ∥  |                         |
+                                   ∥  |         " and Goodbye"  |
+                                   ∥  |                         |
+                                   ===>'Hello World and Goodbye'|
+                                      |                         |
+                                      |_________________________|
+
+  On these diagrams, I show String and StringBuilders in different quotation marks("" and ''). We still have the objects
+  in memory, that represent the String literals, that were passed to the StringBuilder, in this case 'Hello World'. But
+  you can see, that after the call to the "append" method, we still only have 1 StringBuilder object. The variable
+  helloWorldBuilder, is still referencing the same object, but the value of that object changed. This is important,
+  because it means the character sequence in the StringBuilder changed. And this time, we didn't have to assign the result,
+  to another variable to access the result.
+
+      String methods create a new object in memory, and return a reference to this new object. StringBuilder methods
+  return a StringBuilder reference, but it's really a self-reference, or a reference to the same object. Unlike Strings,
+  we can call methods on StringBuilder, without the need to assign the results, to intermediate variables, as we saw
+  with Strings. StringBuilder methods return this self-reference, to support chaining methods together.
+
+      Ok, so getting back to the code. In the main method, we'll create 2 more StringBuilder instances. This time, we'll
+  make them both start out with empty character sequences. In other words, they won't contain any characters, or any text.
+  And we'll call our printInformation method for StringBuilder for both.
+
+                      StringBuilder emptyStart = new StringBuilder();
+                      StringBuilder emptyStart32 = new StringBuilder(32);
+
+                      printInformation(emptyStart);
+                      printInformation(emptyStart32);
+
+  In the first case, we don't pass any arguments in the constructor, but in the second, we're passing a number, 32. Let's
+  run this and see what we get:
+
+                      StringBuilder =
+                      length = 0
+                      StringBuilder =
+                      length = 0
+
+  In both cases, we have empty strings, as the value of the StringBuilder sequence, and length = 0. Ok, what's the difference
+  here? Before we talk about that, let's change our information method, and add a call to another method on StringBuilder,
+  a method named "capacity":
+
+                      System.out.println("capacity = " + builder.capacity());
+
+  we'll run this code, then we'll talk about it:
+
+                      StringBuilder =
+                      length = 0
+                      capacity = 16
+                      StringBuilder =
+                      length = 0
+                      capacity = 32
+
+  A StringBuilder is mutable, which means it can shrink, or grow, in size. By default, an empty StringBuilder starts out
+  with a capacity of 16, meaning it can contain up to 16 characters, before it needs to request more memory. In the second
+  example, we created a StringBuilder with a starting capacity of 32, which means our sequence can grow up to 32 characters,
+  without needing to request additional allocation.
+
+      Every time a StringBuilder needs to increase capacity, the data stored in the original storage, needs to get copied
+  over to the larger storage area. Let's see this in action. Let's append some text to our 2 empty StringBuilder objects.
+
+                      emptyStart.append("a".repeat(17));
+                      emptyStart32.append("a".repeat(17));
+
+  Here, we're using the repeat method, which we introduced you to in the last course. So this creates a 17 character string,
+  filled with a's. For the first StringBuilder object, which has a capacity of 16, this is going to require a request
+  for a larger memory area, to store the extra data. Let's run this:
+
+                      StringBuilder = aaaaaaaaaaaaaaaaa
+                      length = 17
+                      capacity = 34
+                      StringBuilder = aaaaaaaaaaaaaaaaa
+                      length = 17
+                      capacity = 32
+
+  First, look at the value in the StringBuilder objects, both contain a String of a's, and both have a length of 17, as
+  expected. But in the first case, the capacity is now 34(when we started out with 16). The new allocation size is
+  determined by JVM. In the second case, the capacity is still 32, because we didn't require a reallocation, since the
+  appended string still fit in the original capacity.
+
+      What happens, if we change our code in the first instance, to something bigger than 34 characters(which we saw was
+  the next allocation 'step')? Let's change our first call to repeat, to create a String of 57 characters.
+
+                      StringBuilder = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                      length = 57
+                      capacity = 57
+                      StringBuilder = aaaaaaaaaaaaaaaaa
+                      length = 17
+                      capacity = 32
+
+  Now, the output shows that the capacity of the first empty StringBuilder, is actually the same size, as the String we
+  passed in, 57. At this stage, It's not that important that you understand how the next capacity is determined. But it
+  is important to understand that the capacity does need to adjust, as the text in your StringBuilder grows. If you know
+  you plan to house a large text value in your StringBuilder object, start out with a larger capacity.
+
+                                  Some methods unique to the StringBuilder Class
+
+              method              description
+              --------------------------------------------------------------------------------------------------------
+              delete              You can delete a substring using indices to specify a range, or delete a single character
+              deleteCharAt        at an index.
+              --------------------------------------------------------------------------------------------------------
+              insert              You can insert text at a specified position.
+              --------------------------------------------------------------------------------------------------------
+              reverse             You can reverse the order of the characters in the sequence.
+              --------------------------------------------------------------------------------------------------------
+              setLength           setLength can be used to truncate the sequence, or include null sequence to "fill out"
+                                  the sequence to that length.
+              --------------------------------------------------------------------------------------------------------
+
+  A StringBuilder class has many similar methods to Strings. But it also has methods to remove and insert characters or
+  Strings, and truncate it's size. The table above shows some of these methods. delete() and deleteCharAt() will remove
+  text or a character from the StringBuilder's text. The insert() method inserts text, into the StringBuilder text at
+  the specified index. reverse() reverses the characters in the sequence. And setLength() is a way to truncate a StringBuilder's
+  text value.
+
+      Let's code for deleting a character, the capital G, and while we're at it, we'll insert a lowercase g, where the
+  uppercase G used to be:
+
+                          StringBuilder builderPlus = new StringBuilder("Hello" + " World");
+                          builderPlus.append(" and Goodbye");
+
+                          builderPlus.deleteCharAt(16).insert(16,'g');
+                          System.out.println(builderPlus);
+
+  We're chaining methods here again, this time with the StringBuilder object. And running that:
+
+                          Hello World and goodbye
+
+  the output shows that it looks like we've just replaces a big G, with a little g. But we did it by, first using the
+  deleteCharAt method, and then the insert method. The StringBuilder class does also have a replace method, which requires
+  a start and end index, to identify what will be replaced, which is different from the replace method for String. Let's
+  set that G back to a big G, using the StringBuilder replace method:
+
+                          builderPlus.replace(16, 17, "G");
+                          System.out.println(builderPlus);
+
+  And running that:
+
+                          Hello World and Goodbye
+
+  Again, the ending index we use with this method is used as an exclusive index, so this code, simply replaces a single
+  character, the letter lowercase g.
+
+      And lastly, let's look at the reverse method and the setLength method, and we'll chain them together.
+
+                          builderPlus.reverse().setLength(7);
+                          System.out.println(builderPlus);
+
+  The reverse method will reverse all tha characters and then call the setLength method, with the number 7, meaning we're
+  truncating the StringBuilder text value, to 7 characters. and running that:
+
+                          eybdooG
+
+  And we see the result of that, Goodbye spelled backwards.
