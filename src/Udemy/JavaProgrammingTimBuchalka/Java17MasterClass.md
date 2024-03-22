@@ -57,11 +57,9 @@ What we will learn from this Path:
 ### [a. Composition (Part-I)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#a-composition-Part-i)
 ### [b. Composition (Part-II)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#b-composition-Part-ii)
 ### [c. Composition Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#c-composition-challenge)
+### [d. Encapsulation](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#d-encapsulation)
+### [e. Encapsulation Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#e-encapsulation-challenge)
 
-    * Composition
-        * Challenge-38: Composition
-    * Encapsulation
-        * Challenge-39: Encapsulation
     * Polymorphism
     * Using Object and var references
     * The instanceof operator
