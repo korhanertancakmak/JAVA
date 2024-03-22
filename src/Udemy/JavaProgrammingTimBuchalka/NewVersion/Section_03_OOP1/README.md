@@ -3458,7 +3458,7 @@ now has the number of the next employee's employee number.
 Remember, a static field is a place that lets you share data among all your instances. 
 When you're generating an id for a new employee, it's a place to find the next id to use.
 
-
+![Step-10](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/images/09JoeAndMaryClassMethods.png?raw=true)
 
 Now, it's time to build a more specific type of Employee, one that's Salaried, 
 or one that's Hourly.

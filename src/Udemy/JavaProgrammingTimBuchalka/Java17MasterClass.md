@@ -177,7 +177,7 @@ What we will learn from this Path:
     * Methods that use Regular Expressions
     * Pattern and Matcher
 
-## ![16. Input & Putput in Java]()
+## ![16. Input & Output in Java]()
 
     * Checked vs Unchecked Exceptions
     * Try with Research and finally clause
