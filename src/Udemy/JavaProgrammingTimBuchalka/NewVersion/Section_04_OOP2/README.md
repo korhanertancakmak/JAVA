@@ -461,7 +461,7 @@ but we're not requiring that all subclasses be defined with those attributes.
 This is just one example of the inflexibility of inheritance, 
 compared to a more flexible design with composition.
 
-## [c. Composition Challenge]()
+## [c. Composition Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/Course03_CompositionChallenge/README.md#composition-challenge-answer)
 
 In this challenge, you need to create an application for controlling a smart kitchen.
 Your smart kitchen will have several appliances.
