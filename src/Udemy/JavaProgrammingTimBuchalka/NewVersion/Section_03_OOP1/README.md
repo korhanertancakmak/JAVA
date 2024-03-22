@@ -1753,7 +1753,7 @@ When we do talk more about the "final" keyword and immutability of data,
 especially as it may be affected by concurrent threads, we'll be revisiting this type. 
 We'll also be showing it to you in action when we get to the Database and I/O sections of this course.
 
-## [i. Plain Old Java Object (The POJO) and Overridden Methods]()
+## [j. Plain Old Java Object (The POJO) and Overridden Methods]()
 
 A plain old Java object (whose acronym is POJO) is a class that generally only has instance fields. 
 It's used to house data and pass data between functional classes. 
