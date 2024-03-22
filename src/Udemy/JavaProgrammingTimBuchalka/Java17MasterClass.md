@@ -45,6 +45,7 @@ What we will learn from this Path:
 ### [k. Inheritance (Part-I)]()
 ### [l. Inheritance (Part-II)]()
 ### [m. Inheritance (Part-III)]()
+### [n. What is Java.lang.Object?]()
 
         * Challenge-32: Wall Area
         * Challenge-33: Point
