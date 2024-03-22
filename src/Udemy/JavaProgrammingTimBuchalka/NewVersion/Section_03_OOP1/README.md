@@ -2750,6 +2750,8 @@ And instead of a generic move method, we might have more specific methods like m
 and moveBackFins.
 Let's look at our class diagram that includes this new Fish class:
 
+
+
                     Fish =>
                             fins  : int
                             gills : int
