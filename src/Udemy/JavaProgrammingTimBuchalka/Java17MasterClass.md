@@ -59,9 +59,11 @@ What we will learn from this Path:
 ### [c. Composition Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#c-composition-challenge)
 ### [d. Encapsulation](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#d-encapsulation)
 ### [e. Encapsulation Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#e-encapsulation-challenge)
+### [f. Polymorphism](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#f-polymorphism)
+### [g. Casting with Classes, Using Object and var References](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#g-casting-with-classes-using-object-and-var-references)
+### [h. Testing the run-time Type](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#h-testing-the-run-time-type)
+### [i. Polymorphism Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#i-polymorphism-challenge)
 
-    * Polymorphism
-    * Using Object and var references
     * The instanceof operator
         * Challenge-40: Polymorphism
     * Organizing Java Classes, Packages and Import Stataments

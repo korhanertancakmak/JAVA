@@ -897,7 +897,7 @@ In the majority of cases, you don't want to give access to other classes.
 As you saw, it's more work to make those changes when you create, or when you change a field name, 
 or something of that nature.
 
-## [e. Encapsulation Challenge]()
+## [e. Encapsulation Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/Course05_EncapsulationChallenge)
 
 This is the challenge to create a class, and to demonstrate proper encapsulation techniques, 
 such as you've learnt in the previous course. 
@@ -929,4 +929,802 @@ The sheet number should also be added to the pagesPrinted variable.
 If it's a duplex printer, print a message that it's a duplex printer.
 
 In this challenge, you'll want to demonstrate proper encapsulation techniques with this class.
+
+## [f. Polymorphism]()
+
+Simply stated, polymorphism, means many forms. 
+Well, how does this apply to code? 
+Polymorphism lets us write to call a method, but at runtime, this method's behavior can be different, 
+for different objects. 
+This means the behavior that occurs, while the program is executing, 
+depends on the runtime type of the object. 
+And the runtime type might be different from the declared type in the code. 
+The declared type has to have some kind of relationship to the runtime type, 
+and inheritance is one way to establish this relationship. 
+There are other ways, but in this video, we'll talk about how to use inheritance to support polymorphism.
+
+We've given you a taste of this in the inheritance courses, 
+but this time we're going to look at polymorphism specifically.
+
+![image10]()
+
+This time, we're going to look at a polymorphism example, using movies. 
+We'll have a base class of Movie, which has the title of the movie. 
+And "Movie" will have one method, watchMovie. 
+We'll have three subclasses, each a different kind of movie. 
+We'll have an Adventure film, a Comedy, and a ScienceFiction movie. 
+These are the different categories, so we'll use these as the subclasses. 
+All of these will override and implement unique behavior for the watchMovie method.
+
+After creating "Movie" class with its own constructor and one method, watchMovie:
+
+```java  
+public class Movie {
+    private String title;
+    public Movie(String title) {
+        this.title = title;
+    }
+    public void watchMovie() {
+        String instanceType = this.getClass().getSimpleName();
+        System.out.println(title + "is a " + instanceType + " film");
+    }
+}
+```
+
+Now, here on the first line of this method is something new. 
+You've seen the use of the keyword "this" before, which refers to the current instance, 
+and now we're calling a method on that called "getClass()".
+
+The method getClass() is on Java linked object, which we've talked about. 
+This method returns class type information about the runtime instance on which this method is executed. 
+And from that we can get the name of the class using the getSimpleName method.
+And here again, we're just using method chaining for convenience. 
+This prints out the class which will be moving if we execute this method on a runtime movie object. 
+But when we implement the subclasses and run this method, 
+the runtime object could be an instance of one of those classes, The Adventure class, for example. 
+This will hopefully make more sense when we run this code. 
+Next in this code, we print out the title of the movie and the top of the movie runtime instance. 
+And that's the movie class.
+
+Let's go to the main method, and test out the watchMovie method:
+
+```java  
+Movie theMovie = new Movie("Star Wars");
+theMovie.watchMovie();
+```
+
+And running this,
+
+```java  
+Star Wars is a Movie film
+```
+
+We got this output. 
+And that's because the runtime instance of the movie variable is the "Movie" class. 
+It's the object we created here in the main method. 
+And we did a new Movie, which means it's really an instance of a Movie. 
+Here we've created the object using the "new Movie" statement and past it the title of "Star Wars". 
+And then we assigned our movie instance to a "movie" reference variable, 
+and here we just called it the "Movie."
+Ok, so no surprises here, I hope.
+
+What we'll do next is add some subclasses of movies that represent different genres 
+or classifications of Movies. 
+You can think of these as the way a streaming company would group different movies. 
+And we'll start with the Adventure movie type. 
+We'll add this class to the Movie.java source file, and we won't give it an access modifier, 
+meaning it has package or default access. 
+But we're going to have it extend Movie:
+
+```java  
+class Adventure extends Movie {
+}
+```
+
+This doesn't compile yet because we need to add a constructor. 
+Adding it:
+
+```java  
+public Adventure(String title) {
+    super(title);
+}
+```
+
+And we generated constructor which uses movies field, title as a parameter, 
+and makes a call to "super," using that argument. 
+Now we got the constructor and an Adventure movie will get created with just the title of the movie.
+
+Next, we want to implement or override the watch movie method. 
+When you're overriding a method, it's a pretty good idea to start with IntelliJ's override generation tool. 
+This ensures that your method signature is right, so let's do that for this class.
+
+```java  
+@Override
+public void watchMovie() {
+    super.watchMovie();
+}
+```
+
+And that gives us the IntelliJ's default generated code, which includes that Override annotation, 
+which we've seen before. 
+And this method simply calls the method on the Movie class, which is the super or base class for Adventure.
+We want to do that, but we want to include extra functionality that's specific to the adventure class, 
+like some of the major plot stages of an Adventure film, for example. 
+And we'll just use the printf method as well as the repeat method on String 
+to print out the plot stages. 
+Three stages on three lines:
+
+```java  
+System.out.printf(".. %s%n".repeat(3), "Pleasant Scene", "Scary Music", "Something Bad Happens");
+```
+
+Let's talk about this code a minute, because here we're using the format specifiers *%s* and *%n*.
+The format specifier *%s* is used to replace any String which is not as commonly used as others, 
+but it will work well here.
+And we've set before that *%n*, puts it a new line there. 
+Now, this string gets repeated three times with this repeat method before the formatting takes place. 
+This means that all these stage plots get printed each on its own line.
+
+Now let's go back to the main method and test the make Movie method on an Adventure object this time. 
+And what we can do here is simply replace this "new Movie" statement with "new Adventure" instead. 
+We don't have to change the type of "theMovie" variable. 
+It can stay as "Movie."
+
+```java  
+Movie theMovie = new Adventure("Star Wars");
+theMovie.watchMovie();
+```
+
+And this is because adventure is really a type of Movie, a subclass. 
+And inheritance lets us say *Adventure is a Movie, and it's ok; we can do this, 
+we can assign an Adventure object to a Movie variable*. 
+This code compiles and we can run it.
+
+```java  
+Star Wars is a Adventure film
+.. Pleasant Scene
+.. Scary Music
+.. Something Bad Happens
+```
+
+And look what happened. 
+The code ran, the watchMovie method on the Adventure class. 
+That's because at runtime, the method that gets run 
+is determined by the Java Virtual machine (JVM) based on the runtime object and not this variable type.
+And that's our first test of polymorphism in this code. 
+We've declared a variable of type Movie and assigned it an object that's really an Adventure type of movie. 
+And when we called watchMovie on that, the behavior was the Adventure movies behavior. 
+It wasn't just the base class behavior. 
+Now, the method that's on the Adventure class, first calls Movie's method, 
+which is why we see that first statement, *Star Wars is an Adventure film*. 
+But this time, we get in the text that *Adventure*, 
+and this is the actual type of object at runtime as *instanceType*. 
+And then we have the plot stages for an Adventure Film, pleasant scene, scary music, 
+and something bad happens. 
+That's a really simple example of polymorphism.
+
+Getting back to the movie.java source file, and creating the "comedy" subclass next:
+
+```java  
+class Comedy extends Movie {
+    public Comedy(String title) {
+        super(title);
+    }
+    @Override
+    public void watchMovie() {
+        super.watchMovie();
+        System.out.printf(".. %s%n".repeat(3),
+                "Something funny happens",
+                "Something even funnier happens",
+                "Happy Ending");
+    }
+}
+```
+
+Ok, we have two of our movie subclasses built, but let's do the last one, 
+which we're calling Science-Fiction.
+
+```java  
+class ScienceFiction extends Movie {
+    public ScienceFiction(String title) {
+        super(title);
+    }
+    @Override
+    public void watchMovie() {
+        super.watchMovie();
+        System.out.printf(".. %s%n".repeat(3),
+                "Bad Alien do Bad Stuff",
+                "Space Guys Chase Aliens",
+                "Planet Blows up");
+    }
+}
+```
+
+And that's the ScienceFiction class, which means now we've built the movie class and oll of its subclasses.
+
+Up to now, we've only assigned an adventure movie instance to a Movie variable and saw that when it ran, 
+Java figured it out which method to run, not on the compile time code, but on the runtime instance's method. 
+But this time, we'll create a method on the Movie class, 
+that the calling code can execute, that will return a movie instance for us. 
+We'll make this method public and static, which means anybody can call this method to get a movie instance, 
+based on the parameter type being passed in a title. 
+Let's type this method our partially.
+
+```java  
+public static Movie getMovie (String type, String title) {
+    return switch (type.toUpperCase().charAt(0)) {
+        default -> new Movie(title);
+    };
+}
+```
+
+In this code, the parameters of this method are the type of the movie, and the title. 
+And we're going to return an instance of the Movie class, or a subclass of a Movie. 
+And this gets returned by the switch expression. 
+But what are we really doing here with the switch expression? 
+Well, we're taking whatever was passed to us, making it uppercase, then just getting the first letter. 
+In our case, each of our subclasses has a unique letter for its class name, 
+so we can use that to figure out the right kind of movie to create.
+And just for now, we're returning a generic movie instance. 
+Now, let's go back to the main method, and test that out. 
+We'll call the static method on Movie, to get an Adventure movie.
+
+```java  
+Movie theSecondMovie = Movie.getMovie("Adventure", "Star Wars");
+theSecondMovie.watchMovie();
+```
+
+Now, notice if we run this,
+
+```java  
+Star Wars is a Movie film
+```
+
+It works, but we're still not really getting *an Adventure* movie. 
+That's because we haven't really completed the getMovie method. 
+Going back to the Movie Class, we want to add the code to run return the different subclasses, 
+based on the type argument:
+
+```java  
+public static Movie getMovie (String type, String title) {
+    return switch (type.toUpperCase().charAt(0)) {
+        case 'A' -> new Adventure(title);
+        case 'C' -> new Comedy(title);
+        case 'S' -> new ScienceFiction(title);
+        default -> new Movie(title);
+    };
+}
+```
+
+Here, our switch expression is really evaluating a char, a single character. 
+We get this character from the String method, charAt() that we're using in the switch expression. 
+That's going to give us the first letter of the type. 
+And if it's an *A*, we'll return a new Adventure instance, 
+if it's *C*, we'll return a Comedy, and if it's *S*, that means we want 
+to create a new Science-Fiction Movie. 
+If it's not one of those, then we'll just return the base class, an instance of Movie. 
+By providing this method, the code in the main method (the calling code) 
+doesn't really need to know anything about any of Movie's subclasses. 
+It can just pass in the type, and get a different type of Movie subclasses. 
+This kind of method that returns a new instance object is known as a factory method, 
+in software programming design patters. 
+Factory methods give us a way to get an object, 
+without having to know the details of how to create a new one, 
+or specify the exact class we want. 
+Actually, if we run this code now, from the main method:
+
+```java  
+Star Wars is a Adventure film
+.. Pleasant Scene
+.. Scary Music
+.. Something Bad Happens
+```
+
+We see that we really do get an Adventure object back, 
+because you can see Adventure film there on the first line. 
+The getMovie method returned an instance which we maybe didn't know what it was, 
+and maybe we don't really care. 
+But because the runtime object was an instance of the Adventure class, 
+the method on that class was executed. 
+And now we can see the output for an Adventure instance, with the title Star-Wars, 
+that it's an Adventure Film. 
+And then we also get the 3 plot stages for the Adventure Class.
+
+Ok, next, we'll change the main method, passing ScienceFiction, 
+because really Star-Wars is more of a ScienceFiction Movie. 
+And really, we don't want to type in the full class name, 
+we can just put in Science, or even *S*, if we wanted.
+
+```java  
+Movie theSecondMovie = Movie.getMovie("S", "Star Wars");
+theSecondMovie.watchMovie();
+```
+
+And if we run this:
+
+```java  
+Star Wars is a ScienceFiction film
+.. Bad Alien do Bad Stuff
+.. Space Guys Chase Aliens
+.. Planet Blows up
+```
+
+We get different type names and different plot stages. 
+With this method, the calling code doesn't need to know about each subclass, 
+or how to create different instances of movies. 
+We can just call this method, passing the type and name, and the right object type is instantiated, 
+and returned, but it's assigned to a variable with the Movie type, 
+so this code will work for any Movie, or any of its subclasses, 
+including subclasses that haven't even been created yet. 
+This keeps all the information about the Movie, and its subclasses, 
+in the control of the Movie class, and simplifies the work that needs to be done, by the calling code. 
+That sounds like a good encapsulation technique, doesn't it?
+
+Ok, going back to our main method, we'll use polymorphism to watch a variety of movies. 
+This time, we'll make the code interactive, using the Scanner class we've seen before. 
+We'll let the user enter the type of movie, and then the title of the movie they want to watch. 
+First, we'll comment out the first four lines of code, then add the code for a new Scanner.
+
+```java  
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+    }
+}
+```
+
+In the Exception course, I showed you how to manually add import lines. 
+Because we still have *Auto Imports enabled*, 
+you saw how IntelliJ added the import for us automatically. 
+Pretty nice, right? 
+Essentially, IntelliJ adds and manages the imports for you 
+as much as it can with the Auto import option turned on. 
+So that's "Auto-import". 
+These are the types of little automations that collectively, 
+make you a much more productive programmer.
+
+Ok, next, we'll create a loop, so we'll keep getting information from the user 
+until they quit out of the loop.
+
+```java  
+while (true) {
+    System.out.println("Enter Type (A for Adventure, C for Comedy, S for Science Fiction, or Q to quit): ");
+    String type = s.nextLine();
+}
+```
+
+In this code, we're using a while loop, with a condition that's always true. 
+That's really an infinite loop, and you definitely don't want to run this code yet. 
+But first, we'll prompt the user for the type of Movie, enter A for Adventure, 
+C for Comedy, Q for quitting. 
+After that, we'll get the user's response, using nextLine method on Scanner. 
+We want to get all the data they entered, up do and including the new line. 
+The nextLine method gets the type of the movie they want to watch, 
+but we're not doing anything with it yet, except assigning it to type. 
+If we ran this now, we'd be stuck in an infinite loop. 
+We need to add the code, to break out of the loop next.
+
+```java  
+if ("Qq".contains(type)) {
+    break;
+}
+```
+
+Ok, what is this code doing? 
+This "if" statement uses the contains method on a String, 
+which we've covered briefly in the String courses. 
+*Qq*, here we have a String literal, that has an uppercase and lowercase Q in it, 
+and we're using contains to test what the user entered. 
+This means, if the user enters a single character, either an uppercase or lowercase Q, 
+then the code will break out of the loop. 
+The contains method will determine if the String literal, "Qq", contains the single letter q, 
+and returns true. 
+Now that we can get out of the loop, we next want the code to get the title of the movie. 
+And after that, we'll use the factory method on the Movie class, to get the right kind of instance:
+
+```java  
+System.out.print("Enter Movie Title: ");
+String title = s.nextLine();
+Movie movie = Movie.getMovie(type, title);
+movie.watchMovie();
+```
+
+Here again, we prompt the user to enter the movie title, 
+and we'll read that in, using the nextLine method on scanner. 
+After that, we can call Movie.getMovie to get an instance of a movie, 
+passing the type, and title that the user entered. 
+And regardless of what comes back from this method, 
+we're going to assign it to a variable with a type that we've said is Movie. 
+So as long as whatever is being returned from the getMovie method, is a Movie, 
+or a subclass of Movie, we can assign it to a Movie variable. 
+And because it's a Movie variable, we can call any of Movie's methods on it. 
+And that method is watchMovie.
+
+And running this code now:
+
+```java  
+Enter Type (A for Adventure, C for Comedy, S for Science Fiction, or Q to quit):
+S
+Enter Movie Title: Star-Wars
+Star-Wars is a ScienceFiction film 
+.. Bad Alien do Bad Stuff
+.. Space Guys Chase Aliens
+.. Planet Blows up
+```
+
+We get prompted to Enter the Type, so let's enter an S, for ScienceFiction, and press enter. 
+And now we'll put in the title, and I'll type in, Star-Wars, 
+but you can enter anything you want there.
+And look at the output for the Star-Wars ScienceFiction movie. 
+The code called the method watchMovie() using a Movie reference variable. 
+But at runtime, the Movie wasn't really a Movie, it was an instance of the subclass, 
+the ScienceFiction class. 
+And it was the method watchMovie(), that's actually declared on the ScienceFiction class, 
+that really got executed. 
+This is polymorphism in action. 
+Our compiled code, in the main method of the Main class, 
+never knew anything about the ScienceFiction class, or any of the other subclasses. 
+But at runtime, we got an object of type ScienceFiction back from the factory method. 
+And when the method watchMovie() was called on that, it called watchMovie on the ScienceFiction class. 
+I hope you agree with me that that's pretty neat. 
+And remember the watchMovie method on ScienceFiction, first called the method on Movie, 
+and we can see that first output statement, *Star-Wars is a ScienceFiction film*. 
+This got printed out because we called super.watchMovie(), 
+when we overrode that method, on the ScienceFiction class.
+
+This is the ability to execute different behavior for different types, 
+which are determined at runtime. 
+And yet we did it with just two statements, in the main method, as shown here:
+
+```java  
+Movie movie = Movie.getMovie(type, title);
+movie.watchMovie();
+```
+
+Polymorphism enables you to write generic code, based on the base class, or a parent class. 
+And this code, in the main method, is extendable, meaning it doesn't have to change, 
+as new subclasses become available. 
+This code can handle any instances that are a Movie, or a subclass of movie, 
+that are returned from the factory method, even ones that don't exist yet.
+
+## [g. Casting with Classes, Using Object and var References]()
+
+We showed you an example of polymorphism in action. 
+There were two lines in that code, they're really important for you to understand. 
+These are the lines:
+
+```java  
+Movie movie = Movie.getMovie("A", "Jaws");
+movie.watchMovie();
+```
+
+Now let's talk about these two lines of code, because there are several things happening here. 
+First, we're creating a variable with the Movie type, and we've called it *movie*. 
+We then assigned the result of this static method, Movie.getMovie, to that variable.
+We know we could've done this several other ways. 
+Let's use that method and try to assign it to an Adventure variable, 
+since we know that we'll really get an Adventure Movie, if we call it this way.
+
+```java  
+Adventure jaws = Movie.getMovie("A", "Jaws");
+```
+
+Now, this code doesn't compile. 
+IntelliJ tells us that the *Required Type is Adventure*, and *Provided is Movie*.
+Why is this a problem? 
+First of all, the compiler isn't going to run the code to figure out what will really happen.
+It has to be satisfied with making assumptions about the code, based on how we write the code. 
+In this case, we declared that the method, getMovie, is going to return a Movie Class.
+We didn't say it was going to return an instance of the Adventure Class. 
+The compiler asks, can every kind of Movie (which is the return type of this method),
+be called an Adventure, meaning, can every kind of Movie be assigned to an Adventure variable? 
+And here, the answer is **no**. 
+The Adventure reference, jaws, would not be able to handle a Comedy movie if that got returned, 
+for example. 
+That's because we can't say a Comedy is an Adventure. 
+But we absolutely know that when we pass the letter A as the type,
+that we'll get an Adventure movie back. 
+But the compiler can't figure that out without executing code, and it's not going to do that. 
+Now, we can give the compiler more detailed instructions to get around this issue. 
+One way to do is casting. 
+Like casting with primitives, we can cast instances, so let's do that here.
+
+```java  
+Adventure jaws = (Adventure) Movie.getMovie("A", "Jaws");
+jaws.watchMovie();
+```
+
+We'll cast the result of the Movie.getMovie, to an Adventure type. 
+And we'll also add the call to watchMovie here.
+Ok, now this code compiles, and we can give it a go, and run it:
+
+```java  
+Jaws is a Adventure film 
+.. Pleasant Scene
+.. Scary Music
+.. Something Bad Happens
+Jaws is a Adventure film
+.. Pleasant Scene
+.. Scary Music
+.. Something Bad Happens
+```
+
+And we can see that it runs just like it did, in the two lines above these. 
+But what happens if we make a mistake, and we pass a C as the type?
+
+```java  
+Adventure jaws = (Adventure) Movie.getMovie("C", "Jaws");
+jaws.watchMovie();
+```
+
+We know that doing that should give us a comedy movie. 
+But let's not change anything else, and see what happens.
+We've told the compiler, with this cast that we're smarter than it, 
+and to just leave this line alone. 
+So this code compiles. 
+But if we run it?
+
+```java  
+Exception in thread "main" java.lang.ClassCastException: class Comedy cannot be cast to class Adventure 
+        (Comedy and Adventure are in unnamed module of loader 'app') at Main.main
+```
+
+We get a special kind of exception, a ClassCastException. 
+And the message is pretty informative, that we got a Comedy object when an Adventure object was expected. 
+This is a bad situation to have your code compile, but then get exceptions at runtime. 
+Ok, maybe you're asking, when can you assign an object of one type, to a reference, 
+with a different type? 
+Well, first of all, you can assign any object to a reference that is of type Object. 
+We'll try that next. 
+First, we'll revert that last change.
+
+```java  
+Adventure jaws = (Adventure) Movie.getMovie("A", "Jaws");
+jaws.watchMovie();
+
+Object comedy = Movie.getMovie("C", "Airplane");
+comedy.watchMovie();
+comedy.watchComedy();
+```
+
+And then we'll create a comedy instance, but assign it to an Object reference. 
+Here, now we've created a variable called comedy, but we've said its type is Object. 
+And this code doesn't compile, but not on the first line where we're doing the assignment, 
+but on the second statement. 
+Can you figure out why? 
+The compiler won't use the method return type to figure out what comedy really is 
+after you make this assignment. 
+It just assumes it's an Object, and this variable only has access to Object's functionality. 
+This is because, at any time in the code, an instance of Object itself could be assigned to this variable. 
+And the code has to work for whatever object gets assigned to this variable.
+This means that when you try to call a Movie method on this object reference, you'll get an error. 
+This is because the compiler can't locate that method, watchMovie, on the Object class. 
+Let's pause here a minute to add a method on each of the subclasses, 
+and we'll make each method unique to the class.
+
+Going back to the Adventure class, we'll add a simple method, that's only on that class.
+
+```java  
+public void watchAdventure() {
+    System.out.println("Watching an Adventure!");
+}
+```
+
+And let's copy that method and paste it in the Comedy class. 
+And name it for Comedy. 
+Same, we do it for the ScienceFiction Class as well.
+
+And if we try to run watchComedy on that Object variable, 
+we have the same problem that we had with watchMovie. 
+It doesn't see that method watchComedy on the Object class, 
+and it's not going to compile. 
+Let's revert that for the moment. 
+Now, you could assign every instance to an Object reference like this, 
+but you wouldn't be able to do much with them without casting them to other typed references. 
+In other words, to run watchMovie on comedy (which has the type Object), 
+we'd have to cast it to a Movie. 
+And we can do that. 
+We'll cast the object reference to a movie reference, 
+and then we'll execute watchMovie on that new reference variable.
+
+```java  
+Movie comedyMovie = (Movie) comedy;
+comedyMovie.watchComedy();
+```
+
+What I want you to see by this is that using references that are too generic, 
+like Object, means you'll be doing a lot of casting. 
+But even now, since we cast to a Movie, check out what happens, 
+if I want to execute one of the methods we just added, watchComedy. 
+This doesn't compile either. 
+For the same reason we couldn't execute watchMovie on an Object reference, 
+we can't run watchComedy on just a Movie reference. 
+The compiler will only look at the reference type to determine if that method is on that type, 
+and watchComedy is not on the Movie class. 
+In this case, we'd need to actually cast to a more specific type, Comedy. 
+And let's do that.
+
+```java  
+Comedy comedyMovie = (Comedy) comedy;
+comedyMovie.watchComedy();
+```
+
+And now all of that works, so that's good. For good measure, let's try one other thing.
+
+```java  
+var airplane = Movie.getMovie("C", "Airplane");
+airplane.watchMovie();
+```
+
+This code compiles, but here is something new. 
+We haven't used this before, you're probably asking, what is this **var**, word mean? 
+Well, **var** is a special contextual keyword in Java, that lets our code take advantage of Local
+Variable Type Inference. 
+By using **var** as the type, we're telling Java to figure out the compile-time type for us.
+Since the Movie class was declared as the return type of the static method getMovie, 
+then Java can infer that the type of this variable, Airplane, should be a Movie. 
+You can see that in the hints if you've configured IntelliJ to show them. 
+Now why didn't it infer that it was a Comedy Class? 
+Nothing about the signature of the method indicated that a Comedy instance might be returned 
+from the method. 
+Only that a Movie would be.
+
+Ok, let's try another example of using type inference, this time by just assigning a new instance:
+
+```java  
+var plane = new Comedy("Airplane");
+plane.watchComedy();
+```
+
+In this case, the compiler had an easier job to infer the type, 
+because we're simply assigning a new instance of Comedy to this variable, plane. 
+But you can see now that using this plane variable, we can execute methods, specific to Comedy, 
+without compile time errors. 
+One of the benefits of Local Variable Type Inference(LVTI) is to help the 
+readability of the code, and to reduce boilerplate code.
+
+* It can't be used in field declarations on a class.
+* It can't be used in method signatures, either as a parameter type or a return type.
+* It can't be used without an assignment, because the type can't be inferred in that case.
+* It can't be assigned a null literal, again because a type can't be inferred in that case.
+
+Are you still confused about the difference between run-time and compile-time typing? 
+You can think of the compile time type as the declared type. 
+This type is declared either as a variable reference, or a method return type, or a method parameter, 
+for example. 
+In the case of LVTI, we don't declare a type for the compiled reference type, it gets inferred, 
+but the bytecode is the same, as if we had declared it. 
+In many cases, the compile time type is the declared type to the left of the assignment operator. 
+What is returned on the right side of the assignment operator, 
+from whatever expression or method is executed, sometimes can only be determined at runtime, 
+when the code is executed conditionally, through the statements in the code. 
+You can assign a runtime instance to a different compile time type, only if certain rules are followed. 
+In this course, up to now, we've looked at only one rule that applies, 
+and that's the inheritance rule. 
+We can assign an instance to a variable of the same type, or a parent type, 
+including java.lang.Object, the ultimate base class.
+
+Why are run-time types different from compile-time types? 
+Because of polymorphism. 
+Polymorphism lets us write code once, in a more generic fashion, 
+like the code we started this lecture with. 
+We saw that those two lines of code, using a single compile time type of Movie, 
+actually supported four different runtime types. 
+Each type was able to execute behavior unique to the class.
+
+## [h. Testing the run-time Type]()
+
+We've said that you can always assign an expression to a type, without casting, 
+if you're always assigning it to a parent class, or a base class type. 
+In this course, we're going to show you how to test what the runtime type of object really is. 
+And how do we test what the runtime type of variable really is at runtime, 
+if the declared type is something else? 
+We can test to see what type the actual object is, at runtime, in several different ways. 
+First, we can use an if statement to see what the class name of the object, 
+coming back from that method is, when this code is running. 
+Getting back to the main method, we'll add another call to the Movie.getMovie method. 
+We'll assign that to an Object reference, called unknownObject.
+
+```java  
+Object unkownObject = Movie.getMovie("S", "Star Wars");
+if (unkownObject.getClass().getSimpleName() == "Comedy") {
+    Comedy c = (Comedy) unkownObject;
+    c.watchComedy();
+} else if (unkownObject instanceof Adventure) {
+    ((Adventure) unkownObject).watchAdventure();
+} else if (unkownObject instanceof ScienceFiction syfy) {
+    syfy.watchScienceFiction();
+}
+```
+
+Here, in this if statement, we're using a method called getClass. 
+We've used this getClass method before, in the Movie class, watchMovie method. 
+But in that case, we used it with the keyword **this**, whereas here, we're simply calling it,
+on the local variable reference, unknownObject. 
+This method is available to any instance because it's a method on Object. 
+And getSimpleName is a method that returns the class name of our instance here. 
+This means we're testing if the object, coming back from that factory method, 
+has a class name that's Comedy. 
+And if it does, we can cast the object to Comedy, and assign it to a Comedy variable. 
+Then we can call any method in Comedy. 
+The reason to cast to a Comedy class here is, we want to execute the method that's specific to Comedy, 
+watchComedy. 
+Without casting to a Comedy class, we couldn't execute that method. 
+And you'll remember that we did not have to cast airplane to Comedy class, on 
+"var airplane = Movie.getMovie("C", "Airplane");", to run watchMovie, 
+and what I mean is, running the Comedy class's own version of watchMovie. 
+This is because of polymorphism, which works in this case, through the use of overridden methods. 
+Without polymorphism, you'd be in this world of having to test, at runtime, 
+what your object really is every time, to execute code. 
+This code shows you one way to test for the runtime type, but it's not the best way.
+
+Let's look at another way, testing if the object coming back might be an Adventure type.
+We'll insert a couple of statements, before that last closing bracket, 
+for the else-if statement: instanceOf. 
+Here is something new, and this is the instanceof operator. 
+The **instanceof** operator, lets you test the type of object or instance. 
+The reference variable you are testing is the left operand. 
+The type you are testing for is the right operand. 
+It's important to see that Adventure is not in quotes, 
+meaning we're not testing the type name, but the actual type. 
+This operator returns true,* if unknownObject is an instance of Adventure. 
+In our code here, we're testing if unknownObject is really an Adventure object, 
+and then, if it is, if that's true, we want to cast unknownObject to Adventure, 
+and call watchAdventure, a method that's only on the Adventure class. 
+And this next statement is different from anything I've shown you before, 
+but perfectly valid. 
+This set of outer parentheses is the result of the Adventure type, *(Adventure) unknownObject*, 
+and we can chain a method directly on that, as we do here. 
+In other words, we don't have to assign the result of the cast, to a local variable.
+
+Ok, now lastly, let's look at 1 more way to do this: 
+*else if (unknownObject **instanceof** ScienceFiction **syfy**)*. 
+Here, we can see we're using a slightly different version of the **instanceof** operator. 
+This is called pattern matching support, for the **instanceof** operator. 
+If the JVM can identify that the object matches the type, 
+it can extract data from the object, without casting. 
+For this operator, the object can be assigned to a binding variable, which here is called **syfy**. 
+The variable **syfy** (if the **instanceof** method returns true) 
+is already typed as a ScienceFiction variable. 
+You can see in our code, *syfy.watchScienceFiction();*, 
+we don't have to create the variable in the block statement, and we don't have to cast it. 
+Let's run this code through a couple of tests. 
+First, we'll run this code as it is. 
+We're interested in the last statement of the output. 
+And that gives us the last output statement, *Watching an Adventure!*. 
+Now, let's test a ScienceFiction movie, making the type a *S*, and the title Star-Wars. 
+And that gives us the output: 
+*Watching a Science Fiction Thriller!*. 
+Ok, those are a few ways to test the runtime type of object in our code. 
+You can see that this newest feature in Java makes a job a lot easier.
+
+## [i. Polymorphism Challenge]()
+
+What we want to do in this challenge is have our runtime code execute 
+different behavior for different objects. 
+Let's talk about what I want you to do in this challenge.
+
+![image11]()
+
+This diagram shows a base class, Car, with one field, description, 
+and three methods, startEngine(), drive(), and runEngine(). 
+The first two methods should be declared as public. 
+The method *runEngine* however, is protected, and it will only get called from the drive method in Car. 
+And we've given three types of subclasses, or three types of cars that you might find on the road. 
+We have the GasPoweredCar, the ElectricCar, and the HybridCar. 
+You can imagine that these three subclasses might have different ways to start their engine, 
+or drive, depending on their engine type. 
+And each of these classes might have different variables or fields that might be used in those methods. 
+We show you a few of the fields here, but you should try to be creative in your own design. 
+Maybe you might be interested in the top speed of the cars, or how fast they can accelerate, 
+or some other way you want to compare these cars' performances. 
+It's your job, to create this class structure in Java, and override some, or maybe all, 
+of these methods appropriately.
+And you'll write code in a Main class and main method, 
+that creates an instance of each of these classes, and that executes 
+different behavior for each instance. 
+At least one method should print the type of the runtime object.
+
+
 
