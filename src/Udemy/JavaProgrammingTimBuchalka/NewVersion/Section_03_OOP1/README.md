@@ -4713,152 +4713,199 @@ The String referenced by the helloWorld variable never changed,
 instead a new String was created by the method call.
 Now, let's compare that to what happened with the StringBuilder:
 
+![Step-12](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/images/11StringAndStringBuilderComparison2.png?raw=true)
+
+On these diagrams, I show String and StringBuilders in different quotation marks("" and '').
+We still have the objects in memory, that represent the String literals, 
+that were passed to the StringBuilder, in this case 'Hello World.'
+But you can see that after the call to the "append" method, we still only have one StringBuilder object.
+The variable helloWorldBuilder is still referencing the same object, 
+but the value of that object changed.
+This is important because it means the character sequence in the StringBuilder changed.
+And this time, we didn't have to assign the result to another variable to access the result.
+
+String methods create a new object in memory, and return a reference to this new object.
+StringBuilder methods return a StringBuilder reference,
+but it's really a self-reference, or a reference to the same object.
+Unlike Strings, we can call methods on StringBuilder, without the need to assign the results, 
+to intermediate variables, as we saw with Strings.
+StringBuilder methods return this self-reference to support chaining methods together.
+
+Ok, so getting back to the code.
+In the main method, we'll create two more StringBuilder instances.
+This time, we'll make them both start out with empty character sequences.
+In other words, they won't contain any characters, or any text. 
+And we'll call our printInformation method for StringBuilder for both.
+
+```java  
+StringBuilder emptyStart = new StringBuilder();
+StringBuilder emptyStart32 = new StringBuilder(32);
+
+printInformation(emptyStart);
+printInformation(emptyStart32);
+```
+
+In the first case, we don't pass any arguments in the constructor, but in the second, 
+we're passing a number, 32. 
+Let's run this and see what we get:
+
+```java  
+StringBuilder =
+length = 0
+StringBuilder =
+length = 0
+```
+
+In both cases, we have empty strings, as the value of the StringBuilder sequence; and length = 0. 
+Ok, what's the difference here?
+Before we talk about that, let's change our information method, 
+and add a call to another method on StringBuilder, a method named "capacity":
+
+```java  
+System.out.println("capacity = " + builder.capacity());
+```
+
+We'll run this code, then we'll talk about it:
+
+```java  
+StringBuilder =
+length = 0
+capacity = 16
+StringBuilder =
+length = 0
+capacity = 32
+```
+
+A StringBuilder is mutable, which means it can shrink, or grow, in size.
+By default, an empty StringBuilder starts out with a capacity of 16, 
+meaning it can contain up to 16 characters before it needs to request more memory.
+In the second example, we created a StringBuilder with a starting capacity of 32,
+which means our sequence can grow up to 32 characters, 
+without needing to request additional allocation.
+
+Every time a StringBuilder needs to increase capacity, the data stored in the original storage, 
+needs to get copied over to the larger storage area.
+Let's see this in action.
+Let's append some text to our two empty StringBuilder objects.
+
+```java  
+emptyStart.append("a".repeat(17));
+emptyStart32.append("a".repeat(17));
+```
+
+Here, we're using the repeat method, which we introduced you to in the last course. 
+So this creates a 17-character string, filled with a's.
+For the first StringBuilder object which has a capacity of 16, 
+this is going to require a request for a larger memory area to store the extra data.
+Let's run this:
+
+```java  
+StringBuilder = aaaaaaaaaaaaaaaaa
+length = 17
+capacity = 34
+StringBuilder = aaaaaaaaaaaaaaaaa
+length = 17
+capacity = 32
+```
+
+First, look at the value in the StringBuilder objects, both contain a String of a's, 
+and both have a length of 17, as expected.
+But in the first case, the capacity is now 34(when we started out with 16).
+The new allocation size is determined by JVM.
+In the second case, the capacity is still 32, because we didn't require a reallocation, 
+since the appended string still fit in the original capacity.
+
+What happens, if we change our code in the first instance, 
+to something bigger than 34 characters (which we saw was the next allocation 'step') ?
+Let's change our first call to repeat, to create a String of 57 characters.
+
+```java  
+StringBuilder = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+length = 57
+capacity = 57
+StringBuilder = aaaaaaaaaaaaaaaaa
+length = 17
+capacity = 32
+```
+
+Now, the output shows that the capacity of the first empty StringBuilder is actually the same size 
+as the String we passed in, 57. 
+At this stage, it's not that important that you understand how the next capacity is determined.
+But it is important to understand that the capacity does need to adjust, 
+as the text in your StringBuilder grows.
+If you know you plan to house a large text value in your StringBuilder object, 
+start out with a larger capacity.
+
+### Some methods unique to the StringBuilder Class
+
+| Method                   | Description                                                                                                          |
+|--------------------------|----------------------------------------------------------------------------------------------------------------------|
+| delete<br/>deleteCharAt  | You can delete a substring using indices to specify a range, or delete a single character at an index.               |
+| insert                   | You can insert text at a specified position.                                                                         |
+| reverse                  | You can reverse the order of the characters in the sequence.                                                         |
+| setLength                | setLength can be used to truncate the sequence, or include null sequence to "fill out" the sequence to that length.  |
+
+A StringBuilder class has many similar methods to Strings.
+But it also has methods to remove and insert characters or Strings, and truncate its size.
+The table above shows some of these methods.
+"delete()" and "deleteCharAt()" will remove text or a character from the StringBuilder's text.
+The "insert()" method inserts text into the StringBuilder text at the specified index.
+"reverse()" reverses the characters in the sequence, 
+and "setLength()" is a way to truncate a StringBuilder's text value.
+
+Let's code for deleting a character, the capital G, and while we're at it, 
+we'll insert a lowercase g, where the uppercase G used to be:
+
+```java  
+StringBuilder builderPlus = new StringBuilder("Hello" + " World");
+builderPlus.append(" and Goodbye");
+
+builderPlus.deleteCharAt(16).insert(16,'g');
+System.out.println(builderPlus);
+```
+
+We're chaining methods here again, this time with the StringBuilder object. 
+And running that:
+
+```java  
+Hello World and goodbye
+```
+
+The output shows that it looks like we've just replaced a big G, with a little g.
+But we did it by first using the deleteCharAt method, and then the insert method.
+The StringBuilder class does also have a replace method, which requires a start and end index,
+to identify what will be replaced, which is different from the replace method for String.
+Let's set that G back to a big G, using the StringBuilder replace method:
+
+```java  
+builderPlus.replace(16, 17, "G");
+System.out.println(builderPlus);
+```
+
+And running that:
+
+```java  
+Hello World and Goodbye
+```
+
+Again, the ending index we use with this method is used as an exclusive index, so this code
+simply replaces a single character, the letter lowercase g.
+
+And lastly, let's look at the reverse method and the "setLength" method, and we'll chain them together.
+
+```java  
+builderPlus.reverse().setLength(7);
+System.out.println(builderPlus);
+```
+
+The reverse method will reverse all the characters and then call the setLength method, 
+with the number 7, meaning we're truncating the StringBuilder text value, to seven characters.
+And running that:
+
+```java  
+eybdooG
+```
+
+And we see the result of that, Goodbye spelled backwards.
 
 
-  On these diagrams, I show String and StringBuilders in different quotation marks("" and ''). We still have the objects
-  in memory, that represent the String literals, that were passed to the StringBuilder, in this case 'Hello World'. But
-  you can see, that after the call to the "append" method, we still only have 1 StringBuilder object. The variable
-  helloWorldBuilder, is still referencing the same object, but the value of that object changed. This is important,
-  because it means the character sequence in the StringBuilder changed. And this time, we didn't have to assign the result,
-  to another variable to access the result.
-
-      String methods create a new object in memory, and return a reference to this new object. StringBuilder methods
-  return a StringBuilder reference, but it's really a self-reference, or a reference to the same object. Unlike Strings,
-  we can call methods on StringBuilder, without the need to assign the results, to intermediate variables, as we saw
-  with Strings. StringBuilder methods return this self-reference, to support chaining methods together.
-
-      Ok, so getting back to the code. In the main method, we'll create 2 more StringBuilder instances. This time, we'll
-  make them both start out with empty character sequences. In other words, they won't contain any characters, or any text.
-  And we'll call our printInformation method for StringBuilder for both.
-
-                      StringBuilder emptyStart = new StringBuilder();
-                      StringBuilder emptyStart32 = new StringBuilder(32);
-
-                      printInformation(emptyStart);
-                      printInformation(emptyStart32);
-
-  In the first case, we don't pass any arguments in the constructor, but in the second, we're passing a number, 32. Let's
-  run this and see what we get:
-
-                      StringBuilder =
-                      length = 0
-                      StringBuilder =
-                      length = 0
-
-  In both cases, we have empty strings, as the value of the StringBuilder sequence, and length = 0. Ok, what's the difference
-  here? Before we talk about that, let's change our information method, and add a call to another method on StringBuilder,
-  a method named "capacity":
-
-                      System.out.println("capacity = " + builder.capacity());
-
-  we'll run this code, then we'll talk about it:
-
-                      StringBuilder =
-                      length = 0
-                      capacity = 16
-                      StringBuilder =
-                      length = 0
-                      capacity = 32
-
-  A StringBuilder is mutable, which means it can shrink, or grow, in size. By default, an empty StringBuilder starts out
-  with a capacity of 16, meaning it can contain up to 16 characters, before it needs to request more memory. In the second
-  example, we created a StringBuilder with a starting capacity of 32, which means our sequence can grow up to 32 characters,
-  without needing to request additional allocation.
-
-      Every time a StringBuilder needs to increase capacity, the data stored in the original storage, needs to get copied
-  over to the larger storage area. Let's see this in action. Let's append some text to our 2 empty StringBuilder objects.
-
-                      emptyStart.append("a".repeat(17));
-                      emptyStart32.append("a".repeat(17));
-
-  Here, we're using the repeat method, which we introduced you to in the last course. So this creates a 17 character string,
-  filled with a's. For the first StringBuilder object, which has a capacity of 16, this is going to require a request
-  for a larger memory area, to store the extra data. Let's run this:
-
-                      StringBuilder = aaaaaaaaaaaaaaaaa
-                      length = 17
-                      capacity = 34
-                      StringBuilder = aaaaaaaaaaaaaaaaa
-                      length = 17
-                      capacity = 32
-
-  First, look at the value in the StringBuilder objects, both contain a String of a's, and both have a length of 17, as
-  expected. But in the first case, the capacity is now 34(when we started out with 16). The new allocation size is
-  determined by JVM. In the second case, the capacity is still 32, because we didn't require a reallocation, since the
-  appended string still fit in the original capacity.
-
-      What happens, if we change our code in the first instance, to something bigger than 34 characters(which we saw was
-  the next allocation 'step')? Let's change our first call to repeat, to create a String of 57 characters.
-
-                      StringBuilder = aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                      length = 57
-                      capacity = 57
-                      StringBuilder = aaaaaaaaaaaaaaaaa
-                      length = 17
-                      capacity = 32
-
-  Now, the output shows that the capacity of the first empty StringBuilder, is actually the same size, as the String we
-  passed in, 57. At this stage, It's not that important that you understand how the next capacity is determined. But it
-  is important to understand that the capacity does need to adjust, as the text in your StringBuilder grows. If you know
-  you plan to house a large text value in your StringBuilder object, start out with a larger capacity.
-
-                                  Some methods unique to the StringBuilder Class
-
-              method              description
-              --------------------------------------------------------------------------------------------------------
-              delete              You can delete a substring using indices to specify a range, or delete a single character
-              deleteCharAt        at an index.
-              --------------------------------------------------------------------------------------------------------
-              insert              You can insert text at a specified position.
-              --------------------------------------------------------------------------------------------------------
-              reverse             You can reverse the order of the characters in the sequence.
-              --------------------------------------------------------------------------------------------------------
-              setLength           setLength can be used to truncate the sequence, or include null sequence to "fill out"
-                                  the sequence to that length.
-              --------------------------------------------------------------------------------------------------------
-
-  A StringBuilder class has many similar methods to Strings. But it also has methods to remove and insert characters or
-  Strings, and truncate it's size. The table above shows some of these methods. delete() and deleteCharAt() will remove
-  text or a character from the StringBuilder's text. The insert() method inserts text, into the StringBuilder text at
-  the specified index. reverse() reverses the characters in the sequence. And setLength() is a way to truncate a StringBuilder's
-  text value.
-
-      Let's code for deleting a character, the capital G, and while we're at it, we'll insert a lowercase g, where the
-  uppercase G used to be:
-
-                          StringBuilder builderPlus = new StringBuilder("Hello" + " World");
-                          builderPlus.append(" and Goodbye");
-
-                          builderPlus.deleteCharAt(16).insert(16,'g');
-                          System.out.println(builderPlus);
-
-  We're chaining methods here again, this time with the StringBuilder object. And running that:
-
-                          Hello World and goodbye
-
-  the output shows that it looks like we've just replaces a big G, with a little g. But we did it by, first using the
-  deleteCharAt method, and then the insert method. The StringBuilder class does also have a replace method, which requires
-  a start and end index, to identify what will be replaced, which is different from the replace method for String. Let's
-  set that G back to a big G, using the StringBuilder replace method:
-
-                          builderPlus.replace(16, 17, "G");
-                          System.out.println(builderPlus);
-
-  And running that:
-
-                          Hello World and Goodbye
-
-  Again, the ending index we use with this method is used as an exclusive index, so this code, simply replaces a single
-  character, the letter lowercase g.
-
-      And lastly, let's look at the reverse method and the setLength method, and we'll chain them together.
-
-                          builderPlus.reverse().setLength(7);
-                          System.out.println(builderPlus);
-
-  The reverse method will reverse all tha characters and then call the setLength method, with the number 7, meaning we're
-  truncating the StringBuilder text value, to 7 characters. and running that:
-
-                          eybdooG
-
-  And we see the result of that, Goodbye spelled backwards.

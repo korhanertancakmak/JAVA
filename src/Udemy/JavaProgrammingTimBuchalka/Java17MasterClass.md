@@ -50,10 +50,7 @@ What we will learn from this Path:
 ### [p. The Text Block and other Formatting Options]()
 ### [r. Another Look at the String]()
 ### [q. String Manipulation Methods]()
-
-    * StringBuilder class
-        * Challenge-36: Cylinder
-        * Challenge-37: Pool Area
+### [s. The StringBuilder Class]()
 
 ## ![4. OOP Part-2 Polymorphism]()
 
