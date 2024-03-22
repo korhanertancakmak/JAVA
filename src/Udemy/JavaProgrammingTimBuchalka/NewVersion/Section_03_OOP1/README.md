@@ -4037,7 +4037,7 @@ There are two methods, indexOf, and lastIndexOf, that can tell us if the
 String value contains a specified character, or substring.
 The method isEmpty() and isBlank() tell us whether the sequence is empty, or contains just white space characters.
  
-Let's start with another method, that will print some String information, 
+Let's start with another method that will print some String information, 
 using a couple of the inspection methods:
 
 ```java  
@@ -4101,7 +4101,7 @@ if (string.isEmpty()) {
 }
 ```
 
-Let's test an empty String, by calling this from the main method:
+Let's test an empty String by calling this from the main method:
 
 ```java  
 printInformation("");
@@ -4129,7 +4129,7 @@ if (string.isBlank()) {
 }
 ```
 
-Now, we'll add another call to our print method, in the main method:
+Now, we'll add another call to our print method in the main method:
 
 ```java  
 printInformation("\t   \n");
@@ -4509,9 +4509,9 @@ And if we run that:
 
 The replaceFirst method just replaces the first instance, where there's a match, 
 so only the first "/" was replaced with a "-".
-In contrast, the replaceAll method, replaced all occurrences.
+In contrast, the replaceAll method replaced all occurrences.
 
-There's another important difference between these two methods, and the replace method.
+There's another important difference between these two methods and the replace method.
 The first argument for these last two methods is really a regular expression String,
 which is a special syntax; that looks for patterns in a String. 
 We'll look at regular expressions later in the course, but in general, 
@@ -4734,7 +4734,7 @@ StringBuilder methods return this self-reference to support chaining methods tog
 Ok, so getting back to the code.
 In the main method, we'll create two more StringBuilder instances.
 This time, we'll make them both start out with empty character sequences.
-In other words, they won't contain any characters, or any text. 
+In other words, they won't contain any characters or any text. 
 And we'll call our printInformation method for StringBuilder for both.
 
 ```java  
@@ -4783,7 +4783,7 @@ In the second example, we created a StringBuilder with a starting capacity of 32
 which means our sequence can grow up to 32 characters, 
 without needing to request additional allocation.
 
-Every time a StringBuilder needs to increase capacity, the data stored in the original storage, 
+Every time a StringBuilder needs to increase capacity, the data stored in the original storage 
 needs to get copied over to the larger storage area.
 Let's see this in action.
 Let's append some text to our two empty StringBuilder objects.
@@ -4815,8 +4815,8 @@ The new allocation size is determined by JVM.
 In the second case, the capacity is still 32, because we didn't require a reallocation, 
 since the appended string still fit in the original capacity.
 
-What happens, if we change our code in the first instance, 
-to something bigger than 34 characters (which we saw was the next allocation 'step') ?
+What happens if we change our code in the first instance, 
+to something bigger than 34 characters (which we saw was the next allocation 'step')?
 Let's change our first call to repeat, to create a String of 57 characters.
 
 ```java  
