@@ -4693,67 +4693,27 @@ length = 23
 Look carefully at the results. 
 String is still "Hello World," but StringBuilder is "Hello World and Goodbye," 
 and its length is increased.
-Let's talk about what happened, by looking at a quick diagram:
+Let's talk about what happened by looking at a quick diagram:
+
+![Step-11](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/images/10StringAndStringBuilderComparison.png?raw=true)
+
+When we passed the String literal, "and Goodbye," to the concat method, 
+this created an Object in memory for that literal, "and Goodbye."
+It also created the result of the concat method, the object, the String, that has the value, 
+"Hello World and Goodbye."
+But our code has a mistake in it, because we didn't assign the result of the method, 
+the concat method, to a variable.
+This is actually a common mistake to make.
+
+It's important to remember to assign the result of any String manipulation method you call on a String, 
+to a variable. 
+These methods don't change the internals of the existing String object, 
+as we show in the second diagram above.
+The String referenced by the helloWorld variable never changed, 
+instead a new String was created by the method call.
+Now, let's compare that to what happened with the StringBuilder:
 
 
-
-                            Memory before executing helloWorld.concat method
-
-                                      |¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯|
-                                      |        Heap Memory      |
-                                      |                         |
-                      helloWorld ==========>  "Hello World"     |
-                                      |                         |
-                                      |                         |
-                                      |_________________________|
-
-                            Memory after executing helloWorld.concat method
-
-                                      |¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯|
-                                      |        Heap Memory      |
-                                      |                         |
-                      helloWorld ==========>  "Hello World"     |
-                                      |                         |
-                                      |      " and Goodbye"     |
-                                      |                         |
-                                      |"Hello World and Goodbye"|
-                                      |                         |
-                                      |_________________________|
-
-  When we passed the String literal, "and Goodbye", to the concat method, this created an Object in memory for that literal,
-  " and Goodbye". It also created the result of the concat method, the object, the String, that has the value, "Hello
-  World and Goodbye". But our code has a mistake in it, because we didn't assign the result of the method, the concat
-  method, to a variable. This is actually a common mistake to make.
-
-      It's important to remember to assign the result, of any String manipulation method you call on a String, to a variable.
-  These methods don't change the internals of the existing String object, as we show at the second diagram above. The
-  String referenced by the helloWorld variable never changed, instead a new String was created by the method call. Now,
-  let's compare that to what happened with the StringBuilder:
-
-                            Memory before executing helloWorldBuilder.append method
-
-                                      |¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯|
-                                      |        Heap Memory      |
-                                      |                         |
-               helloWorldBuilder ===  |       "Hello World"     |
-                                   ∥  |                         |
-                                   ∥  |                         |
-                                   ========>  'Hello World'     |
-                                      |                         |
-                                      |_________________________|
-
-                            Memory after executing helloWorldBuilder.append method
-
-                                      |¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯ ¯|
-                                      |        Heap Memory      |
-                                      |                         |
-               helloWorldBuilder ===  | "Hello World"           |
-                                   ∥  |                         |
-                                   ∥  |         " and Goodbye"  |
-                                   ∥  |                         |
-                                   ===>'Hello World and Goodbye'|
-                                      |                         |
-                                      |_________________________|
 
   On these diagrams, I show String and StringBuilders in different quotation marks("" and ''). We still have the objects
   in memory, that represent the String literals, that were passed to the StringBuilder, in this case 'Hello World'. But
