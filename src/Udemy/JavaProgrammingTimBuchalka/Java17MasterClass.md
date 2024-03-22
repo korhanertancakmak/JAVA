@@ -46,6 +46,8 @@ What we will learn from this Path:
 ### [l. Inheritance (Part-II)]()
 ### [m. Inheritance (Part-III)]()
 ### [n. What is Java.lang.Object?]()
+### [o. Inheritance Challenge]()
+### [p. The Text Block and other Formatting Options]()
 
         * Challenge-32: Wall Area
         * Challenge-33: Point

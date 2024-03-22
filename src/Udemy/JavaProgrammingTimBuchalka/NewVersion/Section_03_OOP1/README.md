@@ -2002,7 +2002,7 @@ Let's see what this class might look like on a class diagram.
 This is just a drawing of the class, showing its fields first, 
 and methods or behaviors in the section below that.
 
-A class diagram, allows us to design our classes before we build them. 
+A class diagram allows us to design our classes before we build them. 
 This diagram shows the Animal class, with the attributes we think that every kind of animal has. 
 All animals have a type (what kind of animal it is). 
 All animals have a size and a weight. 
@@ -2170,7 +2170,7 @@ public static void doAnimalStuff(Animal animal, String speed) {
 }
 ```
 
-This method is static, because we want to call it from the main method. 
+This method is static because we want to call it from the main method. 
 The last line is just to separate the data, so reading the output is easier. 
 Let's create an instance of Animal first, and then pass that to this method:
 
@@ -2223,11 +2223,11 @@ The code compiles, runs, and we get output.
 We created a Dog with a default constructor(no arguments passed), 
 so nothing got set on this class, 
 but you can see Dog has inherited all-Animals attributes on that last line. 
-The values have the default values for their type, 
+The values have the default values for their type 
 because we didn't create a way to pass any data to these fields on Dog. 
 So far, all we've done with Dog is extend Animal. 
 Next, let's change our default constructor in Dog, and this time, 
-when we call "super()", we'll pass values to Animal's three parameter constructors. 
+when we call "super()", we'll pass values to Animal's three-parameter constructors. 
 We'll pass the type of dog, which here we'll call it a mutt, then the size, big, and 50 for the weight.
 
 ```java  
@@ -2315,14 +2315,14 @@ public Dog(String type, double weight, String earShape, String tailShape) {
 }
 ```
 
-This constructor has a combination of the Dog and the Animal fields, in its argument list. 
+This constructor has a combination of the Dog and the Animal fields in its argument list. 
 We can pass it the type of the dog, the dog's weight, and the earShape and tailShape. 
 We're calling the super constructor to set some of our fields, the Animal specific fields. 
 And for the size, we're deriving the size of the dog from the weight, small, medium, or large. 
 To do this, we use a nested ternary operator, which is passed directly to the super constructor. 
 We couldn't do this operation before the call to super, because "super()" must be the first statement. 
 But we can do it directly like this, as an expression, in the argument list. 
-This is one way to perform calculations, in your constructor, and pass the result to the super call. 
+This is one way to perform calculations in your constructor, and pass the result to the super call. 
 After the call to the super constructor, we set some of the Dog-specific attributes, 
 the earShape and tailShape; that were passed to us.
 
@@ -2352,12 +2352,12 @@ public String toString() {
 }
 ```
 
-You can see 2 new fields there, plus a call to super.toString(). 
+You can see two new fields there, plus a call to super.toString(). 
 Now, this super is different from the super parentheses call. 
 It's a lot like using the "this" notation to access a field on the current instance. 
 This code lets us call a method of superclass. 
 We'll talk about this a lot more in upcoming courses. 
-I want to add 1 more constructor, after the first one, before we test this:
+I want to add one more constructor, after the first one, before we test this:
 
 ```java  
 public Dog(String type, double  weight) {
@@ -2365,7 +2365,7 @@ public Dog(String type, double  weight) {
 }
 ```
 
-This constructor makes it even simpler to create a Dog object, 
+This constructor makes it even simpler to create a Dog object 
 for the majority of dogs (if their ears are Perky, and their tails are Curled). 
 It calls the other Dog constructor that has four parameters, which in turn calls the Animal constructor.
 We're using constructor chaining to make this work. 
@@ -2398,7 +2398,7 @@ We get all the fields that are specific for Dog, and the fields that are more ge
 That's because our toString method printed out the Dog fields then made a call to super.toString(), 
 which was Animal's toString method. 
 We were also able to calculate the size of the dog, based on its weight. 
-And we created constructors for Dog, that targeted more Dog-like features, 
+And we created constructors for Dog that targeted more Dog-like features, 
 and passed default values for Animal's more general fields.
 
 Let's talk a little bit about the behavior of Animal and Dog next. 
@@ -2491,7 +2491,7 @@ to show different behavior for that method.
 So notice, in IntelliJ that it has a special icon next to this makeNoise method, 
 the little o with an arrow.
 This is IntelliJ telling us this method is overriding a parent class's method.
-Another option, is to use IntelliJ's code generation tool to override methods.
+Another option is to use IntelliJ's code generation tool to override methods.
 
 Let's use that way now, to override the move method on Animal.
 Select 'Code' from the menu, but let's select 'Override Methods' this time. 
@@ -2507,9 +2507,9 @@ public void move(String speed) {
 }
 ```
 
-Now, look at the difference, between the code we created manually, the makeNoise method, 
-and this one, the move method that IntelliJ created for us. 
-IntelliJ's generation tool adds this @Override symbol, and that's to remind us, 
+Now, look at the difference between the code we created manually, the makeNoise method, 
+and this one, "move" method that IntelliJ created for us. 
+IntelliJ's generation tool adds this @Override symbol, and that's to remind us 
 that we're overriding a method in the superclass. 
 In this case, it's in the Animal class. 
 And notice that the automatically generated code 
@@ -2526,7 +2526,7 @@ It made all our dogs silent, for the moment.
 Next, let's extend the functionality for the move method. 
 This means we'll do what the animal class does, but we'll do additional stuff as well. 
 We'll leave the "super.move" statement there, but we'll add more code. 
-Here, we'll just print out another statement, that Dogs walk and run, and wag their tail:
+Here, we'll just print out another statement that Dogs walk and run, and wag their tail:
 
 ```java  
 @Override
@@ -2557,7 +2557,7 @@ Dog{earShape='Floppy', tailShape='Swimmer'} Animal{type='Labrador Retriever', si
 _ _ _ _
 ```
 
-We can see from the output, that when we called the move method, 
+We can see from the output that when we called the move method, 
 we did what Animal had us do with that statement, 
 "Yorkie moves fast" but we added another line of text to the output, 
 "Dogs walk, run and wag their tail." 
@@ -2642,7 +2642,7 @@ Dog{earShape='Floppy', tailShape='Swimmer'} Animal{type='Labrador Retriever', si
 _ _ _ _
 ```
 
-the output shows our dogs moving, first the "yorkie moves fast" 
+The output shows our dogs moving, first the "yorkie moves fast" 
 and then it prints "Dog running, woof!"
 Then we have "Labrador Retriever moves slow"
 and that's now also printing "Dog walking, tail wagging."
@@ -2694,7 +2694,7 @@ public void makeNoise() {
 }
 ```
 
-Now, in this case, where we're referencing type we get a compiler error, 
+Now, in this case, where we're referencing a type, we get a compiler error, 
 which says "**type** has private access in **Animal**. 
 This is because the type has private access in Animal. 
 But the type is one of the fields inherited by Dog.
@@ -2704,7 +2704,7 @@ We've said there's a modifier that allows access for subclasses, and that's the 
 Let's go to the Animal class, and change the modifier from private to protect for the type field. 
 What this modifier says is, let any class, that is a subclass, access this field. 
 This is a conditional encapsulation. 
-We're allowing some limited access, to our internal fields, and that's to subclass. 
+We're allowing some limited access to our internal fields, and that's to subclass. 
 Protected access also means that any classes in the same package will also have access. 
 And changing that modifier means our code compiles successfully.
 
@@ -2712,7 +2712,7 @@ Let's look at that code in Dog again.
 Notice here that we just simply reference type here. 
 We didn't add any other qualifier, not this(), or super(),
 and we didn't have to call the type from a different instance of Dog.
-This is another advantage of Inheritance, for fields and methods that aren't private.
+This is another advantage of Inheritance for fields and methods that aren't private.
 They can be accessed directly, as if they really were declared, on the subclass itself.
 Java first looks on the subclass for a method or a field with that name; 
 then it'll go up the inheritance tree, looking for a match.
@@ -2949,7 +2949,7 @@ public class Main extends Object{
 
 For now, I'll just say that Java has a way of implicitly doing things that make our jobs easier. 
 One of these is to include all Objects from its core libraries automatically, 
-so we can refer to them like we do here, as simply Object for example. 
+so we can refer to them like we do here, as Object, for example. 
 The other is to implicitly have all classes extend this Object class, 
 that do not explicitly extend from another class. 
 Just to be clear, we can show this on a class diagram:
@@ -3006,9 +3006,9 @@ Student@5f184fc6
 You can get something different, but that's fine, and I'll explain it soon. 
 What is that? 
 Well, the code in the toString method in Object class, 
-prints out the classname (which in our case is Student), 
+prints out the class name (which in our case is Student), 
 followed by an at sign, then the hashCode of the object. 
-A hashCode is an integer, that is unique to an instance (in the currently executing code). 
+A hashCode is an integer that is unique to an instance (in the currently executing code). 
 When an instance is created, it's assigned a hashCode, 
 and that hashCode is what can tell us if our multiple references 
 are pointing to a single instance. It's a mechanism for comparison, in other words. 
@@ -3060,7 +3060,7 @@ Student{name='Max', age=21}
 
 The Student class name still, but now in brackets, 
 we can see this object has name equals Max, and age = 21. 
-Let's change this and just simplify it. 
+Let's change this and simplify it. 
 We don't really care that the class name is Student. 
 We'll comment out the default generated code, and simply return the student name, 
 and say how old they are:
@@ -3104,7 +3104,7 @@ Max is 21
 
 We can confirm that this code is really calling the toString method on Student, 
 and Max is 21 is still printed out. 
-And what happens, if we now have another class, that extends Student?
+And what happens if we now have another class that extends Student?
 Let's create a PrimarySchoolStudent class, 
 which would be a student who is age 5 to 12, for example, 
 in elementary or primary school. 
@@ -3206,382 +3206,699 @@ which means all class can use, or override, Object's methods.
 For this challenge, I'm going to show you a class diagram, like we worked with in the previous courses.
 This describes a lot of the challenges in a diagram.
 
-                                               Worker   =>
-                                                            name: String
-                                                            birthDate: String
-                                                            endDate: String
-                                                            ---------------------
-                                                            int getAge()
-                                                            double collectPay()
-                                                            terminate(String endDate)
-                                                       ↑
-                                               Employee =>
-                                                            employeeId:long
-                                                            hireDate:String
-                                                            ----------------
-                                                       ↑
-                           |¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯|
-                SalariedEmployee =>                                          HourlyEmployee =>
-                                    annualSalary: double                                        hourlyPayRate: double
-                                    isRetired: boolean                                          ----------------------
-                                    ----------------------                                      getDoublePay()
-                                    retire()
+![Step-9](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/images/08WorkerClassTree.png?raw=true)
 
-        This diagram starts with Worker at the top of the hierarchy, this the base, or super class. It shows one subclass,
-    Employee, but you could imagine other types of workers, perhaps Contractors, and Interns, for example. From Employee,
-    we have 2 subclasses, these are Salaried Employee, and HourlyEmployee.
+This diagram starts with Worker at the top of the hierarchy, this the base, or superclass. 
+It shows one subclass, Employee, but you could imagine other types of workers, 
+perhaps Contractors, and Interns, for example.
+From Employee, we have two subclasses, these are SalariedEmployee and HourlyEmployee.
 
-        Your challenge is to create the Worker class, the Employee class, and either the SalariedEmployee, and HourlyEmployee
-    class. You don't have to do both, but if you want to, go right ahead. For each class, create the attributes and methods
-    shown on this diagram. Note that Employee has no methods of its own. Create a main method that will create either a
-    SalariedEmployee or HourlyEmployee, and call the methods, getAge, collectPay, and the method shown for the specific
-    type of class you decide to implement. So if you implement SalariedEmployee, then execute retire(). If you implement
-    HourlyEmployee, then execute getDoublePay().
+Your challenge is to create the Worker class, the Employee class, and either the SalariedEmployee, 
+and HourlyEmployee class. 
+You don't have to do both, but if you want to, go right ahead. 
+For each class, create the attributes and methods shown on this diagram. 
+Note that Employee has no methods of its own. 
+Create a main method that will create either a SalariedEmployee or HourlyEmployee, 
+and call the methods, getAge, collectPay, 
+and the method shown for the specific type of class you decide to implement. 
+So if you implement SalariedEmployee, then execute retire(). 
+If you implement HourlyEmployee, then execute getDoublePay().
 
-        Logically, we'd start at the top of the hierarchy, which is our most generic class or base class, this is our super
-    class, and in this case, that's the Worker class. After creating Worker class, since our diagram identified at least
-    3 attributes that a Worker might have, name, birthdate, and endDate, which would be the employment end date.
+Logically, we'd start at the top of the hierarchy, which is our most generic class or base class, 
+this is our superclass, and in this case, that's the Worker class. 
+After creating Worker class, since our diagram identified at least 3 attributes 
+that a Worker might have, name, birthdate, and endDate,
+which would be the employment end date.
 
-                    private String name;
-                    private String birthDate;
-                    protected String endDate;
+```java  
+private String name;
+private String birthDate;
+protected String endDate;
+```
 
-    I made these attributes private, except for endDate. The endDate will get set by a method, either on this class or a
-    subclass, so making it protected, will give a subclass the flexibility to operate on it. Next, we'll create at least
-    1 constructor. Let's use IntelliJ's code generation for this, let's pick just name and birthdate. It's unlike if when
-    we create a new Worker, we'd know the endDate, so I'm not going to include it here.
+I made these attributes private, except for endDate. 
+The endDate will get set by a method, either on this class or a subclass, 
+so making it protected, will give a subclass the flexibility to operate on it. 
+Next, we'll create at least one constructor. 
+Let's use IntelliJ's code generation for this, let's pick just name and birthdate. 
+It's unlike if when we create a new Worker, we know the endDate, so I'm not going to include it here.
 
-                    public Worker(String name, String birthDate) {
-                        this.name = name;
-                        this.birthDate = birthDate;
-                    }
+```java  
+public Worker(String name, String birthDate) {
+    this.name = name;
+    this.birthDate = birthDate;
+}
+```
 
-    We also want to add a default constructor on Worker, which gives our subclasses a little more flexibility.
+We also want to add a default constructor on Worker, which gives our subclasses a little more flexibility.
 
-                    public Worker() {
-                    }
+```java  
+public Worker() {
+}
+```
 
-    We could add getters and setters at this point, but we don't really need them for this challenge. Next, let's add the
-    method, and generate a toString method for this class. Taking another look at the Worker class.
+We could add getters and setters at this point, but we don't really need them for this challenge. 
+Next, let's add the method, and generate a toString method for this class. 
+Taking another look at the Worker class.
 
-                    Worker   =>
-                                 name: String
-                                 birthDate: String
-                                 endDate: String
-                                 ---------------------
-                                 int getAge()
-                                 double collectPay()
-                                 terminate(String endDate)
+We can see the methods are getAge(), collectPay(), and terminate(). 
+Starting with getAge(). 
+This should return an int that represents the age of the person, 
+using the currentYear and the birthDate, which is a String.
 
-    We can see the methods are getAge(), collectPay(), and terminate(). Starting with getAge(). This should return an int,
-    that represents the age of the person, using the currentYear and the birthDate, which is a String.
+```java  
+public int getAge() {
+    int currentYear = 2025;
+    return currentYear-Integer.parseInt(birthDate.substring(6));
+}
+```
 
-                    public int getAge() {
-                        int currentYear = 2025;
-                        return currentYear-Integer.parseInt(birthDate.substring(6));
-                    }
+This code starts out by creating local variable for the currentYear, 
+which we arbitrarily set to 2025. 
+We're going to assume dates (birthdate, hire date, and end date) will be in the format, 
+MM/DD/YYYY. 
+We'll use a method on String called "substring," to get the birth year in birthDate. 
+For this method, substring, we pass the start position of the String we want to extract, 
+and since indices start with zero, the birt year starts at position 6. 
+If we only pass the start position, and not the end position, 
+the String returned will be whatever is from the start position, to the end of the String. 
+Then we use the Integer wrapper's parseInt method, to turn a String into an integer, 
+which we've done before. 
+Lastly, we return the difference between currentYear, and the birthYear to estimate age. 
+That's the getAge() method.
 
-    This code starts out by creating local variable for the currentYear, which we arbitrarily set to 2025. We're going to
-    assume dates(birth date, hire date, and end date) will be in the format, MM/DD/YYYY. We'll use a method on String called
-    "substring", to get the birth year in birthDate. For this method, substring, we pass the start position of the String
-    we want to extract, and since indices start with zero, the birt year starts at position 6. If we only pass the start
-    position, and not the end position, the String returned will be whatever is from the start position, to the end of the
-    String. Then we use the Integer wrapper's parseInt method, to turn a String into an integer, which we've done before.
-    Lastly, we return the difference between currentYear, and the birthYear, to estimate age. That's the getAge() method.
+Let's add the collectPay method, this will just return a double, representing pay, 
+that will be received for a work period. 
+We'll just return 0.0 for Worker's collectPay method.
 
-        Let's add the collectPay method, this will just return a double, representing pay, that will be received for a work
-    period. We'll just return 0.0 for Worker's collectPay method.
+```java  
+public double collectPay() {
+    return 0d;
+}
+```
 
-                    public double collectPay() {
-                        return 0d;
-                    }
+This method is one that subclasses should override, 
+that can figure out the right pay to return, based on the type of worker, etc. 
+And now let's add the last method, terminate, which is terminating employment really. 
+This will take a date and set the endDate to that day.
 
-    This method is one which should be overridden by subclasses, that can figure out the right pay to return, based on the
-    type of worker, etc. And now let's add the last method, terminate, which is terminating employment really. This will
-    take a date, and set the endDate to that day.
+```java  
+public void terminate(String endDate) {
+    this.endDate = endDate;
+}
+```
 
-                    public void terminate(String endDate) {
-                        this.endDate = endDate;
-                    }
+It looks like a setter, doesn't it?
+We could've just created a setter, 
+but creating a terminate method is a bit clearer for the business logic. 
+And subclasses might want to override it, and add additional code,
+that's specific to terminating employment, of a certain type of Worker.
 
-    It looks like a setter, doesn't it? We could've just created a setter, but creating a terminate method, is a bit clearer
-    for the business logic. And subclasses might want to override it, and add additional code, that's specific to terminating
-    employment, of a certain type of Worker.
+Finally, let's generate the toString method for Worker, so we'll pick Code from the Menu, 
+Generate, then toString, and all the fields:
 
-        Finally, let's generate the toString method for Worker, so we'll pick Code from the Menu, Generate, then toString,
-    and all the fields:
+```java  
+@Override
+public String toString() {
+    return "Worker{" +
+            "name='" + name + '\'' +
+            ", birthDate='" + birthDate + '\'' +
+            ", endDate='" + endDate + '\'' +
+            '}';
+}
+```
 
-                    @Override
-                    public String toString() {
-                        return "Worker{" +
-                                "name='" + name + '\'' +
-                                ", birthDate='" + birthDate + '\'' +
-                                ", endDate='" + endDate + '\'' +
-                                '}';
-                    }
+Ok, so that's our superclass. 
+Now, let's create the Employee.
+For this class, we have specific Employee attributes, employeeId, and hireDate. 
+For simplicity's sake, we haven't included any methods specific to an Employee. 
+But you could probably think of some, like getaJobReview, or takeaVacation for example.
+Let's build this.
+After creating a new class named "Employee" we also add "extends Worker":
 
-    Ok, so that's our super class. Now, let's create the Employee. Let's look at that class again.
+```java  
+public class Employee extends Worker{
+    private long employeeId;
+    private String hireDate;
+}
+```
+                    
+And so we have a subclass with its own fields. 
+Let's generate the constructor with all fields. 
+You'll notice this time that we can pick which constructor, on the superclass, 
+will get called from this constructor. 
+Let's pick the one with two fields.
 
-                    Employee =>
-                                employeeId:long
-                                hireDate:String
-                                ----------------
+```java  
+public Employee(String name, String birthDate, long employeeId, String hireDate) {
+    super(name, birthDate);
+    this.employeeId = employeeId;
+    this.hireDate = hireDate;
+}
+```
 
-    For this class, we have specific Employee attributes, employeeId, and hireDate. For simplicity's sake, we haven't included
-    any methods specific to an Employee. But you could probably think of some, like getaJobReview, or takeaVacation for
-    example.
+You can see the call to super constructor, as the first statement in this constructor. 
+You'll remember this has to be the first statement, otherwise we'll get a compiler error. 
+This constructor has four fields, two fields that were declared by the Worker class, 
+and other two fields declared in the Employee class. 
+Let's add toString next. 
+Remember to include the superclass toString method as well 
+if it's not selected by default.
 
-        Let's build this. After creating a new class named "Employee", we also add "extends Worker":
+```java  
+@Override
+public String toString() {
+    return "Employee{" +
+            "employeeId=" + employeeId +
+            ", hireDate='" + hireDate + '\'' +
+            "} " + super.toString();
+}
+```
 
-                    public class Employee extends Worker{
-                        private long employeeId;
-                        private String hireDate;
-                    }
+And now, let's test the code we have so far. 
+We'll open up the Description.txt file, and add some code to the main method.
 
-    And so we have a subclass with its own fields. Let's generate the constructor with all fields. You'll notice this time
-    that we can pick which constructor, on the super class, will get called from this constructor. Let's pick the one with
-    2 fields.
-
-                    public Employee(String name, String birthDate, long employeeId, String hireDate) {
-                        super(name, birthDate);
-                        this.employeeId = employeeId;
-                        this.hireDate = hireDate;
-                    }
-
-    You can see the call to super constructor, as the first statement in this constructor. You'll remember this has to be
-    the first statement, otherwise we'll get a compiler error. This constructor has 4 fields, 2 fields that were declared
-    by the Worker class, and other 2 fields declared on the Employee class. Let's add toString next. Remember to include
-    the super class toString method as well, if it's not selected by default.
-
-                    @Override
-                    public String toString() {
-                        return "Employee{" +
-                                "employeeId=" + employeeId +
-                                ", hireDate='" + hireDate + '\'' +
-                                "} " + super.toString();
-                    }
-
-    And now, let's test the code we have so far. We'll open up the Description.txt file, and add some code to the main method.
-
-                    Employee korhan = new Employee("Korhan", "02/09/1990",
-                            77001, "01/01/2020");
+```java  
+Employee korhan = new Employee("Korhan", "02/09/1990",
+        77001, "01/01/2020");
                     System.out.println(korhan);
                     System.out.println("Age = " + korhan.getAge());
-                    System.out.println("Pay = " + korhan.collectPay());
+        System.out.println("Pay = " + korhan.collectPay());
+```
 
-    And running this code:
+And running this code:
 
-                    Employee{employeeId=77001, hireDate='01/01/2020'} Worker{name='Korhan', birthDate='02/09/1990', endDate='null'}
-                    Age = 35
-                    Pay = 0.0
+```java  
+Employee{employeeId=77001, hireDate='01/01/2020'} Worker{name='Korhan', birthDate='02/09/1990', endDate='null'}
+Age = 35
+Pay = 0.0
+```
 
-    we get Korhan's information all printed out, when we pass Korhan to System.out.println. And then we've printed out age,
-    which was calculated to be 35, if the year is 2025, and the pay is 0. This is all good, but let's not pass employeeId
-    on the constructor. Let's generate it. We can do this by setting a static field called employeeNumber, on Employee.
-    Let's set that to 1, so our first Employee is Employee 1.
+We get Korhan's information all printed out when we pass Korhan to System.out.println. 
+And then we've printed out age, which was calculated to be 35 if the year is 2025, and the pay is 0. 
+This is all good, but let's not pass employeeId on the constructor. 
+Let's generate it. 
+We can do this by setting a static field called employeeNumber, on Employee. 
+Let's set that to 1, so our first Employee is Employee 1.
 
-                    private static int employeeNo = 1;
+```java  
+private static int employeeNo = 1;
+```
 
-    And now let's simplify our constructor, removing the employeeId argument. And we'll set employeeId here, but use that
-    static employee number field we just created:
+And now let's simplify our constructor, removing the employeeId argument. 
+And we'll set employeeId here, but use that static employee number field we just created:
 
-                    public Employee(String name, String birthDate, String hireDate) {
-                        super(name, birthDate);
-                        this.employeeId = Employee.employeeNo++;
-                        this.hireDate = hireDate;
+```java  
+public Employee(String name, String birthDate, String hireDate) {
+    super(name, birthDate);
+    this.employeeId = Employee.employeeNo++;
+    this.hireDate = hireDate;
+}
+```
+
+Using a class name when using a static field, helps people reading this code, 
+understand what's occurring. 
+Notice that we're using the post-increment operator(++). 
+And now we've caused an error in the main method, so let's go back to that, 
+and we don't have to pass that "77001" now, because our constructor is going to build an employee id for us. 
+So let's remove that:
+
+```java  
+Employee korhan = new Employee("Korhan", "02/09/1990", "01/01/2020");
+```
+
+And we run it:
+
+```java  
+Employee{employeeId=1, hireDate='01/01/2020'} Worker{name='Korhan', birthDate='02/09/1990', endDate='null'}
+Age = 35
+Pay = 0.0
+```
+
+We get the same output, except Korhan's employeeId is 1. 
+Let's add another employee, so you can see how the static field is working.
+
+```java  
+Employee joe = new Employee("Joe", "11/11/1990", "03/03/2020");
+System.out.println(joe);
+```
+
+And if we run that:
+
+```java  
+Employee{employeeId=1, hireDate='01/01/2020'} Worker{name='Korhan', birthDate='02/09/1990', endDate='null'}
+Age = 35
+Pay = 0.0
+Employee{employeeId=2, hireDate='03/03/2020'} Worker{name='Joe', birthDate='11/11/1990', endDate='null'}
+```
+
+Check out the employee id for joe, is 2. 
+That's because employee number, that static field, 
+now has the number of the next employee's employee number. 
+Remember, a static field is a place that lets you share data among all your instances. 
+When you're generating an id for a new employee, it's a place to find the next id to use.
+
+
+
+Now, it's time to build a more specific type of Employee, one that's Salaried, 
+or one that's Hourly.
+A salaried employee is paid based on some percentage of his or her salary.
+If this person is retired, then the salary may be 100 percent, 
+but it is generally reduced somewhat.
+An hourly employee is paid by the hours worked, and the hourly rate they agreed to work for.
+An hourly employee may also get double pay if they work over a certain amount of hours.
+The challenge asked us to just pick one type of Employee, and build it out. 
+I'm going to create the SalariedEmployee next, so let's focus on just that class:
+
+```java  
+SalariedEmployee =>
+annualSalary: double
+isRetired: boolean
+----------------------
+retire()
+```
+
+We see that we have two new attributes that are specific to a SalariedEmployee,
+these are annualSalary, and a flag, isRetired, a boolean.
+This means our retired person will still get paid, but not his or her full salary.
+We'll have one method to retire, that will set the isRetired field to true. 
+Let's create a new class and name it SalariedEmployee with extends keyword for Employee class.
+
+```java  
+public class SalariedEmployee extends Employee{
+}
+```
+
+And that won't compile, as we see, without a constructor declaration that calls Employee's constructor. 
+But first, let's add our fields for this class and generate the constructor which only has annualSalary:
+
+```java  
+double annualSalary;
+boolean isRetired;
+
+public SalariedEmployee(String name, String birthDate, String hireDate,
+                        double annualSalary) {
+    super(name, birthDate, hireDate);
+    this.annualSalary = annualSalary;
+}
+```
+
+Remember that isRetired is false by default, and annualSalary is initialized to zero. 
+Now we can create a SalariedEmployee with just one extra field than we did with Employee, the annualSalary. 
+Now, we're ready to hire a salaried employee. 
+In fact, let's change our main method to make Joe, our second employee, a salaried employee:
+
+```java  
+SalariedEmployee joe = new SalariedEmployee("Joe", "11/11/1990", "03/03/2020", 35000);
+```
+
+Running this will give us the same output because we haven't overridden toString, 
+and actually, we don't want to. 
+We wouldn't want our employee's salary to inadvertently get out, 
+so we'll keep it well encapsulated, and we won't print that out on the to String method. 
+We do, however, want to override the collectPay method on Worker, so Joe can get paid. 
+In the SalariedEmployee class, let's add that method, 
+let's say salaried employees get paid every other week, 
+so we'll want to divide Joe's annual salary, by 26 weeks, to get his biweekly pay. 
+We'll cast that to an int, to remove any decimal part for now, for simplicity's sake.
+By the end of this section, we'll cover several options available for formatting strings.
+But for now, we'll just pay in whole dollar amounts.
+
+```java  
+@Override
+public double collectPay() {
+    return (int) annualSalary / 26;
+}
+```
+
+And let's make a call to that method in the main method.
+
+```java  
+System.out.println("Joe's Paycheck = $" + joe.collectPay());
+```
+
+And running that:
+
+```java  
+.... (above part is the same with previous)
+Joe's Paycheck = $1346.0
+```
+
+We see that "Joe's Paycheck = $1346.0."
+Now let's implement a path to retirement with the method retire on SalariedEmployee.
+Let me type that out, then we'll talk about it:
+
+```java  
+public void retire() {
+    terminate("12/12/2025");
+    isRetired = true;
+}
+```
+
+Ok, so first we're calling a method called terminate. 
+Do you remember which class's method that is? 
+It's on Worker, the grandparent of this class, or the base class (after Object). 
+As long as the parent class doesn't override its parent's methods, 
+then these methods can be called from any descendants. 
+Next, we set the isRetired field to true. 
+Before we retire Joe, let's edit our collectPay method. 
+Let's say the maximum pension can only ever be 90 percent of their final salary:
+
+```java  
+@Override
+public double collectPay() {
+
+    double paycheck = annualSalary / 26;
+    double adjustedPay = isRetired ? 0.9 * paycheck : paycheck;
+    return  (int) adjustedPay;
+}
+```
+
+And going back to the calling code, the main method on Description.txt:
+
+```java  
+joe.retire();
+System.out.println("Joe's Pension check = $" + joe.collectPay());
+```
+
+And now running that:
+
+```java  
+.... (same above)
+Joe's Pension check = $1211.0
+```
+
+We find out that Joe's pension pay will be $1211.
+For the Salaried Employee, we overrode collectPay, a method declared on Worker, 
+and we implemented it using code that was unique, for a Salaried employee. 
+We also implemented a method not found on either Worker or Employee,
+because it really only made sense for a SalariedEmployee, which was "retire()".
+
+Let's examine the Hourly Employee class now.
+On this one, we have one additional field, hourlyPayRate, 
+which is what this worker will get paid for each hour worked. 
+We'll also implement a method called getDoublePay.
+Let's create a new class called HourlyEmployee.
+
+```java  
+public class HourlyEmployee extends Employee{
+    double hourlyPayRate;
+}
+```
+
+As we did with SalariedEmployee, we'll have a compiler error until we implement a constructor:
+
+```java  
+public HourlyEmployee(String name, String birthDate, String hireDate,
+                      double hourlyPayRate) {
+    super(name, birthDate, hireDate);
+    this.hourlyPayRate = hourlyPayRate;
+}
+```
+
+And that gets rid of our compiler error. 
+In this case, we'll be passing the hourlyRate for our HourlyEmployee.
+Let's add our two methods real quick. 
+We want to implement collectPay for this class, overriding the one on Worker, 
+just as we did for the SalariedWorker, but with a different calculation. 
+In this case, let's assume our hourly worker gets paid weekly, 
+and that he or she works 40 hours in a week.
+
+```java  
+@Override
+public double collectPay() {
+    return 40 * hourlyPayRate;
+}
+```
+
+And now we'll implement getDoublePay.
+We'll make this one simple too, for the sake of time, and just return double of the normal pay:
+
+```java  
+public double getDoublePay() {
+    return 2 * collectPay();
+}
+```
+
+Now, this call to the method collectPay will call the collectPay on this class, 
+and not the one method on Worker.
+Moving over to the main method, we'll create an HourlyEmployee, named Mary, 
+and we'll make her hourly rate $15. 
+First, we'll create the employee, and just print out the employee data.
+
+```java  
+HourlyEmployee mary = new HourlyEmployee("Mary", "05/05/1970", "03/03/2021", 15);
+System.out.println(mary);
+```
+
+Next, we'll print out both collectPay and getDoublePay.
+
+```java  
+System.out.println("Mary's Paycheck = $" + mary.collectPay());
+System.out.println("Mary's Holiday Pay = $" + mary.getDoublePay());
+```
+
+And running the code:
+
+```java  
+.... (above same)
+Employee{employeeId=3, hireDate='03/03/2021'} Worker{name='Mary', birthDate='05/05/1970', endDate='null'}
+Mary's Paycheck = $600.0
+Mary's Holiday Pay = $1200.0
+```
+
+We get the information for mary.
+You can see her employee id is 3, her weekly pay is $600.
+Her double time pay would be double that, or $1200.
+That was a quick implementation of the HourlyEmployee class.
+
+## [p. The Text Block and other Formatting Options]()
+
+I want to revisit Strings, because they are so intrinsic to Java, 
+it's important to talk about them a bit more. 
+But before we do that, let's take a look at a fairly new feature in Java, the Text Block.
+
+        A Text Block is just a special format for multi-line String literals. It's simply a "String" with a new representation
+    in the source code. It became part of the official language as of JDK 15. To start with, let's look at an example in
+    code of handling multiple lines of text:
+
+                    String bulletIt = "Print a Bulleted List:" +
+                            "\u2022 First Point" +
+                            "\u2022 Sub Point";
+
+                    System.out.println(bulletIt);
+
+    Ok, so in "bulletIt" we're using the concatenation operator, the plus sign, to add several Strings together. And we're
+    using the unicode character, "\u2022", to include a bullet point character, on these 2 lines. And if we print that out,
+
+                    Print a Bulleted List:• First Point• Sub Point
+
+    we get a single line of text. That's not what I really wanted, because I wanted some formatting, and these Strings on
+    multiple lines. I can do this with some special combinations of characters, called escape sequences.
+
+                                        Some Common Escape Sequences
+
+        An escape sequence starts with a "\". Java has several, but the most common ones, are shown below. These can insert
+    a tab, a newline, a double quote character, or a backslash character if you need it, in your text.
+
+                            Escape Sequence                     Description
+                                  \t                            Insert a tab character
+                                  \n                            Insert a new line character
+                                  \"                            Insert a double quote character
+                                  \\                            Insert a backslash character
+
+    Let's add some of these characters to our multi-line String in this code:
+
+                    String bulletIt = "Print a Bulleted List:\n" +
+                            "\t\u2022 First Point\n" +
+                            "\t\t\u2022 Sub Point";
+
+                    System.out.println(bulletIt);
+
+    and if we run it:
+
+                    Print a Bulleted List:
+                        • First Point
+                            • Sub Point
+
+    we get a formatted bulleted list. That looks pretty good. Now let's use a text block, to reproduce this output.
+
+                    String textBlock = """
+                            Print a Bulleted List:
+                                    \u2022 First Point
+                                        \u2022 Sub Point""";
+
+                    System.out.println(textBlock);
+
+    You can see right at the start, we're creating a String variable, and assigning it something. This something is the
+    new format, called a "text block", for creating a multi-line formatted String. You'll notice that we start with 3 double
+    quote there("""). This is required, and they must be on their own line. The text that follows, is the text that's part
+    of the String. And we end with another triple quotes, which close, or complete, the text block. Everything between the 2
+    sets of triple quotes, is the text block itself, and you can see we didn't include any additional quotes, or plus signs.
+    And we also got rid of the tab, and newline escape sequences. The text block lets us format text in the source code,
+    the same way we want to see it in the output. Let's run it and we get,
+
+                    Print a Bulleted List:
+                        • First Point
+                            • Sub Point
+                    Print a Bulleted List:
+                            • First Point
+                                • Sub Point
+
+    And, you can see, we get the exact the same output, as we did when we concatenated several strings, and used escape
+    sequences. That's really it. The text block makes outputting many lines of text, using indents and new lines, a lot
+    easier, as I hope you can see.
+
+        We've looked at formatting text over multiple lines in 2 different way. Next, let's look at formatting numbers in
+    text, that we'll output. There are several ways to do this. Up until now, we've used System.out.println, and System.out.
+    print, but there are 2 other methods, we haven't yet discussed. These are System.out.printf, and System.out.format.
+    These methods behave the same, so for our examples, we'll just use System.out.printf, but be aware you can change printf
+    to format, with the same results. Let's start with a simple example, then we'll explain how this works.
+
+                    int age = 35;
+                    System.out.printf("Your age is %d\n", age);
+
+    You'll notice we're using printf, in place of print or println, on System.out. Printf is like print, in that it doesn't
+    end with a newline character. But this method has multiple arguments, the first is a String which will be printed to
+    the console, and the following arguments are values, that'll be used in the String. First, you'll notice our String
+    contains "%d" in it. This is a special indicator, called a format specifier. This is a placeholder for other data,
+    which should replace this specifier in the text. In this example, we're going to replace "%d" with "age", and that's
+    why we pass age as the second argument to this method. Now running this code,
+
+                    Your age is 35
+
+    we see we get the output. Let's try another example. This time, we'll pass age, and year of birth, which we'll try to
+    calculate using the year 2023 as the current year. Before we do that, we'll first add an escape sequence in the first
+    String, so we have a newline printed between statements.
+
+                    int yearOfBirth = 2023 - age;
+                    System.out.printf("Age = %d, Birth year = %d", age, yearOfBirth);
+
+    In this last statement, we have 2 instances of percent d, so we should pass 2 arguments, age and year of birth. And
+    running that we see the result,
+
+                    Your age is 35Age = 35, Birth year = 1988
+
+    Let's take a moment, and look more closely at this format specifier, "%d". At their most complex, format specifiers
+    take the form shown here.
+
+                    %[argument_index$][flags][width][.precision]conversion
+
+    They start with a "%" sign, and end with a conversion symbol, and have lots of options in between. We've looked at one
+    conversion type, "d", which is the symbol used for a decimal integer value. Let's go to Java's API documentation from
+    oracle website for a class called Formatter, which is the basis for many of the formatting methods we'll be talking
+    about.
+
+        Conversion      Argument Category       Description
+        ----------      -----------------       ---------------------------------------------
+            'd'	        integral	            The result is formatted as a decimal integer
+            'f'	        floating point	        The result is formatted as a decimal number
+            'n'	        line separator	        The result is the platform-specific line separator
+
+    The ones you'll be using the most are above for 2 different numeric types, 'd' and 'f'. 'd', formats a decimal integer,
+    as we've said, and would be used for any of Java's whole number primitive types, like short, int, and long. 'f' formats
+    a decimal number, so it can be used for floating point numbers, a double, or float. But you can see there are many
+    others, at the website, for different types of numbers, dates and time, as well as general specifiers. And look at the
+    last one, the letter n, called the line separator, so this would print a newline character. The difference between
+    the escape sequence, "\n", and this format specifier, "%n", is that "%n" outputs the platform's specific line separator,
+    so it's preferred.
+
+        From that documentation, we learned that we can replace our escape sequence, "\n", with a format specifier, "%n",
+    so let's do that in our current code. And we'll also add it to the end of our second statement.
+
+                    int age = 35;
+                    System.out.printf("Your age is %d%n", age);
+
+                    int yearOfBirth = 2023 - age;
+                    System.out.printf("Age = %d, Birth year = %d%n", age, yearOfBirth);
+
+                    System.out.printf("Your age is %f%n", age);
+
+    Now, let's see what happens if we replace "%d", with "%f". We'll copy the first System.out.printf line, which prints
+    out age only, and paste it, and we'll replace "d" with "f". This compiles, but if we run it, we get an exception,
+    IllegalFormatConversionException. This is because it was expecting a float or double, and we passed an integer. Let's
+    actually cast age to a float then, now, the code runs, and look at the output:
+
+                    Your age is 35
+                    Age = 35, Birth year = 1988
+                    Your age is 35,000000
+
+    We see age is printed, with a decimal point, and 6 zeros following it. This is the default format, for the floating
+    point number specifier.
+
+        What's nice about using this method, actually the reason it exists, is we can configure the specifier, so that we
+    can output this number, in any way we want. Let's say we want 2 decimal places, and not 6, we do this by specifying
+    the number of decimal places, called precision, between the "%" sign and the conversion symbol, f. We add the decimal,
+    and then 2, and that tells the formatter, we only want 2 decimal places, for the number printed.
+
+                    System.out.printf("Your age is %.2f%n", (float) age);
+
+    now running this,
+
+                    Your age is 35,00
+
+    Ok, so that's how we specify precision, but now let's consider formatting the width of numbers, which is a separate
+    option. Let's create a quick loop, that'll print out a series of numbers:
+
+                    for (int i = 1; i <= 100000; i *= 10) {
+                        System.out.printf("Printing %d %n", i);
                     }
 
-    Using a class name when using a static field, helps people reading this code, understand what's occurring. Notice here,
-    that we're using the post increment operator(++). And now we've caused an error in the main method, so let's go back
-    to that, and we don't have to pass that "77001" now, because our constructor is going to build an employee id for us.
-    So let's remove that:
+    This loop just prints out numbers, multiplying by 10 each time. And running that,
 
-                    Employee korhan = new Employee("Korhan", "02/09/1990", "01/01/2020");
+                    Printing 1
+                    Printing 10
+                    Printing 100
+                    Printing 1000
+                    Printing 10000
+                    Printing 100000
 
-    and we run it:
+    we get output for 6 numbers, 1 through 100 thousand. What's important to notice are the numbers are all aligned on the
+    left. We can change this by specifying the width of the number, in the specifier. First we'll set a width for the number.
+    Our largest number in the output is 100000, so let's make the width, 6, so we'll add 6 in the specifier.
 
-                    Employee{employeeId=1, hireDate='01/01/2020'} Worker{name='Korhan', birthDate='02/09/1990', endDate='null'}
-                    Age = 35
-                    Pay = 0.0
-
-    we get the same output, except Korhan's employeeId is 1. Let's just add another employee, so you can see how the static
-    field is working.
-
-                    Employee joe = new Employee("Joe", "11/11/1990",
-                            "03/03/2020");
-                    System.out.println(joe);
-
-    And if we run that:
-
-                    Employee{employeeId=1, hireDate='01/01/2020'} Worker{name='Korhan', birthDate='02/09/1990', endDate='null'}
-                    Age = 35
-                    Pay = 0.0
-                    Employee{employeeId=2, hireDate='03/03/2020'} Worker{name='Joe', birthDate='11/11/1990', endDate='null'}
-
-    check out the employee id for joe, is 2. That's because employee number, that static field, now has the number of the
-    next employee's employee number. Remember, a static field is a place that lets you share data, among all your instances.
-    When you're generating an id for a new employee, it's a place to find the next id to use.
-
-        Now, it's time to build a more specific type of Employee, one that's Salaried, or one that's Hourly. A salaried
-    employee is paid based on some percentage of his or her salary. If this person is retired, then the salary may be 100
-    percent, but it is generally reduced somewhat. An hourly employee, is paid by the hours worked, and the hourly rate
-    they agreed to work for. An hourly employee may also get double pay, if they work over a certain amount of hours. The
-    challenge asked us to just pick 1 type of Employee, and build it out. I'm going to create the SalariedEmployee next,
-    so let's focus on just that class:
-
-                    SalariedEmployee =>
-                                    annualSalary: double
-                                    isRetired: boolean
-                                    ----------------------
-                                    retire()
-
-    We see that we have 2 new attributes that are specific to a SalariedEmployee, these are annualSalary, and a flag, isRetired,
-    a boolean. This means our retired person will still get paid, but not his or her full salary. We'll have 1 method retire,
-    that will set the isRetired field to true. Let's create a new class and name it SalariedEmployee with extends keyword
-    for Employee class.
-
-                    public class SalariedEmployee extends Employee{
+                    for (int i = 1; i <= 100000; i *= 10) {
+                        System.out.printf("Printing %6d %n", i);
                     }
-
-    And that won't compile, as we see, without a constructor declaration that calls Employee's constructor. But first, let's
-    add our fields for this class and generating the constructor which only has annualSalary:
-
-                    double annualSalary;
-                    boolean isRetired;
-
-                    public SalariedEmployee(String name, String birthDate, String hireDate,
-                                            double annualSalary) {
-                        super(name, birthDate, hireDate);
-                        this.annualSalary = annualSalary;
-                    }
-
-    Remember that isRetired is false by default, and annualSalary is initialized to zero. Now we can create a SalariedEmployee
-    with just 1 extra field than we did with Employee, the annualSalary. Now, we're ready to hire a salaried employee. In
-    fact, let's just change our main method make Joe, our second employee, a salaried employee:
-
-                    SalariedEmployee joe = new SalariedEmployee("Joe", "11/11/1990",
-                                    "03/03/2020", 35000);
-
-    Running this will give us the same output, because we haven't overridden toString, and actually, we don't want to. We
-    wouldn't want our employee's salary to inadvertently get out, so we'll keep it well encapsulated, and we won't print
-    that out on the to String method. We do however want to override the collectPay method on Worker, so Joe can get paid.
-    In the SalariedEmployee class, let's add that method, let's say salaried employees get paid every other week, so we'll
-    want to divide Joe's annual salary, by 26 weeks, to get his biweekly pay. We'll cast that to an int, to remove any decimal
-    part for now, for simplicity's sake. By the end of this section, we'll cover several options available for formatting
-    strings. But for now, we'll just pay in whole dollar amounts.
-
-                    @Override
-                    public double collectPay() {
-                        return (int) annualSalary / 26;
-                    }
-
-    And let's make a call to that method in the main method.
-
-                    System.out.println("Joe's Paycheck = $" + joe.collectPay());
 
     And running that:
 
-                    .... (above part is the same with previous)
-                    Joe's Paycheck = $1346.0
+                    Printing      1
+                    Printing     10
+                    Printing    100
+                    Printing   1000
+                    Printing  10000
+                    Printing 100000
 
-    we see that "Joe's Paycheck = $1346.0". Now let's implement a path to retirement with the method retire on SalariedEmployee.
-    Let me type that out, then we'll talk about it:
+    we get the numbers aligned on the right, because we said each number will fill up 6 spaces. Those are some of the most
+    common things you'd do with formatting. We used System.out.printf, and remember System.out.format, can be used anywhere
+    System.out.printf is used. But there'll be times you want to format Strings, and output them to a file, or error log
+    for example, or maybe to a database. The String class itself has 2 methods, to support this type of formatting as well.
+    One is a static method, called format. Let's see what that one looks like in code:
 
-                    public void retire() {
-                        terminate("12/12/2025");
-                        isRetired = true;
-                    }
+                    String formattedString = String.format("Your age is %d", age);
+                    System.out.printf(formattedString);
 
-    Ok, so first we're calling a method called terminate. Do you remember which class's method that is? It's on Worker,
-    the grandparent of this class, or the base class(after Object). As long as the parent class doesn't override its parent's
-    methods, then these methods can be called from any descendants. Next, we set the isRetired field to true. Before we
-    retire Joe, let's edit our collectPay method. Let's say the maximum pension, can only ever be 90 percent of their final
-    salary:
+    Here, we're creating a String variable, and assigning it the output of the call, to String.format, a static method.
+    Like System.out.printf, this method has a String as its first argument, followed by arguments that match the specifiers
+    in the String. And running that,
 
-                    @Override
-                    public double collectPay() {
+                    Your age is 35
 
-                        double paycheck = annualSalary / 26;
-                        double adjustedPay = isRetired ? 0.9 * paycheck : paycheck;
-                        return  (int) adjustedPay;
-                    }
+    we get the same as before. And we could also have done that with the String instance method, "formatted". This method
+    works the same as String.format, except you don't need to pass the formatString as an argument. The String itself is
+    format String. Let's code that one next:
 
-    And going back to the calling code, the main method on Description.txt:
+                    formattedString = "Your age is %d".formatted(age);
+                    System.out.printf(formattedString);
 
-                    joe.retire();
-                    System.out.println("Joe's Pension check = $" + joe.collectPay());
+    When you use this method, you just pass the arguments that match the specifiers in the current String, and the result
+    is a formattedString. Running this output gives us the same output as before: "Your age is 35".
 
-    And now running that:
-
-                    .... (same above)
-                    Joe's Pension check = $1211.0
-
-    we find out that Joe's pension pay will be $1211. For the Salaried Employee, we overrode collectPay, a method declared
-    on Worker, and we implemented it using code that was unique, for a Salaried employee. We also implemented a method that
-    wasn't found on either Worker or Employee, because it really only made sense for a SalariedEmployee, which was retire().
-
-        Let's examine the Hourly Employee class briefly, now:
-
-                    HourlyEmployee =>
-                                        hourlyPayRate: double
-                                        ----------------------
-                                        getDoublePay()
-
-    On this one, we have one additional field, hourlyPayRate, which is what this worker will get paid, for each hour worked.
-    We'll also implement a method called getDoublePay. Let's create a new class called HourlyEmployee.
-
-                    public class HourlyEmployee extends Employee{
-                        double hourlyPayRate;
-                    }
-
-    As we did with SalariedEmployee, we'll have a compiler error, until we implement a constructor:
-
-                    public HourlyEmployee(String name, String birthDate, String hireDate,
-                                          double hourlyPayRate) {
-                        super(name, birthDate, hireDate);
-                        this.hourlyPayRate = hourlyPayRate;
-                    }
-
-    And that gets rid of our compiler error. In this case, we'll be passing the hourlyRate, for our HourlyEmployee. Let's
-    add our 2 methods real quick. We want to implement collectPay for this class, overriding the one on Worker, just as
-    we did for the SalariedWorker, but with a different calculation. In this case, let's just assume our hourly worker
-    gets paid weekly, and that he or she works 40 hours in a week.
-
-                    @Override
-                    public double collectPay() {
-                        return 40 * hourlyPayRate;
-                    }
-
-    And now we'll implement getDoublePay. We'll make this one simple too, for the sake of time, and just return double,
-    of the normal pay:
-
-                    public double getDoublePay() {
-                        return 2 * collectPay();
-                    }
-
-    Now, this call to the method collectPay will call the collectPay on this class, and not the one method on Worker. Moving
-    over to the main method, we'll create an HourlyEmployee, named Mary, and we'll make her hourly rate $15. First, we'll
-    create the employee, and just print out the employee data.
-
-                    HourlyEmployee mary = new HourlyEmployee("Mary", "05/05/1970",
-                                    "03/03/2021", 15);
-                    System.out.println(mary);
-
-    Next, we'll print out both collectPay and getDoublePay.
-
-                    System.out.println("Mary's Paycheck = $" + mary.collectPay());
-                    System.out.println("Mary's Holiday Pay = $" + mary.getDoublePay());
-
-    And running the code:
-
-                    .... (above same)
-                    Employee{employeeId=3, hireDate='03/03/2021'} Worker{name='Mary', birthDate='05/05/1970', endDate='null'}
-                    Mary's Paycheck = $600.0
-                    Mary's Holiday Pay = $1200.0
-
-    We get the information for mary. You can see her employee id is 3, her weekly pay is $600. Her double time pay would
-    be double that, or $1200. That was a quick implementation of the HourlyEmployee class.
-
+        Ok, so those are some of your formatting options. There was a time, when some of these formatting options were
+    much slower, than simply using the concatenate operator, the "+" sign. But Java continues to make performance enhancements
+    on these methods. The argument for using them, is that they make the code easier to read and maintain, and you have
+    many options for outputting different specifier types.
 ```java  
 
 ```
