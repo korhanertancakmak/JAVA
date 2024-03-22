@@ -2273,240 +2273,587 @@ by declaring the fields and methods that are specific to it.
 
 Let's look at the class diagram for just Dog, at the moment.
 
+![Step-4](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/images/04Dog.png?raw=true)
 
+We want to add the attributes, earShape and tailShape, as shown here, in our class diagram. 
+Then we'll implement the methods, bark, run, walk, and wagTail. 
+Going back to the Dog.java file, we'll add earShape and tailShape.
 
-    We want to add the attributes, earShape and tailShape, as shown here, in our class diagram. Then we'll implement the
-    methods, bark, run, walk, and wagTail. Going back to the Dog.java file, we'll add earShape and tailShape.
+```java  
+public class Dog extends Animal {
+    private String earShape;
+    private String tailShape;
 
-                        public class Dog extends Animal {
-                            private String earShape;
-                            private String tailShape;
+    public Dog() {
+        super("Mutt", "Big", 50);
+    }
+}
+```
 
-                            public Dog() {
-                                super("Mutt", "Big", 50);
-                            }
-                        }
+Those are our Dog's specific fields. 
+Let's create a more specific Dog constructor than the one we have. 
+This time, we have an additional choice, and that's which parent constructor we should use. 
+Let's pick the one with parameters. 
+And then, we pick both of our dog attributes, and hit OK.
 
-    Those are our a Dog specific fields. Let's create a more specific Dog constructor than the one we have. This time, we
-    have an additional choice, and that's which parent constructor we should use. Let's pick the one with parameters. And
-    then, we pick both of our dog attributes, and hit OK.
+```java  
+public Dog(String type, String size, double weight, String earShape, String tailShape) {
+    super(type, size, weight);
+    this.earShape = earShape;
+    this.tailShape = tailShape;
+}
+```
 
-                        public Dog(String type, String size, double weight, String earShape, String tailShape) {
-                            super(type, size, weight);
-                            this.earShape = earShape;
-                            this.tailShape = tailShape;
-                        }
+Let's actually change this constructor, so it's easier to create a Dog object. 
+We'll remove size as a parameter, and instead write code to derive it, passing that to the super call.
 
-    Let's actually change this constructor, so it's easier to create a Dog object. We'll remove size as a parameter, and
-    instead write code to derive it, passing that to the super call.
+```java  
+public Dog(String type, double weight, String earShape, String tailShape) {
+    super(type, weight < 15 ? "small" : (weight < 35 ? "medium" : "large"), weight);
+    this.earShape = earShape;
+    this.tailShape = tailShape;
+}
+```
 
-                        public Dog(String type, double weight, String earShape, String tailShape) {
-                            super(type, weight < 15 ? "small" : (weight < 35 ? "medium" : "large"), weight);
-                            this.earShape = earShape;
-                            this.tailShape = tailShape;
-                        }
+This constructor has a combination of the Dog and the Animal fields, in its argument list. 
+We can pass it the type of the dog, the dog's weight, and the earShape and tailShape. 
+We're calling the super constructor to set some of our fields, the Animal specific fields. 
+And for the size, we're deriving the size of the dog from the weight, small, medium, or large. 
+To do this, we use a nested ternary operator, which is passed directly to the super constructor. 
+We couldn't do this operation before the call to super, because "super()" must be the first statement. 
+But we can do it directly like this, as an expression, in the argument list. 
+This is one way to perform calculations, in your constructor, and pass the result to the super call. 
+After the call to the super constructor, we set some of the Dog-specific attributes, 
+the earShape and tailShape; that were passed to us.
 
-    This constructor has a combination of the Dog and the Animal fields, in its argument list. We can pass it the type of
-    the dog, the dog's weight, and the earShape and tailShape. We're calling the super constructor to set some of our fields,
-    the Animal specific fields. And for the size, we're deriving the size of the dog from the weight, small, medium, or
-    large. To do this, we use a nested ternary operator, which is passed directly to the super constructor. We couldn't
-    do this operation before the call to super, because "super()" must be the first statement. But we can do it directly
-    like this, as an expression, in the argument list. This is one way to perform calculations, in your constructor, and
-    pass the result to the super call. After the call to the super constructor, we set some of the Dog-specific attributes,
-    the earShape and tailShape, that were passed to us.
+Before we do anything else, let's generate toString method for the Dog class. 
+But this time, not the template as "String concat(+)", which gives this:
 
-        Before we do anything else, let's generate toString method for the Dog class. But this time, not the template as
-    "String concat(+)", which gives this:
+```java  
+@Override
+public String toString() {
+    return "Dog{" +
+            "earShape='" + earShape + '\'' +
+            ", tailShape='" + tailShape + '\'' +
+            '}';
+}
+```
 
-                        @Override
-                        public String toString() {
-                            return "Dog{" +
-                                    "earShape='" + earShape + '\'' +
-                                    ", tailShape='" + tailShape + '\'' +
-                                    '}';
-                        }
+but the one says the template as "String concat(+) and super.toString()", 
+which also includes super.toString:
 
-    but the one says the template as "String concat(+) and super.toString()", which also includes super.toString:
+```java  
+@Override
+public String toString() {
+    return "Dog{" +
+            "earShape='" + earShape + '\'' +
+            ", tailShape='" + tailShape + '\'' +
+            "} " + super.toString();
+}
+```
 
-                        @Override
-                        public String toString() {
-                            return "Dog{" +
-                                    "earShape='" + earShape + '\'' +
-                                    ", tailShape='" + tailShape + '\'' +
-                                    "} " + super.toString();
-                        }
+You can see 2 new fields there, plus a call to super.toString(). 
+Now, this super is different from the super parentheses call. 
+It's a lot like using the "this" notation to access a field on the current instance. 
+This code lets us call a method of superclass. 
+We'll talk about this a lot more in upcoming courses. 
+I want to add 1 more constructor, after the first one, before we test this:
 
-    You can see 2 new fields there, plus a call to super.toString(). Now, this super is different than the super parentheses
-    call. It's a lot like using the "this." notation, to access a field on the current instance. This code lets us call
-    a super class's method. We'll talk about this a lot more in upcoming courses. I want to add 1 more constructor, after
-    the first one, before we test this:
+```java  
+public Dog(String type, double  weight) {
+    this(type, weight, "Perky", "Curled");
+}
+```
 
-                        public Dog(String type, double  weight) {
-                            this(type, weight, "Perky", "Curled");
-                        }
+This constructor makes it even simpler to create a Dog object, 
+for the majority of dogs (if their ears are Perky, and their tails are Curled). 
+It calls the other Dog constructor that has four parameters, which in turn calls the Animal constructor.
+We're using constructor chaining to make this work. 
+Let's go back to Description.txt, and create some more dogs, calling the doAnimalStuff for each one:
 
-    This constructor makes it even simpler, to create a Dog object, for the majority of dogs(if their ears are Perky, and
-    their tails are Curled). It calls the other Dog constructor that has 4 parameters, which in turn calls the Animal constructor.
-    We're using constructor chaining to make this work. Let's go back to Description.txt, and create some more dogs, calling
-    the doAnimalStuff for each one:
+```java  
+Dog yorkie = new Dog("Yorkie", 15);
+doAnimalStuff(yorkie, "fast");
+Dog retriever = new Dog("Labrador Retriever", 65,
+        "Floppy", "Swimmer");
+doAnimalStuff(retriever, "slow");
+```
 
-                        Dog yorkie = new Dog("Yorkie", 15);
-                        doAnimalStuff(yorkie, "fast");
-                        Dog retriever = new Dog("Labrador Retriever", 65,
-                                "Floppy", "Swimmer");
-                        doAnimalStuff(retriever, "slow");
+Dogs have over 20 ear types, and more than 9 tail types, one of which is a Swimmer tail type, 
+which we use here. 
+And now, check out what gets printed for both of these Dog objects, when we run this code:
 
-    Dogs have over 20 ear types, and more than 9 tail types, one of which is a Swimmer tail type, which we use here. And
-    now, check out what gets printed for both of these Dog objects, when we run this code:
+```java  
+Yorkie makes some kind of noise
+Yorkie moves fast
+Dog{earShape='Perky', tailShape='Curled'} Animal{type='Yorkie', size='medium', weight=15.0}
+_ _ _ _
+Labrador Retriever makes some kind of noise
+Labrador Retriever moves slow
+Dog{earShape='Floppy', tailShape='Swimmer'} Animal{type='Labrador Retriever', size='large', weight=65.0}
+_ _ _ _
+```
 
-                        Yorkie makes some kind of noise
-                        Yorkie moves fast
-                        Dog{earShape='Perky', tailShape='Curled'} Animal{type='Yorkie', size='medium', weight=15.0}
-                        _ _ _ _
-                        Labrador Retriever makes some kind of noise
-                        Labrador Retriever moves slow
-                        Dog{earShape='Floppy', tailShape='Swimmer'} Animal{type='Labrador Retriever', size='large', weight=65.0}
-                        _ _ _ _
+We get all the fields that are specific for Dog, and the fields that are more general to the Animal. 
+That's because our toString method printed out the Dog fields then made a call to super.toString(), 
+which was Animal's toString method. 
+We were also able to calculate the size of the dog, based on its weight. 
+And we created constructors for Dog, that targeted more Dog-like features, 
+and passed default values for Animal's more general fields.
 
-    We get all the fields that are specific for Dog, and the fields that are more general to the Animal. That's because
-    our toString method printed out the Dog fields then made a call to super.toString(), which was Animal's toString method.
-    We were also able to calculate the size of the dog, based on its weight. And we created constructors for Dog, that
-    targeted more Dog-like features, and passed default values for Animal's more general fields.
+Let's talk a little bit about the behavior of Animal and Dog next. 
+Up to now, we called methods on Animal, and were able to access the functionality 
+that's part and parcel of the animal class, and we're able to use methods on, 
+and through Dog, that were defined on Animal. 
+And even more importantly, we're doing this from a method 
+that really doesn't even know anything about the Dog class. 
+Dog can use methods on Animal and print out its own object's values, 
+in this case, both the move and makeNoise methods printed the type field. 
+You can see why inheritance promotes code re-use.
 
-        Let's talk a little bit about the behavior of Animal and Dog next. Up to now, we called methods on Animal, and were
-    able to access the functionality that's part and parcel of the animal class, and we're able to use methods on, and
-    through Dog, that were defined on Animal. And even more importantly, we're doing this from a method, that really doesn't
-    even know anything about the Dog class. Dog can use methods on Animal, and print out its own object's values, in this
-    case, both the move and makeNoise methods printed the type field. You can see why inheritance promotes code re-use.
+### Code Re-use
 
-                                                    Code Re-use
+All subclasses can execute methods, even though the code is declared on the parent class. 
+The code doesn't have to be duplicated in each subclass. 
+But it does even get better than that. 
+We can use code, out of the box, from the parent, as we did in this example. 
+Or, we can change that code for the subclass. 
+We did this with the toString() method.
 
-        All subclasses can execute methods, even though the code is declared on the parent class. The code doesn't have
-    to be duplicated in each subclass. But it does even get better than that. We can use code, out of the box, from the
-    parent, as we did in this example. Or, we can change that code for the subclass. We did this with the toString() method.
+The toString() method called in the doAnimalStuff method of the Main class didn't call 
+the Animal toString method. 
+It is called the Dog toString() method, when an animal is an instance of a Dog. 
+I want you to really understand that, because it's so important. 
+And really, it's one of the best parts about this inheritance feature.
 
-        The toString() method that was called in the doAnimalStuff method, of the Main class, didn't actually call the Animal
-    toString method. It called the Dog toString() method, when animal is an instance of a Dog. I want you to really understand
-    that, because it's so important. And really, it's one of the best parts about this inheritance feature.
+We told doAnimalStuff method that we were dealing with an Animal class (the first parameter of it), 
+and we called the toString method (by the command of "System.out.println(animal)"), 
+which is declared as a method on Animal.
 
-        We told doAnimalStuff method that we were dealing with an Animal class(the first parameter of it), and we called
-    the toString method(by the command of "System.out.println(animal)"), which is declared as a method on Animal.
+```java  
+@Override
+public String toString() {
+    return "Animal{" +
+            "type='" + type + '\'' +
+            ", size='" + size + '\'' +
+            ", weight=" + weight +
+            '}';
+}
+```
 
-                        @Override
-                        public String toString() {
-                            return "Animal{" +
-                                    "type='" + type + '\'' +
-                                    ", size='" + size + '\'' +
-                                    ", weight=" + weight +
-                                    '}';
-                        }
+At run time, Java figures out the Animal object is even more specific than Animal, 
+it's really a Dog, and it actually calls the toString() method on Dog (if one exists on Dog). 
+If the toString() method doesn't exist on Dog, that's no problem, 
+because then it just uses the toString method on Animal. 
+This is good stuff, so let's explore this a little bit more.
 
-    At run time, Java figures out the Animal object is even more specific than Animal, it's really a Dog, and it actually
-    calls the toString() method on Dog (if one exists on Dog). If the toString() method doesn't exist on Dog, that's no
-    problem, because then it just uses the toString method on Animal. This is good stuff, so let's explore this a little
-    bit more.
+Let's create a makeNoise method on Dog next, and this method has the same signature as makeNoise on Animal:
 
-        Let's create a makeNoise method on Dog next, and this method has the same signature as makeNoise on Animal:
+```java  
+public void makeNoise() {
+}
+```
 
-                        public void makeNoise() {
-                        }
+And now what happens if we run our code?
 
-    And now what happens if we run our code?
+```java  
+Generic Animal makes some kind of noise
+Generic Animal moves slow
+Animal{type='Generic Animal', size='Huge', weight=400.0}
+_ _ _ _
+Mutt moves fast
+Dog{earShape='null', tailShape='null'} Animal{type='Mutt', size='Big', weight=50.0}
+_ _ _ _
+Yorkie moves fast
+Dog{earShape='Perky', tailShape='Curled'} Animal{type='Yorkie', size='medium', weight=15.0}
+_ _ _ _
+Labrador Retriever moves slow
+Dog{earShape='Floppy', tailShape='Swimmer'} Animal{type='Labrador Retriever', size='large', weight=65.0}
+_ _ _ _
+```
 
-                        Generic Animal makes some kind of noise
-                        Generic Animal moves slow
-                        Animal{type='Generic Animal', size='Huge', weight=400.0}
-                        _ _ _ _
-                        Mutt moves fast
-                        Dog{earShape='null', tailShape='null'} Animal{type='Mutt', size='Big', weight=50.0}
-                        _ _ _ _
-                        Yorkie moves fast
-                        Dog{earShape='Perky', tailShape='Curled'} Animal{type='Yorkie', size='medium', weight=15.0}
-                        _ _ _ _
-                        Labrador Retriever moves slow
-                        Dog{earShape='Floppy', tailShape='Swimmer'} Animal{type='Labrador Retriever', size='large', weight=65.0}
-                        _ _ _ _
+The last time we ran this code, we had statements that said "the Yorkie and Labrador made noise." 
+But now we don't see anything like that. 
+This method, makeNoise on Dog, which doesn't do anything, was called, 
+and not the makeNoise method, on Animal. 
+What have we really done here? 
+Well, we've overridden Animal's makeNoise method.
 
-    The last time we ran this code, we had statements that said "the Yorkie and Labrador made noise". But now we don't see
-    anything like that. This method, makeNoise on Dog, which doesn't do anything, was called, and not the makeNoise method,
-    on Animal. What have we really done here? Well, we've overridden Animal's makeNoise method.
+### Overriding a method
 
-                                                Overriding a method
+Overriding a method is when you create a method on a subclass, 
+which has the same signature as a method on a superclass. 
+Remember that a method signature consists of the method name, 
+and the number and types of parameters. 
+You override a parent class method when you want the child class 
+to show different behavior for that method.
 
-        Overriding a method is when you create a method on a subclass, which has the same signature as a method on a super
-    class. Remember that a method signature consists of the method name, and the number and types of parameters. You override
-    a parent class method, when you want the child class to show different behavior for that method.
+So notice, in IntelliJ that it has a special icon next to this makeNoise method, 
+the little o with an arrow.
+This is IntelliJ telling us this method is overriding a parent class's method.
+Another option, is to use IntelliJ's code generation tool to override methods.
 
-        So notice, in IntelliJ, that it has a special icon next to this makeNoise method, the little o with an arrow. This
-    is IntelliJ telling us this method is overriding a parent class's method. Another option, is to use IntelliJ's code
-    generation tool to override methods.
+Let's use that way now, to override the move method on Animal.
+Select 'Code' from the menu, but let's select 'Override Methods' this time. 
+And IntelliJ is showing us all the methods we could override, starting with Animal, 
+but it's also showing us methods on java.lang.Object. 
+I'll be talking about java.lang.Object, in just a bit. 
+Let's pick the move method on Animal, and hit the ok button:
 
-        Let's use that way now, to override the move method on Animal. Select 'Code' from the menu, but let's select 'Override
-    Methods' this time. And IntelliJ is showing us all the methods we could override, starting with Animal's, but it's also
-    showing us methods on java.lang.Object. I'll be talking about java.lang.Object, in just a bit. Let's pick the move
-    method on Animal, and hit the ok button:
+```java  
+@Override
+public void move(String speed) {
+    super.move(speed);
+}
+```
 
-                        @Override
-                        public void move(String speed) {
-                            super.move(speed);
-                        }
+Now, look at the difference, between the code we created manually, the makeNoise method, 
+and this one, the move method that IntelliJ created for us. 
+IntelliJ's generation tool adds this @Override symbol, and that's to remind us, 
+that we're overriding a method in the superclass. 
+In this case, it's in the Animal class. 
+And notice that the automatically generated code 
+simply makes a call to the parent class's method, move using the keyword super and dot move. 
+What that means is, we're calling the move method on the parent class, the Animal class. 
+This code kind of does the same thing as not having that overridden method at all. 
+It simply executes the Animal class's move method, which would have happened 
+if we didn't create this method at all. 
+Why would we do this? Well, most likely, we'll want to change or extend the code here. 
+We changed the makeNoise method by having a method with no code at all. 
+This changed the behavior of makeNoise for all Dog objects. 
+It made all our dogs silent, for the moment.
 
-    Now, look at the difference, between the code we created manually, the makeNoise method, and this one, the move method
-    that IntelliJ created for us. IntelliJ's generation tool adds this @Override symbol, and that's to remind us, that
-    we're overriding a method that's in the superclass. In this case, it's in the Animal class. And notice too, that the
-    automatically generated code, simply makes a call to the parent class's method, move using the keyword super and dot
-    move. What that means is, we're calling the move method on the parent class, the Animal class. This code kind of does
-    the same thing as not having that overridden method at all. It simply executes the Animal class's move method, which
-    would have happened, if we didn't create this method at all. Why would we do this? Well, most likely, we'll want to
-    change or extend the code here. We changed the makeNoise method, by having a method with no code at all. This changed
-    the behavior of makeNoise for all Dog objects. It made all our dogs silent, for the moment.
+Next, let's extend the functionality for the move method. 
+This means we'll do what the animal class does, but we'll do additional stuff as well. 
+We'll leave the "super.move" statement there, but we'll add more code. 
+Here, we'll just print out another statement, that Dogs walk and run, and wag their tail:
 
-        Next, let's extend the functionality for the move method. This means we'll do what the animal class does, but we'll
-    do additional stuff as well. We'll leave the super.move statement there, but we'll add more code. Here, we'll just
-    print out another statement, that Dogs walk and run, and wag their tail:
+```java  
+@Override
+public void move(String speed) {
+    super.move(speed);
+    System.out.println("Dogs walk, run and wag their tail ");
+}
+```
 
-                        @Override
-                        public void move(String speed) {
-                            super.move(speed);
-                            System.out.println("Dogs walk, run and wag their tail ");
-                        }
+And running the code now:
 
-    And running the code now:
+```java  
+Generic Animal makes some kind of noise
+Generic Animal moves slow
+Animal{type='Generic Animal', size='Huge', weight=400.0}
+_ _ _ _
+Mutt moves fast
+        Dogs walk, run and wag their tail
+Dog{earShape='null', tailShape='null'} Animal{type='Mutt', size='Big', weight=50.0}
+_ _ _ _
+Yorkie moves fast
+        Dogs walk, run and wag their tail
+Dog{earShape='Perky', tailShape='Curled'} Animal{type='Yorkie', size='medium', weight=15.0}
+_ _ _ _
+Labrador Retriever moves slow
+        Dogs walk, run and wag their tail
+Dog{earShape='Floppy', tailShape='Swimmer'} Animal{type='Labrador Retriever', size='large', weight=65.0}
+_ _ _ _
+```
 
-                        Generic Animal makes some kind of noise
-                        Generic Animal moves slow
-                        Animal{type='Generic Animal', size='Huge', weight=400.0}
-                        _ _ _ _
-                        Mutt moves fast
-                        Dogs walk, run and wag their tail
-                        Dog{earShape='null', tailShape='null'} Animal{type='Mutt', size='Big', weight=50.0}
-                        _ _ _ _
-                        Yorkie moves fast
-                        Dogs walk, run and wag their tail
-                        Dog{earShape='Perky', tailShape='Curled'} Animal{type='Yorkie', size='medium', weight=15.0}
-                        _ _ _ _
-                        Labrador Retriever moves slow
-                        Dogs walk, run and wag their tail
-                        Dog{earShape='Floppy', tailShape='Swimmer'} Animal{type='Labrador Retriever', size='large', weight=65.0}
-                        _ _ _ _
+We can see from the output, that when we called the move method, 
+we did what Animal had us do with that statement, 
+"Yorkie moves fast" but we added another line of text to the output, 
+"Dogs walk, run and wag their tail." 
+We extended the functional behavior of Animal for Dogs. 
+We used what was there (with the call to "super.move"), but then added our own code to it. 
+I think this is a good place to end this course.
 
-     we can see from the output, that when we called the move method, we did what Animal had us do with that statement,
-     "Yorkie moves fast", but we added another line of text to the output, "Dogs walk, run and wag their tail". We extended
-     the functional behavior of Animal for Dogs. We used what was there(with the call to super.move), but then added our
-     own code to it. I think this is a good place to end this course.
-
-        In this course, we created methods on a super class, then called them from a subclass, directly, showing you that
-     methods can be inherited, as well as fields. We also showed you that a subclass can override a superclass's methods.
-     The overridden method can do one of 3 things:
+We created methods on a superclass, then called them from a subclass, directly, 
+showing you that methods can be inherited, as well as fields. 
+We also showed you that a subclass can override the methods of a superclass.
+The overridden method can do one of three things:
 
 1. It can implement completely different behavior, overriding the behavior of the parent.
-2. It can simply call the parent class's method, which is somewhat redundant to do. This is the default behavior of an
-   inherited method.
-3. Or the method can call the parent class's method, and include other code to run, so it can extend the functionality
-   for the Dog, for that behavior.
+2. It can simply call the parent class's method, which is somewhat redundant to do. 
+This is the default behavior of an inherited method.
+3. Or the method can call the parent class's method, and include other code to run, 
+so it can extend the functionality for the Dog, for that behavior.
 
-   In the next course, we'll implement methods unique to Dog. In other words, the behavior we think only makes sense
-   for Dogs.
+## [m. Inheritance (Part-III)]()
+
+In the last course, we were working on a simple class diagram, to create two classes, 
+Animal and Dog, where Dog inherited from Animal. 
+Let's continue with this example, by adding other methods that are really specific to Dog. 
+Remember the Class diagram for Dog and Animal:
+
+![Step-5](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/images/04Dog.png?raw=true)
+
+We can see there, the methods on Dog are bark, run, walk, and wagTail. 
+Let's add these, starting with the bark method. 
+I'm going to make this method private, because I'm going to call it from the move method. 
+This is a reminder that not all methods need to be exposed, 
+especially if you only intend them to be called internally from the current class.
+
+```java  
+private void bark() {
+    System.out.println("Woof! ");
+}
+
+private void run() {
+    System.out.println("Dog running ");
+}
+
+private void walk() {
+    System.out.println("Dog walking ");
+}
+
+private void wagTail() {
+    System.out.println("Tail wagging ");
+}
+```
+
+Okay, so those are our Dog behaviors, so let's use some of these methods from Dog's move method.
+
+```java  
+@Override
+public void move(String speed) {
+    super.move(speed);
+    //System.out.println("Dogs walk, run and wag their tail ");
+    if (speed == "slow") {
+        walk();
+        wagTail();
+    } else {
+        run();
+        bark();
+    }
+}
+```
+
+Now if we run that:
+
+```java  
+..... // above all the same(since there is no move method output)
+Yorkie moves fast
+Dog running
+Woof!
+Dog{earShape='Perky', tailShape='Curled'} Animal{type='Yorkie', size='medium', weight=15.0}
+_ _ _ _
+Labrador Retriever moves slow
+Dog walking
+Tail wagging
+Dog{earShape='Floppy', tailShape='Swimmer'} Animal{type='Labrador Retriever', size='large', weight=65.0}
+_ _ _ _
+```
+
+the output shows our dogs moving, first the "yorkie moves fast" 
+and then it prints "Dog running, woof!"
+Then we have "Labrador Retriever moves slow"
+and that's now also printing "Dog walking, tail wagging."
+And again, nothing in the doAnimalStuff method had to change 
+for this new functionality to be called. 
+I hope you're starting to get a little glimpse at how powerful a feature this is. 
+And lastly, we can call the bark method in the overridden method, makeNoise, 
+which right now has no code in it. 
+Here we're not calling Animal's makeNoise method, and we don't want to. 
+We want the Dog to have behavior that the Animal doesn't have.
+
+```java  
+public void makeNoise() {
+    bark();
+}
+```
+
+Let's run that:
+
+```java  
+Woof!
+Yorkie moves fast
+Dog running
+Woof!
+Dog{earShape='Perky', tailShape='Curled'} Animal{type='Yorkie', size='medium', weight=15.0}
+_ _ _ _
+Woof!
+Labrador Retriever moves slow
+Dog walking
+Tail wagging
+Dog{earShape='Floppy', tailShape='Swimmer'} Animal{type='Labrador Retriever', size='large', weight=65.0}
+_ _ _ _
+```
+
+Now, we can get "woof" for both types of dogs, when we call the makeNoise method, in the main class. 
+We've overridden the makeNoise method, with code unique to the dog, 
+which, in this case, makes a call to the bark method. 
+And that's how you do it, you can separate the functionality just for a dog, 
+and only include it in the dog class. 
+Let's try to change our makeNoise method again. 
+This time, if the type of the dog is a Wolf, let's have the Dog howl and bark.
+
+```java  
+public void makeNoise() {
+    if (type == "Wolf") {
+        System.out.println("Ow Woooo! ");
+    }
+    bark();
+}
+```
+
+Now, in this case, where we're referencing type we get a compiler error, 
+which says "**type** has private access in **Animal**. 
+This is because the type has private access in Animal. 
+But the type is one of the fields inherited by Dog.
+Yes, but because the type is private on Animal, no other classes, 
+not even subclasses, can access or use this field, in its own methods. 
+We've said there's a modifier that allows access for subclasses, and that's the protected modifier. 
+Let's go to the Animal class, and change the modifier from private to protect for the type field. 
+What this modifier says is, let any class, that is a subclass, access this field. 
+This is a conditional encapsulation. 
+We're allowing some limited access, to our internal fields, and that's to subclass. 
+Protected access also means that any classes in the same package will also have access. 
+And changing that modifier means our code compiles successfully.
+
+Let's look at that code in Dog again. 
+Notice here that we just simply reference type here. 
+We didn't add any other qualifier, not this(), or super(),
+and we didn't have to call the type from a different instance of Dog.
+This is another advantage of Inheritance, for fields and methods that aren't private.
+They can be accessed directly, as if they really were declared, on the subclass itself.
+Java first looks on the subclass for a method or a field with that name; 
+then it'll go up the inheritance tree, looking for a match.
+Let's quickly test this by creating a wolf in the main method of the Main class:
+
+```java  
+.... (nothing changed)
+Dog wolf = new Dog("Wolf", 40);
+doAnimalStuff(wolf, "slow");
+```
+
+And now, running this code:
+
+```java  
+..... (nothing changed)
+Ow Woooo!
+Woof!
+Wolf moves slow
+Dog walking
+Tail wagging
+Dog{earShape='Perky', tailShape='Curled'} Animal{type='Wolf', size='large', weight=40.0}
+_ _ _ _
+```
+
+We can see all the information about our wolf, and we can also see the output
+that our wolf is howling, as well as barking. 
+That was the Dog class. Let's add another subclass, 
+so you can get used to this inheritance concept, 
+and the idea of extending another class.
+
+Let's add the Fish class to our hierarchy. 
+What are some unique characteristics of a fish?
+Well, let's go with a couple, like gills, and fins.
+And instead of a generic move method, we might have more specific methods like moveMuscles,
+and moveBackFins.
+Let's look at our class diagram that includes this new Fish class:
+
+                    Fish =>
+                            fins  : int
+                            gills : int
+                            -----------
+                            moveMuscles()
+                            moveBackFins()
+
+    It's quite a bit different from Dog, but it's still an Animal. This diagram shows a new class named Fish, that extends
+    Animal. It has 2 fields and 2 methods, specific to its own type. Let's build that Fish class.
+
+                    public class Fish extends Animal {
+                        private int gills;
+                        private int fins;
+
+                        public Fish(String type, double weight, int gills, int fins) {
+                            super(type, "small", weight);
+                            this.gills = gills;
+                            this.fins = fins;
+                        }
+                    }
+
+    Also we pick the Animal constructor with parameters as its first constructor, and then 2 field for Fish. And like we
+    did with Dog, we changed "size" parameter from the input parameter, and this time, to be hard coded to "small", for
+    simplicity. This constructor is a lot like Dog's. We're calling the super constructor, the constructor on Animal, and
+    we pass the type, the size, and this time we'll make all fish small. And finally, we pass the weight. Then we add the
+    assignments for Fish's more specialized fields, gills and fins. So, very similar to the dog class. But in this case,
+    we've created a new fish class, that inherits from the animal class, and we've defined some unique characteristics
+    for the fish, namely, gills and fins. Let's next add Fish's custom behavior, and add the method, moveMuscles first,
+    and we'll just print out a statement for that. And we'll make this method private, because we only want the move method
+    to call it. We won't expose this behavior in other words, for any outside code to call it directly.
+
+                    private void moveMuscles() {
+                        System.out.print("muscles moving ");
+                    }
+
+                    private void moveBackFin() {
+                        System.out.print("Backfin moving ");
+                    }
+
+    And now, we'll override the move method from Animal, so that our fish moves(or swims). With our cursor right before
+    the closing brace of the Fish class, we'll start typing public void, and you'll see IntelliJ pops up a list of methods,
+    and from that we'll select move.
+
+                    @Override
+                    public void move(String speed) {
+                        super.move(speed);
+                    }
+
+    And now we have the overridden move method generated for us. Like we did with the Dog class, let's extend this behavior
+    for a fish. We'll have our fish move its muscles regardless of the speed, but use its backfin if it wants to go fast.
+
+                    @Override
+                    public void move(String speed) {
+                        super.move(speed);
+                        moveMuscles();
+                        if (speed == "fast") {
+                            moveBackFin();
+                        }
+                        System.out.println();
+                    }
+
+    That would be one way to model the fish moving, or swimming. It moves its muscles, and it moves the back fin, which
+    the net result of that is, it actually propels itself or moves. Let's add a code-generated toString method for Fish,
+    like we did for Dog, that print's both Fish's fields as well as Animal's.
+
+                    @Override
+                    public String toString() {
+                        return "Fish{" +
+                                "gills=" + gills +
+                                ", fins=" + fins +
+                                "} " + super.toString();
+                    }
+
+    And that's it. We've built the Fish class, so let's create an instance of fish, and call our doAnimalStuff method. And
+    we can call that method with Fish, without changing that method at all, because Fish is another type of Animal.
+
+                    Fish goldie = new Fish("Goldfish", 0.25, 2, 3);
+                    doAnimalStuff(goldie, "fast");
+
+    And running that:
+
+                    _ _ _ _
+                    Goldfish makes some kind of noise
+                    Goldfish moves fast
+                    muscles moving Backfin moving
+                    Fish{gills=2, fins=3} Animal{type='Goldfish', size='small', weight=0.25}
+                    _ _ _ _
+
+    we can see the output from this additional code. Goldfish makes some kind of noise, Goldfish moves fast, and there we
+    have muscles moving backfin moving. Again, we used Animal's fields and behaviors, the ones we wanted to use, and then
+    added some more specific elements to the Fish class. And we passed Fish to a method, that never even had to know a Fish
+    class existed. We're going to be coming back to this particular feature a lot, because it has a special name, Polymorphism.
+    It simply means "many forms".
+
+        In this course, we showed that Animal can take multiple forms, the base class Animal, or a Dog, or a Fish. And as
+    you've seen, some advantages of Polymorphism are:
+
+- It makes code simpler. We can write code once, using the base class or super class, as we did with our doAnimalStuff
+  method. We wrote that code without ever having to know about subclass types. We didn't have to write code to check the
+  type of the object, and then decide what method to call, Java did all that at runtime.
+
+- It encourages code extensibility. It's very easy to subclass, and override or extend the method, that'll be called as
+  we demonstrated. We have a whole course on polymorphism, where we cover this powerful object-oriented concept, as well
+  as others.
 
 ```java  
 
