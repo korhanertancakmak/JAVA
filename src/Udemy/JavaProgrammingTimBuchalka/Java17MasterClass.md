@@ -66,7 +66,7 @@ What we will learn from this Path:
 ### [j. Bill's Burger(OOP Master) Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#j-bills-burgeroop-master-challenge)
 ### [k. Organizing Java Classes, Packages and Import Statements](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#j-bills-burgeroop-master-challenge)
 
-## [5. Arrays]()
+## [5. Arrays](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#section-5-arrays)
 
 ### [a. Arrays](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#a-arrays)
 ### [b. java.util.Arrays Class and Binary Search](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#b-javautilarrays-class-and-binary-search)
@@ -74,7 +74,7 @@ What we will learn from this Path:
 ### [d. Variable Arguments (Varargs)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#d-variable-arguments-varargs)
 ### [e.Multi-Dimensional Arrays](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#emulti-dimensional-arrays)
 
-## [6. Lists and Iterator]()
+## [Section-6: Lists, Big-O Notation, Iterators, Autoboxing & Unboxing and Enum Type]()
 
     * List and ArrayList
     * Arrays vs ArrayLists
