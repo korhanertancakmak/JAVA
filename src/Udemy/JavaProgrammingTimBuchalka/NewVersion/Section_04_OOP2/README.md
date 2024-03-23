@@ -18,7 +18,7 @@ All the parts are manufacturer's products, which we have to buy,
 and assemble, to sell our final product, the personal computer.
 Next, we'll look at a class diagram of some computer products, or computer parts.
 
-![image01]()
+![image01](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image01.png?raw=true)
 
 
 In this instance, we have a base class called "Product."
@@ -95,7 +95,7 @@ Inheritance defines an "is A" relationship.
 Composition defines a "HAS A" relationship.
 Next, let's look at how we'd use composition to create a personal computer.
 
-![image02]()
+![image02](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image02.png?raw=true)
 
 To keep this diagram simple, I'm showing only that PersonalComputer inherits from Product, 
 but remember all of our classes are really subclasses of product.
@@ -110,7 +110,7 @@ And we've already created the parts, but we didn't really make them different fr
 Now we'll look at another diagram that shows these classes, 
 with some state and behavior, specific to their product type.
 
-![image03]()
+![image03](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image03.png?raw=true)
 
 This diagram shows 3 classes that will make up the personal computer.
 We'll have size and resolution for the monitor, and we'll want a method called drawPixelAt, 
@@ -215,7 +215,7 @@ Java only lets you inherit from one class at a time.
 You could see that we'd run into difficulties and limitations quite quickly 
 if our only tool was inheritance. 
 
-![image04]()
+![image04](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image04.png?raw=true)
 
 In this case, what we've said is, the Personal computer consists of these three other classes,
 namely the computer case, the monitor, and the motherboard.
@@ -435,7 +435,7 @@ meaning the model no longer represents the reality in the code.
 Let's say we want to include digital products, like software products, in our product inventory.
 Should Digital Product inherit from Product?
 
-![image05]()
+![image05](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image05.png?raw=true)
 
 Here we show the model with Digital Product, inheriting from our current definition of Product.
 If we do this, this should mean Digital Product has Product's attributes, but this isn't true now.
@@ -444,7 +444,7 @@ so this model isn't a good representation of what we want to build.
 It would be better if we didn't have those three attributes on Product, 
 but instead used composition to include them on certain products, but not all products.
 
-![image06]()
+![image06](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image06.png?raw=true)
 
 Now, consider this revised class diagram.
 We haven't completely removed the class hierarchy, but we've made the base class, Product, 
@@ -467,7 +467,7 @@ In this challenge, you need to create an application for controlling a smart kit
 Your smart kitchen will have several appliances.
 Your appliances will be Internet Of Things (IoT) devices, which can be programmed.
 
-![image07]()
+![image07](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image07.png?raw=true)
 
 For example, you might do stuff in your kitchen in the morning, in a rush to get to work, 
 and then expect your smart kitchen appliances to run automatically at a later time.
@@ -524,7 +524,7 @@ We're going to start off with the class that does not use it,
 and then we'll create another enhanced class; that does use it. 
 We'll start with the non-encapsulated class, called Player.
 
-![image08]()
+![image08](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image08.png?raw=true)
 
 Hopefully you're getting used to seeing classes on a diagram now, 
 and can appreciate looking at a class this way before we even build it. 
@@ -903,7 +903,7 @@ This is the challenge to create a class, and to demonstrate proper encapsulation
 such as you've learnt in the previous course. 
 In this challenge, you need to create a class named Printer.
 
-![image09]()
+![image09](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image09.png?raw=true)
 
 It's going to simulate a real computer printer, a laser printer.
 The fields in this class are going to be:
@@ -946,7 +946,7 @@ There are other ways, but in this video, we'll talk about how to use inheritance
 We've given you a taste of this in the inheritance courses, 
 but this time we're going to look at polymorphism specifically.
 
-![image10]()
+![image10](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image10.png?raw=true)
 
 This time, we're going to look at a polymorphism example, using movies. 
 We'll have a base class of Movie, which has the title of the movie. 
@@ -1699,13 +1699,13 @@ And that gives us the output:
 Ok, those are a few ways to test the runtime type of object in our code. 
 You can see that this newest feature in Java makes a job a lot easier.
 
-## [i. Polymorphism Challenge]()
+## [i. Polymorphism Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/Course09_PolymorphismChallenge/README.md#polymorphism-challenge)
 
 What we want to do in this challenge is have our runtime code execute 
 different behavior for different objects. 
 Let's talk about what I want you to do in this challenge.
 
-![image11]()
+![image11](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image11.png?raw=true)
 
 This diagram shows a base class, Car, with one field, description, 
 and three methods, startEngine(), drive(), and runEngine(). 
@@ -1726,7 +1726,7 @@ that creates an instance of each of these classes, and that executes
 different behavior for each instance. 
 At least one method should print the type of the runtime object.
 
-## [j. Bill's Burger(OOP Master) Challenge]()
+## [j. Bill's Burger(OOP Master) Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/Course10_OOPMasterChallenge/README.md#bills-burgeroop-master-challenge)
 
 In this challenge, Bill runs a fast food hamburger restaurant, and sells hamburger meals. 
 His meal orders are composed of three items, the hamburger, the drink, and the side item. 

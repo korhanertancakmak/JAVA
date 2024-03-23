@@ -1,6 +1,6 @@
 # [Bill's Burger(OOP Master) Challenge]()
 
-![image12]()
+![image12](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image12.png?raw=true)
 
 Here is the diagram of my design. 
 This diagram doesn't include the DeluxeBurger class.
@@ -540,7 +540,7 @@ and provided methods for adding toppings and customizing a drink size.
 Now, we want to create a burger subclass, the DeluxeBurger, 
 which has two additional toppings, so a total of 5.
 
-![image13]()
+![image13](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image13.png?raw=true)
 
 And one other little thing, this burger when it's part of a meal, has a single set price, 
 meaning the drink, the side item and the toppings, have no additional changes. 
