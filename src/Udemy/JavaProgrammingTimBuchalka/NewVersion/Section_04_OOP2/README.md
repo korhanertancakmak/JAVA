@@ -12,13 +12,13 @@ and also how to apply them to your programs.
 
 ## [a. Composition (Part-I)]()
 
-<p style="text-align: justify;"> 
+<div align="justify">
 As a refresher, I want to review another inheritance example before we move into composition.
 Let's say we're interested in building a computer, and we want to assemble it.
 All the parts are manufacturer's products, which we have to buy, 
 and assemble, to sell our final product, the personal computer.
 Next, we'll look at a class diagram of some computer products or computer parts.
-</p>
+</div>
 
 ![image01](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image01.png?raw=true)
 
