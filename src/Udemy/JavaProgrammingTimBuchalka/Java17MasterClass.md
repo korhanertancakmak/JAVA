@@ -52,7 +52,7 @@ What we will learn from this Path:
 ### [q. String Manipulation Methods](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#q-string-manipulation-methods)
 ### [s. The StringBuilder Class](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#s-the-stringbuilder-class)
 
-## [4. Object-Oriented Programming (Part-II)](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#section-4-object-oriented-programming-part-ii)
+## [4. Object-Oriented Programming (Part-II)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#section-4-object-oriented-programming-part-ii)
 
 ### [a. Composition (Part-I)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#a-composition-Part-i)
 ### [b. Composition (Part-II)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#b-composition-Part-ii)
@@ -63,16 +63,16 @@ What we will learn from this Path:
 ### [g. Casting with Classes, Using Object and var References](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#g-casting-with-classes-using-object-and-var-references)
 ### [h. Testing the run-time Type](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#h-testing-the-run-time-type)
 ### [i. Polymorphism Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#i-polymorphism-challenge)
-### [j. Bill's Burger(OOP Master) Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#j-bills-burgeroop-master-challenge)
-### [k. Organizing Java Classes, Packages and Import Statements](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#j-bills-burgeroop-master-challenge)
+### [j. Bill's Burger(OOP Master) Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#j-bills-burgeroop-master-challenge)
+### [k. Organizing Java Classes, Packages and Import Statements](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#j-bills-burgeroop-master-challenge)
 
 ## [5. Arrays]()
 
 ### [a. Arrays](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#a-arrays)
-### [b. java.util.Arrays Class and Binary Search](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#b-java-util-arrays-class-and-binary-search)
+### [b. java.util.Arrays Class and Binary Search](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#b-javautilarrays-class-and-binary-search)
 ### [c. Reference Types vs Value Types](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#c-reference-types-vs-value-types)
 ### [d. Variable Arguments (Varargs)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#d-variable-arguments-varargs)
-### [e.Multi-Dimensional Arrays](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#e-multi-dimensional-arrays)
+### [e.Multi-Dimensional Arrays](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#emulti-dimensional-arrays)
 
 ## [6. Lists and Iterator]()
 
