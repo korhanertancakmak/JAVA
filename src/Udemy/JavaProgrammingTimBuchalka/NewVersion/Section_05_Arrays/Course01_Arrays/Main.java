@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_09_Arrays.Course01_Arrays;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_05_Arrays.Course01_Arrays;
 
 import java.util.Arrays;
 

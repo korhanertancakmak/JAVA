@@ -16,7 +16,7 @@ As a refresher, I want to review another inheritance example before we move into
 Let's say we're interested in building a computer, and we want to assemble it.
 All the parts are manufacturer's products, which we have to buy, 
 and assemble, to sell our final product, the personal computer.
-Next, we'll look at a class diagram of some computer products, or computer parts.
+Next, we'll look at a class diagram of some computer products or computer parts.
 
 ![image01](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image01.png?raw=true)
 
@@ -26,7 +26,7 @@ All of our computer parts are going to inherit from Product.
 All our parts will then have the same set of attributes, a manufacturer, and model, 
 and dimensions, the width, height, and depth in other words. 
 All of these items are products are particular type of Product. 
-Personal Computer, Monitor, Motherboard, and ComputerCase, are but a few parts, or products; 
+Personal Computer, Monitor, Motherboard, and ComputerCase are but a few parts, or products; 
 you can think of that would be sold by a computer distributor.
 
 Ok, let's build this. Creating a new class named "Product," 
@@ -51,7 +51,7 @@ Ok, we now have our base class, and next let's create a couple of subclasses.
 Remember, only one class can be public, so we'll omit the access modifier for these classes.
 We'll start with Monitor. 
 For Monitor to be a subclass of Product, 
-we have to add extends Product by generating the constructor that has got 2 attributes:
+we have to add extends Product by generating the constructor that has got two attributes:
 
 ```java  
 class Monitor extends Product {
@@ -112,7 +112,7 @@ with some state and behavior, specific to their product type.
 
 ![image03](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image03.png?raw=true)
 
-This diagram shows 3 classes that will make up the personal computer.
+This diagram shows three classes that will make up the personal computer.
 We'll have size and resolution for the monitor, and we'll want a method called drawPixelAt, 
 so the monitor has behavior to draw.
 For the computerCase, we'll have a powerSupply, and a method pressPowerButton().
@@ -200,7 +200,7 @@ public void pressPowerButton() {
  Let's look at our PersonalComputer class diagram again.
  We've said it inherits from Product, and it also has three fields, 
  which are classes, these are Monitor, Motherboard, and ComputerCase.  
- Let's build this Personal Computer class now, using composition, which means we'll add 3 attributes:
+ Let's build this Personal Computer class now, using composition, which means we'll add three attributes:
 
 ```java  
 public class PersonalComputer extends Product{
@@ -295,7 +295,7 @@ then Dell as the manufacturer, and then we'll pass the other variables to the PC
 PersonalComputer thePC = new PersonalComputer("2208", "Dell", theCase, theMonitor, theMotherboard);
 ```
 
-And you can see here, we've created the PC object by passing those 3 other objects to it, 
+And you can see here, we've created the PC object by passing those three other objects to it, 
 as well as the model and manufacturer.
 
 With inheritance, we were able to use a method from the base class.
@@ -414,7 +414,7 @@ The reasons of preference of composition against inheritance are:
 
 * Composition is more flexible. You can add parts in, or remove them, and 
 these changes are less likely to have a downstream effect.
-* Composition provides functional reuse outside of the class hierarchy, 
+* Composition provides functional reuse outside the class hierarchy, 
 meaning classes can share attributes & behaviors by having similar components, 
 instead of inheriting functionality from a parent or base class.
 * Java's inheritance breaks encapsulation because subclasses may need direct access 
@@ -479,7 +479,7 @@ Methods in your SmartKitchen class will determine what work needs to be done:
 * pourMilk() will set Refrigerator's hasWorkTodo to true.
 * loadDishwasher() will set the hasWorkToDo flag to true, on that appliance.
 
-Alternatively, you could have a single method, called setKitchenState, that takes 3 boolean values, 
+Alternatively, you could have a single method, called setKitchenState, that takes three boolean values, 
 which could combine the three methods above.
 
 To execute the work needed to be done by the appliances, you'll implement this in two ways:
@@ -588,7 +588,7 @@ public void restoreHealth(int extraHealth) {
 }
 ```
 
-Now, let's just make a rule that health should never go over 100. 
+Now, let's make a rule that health should never go over 100. 
 If health is greater than 100, we'll just set it back to be 100, 
 and print that the player was completely restored.
 
@@ -621,7 +621,7 @@ player.weapon = "Sword";
 ```
 
 That's the way we need to initialize those fields.
-And of course, as you can see, even though we're not in that class, we can access those fields directly.
+And, as you can see, even though we're not in that class, we can access those fields directly.
 That's because we set the access to be public for those fields. 
 If we set those to private, we wouldn't be able to do this.
 
@@ -718,7 +718,7 @@ And maybe this isn't really a problem as much when it's your own code,
 but if you're deploying this kind of code in a library, for example, 
 you're setting yourself up for a lot of problems.
 
-3. Omitting a constructor, that would accept initialization data 
+3. Omitting a constructor that would accept initialization data 
 may mean the calling code is responsible for setting up this data on the new object. 
 The third issue with this approach is, we're manually initializing our object with these calls at the start. 
 This means the calling code is responsible for making all the right method calls, 
@@ -741,7 +741,7 @@ let's actually comment this code out.
  
 Let's create a new class that actually has got proper encapsulation by creating a new class, 
 named EnhancedPlayer, and show you the right way of doing it. 
-The difference here is, we're going to create our 3 fields as private.
+The difference here is, we're going to create our three fields as private.
 
 ```java  
 private String name;
@@ -932,7 +932,7 @@ In this challenge, you'll want to demonstrate proper encapsulation techniques wi
 
 ## [f. Polymorphism]()
 
-Simply stated, polymorphism, means many forms. 
+Simply stated, polymorphism means many forms. 
 Well, how does this apply to code? 
 Polymorphism lets us write to call a method, but at runtime, this method's behavior can be different, 
 for different objects. 
@@ -941,7 +941,7 @@ depends on the runtime type of the object.
 And the runtime type might be different from the declared type in the code. 
 The declared type has to have some kind of relationship to the runtime type, 
 and inheritance is one way to establish this relationship. 
-There are other ways, but in this video, we'll talk about how to use inheritance to support polymorphism.
+There are other ways, but in this course, we'll talk about how to use inheritance to support polymorphism.
 
 We've given you a taste of this in the inheritance courses, 
 but this time we're going to look at polymorphism specifically.
@@ -1003,7 +1003,7 @@ We got this output.
 And that's because the runtime instance of the movie variable is the "Movie" class. 
 It's the object we created here in the main method. 
 And we did a new Movie, which means it's really an instance of a Movie. 
-Here we've created the object using the "new Movie" statement and past it the title of "Star Wars". 
+Here we've created the object using the "new Movie" statement and past it the title of *Star Wars*. 
 And then we assigned our movie instance to a "movie" reference variable, 
 and here we just called it the "Movie."
 Ok, so no surprises here, I hope.
@@ -1257,7 +1257,7 @@ and returned, but it's assigned to a variable with the Movie type,
 so this code will work for any Movie, or any of its subclasses, 
 including subclasses that haven't even been created yet. 
 This keeps all the information about the Movie, and its subclasses, 
-in the control of the Movie class, and simplifies the work that needs to be done, by the calling code. 
+in the control of the Movie class, and simplifies the work that needs to be done by the calling code. 
 That sounds like a good encapsulation technique, doesn't it?
 
 Ok, going back to our main method, we'll use polymorphism to watch a variety of movies. 
@@ -1303,7 +1303,7 @@ We want to get all the data they entered, up do and including the new line.
 The nextLine method gets the type of the movie they want to watch, 
 but we're not doing anything with it yet, except assigning it to type. 
 If we ran this now, we'd be stuck in an infinite loop. 
-We need to add the code, to break out of the loop next.
+We need to add the code to break out of the loop next.
 
 ```java  
 if ("Qq".contains(type)) {
@@ -1587,7 +1587,7 @@ readability of the code, and to reduce boilerplate code.
 * It can't be used in field declarations on a class.
 * It can't be used in method signatures, either as a parameter type or a return type.
 * It can't be used without an assignment, because the type can't be inferred in that case.
-* It can't be assigned a null literal, again because a type can't be inferred in that case.
+* It can't be assigned a null literal again because a type can't be inferred in that case.
 
 Are you still confused about the difference between run-time and compile-time typing? 
 You can think of the compile time type as the declared type. 
@@ -1676,9 +1676,9 @@ And this next statement is different from anything I've shown you before,
 but perfectly valid. 
 This set of outer parentheses is the result of the Adventure type, *(Adventure) unknownObject*, 
 and we can chain a method directly on that, as we do here. 
-In other words, we don't have to assign the result of the cast, to a local variable.
+In other words, we don't have to assign the result of the cast to a local variable.
 
-Ok, now lastly, let's look at 1 more way to do this: 
+Ok, now lastly, let's look at one more way to do this: 
 *else if (unknownObject **instanceof** ScienceFiction **syfy**)*. 
 Here, we can see we're using a slightly different version of the **instanceof** operator. 
 This is called pattern matching support, for the **instanceof** operator. 
@@ -1693,7 +1693,7 @@ Let's run this code through a couple of tests.
 First, we'll run this code as it is. 
 We're interested in the last statement of the output. 
 And that gives us the last output statement, *Watching an Adventure!*. 
-Now, let's test a ScienceFiction movie, making the type a *S*, and the title Star-Wars. 
+Now, let's test a ScienceFiction movie, making the type an *S*, and the title Star-Wars. 
 And that gives us the output: 
 *Watching a Science Fiction Thriller!*. 
 Ok, those are a few ways to test the runtime type of object in our code. 
@@ -1719,7 +1719,7 @@ And each of these classes might have different variables or fields that might be
 We show you a few of the fields here, but you should try to be creative in your own design. 
 Maybe you might be interested in the top speed of the cars, or how fast they can accelerate, 
 or some other way you want to compare these cars' performances. 
-It's your job, to create this class structure in Java, and override some, or maybe all, 
+It's your job to create this class structure in Java, and override some, or maybe all, 
 of these methods appropriately.
 And you'll write code in a Main class and main method, 
 that creates an instance of each of these classes, and that executes 
@@ -1738,7 +1738,7 @@ You need a meal order:
 * This should be composed of exactly one burger, one drink, and one side item.
 * The most common meal order should be created without any args, like a regular burger, 
 a small coke, and fries, for example.
-* You should be able to create other meal orders, by specifying different burgers, drinks, and side items.
+* You should be able to create other meal orders by specifying different burgers, drinks, and side items.
 
 You need a drink and side item:
 
@@ -1760,7 +1760,7 @@ so that any additional toppings do not change the price.
 
 Your main method should have code to do the following:
 
-* Create a default meal, that uses the no args constructor.
+* Create a default meal that uses the no args constructor.
 * Create a meal with a burger, and the drink and side item of your choice, with up to three extra toppings.
 * Create a meal with a deluxe burger, where all items, drink, side item and toppings up to 5 extra toppings, 
 are included in the burger price.
@@ -1774,5 +1774,97 @@ This should include the price of the burger, any extra toppings, the drink price
 and the side item price.
 * Print the total due amount for the meal.
 
+## [k. Organizing Java Classes, Packages and Import Statements]()
+
+Up until this point in the class, we haven't created a lot of classes, 
+so we haven't had to think much about organizing those classes. 
+As the course progresses, we're going to be using more and more of Java's libraries, 
+and our applications are going to get more complex. 
+This feels like a good time to talk about the **package** and **import** statements, 
+in more detail. 
+We've talked briefly about **import** statements when we used the **Scanner** class, 
+and we mentioned packages when we talked about access modifiers.
+In this course, I want to focus on what a package is, 
+why we'll be switching to using it from this period forward, 
+and how to access classes in different packages.
+
+As per the Oracle Java Documentation:
+
+* A package is a namespace that organizes a set of related types.
+* In general, a package corresponds to a folder or directory on the operating system, 
+but this isn't a requirement.
+* When using an IDE, like IntelliJ, we don't have to worry about how packages 
+and classes are stored on the file system.
+
+The package structure is hierarchical, meaning you group types in a tree fashion. 
+You can use any legal Java identifier for your package names, but common practice 
+has package names as all lower cases. 
+The period separates the hierarchical level of the package. 
+By now, you're familiar with two of Java's packages, java.lang, and java.util. 
+
+![image14]()
+
+You may remember, when we used the Scanner class or the Random class, 
+we were required to use an **import** statement. 
+The **import** statement has to be declared before any class or type declarations, 
+but after any package statement. 
+In this code, we don't have a package statement, so the import statement must be 
+the first statement in the code. 
+There is no limit to the number of import statements you can have. 
+Alternately, we could use a wildcard, "&ast;", with the asterisk character, 
+with the import statement. 
+We're telling Java to import all classes from that package with the use of "*".
+
+![image15]()
+
+Packages let us re-use common class names across different libraries or applications, 
+and provide a way to identify the correct class, either with an import statement, 
+or a qualifying name. 
+For example, you might have a package for utility classes that can provide common functionality 
+for all of your classes to access. 
+Packages let us or organize our classes by functionality, or relationships. 
+Packages also let us encapsulate our classes, from classes in other packages. 
+So you might have a package of tightly coupled classes that should only be accessed by each other, 
+but not by the outside world, as an example.
+
+What would a package name look like? 
+We've seen that Java starts their package names with java, in some of the examples we've looked at. 
+However, it is common practice to use the reverse domain name 
+to start your own package naming conventions. 
+If your company is *abcompany.com* for example, your package prefixes would be *com.abccompany*.
+For the rest of the course, I'll be using dev.lpa, 
+which is the reverse domain of my Learn Programming Academy development company. 
+The package name hierarchy is separated by periods. 
+
+![image16]()
+
+The package statement needs to be the first statement in the code except comments. 
+The package statement comes before any import statements. 
+There can be only one package statement, because a class or type can only be in a single package.
+
+A class's fully qualified class name (FQCN) consists of the package name and the class name. 
+It's unlikely a class, with its fully qualified name, will have a naming conflict, 
+with a Main class in another package. 
+As an example, the fully qualified class name of the Scanner class in a code is java.util.Scanner. 
+You can use the fully qualified class name instead of the import statement just as below:
+
+```java  
+java.util.Scanner scanner = new java.util.Scanner(System.in);
+```
+
+You can imagine this could get tedious if you have to use the type often in your code. 
+Later in the course, we'll talk about using a combination of the import statement,
+and the fully qualified class name, to resolve conflicts.
+
+![image17]()
+
+For your applications, you should always specify a package statement 
+and avoid using the default or unnamed package. 
+Although that's all we've been using up until now, 
+it has some disadvantages when you work in a true development environment. 
+The main disadvantage is you can't import types from the default package into other classes, 
+outside the default package. 
+In other words, you can't qualify the name 
+if it's in the default package, and you can't import classes from the default package.
 
 

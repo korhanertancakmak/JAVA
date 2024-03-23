@@ -63,11 +63,10 @@ What we will learn from this Path:
 ### [g. Casting with Classes, Using Object and var References](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#g-casting-with-classes-using-object-and-var-references)
 ### [h. Testing the run-time Type](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#h-testing-the-run-time-type)
 ### [i. Polymorphism Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#i-polymorphism-challenge)
-### [j. Bill's Burger(OOP Master) Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#j-bill-s-burger-oop-master-challenge)
+### [j. Bill's Burger(OOP Master) Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#j-bills-burgeroop-master-challenge)
+### [k. Organizing Java Classes, Packages and Import Statements](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#j-bills-burgeroop-master-challenge)
 
-    * Organizing Java Classes, Packages and Import Stataments
-
-## ![5. Arrays]()
+## [5. Arrays]()
 
     * Arrays
     * java.util.Arrays (sort, fill, copyOf)
@@ -79,7 +78,7 @@ What we will learn from this Path:
         * Challenge-43: Reverse Array
     * Multi-Dimensional Arrays
 
-## ![6. Lists and Iterator]()
+## [6. Lists and Iterator]()
 
     * List and ArrayList
     * Arrays vs ArrayLists
@@ -91,21 +90,21 @@ What we will learn from this Path:
         * Challenge-46: Banking
     * Enum type class
 
-## ![7. Abstraction in Java]()
+## [7. Abstraction in Java]()
 
     * Abstraction & Generalization
     * Interfaces
         * Challenge-47: Abstract Class
         * Challenge-48: Interface
 
-## ![8. Generics]()
+## [8. Generics]()
 
     * Generics
     * Comparable vs Comparator
     * Wildcards, and type eresure
     * Static method & multiple upper bonds
 
-## ![9. Nested Classes and Types]()
+## [9. Nested Classes and Types]()
 
     * Static Nested Classes
     * Inner Classes
@@ -113,7 +112,7 @@ What we will learn from this Path:
     * Local Classes
     * Anonymous Classes
 
-## ![10. Lambda Expressions]()
+## [10. Lambda Expressions]()
 
     * Lambda Expressions
     * Java's Functional Interfaces (Consumer & Predicate)   
@@ -121,7 +120,7 @@ What we will learn from this Path:
     * Method Reference
     * Convenience Methods
 
-## ![11. Java Collections]()
+## [11. Java Collections]()
 
     * java.util.Collections Methods
         * suffle
@@ -138,7 +137,7 @@ What we will learn from this Path:
     * HashMap
     * LinkedHashMap and TreeMap
 
-## ![12. Immutable and Sealed Classes]()
+## [12. Immutable and Sealed Classes]()
 
     * The final Modifier
     * Immutable Classes and Objects
@@ -146,7 +145,7 @@ What we will learn from this Path:
     * Enum Constructors
     * Sealed Classes
 
-## ![13. Streams]()
+## [13. Streams]()
 
     * The Structure of Stream Pipeline
     * Intermediate Operations
@@ -154,7 +153,7 @@ What we will learn from this Path:
     * Streams to Maps
     * Maps to Streams (Using flatMap)
 
-## ![14. Some Useful Classes]()
+## [14. Some Useful Classes]()
 
     * java.lang.Math Class
     * java.util.Random Class
@@ -163,13 +162,13 @@ What we will learn from this Path:
     * java.time.LocalDate Class
     * DateTime and Localization
 
-## ![15. Regular Expressions]()
+## [15. Regular Expressions]()
 
     * The Parts of a Regular Expression
     * Methods that use Regular Expressions
     * Pattern and Matcher
 
-## ![16. Input & Output in Java]()
+## [16. Input & Output in Java]()
 
     * Checked vs Unchecked Exceptions
     * Try with Research and finally clause
@@ -182,7 +181,7 @@ What we will learn from this Path:
     * DataOutputStream & DataInputStream
     * Serilization
 
-## ![17. Concurrency]()
+## [17. Concurrency]()
 
     * Thread Basics
     * Thread Creating, Execution and 
@@ -202,7 +201,7 @@ What we will learn from this Path:
     * Livelock
     * Starvation & Fair Locks
 
-## ![18. Working with Databases]()
+## [18. Working with Databases]()
 
     * MySQL Installation
     * Database Basics
@@ -217,7 +216,7 @@ What we will learn from this Path:
     * JPA and ORM
     * JPA Queries, JPQL
 
-## ![19. JavaFX]()
+## [19. JavaFX]()
 
     * JavaFX Overview
     * GridPane, HBox, BorderPane and other Layout
@@ -245,7 +244,7 @@ What we will learn from this Path:
     * SceneBuilder
     * Building a UI with SceneBuilder
 
-## ![20. Debugging and Unit Testing]()
+## [20. Debugging and Unit Testing]()
 
     * Debugging
     * Field Watch Points
@@ -253,7 +252,7 @@ What we will learn from this Path:
     * Asserts in JUnit and Exception Handling
     * Parameterized Testing
 
-## ![21. Java Networking Programming]()
+## [21. Java Networking Programming]()
 
     * Networking Overview
     * First Client and Server Apps
