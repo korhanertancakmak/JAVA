@@ -12,7 +12,7 @@ and also how to apply them to your programs.
 
 ## [a. Composition (Part-I)]()
 
-<p align="justify">
+<p style="text-align: justify;"> 
 As a refresher, I want to review another inheritance example before we move into composition.
 Let's say we're interested in building a computer, and we want to assemble it.
 All the parts are manufacturer's products, which we have to buy, 
@@ -22,7 +22,7 @@ Next, we'll look at a class diagram of some computer products or computer parts.
 
 ![image01](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image01.png?raw=true)
 
-
+<p style="text-align: justify;"> 
 In this instance, we have a base class called "Product."
 All of our computer parts are going to inherit from Product.
 All our parts will then have the same set of attributes, a manufacturer, and model, 
@@ -30,10 +30,13 @@ and dimensions, the width, height, and depth in other words.
 All of these items are products are particular type of Product. 
 Personal Computer, Monitor, Motherboard, and ComputerCase are but a few parts, or products; 
 you can think of that would be sold by a computer distributor.
+</p>
 
+<p style="text-align: justify;">
 Ok, let's build this. Creating a new class named "Product," 
 we start adding the attributes and a constructor, 
 which only includes the model and manufacturer for simplicity:
+</p>
 
 ```java  
 public class Product {
@@ -49,11 +52,13 @@ public class Product {
 }
 ```
 
+<p style="text-align: justify;">
 Ok, we now have our base class, and next let's create a couple of subclasses. 
 Remember, only one class can be public, so we'll omit the access modifier for these classes.
 We'll start with Monitor. 
 For Monitor to be a subclass of Product, 
 we have to add extends Product by generating the constructor that has got two attributes:
+</p>
 
 ```java  
 class Monitor extends Product {
@@ -63,9 +68,11 @@ class Monitor extends Product {
 }
 ```
 
+<p style="text-align: justify;">
 Ok, that's our first subclass. 
 Let's create our second class just by copying and pasting the same class 
 but with changing the method name, and the constructor:
+</p>
 
 ```java  
 class Motherboard extends Product {
@@ -85,6 +92,7 @@ class ComputerCase extends Product {
 }
 ```
 
+<p style="text-align: justify;">
 Ok, so our three classes all extend Product.
 We can say now, that Monitor has got a relationship with Product, 
 meaning that a Monitor can be said to be a type of Product.
@@ -92,13 +100,17 @@ And that's the relationship between the two classes.
 And we can quite correctly say that all three of these parts, 
 Monitor, Motherboard, and ComputerCase are all types of Product.
 And that's essentially what inheritance is.
+</p>
 
+<p style="text-align: justify;">
 Inheritance defines an "is A" relationship.
 Composition defines a "HAS A" relationship.
 Next, let's look at how we'd use composition to create a personal computer.
+</p>
 
 ![image02](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image02.png?raw=true)
 
+<p style="text-align: justify;">
 To keep this diagram simple, I'm showing only that PersonalComputer inherits from Product, 
 but remember all of our classes are really subclasses of product.
 But a PersonalComputer, in addition to being a product, is actually made up of other parts.
@@ -111,20 +123,25 @@ and we're modeling the "has a" relationship, with the motherboard, the case, and
 And we've already created the parts, but we didn't really make them different from each other.
 Now we'll look at another diagram that shows these classes, 
 with some state and behavior, specific to their product type.
+</p>
 
 ![image03](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image03.png?raw=true)
 
+<p style="text-align: justify;">
 This diagram shows three classes that will make up the personal computer.
 We'll have size and resolution for the monitor, and we'll want a method called drawPixelAt, 
 so the monitor has behavior to draw.
 For the computerCase, we'll have a powerSupply, and a method pressPowerButton().
-And for the Motherboard, we'll have slots for ram and cards, as well as a bios attribute, 
+And for the Motherboard, we'll have slots for ram and cards, as well as a bios' attribute, 
 and a method called loadProgram().
+</p>
 
+<p style="text-align: justify;">
 Getting back to the code, let's add these members to our parts.
 We'll start with the motherboard, and add the three attributes first, 
 and next we want to generate another constructor, 
 which initializes these three attributes but also calls super constructor:
+</p>
 
 ```java  
 private int ramSlots;
@@ -146,9 +163,11 @@ public void loadProgram(String programName) {
 }
 ```
 
+<p style="text-align: justify;">
 That's our Motherboard class, pretty straightforward as you can see, 
 with nothing particularly complicated there.
 Now, let's move onto our Monitor class, and add those fields, size and resolution:
+</p>
 
 ```java  
 private int size;
@@ -160,11 +179,13 @@ public ComputerCase(String model, String manufacturer, int size, String resoluti
 }
 ```
 
+<p style="text-align: justify;">
 Ok, so now we have the fields and the constructors.
 What we're going to do here next is, create a public method called drawPixelAt, 
 and it's going to have an x and y location, and a color. 
 We want to use String.format, which we learned to do in the last section.
 And we'll just print a simple message out:
+</p>
 
 ```java  
 public void drawPixelAt(int x, int y, String color) {
@@ -173,9 +194,11 @@ public void drawPixelAt(int x, int y, String color) {
 }
 ```
 
+<p style="text-align: justify;">
 And that completes the Monitor class.
 Finally, let's finish Computer Case, which we've said has a power supply and one method, 
 pressPowerButton, so we'll add the powerSupply field:
+</p>
 
 ```java  
 private String powerSupply;
@@ -188,6 +211,7 @@ public void pressPowerButton() {
 }
 ```
 
+<p style="text-align: justify;">
  Now that we have all of our parts done, it's time to build the computer.
  This is the fun part, where we actually create a class that consists of the computer case, 
  the monitor, and the motherboard.
@@ -203,6 +227,7 @@ public void pressPowerButton() {
  We've said it inherits from Product, and it also has three fields, 
  which are classes, these are Monitor, Motherboard, and ComputerCase.  
  Let's build this Personal Computer class now, using composition, which means we'll add three attributes:
+</p>
 
 ```java  
 public class PersonalComputer extends Product{
@@ -212,17 +237,21 @@ public class PersonalComputer extends Product{
 }
 ```
 
+<p style="text-align: justify;">
 And you can see the obvious advantage here, because if you're using the extends option to inherit, 
 Java only lets you inherit from one class at a time.
 You could see that we'd run into difficulties and limitations quite quickly 
 if our only tool was inheritance. 
+</p>
 
 ![image04](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image04.png?raw=true)
 
+<p style="text-align: justify;">
 In this case, what we've said is, the Personal computer consists of these three other classes,
 namely the computer case, the monitor, and the motherboard.
 Before we do anything else, we should add a constructor. 
 You can see IntelliJ isn't happy with us because we haven't done that yet.
+</p>
 
 ```java  
 public PersonalComputer(String model, String manufacturer, ComputerCase computerCase, Monitor monitor, Motherboard motherboard) {
@@ -247,56 +276,69 @@ public Motherboard getMotherboard() {
 }
 ```
 
+<p style="text-align: justify;">
 Ok, that's our Personal Computer. 
 We've described what we want to assemble.
 In the next course, we'll actually assemble the parts, 
 and we'll look at how to access the functionality of the parts
 through the personal computer container.
+</p>
 
 ## [b. Composition (Part-II)]()
 
+<p style="text-align: justify;">
 Now, we need to assemble the Personal Computer.
 Let's create some objects in the Main class firstly, an object of type ComputerCase.
 We'll create a Dell 2208 case, and it will have a 240 power supply:
+</p>
 
 ```java  
 ComputerCase theCase = new ComputerCase("2208", "Dell", "240");
 ```
 
+<p style="text-align: justify;">
 That's our definition for a computer case now.
 Remembering that when we create the personal computer, which we're going to be doing shortly, 
 it needs this reference.
 PCs generally can't be put together without a case, so what we're doing here is creating that case.
 Next, we need to create a monitor, this time we'll say it's an Acer 27inch beast, 
 so we'll pass in the size, and the resolution of 2540 by 1440.
+</p>
 
 ```java  
 Monitor theMonitor = new Monitor("27inch Beast", "Acer", 27, "2540 x 1440");
 ```
 
+<p style="text-align: justify;">
 We've now got a case and a monitor; that ultimately are going to be used to create our PC.
 Of course, we now need a motherboard. 
 And we'll make this an Asus, BJ-200 model. 
 We also need the Number of RAM slots, which we'll say is 4. 
 And the number of card slots, let's say there's 6. 
 And for the bios, let's say it's version v2.44.
+</p>
 
 ```java  
 Motherboard motherboard = new Motherboard("BJ-200", "Asus", 4,6,"v2.44");
 ```
 
+<p style="text-align: justify;">
 That gives us our motherboard.
 And now that we've got all our parts, we can put our Personal Computer together.
 We've created instances of a Monitor class, a Motherboard class, and a Computer Case class, 
 and it's time to build this, and see what we can do with it.
+</p>
 
+<p style="text-align: justify;">
 The PC will have the same manufacturer and model as the computer case, so 2208 as the model, 
 then Dell as the manufacturer, and then we'll pass the other variables to the PC.
+</p>
 
 ```java  
 PersonalComputer thePC = new PersonalComputer("2208", "Dell", theCase, theMonitor, theMotherboard);
 ```
 
+<p style="text-align: justify;">
 And you can see here, we've created the PC object by passing those three other objects to it, 
 as well as the model and manufacturer.
 
@@ -308,31 +350,37 @@ For example, if we want to draw something using the monitor, how do we access th
 We have the method drawPixelAt on monitor, but how do we access that? 
 Well, we can get the PC's monitor object, using the getter method, 
 and then call drawPixelAt on that object, so let's do that:
+</p>
 
 ```java  
 thePC.getMonitor().drawPixelAt(10, 10, "red");
 ```
 
+<p style="text-align: justify;">
 That's one way of executing functionality, by using the getter method from PC, 
 to get the instance of the monitor class, that the Pc contains.
 In this code, from that return object, we're chaining the call to the method drawPixelAt.
 And that's invoking that method for us.
 Likewise, we could call the method loadProgram on the motherboard, 
 passing it Windows OS, for example, as the program we want to run.
+</p>
 
 ```java  
 thePC.getMotherboard().loadProgram("Windows OS");
 ```
 
+<p style="text-align: justify;">
 We're doing the same thing here, we're getting the Motherboard object that's been created, 
 and that PC has a reference to, with the variable motherboard.
 And we use a getter method to get that reference, then execute loadProgram method on that.
 Lastly, let's do that with the next method, the pressPowerButton on the Computer case.
+</p>
 
 ```java  
 thePC.getComputerCase().pressPowerButton();
 ```
 
+<p style="text-align: justify;">
 Here, in all three cases, we're ultimately accessing functions in other classes, 
 theCase, theMotherboard, and theMonitor, but we're accessing them through thePC object.
 This is what composition is, this is the difference from inheritance. 
@@ -340,25 +388,32 @@ What we did to call the PC object was, we created our case, our monitor, and our
 And in reality, when putting a computer together, that's what you'd be doing.
 You'd buy the computer case, you'd buy the monitor, 
 and you'd buy the motherboard, and you'd then put it together to build the PC.
+</p>
 
+<p style="text-align: justify;">
 We built this PC by passing objects to the constructor, like assembling the computer.
 Let's continue on now, and look at another scenario, whereby we can actually hide 
 the functionality further.
 In this case, we're not going to allow the calling program to access those objects, the parts, directly. 
 We don't want anybody to access the Monitor, Motherboard, ComputerCase directly.
+</p>
 
+<p style="text-align: justify;">
 What we'll do first is, we'll go to our PC class, and we'll comment out all the getter methods. 
 You'll remember this encapsulates these attributes it hides them from the calling code.
 And just to go back and show you what happened, we're now getting an error, 
 because those methods no longer exist.
 We really don't want the Main class, or any class except the PC class, to make calls on its parts.
+</p>
 
+<p style="text-align: justify;">
 Ok, so next, let's create methods on PC, which we'll expose to the calling code.
 The first one, we'll call drawLogo, and we're going to implement that in a private method.
 And it might do some fancy graphics, but here we're not going to write that code yet.
 Instead, we'll just call drawPixelAt, on the monitor attribute of our computer.
 We're making this private because the only code we want to draw the computer manufacturer logo 
 is the personal computer itself.
+</p>
 
 ```java  
 private void drawLogo() {
@@ -366,9 +421,11 @@ private void drawLogo() {
 }
 ```
 
+<p style="text-align: justify;">
 Next, we want to call this method, from a method we'll call power up.
 If you think about a computer, when it starts up, you press the power button, 
 and then you see a logo come up on the screen.
+</p>
 
 ```java  
 public void powerUp() {
@@ -377,10 +434,12 @@ public void powerUp() {
 }
 ```
 
+<p style="text-align: justify;">
 Here, we've got a public method called powerUp, and a private function called drawLogo.
 The powerUp function of the PC will draw that logo on the screen, as part of starting up the computer.
 And now, going back to the main class, we'll comment out the three lines that aren't compiling.
 Instead, we'll make a call to the powerUp method on the PC.
+</p>
 
 ```java  
 thePC.powerUp();
@@ -393,37 +452,44 @@ Power button pressed
 Drawing pixel at 1200,50 in color yellow
 ```
 
+<p style="text-align: justify;">
 From the calling code's perspective, this code in Main didn't have to know anything about PC's parts, 
 to get the PC to do something.
 Composition is actually creating objects within objects.
 It's like creating a primary object. 
 In this case, the PC is managing and looking after all its parts, and it uses composition to achieve that.
+</p>
 
 ### Use Composition or Inheritance or BOth?
 
+<p style="text-align: justify;">
 As a general rule, when you're designing your programs in Java, 
 you probably want to look at composition first. 
 If you do any sort of research on the Internet, most of the experts will tell you that as a rule, 
 look at using composition before implementing inheritance.
 You saw in this example, we actually used both.
+</p>
 
+<p style="text-align: justify;">
 All our products, the parts that made up the finished product, and the finished product itself, 
 were able to inherit a set of attributes, like the manufacturer and model.
 The calling code didn't have to know anything about these parts, to get PC to do something.
 It was able to tell the pc to power up, and the pc delegated that work to its parts.
+</p>
 
 The reasons of preference of composition against inheritance are:
-
-* Composition is more flexible. You can add parts in, or remove them, and 
-these changes are less likely to have a downstream effect.
+* Composition is more flexible.
+You can add parts in, or remove them, and these changes are less likely to have a downstream effect.
 * Composition provides functional reuse outside the class hierarchy, 
 meaning classes can share attributes & behaviors by having similar components, 
 instead of inheriting functionality from a parent or base class.
 * Java's inheritance breaks encapsulation because subclasses may need direct access 
 to a parent's state or behavior.
 
+<p style="text-align: justify;">
 We showed you an example of using the protected access modifier in the last course, 
 and we'll talk about why this breaks encapsulation, in the next courses on encapsulation.
+</p>
 
 * Inheritance is less flexible. 
 Adding a class to, or removing a class form, a class hierarchy, 
@@ -439,22 +505,27 @@ Should Digital Product inherit from Product?
 
 ![image05](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image05.png?raw=true)
 
+<p style="text-align: justify;">
 Here we show the model with Digital Product, inheriting from our current definition of Product.
 If we do this, this should mean Digital Product has Product's attributes, but this isn't true now.
 A digital product wouldn't really have width, height, and depth, 
 so this model isn't a good representation of what we want to build.
 It would be better if we didn't have those three attributes on Product, 
 but instead used composition to include them on certain products, but not all products.
+</p>
 
 ![image06](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image06.png?raw=true)
 
+<p style="text-align: justify;">
 Now, consider this revised class diagram.
 We haven't completely removed the class hierarchy, but we've made the base class, Product, 
 less specific, or more generic.
 We've removed the width, height, and depth attributes from the Product, and made a new class, 
 Dimensions, with those attributes.
 And we've added an attribute to Motherboard, which is dimensions, which has those attributes.
+</p>
 
+<p style="text-align: justify;">
 This design allows for future enhancements to be made, like the addition of the subclass Digital Product, 
 without causing problems for existing code, that may already be extending Product.
 By pulling width, height, and depth into a dimension class, we can use composition
@@ -462,27 +533,36 @@ to apply those attributes to any product, as we did here with Motherboard,
 but we're not requiring that all subclasses be defined with those attributes.
 This is just one example of the inflexibility of inheritance, 
 compared to a more flexible design with composition.
+</p>
 
 ## [c. Composition Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/Course03_CompositionChallenge/README.md#composition-challenge-answer)
 
+<p style="text-align: justify;">
 In this challenge, you need to create an application for controlling a smart kitchen.
 Your smart kitchen will have several appliances.
 Your appliances will be Internet Of Things (IoT) devices, which can be programmed.
+</p>
 
 ![image07](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image07.png?raw=true)
 
+<p style="text-align: justify;">
 For example, you might do stuff in your kitchen in the morning, in a rush to get to work, 
 and then expect your smart kitchen appliances to run automatically at a later time.
+</p>
 
+<p style="text-align: justify;">
 It's your job to write the code, to enable your Smart Kitchen application to execute certain jobs.
 Methods in your SmartKitchen class will determine what work needs to be done:
+</p>
 
 * addWater() will set the Coffee Maker's hasWorkToDo field to true.
 * pourMilk() will set Refrigerator's hasWorkTodo to true.
 * loadDishwasher() will set the hasWorkToDo flag to true, on that appliance.
 
+<p style="text-align: justify;">
 Alternatively, you could have a single method, called setKitchenState, that takes three boolean values, 
 which could combine the three methods above.
+</p>
 
 To execute the work needed to be done by the appliances, you'll implement this in two ways:
 
@@ -494,15 +574,19 @@ what work is being done.
 * Second, your application won't access the appliances directly.
 It should call doKitchenWork(), which delegates the work to any of its appliances.
 
+<p style="text-align: justify;">
 You'll have to create the appliances as classes, with their own methods, as shown on the diagram, 
 and then compose your smart kitchen with these appliances.
+</p>
 
 ## [d. Encapsulation]()
 
+<p style="text-align: justify;">
 In this course, we talk about another fundamental OOP concept, which is Encapsulation. 
 We've already talked about it briefly when we first introduced getter methods.
 In Java, encapsulation means hiding things by making them private or inaccessible. 
 Why would we want to hide things in Java?
+</p>
 
 * To make the interface simpler, we may want to hide unnecessary details.
 * To protect the integrity of data on an object, we may hide or restrict access to some data and operations.
@@ -510,6 +594,7 @@ Why would we want to hide things in Java?
 we may hide actual names and types of class members. 
 This gives us more flexibility if we have to change the class in the future.
 
+<p style="text-align: justify;">
 And you might wonder what we mean by interface here? 
 Although Java has a type called interface, which is important, 
 and we'll be covering it in a later section, that's not what we're talking about here. 
@@ -519,15 +604,19 @@ or can be accessed by the calling code.
 Everything else in the class is internal or private to it. 
 An application programming interface, or API, 
 is the public contract that tells others how to use the class.
+</p>
 
+<p style="text-align: justify;">
 What we're going to do is, create a class that doesn't use encapsulation, 
 to show why this feature's important. 
 We're going to start off with the class that does not use it, 
 and then we'll create another enhanced class; that does use it. 
 We'll start with the non-encapsulated class, called Player.
+</p>
 
 ![image08](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image08.png?raw=true)
 
+<p style="text-align: justify;">
 Hopefully you're getting used to seeing classes on a diagram now, 
 and can appreciate looking at a class this way before we even build it. 
 This is the model for a Player class, as in a player in a computer game. 
@@ -535,10 +624,13 @@ And The Player will have three variables: name, health, and weapon.
 And this class will have three methods, loseHealth(), restoreHealth(), and healthRemaining(), 
 which I'll explain in a bit. 
 And we're going to create this class without using encapsulation.
+</p>
 
+<p style="text-align: justify;">
 To do this, we'll create a new Java class and call it Player. 
 And let's add the variables or fields, and we've said these are the player's name, 
 the player's health, and the weapon:
+</p>
 
 ```java  
 public class Player {
@@ -548,6 +640,7 @@ public class Player {
 }
 ```
 
+<p style="text-align: justify;">
 Now, what I want you to notice is that here, we've actually used a public access modifier. 
 We've discussed this before, and we've said, it's usually a good idea to use private. 
 But we're using "public" for a reason here, and that'll become clear shortly. 
@@ -558,6 +651,7 @@ like they fell off a cliff, or they got damaged in some way.
 We pass an integer value to this method, and that's subtracted from the player's health. 
 If this brings the player's health down to a value less than zero, 
 we'll print that the player's been knocked out of the game:
+</p>
 
 ```java  
 public void loseHealth(int damage) {
@@ -568,11 +662,13 @@ public void loseHealth(int damage) {
 }
 ```
 
+<p style="text-align: justify;">
 There we have the first method, which is going to subtract health from our player.
 The second method is going to return the amount of health that's available, or what's remaining.
 We're calling this method healthRemaining.
 And for now, it's simply going to return our variable, health, 
 which is our field in this class, so it's really a type of getter, or accessor method.
+</p>
 
 ```java  
 public int healthRemaining() {
@@ -580,9 +676,11 @@ public int healthRemaining() {
 }
 ```
 
+<p style="text-align: justify;">
 Finally, we'll add a way for the player to have this health restored, with the restoreHealth method.
 This method might be called in the game if the Player finds health tokens, or does something healthy.
 This method will add extraHealth points to the health field.
+</p>
 
 ```java  
 public void restoreHealth(int extraHealth) {
@@ -590,9 +688,11 @@ public void restoreHealth(int extraHealth) {
 }
 ```
 
+<p style="text-align: justify;">
 Now, let's make a rule that health should never go over 100. 
 If health is greater than 100, we'll just set it back to be 100, 
 and print that the player was completely restored.
+</p>
 
 ```java  
 public void restoreHealth(int extraHealth) {
@@ -604,17 +704,21 @@ public void restoreHealth(int extraHealth) {
 }
 ```
 
+<p style="text-align: justify;">
 The Player class is done now, and we can go back to our main class. 
 And we'll create a new Player.
+</p>
 
 ```java  
 Player player = new Player();
 ```
 
+<p style="text-align: justify;">
 We didn't create a constructor in the Player class, 
 but if you recall a default constructor with no parameters, gets created for us by Java. 
 In other words, we don't now have a constructor to pass player data when we create a new player. 
 This means the calling code needs to manually set the data in these fields.
+</p>
 
 ```java  
 player.name = "Korhan";
@@ -622,10 +726,12 @@ player.health = 20;
 player.weapon = "Sword";
 ```
 
+<p style="text-align: justify;">
 That's the way we need to initialize those fields.
 And, as you can see, even though we're not in that class, we can access those fields directly.
 That's because we set the access to be public for those fields. 
 If we set those to private, we wouldn't be able to do this.
+</p>
 
 Next, let's test the methods on the Player class:
 
@@ -635,18 +741,22 @@ player.loseHealth(damage);
 System.out.println("Remaining health = " + player.healthRemaining());
 ```
 
+<p style="text-align: justify;">
 Looking at this code, you can see we first made the player health = 20 above this, 
 and here we've got "10" damage. 
 Then we're calling the player.loseHealth method, which actually reduces the player's 
 health by the damage done. 
 And if we run that,
+</p>
 
 ```java  
 Remaining health = 10
 ```
 
+<p style="text-align: justify;">
 You can see the result. 
 Ok, let's add some more game play with a few more statements:
+</p>
 
 ```java  
 player.loseHealth(11);
@@ -661,6 +771,7 @@ Player knocked out of game
 Remaining health = -1
 ```
 
+<p style="text-align: justify;">
 We can see that the second call to loseHealth, this prints that the player got knocked out, 
 because after the call, the remaining health is now equal to -1. 
 That's obviously working, but I'm wondering whether you can see a possible problem here. 
@@ -671,22 +782,26 @@ health correctly when some damage happens.
 But what happens if the calling code decides to just access the player's health directly 
 any time it wants? 
 And it just sets the player health here, above the second call to the loseHealth method:
+</p>
 
 ```java  
 player.health = 200;
 ```
 
+<p style="text-align: justify;">
 Now, here, the main method has kind of gone rogue, because it's setting the player's health manually, 
 outside the normal game play method calls. 
 This code actually takes control away from the Player class, for managing the Player's health. 
 It didn't call the restoreHealth method, which has the additional control in place, 
 that player health can never exceed 100. 
 This is an example of the first problem, with a class that's not encapsulated properly.
+</p>
 
 
 ### Problems(when no encapsulations)
 
-1. Allowing direct access to data on an object, can potentially bypass checks, 
+<p style="text-align: justify;">
+1. Allowing direct access to data on an object can potentially bypass checks, 
 and additional processing, your class has in place to manage the data. 
 By being able to access fields directly like this, we're really potentially opening up our application 
 to be accessed in ways that it shouldn't be. 
@@ -694,8 +809,11 @@ Maybe we don't ever want the code to be able to change the health like that,
 because we really wanted the restoreHealth method to be called, 
 and the right set of conditions to be set. 
 But because these fields are public to everyone, we can't control when they get accessed.
+</p>
 
-2. Allowing direct access to fields means calling code would need to change when you edit any of the fields. 
+<p style="text-align: justify;">
+2. Allowing direct access to fields means calling code would need to change 
+when you edit any of the fields. 
 If we go back to our Player class again, and let's say, we've decided that 
 we want to change the field for the name of our player. 
 Maybe now, we think the name isn't descriptive enough, and we want to be a bit much clearer.
@@ -719,7 +837,9 @@ This means you need to go back into the code and have a look and see what the ne
 And maybe this isn't really a problem as much when it's your own code, 
 but if you're deploying this kind of code in a library, for example, 
 you're setting yourself up for a lot of problems.
+</p>
 
+<p style="text-align: justify;">
 3. Omitting a constructor that would accept initialization data 
 may mean the calling code is responsible for setting up this data on the new object. 
 The third issue with this approach is, we're manually initializing our object with these calls at the start. 
@@ -734,16 +854,21 @@ Now we can do that with a constructor.
 We can actually make sure that the data is valid, and that the object is valid before the game starts. 
 But when you're allowing people to manually access the fields, 
 there's no real way to guarantee that the player health is set.
+</p>
 
+<p style="text-align: justify;">
 And this is what encapsulation actually does for us, and why we don't want to code like this.
 We want the ability to ensure certain conditions are met before playing, 
 and that access to the player data during the game is controlled and protected. 
 Now that you've seen some of the bad things, the bad ways of doing it, 
 let's actually comment this code out.
- 
+</p>
+
+<p style="text-align: justify;">
 Let's create a new class that actually has got proper encapsulation by creating a new class, 
 named EnhancedPlayer, and show you the right way of doing it. 
 The difference here is, we're going to create our three fields as private.
+</p>
 
 ```java  
 private String name;
@@ -751,9 +876,11 @@ private int health;
 private String weapon;
 ```
 
+<p style="text-align: justify;">
 And here, we have the name of the Player, the health and the weapon, they're all declared as private. 
 Next, we do want to create a constructor. 
 Placing the cursor below those fields, we'll first create a constructor with three fields.
+</p>
 
 ```java  
 public EnhancedPlayer(String name, int health, String weapon) {
@@ -762,12 +889,14 @@ public EnhancedPlayer(String name, int health, String weapon) {
     this.weapon = weapon;
 }
 ```
-                      
+
+<p style="text-align: justify;">
 And what we're going to do is, use this constructor to make sure the health field stays 
 in the range of 1 to 100, with an if-else statement. 
 Let's edit this constructor a bit, if a user passes a value that's less than 1, 
 we'll just make the health 1. 
 And if we get a value greater than 100, than doesn't make sense either.
+</p>
 
 ```java  
 this.name = name;
@@ -781,6 +910,7 @@ if (health < 0) {
 this.weapon = weapon;
 ```
 
+<p style="text-align: justify;">
 This constructor gives us a little more control about how a new Player is created.
 Now, we could put more validation in there, to check the length of the name, 
 or to make sure the name we get isn't null, for example, and likewise for the weapon.
@@ -788,6 +918,7 @@ In other words, we could do some additional validation to make sure that it's va
 And actually, let's create an overloaded constructor that does not have health or weapon, 
 because we'll set these to some default values. 
 Generating another constructor for name:
+</p>
 
 ```java  
 public EnhancedPlayer(String name) {
@@ -795,6 +926,7 @@ public EnhancedPlayer(String name) {
 }
 ```
 
+<p style="text-align: justify;">
 This will make creating a new player easy, and we can make the default value for health be 100, 
 meaning the Player starts out completely healthy. 
 And we're guaranteeing now that the name, the health, and the weapon are initialized 
@@ -802,15 +934,18 @@ when the class is created.
 Now, let's copy the three methods we had for Player. 
 Ok, now we have a better Player class, which we're calling EnhancedPlayer. 
 And if we go back now to the Main class and main method, we can create a new EnhancedPlayer:
+</p>
 
 ```java  
 EnhancedPlayer korhan = new EnhancedPlayer("Korhan");
 System.out.println("Initial health is " + korhan.healthRemaining());
 ```
 
+<p style="text-align: justify;">
 Now if we run that, we should get initial health is 100. 
 But what if we use the other constructor, and pass 200 as the health, and sword as the weapon? 
 Let's do that and see what happens:
+</p>
 
 ```java  
 EnhancedPlayer korhan = new EnhancedPlayer("Korhan", 200, "Swrod");
@@ -823,6 +958,7 @@ If we run that:
 Initial health is 100
 ```
 
+<p style="text-align: justify;">
 Hopefully, you can see, straight away; we've got more control.
 There's no other way for the calling code to change the health, 
 except to call EnhancedPlayer's method to do it.
@@ -830,7 +966,9 @@ This gives all the control back to the EnhancedPlayer class.
 And just to be clear, this is the encapsulation. 
 This is what we're doing, by making our fields private, 
 we're making sure that the fields within the class aren't accessible to any classes that our outside.
+</p>
 
+<p style="text-align: justify;">
 And now, let's say I wanted to change the field we use for the player's name, 
 changing it to "fullName" from name, like we did with Player. 
 But this time, I want to show you another feature of IntelliJ that's really cool, 
@@ -858,11 +996,13 @@ This is another cool feature of encapsulation, which is, we can make all three c
 to this enhanced player class, we can create private fields and private functions, 
 that we don't want to be exposed to any other class. 
 And we can change those names at any time in this code, without affecting any other code.
+</p>
 
 ### Benefits of Encapsulation
 
+<p style="text-align: justify;">
 That's really one of the huge benefits of encapsulation, is that 
-you're not actually affecting any other code. 
+you're not affecting any other code. 
 It's sort of like a black box in many ways. 
 What we're saying here is, the only way to create an enhanced player object is 
 to call the constructor with these parameters. 
@@ -877,7 +1017,9 @@ Using the Player class, we could set the value, and we actually changed the valu
 when we shouldn't have. 
 But the EnhancedPlayer class has more control over its data. 
 This is why we want to use encapsulation.
+</p>
 
+<p style="text-align: justify;">
 We really want to protect access to our object's data. 
 We protect the members of the class, and some methods, from external access. 
 This prevents calling code from bypassing the rules and constraints, we've built into the class. 
@@ -885,6 +1027,7 @@ When we create a new instance, it's initialized with valid data.
 But likewise, we're also making sure that there's no direct access to the fields. 
 That's why you want to always use encapsulation. 
 It's something that you should really get used to.
+</p>
 
 To create an encapsulated class, you want to:
 
@@ -894,16 +1037,20 @@ To create an encapsulated class, you want to:
 * Use setter and getter methods sparingly, and only as needed.
 * Use access modifiers that aren't private, only for the methods that the calling code needs to use.
 
+<p style="text-align: justify;">
 You definitely don't want to be creating code like the Player class when you're creating public fields. 
 In the majority of cases, you don't want to give access to other classes.
 As you saw, it's more work to make those changes when you create, or when you change a field name, 
 or something of that nature.
+</p>
 
 ## [e. Encapsulation Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/Course05_EncapsulationChallenge)
 
+<p style="text-align: justify;">
 This is the challenge to create a class, and to demonstrate proper encapsulation techniques, 
 such as you've learnt in the previous course. 
 In this challenge, you need to create a class named Printer.
+</p>
 
 ![image09](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image09.png?raw=true)
 
@@ -914,10 +1061,12 @@ The fields in this class are going to be:
 * **duplex**: which is a boolean indicator. 
 If true, it can print on two slides of a single sheet of paper.
 
+<p style="text-align: justify;">
 You'll to initialize your printer by specifying a starting toner amount, 
 and whether the printer is duplex or not. 
 On the Printer class, you want to create two methods, which the calling code should be able to access. 
 These methods are:
+</p>
 
 * **addToner()**: which takes a tonerAmount argument. 
 "tonerAmount" is added to the tonerLevel field. 
@@ -934,6 +1083,7 @@ In this challenge, you'll want to demonstrate proper encapsulation techniques wi
 
 ## [f. Polymorphism]()
 
+<p style="text-align: justify;">
 Simply stated, polymorphism means many forms. 
 Well, how does this apply to code? 
 Polymorphism lets us write to call a method, but at runtime, this method's behavior can be different, 
@@ -944,12 +1094,16 @@ And the runtime type might be different from the declared type in the code.
 The declared type has to have some kind of relationship to the runtime type, 
 and inheritance is one way to establish this relationship. 
 There are other ways, but in this course, we'll talk about how to use inheritance to support polymorphism.
+</p>
 
+<p style="text-align: justify;">
 We've given you a taste of this in the inheritance courses, 
 but this time we're going to look at polymorphism specifically.
+</p>
 
 ![image10](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image10.png?raw=true)
 
+<p style="text-align: justify;">
 This time, we're going to look at a polymorphism example, using movies. 
 We'll have a base class of Movie, which has the title of the movie. 
 And "Movie" will have one method, watchMovie. 
@@ -957,8 +1111,11 @@ We'll have three subclasses, each a different kind of movie.
 We'll have an Adventure film, a Comedy, and a ScienceFiction movie. 
 These are the different categories, so we'll use these as the subclasses. 
 All of these will override and implement unique behavior for the watchMovie method.
+</p>
 
+<p style="text-align: justify;">
 After creating "Movie" class with its own constructor and one method, watchMovie:
+</p>
 
 ```java  
 public class Movie {
@@ -973,10 +1130,13 @@ public class Movie {
 }
 ```
 
+<p style="text-align: justify;">
 Now, here on the first line of this method is something new. 
 You've seen the use of the keyword "this" before, which refers to the current instance, 
 and now we're calling a method on that called "getClass()".
+</p>
 
+<p style="text-align: justify;">
 The method getClass() is on Java linked object, which we've talked about. 
 This method returns class type information about the runtime instance on which this method is executed. 
 And from that we can get the name of the class using the getSimpleName method.
@@ -987,6 +1147,7 @@ the runtime object could be an instance of one of those classes, The Adventure c
 This will hopefully make more sense when we run this code. 
 Next in this code, we print out the title of the movie and the top of the movie runtime instance. 
 And that's the movie class.
+</p>
 
 Let's go to the main method, and test out the watchMovie method:
 
@@ -1001,6 +1162,7 @@ And running this,
 Star Wars is a Movie film
 ```
 
+<p style="text-align: justify;">
 We got this output. 
 And that's because the runtime instance of the movie variable is the "Movie" class. 
 It's the object we created here in the main method. 
@@ -1009,7 +1171,9 @@ Here we've created the object using the "new Movie" statement and past it the ti
 And then we assigned our movie instance to a "movie" reference variable, 
 and here we just called it the "Movie."
 Ok, so no surprises here, I hope.
+</p>
 
+<p style="text-align: justify;">
 What we'll do next is add some subclasses of movies that represent different genres 
 or classifications of Movies. 
 You can think of these as the way a streaming company would group different movies. 
@@ -1017,14 +1181,17 @@ And we'll start with the Adventure movie type.
 We'll add this class to the Movie.java source file, and we won't give it an access modifier, 
 meaning it has package or default access. 
 But we're going to have it extend Movie:
+</p>
 
 ```java  
 class Adventure extends Movie {
 }
 ```
 
+<p style="text-align: justify;">
 This doesn't compile yet because we need to add a constructor. 
 Adding it:
+</p>
 
 ```java  
 public Adventure(String title) {
@@ -1032,13 +1199,17 @@ public Adventure(String title) {
 }
 ```
 
+<p style="text-align: justify;">
 And we generated constructor which uses movies field, title as a parameter, 
 and makes a call to "super," using that argument. 
 Now we got the constructor and an Adventure movie will get created with just the title of the movie.
+</p>
 
+<p style="text-align: justify;">
 Next, we want to implement or override the watch movie method. 
 When you're overriding a method, it's a pretty good idea to start with IntelliJ's override generation tool. 
 This ensures that your method signature is right, so let's do that for this class.
+</p>
 
 ```java  
 @Override
@@ -1047,6 +1218,7 @@ public void watchMovie() {
 }
 ```
 
+<p style="text-align: justify;">
 And that gives us the IntelliJ's default generated code, which includes that Override annotation, 
 which we've seen before. 
 And this method simply calls the method on the Movie class, which is the super or base class for Adventure.
@@ -1055,32 +1227,39 @@ like some of the major plot stages of an Adventure film, for example.
 And we'll just use the printf method as well as the repeat method on String 
 to print out the plot stages. 
 Three stages on three lines:
+</p>
 
 ```java  
 System.out.printf(".. %s%n".repeat(3), "Pleasant Scene", "Scary Music", "Something Bad Happens");
 ```
 
+<p style="text-align: justify;">
 Let's talk about this code a minute, because here we're using the format specifiers *%s* and *%n*.
 The format specifier *%s* is used to replace any String which is not as commonly used as others, 
 but it will work well here.
 And we've set before that *%n*, puts it a new line there. 
 Now, this string gets repeated three times with this repeat method before the formatting takes place. 
 This means that all these stage plots get printed each on its own line.
+</p>
 
+<p style="text-align: justify;">
 Now let's go back to the main method and test the make Movie method on an Adventure object this time. 
 And what we can do here is simply replace this "new Movie" statement with "new Adventure" instead. 
 We don't have to change the type of "theMovie" variable. 
 It can stay as "Movie."
+</p>
 
 ```java  
 Movie theMovie = new Adventure("Star Wars");
 theMovie.watchMovie();
 ```
 
+<p style="text-align: justify;">
 And this is because adventure is really a type of Movie, a subclass. 
 And inheritance lets us say *Adventure is a Movie, and it's ok; we can do this, 
 we can assign an Adventure object to a Movie variable*. 
 This code compiles and we can run it.
+</p>
 
 ```java  
 Star Wars is a Adventure film
@@ -1089,6 +1268,7 @@ Star Wars is a Adventure film
 .. Something Bad Happens
 ```
 
+<p style="text-align: justify;">
 And look what happened. 
 The code ran, the watchMovie method on the Adventure class. 
 That's because at runtime, the method that gets run 
@@ -1104,8 +1284,11 @@ and this is the actual type of object at runtime as *instanceType*.
 And then we have the plot stages for an Adventure Film, pleasant scene, scary music, 
 and something bad happens. 
 That's a really simple example of polymorphism.
+</p>
 
+<p style="text-align: justify;">
 Getting back to the movie.java source file, and creating the "comedy" subclass next:
+</p>
 
 ```java  
 class Comedy extends Movie {
@@ -1123,8 +1306,10 @@ class Comedy extends Movie {
 }
 ```
 
+<p style="text-align: justify;">
 Ok, we have two of our movie subclasses built, but let's do the last one, 
 which we're calling Science-Fiction.
+</p>
 
 ```java  
 class ScienceFiction extends Movie {
@@ -1142,8 +1327,12 @@ class ScienceFiction extends Movie {
 }
 ```
 
-And that's the ScienceFiction class, which means now we've built the movie class and oll of its subclasses.
+<p style="text-align: justify;"> 
+And that's the ScienceFiction class, which means now we've built the movie class 
+and oll of its subclasses.
+</p>
 
+<p style="text-align: justify;">
 Up to now, we've only assigned an adventure movie instance to a Movie variable and saw that when it ran, 
 Java figured it out which method to run, not on the compile time code, but on the runtime instance's method. 
 But this time, we'll create a method on the Movie class, 
@@ -1151,6 +1340,7 @@ that the calling code can execute, that will return a movie instance for us.
 We'll make this method public and static, which means anybody can call this method to get a movie instance, 
 based on the parameter type being passed in a title. 
 Let's type this method our partially.
+</p>
 
 ```java  
 public static Movie getMovie (String type, String title) {
@@ -1160,6 +1350,7 @@ public static Movie getMovie (String type, String title) {
 }
 ```
 
+<p style="text-align: justify;">
 In this code, the parameters of this method are the type of the movie, and the title. 
 And we're going to return an instance of the Movie class, or a subclass of a Movie. 
 And this gets returned by the switch expression. 
@@ -1170,6 +1361,7 @@ so we can use that to figure out the right kind of movie to create.
 And just for now, we're returning a generic movie instance. 
 Now, let's go back to the main method, and test that out. 
 We'll call the static method on Movie, to get an Adventure movie.
+</p>
 
 ```java  
 Movie theSecondMovie = Movie.getMovie("Adventure", "Star Wars");
@@ -1182,10 +1374,12 @@ Now, notice if we run this,
 Star Wars is a Movie film
 ```
 
+<p style="text-align: justify;">
 It works, but we're still not really getting *an Adventure* movie. 
 That's because we haven't really completed the getMovie method. 
 Going back to the Movie Class, we want to add the code to run return the different subclasses, 
 based on the type argument:
+</p>
 
 ```java  
 public static Movie getMovie (String type, String title) {
@@ -1198,6 +1392,7 @@ public static Movie getMovie (String type, String title) {
 }
 ```
 
+<p style="text-align: justify;">
 Here, our switch expression is really evaluating a char, a single character. 
 We get this character from the String method, charAt() that we're using in the switch expression. 
 That's going to give us the first letter of the type. 
@@ -1214,6 +1409,7 @@ Factory methods give us a way to get an object,
 without having to know the details of how to create a new one, 
 or specify the exact class we want. 
 Actually, if we run this code now, from the main method:
+</p>
 
 ```java  
 Star Wars is a Adventure film
@@ -1222,6 +1418,7 @@ Star Wars is a Adventure film
 .. Something Bad Happens
 ```
 
+<p style="text-align: justify;">
 We see that we really do get an Adventure object back, 
 because you can see Adventure film there on the first line. 
 The getMovie method returned an instance which we maybe didn't know what it was, 
@@ -1231,11 +1428,14 @@ the method on that class was executed.
 And now we can see the output for an Adventure instance, with the title Star-Wars, 
 that it's an Adventure Film. 
 And then we also get the 3 plot stages for the Adventure Class.
+</p>
 
+<p style="text-align: justify;">
 Ok, next, we'll change the main method, passing ScienceFiction, 
 because really Star-Wars is more of a ScienceFiction Movie. 
 And really, we don't want to type in the full class name, 
 we can just put in Science, or even *S*, if we wanted.
+</p>
 
 ```java  
 Movie theSecondMovie = Movie.getMovie("S", "Star Wars");
@@ -1251,6 +1451,7 @@ Star Wars is a ScienceFiction film
 .. Planet Blows up
 ```
 
+<p style="text-align: justify;">
 We get different type names and different plot stages. 
 With this method, the calling code doesn't need to know about each subclass, 
 or how to create different instances of movies. 
@@ -1261,11 +1462,14 @@ including subclasses that haven't even been created yet.
 This keeps all the information about the Movie, and its subclasses, 
 in the control of the Movie class, and simplifies the work that needs to be done by the calling code. 
 That sounds like a good encapsulation technique, doesn't it?
+</p>
 
+<p style="text-align: justify;">
 Ok, going back to our main method, we'll use polymorphism to watch a variety of movies. 
 This time, we'll make the code interactive, using the Scanner class we've seen before. 
 We'll let the user enter the type of movie, and then the title of the movie they want to watch. 
 First, we'll comment out the first four lines of code, then add the code for a new Scanner.
+</p>
 
 ```java  
 import java.util.Scanner;
@@ -1276,6 +1480,7 @@ public class Main {
 }
 ```
 
+<p style="text-align: justify;">
 In the Exception course, I showed you how to manually add import lines. 
 Because we still have *Auto Imports enabled*, 
 you saw how IntelliJ added the import for us automatically. 
@@ -1285,9 +1490,12 @@ as much as it can with the Auto import option turned on.
 So that's "Auto-import". 
 These are the types of little automations that collectively, 
 make you a much more productive programmer.
+</p>
 
+<p style="text-align: justify;">
 Ok, next, we'll create a loop, so we'll keep getting information from the user 
 until they quit out of the loop.
+</p>
 
 ```java  
 while (true) {
@@ -1296,6 +1504,7 @@ while (true) {
 }
 ```
 
+<p style="text-align: justify;">
 In this code, we're using a while loop, with a condition that's always true. 
 That's really an infinite loop, and you definitely don't want to run this code yet. 
 But first, we'll prompt the user for the type of Movie, enter A for Adventure, 
@@ -1306,6 +1515,7 @@ The nextLine method gets the type of the movie they want to watch,
 but we're not doing anything with it yet, except assigning it to type. 
 If we ran this now, we'd be stuck in an infinite loop. 
 We need to add the code to break out of the loop next.
+</p>
 
 ```java  
 if ("Qq".contains(type)) {
@@ -1313,6 +1523,7 @@ if ("Qq".contains(type)) {
 }
 ```
 
+<p style="text-align: justify;">
 Ok, what is this code doing? 
 This "if" statement uses the contains method on a String, 
 which we've covered briefly in the String courses. 
@@ -1320,10 +1531,11 @@ which we've covered briefly in the String courses.
 and we're using contains to test what the user entered. 
 This means, if the user enters a single character, either an uppercase or lowercase Q, 
 then the code will break out of the loop. 
-The contains method will determine if the String literal, "Qq", contains the single letter q, 
+The contains method will determine if the String literal, "Qq" contains the single letter q, 
 and returns true. 
 Now that we can get out of the loop, we next want the code to get the title of the movie. 
 And after that, we'll use the factory method on the Movie class, to get the right kind of instance:
+</p>
 
 ```java  
 System.out.print("Enter Movie Title: ");
@@ -1332,6 +1544,7 @@ Movie movie = Movie.getMovie(type, title);
 movie.watchMovie();
 ```
 
+<p style="text-align: justify;">
 Here again, we prompt the user to enter the movie title, 
 and we'll read that in, using the nextLine method on scanner. 
 After that, we can call Movie.getMovie to get an instance of a movie, 
@@ -1342,6 +1555,7 @@ So as long as whatever is being returned from the getMovie method, is a Movie,
 or a subclass of Movie, we can assign it to a Movie variable. 
 And because it's a Movie variable, we can call any of Movie's methods on it. 
 And that method is watchMovie.
+</p>
 
 And running this code now:
 
@@ -1355,6 +1569,7 @@ Star-Wars is a ScienceFiction film
 .. Planet Blows up
 ```
 
+<p style="text-align: justify;">
 We get prompted to Enter the Type, so let's enter an S, for ScienceFiction, and press enter. 
 And now we'll put in the title, and I'll type in, Star-Wars, 
 but you can enter anything you want there.
@@ -1374,44 +1589,54 @@ And remember the watchMovie method on ScienceFiction, first called the method on
 and we can see that first output statement, *Star-Wars is a ScienceFiction film*. 
 This got printed out because we called super.watchMovie(), 
 when we overrode that method, on the ScienceFiction class.
+</p>
 
+<p style="text-align: justify;">
 This is the ability to execute different behavior for different types, 
 which are determined at runtime. 
 And yet we did it with just two statements, in the main method, as shown here:
+</p>
 
 ```java  
 Movie movie = Movie.getMovie(type, title);
 movie.watchMovie();
 ```
 
+<p style="text-align: justify;">
 Polymorphism enables you to write generic code, based on the base class, or a parent class. 
 And this code, in the main method, is extendable, meaning it doesn't have to change, 
 as new subclasses become available. 
 This code can handle any instances that are a Movie, or a subclass of movie, 
 that are returned from the factory method, even ones that don't exist yet.
+</p>
 
 ## [g. Casting with Classes, Using Object and var References]()
 
+<p style="text-align: justify;">
 We showed you an example of polymorphism in action. 
 There were two lines in that code, they're really important for you to understand. 
 These are the lines:
+</p>
 
 ```java  
 Movie movie = Movie.getMovie("A", "Jaws");
 movie.watchMovie();
 ```
 
+<p style="text-align: justify;">
 Now let's talk about these two lines of code, because there are several things happening here. 
 First, we're creating a variable with the Movie type, and we've called it *movie*. 
 We then assigned the result of this static method, Movie.getMovie, to that variable.
 We know we could've done this several other ways. 
 Let's use that method and try to assign it to an Adventure variable, 
 since we know that we'll really get an Adventure Movie, if we call it this way.
+</p>
 
 ```java  
 Adventure jaws = Movie.getMovie("A", "Jaws");
 ```
 
+<p style="text-align: justify;">
 Now, this code doesn't compile. 
 IntelliJ tells us that the *Required Type is Adventure*, and *Provided is Movie*.
 Why is this a problem? 
@@ -1431,15 +1656,18 @@ But the compiler can't figure that out without executing code, and it's not goin
 Now, we can give the compiler more detailed instructions to get around this issue. 
 One way to do is casting. 
 Like casting with primitives, we can cast instances, so let's do that here.
+</p>
 
 ```java  
 Adventure jaws = (Adventure) Movie.getMovie("A", "Jaws");
 jaws.watchMovie();
 ```
 
+<p style="text-align: justify;">
 We'll cast the result of the Movie.getMovie, to an Adventure type. 
 And we'll also add the call to watchMovie here.
 Ok, now this code compiles, and we can give it a go, and run it:
+</p>
 
 ```java  
 Jaws is a Adventure film 
@@ -1452,26 +1680,31 @@ Jaws is a Adventure film
 .. Something Bad Happens
 ```
 
+<p style="text-align: justify;">
 And we can see that it runs just like it did, in the two lines above these. 
 But what happens if we make a mistake, and we pass a C as the type?
+</p>
 
 ```java  
 Adventure jaws = (Adventure) Movie.getMovie("C", "Jaws");
 jaws.watchMovie();
 ```
 
+<p style="text-align: justify;">
 We know that doing that should give us a comedy movie. 
 But let's not change anything else, and see what happens.
 We've told the compiler, with this cast that we're smarter than it, 
 and to just leave this line alone. 
 So this code compiles. 
 But if we run it?
+</p>
 
 ```java  
 Exception in thread "main" java.lang.ClassCastException: class Comedy cannot be cast to class Adventure 
         (Comedy and Adventure are in unnamed module of loader 'app') at Main.main
 ```
 
+<p style="text-align: justify;">
 We get a special kind of exception, a ClassCastException. 
 And the message is pretty informative, that we got a Comedy object when an Adventure object was expected. 
 This is a bad situation to have your code compile, but then get exceptions at runtime. 
@@ -1480,6 +1713,7 @@ with a different type?
 Well, first of all, you can assign any object to a reference that is of type Object. 
 We'll try that next. 
 First, we'll revert that last change.
+</p>
 
 ```java  
 Adventure jaws = (Adventure) Movie.getMovie("A", "Jaws");
@@ -1490,6 +1724,7 @@ comedy.watchMovie();
 comedy.watchComedy();
 ```
 
+<p style="text-align: justify;">
 And then we'll create a comedy instance, but assign it to an Object reference. 
 Here, now we've created a variable called comedy, but we've said its type is Object. 
 And this code doesn't compile, but not on the first line where we're doing the assignment, 
@@ -1504,8 +1739,11 @@ This means that when you try to call a Movie method on this object reference, yo
 This is because the compiler can't locate that method, watchMovie, on the Object class. 
 Let's pause here a minute to add a method on each of the subclasses, 
 and we'll make each method unique to the class.
+</p>
 
+<p style="text-align: justify;">
 Going back to the Adventure class, we'll add a simple method, that's only on that class.
+</p>
 
 ```java  
 public void watchAdventure() {
@@ -1513,10 +1751,13 @@ public void watchAdventure() {
 }
 ```
 
+<p style="text-align: justify;">
 And let's copy that method and paste it in the Comedy class. 
 And name it for Comedy. 
 Same, we do it for the ScienceFiction Class as well.
+</p>
 
+<p style="text-align: justify;">
 And if we try to run watchComedy on that Object variable, 
 we have the same problem that we had with watchMovie. 
 It doesn't see that method watchComedy on the Object class, 
@@ -1529,12 +1770,14 @@ we'd have to cast it to a Movie.
 And we can do that. 
 We'll cast the object reference to a movie reference, 
 and then we'll execute watchMovie on that new reference variable.
+</p>
 
 ```java  
 Movie comedyMovie = (Movie) comedy;
 comedyMovie.watchComedy();
 ```
 
+<p style="text-align: justify;">
 What I want you to see by this is that using references that are too generic, 
 like Object, means you'll be doing a lot of casting. 
 But even now, since we cast to a Movie, check out what happens, 
@@ -1546,6 +1789,7 @@ The compiler will only look at the reference type to determine if that method is
 and watchComedy is not on the Movie class. 
 In this case, we'd need to actually cast to a more specific type, Comedy. 
 And let's do that.
+</p>
 
 ```java  
 Comedy comedyMovie = (Comedy) comedy;
@@ -1559,8 +1803,9 @@ var airplane = Movie.getMovie("C", "Airplane");
 airplane.watchMovie();
 ```
 
+<p style="text-align: justify;">
 This code compiles, but here is something new. 
-We haven't used this before, you're probably asking, what is this **var**, word mean? 
+We haven't used this before, you're probably asking, what is this **var**, word means? 
 Well, **var** is a special contextual keyword in Java, that lets our code take advantage of Local
 Variable Type Inference. 
 By using **var** as the type, we're telling Java to figure out the compile-time type for us.
@@ -1571,26 +1816,32 @@ Now why didn't it infer that it was a Comedy Class?
 Nothing about the signature of the method indicated that a Comedy instance might be returned 
 from the method. 
 Only that a Movie would be.
+</p>
 
+<p style="text-align: justify;">
 Ok, let's try another example of using type inference, this time by just assigning a new instance:
+</p>
 
 ```java  
 var plane = new Comedy("Airplane");
 plane.watchComedy();
 ```
 
+<p style="text-align: justify;">
 In this case, the compiler had an easier job to infer the type, 
 because we're simply assigning a new instance of Comedy to this variable, plane. 
 But you can see now that using this plane variable, we can execute methods, specific to Comedy, 
 without compile time errors. 
 One of the benefits of Local Variable Type Inference(LVTI) is to help the 
 readability of the code, and to reduce boilerplate code.
+</p>
 
 * It can't be used in field declarations on a class.
 * It can't be used in method signatures, either as a parameter type or a return type.
 * It can't be used without an assignment, because the type can't be inferred in that case.
 * It can't be assigned a null literal again because a type can't be inferred in that case.
 
+<p style="text-align: justify;">
 Are you still confused about the difference between run-time and compile-time typing? 
 You can think of the compile time type as the declared type. 
 This type is declared either as a variable reference, or a method return type, or a method parameter, 
@@ -1606,7 +1857,9 @@ In this course, up to now, we've looked at only one rule that applies,
 and that's the inheritance rule. 
 We can assign an instance to a variable of the same type, or a parent type, 
 including java.lang.Object, the ultimate base class.
+</p>
 
+<p style="text-align: justify;">
 Why are run-time types different from compile-time types? 
 Because of polymorphism. 
 Polymorphism lets us write code once, in a more generic fashion, 
@@ -1614,9 +1867,11 @@ like the code we started this lecture with.
 We saw that those two lines of code, using a single compile time type of Movie, 
 actually supported four different runtime types. 
 Each type was able to execute behavior unique to the class.
+</p>
 
 ## [h. Testing the run-time Type]()
 
+<p style="text-align: justify;">
 We've said that you can always assign an expression to a type, without casting, 
 if you're always assigning it to a parent class, or a base class type. 
 In this course, we're going to show you how to test what the runtime type of object really is. 
@@ -1627,6 +1882,7 @@ First, we can use an if statement to see what the class name of the object,
 coming back from that method is, when this code is running. 
 Getting back to the main method, we'll add another call to the Movie.getMovie method. 
 We'll assign that to an Object reference, called unknownObject.
+</p>
 
 ```java  
 Object unkownObject = Movie.getMovie("S", "Star Wars");
@@ -1640,9 +1896,10 @@ if (unkownObject.getClass().getSimpleName() == "Comedy") {
 }
 ```
 
+<p style="text-align: justify;">
 Here, in this if statement, we're using a method called getClass. 
 We've used this getClass method before, in the Movie class, watchMovie method. 
-But in that case, we used it with the keyword **this**, whereas here, we're simply calling it,
+But in that case, we used it with the keyword this, whereas here, we're simply calling it,
 on the local variable reference, unknownObject. 
 This method is available to any instance because it's a method on Object. 
 And getSimpleName is a method that returns the class name of our instance here. 
@@ -1650,8 +1907,8 @@ This means we're testing if the object, coming back from that factory method,
 has a class name that's Comedy. 
 And if it does, we can cast the object to Comedy, and assign it to a Comedy variable. 
 Then we can call any method in Comedy. 
-The reason to cast to a Comedy class here is, we want to execute the method that's specific to Comedy, 
-watchComedy. 
+The reason to cast to a Comedy class here is, we want to execute the method 
+that's specific to Comedy, watchComedy. 
 Without casting to a Comedy class, we couldn't execute that method. 
 And you'll remember that we did not have to cast airplane to Comedy class, on 
 "var airplane = Movie.getMovie("C", "Airplane");", to run watchMovie, 
@@ -1660,7 +1917,9 @@ This is because of polymorphism, which works in this case, through the use of ov
 Without polymorphism, you'd be in this world of having to test, at runtime, 
 what your object really is every time, to execute code. 
 This code shows you one way to test for the runtime type, but it's not the best way.
+</p>
 
+<p style="text-align: justify;">
 Let's look at another way, testing if the object coming back might be an Adventure type.
 We'll insert a couple of statements, before that last closing bracket, 
 for the else-if statement: instanceOf. 
@@ -1673,13 +1932,15 @@ meaning we're not testing the type name, but the actual type.
 This operator returns true,* if unknownObject is an instance of Adventure. 
 In our code here, we're testing if unknownObject is really an Adventure object, 
 and then, if it is, if that's true, we want to cast unknownObject to Adventure, 
-and call watchAdventure, a method that's only on the Adventure class. 
+and call watchAdventure, a method only on the Adventure class. 
 And this next statement is different from anything I've shown you before, 
 but perfectly valid. 
 This set of outer parentheses is the result of the Adventure type, *(Adventure) unknownObject*, 
 and we can chain a method directly on that, as we do here. 
 In other words, we don't have to assign the result of the cast to a local variable.
+</p>
 
+<p style="text-align: justify;">
 Ok, now lastly, let's look at one more way to do this: 
 *else if (unknownObject **instanceof** ScienceFiction **syfy**)*. 
 Here, we can see we're using a slightly different version of the **instanceof** operator. 
@@ -1700,15 +1961,19 @@ And that gives us the output:
 *Watching a Science Fiction Thriller!*. 
 Ok, those are a few ways to test the runtime type of object in our code. 
 You can see that this newest feature in Java makes a job a lot easier.
+</p>
 
 ## [i. Polymorphism Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/Course09_PolymorphismChallenge/README.md#polymorphism-challenge)
 
+<p style="text-align: justify;">
 What we want to do in this challenge is have our runtime code execute 
 different behavior for different objects. 
 Let's talk about what I want you to do in this challenge.
+</p>
 
 ![image11](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image11.png?raw=true)
 
+<p style="text-align: justify;">
 This diagram shows a base class, Car, with one field, description, 
 and three methods, startEngine(), drive(), and runEngine(). 
 The first two methods should be declared as public. 
@@ -1727,13 +1992,16 @@ And you'll write code in a Main class and main method,
 that creates an instance of each of these classes, and that executes 
 different behavior for each instance. 
 At least one method should print the type of the runtime object.
+</p>
 
 ## [j. Bill's Burger(OOP Master) Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/Course10_OOPMasterChallenge/README.md#bills-burgeroop-master-challenge)
 
+<p style="text-align: justify;">
 In this challenge, Bill runs a fast food hamburger restaurant, and sells hamburger meals. 
 His meal orders are composed of three items, the hamburger, the drink, and the side item. 
 Your application lets Bill select the type of burgers, and some of the additional items, 
 or extras, that can be added to the burgers, as well as the actual pricing.
+</p>
 
 You need a meal order:
 
@@ -1778,6 +2046,7 @@ and the side item price.
 
 ## [k. Organizing Java Classes, Packages and Import Statements]()
 
+<p style="text-align: justify;">
 Up until this point in the class, we haven't created a lot of classes, 
 so we haven't had to think much about organizing those classes. 
 As the course progresses, we're going to be using more and more of Java's libraries, 
@@ -1789,6 +2058,7 @@ and we mentioned packages when we talked about access modifiers.
 In this course, I want to focus on what a package is, 
 why we'll be switching to using it from this period forward, 
 and how to access classes in different packages.
+</p>
 
 As per the Oracle Java Documentation:
 
@@ -1798,27 +2068,32 @@ but this isn't a requirement.
 * When using an IDE, like IntelliJ, we don't have to worry about how packages 
 and classes are stored on the file system.
 
+<p style="text-align: justify;">
 The package structure is hierarchical, meaning you group types in a tree fashion. 
 You can use any legal Java identifier for your package names, but common practice 
 has package names as all lower cases. 
 The period separates the hierarchical level of the package. 
 By now, you're familiar with two of Java's packages, java.lang, and java.util. 
+</p>
 
 ![image14](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image14.png?raw=true)
 
+<p style="text-align: justify;">
 You may remember, when we used the Scanner class or the Random class, 
-we were required to use an **import** statement. 
-The **import** statement has to be declared before any class or type declarations, 
-but after any package statement. 
-In this code, we don't have a package statement, so the import statement must be 
+we were required to use an "import" statement. 
+The "import" statement has to be declared before any class or type declarations, 
+but after any "package" statement. 
+In this code, we don't have a "package" statement, so the "import" statement must be 
 the first statement in the code. 
-There is no limit to the number of import statements you can have. 
+There is no limit to the number of "import" statements you can have. 
 Alternately, we could use a wildcard, "&ast;", with the asterisk character, 
-with the import statement. 
+with the "import" statement. 
 We're telling Java to import all classes from that package with the use of "*".
+</p>
 
 ![image15](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image15.png?raw=true)
 
+<p style="text-align: justify;">
 Packages let us re-use common class names across different libraries or applications, 
 and provide a way to identify the correct class, either with an import statement, 
 or a qualifying name. 
@@ -1828,7 +2103,9 @@ Packages let us or organize our classes by functionality, or relationships.
 Packages also let us encapsulate our classes, from classes in other packages. 
 So you might have a package of tightly coupled classes that should only be accessed by each other, 
 but not by the outside world, as an example.
+</p>
 
+<p style="text-align: justify;">
 What would a package name look like? 
 We've seen that Java starts their package names with java, in some of the examples we've looked at. 
 However, it is common practice to use the reverse domain name 
@@ -1837,29 +2114,37 @@ If your company is *abcompany.com* for example, your package prefixes would be *
 For the rest of the course, I'll be using dev.lpa, 
 which is the reverse domain of my Learn Programming Academy development company. 
 The package name hierarchy is separated by periods. 
+</p>
 
 ![image16](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image16.png?raw=true)
 
+<p style="text-align: justify;">
 The package statement needs to be the first statement in the code except comments. 
 The package statement comes before any import statements. 
 There can be only one package statement, because a class or type can only be in a single package.
+</p>
 
+<p style="text-align: justify;">
 A class's fully qualified class name (FQCN) consists of the package name and the class name. 
 It's unlikely a class, with its fully qualified name, will have a naming conflict, 
 with a Main class in another package. 
 As an example, the fully qualified class name of the Scanner class in a code is java.util.Scanner. 
 You can use the fully qualified class name instead of the import statement just as below:
+</p>
 
 ```java  
 java.util.Scanner scanner = new java.util.Scanner(System.in);
 ```
 
+<p style="text-align: justify;">
 You can imagine this could get tedious if you have to use the type often in your code. 
 Later in the course, we'll talk about using a combination of the import statement,
 and the fully qualified class name, to resolve conflicts.
+</p>
 
 ![image17](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image17.png?raw=true)
 
+<p style="text-align: justify;">
 For your applications, you should always specify a package statement 
 and avoid using the default or unnamed package. 
 Although that's all we've been using up until now, 
@@ -1868,5 +2153,6 @@ The main disadvantage is you can't import types from the default package into ot
 outside the default package. 
 In other words, you can't qualify the name 
 if it's in the default package, and you can't import classes from the default package.
+</p>
 
 
