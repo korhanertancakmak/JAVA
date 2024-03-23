@@ -1802,7 +1802,7 @@ has package names as all lower cases.
 The period separates the hierarchical level of the package. 
 By now, you're familiar with two of Java's packages, java.lang, and java.util. 
 
-![image14]()
+![image14](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image14.png?raw=true)
 
 You may remember, when we used the Scanner class or the Random class, 
 we were required to use an **import** statement. 
@@ -1815,7 +1815,7 @@ Alternately, we could use a wildcard, "&ast;", with the asterisk character,
 with the import statement. 
 We're telling Java to import all classes from that package with the use of "*".
 
-![image15]()
+![image15](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image15.png?raw=true)
 
 Packages let us re-use common class names across different libraries or applications, 
 and provide a way to identify the correct class, either with an import statement, 
@@ -1836,7 +1836,7 @@ For the rest of the course, I'll be using dev.lpa,
 which is the reverse domain of my Learn Programming Academy development company. 
 The package name hierarchy is separated by periods. 
 
-![image16]()
+![image16](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image16.png?raw=true)
 
 The package statement needs to be the first statement in the code except comments. 
 The package statement comes before any import statements. 
@@ -1856,7 +1856,7 @@ You can imagine this could get tedious if you have to use the type often in your
 Later in the course, we'll talk about using a combination of the import statement,
 and the fully qualified class name, to resolve conflicts.
 
-![image17]()
+![image17](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/images/image17.png?raw=true)
 
 For your applications, you should always specify a package statement 
 and avoid using the default or unnamed package. 
