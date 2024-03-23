@@ -967,7 +967,7 @@ int[][] array = {
         {31, 32, 33}
 };
 
-int[][] array = {{1, 2, 3}, {11, 12, 13}, {21, 22, 23}, {31, 32, 33}};
+int[][] array = { {1, 2, 3}, {11, 12, 13}, {21, 22, 23}, {31, 32, 33} };
 ```
 
 Notice the two sets of square brackets on the left side of the assignment, in the declaration. 

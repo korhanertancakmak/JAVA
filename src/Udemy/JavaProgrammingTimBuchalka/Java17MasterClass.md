@@ -74,7 +74,10 @@ What we will learn from this Path:
 ### [d. Variable Arguments (Varargs)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#d-variable-arguments-varargs)
 ### [e.Multi-Dimensional Arrays](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#emulti-dimensional-arrays)
 
-## [Section-6: Lists, Big-O Notation, Iterators, Autoboxing & Unboxing and Enum Type]()
+## [Section-6: Lists, Big-O Notation, Iterators, Autoboxing & Unboxing and Enum Type](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#section-6-lists-big-o-notation-iterators-autoboxing--unboxing-and-enum-type)
+
+### [a. ArrayLists](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#a-arrayLists)
+
 
     * List and ArrayList
     * Arrays vs ArrayLists
