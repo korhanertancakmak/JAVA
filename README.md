@@ -8,4 +8,4 @@
 
 ## [2. Udemy](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy)
 
-### [a. Java 17 Masterclass: Start Coding in 2024](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka)
+### [a. Java 17 Masterclass: Start Coding in 2024](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/Java17MasterClass.md#java-17-masterclass-start-coding-in-2024-by-tim-buchalka)
