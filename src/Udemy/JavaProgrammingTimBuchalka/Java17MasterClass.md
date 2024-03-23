@@ -68,15 +68,11 @@ What we will learn from this Path:
 
 ## [5. Arrays]()
 
-    * Arrays
-    * java.util.Arrays (sort, fill, copyOf)
-    * Binary Search and testing equality of arrays
-        * Challenge-41: Sorted Array
-    * References Types vs Value Types
-    * Variable Arguments (Varargs)
-        * Challenge-42: Minimum Element
-        * Challenge-43: Reverse Array
-    * Multi-Dimensional Arrays
+### [a. Arrays](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#a-arrays)
+### [b. java.util.Arrays Class and Binary Search](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#b-java-util-arrays-class-and-binary-search)
+### [c. Reference Types vs Value Types](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#c-reference-types-vs-value-types)
+### [d. Variable Arguments (Varargs)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#d-variable-arguments-varargs)
+### [e.Multi-Dimensional Arrays](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#e-multi-dimensional-arrays)
 
 ## [6. Lists and Iterator]()
 

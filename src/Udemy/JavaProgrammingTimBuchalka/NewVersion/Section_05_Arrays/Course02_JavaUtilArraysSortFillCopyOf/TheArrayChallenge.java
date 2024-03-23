@@ -1,22 +1,9 @@
-package CourseCodes.NewSections.Section_09_Arrays.Course02_JavaUtilArraysSortFillCopyOf;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_05_Arrays.Course02_JavaUtilArraysSortFillCopyOf;
 
 import java.util.Arrays;
 import java.util.Random;
 
 public class TheArrayChallenge {
-
-/*
-Part-1
-                                               The Array Challenge
-
-        Create a program using arrays, that "sorts" a list of "integers", in "descending order". Descending order means
-    from the highest value to lowest.
-
-  - First, create an array of randomly generated integers.
-  - Print the array before and after you sort it.
-  - You can choose to create a new sorted array, or just sort the current array.
-End-Part-1
-*/
 
     public static void main(String[] args) {
         Random random = new Random();
