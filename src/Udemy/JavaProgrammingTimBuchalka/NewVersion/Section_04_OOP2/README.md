@@ -1167,7 +1167,7 @@ We got this output.
 And that's because the runtime instance of the movie variable is the "Movie" class. 
 It's the object we created here in the main method. 
 And we did a new Movie, which means it's really an instance of a Movie. 
-Here we've created the object using the "new Movie" statement and past it the title of *Star Wars*. 
+Here we've created the object using the "new Movie" statement and past it the title of "Star Wars." 
 And then we assigned our movie instance to a "movie" reference variable, 
 and here we just called it the "Movie."
 Ok, so no surprises here, I hope.
@@ -1234,10 +1234,10 @@ System.out.printf(".. %s%n".repeat(3), "Pleasant Scene", "Scary Music", "Somethi
 ```
 
 <p style="text-align: justify;">
-Let's talk about this code a minute, because here we're using the format specifiers *%s* and *%n*.
-The format specifier *%s* is used to replace any String which is not as commonly used as others, 
+Let's talk about this code a minute, because here we're using the format specifiers "%s" and "%n".
+The format specifier "%s" is used to replace any String which is not as commonly used as others, 
 but it will work well here.
-And we've set before that *%n*, puts it a new line there. 
+And we've set before that "%n" puts it a new line there. 
 Now, this string gets repeated three times with this repeat method before the formatting takes place. 
 This means that all these stage plots get printed each on its own line.
 </p>
@@ -1256,8 +1256,8 @@ theMovie.watchMovie();
 
 <p style="text-align: justify;">
 And this is because adventure is really a type of Movie, a subclass. 
-And inheritance lets us say *Adventure is a Movie, and it's ok; we can do this, 
-we can assign an Adventure object to a Movie variable*. 
+And inheritance lets us say, "Adventure is a Movie, and it's ok; we can do this, 
+we can assign an Adventure object to a Movie variable."
 This code compiles and we can run it.
 </p>
 
@@ -1278,9 +1278,9 @@ We've declared a variable of type Movie and assigned it an object that's really 
 And when we called watchMovie on that, the behavior was the Adventure movies behavior. 
 It wasn't just the base class behavior. 
 Now, the method that's on the Adventure class, first calls Movie's method, 
-which is why we see that first statement, *Star Wars is an Adventure film*. 
-But this time, we get in the text that *Adventure*, 
-and this is the actual type of object at runtime as *instanceType*. 
+which is why we see that first statement, "Star Wars is an Adventure film."
+But this time, we get in the text that "Adventure", 
+and this is the actual type of object at runtime as "instanceType." 
 And then we have the plot stages for an Adventure Film, pleasant scene, scary music, 
 and something bad happens. 
 That's a really simple example of polymorphism.
@@ -1375,7 +1375,7 @@ Star Wars is a Movie film
 ```
 
 <p style="text-align: justify;">
-It works, but we're still not really getting *an Adventure* movie. 
+It works, but we're still not really getting "an Adventure" movie. 
 That's because we haven't really completed the getMovie method. 
 Going back to the Movie Class, we want to add the code to run return the different subclasses, 
 based on the type argument:
@@ -1396,8 +1396,8 @@ public static Movie getMovie (String type, String title) {
 Here, our switch expression is really evaluating a char, a single character. 
 We get this character from the String method, charAt() that we're using in the switch expression. 
 That's going to give us the first letter of the type. 
-And if it's an *A*, we'll return a new Adventure instance, 
-if it's *C*, we'll return a Comedy, and if it's *S*, that means we want 
+And if it's an "A" we'll return a new Adventure instance, 
+if it's "C" we'll return a Comedy, and if it's "S" that means we want 
 to create a new Science-Fiction Movie. 
 If it's not one of those, then we'll just return the base class, an instance of Movie. 
 By providing this method, the code in the main method (the calling code) 
@@ -1434,7 +1434,7 @@ And then we also get the 3 plot stages for the Adventure Class.
 Ok, next, we'll change the main method, passing ScienceFiction, 
 because really Star-Wars is more of a ScienceFiction Movie. 
 And really, we don't want to type in the full class name, 
-we can just put in Science, or even *S*, if we wanted.
+we can just put in Science, or even "S" if we wanted.
 </p>
 
 ```java  
@@ -1482,7 +1482,7 @@ public class Main {
 
 <p style="text-align: justify;">
 In the Exception course, I showed you how to manually add import lines. 
-Because we still have *Auto Imports enabled*, 
+Because we still have "Auto Imports enabled"
 you saw how IntelliJ added the import for us automatically. 
 Pretty nice, right? 
 Essentially, IntelliJ adds and manages the imports for you 
@@ -1527,7 +1527,7 @@ if ("Qq".contains(type)) {
 Ok, what is this code doing? 
 This "if" statement uses the contains method on a String, 
 which we've covered briefly in the String courses. 
-*Qq*, here we have a String literal, that has an uppercase and lowercase Q in it, 
+"Qq," here we have a String literal, that has an uppercase and lowercase Q in it, 
 and we're using contains to test what the user entered. 
 This means, if the user enters a single character, either an uppercase or lowercase Q, 
 then the code will break out of the loop. 
@@ -1586,7 +1586,7 @@ But at runtime, we got an object of type ScienceFiction back from the factory me
 And when the method watchMovie() was called on that, it called watchMovie on the ScienceFiction class. 
 I hope you agree with me that that's pretty neat. 
 And remember the watchMovie method on ScienceFiction, first called the method on Movie, 
-and we can see that first output statement, *Star-Wars is a ScienceFiction film*. 
+and we can see that first output statement, "Star-Wars is a ScienceFiction film." 
 This got printed out because we called super.watchMovie(), 
 when we overrode that method, on the ScienceFiction class.
 </p>
@@ -1625,7 +1625,7 @@ movie.watchMovie();
 
 <p style="text-align: justify;">
 Now let's talk about these two lines of code, because there are several things happening here. 
-First, we're creating a variable with the Movie type, and we've called it *movie*. 
+First, we're creating a variable with the Movie type, and we've called it "movie." 
 We then assigned the result of this static method, Movie.getMovie, to that variable.
 We know we could've done this several other ways. 
 Let's use that method and try to assign it to an Adventure variable, 
@@ -1638,7 +1638,7 @@ Adventure jaws = Movie.getMovie("A", "Jaws");
 
 <p style="text-align: justify;">
 Now, this code doesn't compile. 
-IntelliJ tells us that the *Required Type is Adventure*, and *Provided is Movie*.
+IntelliJ tells us that the "Required Type is Adventure," and "Provided is Movie."
 Why is this a problem? 
 First of all, the compiler isn't going to run the code to figure out what will really happen.
 It has to be satisfied with making assumptions about the code, based on how we write the code. 
@@ -1646,7 +1646,7 @@ In this case, we declared that the method, getMovie, is going to return a Movie 
 We didn't say it was going to return an instance of the Adventure Class. 
 The compiler asks, can every kind of Movie (which is the return type of this method),
 be called an Adventure, meaning, can every kind of Movie be assigned to an Adventure variable? 
-And here, the answer is **no**. 
+And here, the answer is "no". 
 The Adventure reference, jaws, would not be able to handle a Comedy movie if that got returned, 
 for example. 
 That's because we can't say a Comedy is an Adventure. 
@@ -1805,10 +1805,10 @@ airplane.watchMovie();
 
 <p style="text-align: justify;">
 This code compiles, but here is something new. 
-We haven't used this before, you're probably asking, what is this **var**, word means? 
-Well, **var** is a special contextual keyword in Java, that lets our code take advantage of Local
+We haven't used this before, you're probably asking, what is this "var" word means? 
+Well, "var" is a special contextual keyword in Java, that lets our code take advantage of Local
 Variable Type Inference. 
-By using **var** as the type, we're telling Java to figure out the compile-time type for us.
+By using "var" as the type, we're telling Java to figure out the compile-time type for us.
 Since the Movie class was declared as the return type of the static method getMovie, 
 then Java can infer that the type of this variable, Airplane, should be a Movie. 
 You can see that in the hints if you've configured IntelliJ to show them. 
@@ -1924,41 +1924,41 @@ Let's look at another way, testing if the object coming back might be an Adventu
 We'll insert a couple of statements, before that last closing bracket, 
 for the else-if statement: instanceOf. 
 Here is something new, and this is the instanceof operator. 
-The **instanceof** operator, lets you test the type of object or instance. 
+The "instanceof" operator, lets you test the type of object or instance. 
 The reference variable you are testing is the left operand. 
 The type you are testing for is the right operand. 
 It's important to see that Adventure is not in quotes, 
 meaning we're not testing the type name, but the actual type. 
-This operator returns true,* if unknownObject is an instance of Adventure. 
+This operator returns true if unknownObject is an instance of Adventure. 
 In our code here, we're testing if unknownObject is really an Adventure object, 
 and then, if it is, if that's true, we want to cast unknownObject to Adventure, 
 and call watchAdventure, a method only on the Adventure class. 
 And this next statement is different from anything I've shown you before, 
 but perfectly valid. 
-This set of outer parentheses is the result of the Adventure type, *(Adventure) unknownObject*, 
+This set of outer parentheses is the result of the Adventure type, "(Adventure) unknownObject" 
 and we can chain a method directly on that, as we do here. 
 In other words, we don't have to assign the result of the cast to a local variable.
 </p>
 
 <p style="text-align: justify;">
 Ok, now lastly, let's look at one more way to do this: 
-*else if (unknownObject **instanceof** ScienceFiction **syfy**)*. 
-Here, we can see we're using a slightly different version of the **instanceof** operator. 
-This is called pattern matching support, for the **instanceof** operator. 
+""else if (unknownObject "instanceof" ScienceFiction "syfy")". 
+Here, we can see we're using a slightly different version of the "instanceof" operator. 
+This is called pattern matching support, for the "instanceof" operator. 
 If the JVM can identify that the object matches the type, 
 it can extract data from the object, without casting. 
-For this operator, the object can be assigned to a binding variable, which here is called **syfy**. 
-The variable **syfy** (if the **instanceof** method returns true) 
+For this operator, the object can be assigned to a binding variable, which here is called "syfy". 
+The variable "syfy" (if the "instanceof" method returns true) 
 is already typed as a ScienceFiction variable. 
-You can see in our code, *syfy.watchScienceFiction();*, 
+You can see in our code, "syfy.watchScienceFiction();", 
 we don't have to create the variable in the block statement, and we don't have to cast it. 
 Let's run this code through a couple of tests. 
 First, we'll run this code as it is. 
 We're interested in the last statement of the output. 
-And that gives us the last output statement, *Watching an Adventure!*. 
-Now, let's test a ScienceFiction movie, making the type an *S*, and the title Star-Wars. 
+And that gives us the last output statement, "Watching an Adventure!". 
+Now, let's test a ScienceFiction movie, making the type an "S" and the title Star-Wars. 
 And that gives us the output: 
-*Watching a Science Fiction Thriller!*. 
+"Watching a Science Fiction Thriller!". 
 Ok, those are a few ways to test the runtime type of object in our code. 
 You can see that this newest feature in Java makes a job a lot easier.
 </p>
@@ -1977,7 +1977,8 @@ Let's talk about what I want you to do in this challenge.
 This diagram shows a base class, Car, with one field, description, 
 and three methods, startEngine(), drive(), and runEngine(). 
 The first two methods should be declared as public. 
-The method *runEngine* however, is protected, and it will only get called from the drive method in Car. 
+The method "runEngine" however, is protected, 
+and it will only get called from the drive method in Car. 
 And we've given three types of subclasses, or three types of cars that you might find on the road. 
 We have the GasPoweredCar, the ElectricCar, and the HybridCar. 
 You can imagine that these three subclasses might have different ways to start their engine, 
@@ -2051,9 +2052,9 @@ Up until this point in the class, we haven't created a lot of classes,
 so we haven't had to think much about organizing those classes. 
 As the course progresses, we're going to be using more and more of Java's libraries, 
 and our applications are going to get more complex. 
-This feels like a good time to talk about the **package** and **import** statements, 
+This feels like a good time to talk about the "package" and "import" statements, 
 in more detail. 
-We've talked briefly about **import** statements when we used the **Scanner** class, 
+We've talked briefly about "import" statements when we used the "Scanner" class, 
 and we mentioned packages when we talked about access modifiers.
 In this course, I want to focus on what a package is, 
 why we'll be switching to using it from this period forward, 
@@ -2110,7 +2111,7 @@ What would a package name look like?
 We've seen that Java starts their package names with java, in some of the examples we've looked at. 
 However, it is common practice to use the reverse domain name 
 to start your own package naming conventions. 
-If your company is *abcompany.com* for example, your package prefixes would be *com.abccompany*.
+If your company is "abcompany.com," for example, your package prefixes would be "com.abccompany."
 For the rest of the course, I'll be using dev.lpa, 
 which is the reverse domain of my Learn Programming Academy development company. 
 The package name hierarchy is separated by periods. 

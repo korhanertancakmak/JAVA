@@ -2,6 +2,7 @@
 
 ## [a. Arrays]()
 
+<p style="text-align: justify;"> </p>
 Up to now, what we haven't really discussed though, is a way to have multiple values, 
 all the same type. 
 We had a taste of this kind of problem in the Bill's Burger challenge. 
