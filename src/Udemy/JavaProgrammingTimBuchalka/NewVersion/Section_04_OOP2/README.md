@@ -32,6 +32,8 @@ Personal Computer, Monitor, Motherboard, and ComputerCase are but a few parts, o
 you can think of that would be sold by a computer distributor.
 </div>
 
+<p></p>
+
 <div align="justify">
 Ok, let's build this. Creating a new class named "Product," 
 we start adding the attributes and a constructor, 
@@ -102,6 +104,8 @@ Monitor, Motherboard, and ComputerCase are all types of Product.
 And that's essentially what inheritance is.
 </div>
 
+<p></p>
+
 <div align="justify">
 Inheritance defines an "is A" relationship.
 Composition defines a "HAS A" relationship.
@@ -135,6 +139,8 @@ For the computerCase, we'll have a powerSupply, and a method pressPowerButton().
 And for the Motherboard, we'll have slots for ram and cards, as well as a bios' attribute, 
 and a method called loadProgram().
 </div>
+
+<p></p>
 
 <div align="justify">
 Getting back to the code, let's add these members to our parts.
@@ -329,6 +335,8 @@ We've created instances of a Monitor class, a Motherboard class, and a Computer 
 and it's time to build this, and see what we can do with it.
 </div>
 
+<p></p>
+
 <div align="justify">
 The PC will have the same manufacturer and model as the computer case, so 2208 as the model, 
 then Dell as the manufacturer, and then we'll pass the other variables to the PC.
@@ -341,7 +349,11 @@ PersonalComputer thePC = new PersonalComputer("2208", "Dell", theCase, theMonito
 <div align="justify">
 And you can see here, we've created the PC object by passing those three other objects to it, 
 as well as the model and manufacturer.
+</div>
 
+<p></p>
+
+<div align="justify">
 With inheritance, we were able to use a method from the base class.
 But how to we get access to the composite object's methods? 
 In other words, how do we make it do anything? 
@@ -390,6 +402,8 @@ You'd buy the computer case, you'd buy the monitor,
 and you'd buy the motherboard, and you'd then put it together to build the PC.
 </div>
 
+<p></p>
+
 <div align="justify">
 We built this PC by passing objects to the constructor, like assembling the computer.
 Let's continue on now, and look at another scenario, whereby we can actually hide 
@@ -398,6 +412,8 @@ In this case, we're not going to allow the calling program to access those objec
 We don't want anybody to access the Monitor, Motherboard, ComputerCase directly.
 </div>
 
+<p></p>
+
 <div align="justify">
 What we'll do first is, we'll go to our PC class, and we'll comment out all the getter methods. 
 You'll remember this encapsulates these attributes it hides them from the calling code.
@@ -405,6 +421,8 @@ And just to go back and show you what happened, we're now getting an error,
 because those methods no longer exist.
 We really don't want the Main class, or any class except the PC class, to make calls on its parts.
 </div>
+
+<p></p>
 
 <div align="justify">
 Ok, so next, let's create methods on PC, which we'll expose to the calling code.
@@ -470,12 +488,16 @@ look at using composition before implementing inheritance.
 You saw in this example, we actually used both.
 </div>
 
+<p></p>
+
 <div align="justify">
 All our products, the parts that made up the finished product, and the finished product itself, 
 were able to inherit a set of attributes, like the manufacturer and model.
 The calling code didn't have to know anything about these parts, to get PC to do something.
 It was able to tell the pc to power up, and the pc delegated that work to its parts.
 </div>
+
+<p></p>
 
 The reasons of preference of composition against inheritance are:
 * Composition is more flexible.
@@ -525,6 +547,8 @@ Dimensions, with those attributes.
 And we've added an attribute to Motherboard, which is dimensions, which has those attributes.
 </div>
 
+<p></p>
+
 <div align="justify">
 This design allows for future enhancements to be made, like the addition of the subclass Digital Product, 
 without causing problems for existing code, that may already be extending Product.
@@ -549,6 +573,8 @@ Your appliances will be Internet Of Things (IoT) devices, which can be programme
 For example, you might do stuff in your kitchen in the morning, in a rush to get to work, 
 and then expect your smart kitchen appliances to run automatically at a later time.
 </div>
+
+<p></p>
 
 <div align="justify">
 It's your job to write the code, to enable your Smart Kitchen application to execute certain jobs.
@@ -606,6 +632,8 @@ An application programming interface, or API,
 is the public contract that tells others how to use the class.
 </div>
 
+<p></p>
+
 <div align="justify">
 What we're going to do is, create a class that doesn't use encapsulation, 
 to show why this feature's important. 
@@ -625,6 +653,8 @@ And this class will have three methods, loseHealth(), restoreHealth(), and healt
 which I'll explain in a bit. 
 And we're going to create this class without using encapsulation.
 </div>
+
+<p></p>
 
 <div align="justify">
 To do this, we'll create a new Java class and call it Player. 
@@ -811,6 +841,8 @@ and the right set of conditions to be set.
 But because these fields are public to everyone, we can't control when they get accessed.
 </div>
 
+<p></p>
+
 <div align="justify">
 2. Allowing direct access to fields means calling code would need to change 
 when you edit any of the fields. 
@@ -839,6 +871,8 @@ but if you're deploying this kind of code in a library, for example,
 you're setting yourself up for a lot of problems.
 </div>
 
+<p></p>
+
 <div align="justify">
 3. Omitting a constructor that would accept initialization data 
 may mean the calling code is responsible for setting up this data on the new object. 
@@ -856,6 +890,8 @@ But when you're allowing people to manually access the fields,
 there's no real way to guarantee that the player health is set.
 </div>
 
+<p></p>
+
 <div align="justify">
 And this is what encapsulation actually does for us, and why we don't want to code like this.
 We want the ability to ensure certain conditions are met before playing, 
@@ -863,6 +899,8 @@ and that access to the player data during the game is controlled and protected.
 Now that you've seen some of the bad things, the bad ways of doing it, 
 let's actually comment this code out.
 </div>
+
+<p></p>
 
 <div align="justify">
 Let's create a new class that actually has got proper encapsulation by creating a new class, 
@@ -968,6 +1006,8 @@ This is what we're doing, by making our fields private,
 we're making sure that the fields within the class aren't accessible to any classes that our outside.
 </div>
 
+<p></p>
+
 <div align="justify">
 And now, let's say I wanted to change the field we use for the player's name, 
 changing it to "fullName" from name, like we did with Player. 
@@ -1018,6 +1058,8 @@ when we shouldn't have.
 But the EnhancedPlayer class has more control over its data. 
 This is why we want to use encapsulation.
 </div>
+
+<p></p>
 
 <div align="justify">
 We really want to protect access to our object's data. 
@@ -1113,6 +1155,8 @@ These are the different categories, so we'll use these as the subclasses.
 All of these will override and implement unique behavior for the watchMovie method.
 </div>
 
+<p></p>
+
 <div align="justify">
 After creating "Movie" class with its own constructor and one method, watchMovie:
 </div>
@@ -1135,6 +1179,8 @@ Now, here on the first line of this method is something new.
 You've seen the use of the keyword "this" before, which refers to the current instance, 
 and now we're calling a method on that called "getClass()".
 </div>
+
+<p></p>
 
 <div align="justify">
 The method getClass() is on Java linked object, which we've talked about. 
@@ -1173,6 +1219,8 @@ and here we just called it the "Movie."
 Ok, so no surprises here, I hope.
 </div>
 
+<p></p>
+
 <div align="justify">
 What we'll do next is add some subclasses of movies that represent different genres 
 or classifications of Movies. 
@@ -1204,6 +1252,8 @@ And we generated constructor which uses movies field, title as a parameter,
 and makes a call to "super," using that argument. 
 Now we got the constructor and an Adventure movie will get created with just the title of the movie.
 </div>
+
+<p></p>
 
 <div align="justify">
 Next, we want to implement or override the watch movie method. 
@@ -1241,6 +1291,8 @@ And we've set before that "%n" puts it a new line there.
 Now, this string gets repeated three times with this repeat method before the formatting takes place. 
 This means that all these stage plots get printed each on its own line.
 </div>
+
+<p></p>
 
 <div align="justify">
 Now let's go back to the main method and test the make Movie method on an Adventure object this time. 
@@ -1285,6 +1337,8 @@ And then we have the plot stages for an Adventure Film, pleasant scene, scary mu
 and something bad happens. 
 That's a really simple example of polymorphism.
 </div>
+
+<p></p>
 
 <div align="justify">
 Getting back to the movie.java source file, and creating the "comedy" subclass next:
@@ -1331,6 +1385,8 @@ class ScienceFiction extends Movie {
 And that's the ScienceFiction class, which means now we've built the movie class 
 and oll of its subclasses.
 </div>
+
+<p></p>
 
 <div align="justify">
 Up to now, we've only assigned an adventure movie instance to a Movie variable and saw that when it ran, 
@@ -1430,6 +1486,8 @@ that it's an Adventure Film.
 And then we also get the 3 plot stages for the Adventure Class.
 </div>
 
+<p></p>
+
 <div align="justify">
 Ok, next, we'll change the main method, passing ScienceFiction, 
 because really Star-Wars is more of a ScienceFiction Movie. 
@@ -1464,6 +1522,8 @@ in the control of the Movie class, and simplifies the work that needs to be done
 That sounds like a good encapsulation technique, doesn't it?
 </div>
 
+<p></p>
+
 <div align="justify">
 Ok, going back to our main method, we'll use polymorphism to watch a variety of movies. 
 This time, we'll make the code interactive, using the Scanner class we've seen before. 
@@ -1491,6 +1551,8 @@ So that's "Auto-import".
 These are the types of little automations that collectively, 
 make you a much more productive programmer.
 </div>
+
+<p></p>
 
 <div align="justify">
 Ok, next, we'll create a loop, so we'll keep getting information from the user 
@@ -1590,6 +1652,8 @@ and we can see that first output statement, "Star-Wars is a ScienceFiction film.
 This got printed out because we called super.watchMovie(), 
 when we overrode that method, on the ScienceFiction class.
 </div>
+
+<p></p>
 
 <div align="justify">
 This is the ability to execute different behavior for different types, 
@@ -1741,6 +1805,8 @@ Let's pause here a minute to add a method on each of the subclasses,
 and we'll make each method unique to the class.
 </div>
 
+<p></p>
+
 <div align="justify">
 Going back to the Adventure class, we'll add a simple method, that's only on that class.
 </div>
@@ -1756,6 +1822,8 @@ And let's copy that method and paste it in the Comedy class.
 And name it for Comedy. 
 Same, we do it for the ScienceFiction Class as well.
 </div>
+
+<p></p>
 
 <div align="justify">
 And if we try to run watchComedy on that Object variable, 
@@ -1818,6 +1886,8 @@ from the method.
 Only that a Movie would be.
 </div>
 
+<p></p>
+
 <div align="justify">
 Ok, let's try another example of using type inference, this time by just assigning a new instance:
 </div>
@@ -1858,6 +1928,8 @@ and that's the inheritance rule.
 We can assign an instance to a variable of the same type, or a parent type, 
 including java.lang.Object, the ultimate base class.
 </div>
+
+<p></p>
 
 <div align="justify">
 Why are run-time types different from compile-time types? 
@@ -1919,6 +1991,8 @@ what your object really is every time, to execute code.
 This code shows you one way to test for the runtime type, but it's not the best way.
 </div>
 
+<p></p>
+
 <div align="justify">
 Let's look at another way, testing if the object coming back might be an Adventure type.
 We'll insert a couple of statements, before that last closing bracket, 
@@ -1939,6 +2013,8 @@ This set of outer parentheses is the result of the Adventure type, "(Adventure) 
 and we can chain a method directly on that, as we do here. 
 In other words, we don't have to assign the result of the cast to a local variable.
 </div>
+
+<p></p>
 
 <div align="justify">
 Ok, now lastly, let's look at one more way to do this: 
@@ -2106,6 +2182,8 @@ So you might have a package of tightly coupled classes that should only be acces
 but not by the outside world, as an example.
 </div>
 
+<p></p>
+
 <div align="justify">
 What would a package name look like? 
 We've seen that Java starts their package names with java, in some of the examples we've looked at. 
@@ -2124,6 +2202,8 @@ The package statement needs to be the first statement in the code except comment
 The package statement comes before any import statements. 
 There can be only one package statement, because a class or type can only be in a single package.
 </div>
+
+<p></p>
 
 <div align="justify">
 A class's fully qualified class name (FQCN) consists of the package name and the class name. 
