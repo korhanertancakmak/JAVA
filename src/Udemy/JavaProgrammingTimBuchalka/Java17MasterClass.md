@@ -52,7 +52,7 @@ What we will learn from this Path:
 ### [q. String Manipulation Methods](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#q-string-manipulation-methods)
 ### [s. The StringBuilder Class](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#s-the-stringbuilder-class)
 
-## ![4. Object-Oriented Programming (Part-II)](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#section-4-object-oriented-programming-part-ii)
+## [4. Object-Oriented Programming (Part-II)](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#section-4-object-oriented-programming-part-ii)
 
 ### [a. Composition (Part-I)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#a-composition-Part-i)
 ### [b. Composition (Part-II)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#b-composition-Part-ii)
@@ -63,9 +63,8 @@ What we will learn from this Path:
 ### [g. Casting with Classes, Using Object and var References](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#g-casting-with-classes-using-object-and-var-references)
 ### [h. Testing the run-time Type](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#h-testing-the-run-time-type)
 ### [i. Polymorphism Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#i-polymorphism-challenge)
+### [j. Bill's Burger(OOP Master) Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#j-bill-s-burger-oop-master-challenge)
 
-    * The instanceof operator
-        * Challenge-40: Polymorphism
     * Organizing Java Classes, Packages and Import Stataments
 
 ## ![5. Arrays]()
