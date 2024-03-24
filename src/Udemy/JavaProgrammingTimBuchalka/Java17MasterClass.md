@@ -85,7 +85,9 @@ What we will learn from this Path:
 ### [g. Autoboxing Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#g-autoboxing-challenge)
 ### [h. Enumeration](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#h-enumeration)
 
-## [7. Abstraction in Java]()
+## [7. Abstraction in Java](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_07_Abstraction_in_Java/README.md#section-7-abstraction-in-java)
+
+### [a. Generalization And Abstraction](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_07_Abstraction_in_Java/README.md#a-generalization-and-abstraction)
 
     * Abstraction & Generalization
     * Interfaces

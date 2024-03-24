@@ -118,17 +118,17 @@ Declaring your arrays with a specific type allows compile-time type checking, as
 Type checking at compile-time prevents runtime exceptions 
 when instances assigned to arrays aren't what they are expected to be. 
 
-| Feature                         | array                        | ArrayList |
-|---------------------------------|------------------------------|-----------|
-| primitives types supported      | Yes                          | **No**    |
-| indexed                         | Yes                          | Yes       |
-| ordered by index                | Yes                          | Yes       |
-| duplicates allowed              | Yes                          | Yes       |
-| nulls allowed                   | Yes, for non-primitive types | Yes       |
-| resizable                       | **No**                       | Yes       |
-| mutable                         | Yes                          | Yes       |
-| inherits from java.util.Objecct | Yes                          | Yes       |
-| implements List interface       | No                           | **Yes**   |
+| Feature                        | array                        | ArrayList |
+|--------------------------------|------------------------------|-----------|
+| primitives types supported     | Yes                          | **No**    |
+| indexed                        | Yes                          | Yes       |
+| ordered by index               | Yes                          | Yes       |
+| duplicates allowed             | Yes                          | Yes       |
+| nulls allowed                  | Yes, for non-primitive types | Yes       |
+| resizable                      | **No**                       | Yes       |
+| mutable                        | Yes                          | Yes       |
+| inherits from java.util.Object | Yes                          | Yes       |
+| implements List interface      | No                           | **Yes**   |
 
 
 Ok, so now I'll create a grocery list, using the ArrayList class instead of an array.
@@ -184,7 +184,7 @@ in IntelliJ.
 And notice here, that IntelliJ is telling us, this second reference to GroceryItem, 
 which is called an explicit type argument, is unnecessary. 
 In this case, I'll use IntelliJ's recommendation, 
-and change this, by selecting Replace this when I hover over that second set of angle brackets. 
+and change this by selecting Replace this when I hover over that second set of angle brackets. 
 And that gets replaced with empty brackets:
 
 ```java  
@@ -750,7 +750,7 @@ for (int i = 0; i < 7; i++) {
 
 
 Here, I show an ArrayList that has a capacity of 10, because we're passing 10 in the constructor of this list. 
-We then add 7 elements.
+We then add seven elements.
 
 ```java  
 intList.add(40);
@@ -789,7 +789,7 @@ than the previous add methods did.
 When Java re-allocates new memory for the ArrayList, it automatically sets the capacity to a greater capacity. 
 But the Java language doesn't really specify exactly how it determines the new capacity, 
 or promise that it will continue to increase the capacity in the same way in future versions.
-We can't get this capacity size, from the ArrayList.
+We can't get this capacity size from the ArrayList.
 
 From their own documentation, Java states that, _The details of the growth policy are not specified beyond the
 fact that adding an element has constant amortized time cost_. 
@@ -1348,7 +1348,7 @@ Melbourne was removed
 []
 ```
 
-We see "Canberra" was removed first then _Hobart_ and finally, _Melbourne_ which leaves our list empty. 
+We see "Canberra" was removed first then _Hobart_ and finally, _Melbourne,_ which leaves our list empty. 
 Let's add a couple of elements back to our list before we test one more method. 
 Let's use the push method here, another stack method, that pushes the item to the top of the stack,
 the start of the list. 
@@ -1589,7 +1589,7 @@ and then that the trip starts at _Alice Springs_ and ends at _Toowoomba_.
 Now let's include a loop to print the places in between, 
 and we'll want to include an entry for each item, except the starting and ending points. 
 Every line item will include where we started and where we ended up. 
-Going back to _printItenirary_ method,
+Going back to _printItinerary_ method,
 
 ```java  
 public static void printItinerary(LinkedList<String> list) {
@@ -1645,7 +1645,7 @@ Then, we set up the for each loop, using a String variable named town,
 and the second component of this declaration is the list then 
 we'll print out the previous town and the current town. 
 Next, we set previousTown to the current iterations town variable, and that's it. 
-I'll call this method now in the main method instead of _printitinerary_. 
+I'll call this method now in the main method instead of _printItinerary_. 
 I'll make that printItinerary2. 
 And running that,
 
@@ -1808,7 +1808,8 @@ Back to the main method,
 testIterator(placesToVisit);
 ```
 
-And now add the call to testIterator, passing it placesToVisit. And if I run that,
+And now add the call to testIterator, passing it placesToVisit. 
+And if I run that:
 
 ```java
 Alice Springs
@@ -2075,7 +2076,7 @@ Next, create an itinerary of places or towns to visit, much like we've been doin
 
 | Town          | Distance from Sydney (in km) |
 |---------------|------------------------------|
-| Adalaide      | 1374                         |
+| Adelaide      | 1374                         |
 | Alice Springs | 2771                         |
 | Brisbane      | 917                          |
 | Darwin        | 3972                         |
@@ -2452,7 +2453,7 @@ This means this method can be called with zero to many int values.
 Inside the method, we create a new instance of an ArrayList, 
 with the Integer wrapper class as its type, in < >.
 We can't put just the int type in there (no <int>), sp this is a good place for auto boxing.
-We use a for loop, to iterate over the values we got passed to the method, in the varargs argument, 
+We use a for loop to iterate over the values we got passed to the method, in the varargs argument, 
 and add these primitives to our ArrayList. 
 Now the _add_ method on an ArrayList is declared with an Integer wrapper parameter type, 
 not a primitive type, so we're really showing many kinds of auto boxing here.
@@ -2604,7 +2605,7 @@ System.out.println(weekDay);
 
 Here, I've created a variable called weekDay, and assigned it the enum value, 
 that's the abbreviation for Tuesday.
-And I've passed that variable, directly to the println statement. 
+And I've passed that variable directly to the println statement. 
 Now, let's see what happens when I run this code.
 
 ```java
@@ -2675,8 +2676,8 @@ for (int i = 0; i < 10; i++) {
 ```
 
 In this code, we're going to loop 10 times, and each time we call the getRandomDay method. We don't know what day
-we'll get back, since it's random. And then we print the information about the day, it's name and ordinal value. And
-running that,
+we'll get back, since it's random. And then we print the information about the day, it is _name_ and _ordinal value_. 
+And running that:
 
 ```java
 Name is WED, Ordinal Value = 3
