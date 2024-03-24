@@ -2104,3 +2104,4 @@ Available actions (select word or letter):
 You'll want to use a Scanner, and the nextLine method, to get input from the console. 
 You'll use a ListIterator to move forwards and backwards, through the list of places on your itinerary.
 </div>
+
