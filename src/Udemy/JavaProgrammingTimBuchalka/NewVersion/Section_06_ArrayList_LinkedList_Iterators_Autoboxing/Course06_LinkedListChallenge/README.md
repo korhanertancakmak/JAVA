@@ -450,6 +450,8 @@ If there is, we want to adjust the cursor, moving it forward, one extra spot.
 All of this code is for when we reverse directions from backwards to forwards. 
 Also, we have to do the same from forwards to backwards.
 
+![image07]()
+
 If the forward flag was true, this means we're reversing our direction and moving backwards, 
 so we set the forward flag to false. 
 And we need to adjust our cursor, with an extra call to the previous method, 
