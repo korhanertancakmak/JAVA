@@ -1,6 +1,5 @@
 package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_07_Abstraction_Interface.Course02_Abstract_Challenge;
 
-
 //Part-2
 /*
         First, let me show you a class diagram of what we'll be building.
