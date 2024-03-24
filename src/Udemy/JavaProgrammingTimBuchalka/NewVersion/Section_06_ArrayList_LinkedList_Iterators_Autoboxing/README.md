@@ -682,9 +682,11 @@ and print the array out, which we know takes an array as an argument.
 
 Ok, so that was a pretty fast review of a lot of methods on the List, 
 which were implemented for the ArrayList class.
+</div>
 
 ### Array of Primitive Values
 
+<div align="justify">
 Let's start with an array of primitive data types. 
 This is the simplest thing to understand.
 
@@ -711,9 +713,11 @@ then the address of the next integer, if it's contiguous would be 104, as we sho
 for the second element.
 Java can use simple math, using the index, and the address of the initial element in the array, 
 to get the address, and retrieve the value of the element.
+</div>
 
 ### Arrays & ArrayLists of Reference Types
 
+<div align="justify">
 For reference types (meaning anything that's not a primitive type), like a String, or any other object, 
 the array elements aren't the values, but the addresses of the referenced object or String. 
 We've learned that ArrayLists are really implemented with arrays, under the covers. 
@@ -846,10 +850,12 @@ O(n) is generally our worst case scenario for List operations,
 but there are Big O Notations for worse performers. 
 We won't be talking about exponential growth or non-linear growth yet, 
 since it's not relevant to our discussion here.
+</div>
 
 ### Constant Amortized Time Cost
 
-Another scenario, is the one the Java docs declared for the growth of the ArrayList, 
+<div align="justify">
+Another scenario is the one the Java docs declared for the growth of the ArrayList, 
 that adding an element has constant amortized time cost. 
 In our case, we'll designate this constant amortized time as O(1)*. 
 This means that in the majority of cases, the cost is close to O(1), but at certain intervals, 
@@ -893,9 +899,11 @@ It only gets costly with indexed add or remove methods if the ArrayList needs to
 
 Now that you understand why some operations are more efficient and less costly 
 because of indexing, it's time to look at another class, called the LinkedList.
+</div>
 
 ### LinkedList
 
+<div align="justify">
 The LinkedList is not indexed at all. 
 There is no array, storing the addresses in a neat ordered way, as we saw with the ArrayList. 
 Instead, each element that's added to a linked list, 
@@ -953,9 +961,11 @@ When removing elements, a LinkedList will be more efficient because it doesn't r
 but the element still needs to be found, using the traversal mechanism,
 which is why it is O(n), as the worst case. 
 Removing elements from the start or end of the List will be more efficient for a LinkedList.
+</div>
 
 ### Review
 
+<div align="justify">
 The ArrayList is usually the better default choice for a List, 
 especially if the List is used predominantly for storing and reading data. 
 If you know the maximum number of possible items, 
@@ -979,9 +989,11 @@ from either the head or tail of the list.
 I've just talked a lot about how the LinkedList, and the ArrayList, are different under the covers. 
 An ArrayList is implemented on top of an array, but a LinkedList is a doubly linked list. 
 Both implement all of List's methods, but the LinkedList implements the Queue and Stack methods as well.
+</div>
 
 ### A Queue is a First-In, First-Out (FIFO) Data Collection
 
+<div align="justify">
 When you think of a queue, you might think of standing in line. 
 When you get in a line or a queue, you expect that you'll be processed, 
 in relationship to the first person in line. 
@@ -994,9 +1006,11 @@ If you want to add an item, you offer it onto the queue, sending it to the back 
 Single-ended queues always process elements from the start of the queue. 
 A double-ended queue allows access to both the start and end of the queue. 
 A LinkedList can be used as a double-ended queue.
+</div>
 
 ### A Stack is a Last-In, First-Out (LIFO) Data Collection
 
+<div align="justify">
 When you think of a stack, you can think of a vertical pile of elements, one on top of another, as we show on this
 diagram.
 
@@ -1747,7 +1761,7 @@ In the loop, the "next" method is called, and its value assigned to a local vari
 and the local variable printed out. 
 This would just print each element in a list, but do it through the iterator object.
 
-![image05]()
+![image05](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/images/image05.png?raw=true)
 
 This diagram shows visually how an Iterator works, using the PlacesToVisit List. 
 When an iterator is created, its cursor position is pointed at a position _before_ the first element. 
@@ -1860,9 +1874,11 @@ This means we can only call the next method on this iterator instance.
 And the only method available for mutating elements in this iterator is the remove method, 
 which I just showed you. 
 There is another iterator, the ListIterator, that gives us additional functionality.
+</div>
 
 ### Iterator & ListIterator
 
+<div align="justify">
 An Iterator is forwards only, and only supports the "remove" method. 
 A ListIterator can be used to go both forwards and backwards, 
 and in addition to the "remove" method, it also supports the "add" and "set" methods. 
@@ -2031,7 +2047,7 @@ Lake Wivenhoe
 We get Lake Wivenhoe. 
 It's really important to understand that the positions of the cursor of iterator are between the elements.
 
-![image06]()
+![image06](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/images/image06.png?raw=true)
 
 When the iterator is at position 0, or the start, it's not pointing at element 0. 
 The code shows an iterator for this list. 
@@ -2044,5 +2060,47 @@ because the cursor position was 2 when we made this call.
 Traversing both backwards and forwards through a collection, 
 using a listIterator, is a little tricky because of this. 
 But if you remember that the cursor is always between elements, then you'll be able to keep it straight.
+</div>
 
+## [e. Iterators Challenge]()
+
+<div align="justify">
+LinkedList challenge is to use LinkedList functionality, to create a list of places, 
+ordered by distance from the starting point. 
+And we want to use a ListIterator, to move, both backwards and forwards, 
+through this ordered itinerary of places.
+
+First, create a type that has a town or place name, and a field for storing the distance from the start. 
+Next, create an itinerary of places or towns to visit, much like we've been doing in the last few courses.
+
+| Town          | Distance from Sydney (in km) |
+|---------------|------------------------------|
+| Adalaide      | 1374                         |
+| Alice Springs | 2771                         |
+| Brisbane      | 917                          |
+| Darwin        | 3972                         |
+| Melbourne     | 877                          |
+| Perth         | 3923                         |
+    
+But this time, instead of Strings, you'll want to create a LinkedList of your place or town type. 
+Here we show a list of a few places in Australia, and their distances from Sydney. 
+You'll create a LinkedList, ordered by the distance from the starting point, in this case Sydney. 
+Sydney should be the first element in your list. 
+You don't want to allow duplicate places to be in your list for this data set.
+
+In addition, you'll create an interactive program with the following menu item options. 
+The menu will have options to move forwards and backwards your itinerary, to list the itinerary, 
+and print menu options and quit the program.
+
+```java
+Available actions (select word or letter):
+(F)orward
+(B)ackward
+(L)ist Places
+(M)enu
+(Q)uit
+```
+
+You'll want to use a Scanner, and the nextLine method, to get input from the console. 
+You'll use a ListIterator to move forwards and backwards, through the list of places on your itinerary.
 </div>
