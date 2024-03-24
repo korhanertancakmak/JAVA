@@ -7,7 +7,7 @@ record OrderItem(int qty, ProductForSale product) {}
 
 public class Store {
 
-    private static ArrayList<ProductForSale> storeProducts = new ArrayList<>();
+    private static final ArrayList<ProductForSale> storeProducts = new ArrayList<>();
 
     public static void main(String[] args) {
         storeProducts.add(new ArtObject("Oil Painting",1350, "Impressionistic work by ABF painted in 2010"));
