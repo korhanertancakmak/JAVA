@@ -79,10 +79,8 @@ What we will learn from this Path:
 ### [a. Lists](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#a-lists)
 ### [b. ArrayList Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#b-arraylist-challenge)
 ### [c. Big-O Notation and LinkedList](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#c-big-o-notation-and-linkedlist)
+### [d. Iterators](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#d-iterators)
 
-
-    * LinkedList and Big-O Notation
-        * Challenge-44: Mobile Phone
     * Iterators
         * Challenge-45: Playlist
     * Autoboxing and Unboxing

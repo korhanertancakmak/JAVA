@@ -721,7 +721,7 @@ This means our objects aren't stored contiguously in memory,
 but their addresses are in the array behind the ArrayList.
 And again, the addresses can be easily retrieved with a bit of math if we know the index of the element.
 
-![image01]()
+![image01](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/images/image01.png?raw=true)
 
 This is a cheap lookup, and doesn't change, no matter what size the ArrayList is. 
 But to remove an element, the referenced addresses have to be re-indexed, or shifted, 
@@ -901,7 +901,7 @@ There is no array, storing the addresses in a neat ordered way, as we saw with t
 Instead, each element that's added to a linked list, 
 forms a chain, and the chain has links to the previous element, and the next element.
 
-![image02]()
+![image02](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/images/image02.png?raw=true)
 
 This architecture is called a doubly linked list, meaning an element is linked to the next element, 
 but it's also linked to a previous element, in this chain of elements. 
@@ -987,7 +987,7 @@ When you get in a line or a queue, you expect that you'll be processed,
 in relationship to the first person in line. 
 We call this a First-in First-out, or FIFO data collection.
 
-![image03]()
+![image03](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/images/image03.png?raw=true)
 
 If you want to remove an item, you poll the queue, getting the first element or person in the line. 
 If you want to add an item, you offer it onto the queue, sending it to the back of the line. 
@@ -1000,7 +1000,7 @@ A LinkedList can be used as a double-ended queue.
 When you think of a stack, you can think of a vertical pile of elements, one on top of another, as we show on this
 diagram.
 
-![image04]()
+![image04](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/images/image04.png?raw=true)
 
 When you add an item, you push it onto the stack. 
 If you want to get an item, you'll take the top item, or pop it from the stack. 
@@ -1726,6 +1726,323 @@ By now, you must be asking what an iterator or what's a ListIterator to be more 
 ## [d. Iterators]()
 
 <div align="justify">
+So far, we've mainly used for loops to traverse, or step through elements, in an array or list. 
+We can use the traditional for loop and an index, to index into a list. 
+We can use the enhanced for loop and a collection, to step through the elements, one at a time. 
+But Java provides other means to traverse lists. 
+Two alternatives are the Iterator, and the ListIterator.
 
+If you're familiar with databases, you might be familiar with a database cursor, 
+which is a mechanism that enables traversal over records in a database. 
+An iterator can be thought of as similar to a database cursor. 
+The kind of cursor we're referring to here can be described as an object 
+that allows traversal over records in a collection.
+
+The Iterator is pretty straightforward. 
+When you get an instance of an iterator, you can call the "next" method, to get the next element in the list. 
+You can use the _hasNext_ method, to check if any elements remain to be processed. 
+In the code, you can see a while loop, which uses the iterators "hasNext" method, 
+to determine if it should continue looping. 
+In the loop, the "next" method is called, and its value assigned to a local variable, 
+and the local variable printed out. 
+This would just print each element in a list, but do it through the iterator object.
+
+![image05]()
+
+This diagram shows visually how an Iterator works, using the PlacesToVisit List. 
+When an iterator is created, its cursor position is pointed at a position _before_ the first element. 
+The first call to the _next_ method gets the first element, 
+and moves the cursor position to be between the first and second elements. 
+Later calls to the _next_ method move the position of the iterator through the list, as shown, 
+until there are _no elements left_, meaning _hasNext = false_. 
+At this point, the iterator or cursor position is below the last element. 
+We looked at it briefly in code in the last course, but I want to explore this type with you a bit more.
+
+```java
+var placesToVisit = new LinkedList<String>();
+placesToVisit.add("Sydney");
+placesToVisit.add(0,"Canberra");
+addMoreElements(placesToVisit);
+```
+
+Copying and pasting the code parts from the last course, which we need for this one. 
+I'll go on with a new method in our Main class, called testIterator.
+I'll create a variable containing our list iterator. 
+And loop through it using hasNext.
+And loop through it using hasNext. 
+Let's print out the element, returned by the next method. 
+And then print out the list.
+
+```java
+private static void testIterator(LinkedList<String> list) {
+    var iterator = list.iterator();
+    while (iterator.hasNext()) {
+        System.out.println(iterator.next());
+    }
+    System.out.println(list);
+}
+```
+
+Here, I have created an iterator variable, assigning it the result of the list.iterator method. 
+I have a while loop that checks the iterator.hasNext method, 
+which returns true, if the cursor position is before another item to process. 
+And I'm calling _iterator.next_, and passing the result directly to the println statement, 
+so these will print every element in the list. 
+Back to the main method,
+
+```java
+testIterator(placesToVisit);
+```
+
+And now add the call to testIterator, passing it placesToVisit. And if I run that,
+
+```java
+Alice Springs
+Brisbane 
+Darwin
+Canberra
+Sydney
+Hobart
+Melbourne
+Toowoomba
+[Alice Springs, Brisbane, Darwin, Canberra, Sydney, Hobart, Melbourne, Toowoomba]
+```
+                    
+We first get our places printed out one by one, and then the full list. 
+One of the benefits of an iterator is that you can use it to modify the list 
+while you're iterating through it. 
+Let's say we wanted to remove all instances of Brisbane from our list, and our list could contain duplicates. 
+I'll add that code to the test Iterator method:
+
+```java
+private static void testIterator(LinkedList<String> list) {
+    var iterator = list.iterator();
+    /*while (iterator.hasNext()) {
+        System.out.println(iterator.next());
+    }
+    System.out.println(list);*/
+
+    while (iterator.hasNext()) {
+        if (iterator.next().equals("Brisbane")) {
+            iterator.remove();                   
+            list.remove();
+            iterator.add("Lake Wivenhoe");
+        }
+    }
+}
+```
+
+Here, we just have an if condition that checks if the value we get back from the next method equals Brisbane. 
+If It does, we execute iterator.remove. 
+Running that,
+
+```java
+[Alice Springs, Darwin, Canberra, Sydney, Hobart, Melbourne, Toowoomba]
+```
+
+You can see this works, and Brisbane was removed from the list. 
+But what If I tried to remove Brisbane directly from the list at this point. 
+I'll change _iterator.remove_ to _list.remove_. 
+If I run this:
+
+```java
+Exception in thread "main" java.util.ConcurrentModificationException
+```
+
+We get a _ConcurrentModificationException_. 
+You'd get this same error if you tried to do something similar in an enhanced for loop. 
+The iterator provides a safe way to remove elements, while still iterating through the list, 
+so it's important, to make sure you're calling remove on the iterator object, 
+and not the list object. 
+I'll revert that last change. 
+This type of iterator only allows us to move forward through the elements. 
+This means we can only call the next method on this iterator instance. 
+And the only method available for mutating elements in this iterator is the remove method, 
+which I just showed you. 
+There is another iterator, the ListIterator, that gives us additional functionality.
+
+### Iterator & ListIterator
+
+An Iterator is forwards only, and only supports the "remove" method. 
+A ListIterator can be used to go both forwards and backwards, 
+and in addition to the "remove" method, it also supports the "add" and "set" methods. 
+I'll make a minor change to our code. Instead of calling the iterator method, 
+I'll change that to call the listIterator method on list, which gives us a ListIterator.
+
+```java
+private static void testIterator(LinkedList<String> list) {
+    var iterator = list.listiterator();
+
+    while (iterator.hasNext()) {
+        if (iterator.next().equals("Brisbane")) {
+            iterator.remove();                   
+            list.remove();
+            iterator.add("Lake Wivenhoe");
+        }
+    }
+}
+```
+
+And running this,
+
+```java
+[Alice Springs, Darwin, Canberra, Sydney, Hobart, Melbourne, Toowoomba]
+```
+
+We get the exact same results. 
+But now, I can change remove to add, adding a new place to visit after Brisbane. 
+Instead of removing Brisbane, this code _iterator.add("Lake Wivenhoe");_ 
+adds _Lake Wivenhoe_, to our places to visit, after Brisbane.
+Again, it's really important to note, we're using the add method on the ListIterator, 
+and NOT on the list itself. 
+And If we run it:
+
+```java
+[Alice Springs, Brisbane, Lake Wivenhoe, Darwin, Canberra, Sydney, Hobart, Melbourne, Toowoomba]
+```
+
+We can confirm that "Lake Wivenhoe" was added to the list, immediately following Brisbane. 
+Now, after the while loop, what happens if I want to loop through the elements again? 
+I'll add another while loop, just after the first, and loop through the elements again, 
+just printing them out. 
+We'll create a while loop, based on our iterators, hasNext method.
+
+```java
+private static void testIterator(LinkedList<String> list) {
+    var iterator = list.listiterator();
+
+    while (iterator.hasNext()) {
+        if (iterator.next().equals("Brisbane")) {
+            iterator.remove();                   
+            list.remove();
+            iterator.add("Lake Wivenhoe");
+        }
+    }
+    
+    while (iterator.hasNext()) {
+        System.out.println(iterator.next());
+    }
+    System.out.println(list);
+}
+```
+
+If I run this code:
+
+```java
+[Alice Springs, Brisbane, Lake Wivenhoe, Darwin, Canberra, Sydney, Hobart, Melbourne, Toowoomba]
+```
+
+We don't get an error, but we don't get any places printed out individually. 
+And that's because _hasNext_, after that first while loop is false, and the second loop never executes. 
+If we wanted to loop through this iterator again, we couldn't use this same iterator instance
+to move forward anymore, not in its current state. 
+And we can't simply reset it to the beginning. 
+We could get a new instance by calling the listIterator method again,
+or we could move backwards. 
+I'll try moving backwards here, so I'll change hasNext to hasPrevious in the while condition.
+
+```java
+private static void testIterator(LinkedList<String> list) {
+    var iterator = list.listiterator();
+
+    while (iterator.hasNext()) {
+        if (iterator.next().equals("Brisbane")) {
+            iterator.remove();                   
+            list.remove();
+            iterator.add("Lake Wivenhoe");
+        }
+    }
+    
+    while (iterator.hasNext()) {
+        System.out.println(iterator.next());
+    }
+    System.out.println(list);
+
+    while (iterator.hasPrevious()) {
+        System.out.println(iterator.previous());
+    }
+    System.out.println(list);
+
+}
+```
+
+In this code, we're actually iterating backwards through the list, and printing each town. 
+And If I run this:
+
+```java
+Toowoomba
+Melbourne
+Hobart
+Sydney
+Canberra
+Darwin
+Lake Wivenhoe
+Brisbane
+Alice Springs
+[Alice Springs, Brisbane, Lake Wivenhoe, Darwin, Canberra, Sydney, Hobart, Melbourne, Toowoomba]
+```
+                
+You can see in the output; Toowoomba is printed first, and Alice Springs last. 
+After running this, we're at the top of the cursor again, at the start of the list. 
+Another thing we can do is call the listIterator method, and pass the cursor position we want to start at. 
+I demonstrated this in the last course, but I'll show it here again. 
+I'll do this, creating a new iterator after the last statement. 
+It's really important to understand that the positions of the cursor of iterator are between the elements.
+
+```java
+var iterator2 = list.listIterator(3);
+System.out.println(iterator2.next());
+```
+
+This is a way to get an iterator, with the cursor positioned in some other place, 
+other than the default, which is prior to the first element.
+We've specified position 3, so the cursor is placed between the elements at index 2 and index 3. 
+Running this:
+
+```java
+Toowoomba 
+Melbourne
+Hobart
+Sydney
+Canberra
+Darwin
+Lake Wivenhoe
+Brisbane
+Alice Springs
+[Alice Springs, Brisbane, Lake Wivenhoe, Darwin, Canberra, Sydney, Hobart, Melbourne, Toowoomba]
+Darwin
+```
+
+We get Darwin printed out. 
+Let's change next to previous. 
+
+```java
+var iterator2 = list.listIterator(3);
+System.out.println(iterator2.previous());
+```
+
+And running that,
+
+```java
+... (same)
+Lake Wivenhoe
+```
+
+We get Lake Wivenhoe. 
+It's really important to understand that the positions of the cursor of iterator are between the elements.
+
+![image06]()
+
+When the iterator is at position 0, or the start, it's not pointing at element 0. 
+The code shows an iterator for this list. 
+We get Alice Springs when we first call _iterator.next_, and 
+that moves the cursor of iterator to cursor position 1, meaning after Alice Springs. 
+Another call to iterator next returns to Brisbane, 
+and moves the cursor to cursor position 2 or between Brisbane and Darwin. 
+But if we decide to reverse positions, and call previous here, we get Brisbane 
+because the cursor position was 2 when we made this call. 
+Traversing both backwards and forwards through a collection, 
+using a listIterator, is a little tricky because of this. 
+But if you remember that the cursor is always between elements, then you'll be able to keep it straight.
 
 </div>
