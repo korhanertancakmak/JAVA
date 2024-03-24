@@ -859,7 +859,7 @@ All Animals have to implement the move and makeNoise methods, but only Mammals
 needed to implement shedHair, as we demonstrated.
 </div>
 
-### [Abstract Challenge]()
+### [Abstract Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_07_Abstraction_Interface/Course02_Abstract_Challenge/README.md#abstraction-challenge)
 <div align="justify">
 
 In this challenge, you need to build an application 
@@ -885,7 +885,28 @@ Create an _OrderItem_ type that has at a minimum two fields, _quantity_
 and a _Product for Sale_. 
 You should create _two or three classes that extend the ProductForSale class_, 
 that will be products in your store.
+</div>
 
+
+<div align="justify">
+
+
+</div>
+
+
+<div align="justify">
+
+
+</div>
+
+
+<div align="justify">
+
+
+</div>
+
+
+<div align="justify">
 
 
 </div>
