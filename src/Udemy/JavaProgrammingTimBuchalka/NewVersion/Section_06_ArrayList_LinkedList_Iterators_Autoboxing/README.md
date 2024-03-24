@@ -2157,9 +2157,11 @@ to get a new instance of a class.
 The code shown above, returns an instance of the java.lang.Integer class, 
 to the boxedInt variable, with the value 15 in it. 
 We can say this code "manually boxes" a primitive integer.
+</div>
 
 ### Deprecated Boxing using the wrapper constructor
 
+<div align="justify">
 Another manual way of boxing, which you'll see in older code, 
 is by creating a new instance of the wrapper class, using the "new" keyword,
 and passing the primitive value to the constructor.
@@ -2173,9 +2175,11 @@ If you try this in IntelliJ, with any Java version greater than JDK-9,
 IntelliJ will tell you, this is deprecated code. 
 **Deprecated code** means it's older, and it may not be supported in a future version. 
 In other words, you should start looking for an alternate way of doing something if it's been deprecated.
+</div>
 
 ### Using new (with a constructor) is deprecated for wrappers
 
+<div align="justify">
 Java's own documentation states the following:
 * It is rarely appropriate to use this constructor.
 * The static factory **valueOf(int)** is generally a better choice, 
@@ -2187,9 +2191,11 @@ Integer boxedInt = new Integer(15);
 
 This deprecation applies to all the constructors of the wrapper classes, not just the Integer class. 
 In truth, we rarely have to manually box primitives because Java supports something called _autoboxing_.
+</div>
 
 ### What is autoboxing?
 
+<div align="justify">
 We can simply assign a primitive to a wrapper variable, as we show below.
 
 ```java
@@ -2214,9 +2220,11 @@ This gives us an object, which is an Integer wrapper class, and has the value of
 To unbox this on an Integer class, we can use the intValue method, which returns the boxed value, 
 the primitive int. This method is called manually _unboxing_. 
 And like boxing, it's unnecessary to manually unbox.
+</div>
 
 ### Automatic Unboxing
 
+<div align="justify">
 Automatic unboxing is really just referred to as unboxing in most cases. 
 We can assign an instance of a wrapper class directly to a primitive variable. 
 The code below shows an example.
@@ -2501,6 +2509,5 @@ var ourList : "List<Integer>" = List.of(1, 2, 3, 4, 5);
 
 Remember this specific method "List.of" returns an unmodifiable list. 
 Note when I do that, the inlay hints updates to show a new return type from the List of factory methods.
-
-
 </div>
+
