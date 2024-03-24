@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_10_ArrayList_LinkedList_Iterators_Autoboxing.Course08_AutoboxingUnboxing_Challenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_06_ArrayList_LinkedList_Iterators_Autoboxing.Course08_AutoboxingUnboxing_Challenge;
 
 import java.util.ArrayList;
 
@@ -39,7 +39,7 @@ record Customer(String name, ArrayList<Double> transactions) {
 }
 
 class Bank {
-    private String name;
+    private final String name;
     private ArrayList<Customer> customers;
 
     public Bank(String name, ArrayList<Customer> customers) {
@@ -47,14 +47,14 @@ class Bank {
         if (findCustomerIndex(this.name, customers) < 0) {
             System.out.println("This customer already exists!");
         } else {
-            this.customers = new ArrayList<Customer>();
+            this.customers = new ArrayList<>();
         }
     }
 
     public static int findCustomerIndex(String name, ArrayList<Customer> customers) {
         int index = 0;
 
-        if (customers.get(customers.size() - 1).name().equalsIgnoreCase(name)) {
+        if (customers.getLast().name().equalsIgnoreCase(name)) {
             return customers.size() - 1;
         }
 

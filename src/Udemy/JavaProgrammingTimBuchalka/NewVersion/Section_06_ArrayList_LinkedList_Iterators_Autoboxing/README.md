@@ -2105,7 +2105,7 @@ You'll want to use a Scanner, and the nextLine method, to get input from the con
 You'll use a ListIterator to move forwards and backwards, through the list of places on your itinerary.
 </div>
 
-## [f. Autoboxing And Unboxing]()
+## [f. Autoboxing and Unboxing]()
 
 <div align="justify">
 Why does Java have primitive data types? Some object-oriented languages 
@@ -2139,7 +2139,7 @@ But Java, as we know, gives us wrapper classes for each primitive type.
 And we can go from a primitive to a wrapper, which is called boxing, or a wrapper to a primitive, 
 which is called unboxing, with relative ease in Java.
 
-![image08]()
+![image08](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/images/image08.png?raw=true)
 
 A primitive is boxed or wrapped, in a containing class, whose main data is the primitive value. 
 Each primitive data type has a wrapper class, as shown on the list, which we've seen before. 
@@ -2511,3 +2511,17 @@ Remember this specific method "List.of" returns an unmodifiable list.
 Note when I do that, the inlay hints updates to show a new return type from the List of factory methods.
 </div>
 
+## [g. Autoboxing Challenge]()
+<div align="justify">
+
+In this challenge, you will need to create a simple banking application with a Customer and Bank type.
+The "Customer" will have a name and an "ArrayList" of transactions containing "Double" wrapper elements.
+
+* A customer's transaction can be a credit, which means a positive amount, or it can be a debit, a negative amount.
+
+The _Bank_ will have a name and an "ArrayList" of customers.
+* The bank should _add a new customer_ if they're not yet already in the list.
+* The bank class should allow a customer to _add a transaction_ to an existing Customer.
+* This class should also _print a statement_ that includes the customer name, and the transaction amounts. 
+This method should use unboxing.
+</div>
