@@ -80,6 +80,7 @@ What we will learn from this Path:
 ### [b. ArrayList Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#b-arraylist-challenge)
 ### [c. Big-O Notation and LinkedList](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#c-big-o-notation-and-linkedlist)
 ### [d. Iterators](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#d-iterators)
+### [e. Iterators Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#e-iterators-challenge)
 
     * Iterators
         * Challenge-45: Playlist
