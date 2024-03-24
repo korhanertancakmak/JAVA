@@ -1,7 +1,5 @@
 # [Section-6: Lists, Big-O Notation, Iterators, Autoboxing & Unboxing and Enum Type]()
 
-
-
 ## [a. Lists]()
 
 <div align="justify">
@@ -684,6 +682,116 @@ and print the array out, which we know takes an array as an argument.
 
 Ok, so that was a pretty fast review of a lot of methods on the List, 
 which were implemented for the ArrayList class.
+
+### Array of Primitive Values
+
+Let's start with an array of primitive data types. 
+This is the simplest thing to understand.
+
+| Index | Value | Address |
+|-------|-------|---------|
+| 0     | 34    | 100     |
+| 1     | 18    | 104     |
+| 2     | 91    | 108     |
+| 3     | 57    | 112     |
+| 4     | 453   | 116     |
+| 5     | 68    | 120     |
+| 6     | 6     | 124     |
+
+When an array of primitive types is allocated, 
+space is allocated for all of its elements contiguously, as shown above. 
+You can see from this table that we have an array of seven integers. 
+The index position is in the left column, and that's the number we use to access a specific array value. 
+So the first element, when we use index position 0, this will retrieve value 34.
+When we use index position 1, this gets the value of 18, and so on. 
+The addresses we show here are memory addresses, represented by these numbers.
+
+If 100 is the address of an integer, and we know an integer is 4 bytes, 
+then the address of the next integer, if it's contiguous would be 104, as we show here, 
+for the second element.
+Java can use simple math, using the index, and the address of the initial element in the array, 
+to get the address, and retrieve the value of the element.
+
+### Arrays & ArrayLists of Reference Types
+
+For reference types (meaning anything that's not a primitive type), like a String, or any other object, 
+the array elements aren't the values, but the addresses of the referenced object or String. 
+We've learned that ArrayLists are really implemented with arrays, under the covers. 
+This means our objects aren't stored contiguously in memory, 
+but their addresses are in the array behind the ArrayList.
+And again, the addresses can be easily retrieved with a bit of math if we know the index of the element.
+
+![image01]()
+
+This is a cheap lookup, and doesn't change, no matter what size the ArrayList is. 
+But to remove an element, the referenced addresses have to be re-indexed, or shifted, 
+to remove an empty space.
+And when adding an element, the array that backs the ArrayList might be too small, 
+and might need to be reallocated.
+Either of these operations can be an expensive process if the number of elements is large.
+
+An ArrayList is created with an initial capacity, depending on how many elements we create the list with, 
+or if you specify a capacity when creating the list.
+
+```java  
+ArrayList<Integer> intList = new ArrayList<>(10);
+for (int i = 0; i < 7; i++) {
+    intList.add((i + 1) * 5);
+}
+```
+
+| Index | 0 | 1  | 2  | 3  | 4  | 5  | 6  | 7 | 8 | 9 |
+|-------|---|----|----|----|----|----|----|---|---|---|
+| Value | 5 | 10 | 15 | 20 | 25 | 30 | 35 |   |   |   |
+
+
+Here, I show an ArrayList that has a capacity of 10, because we're passing 10 in the constructor of this list. 
+We then add 7 elements.
+
+```java  
+intList.add(40);
+intList.add(45);
+intList.add(50);
+```
+
+| Index | 0 | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  |
+|-------|---|----|----|----|----|----|----|----|----|----|
+| Value | 5 | 10 | 15 | 20 | 25 | 30 | 35 | 40 | 45 | 50 |
+
+
+We can add three more elements, using the ArrayList add method, 
+and the array used to store the data doesn't need to change. 
+The elements at indices 7, 8, and 9, get populated.
+
+```java  
+intList.add(55);            // This add exceeds the ArrayList capacity,
+                            // assuming an initial capacity of 10,
+                            // as an example.
+```
+
+| Index | 0 | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | 10 | 11 | 12 | 13 | 14 |
+|-------|---|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+| Value | 5 | 10 | 15 | 20 | 25 | 30 | 35 | 40 | 45 | 50 | 55 |    |    |    |    |
+
+But if the number of elements exceeds the current capacity, 
+Java needs to reallocate memory to fit all the elements, and this can be a costly operation, 
+especially if your ArrayList contains a lot of items.
+
+So now, if our code simply calls add on this ArrayList, 
+the next operation is going to create a new array, with more elements, but copy the existing 10 elements over.
+Then the new element is added. 
+You can imagine this "add" operation costs more, in both time and memory, 
+than the previous add methods did. 
+When Java re-allocates new memory for the ArrayList, it automatically sets the capacity to a greater capacity. 
+But the Java language doesn't really specify exactly how it determines the new capacity, 
+or promise that it will continue to increase the capacity in the same way in future versions.
+We can't get this capacity size, from the ArrayList.
+
+From their own documentation, Java states that, _The details of the growth policy are not specified beyond the
+fact that adding an element has constant amortized time cost_. 
+Ok, maybe you're interested in what constant amortized time is. 
+Let's start with how to determine cost, which in this case is generally considered in terms of time, 
+but may include memory usage and processing costs, etc.
 </div>
 
 ## [b. ArrayList Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/Course02_ArrayListChallenge/README.md#arraylist-challenge)
@@ -711,4 +819,913 @@ You should print the list, sorted alphabetically, after each operation.
 You shouldn't allow duplicate items in the list.
 </div>
 
+## [c. Big-O Notation and LinkedList]()
 
+<div align="justify">
+Maybe you've heard people talking about Big O Notation, or Big O, and wondered what this means. 
+I won't get too deep into it, but there are a couple of concepts that are fairly easy to grasp, 
+and will help us understand how cheap or expensive an operation is, in terms of time and memory usage, 
+as the operation scales. 
+This means it's a way to express how well the operation performs, when applied to more and more elements. 
+Big O approximates the cost of an operation, for a certain number of elements, called n. 
+Cost is usually determined by the time it takes, but it can include memory usage, and complexity, for example.
+
+As n (the number of elements) gets bigger, an operation's cost can stay the same. 
+But cost often grows, as the number of elements grows. 
+Costs can grow linearly, meaning the cost stays in a step, with the size of the number of elements. 
+Or costs can grow exponentially, or in some other non-linear fashion. 
+In a perfect world, an operation's time and complexity would never change. 
+This ideal world, in Big O Notation is O(1), sometimes called constant time. 
+In many situations, an operation's cost is in direct correlation to the number of elements, n. 
+In Big O Notation this is O(n), sometimes called linear time.
+
+So if we have 10 elements, the cost is 10 times what it would be for one element, 
+because the operation may have to execute some functions, 
+up to 10 times vs. just once, and 100 times for 100 elements, for example. 
+O(n) is generally our worst case scenario for List operations, 
+but there are Big O Notations for worse performers. 
+We won't be talking about exponential growth or non-linear growth yet, 
+since it's not relevant to our discussion here.
+
+### Constant Amortized Time Cost
+
+Another scenario, is the one the Java docs declared for the growth of the ArrayList, 
+that adding an element has constant amortized time cost. 
+In our case, we'll designate this constant amortized time as O(1)*. 
+This means that in the majority of cases, the cost is close to O(1), but at certain intervals, 
+the cost is O(n). 
+If we add an element to an ArrayList, where the capacity of the List is already allocated, 
+and space is available, the cost is the same each time, regardless of how many elements we add.
+
+But as soon as we reach the capacity, and all the elements (all n elements) need to be copied in memory, 
+this single adding would have a maximum cost of O(n). 
+After this operation, that forced a reallocation, any additional add operations go back to O(1), 
+until the capacity is reached again. As the expensive intervals decrease, the cost gets closer to O(1), 
+so we give it the notation O(1)*.
+
+| ArrayList Operations - Big-O | Worst Case | Best Case |
+|------------------------------|------------|-----------|
+| add(E element)               | O(1)*      |           |
+| add(int index, E element)    | O(n)       | O(1)*     |
+| contains(E element)          | O(n)       | O(1)      |
+| get(int index)               | O(1)       |           |
+| indexOf(E element)           | O(n)       | O(1)      |
+| remove(int index)            | O(n)       | O(1)      |
+| remove(E element)            | O(n)       |           |
+| set(int index, E element)    | O(1)       |           |
+
+
+- O(1): constant time - operation's cost(time) should be constant regardless of number of elements.
+- O(n): linear time - operation's cost(time) will increase linearly with the number of elements n.
+- O(1)*: constant amortized time—somewhere between O(1) and O(n), but closer to O(1) as efficiencies are gained.
+
+This table shows the Big O values for the most common ArrayList operations or methods. 
+Let's talk about one example, the contains method, which looks for a matching element, 
+and needs to traverse through the ArrayList to find a match. 
+It could find a match at the very first index; this is the best case scenario, so it's O(1). 
+It might not find a match until the last index, this is the worst case scenario, so it's O(n).
+
+In general, the cost will be something in between, for the contains method, 
+because the element will be found somewhere between the first and nth (or last) element. 
+You'll notice that the indexed methods are usually O(1), remembering that finding an element by its index 
+is a simple calculation. 
+It only gets costly with indexed add or remove methods if the ArrayList needs to be re-indexed or re-sized.
+
+Now that you understand why some operations are more efficient and less costly 
+because of indexing, it's time to look at another class, called the LinkedList.
+
+### LinkedList
+
+The LinkedList is not indexed at all. 
+There is no array, storing the addresses in a neat ordered way, as we saw with the ArrayList. 
+Instead, each element that's added to a linked list, 
+forms a chain, and the chain has links to the previous element, and the next element.
+
+![image02]()
+
+This architecture is called a doubly linked list, meaning an element is linked to the next element, 
+but it's also linked to a previous element, in this chain of elements. 
+The beginning of the chain is called the head of the list, and the end is called the tail. 
+This can also be considered a queue, in this case, a double-ended queue, 
+because we can traverse both backwards and forwards, through these elements.
+
+Getting an element from the list, or setting a value of element, isn't just simple math anymore, 
+with the LinkedList type. 
+To find an element, we'd need to start at the head or tail, and check if the element matches, 
+or keep track of the number of elements traversed, if we are matching by an index, 
+because the index isn't stored as part of the list. 
+For example, even if you know, you want to find the fifth element, 
+you'd still have to traverse the chain this way, to get that fifth element. 
+This type of retrieval is considered expensive in computer currency, 
+which is processing time and memory usage. 
+On the other hand, inserting and removing an element is much simpler for this type of collection.
+
+In contrast to an ArrayList, inserting or removing an item in a LinkedList, 
+is just a matter of breaking two links in the chain, and re-establishing two different links. 
+No new array needs to be created, and elements don't need to be shifted into different positions. 
+A reallocation of memory to accommodate all existing elements is never required. 
+So for a LinkedList, inserting and removing elements, is generally considered cheap in computer currency, 
+compared to doing these functions in an ArrayList.
+
+All of that being said, there is a lot of debate about whether a LinkedList 
+is ever really a preferred solution over the ArrayList, 
+especially as the Java language improves in performance, 
+and computer hardware itself continues to improve. 
+I won't wade into this debate, but I want to encourage you to review both sides of the debate 
+if you're interested. 
+Let's look at the Big O Notation for the matching operations in a Linked List.
+
+| Operation                 | LinkedList Worst Case | LinkedList Best Case | ArrayList Worst Case | ArrayList Best Case |
+|---------------------------|-----------------------|----------------------|----------------------|---------------------|
+| add(E element)            | O(1)                  |                      | O(1)*                |                     |
+| add(int index, E element) | O(n)                  | O(1)                 | O(n)                 | O(1)*               |
+| contains(E element)       | O(n)                  | O(1)                 | O(n)                 | O(1)                |
+| get(int index)            | O(n)                  | O(1)                 | O(1)                 |                     |
+| indexOf(E element)        | O(n)                  | O(1)                 | O(n)                 | O(1)                |
+| remove(int index)         | O(n)                  | O(1)                 | O(n)                 | O(1)                |
+| remove(E element)         | O(n)                  | O(1)                 | O(n)                 |                     |
+| set(int index, E element) | O(n)                  | O(1)                 | O(1)                 |                     |
+
+This table shows the Big O values, for the most common shared List operations or methods, for both types. 
+For a LinkedList, adding elements to the start or end of the List 
+will almost always be more efficient than an ArrayList. 
+When removing elements, a LinkedList will be more efficient because it doesn't require re-indexing, 
+but the element still needs to be found, using the traversal mechanism,
+which is why it is O(n), as the worst case. 
+Removing elements from the start or end of the List will be more efficient for a LinkedList.
+
+### Review
+
+The ArrayList is usually the better default choice for a List, 
+especially if the List is used predominantly for storing and reading data. 
+If you know the maximum number of possible items, 
+then it's probably better to use an ArrayList, but set its capacity. 
+This code demonstrates how to set the capacity of your ArrayList to 500,000.
+
+```java  
+int capacity = 500_000;
+ArrayList<String> stringArray = new ArrayList<>(capacity);
+```
+
+An ArrayList's index is an int type, so an ArrayList's capacity is limited 
+to the maximum number of elements an int can hold, Integer.MAX_VALUE = 2,147,483,647.
+
+You may want to consider using a LinkedList if you're adding and processing 
+or manipulating a large number of elements, and the maximum elements aren't known, 
+but may be great, or if your number of elements may exceed Integer.MAX_VALUE. 
+A LinkedList can be more efficient when items are being processed predominantly 
+from either the head or tail of the list.
+
+I've just talked a lot about how the LinkedList, and the ArrayList, are different under the covers. 
+An ArrayList is implemented on top of an array, but a LinkedList is a doubly linked list. 
+Both implement all of List's methods, but the LinkedList implements the Queue and Stack methods as well.
+
+### A Queue is a First-In, First-Out (FIFO) Data Collection
+
+When you think of a queue, you might think of standing in line. 
+When you get in a line or a queue, you expect that you'll be processed, 
+in relationship to the first person in line. 
+We call this a First-in First-out, or FIFO data collection.
+
+![image03]()
+
+If you want to remove an item, you poll the queue, getting the first element or person in the line. 
+If you want to add an item, you offer it onto the queue, sending it to the back of the line. 
+Single-ended queues always process elements from the start of the queue. 
+A double-ended queue allows access to both the start and end of the queue. 
+A LinkedList can be used as a double-ended queue.
+
+### A Stack is a Last-In, First-Out (LIFO) Data Collection
+
+When you think of a stack, you can think of a vertical pile of elements, one on top of another, as we show on this
+diagram.
+
+![image04]()
+
+When you add an item, you push it onto the stack. 
+If you want to get an item, you'll take the top item, or pop it from the stack. 
+We call this a Last-In First-out, or LIFO data collection. 
+A LinkedList can be used as a stack as well.
+Let's start using this new class in some code.
+
+```java  
+LinkedList<String> placesToVisit = new LinkedList<>();
+```
+
+The first thing I'll do is create a LinkedList variable called placesToVisit. 
+Like an ArrayList, we include the type parameter, String, in <>, in the declaration. 
+And we use the <> operator on the right side of the assignment operator. 
+This is one way to declare a LinkedList. 
+I want to take an extra minute here to talk to you about Lists, and the "var" keyword. 
+Now I'll use the "var" keyword instead to set up this LinkedList.
+
+```java  
+var placesToVisit2 = new LinkedList<String>();
+```
+
+Creating a new LinkedList of strings and assigning to our placesToVisit, 
+what I wanted to show you here is that we can use "var" keyword for type LinkedList (or any type list or collection). 
+But when we do, we have to specify the type parameter on the right side of the assignment operator in < >. 
+We can't just put a diamond operator there as we did on the line above.
+Using the < > operator without a type in this statement doesn't give 
+Java enough information to infer the type. 
+So in this case, the type isn't optional on the right side of the assignment. 
+Now, adding records to a LinkedList is a lot like adding records to an ArrayList, 
+so let's add a few places we might want to visit in Australia.
+First I'll add Sydney, then I'll add Canberra at index 0.
+
+```java  
+placesToVisit2.add("Sydney");
+placesToVisit2.add(0,"Canberra");
+System.out.println(placesToVisit2);
+```
+
+Like an ArrayList, we can use the "add" method, passing it just an element, 
+which appends the element to the end of the list. 
+We next use the overwritten method for _add_ which takes an index, again like the ArrayList. 
+This inserts "Canberra" at position 0 of the list. 
+Running this code,
+
+```java  
+[Canberra, Sydney]
+```
+                
+We confirm that our list has _Canberra_ first, then _Sydney_. 
+Now because the LinkedList implements methods on the deck interface, 
+we have several other functions, to add elements. 
+I'm going to create a method called addMoreElements, to demonstrate some of these. 
+I'll make the return type void, and add a parameter of a LinkedList of strings.
+
+```java  
+private static void addMoreElements(LinkedList<String> list) {
+    list.addFirst("Darwin");
+    list.addLast("Hobart");
+}
+```
+
+I'll then add "Darwin" at the start of the list. 
+And then "Hobart" at the end. 
+These methods that are on the LinkedList
+class, but not on an ArrayList. 
+The first statement adds _Darwin_, inserting it at the start of the list. 
+The next statement adds _Hobart_, appending it to the end of the list. 
+Let's call the addMoreElements from the main method and print out the list.
+
+```java  
+addMoreElements(placesToVisit2);
+System.out.println(placesToVisit2);
+```
+
+Running this code,
+
+```java  
+[Canberra, Sydney]
+[Darwin, Canberra, Sydney, Hobart]
+```
+
+We can confirm that "Darwin" was added at the start and how about at the end of the list. 
+In addition to these methods, LinkedList has a method called offer, which queue language if you will, 
+for adding an element to the end of the queue. 
+Let's add that to the addMoreElements method.
+
+```java  
+private static void addMoreElements(LinkedList<String> list) {
+    list.addFirst("Darwin");
+    list.addLast("Hobart");
+    // Queue methods
+    list.offer("Melbourne");
+}
+```
+
+I'll call offer passing the string literal _Melbourne_. 
+And running that,
+
+```java  
+[Canberra, Sydney]
+[Darwin, Canberra, Sydney, Hobart, Melbourne]
+```
+
+We see _Melbourne_ now at the end of the list or queue. 
+The "offerLast" last method does the same thing as the offer method. 
+We also have an "offerFirst" method that does what the addFirst method does, so let's add these next.
+
+```java  
+private static void addMoreElements(LinkedList<String> list) {
+    list.addFirst("Darwin");
+    list.addLast("Hobart");
+    // Queue methods
+    list.offer("Melbourne");
+
+    list.offerFirst("Brisbane");
+    list.offerLast("Toowoomba");
+}
+```
+
+Running this,
+
+```java  
+[Canberra, Sydney]
+[Brisbane, Darwin, Canberra, Sydney, Hobart, Melbourne, Toowoomba]
+```
+
+We see "Brisbane" as our first element and "Toowoomba" as the last. 
+Continuing on, there is one more method for adding an element. 
+If you're familiar with stack language, you might know that when you want to add something to a stack, 
+you push it onto the stack. 
+We also have a "push" method. 
+The top of the stack is the first element in the LinkedList, 
+and if you're using LinkedList as a stack, pushing will insert the element at the start. 
+I'll add that method:
+
+```java  
+private static void addMoreElements(LinkedList<String> list) {
+    list.addFirst("Darwin");
+    list.addLast("Hobart");
+    // Queue methods
+    list.offer("Melbourne");
+
+    list.offerFirst("Brisbane");
+    list.offerLast("Toowoomba");
+
+    // Stack Methods
+    list.push("Alice Springs");
+}
+```
+
+Running that,
+
+```java  
+[Canberra, Sydney]
+[Alice Springs, Brisbane, Darwin, Canberra, Sydney, Hobart, Melbourne, Toowoomba]
+```
+
+We see that the push method placed "Alice Springs" at the head, or beginning of the list. 
+So you can see the LinkedList can be used as different types of data collections a list, 
+a queue, a double-ended queue, and a stack. 
+Like the many ways to add an element, there are also many ways to remove an item from a LinkedList.
+We'll put these in a separate method called removeElements.
+
+```java  
+private static void removeElements(LinkedList<String> list) {
+    list.remove(4);
+    list.remove("Brisbane");
+}
+```
+
+I'll remove the element at index 4. And remove _Brisbane_.
+Here, we're simply calling the remove methods that we also saw on the ArrayList. 
+The first statement removes the fifth element in the list 
+which will be Sydney and the next removes _Brisbane_ from the list. 
+Let's add a call to the removeElements method in the main method, and print the list.
+
+```java  
+private static void removeElements(LinkedList<String> list) {
+    list.remove(4);
+    list.remove("Brisbane");
+
+    System.out.println(list);
+}
+```
+
+```java  
+removeElements(placesToVisit2);
+System.out.println(placesToVisit2);
+```
+
+Running that,
+
+```java  
+[Canberra, Sydney]
+[Alice Springs, Brisbane, Darwin, Canberra, Sydney, Hobart, Melbourne, Toowoomba]
+[Alice Springs, Darwin, Canberra, Hobart, Melbourne, Toowoomba]
+```
+
+We can confirm that we removed _Brisbane_ and _Sydney_. 
+LinkedList has additional methods to remove elements, that aren't on ArrayList. 
+One of these is a no argument remove method. 
+Let's add that to removeElements method.
+
+```java  
+private static void removeElements(LinkedList<String> list) {
+    list.remove(4);
+    list.remove("Brisbane");
+
+    System.out.println(list);
+    String s1 = list.remove();  // removes first element
+    System.out.println(s1 + " was removed");
+}
+```
+
+So, we call remove again, but we aren't passing any arguments to this version of the method. 
+This method removes the first element in the list, and returns the removed element. 
+We assign that to a variable S1 and print that out.
+
+```java  
+[Canberra, Sydney]
+[Alice Springs, Brisbane, Darwin, Canberra, Sydney, Hobart, Melbourne, Toowoomba]
+[Alice Springs, Darwin, Canberra, Hobart, Melbourne, Toowoomba]
+Alice Springs was removed
+[Darwin, Canberra, Hobart, Melbourne, Toowoomba]
+```
+
+And we can confirm that "Alice Springs" was removed from the list, which was the first item in our list.
+
+```java  
+private static void removeElements(LinkedList<String> list) {
+    list.remove(4);
+    list.remove("Brisbane");
+
+    System.out.println(list);
+    String s1 = list.remove();  // removes first element
+    System.out.println(s1 + " was removed");
+
+    String s2 = list.removeFirst();  // removes first element
+    System.out.println(s2 + " was removed");
+}
+```
+
+Running this,
+
+```java  
+[Canberra, Sydney]
+[Alice Springs, Brisbane, Darwin, Canberra, Sydney, Hobart, Melbourne, Toowoomba]
+[Alice Springs, Darwin, Canberra, Hobart, Melbourne, Toowoomba]
+Alice Springs was removed
+Darwin was removed
+[Canberra, Hobart, Melbourne, Toowoomba]
+```
+
+We confirm that removeFirst is the same as calling remove, 
+but might be a bit clearer to anyone reading our code. 
+And there's also a removeLast method.
+
+```java  
+private static void removeElements(LinkedList<String> list) {
+    list.remove(4);
+    list.remove("Brisbane");
+
+    System.out.println(list);
+    String s1 = list.remove();  // removes first element
+    System.out.println(s1 + " was removed");
+
+    String s2 = list.removeFirst();  // removes first element
+    System.out.println(s2 + " was removed");
+
+    String s3 = list.removeLast();  // removes last element
+    System.out.println(s3 + " was removed");
+}
+```
+
+Running this,
+
+```java  
+[Canberra, Sydney]
+[Alice Springs, Brisbane, Darwin, Canberra, Sydney, Hobart, Melbourne, Toowoomba]
+[Alice Springs, Darwin, Canberra, Hobart, Melbourne, Toowoomba]
+Alice Springs was removed
+Darwin was removed
+Toowoomba was removed
+[Canberra, Hobart, Melbourne]
+```
+
+We see _Toowoomba_, the last element, gets removed this time. 
+And like the additional queue methods offer, offerFirst and offerLast for adding an element, 
+we have the poll, pollFirst and pollLast methods to remove an element. 
+Let's add these, starting with Poll.
+
+```java  
+private static void removeElements(LinkedList<String> list) {
+    list.remove(4);
+    list.remove("Brisbane");
+
+    System.out.println(list);
+    String s1 = list.remove();  // removes first element
+    System.out.println(s1 + " was removed");
+
+    String s2 = list.removeFirst();  // removes first element
+    System.out.println(s2 + " was removed");
+
+    String s3 = list.removeLast();  // removes last element
+    System.out.println(s3 + " was removed");
+
+    // Queue/Deque poll methods
+    String p1 = list.poll();             // removes first element
+    System.out.println(p1 + " was removed");
+
+    String p2 = list.pollFirst();        // removes first element
+    System.out.println(p2 + " was removed");
+
+    String p3 = list.pollLast();         // removes last element
+    System.out.println(p3 + " was removed");
+}
+```
+
+First, we create a local variable, a String named P1 and assign it the result of the poll method, 
+which removes the first element from the list. 
+And we simply print that variable out. 
+And I added the rest of poll methods. 
+Running this code,
+
+```java  
+.... (same)
+Canberra was removed
+Hobart was removed
+Melbourne was removed
+[]
+```
+
+We see "Canberra" was removed first then _Hobart_ and finally, _Melbourne_ which leaves our list empty. 
+Let's add a couple of elements back to our list before we test one more method. 
+Let's use the push method here, another stack method, that pushes the item to the top of the stack,
+the start of the list. 
+You can imagine, if you move that push, it's pushing all the elements back in the pile, 
+or downwards in the stack. 
+I'll add Sydney, Brisbane, and Canberra back into the list.
+
+```java  
+private static void removeElements(LinkedList<String> list) {
+    list.remove(4);
+    list.remove("Brisbane");
+
+    System.out.println(list);
+    String s1 = list.remove();  // removes first element
+    System.out.println(s1 + " was removed");
+
+    String s2 = list.removeFirst();  // removes first element
+    System.out.println(s2 + " was removed");
+
+    String s3 = list.removeLast();  // removes last element
+    System.out.println(s3 + " was removed");
+
+    // Queue/Deque poll methods
+    String p1 = list.poll();             // removes first element
+    System.out.println(p1 + " was removed");
+
+    String p2 = list.pollFirst();        // removes first element
+    System.out.println(p2 + " was removed");
+
+    String p3 = list.pollLast();         // removes last element
+    System.out.println(p3 + " was removed");
+
+    list.push("Sydney");
+    list.push("Brisbane");
+    list.push("Canberra");
+    System.out.println(list);
+
+    String p4 = list.pop();         // removes first element
+    System.out.println(p4 + " was removed");
+}
+```
+
+We'll test the stack method for removing an element, which is the pop method. 
+I'll remove the first element and assign it to P4 then I'll print it out. 
+So let's run this code.
+
+```java  
+.... (same)
+[Canberra, Brisbane, Sydney]
+Canberra was removed
+[Brisbane, Sydney]
+```
+
+And we can confirm "Canberra" gets removed using the pop method. 
+Using the push methods, it was the last element in, and with pop, it was the first element out.
+
+Now, I want to review the different ways to retrieve an element from a LinkedList. 
+I'll add another method to this class.
+I'll call it getting element static return type void:
+
+```java  
+private static void gettingElements(LinkedList<String> list) {
+    System.out.println("Retrieved Element = " + list.get(4));
+}
+```
+
+This method simply retrieves the fifth element in the list, and prints that out. 
+Let's add a call to this method in the main method.
+
+```java  
+gettingElements(placesToVisit2);
+```
+
+First, we'll comment out the call to the removeElements method. 
+And running this code,
+
+```java  
+[Canberra, Sydney]
+[Alice Springs, Brisbane, Darwin, Canberra, Sydney, Hobart, Melbourne, Toowoomba]
+Retrieved Element = Sydney
+```
+
+We can see we retrieved the element at index fourth or the fifth City in our list, Sydney. 
+I've said this as a method on both ArrayList and LinkedList, however on the 
+ArrayList the Big O Notation is O(1) at its worst, whereas for a LinkedList, the worst case is O(n). 
+It's actually not as bad as that on a LinkedList.
+Since it's a double-ended queue, Java will decide where to start searching. 
+The retrieval will start moving from one link to the next, either from the start 
+or the end of the list, whichever is closer to the specified index. 
+So it would never traverse the entire number of elements. 
+In addition to get method, the LinedList has the getFirst, and getLast methods. 
+I'll print out the first and last elements using getFirst and getLast. 
+Going back to the gettingElements method,
+
+```java  
+private static void gettingElements(LinkedList<String> list) {
+    System.out.println("Retrieved Element = " + list.get(4));
+
+    System.out.println("First element = " + list.getFirst());
+    System.out.println("Last element = " + list.getLast());
+}
+```
+
+Here, we're calling each method, and printing the result in the println statement. 
+So no surprises here when I run it,
+
+```java  
+[Canberra, Sydney]
+[Alice Springs, Brisbane, Darwin, Canberra, Sydney, Hobart, Melbourne, Toowoomba]
+Retrieved Element = Sydney
+First element = Alice Springs
+Last element = Toowoomba
+```
+                
+We get "Alice Springs" from the getFirst method and "Toowoomba" from the getLast method. 
+We can also use the methods indexOf and lastIndexOf, to see if an element is in a list, 
+as we did with the ArrayList.
+
+```java  
+private static void gettingElements(LinkedList<String> list) {
+    System.out.println("Retrieved Element = " + list.get(4));
+
+    System.out.println("First element = " + list.getFirst());
+    System.out.println("Last element = " + list.getLast());
+    
+    System.out.println("Darwin is at position: " + list.indexOf("Darwin"));
+    System.out.println("Melbourne is at posiiton = " + list.lastIndexOf("Melbourne"));
+}
+```
+
+The Big O Notation is the same for these methods, as it is for the ArrayList. 
+The worst case is O(n) for both if the element retrieved is the element of the last position to be checked. 
+Running this code tells us the positions of these towns in our list.
+
+```java  
+[Canberra, Sydney]
+[Alice Springs, Brisbane, Darwin, Canberra, Sydney, Hobart, Melbourne, Toowoomba]
+Retrieved Element = Sydney
+First element = Alice Springs
+Last element = Toowoomba
+Darwin is at position: 2
+Melbourne is at posiiton = 6
+```
+                
+So "Darwin" is at position 2, and "Melbourne" is at 6. As you'd expect, 
+LinkedList has additional methods for retrieving an element. 
+The first is appropriately named element, which is a Queue method.
+
+```java  
+private static void gettingElements(LinkedList<String> list) {
+    System.out.println("Retrieved Element = " + list.get(4));
+
+    System.out.println("First element = " + list.getFirst());
+    System.out.println("Last element = " + list.getLast());
+    
+    System.out.println("Darwin is at position: " + list.indexOf("Darwin"));
+    System.out.println("Melbourne is at posiiton = " + list.lastIndexOf("Melbourne"));
+
+    // Queue retrieval method
+    System.out.println("Element from element() = " + list.element());
+}
+```
+
+This "element" method takes no arguments. 
+So what element does it return? 
+Remember, I've said it's a queue method and a queue is first in first out. 
+So this should indicate that an element gets the first item out of the list. 
+Running this,
+
+```java  
+[Canberra, Sydney]
+[Alice Springs, Brisbane, Darwin, Canberra, Sydney, Hobart, Melbourne, Toowoomba]
+Retrieved Element = Sydney
+First element = Alice Springs
+Last element = Toowoomba
+Darwin is at position: 2
+Melbourne is at posiiton = 6
+Element from element() = Alice Springs
+```
+
+We can confirm that because we get _Alice Springs_. 
+Now let's add the stack retrieval methods which are peek, and similar methods like peekFirst and peekLast.
+
+```java  
+private static void gettingElements(LinkedList<String> list) {
+    System.out.println("Retrieved Element = " + list.get(4));
+
+    System.out.println("First element = " + list.getFirst());
+    System.out.println("Last element = " + list.getLast());
+    
+    System.out.println("Darwin is at position: " + list.indexOf("Darwin"));
+    System.out.println("Melbourne is at posiiton = " + list.lastIndexOf("Melbourne"));
+
+    // Queue retrieval method
+    System.out.println("Element from element() = " + list.element());
+
+    // Stack retrieval method
+    System.out.println("Element from peek() = " + list.peek());
+    System.out.println("Element from peekFirst() = " + list.peekFirst());
+    System.out.println("Element from peekLast() = " + list.peekLast());
+}
+```
+
+Running this,
+
+```java  
+.... (same)
+Element from peek() = Alice Springs
+Element from peekFirst() = Alice Springs
+Element from peekLast() = Toowoomba
+```
+
+We can see that peek and peekFirst, get the first element of the list, and peekLast gets the last element.
+Now, let's switch gears and talk about traversing and manipulating the elements in the list. 
+First, let's use a simple for loop. 
+We'll say this list of towns is our itinerary, 
+and we plan to travel to each list in the order we've defined here. 
+I'll call the method _printItinerary_ and pass it a LinkedList of string.
+
+```java  
+public static void printItinerary(LinkedList<String> list) {
+    System.out.println("Trip starts at " + list.getFirst());
+    System.out.println("Trip ends at " + list.getLast());
+}
+```
+
+This method uses the getFirst and getLast methods to print out 
+the starting and ending points of our trip. 
+And I'll add a call to this from the main method.
+
+```java
+printItinerary(placesToVisit2);
+```
+
+I'll first comment out the call to the _gettingElements_ method. 
+Running this code, we should see our list of places 
+and then that the trip starts at _Alice Springs_ and ends at _Toowoomba_. 
+Now let's include a loop to print the places in between, 
+and we'll want to include an entry for each item, except the starting and ending points. 
+Every line item will include where we started and where we ended up. 
+Going back to _printItenirary_ method,
+
+```java  
+public static void printItinerary(LinkedList<String> list) {
+    System.out.println("Trip starts at " + list.getFirst());
+    System.out.println("Trip ends at " + list.getLast());
+
+    System.out.println("Trip starts at " + list.getFirst());
+    for (int i = 1; i < list.size(); i++) {
+        System.out.println("--> From: " + list.get(i - 1) + " to " + list.get(i));
+    }
+    System.out.println("Trip ends at " + list.getLast());
+}
+```
+
+So this for loop starts at i = 1, because we don't want to include an entry 
+for the first time we started in, since we've already printed that out. 
+And then I'll print the item we started at using a minus one as the index to get 
+that down and then get the town at the current index. 
+Running this code,
+
+```java
+Trip starts at Alice Springs
+--> From: Alice Springs to Brisbane
+--> From: Brisbane to Darwin
+--> From: Darwin to Canberra 
+--> From: Canberra to Sydney
+--> From: Sydney to Hobart
+--> From: Hobart to Melbourne
+--> From: Melbourne to Toowoomba
+Trip ends at Toowoomba
+```
+                    
+We get a decent itinerary. 
+I've said that indexing into a LinkedList isn't the most efficient way to access elements.
+In the for loop, we're accessing two elements by index for each iteration of the loop. 
+Let's try another method this time using the for each loop. 
+I'm going to copy this method and rename a new method as _printItinerary2_:
+
+```java
+public static void printItinerary2(LinkedList<String> list) {
+    System.out.println("Trip starts at " + list.getFirst());
+    String previousTown = list.getFirst();
+    for (String town : list) {
+        System.out.println("--> From: " + previousTown + " to " + town);
+        previousTown = town;
+    }
+    System.out.println("Trip ends at " + list.getLast());
+}
+```
+
+So first, we set up the previousTown, to be the first place in our list. 
+Then, we set up the for each loop, using a String variable named town, 
+and the second component of this declaration is the list then 
+we'll print out the previous town and the current town. 
+Next, we set previousTown to the current iterations town variable, and that's it. 
+I'll call this method now in the main method instead of _printitinerary_. 
+I'll make that printItinerary2. 
+And running that,
+
+```java
+Trip starts at Alice Springs
+--> From: Alice Springs to Alice Springs
+--> From: Alice Springs to Brisbane
+--> From: Brisbane to Darwin
+--> From: Darwin to Canberra
+--> From: Canberra to Sydney
+--> From: Sydney to Hobart
+--> From: Hobart to Melbourne
+--> From: Melbourne to Toowoomba
+Trip ends at Toowoomba
+```
+
+So this is a bit more efficient, but it also prints out from Alice Springs, 
+to Alice Springs, on that second line. 
+Using this loop limits us to looping through the elements, one at a time, 
+from the very first to the last. 
+The traditional for loop is much more flexible if we don't want to loop through every element one at a time. 
+But now, let's look at another way to do this without using either of the for loops. 
+I'll copy and paste this method and rename it _printItinerary3_:
+
+```java
+public static void printItinerary3(LinkedList<String> list) {
+    System.out.println("Trip starts at " + list.getFirst());
+    String previousTown = list.getFirst();
+    ListIterator<String> iterator = list.listIterator(1);
+    while (iterator.hasNext()) {
+        var town = iterator.next();
+        System.out.println("--> From: " + previousTown + " to " + town);
+        previousTown = town;
+    }
+    System.out.println("Trip ends at " + list.getLast());
+}
+```
+
+Here, I've made three changes. 
+I've set up a local variable with a type of list iterator with type string. 
+And I've named it iterator, and assigned it to a method on LinkedList, listIterator. 
+After this, I change the for loop to a while loop. 
+And we're using a method on ListIterator called hasNext(), 
+which will return true if there are more elements to the process. 
+After this, we have a local loop variable which we call in town again. 
+And we're setting this to the result of another method on the ListIterator, called next(). 
+And instead of calling print itinerary2, I'll call printItinerary3.
+And running this,
+
+```java
+Trip starts at Alice Springs
+--> From: Alice Springs to Alice Springs
+--> From: Alice Springs to Brisbane
+--> From: Brisbane to Darwin
+--> From: Darwin to Canberra
+--> From: Canberra to Sydney
+--> From: Sydney to Hobart
+--> From: Hobart to Melbourne
+--> From: Melbourne to Toowoomba
+Trip ends at Toowoomba
+```
+
+We get the same output as before, including the problematic first line that we don't really want.
+Let's make one change to this printItinerary3 method. 
+When we make that call to the method list iterator on the linked list, we'll call an overloaded version, 
+passing the index of the first element we want to process:
+
+```java
+ListIterator<String> iterator = list.listIterator(1);
+```
+
+And now we'll run this again:
+
+```java
+Trip starts at Alice Springs
+--> From: Alice Springs to Brisbane
+--> From: Brisbane to Darwin
+--> From: Darwin to Canberra
+--> From: Canberra to Sydney
+--> From: Sydney to Hobart 
+--> From: Hobart to Melbourne
+--> From: Melbourne to Toowoomba
+Trip ends at Toowoomba
+```
+                    
+And you'll notice that we don't have that problematic first line 
+because this particular method gets an iterator, 
+that isn't set before the first element but is set before the second element in between index 0 and 1. 
+By now, you must be asking what an iterator or what's a ListIterator to be more specific is.
+</div>
+
+## [d. Iterators]()
+
+<div align="justify">
+
+
+</div>

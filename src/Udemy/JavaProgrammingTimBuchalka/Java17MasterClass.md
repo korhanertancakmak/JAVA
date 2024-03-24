@@ -77,7 +77,8 @@ What we will learn from this Path:
 ## [Section-6: Lists, Big-O Notation, Iterators, Autoboxing & Unboxing and Enum Type](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#section-6-lists-big-o-notation-iterators-autoboxing--unboxing-and-enum-type)
 
 ### [a. Lists](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#a-lists)
-### [b. ArrayList Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#b-arrayList-challenge)
+### [b. ArrayList Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#b-arraylist-challenge)
+### [c. Big-O Notation and LinkedList](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#c-big-o-notation-and-linkedlist)
 
 
     * LinkedList and Big-O Notation
