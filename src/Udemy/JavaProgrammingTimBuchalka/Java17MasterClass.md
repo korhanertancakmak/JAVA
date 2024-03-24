@@ -82,12 +82,8 @@ What we will learn from this Path:
 ### [d. Iterators](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#d-iterators)
 ### [e. Iterators Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#e-iterators-challenge)
 ### [f. Autoboxing and Unboxing](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#f-autoboxing-and-unboxing)
-
-    * Iterators
-        * Challenge-45: Playlist
-    * Autoboxing and Unboxing
-        * Challenge-46: Banking
-    * Enum type class
+### [g. Autoboxing Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#g-autoboxing-challenge)
+### [h. Enumeration](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#h-enumeration)
 
 ## [7. Abstraction in Java]()
 
