@@ -686,7 +686,7 @@ Ok, so that was a pretty fast review of a lot of methods on the List,
 which were implemented for the ArrayList class.
 </div>
 
-## [b. ArrayList Challenge]()
+## [b. ArrayList Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/Course02_ArrayListChallenge/README.md#arraylist-challenge)
 
 <div align="justify">
 The challenge is to create an interactive console program which gives to the user a menu of options as shown here:

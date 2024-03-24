@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Main {
 
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
 
     private static void printActions() {
@@ -44,7 +44,7 @@ public class Main {
 
         for (String i : items) {
             String trimmed = i.trim();
-            if (groceries.indexOf(trimmed) < 0) {
+            if (!groceries.contains(trimmed)) {
                 groceries.add(trimmed);
             }
         }

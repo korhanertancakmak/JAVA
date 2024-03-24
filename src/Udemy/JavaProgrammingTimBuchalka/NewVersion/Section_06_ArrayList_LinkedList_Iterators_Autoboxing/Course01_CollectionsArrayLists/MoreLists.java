@@ -15,12 +15,10 @@ public class MoreLists {
         List<String> list = List.of(items);
         System.out.println(list);
 
-
-        //System.out.println(list.getClass().getName());
-
-
-        //list.add("yogurt");
-
+        /*
+        System.out.println(list.getClass().getName());
+        list.add("yogurt");
+        */
 
         ArrayList<String> groceries = new ArrayList<>(list);
         groceries.add("yogurt");
