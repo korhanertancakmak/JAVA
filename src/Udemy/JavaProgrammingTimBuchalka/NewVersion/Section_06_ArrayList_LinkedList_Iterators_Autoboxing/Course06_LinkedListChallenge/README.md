@@ -450,7 +450,7 @@ If there is, we want to adjust the cursor, moving it forward, one extra spot.
 All of this code is for when we reverse directions from backwards to forwards. 
 Also, we have to do the same from forwards to backwards.
 
-![image07]()
+![image07](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/images/image07.png?raw=true)
 
 If the forward flag was true, this means we're reversing our direction and moving backwards, 
 so we set the forward flag to false. 

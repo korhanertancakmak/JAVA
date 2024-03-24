@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_10_ArrayList_LinkedList_Iterators_Autoboxing.Course07_AutoboxingUnboxing;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_06_ArrayList_LinkedList_Iterators_Autoboxing.Course07_AutoboxingUnboxing;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,111 +6,6 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
 
-/*
-Part-1
-                                              Autoboxing And Unboxing
-
-        Why does Java have primitive data types? Some object-oriented languages, don't support any primitive data types
-    at all, meaning everything is an object. But most of the more popular object-oriented languages of the day, support
-    both primitive types and objects, as does Java. Primitive types generally represent the way data is stored on an
-    operating system. Primitives have some advantages over objects, especially as the magnitude, or number of elements
-    increase. This is why many of the object-oriented languages chose not to be purist on this point, and continue to provide
-    support for primitive types. Objects take up additional memory, and may require a bit more processing power. We know
-    we can create objects, with primitive data types as field types, for example, and we can also return primitive types
-    from methods. So we can mix and match primitives with objects pretty easily.
-
-        But when we look at classes like the ArrayList, or the LinkedList, which we've reviewed in a lot of detail in this
-    section, these classes don't support primitive data types, as the collection type. In other words we can't do the
-    following, creating a LinkedList, using the int primitive type.
-
-                                LinkedList<int> myIntegers = new LinkedList<>();
-
-    This code won't compile. This means, we can't use all the great functions Lists provide, with primitive values. More
-    importantly, we can't easily use primitives, in some of the features we'll be learning about in the future, like
-    generics. But Java, as we know, gives us wrapper classes for each primitive type. And we can go from a primitive to
-    a wrapper, which is called boxing, or a wrapper to a primitive, which is called unboxing, with relative ease in Java.
-
-                                                Wrapper Types                                       Wrapper Classes
-                            ______________________________________________________                      Boolean
-                            ↓↓                                                  ↓↓                      Byte
-                    java.lang.Integer                                   java.lang.Double                Character
-                         (int)                                               (double)                   Double
-                          ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯↓↓¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯                      Float
-                                               primitive types                                          Integer
-                                                                                                        Long
-                                                                                                        Short
-
-    A primitive is boxed, or wrapped, in a containing class, whose main data is the primitive value. Each primitive data
-    type has a wrapper class, as shown on the list, which we've seen before. Each wrapper type boxes a specific primitive
-    value.
-
-                                    Integer boxedInt = Integer.valueOf(15);
-
-        How do we box? Each wrapper has a static overloaded factory method, valueOf(), which takes a primitive, and returns
-    an instance of the wrapper class. You'll remember that factory methods are often used instead of the "new" keyword,
-    to get a new instance of a class. The code shown above, returns an instance of the java.lang.Integer class, to the
-    boxedInt variable, with the value 15 in it. We can say this code "manually boxes" a primitive integer.
-
-                                Deprecated Boxing using the wrapper constructor
-
-        Another manual way of boxing, which you'll see in older code, is by creating a new instance of the wrapper class,
-    using the "new" keyword, and passing the primitive value to the constructor. We show an example of this here.
-
-                                    Integer boxedInt = Integer.valueOf(15);
-
-    If you try this in IntelliJ, with any Java version greater than JDK-9, IntelliJ will tell you, this is deprecated code.
-    "Deprecated code" means it's older, and it may not be supported in a future version. In other words, you should start
-    looking for an alternate way of doing something, if it's been deprecated.
-
-                            Using new (with a constructor) is deprecated for wrappers
-
-        Java's own documentation states the following:
-  - It is rarely appropriate to use this constructor.
-  - The static factory "valueOf(int)" is generally a better choice, as it is "likely to yield significantly better space
-    and time performance".
-
-                                    Integer boxedInt = new Integer(15);
-
-    This deprecation applies to all the constructors of the wrapper classes, not just the Integer class. In truth, we rarely
-    have to manually box primitives, because Java supports something called "autoboxing".
-
-                                                What is autoboxing?
-
-        We can simply assign a primitive to a wrapper variable, as we show below.
-
-                                            Integer boxedInt = 15;
-
-    Java allows this code, and it's actually preferred, to manually boxing. Underneath the covers, Java is doing the boxing.
-    In other words, an instance of Integer is created, and it's value is set to 15. Allowing Java to autobox, is preferred
-    to any other method, because Java will provide the best mechanism to do it.
-
-                                            Integer boxedInt = 15;
-                                            int unboxedInt = boxedInteger.intValue();
-
-        Every wrapper class supports a method to return the primitive value it contains. This is called unboxing. In the
-    example above, we've autoboxed the integer value 15, to a variable called boxedInteger. This gives us an object which
-    is an Integer wrapper class, and has the value of 15. To unbox this, on an Integer class, we can use the intValue method,
-    which returns the boxed value, the primitive int. This method is called manually "unboxing". And like boxing, it's
-    unnecessary to manually unbox.
-
-                                                Automatic Unboxing
-
-        Automatic unboxing is really just referred to as unboxing in most cases. We can assign an instance of a wrapper
-    class, directly to a primitive variable. The code below shows an example.
-
-                                            Integer boxedInteger = 15;
-                                            int unboxedInt = boxedInteger;
-
-    We're assigning an object instance to a primitive variable, in the second statement. This is allowed, because the object
-    instance is an Integer wrapper, and we're assigning it to an int primitive type variable. Again, this is the preferred
-    way to unbox a wrapper instance. Let's get back to some code now, and show different examples of when this feature can
-    be used.
-
-        There are a lot of ways Java supports autoboxing and boxing, and we've shown you a couple of simple examples on
-    above. I want to review these in code, but I want to also get you thinking about other places this feature can be used.
-    And I'll start with the examples above, for manually boxing and autoboxing.
-End-Part-1
-*/
 
         Integer boxedInt = Integer.valueOf(15);             // preferred but unnecessary
         Integer deprecatedBoxing = new Integer(15);      // deprecated since JDK 9
