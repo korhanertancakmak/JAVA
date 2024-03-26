@@ -1,8 +1,0 @@
-Directory Contents: 
-D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_11_Abstraction_Interface\Course07_Interface_Challenge
-D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_11_Abstraction_Interface\Course07_Interface_Challenge\Building.java
-D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_11_Abstraction_Interface\Course07_Interface_Challenge\Description.txt
-D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_11_Abstraction_Interface\Course07_Interface_Challenge\Main.java
-D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_11_Abstraction_Interface\Course07_Interface_Challenge\Mappable.java
-D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_11_Abstraction_Interface\Course07_Interface_Challenge\UtilityLine.java
-Generated: 2023-12-15T21:55:26.795677200

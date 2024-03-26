@@ -1,4 +1,4 @@
-package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_07_Abstraction_Interface.Course07_Interface_Challenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_07_Abstraction_Interface.Course06_Interface_Challenge;
 
 //Part-17
 /*
