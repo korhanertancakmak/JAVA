@@ -70,14 +70,14 @@ And we know we have public, protected, package, and private access modifiers as 
 In addition to access modifiers, methods have other modifiers, 
 which we'll list here, as a high-level introduction:
 
-| Modifiers    | Purpose                                                                                                                                                                                                                                                                                                                     |
-|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| abstract     | When you declare a method abstract, a method body is always omitted. An abstract method can only be declared on an abstract class or an interface.                                                                                                                                                                          |
-| static       | Sometimes called a class method, rather than an instance method, because it's called directly on the Class instance and does not access any single instance of the class.                                                                                                                                                   |
-| final        | A method that is final cannot be overridden by subclasses.                                                                                                                                                                                                                                                                  |
-| default      | This modifier is only applicable to an interface.                                                                                                                                                                                                                                                                           |
-| native       | This is another method with no-body, but it's very different from the abstract modifier. The method body will be implemented in platform-dependent code, typically written in another programming languagesuch as C. This is an advanced topic and not generally commonly used, and we won't be covering it in this course. |
-| synchronized | This modifier manages how multiple threads will access the code in this method.                                                                                                                                                                                                                                             |
+| Modifiers    | Purpose                                                                                                                                                                                                                                                                                                                      |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| abstract     | When you declare a method abstract, a method body is always omitted. An abstract method can only be declared on an abstract class or an interface.                                                                                                                                                                           |
+| static       | Sometimes called a class method, rather than an instance method, because it's called directly on the Class instance and does not access any single instance of the class.                                                                                                                                                    |
+| final        | A method that is final cannot be overridden by subclasses.                                                                                                                                                                                                                                                                   |
+| default      | This modifier is only applicable to an interface.                                                                                                                                                                                                                                                                            |
+| native       | This is another method with no-body, but it's very different from the abstract modifier. The method body will be implemented in platform-dependent code, typically written in another programming language such as C. This is an advanced topic and not generally commonly used, and we won't be covering it in this course. |
+| synchronized | This modifier manages how multiple threads will access the code in this method.                                                                                                                                                                                                                                              |
 </div>
 
 ### Abstract Class
@@ -165,7 +165,7 @@ and the subtype will implement this method with this signature.
 This is also true for a concrete class, and a concrete method that's overridden. 
 You might be asking, what's the difference, and when would you use an abstract class.
 
-![image01]()
+![image01](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_07_Abstraction_Interface/images/image01.png?raw=true)
 
 In the course of inheritance, we created a very basic Animal class, 
 and then we extended it to create a Dog. 
@@ -840,7 +840,7 @@ Horse (Clydesdale) sheds in the spring
                 
 You can see that for all our dogs; we're getting that they shed hair all the time. 
 So that's an example of an abstract class, extending another abstract class. 
-I won't cover the use case where we have an abstract class, that extends a concrete class.
+I won't cover the use case where we have an abstract class that extends a concrete class.
 It's a lot rarer to do something like that, but just be aware that that's an option. 
 You might be asking, why use an Abstract Class?
 
@@ -1345,7 +1345,7 @@ Truck's coordinates recorded
 We can see that a Truck can be tracked because it implements the Trackable interface. 
 Let's review what we did here.
 
-![image03]()
+![image03](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_07_Abstraction_Interface/images/image03.png?raw=true)
 
 An interface lets us treat an instance of a single class as many different types. 
 The Bird Class inherits behavior and attributes from Animal 
@@ -1367,10 +1367,10 @@ but customized to Bird.
 
 It can be used as a FlightEnabled type, with just the methods a FlightEnabled type needs, 
 but again customized for the Bird. 
-Or it can take the form of a Trackable object, and be tracked 
+Or it can take the form of a Trackable object and be tracked 
 with specifics for the Bird class.
 
-![image04]()
+![image04](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_07_Abstraction_Interface/images/image04.png?raw=true)
 
 Interfaces let us take objects that may have almost nothing in common, and write reusable code, 
 so we can process them all in a like manner. 
@@ -2056,7 +2056,7 @@ These were Comparator.naturalOrder() and Comparator.reverseOrder().
 
 Let's see what this really means when we create a static method on our own interface. 
 This time, I want to work with the OrbitEarth interface.
-And I'm going to add a method, to log data to the console in a flexible way.
+And I'm going to add a method to log data to the console in a flexible way.
 
 ```java  
 static void log(String description) {
@@ -2332,7 +2332,7 @@ for all the abstract methods in its parent class.
 
 You'll want to use an abstract class, when:
 
-* You want to share code, among several closely related classes 
+* You want to share code among several closely related classes 
 (Animal, for example, with fields, name, age...).
 * You expect classes that extend your abstract class, to have many common methods or fields, 
 or require access modifiers other than public.
@@ -2385,7 +2385,7 @@ I've briefly discussed some interfaces, like List and Queue, and their implement
 _ArrayList_ and _LinkedList_. 
 These are part of what Java calls its Collection Framework. 
 Interfaces are also the basis for many of the features that are coming up, 
-for example _lambda expressions_, which were introduced in JDK8. 
+for example, _lambda expressions_, which were introduced in JDK8. 
 Another example is _Java's database connectivity support, or JDBC_, 
 built almost entirely with interfaces. 
 The concrete implementation of methods is different 
@@ -2461,7 +2461,7 @@ including those mentioned above, but also any other fields in the business class
 
 You'll also want to create two classes that implement this interface, 
 a _Building_ and _UtilityLine_.
-* One class, in my case the Building, should have a geometry type of POINT, 
+* One class, in my case, the Building, should have a geometry type of POINT, 
 and One class should have a geometry type of Line. 
 The UtilityLine class will be my example for a class that will be a LINE on a map.
 * When these items are mapped, the Building will be shown on a city map, 
@@ -2489,14 +2489,4 @@ would get drawn for a fiber optic cable on College Street.
 You can see that the properties are a comma-delimited list, in curly braces, 
 with the property or field name in quotes, then a colon, 
 followed by the property value or field value, and that's also in double quotes.
-</div>
-
-
-<div align="justify">
-
-
-</div>
-<div align="justify">
-
-
 </div>

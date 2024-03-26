@@ -90,11 +90,7 @@ What we will learn from this Path:
 ### [a. Generalization And Abstraction](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_07_Abstraction_in_Java/README.md#a-generalization-and-abstraction)
 ### [b. Abstract Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_07_Abstraction_in_Java/README.md#b-abstract-challenge)
 ### [c. Interfaces](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_07_Abstraction_in_Java/README.md#c-interfaces)
-### [c. Interfaces](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_07_Abstraction_in_Java/README.md#c-interfaces)
-
-    * Interfaces
-        * Challenge-47: Abstract Class
-        * Challenge-48: Interface
+### [d. Interfaces Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_07_Abstraction_in_Java/README.md#d-interfaces-challenge)
 
 ## [8. Generics]()
 
