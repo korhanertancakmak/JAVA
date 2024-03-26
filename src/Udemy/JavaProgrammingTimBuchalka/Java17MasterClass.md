@@ -95,9 +95,9 @@ What we will learn from this Path:
 ## [8. Generics]()
 
 ### [a. Generics Part-I](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#a-generics-part-i)
-### [b. Generics Part-II](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#b-generics-part-ii)
-### [c. Generics Part-III](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#c-generics-part-iii)
-### [d. Generics Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#d-generics-challenge)
+### [b. Generics Part-II](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#b-generics-part-ii)
+### [c. Generics Part-III](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#c-generics-part-iii)
+### [d. Generics Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#d-generics-challenge)
 
     * Comparable vs Comparator
     * Wildcards, and type eresure
