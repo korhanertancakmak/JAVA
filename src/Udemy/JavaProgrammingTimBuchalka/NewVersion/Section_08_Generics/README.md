@@ -2972,7 +2972,7 @@ I'll be using examples in future code, and reiterating as many of these points a
 as we continue to build on what we've learned, in each section.
 </div>
 
-## [h. Generics Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/Course10_StudentChallenge/README.md#h-generics-challenge)
+## [h. Generics Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/Course10_StudentChallenge/README.md#h-generics-challenge)
 <div align="justify">
 
 In this challenge, I want you to start with some of the code 
