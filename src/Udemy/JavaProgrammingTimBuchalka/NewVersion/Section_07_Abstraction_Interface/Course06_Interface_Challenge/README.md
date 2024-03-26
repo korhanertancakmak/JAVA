@@ -36,7 +36,7 @@ So first, my constant JSON_PROPERTY.
 public interface Mappable {
 
     String JSON_PROPERTY = """
-            "properties": %s  """;
+            "properties": {/\%s\} """;
 }
 ```
 
