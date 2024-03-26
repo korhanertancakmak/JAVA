@@ -12,7 +12,7 @@ enum LineMarker {DASHED, DOTTED, SOLID}
 public interface Mappable {
 
     String JSON_PROPERTY = """
-            "properties": {%s} """;
+            "properties": {%s}\s""";
 
     String getLabel();
     Geometry getShape();
@@ -21,11 +21,11 @@ public interface Mappable {
     default String toJSON() {
 
         return """
-                "type": "%s", "label": "%s", "marker": "%s" """.formatted(getShape(), getLabel(), getMarker());
+                "type": "%s", "label": "%s", "marker": "%s"\s""".formatted(getShape(), getLabel(), getMarker());
     }
 
     static void mapIt(Mappable mappable) {
-        System.out.println(JSON_PROPERTY.formatted(mappable.toJSON()));
+        System.out.printf((JSON_PROPERTY) + "%n", mappable.toJSON());
     }
 
 }

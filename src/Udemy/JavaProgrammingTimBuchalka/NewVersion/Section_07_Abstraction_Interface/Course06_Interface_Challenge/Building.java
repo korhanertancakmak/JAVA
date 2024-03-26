@@ -4,9 +4,9 @@ enum UsageType {ENTERTAINMENT, GOVERNMENT, RESIDENTIAL, SPORTS}
 
 public class Building implements Mappable {
 
-    private String name;
+    private final String name;
 
-    private UsageType usage;
+    private final UsageType usage;
 
     public Building(String name, UsageType usage) {
         this.name = name;
@@ -40,6 +40,6 @@ public class Building implements Mappable {
     @Override
     public String toJSON() {
         return Mappable.super.toJSON() + """
-               , "name": "%s", "usage": "%s"  """.formatted(name, usage);
+               , "name": "%s", "usage": "%s" \s""".formatted(name, usage);
     }
 }

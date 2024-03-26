@@ -5,8 +5,8 @@ enum UtilityType {ELECTRICAL, FIBER_OPTIC, GAS, WATER}
 
 public class UtilityLine implements Mappable {
 
-    private String name;
-    private UtilityType type;
+    private final String name;
+    private final UtilityType type;
 
     public UtilityLine(String name, UtilityType type) {
         this.name = name;
@@ -37,6 +37,6 @@ public class UtilityLine implements Mappable {
     @Override
     public String toJSON() {
         return Mappable.super.toJSON() + """
-               , "name": "%s", "utility": "%s"  """.formatted(name, type);
+               , "name": "%s", "utility": "%s" \s""".formatted(name, type);
     }
 }
