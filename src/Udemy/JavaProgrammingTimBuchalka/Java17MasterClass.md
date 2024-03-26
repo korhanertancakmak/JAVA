@@ -101,7 +101,7 @@ What we will learn from this Path:
 ### [e. Comparable & Comparator (Interfaces for Sorting)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#e-comparable--comparator-interfaces-for-sorting)
 ### [f. Generic Reference Types](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#f-generic-reference-types)
 ### [g. Generic Methods and Wildcards](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#g-generic-methods-and-wildcards)
-### [h. Generics Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#g-generic-methods-and-wildcards)
+### [h. Generics Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#h-generics-challenge)
 
 ## [9. Nested Classes and Types]()
 
