@@ -442,7 +442,7 @@ The most commonly used type parameter identifiers are:
 * N for Number.
 * T for Type.
 * V for Value.
-* S, U, V etc. for 2nd, 3rd, 4th types.
+* S, U, V etc. for second, third, fourth types.
 
 Going back to our Generic Team, I'll add the type parameter, 
 angle brackets with a T inside <T>, after the class name.
@@ -1131,7 +1131,7 @@ in the US, called _Mather Point_.
 You can see the point is by default a red marker, and if you right-click that, 
 you'll see numbers listed at the top, 2 numbers, 36.06492, and -112.10780. 
 These numbers represent the x and y points for this map, or latitude and longitude.
-We'll use this set of double values, to identify our location of a point. 
+We'll use this set of double values to identify our location of a point. 
 If you click on those numbers, they get copied to your clipboard. 
 If you want to use your own locations for this challenge, 
 you can retrieve them this way. 
@@ -1271,26 +1271,877 @@ Render Mississippi River as LINE ([[47.2160, -95.2348], [35.1556, -90.0659], [29
 ```
 </div>
 
-
-
-
-
-
+## [e. Comparable & Comparator (Interfaces for Sorting)]()
 <div align="justify">
 
+Now that I've covered interfaces and generic classes, 
+I want to review in more detail, interfaces I mentioned in previous lectures. 
+The first is Comparable. 
+For an array, we can simply call _Arrays.sort_, and pass it an array, 
+but as I have previously mentioned, the elements in the array, need to implement Comparable. 
+Types like String, or primitive wrapper classes like Integer or Character are sortable, 
+and this is because they do implement this interface.
 
+The interface declaration in Java:
+
+```java  
+public interface Comparable<T> {
+    int compareTo(T o);
+}
+```
+                        
+It's a generic type, meaning it's parameterized. 
+Any class that implements this interface needs to implement the **compareTo** method. 
+This method takes one object as an argument, shown above as the letter **o**, 
+and compares it to the current instance, shown as this. 
+The table below shows what the results of the compareTo method should mean, 
+when implemented. 
+This method returns an integer.
+
+| Resulting Value | Meanin    |
+|-----------------|-----------|
+| zero            | 0 == this |
+| negative value  | this < 0  |
+| positive value  | this > 0  |
+
+It should return zero if the two objects being compared are equal. 
+It should return a negative value if this is less than **o**, 
+or a positive value if this is greater than **o**. 
+The best way to get familiar with this method is probably to look at it 
+for types you're very familiar with. 
+I'll start by comparing Integers, since it's straightforward to understand 
+if one number is greater than another.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        Integer five = 5;
+        Integer[] others = {0, 5, 10, -50, 50};
+    }
+    
+    for (Integer i :others) {
+        int val = five.compareTo(i);
+        System.out.printf("%d %s %d: compareTo=%d%n", five, (val == 0 ? "==" : (val < 0) ? "<" : ">"), i, val);
+    }
+}
+```
+
+In this code, I plan to compare the number five to each number in that array. 
+Let me add that code, using a for each loop. 
+I'll print out a formatted string with multiple specifiers. 
+I'll use a nested ternary, so first, if val equals 0, then I can say these two numbers are equal, 
+and output a double equals sign. 
+If val less than 0, I want a less than sign, otherwise a greater than sign.
+If I run this code:
+
+```java  
+5 > 0: compareTo=1 
+5 == 5: compareTo=0
+5 < 10: compareTo=-1
+5 > -50: compareTo=1
+5 < 50: compareTo=-1
+```
+
+You can see that for Integers, the compareTo method is returning 
+only three unique values, -1, 0, 1. 
+These values are displayed at the end of each of these output lines. 
+If the value is 0, the numbers are equal, and we see that with _5 == 5_ on the second line, 
+and the return value is zero. 
+If the value comes back as -1, that means five is less than the array element, 
+so five is less than 10 on line 3, and less than 50 on line 5 above. 
+If we get 1 back, five is greater than the array value, 
+so five is greater than 0 and -50, as shown on the first and fourth lines.
+
+Ok, now let's look at how Strings have implemented this same method. 
+I'll set up the scenario in the same way with a variable called banana.
+
+```java  
+String banana = "banana";
+String[] fruit = {"apple", "banana", "pear", "BANANA"};
+
+for (String s : fruit) {
+    int val = banana.compareTo(s);
+    System.out.printf("%s %s %s : compareTo = %d%n", banana, (val == 0 ? "==" : (val < 0 ? "<" : ">")), s, val);
+}
+```
+
+Running this code,
+
+```java  
+banana > apple : compareTo = 1
+banana == banana : compareTo = 0
+banana < pear : compareTo = -14
+banana > BANANA : compareTo = 32
+```
+                    
+The first thing I want you to see is, I'm not just getting _-1_,_0_ and _1_ back for Strings. 
+Comparing banana and apple, returns 1, and banana to itself is 0, 
+so that might look like the same result as Integers. 
+But look at **banana** compared to **pear**. 
+I've got a _-14_, so the code is saying banana is less than pear, 
+but it's not a _-1_. 
+And comparing _banana_ in lowercase to _BANANA_ in all uppercase gives me _32_ back, 
+which means lower case banana is greater than uppercase banana, 
+but again we've got a value that's something other than _1_, 
+here we have _32_. 
+I want to sort this list of strings and print it out.
+
+```java  
+Arrays.sort(fruit);
+System.out.println(Arrays.toString(fruit));
+```
+
+Running this code,
+
+```java  
+[BANANA, apple, banana, pear]
+```
+                    
+You can see how the strings have been sorted. 
+Are you wondering what these numbers (1, 0, -14, 32) coming back 
+from the compareTo method mean? 
+Let me add a couple lines of code, which might help you understand what's happening here.
+
+```java  
+System.out.println("A:" + (int)'A' + " " + "a:" + (int)'a');
+System.out.println("B:" + (int)'B' + " " + "b:" + (int)'b');
+System.out.println("P:" + (int)'P' + " " + "p:" + (int)'p');
+```
+
+Running this code,
+
+```java  
+A:65 a:97
+B:66 b:98
+P:80 p:112
+```
+                    
+Here, I'm printing out the capital letter A, and it's underlying integer value. 
+You may remember, chars are stored in memory as positive integer values, 
+and that's what this is showing. 
+Capital **A** is stored as 65. 
+Lowercase **a** is stored as 97. 
+When we use the compareTo method on Strings, 
+we're really comparing the integer values of the characters in the strings. 
+The method will compare the first characters, and if they're the same, 
+it next compares the second characters, and so on, 
+returning the difference between the character's underlying integer values. 
+In this example, all my strings start with a different letter, 
+so only the first letter will be compared. 
+If we compare **banana** with **apple**, we're comparing 98 (the value for b) 
+with 97 (the value for a), and the compareTo method returns the numeric difference, which is 1. 
+If we compare **banana** to **pear**, we're comparing 98 with 112, 
+and that gives us the difference, **-14**. 
+And the same with comparing lowercase **banana** with uppercase **BANANA**, 
+we get _98–66_, which is _32_. 
+This is how Java implemented the compareTo method on the String class.
+
+Now, I'll create my own class, I'll just call it **Student**, 
+and put it in the _Main.java_ source file.
+
+```java  
+class Student {
+    private final String name;
+
+    public Student(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+}
+```
+
+I also want to generate a toString method. 
+I'll do that by overriding toString. 
+And I'll replace **super.toString**with name. 
+Now, I'll go back to the main method, and set up a test 
+for a few of these Student instances.
+
+```java  
+Student tim = new Student("Tim");
+Student[] students = {new Student("Zach"), new Student("Tim"), new Student("Ann")};
+
+Arrays.sort(students);
+System.out.println(Arrays.toString(students));
+```
+
+That's the setup, and I'm going to compare the student **Tim**, 
+to a series of other students. 
+Before we set up for loop, let's call **Arrays.sort** on this array, 
+and print the sorted Students array out.
+This code compiles, so let me run that:
+
+```java  
+Exception in thread "main" java.lang.ClassCastException: class "Student" cannot be cast to class "Comparable"
+        "Student" is in unnamed module of loader 'app'; "Comparable" is in module java.base of loader 'bootstrap'
+
+```
+            
+And you can see, I get a ClassCastException. 
+We get that because our class **Student** can't be cast to Comparable. 
+This is an example of not being able to use **Arrays.sort**, on just any class or type we want. 
+Your class has to be derived in some way from Comparable, 
+meaning it has to implement Comparable, or an interface that extends Comparable. 
+I'll do that now. 
+
+```java  
+class Student implements Comparable {
+    private final String name;
+
+    public Student(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Student other = (Student) o;
+        return name.compareTo(other.name);
+    }
+}
+```
+
+I'll add "**implements Comparable**" to Student which force me to override compareTo method. 
+I'll accept the default implementation, and ignore IntelliJ's warnings on 
+that class for the moment. 
+If I run the code now:
+
+```java  
+[Zach, Tim, Ann]
+```
+            
+I don't get an error, but you can see my students aren't sorted either, 
+at least not alphabetically by name, which would be the natural order 
+for this class at this point. 
+That's because my compareTo method on Student always returns 0, 
+so one Student is never less than or greater than another. 
+That's not a good implementation of this method. 
+I want to compare students by their names, so going back to the Student class, 
+I want to look at the compareTo method, it's got an argument with the type Object.
+
+If the argument is really going to be a Student, 
+we have to cast this argument to **Student** if we want to compare names.
+
+| Before    | After                                                                 |
+|-----------|-----------------------------------------------------------------------|
+| return 0; | Student other = (Student) 0; <br/> return name.compareTo(other.name); |
+
+In this code, I cast the method parameter o, to a Student type, 
+and assign it to a Student variable, called other. 
+This lets me compare other to the current instance, 
+so I'll compare the name fields on each, using String's **compareTo** method. 
+Now, If I run the code:
+
+```java  
+[Ann, Tim, Zach]
+```
+                
+My list gets sorted alphabetically by name, which is good. 
+Although you can write the compareTo method this way, you shouldn't. 
+When I showed you the declaration of the Comparable interface above, 
+you saw that it was a generic type, but here
+
+```java  
+return name.compareTo(other.name);
+```
+                
+I'm using the raw version. 
+It works, but now I want to discourage you from coding 
+your **compareTo** method this way.
+Going back to the main method, I'm going to try 
+to compare my _Tim_ Student to a String literal, Mary.
+
+```java  
+System.out.println("result = " + tim.compareTo("Mary"));
+```
+
+This code compiles, but if I run it:
+
+```java  
+Exception in thread "main" java.lang.ClassCastException:
+class java.lang.String cannot be cast to class "Student" (java.lang.String is in module java.base of loader 'bootstrap';
+        "Student" is in unnamed module of loader 'app')
+```
+            
+I get another ClassCastException, because my compareTo method on the Student class 
+is trying to cast a **String** to a **Student**, and that's not a good cast for a **String** argument. 
+When you implement Comparable on a class, you should specify a type parameter.
+So far, we used the raw version of Comparable.
+Let's change that. 
+Going to the Student class,
+
+```java  
+class Student implements Comparable<Student> {
+    @Override
+    public int compareTo(Student o) {
+        return 0;
+    }
+}
+```
+
+I'll include the type parameter, and set it to the current type, **Student**. 
+Because of this change, my code doesn't compile anymore. 
+I've got the error that the compareTo method isn't implemented. 
+But we have it implemented, below. 
+Well, not really. 
+We have a method called compareTo, yes, 
+but now its signature doesn't match the one we need to match,
+because it's not typed correctly. 
+I need to re-implement this method, and 
+I'll again use IntelliJ's feature, to automatically add that.
+
+```java  
+@Override
+public int compareTo(Object o) {
+    Student other = (Student) o;
+    return name.compareTo(other.name);
+}
+```
+
+Notice now the argument in this method has a type of Student, not an Object. 
+Now, I'll replace the "_return 0_" statement. 
+I'll make this return "_name.compareTo(o.name)_". 
+The only difference between these two methods is, I don't have to cast in this one 
+because the argument has the Student type already. 
+But now, I'm still encountering another error which may be new to you. 
+IntelliJ is telling us that _both methods have the same erasure, yet neither overrides the other_.
+
+But now, I'm still encountering another error which may be new to you. 
+IntelliJ is telling us that _both methods have the same erasure, yet neither overrides the other_. 
+This is a bit complicated, and I'll be talking about this in a later lecture. 
+In summary, though, this error means that Java at runtime
+can't figure out which method here should get called, the one with Object as an argument, 
+or the one with Student. 
+I'm going to comment out this entire method, the one that has Object as the argument, 
+which will solve the problem for now.
+
+And now, this class compiles, but in the main method, 
+I've got a compiler error on the last line.
+
+```java  
+//System.out.println("result = " + tim.compareTo("Mary"));
+```
+
+And this is actually a good thing that we get errors now, before we run the code, 
+because we don't really want to compare a String to a Student object. 
+I'll change that comparison to an instance of Student instead, 
+passing it my name, all in caps.
+
+```java  
+System.out.println("result = " + tim.compareTo(new Student("TIM")));
+```
+
+Running this code now:
+
+```java  
+----(same)
+        [Ann, Tim, Zach]
+result = 32
+```
+                
+You can see the array is sorted as before, so that's working. 
+And the last line which compares tim in lowercase, to TIM in all uppercases, 
+gives us a result equals 32. 
+And 32 is the difference between any uppercase letter and lowercase letter, as we saw earlier. 
+I've spent a little extra time on this one interface 
+to hopefully help you understand it as thoroughly as possible. 
+Sorting and comparing objects, meaning instances of your own classes 
+will be something that you'll be doing a lot. 
+You will use Comparable, when something has a natural order, 
+as we saw here with student names. 
+Natural order means that your object's **compareTo** method will return a zero 
+if one object is considered equal to another, or the equals method returns true, 
+when the compareTo method returns 0. 
+If you had a list of Students who could be uniquely identified by name, 
+then this could be true. 
+It's probably more likely that you'd have a Student ID and use Comparable **compareTo** method, 
+to sort by student id, for example.
+
+Next, I want to review Comparator, another interface for sorting and comparing, 
+and talk about the differences between those two interfaces.
 </div>
 
-
+### The Comparator Interface
 <div align="justify">
 
+The Comparator interface is similar to the Comparable interface, 
+and the two can often be confused with each other. 
+Its declaration and primary abstract method are shown here, 
+in comparison to Comparable. 
+You'll notice that the method names are different, **compare** vs. **compareTo**.
 
+| Comparator                                                                                          | Comparable                                                                               |
+|-----------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| public interface Comparator<T> {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int compare (T o1, T o2);<br/>} | public interface Comparable<T> {<br/>&nbsp;&nbsp;&nbsp;&nbsp; int compareTo(T o);<br/>}  |
+
+The compare method takes two arguments vs. one for compareTo, 
+meaning that it will compare the two arguments to one another, and not one object to the instance itself. 
+We'll review Comparator in code, but in a slightly manufactured way. 
+It's common practice to include a Comparator as a nested class, 
+which we'll talk more about in the next section of the course. 
+But I think it's valuable to talk about these interfaces together, 
+and when to choose or use one or the other, or both in your class.
+
+I want to get back to the Student class, and add a couple of fields.
+
+```java  
+class Student implements Comparable<Student> {
+
+    private String name;
+    private static int LAST_ID = 1000;
+    private static final Random random = new Random();
+    private final int id;
+    protected double gpa;
+
+    public Student(String name) {
+        this.name = name;
+        id = LAST_ID++;
+        gpa = random.nextDouble(1.0, 4.0);
+    }
+
+    @Override
+    public String toString() {
+        return "%d - %s (%.2f)".formatted(id, name, gpa);
+    }
+    
+    @Override
+    public int compareTo(Student o) {
+        return Integer.compare(id, o.id);
+    }
+```
+
+First, I'll add a couple of private static fields, 
+these fields will exist only in memory of the Student class. 
+I'm making them private because they're only needed inside the Student methods. 
+I'll add the instance fields, student id, and GPA, which stands for Grade Point Average, 
+which is how well the student is doing overall.
+Notice gpa is protected and not private. 
+I'll explain why in a minute. 
+Next, I'll change the constructor, and assign values to id and gpa, using my static fields.
+Because LAST_ID is a static, there's only one copy in memory. 
+And instance that increments it, increments that one copy, 
+meaning no two students should get the same id, 
+since we're keeping the last id in a central place.
+A grade point average can be any value from 0 to 4.0. 
+4.0 is **A**, 3.0 is **B**, 2.0 is **C**, and so on. 
+Next, I'll change the compareTo method, 
+so I'm comparing id's since this is the field that makes our student unique, 
+and we'll sort by student id, as the natural sort.
+Since my id field is a primitive int, I'll need to box those in wrappers 
+to compare the id's. 
+I'll do this manually.
+I'll compare the id field, using _Integer.valueOf_. 
+You may ask why I just didn't use an int calculation here, returning **id - o.id**, 
+but it's less error-prone to use Java's comparison of Integers,
+so I'll just leverage the _compareTo_ method on _Integer_. 
+And I want to print out all the fields I have in the toString method.
+
+I'll return formatted string for id, name and gpa. 
+This will print out the student id, student name, and their gpa, 
+with two decimal places. 
+Let's run the code:
+
+```java  
+....(same)
+[1001 - Zach (3,18), 1002 - Tim (2,83), 1003 - Ann (3,74)]
+result = -1
+```
+                
+The students are sorted by the assigned student id, as you can see, lowest id to highest. 
+And the result of comparing a new TIM student with the existing tim student instance, 
+is a mines one, and this is because the first tim's id is always less than the new Tim's id. 
+Ok, so we've got a comparable and sortable student. 
+But what if we want to sort by gpa, to figure out who our best students are? 
+We don't want to touch the compareTo method. 
+We could write our own mechanism, but we don't have to. 
+We just have to create a class that implements Comparator, comparing two Students. 
+I'll do this next. 
+I'll add this class above the Student class in this file.
+
+```java  
+class StudentGPAComparator implements Comparator<Student> {
+    
+    @Override
+    public int compare(Student o1, Student o2) {
+        return (o2.gpa + o2.name).compareTo(o1.gpa + o1.name);
+    }
+}
+```
+
+Ok, so I've got a class called StudentGPAComparator, 
+and that implements Comparator with a Student type parameter.
+And I've implemented the compare method. 
+To be technically correct, because I am overriding the compare method, 
+I'll add the override annotation above the method. 
+I want to compare gpa scores, but if there's a tie, meaning two students have the same GPA, 
+I'll sort alphabetically after that.
+
+```java  
+class StudentGPAComparator implements Comparator<Student> {
+    
+    @Override
+    public int compare(Student o1, Student o2) {
+        return (o2.gpa + o2.name).compareTo(o1.gpa + o1.name);
+    }
+}
+```
+
+Now notice, I have a compiler error, and that's because the name is private on Student. 
+For this example, I'll change it.
+In the next section, we're going to make this comparator class a nested type. 
+However, for now, it's outside the Student class, 
+and the only way it can access this field is 
+if we make the name field protected or package private.
+I'll make it package private, meaning I won't specify an access modifier at all. 
+You might want to make this protected, like I did for gpa. 
+I wanted to show you that either way will work, in your comparator class. 
+The protected modifier would allow subtypes of Student, outside this package, 
+to access the field as well. 
+But really, in this example, I won't have a subtype, so I'll use this variation. 
+That change means our custom Comparator class compiles, but how do I use it? 
+Well, it turns out the **Arrays.sort** method has an overloaded version 
+that takes a comparator as the second argument. 
+I'll create a variable of this type in the main method, then call sort on my students using it.
+
+```java  
+Comparator<Student> gpaSorter = new StudentGPAComparator();
+Arrays.sort(students, gpaSorter); 
+System.out.println(Arrays.toString(students));
+```
+
+Ok, so I've got a new instance of my Comparator, notice my reference type there, 
+Comparator with <Student>. 
+I could have used var for simplicity, but this is the explicit type. 
+And next, I call sort, passing it the gpaSorter. 
+Now, the sort method won't use the Comparable compareTo method. 
+It will instead use this Comparator's compare method when sorting, so that's pretty neat. 
+Running this:
+
+```java  
+....(same)
+[1002 - Tim (2,29), 1001 - Zach (3,47), 1003 - Ann (3,95)]
+```
+                
+You can see my students are sorted by gpa, lowest to highest. 
+But that's not what I want, I want to be sorted highest to lowest. 
+Now, I could change my Comparator's compare method. 
+Let me show you that.
+
+```java  
+class StudentGPAComparator implements Comparator<Student> {
+    
+    @Override
+    public int compare(Student o1, Student o2) {
+        return (o1.gpa + o1.name).compareTo(o2.gpa + o2.name);
+    }
+}
+```
+
+I'm going to swap o1 with o2 in that return statement. And running it this way:
+
+```java  
+....(same)
+[1002 - Tim (2,13), 1001 - Zach (1,95), 1003 - Ann (1,68)]
+```
+                
+You can see I get my students by the GPA in descending order, 
+but you don't really want to do this. 
+You want this method to return things in order of lowest to highest, 
+and we've reversed that. 
+Let me revert to the last change. 
+The Comparator interface, unlike Comparable, comes with many other methods, 
+most of them static helper methods, but some are default methods. 
+Many of these are useful streams, so we'll hold on discussing them until that section, 
+but one of them is very convenient for what I want to do here. 
+And that's the reversed default method. 
+I can call that on the gpaSorter as I pass it to the Arrays.sort method, 
+in the main method.
+
+```java  
+Arrays.sort(students, gpaSorter.reversed());
+System.out.println(Arrays.toString(students));
+```
+
+Running that:
+
+```java  
+[1003 - Ann (3,31), 1001 - Zach (2,92), 1002 - Tim (2,61)]
+```
+                
+I get my students in reverse gpa order. 
+Let me summarize the differences between these interfaces.
+
+| Comparator (int compare(T o1, T o2);)                                                                   | Comparable (int comapreTo(T o);)                                                     |
+|---------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
+| Compares two arguments of the same type with each other.                                                | Compares the argument with the current instance.                                     |
+| Called from an instance of Comparator.                                                                  | Called from the instance of the class that implements Comparable.                    |
+| Does not require the class itself to implement Comparator, though you could also implement it this way. | Best practice is to have this.compareTo(o) == 0 result in this.equals(0) being true. |
+| Array.sort(T[] elements, Comparator<T>) does not require T to implement Comparable.                     | Arrays.sort(T[] elements) requries T to implement Comparable.                        |
+
+We'll be revisiting Comparator in our nested types discussion, 
+and we'll have plenty of opportunity to use both when we explore more of Java's collection types.
 </div>
 
-
+## [f. Generic Reference Types]()
 <div align="justify">
 
+My **student** class needs a few fields. 
+I'm interested in a student's name, the course they're taking, 
+and the year they signed up for the course.
 
+```java  
+public class Student {
+
+    private final String name;
+    private final String course;
+    private final int yearStarted;
+    protected static Random random = new Random();
+    private static final String[] firstNames = {"Ann", "Bill", "Cathy", "John", "Korhan"};
+    private static final String[] courses = {"C++", "Java", "Python"};
+
+    public Student() {
+        int lastNameIndex = random.nextInt(65, 91);
+        name = firstNames[random.nextInt(5)] + " " + (char) lastNameIndex;
+        course = courses[random.nextInt(3)];
+        yearStarted = random.nextInt(2018, 2024);
+
+    }
+
+    @Override
+    public String toString() {
+        return "%-15s %-15s %d".formatted(name, course, yearStarted);
+    }
+
+    public int getYearStarted() {
+        return yearStarted;
+    }
+}
+```
+
+I'm going to spend a little extra time setting up this Student class,
+with a bit of extra functionality and complexity.
+I'll be using this over the next couple of lectures, 
+so bear with me for a couple of minutes while I set this up. 
+I want three more fields, which I'll use to create random data for a set of Students. 
+I'll set up a random field to get random numbers. 
+This is protected because I want subclasses to be able to access this helper field. 
+These fields will help me create a lot of students with different data. 
+I've made them static because I don't want each instance to have this data, 
+it can be stored with the class instance instead. 
+I'm doing this because I will eventually want a larger set of students. 
+Next, I'll create my constructor with no arguments, 
+because all the student data will get generated.
+
+I want to randomly generate a single character for the last name, 
+so 65 is the integer value for capital A. 
+90 is integer value for the capital Z, so I use 91 for the upper bound, 
+because the number generated will be exclusive of this upper bound. 
+I randomly pick an integer from 0 to 5, to get a first name from my _names_ array, 
+then append a space and the last name index to that. 
+I randomly get an integer from 0 to 2 to pick a course from the course list.
+And the year started, will be a random integer from 2018 to 2023, 
+again because its exclusive of the upper bound of 2024. 
+I want to create a 2-String method for this next.
+
+And I'll change that code just to return a single line. 
+The returned string is formatted and includes name, course, and year started. 
+I want name and course to be left justified, so -15 in both cases, 
+in the format specifiers, where negative is the indicator to left justify, 
+and 15 is the allotted width. 
+Finally, I'll generate a getter for one of the fields, yearStarted.
+
+Ok, this is enough code to give me many unique students, 
+so I'll go back to the main method in the main class,
+and set up a quick test.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+        
+    }
+
+    public static void printList(List students) {
+
+        for (var student : students) {
+            System.out.println(student);
+        }
+        System.out.println();
+    }
+}
+```
+
+First, I want a method, a static method that I'll call from the main method, 
+that'll print my list of Students out. 
+This method takes a List of Students. 
+Notice I'm not specific about the type of List, so I'm not putting ArrayList
+there in the method parameter, but just List. 
+Next, I want to generate 10 students, so in the main method, 
+I'll set up a for loop.
+
+```java  
+int studentCount = 10;
+List<Student> students = new ArrayList<>();
+for (int i = 0; i < studentCount; i++) {
+    students.add(new Student());
+}
+printList(students);
+```
+
+Here, I start with the number of students I want, so that's 10 for now, 
+and then I set up an ArrayList of Students.
+I assign that to the _students_ variable, which I've declared as a List, 
+with a type argument of Student in angle brackets.
+Then I loop from 0 to that count, and add a new Student each time to the list. 
+And lastly, I want to invoke the printList method. 
+I'll pass students to this method. 
+If I run this:
+
+```java  
+John H          Java            2022
+Ann M           C++             2020
+Cathy A         Java            2019
+Cathy A         Java            2020
+Ann R           C++             2022
+Ann A           Python          2020
+John I          Java            2018
+Cathy R         Java            2022
+Bill C          Python          2022
+Korhan R        Python          2020
+```
+                
+You can see 10 students, whose name, course year started, were randomly generated. 
+Ok, so that's the set up for a variety of students.
+I next want to create a subclass of Student, which I'll call LPAStudent, 
+also in the model package.
+
+```java  
+public class LPAStudent extends Student {
+    private final double percentComplete;
+    public LPAStudent() {
+
+        percentComplete = random.nextDouble(0, 100.001);
+    }
+}
+```
+
+And I'll have that extend Student. 
+I'll add an extra field, which isPercentComplete, which indicates how far along
+the student is in the course. 
+This will be a double. 
+And I'll type in my constructor, which again will be no args constructor. 
+This code will execute the super constructor implicitly, and that's going 
+to generate data for the other fields. 
+This class has one additional field, so I want to randomly generate data for it. 
+Here, I'm using the random field from the Student class, 
+and I get a random number from 0 to 100 percent. 
+Next, I'll generate an override for the toString method, 
+and I'll include this new field in a formatted string.
+
+```java  
+@Override
+public String toString() {
+    return "%s %8.1f%%".formatted(super.toString(), percentComplete);
+}
+
+public double getPercentComplete() {
+    return percentComplete;
+}
+```
+
+Notice; in this formatted String, I have 2 percent signs after the specified percent _8.1f_. 
+This is how you print out a percent sign in the output, so it's a specifier for a percent sign. 
+After creating getter for PercentComplete, go back to the main method,
+
+
+```java  
+List<LPAStudent> lpaStudents = new ArrayList<>();
+for (int i = 0; i < studentCount; i++) {
+    lpaStudents.add(new LPAStudent()); 
+}
+printList(lpaStudents);
+```
+
+I'll copy the code above and past it below, I'll change Student to LPAStudent. 
+But we have a problem, you can see that, on the last statement, 
+the call to the static method here. 
+Java tells us _required type is a List of Student, and we're providing an ArrayList of LPAStudent_. 
+Isn't this valid? 
+Well, no, it's not. 
+And this gets pretty confusing, I know.
+
+**NOTE**: This isn't inheritance
+
+We know LPAStudent inherits from Student, and we can pass an instance of LPA Student to any method, 
+or assign it to any reference type, declared with the type Student. 
+We also know that ArrayList implements List, and we can pass an ArrayList to a method or assign it 
+to a reference of the List type. 
+And we saw this in both cases for our Student ArrayList. 
+But why can't we pass an ArrayList of LPAStudent to the method parameter 
+that's declared as a List of **Student**?
+
+![image06]()
+
+Surely, if an LPAStudent is a Student, a List of LPAStudent is ultimately a List of Student. It's very natural to
+    assume that a method that takes a List with Students should accept a List with LPAStudents, because LPAStudent is a
+    Student after all. But that's not how it works. When used as reference types, a container of one type has no relationship
+    to the same container of another type, even if the contained types do have a relationship.
+
+        Let's explore this just a little further, because this concept is sure to trip you up. It's important to understand
+    that this restriction has to do with variable reference types and method parameters. First, I'll comment out "lpaStudents.add"
+    call for the moment. And I'll use "students.add" to add an LPAStudent to that list in the for loop. And that compiles
+    and runs:
+
+                        Ann B           Java            2020
+                        Korhan K        Python          2019
+                        John Q          C++             2018
+                        Bill L          C++             2018
+                        Bill G          Java            2021
+                        Cathy X         C++             2023
+                        Cathy E         Python          2018
+                        John P          Python          2023
+                        Ann N           Python          2023
+                        John L          C++             2021
+                        Ann K           C++             2019     50,4%
+                        John B          C++             2022     56,9%
+                        John V          C++             2018     60,4%
+                        Bill U          Java            2020     44,1%
+                        Cathy L         Java            2019     55,1%
+                        Ann M           Python          2021     98,7%
+                        Cathy N         Python          2021     90,6%
+                        Ann W           Python          2018     93,8%
+                        Ann Q           Java            2020     78,5%
+                        Ann S           Java            2018     64,6%
+
+    you can see my last students are printed out with percentage complete, indicating these students are LPAStudents. This
+    confirms we can add any type of Student to this List. But consider another next change. I'm going to put LPAStudent
+    in <>(diamond) operator, on the right side of the assignment of our students variable.
+
+                            Before                                                  After
+          List<Student> students = new ArrayList<>();              List<Student> students = new ArrayList<LPAStudent>();
+
+    And now, we've got a very similar error to the one we had with the printList method. Even if I change List to ArrayList
+    in the reference type,
+
+                            Before                                                  After
+      List<Student> students = new ArrayList<LPAStudent>();      ArrayList<Student> students = new ArrayList<LPAStudent>();
+
+    I have the same problem. The problem isn't that I'm assigning an ArrayList to a List reference. The problem is the
+    type argument in the references. When we specify Student as a type argument to a generic class or container, only
+    Student, and not one of its subtypes is valid for this container. And although we can add Students of any type to the
+    container, we can't pass a List typed as LPAStudent to a reference variable of List typed with Student. I'll revert
+    the last 2 changes, putting back our List of Student to the way it was.
+
+        Now, I'll show you different ways to handle this situation. I'll uncomment the statements below.
 </div>
 
 
