@@ -42,12 +42,6 @@ public class Main {
         }
         //printList(students);                                              >>> Commented via Part-12
 
-//Part-12
-/*
-
-*/
-//End-Part-12
-
         List<LPAStudent> lpaStudents = new ArrayList<>();                             //>>> Commented via Part-12
         for (int i = 0; i < studentCount; i++) {
             lpaStudents.add(new LPAStudent());                                        //>>> Commented via Part-12
@@ -55,35 +49,6 @@ public class Main {
         }
         printList(lpaStudents);
         //printList(students);
-
-//Part-13
-/*
-        You might remember in a previous lecture, with our generic class team, we simply use the raw version of List in
-    the method parameter. Let me show you right here,
-
-                            Before                                                  After
-       public static void printList(List<Student> students)       public static void printList(List students)
-
-    that lets our code compile, but IntelliJ is giving us a warning, by highlighting it, and you saw this before, it says,
-    "raw use of a parameterized type". But now I can run this code:
-
-                    Bill N          Python          2019     60,7%
-                    Korhan D        Java            2018     67,9%
-                    Cathy W         Python          2021     15,2%
-                    Bill Q          Java            2022     33,2%
-                    Ann W           Java            2022     98,2%
-                    Korhan C        C++             2020     32,2%
-                    Bill Y          Python          2022      9,0%
-                    Ann A           Python          2019     38,1%
-                    Ann G           C++             2018     79,9%
-                    Korhan Q        Python          2023     64,8%
-
-    and I get the second list of 10 LPAStudents, which have percentage complete next to the course. This may seem like a
-    good solution, because it worked, but we don't really want to this, which is why IntelliJ is warning us about it. So
-    what are the other alternatives? In the next lecture, we'll explore other better options.
-*/
-//End-Part-13
-
     }
 
     public static void printList(List students) {

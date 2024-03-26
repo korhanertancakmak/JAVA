@@ -100,9 +100,8 @@ What we will learn from this Path:
 ### [d. Generics Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#d-generics-challenge)
 ### [e. Comparable & Comparator (Interfaces for Sorting)]()
 ### [f. Generic Reference Types]()
-
-    * Wildcards, and type eresure
-    * Static method & multiple upper bonds
+### [g. Generic Methods and Wildcards]()
+### [h. Generics Challenge]()
 
 ## [9. Nested Classes and Types]()
 

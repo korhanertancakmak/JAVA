@@ -4,16 +4,6 @@ import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_08_Generics.Course10_
 
 import java.util.Random;
 
-//Part-12
-/*
-                        public class Student implements QueryItem
-                                            to
-                        public class Student implements QueryItem, Comparable<Student>
-
-    And now you see I have an error, so I want to implement the CompareTo method.
-*/
-//End-Part-12
-
 public class Student implements QueryItem, Comparable<Student> {
 
     private static int LAST_ID = 10_000;
@@ -21,15 +11,6 @@ public class Student implements QueryItem, Comparable<Student> {
     private final String name;
     private final String course;
     private final int yearStarted;
-
-//Part-5
-/*
-        I'll first create a private static field called LAST_ID, which will keep track of the last student id assigned.
-    I did something similar in a previous lecture. I'm just going to set that to ten thousand to start, just because I
-    don't want student IDs that start with 1. And I will create an instance field, called studentId. I want to populate
-    that in my constructor, that does all the other data population.
-*/
-//End-Part-5
 
     protected static Random random = new Random();
     private static final String[] firstNames = {"Ann", "Bill", "Cathy", "John", "Korhan"};
@@ -42,14 +23,6 @@ public class Student implements QueryItem, Comparable<Student> {
         course = courses[random.nextInt(3)];
         yearStarted = random.nextInt(2018, 2024);
     }
-
-//Part-6
-/*
-        I'll add studentId to the toString method, by adding a percent d specifier at the start, and including studentId
-    in the arguments list. Now, going to the main method in the main class, I'll first create a new instance of the
-    QueryList class.
-*/
-//End-Part-6
 
     @Override
     public String toString() {
@@ -72,14 +45,6 @@ public class Student implements QueryItem, Comparable<Student> {
             default -> false;
         };
     }
-
-//Part-13
-/*
-        And I'll change the method to compare the student IDs. As I did in an earlier example, I'll use the Integer wrappers
-    compareTo method, and pass it the student id of the argument, o. Use Integer value of passing student id, and chain
-    a call to compareTo, passing o.studentId. Going back to the main method, I'll change that null, back to Comparator.naturalOrder().
-*/
-//End-Part-13
 
     @Override
     public int compareTo(Student o) {
