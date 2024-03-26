@@ -2451,7 +2451,7 @@ This could be a black push pin for a point of interest,
 or a red solid line for a highway, for example.
 
 In addition to the three methods described, the interface should also include:
-* A constant String value called JSON_PROPERTY, which is equal to: _properties_:{%s}. 
+* A constant String value called JSON_PROPERTY, which is equal to: _properties_:{/\%s\}. 
 A hint here, using a text block will help maintain quotation marks in your output.
 * Include a default method called toJSON() that prints out the type, label, and marker. 
 I'll show examples shortly.
