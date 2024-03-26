@@ -2,7 +2,7 @@
 
 <div align="justify">
 
-![image05]()
+![image05](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/images/image05.png?raw=true)
 
 This diagram shows how I plan to build this.
 You can see my Mappable interface has the method render() on it,

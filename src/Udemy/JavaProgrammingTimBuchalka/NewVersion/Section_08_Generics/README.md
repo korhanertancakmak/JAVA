@@ -24,7 +24,7 @@ It's easier to talk about a generic class by looking at one in a bit of code.
 Below, I'm showing you a regular class declaration, 
 next to a generic class.
 
-![image01]()
+![image01](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/images/image01.png?raw=true)
 
 The thing to notice with the generic class 
 is that the class declaration has angle brackets with a _<T>_ in them, 
@@ -38,7 +38,7 @@ and this means it can be any type at all.
 The **T** in the angle brackets means it's the same type as the **T**, 
 specified as the type of the field.
 
-![image02]()
+![image02](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/images/image02.png?raw=true)
 
 Above, I have a variable declaration of the generic ArrayList.
 In the declaration of a reference type that uses generics, 
@@ -261,7 +261,7 @@ One solution is to duplicate the code.
 We could copy and paste the BaseballTeam, and rename everything for FootballTeam, 
 and create a FootballPlayer, as I'm showing below.
 
-![image03]
+![image03](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/images/image03.png?raw=true)
 
 This means you'd have to make sure any changes you made to one team or player 
 that made sense for the other team and player, had to be made in both sets of code. 
@@ -277,7 +277,7 @@ and use an interface type (or abstract or base class) called **Player**.
 Below, I show a Team Class, and on this class, 
 the members are a List of Players.
 
-![image04]
+![image04](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/images/image04.png?raw=true)
 
 I've made Player an interface, and have BaseballPlayer and FootballPlayer 
 implementing that interface. 
