@@ -94,12 +94,11 @@ What we will learn from this Path:
 
 ## [8. Generics]()
 
-### [a. Generics Part-I]()
-### [b. Generics Part-II]()
-### [c. Generics Part-III]()
-### [d. Generics Challenge]()
+### [a. Generics Part-I](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#a-generics-part-i)
+### [b. Generics Part-II](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#b-generics-part-ii)
+### [c. Generics Part-III](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#c-generics-part-iii)
+### [d. Generics Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#d-generics-challenge)
 
-    * Generics
     * Comparable vs Comparator
     * Wildcards, and type eresure
     * Static method & multiple upper bonds

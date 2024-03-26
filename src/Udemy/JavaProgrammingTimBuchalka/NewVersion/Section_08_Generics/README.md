@@ -1112,7 +1112,7 @@ For the most part, you're far more likely to be using classes,
 with type parameters, and venturing into the complexities I've just mentioned.
 </div>
 
-## [d. Generics Challenge]()
+## [d. Generics Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/Course04_Generics_Challenge/README.md)
 
 <div align="justify">
 
@@ -1270,6 +1270,7 @@ Render Grand Canyon National Park as POINT ([40.1021, -75.4231])
 Render Mississippi River as LINE ([[47.2160, -95.2348], [35.1556, -90.0659], [29.1556, -89.2495]])
 ```
 </div>
+
 
 
 
