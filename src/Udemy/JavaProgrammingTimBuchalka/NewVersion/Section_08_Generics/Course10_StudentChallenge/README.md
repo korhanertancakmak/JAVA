@@ -1,4 +1,4 @@
-# [h. Generics Challenge]()
+# Generics Challenge
 <div align="justify">
 
 The first thing we want to do is change the QueryList class 
