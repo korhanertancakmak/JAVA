@@ -21,7 +21,7 @@ public class Layer<T extends Mappable>{
 */
 //End-Part-13
 
-    private List<T> layerElements;
+    private final List<T> layerElements;
 
 //Part-14
 /*

@@ -50,7 +50,7 @@ public class QueryList <T extends Student & QueryItem> {
 */
 //End-Part-12
 
-    private List<T> items;
+    private final List<T> items;
 
     public QueryList(List<T> items) {
         this.items = items;

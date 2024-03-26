@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_12_Generics.Course05_RevisitingComparable;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_08_Generics.Course05_RevisitingComparable;
 
 
 //Part-1
@@ -200,7 +200,7 @@ public class Main {
 
 
 class Student implements Comparable {
-    private String name;
+    private final String name;
 
     public Student(String name) {
         this.name = name;

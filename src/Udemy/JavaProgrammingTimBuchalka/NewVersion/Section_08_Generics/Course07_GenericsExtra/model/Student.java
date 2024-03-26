@@ -10,9 +10,9 @@ public class Student {
 */
 //End-Part-2
 
-    private String name;
-    private String course;
-    private int yearStarted;
+    private final String name;
+    private final String course;
+    private final int yearStarted;
 
 //Part-3
 /*
@@ -28,8 +28,8 @@ public class Student {
 //End-Part-3
 
     protected static Random random = new Random();
-    private static String[] firstNames = {"Ann", "Bill", "Cathy", "John", "Korhan"};
-    private static String[] courses = {"C++", "Java", "Python"};
+    private static final String[] firstNames = {"Ann", "Bill", "Cathy", "John", "Korhan"};
+    private static final String[] courses = {"C++", "Java", "Python"};
 
 //Part-4
 /*

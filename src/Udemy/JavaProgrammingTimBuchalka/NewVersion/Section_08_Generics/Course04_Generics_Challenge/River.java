@@ -2,7 +2,7 @@ package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_08_Generics.Course04
 
 public class River extends Line{
 
-    private String name;
+    private final String name;
 
     public River(String name, String... locations) {
         super(locations);

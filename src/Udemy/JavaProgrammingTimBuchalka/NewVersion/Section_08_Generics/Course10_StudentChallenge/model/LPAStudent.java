@@ -2,7 +2,7 @@ package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_08_Generics.Course10
 
 public class LPAStudent extends Student {
 
-    private double percentComplete;
+    private final double percentComplete;
 
     public LPAStudent() {
 

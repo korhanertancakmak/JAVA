@@ -17,10 +17,10 @@ import java.util.Random;
 public class Student implements QueryItem, Comparable<Student> {
 
     private static int LAST_ID = 10_000;
-    private int studentId;
-    private String name;
-    private String course;
-    private int yearStarted;
+    private final int studentId;
+    private final String name;
+    private final String course;
+    private final int yearStarted;
 
 //Part-5
 /*
@@ -32,8 +32,8 @@ public class Student implements QueryItem, Comparable<Student> {
 //End-Part-5
 
     protected static Random random = new Random();
-    private static String[] firstNames = {"Ann", "Bill", "Cathy", "John", "Korhan"};
-    private static String[] courses = {"C++", "Java", "Python"};
+    private static final String[] firstNames = {"Ann", "Bill", "Cathy", "John", "Korhan"};
+    private static final String[] courses = {"C++", "Java", "Python"};
 
     public Student() {
         studentId = LAST_ID++;
@@ -84,6 +84,6 @@ public class Student implements QueryItem, Comparable<Student> {
     @Override
     public int compareTo(Student o) {
         //return 0;
-        return Integer.valueOf(studentId).compareTo(o.studentId);
+        return Integer.compare(studentId, o.studentId);
     }
 }

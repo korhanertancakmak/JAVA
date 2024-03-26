@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Team <T>{
 
-    private String teamName;
-    private List<T> teamMembers = new ArrayList<>();
+    private final String teamName;
+    private final List<T> teamMembers = new ArrayList<>();
     private int totalWins = 0;
     private int totalLosses = 0;
     private int totalTies = 0;

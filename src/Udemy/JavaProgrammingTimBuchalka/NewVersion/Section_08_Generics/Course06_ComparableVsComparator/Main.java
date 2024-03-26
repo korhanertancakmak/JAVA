@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_12_Generics.Course06_ComparableVsComparator;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_08_Generics.Course06_ComparableVsComparator;
 
 
 //Part-1
@@ -217,8 +217,8 @@ class Student implements Comparable<Student> {
 //End-Part-7
 
     private static int LAST_ID = 1000;
-    private static Random random = new Random();
-    private int id;
+    private static final Random random = new Random();
+    private final int id;
     protected double gpa;
 
 //Part-8
@@ -302,7 +302,7 @@ class Student implements Comparable<Student> {
     public int compareTo(Student o) {
         //return 0;                                                         >>> commented via part-3
         //return name.compareTo(o.name);                                    >>> commented via part-9
-        return Integer.valueOf(id).compareTo(Integer.valueOf(o.id));
+        return Integer.compare(id, o.id);
     }
 
 //Part-9

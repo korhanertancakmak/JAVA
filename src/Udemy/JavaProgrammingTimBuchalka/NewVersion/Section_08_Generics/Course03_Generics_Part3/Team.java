@@ -13,8 +13,8 @@ record Affiliation(String name, String type, String countryCode) {
 
 public class Team <T extends Player, S>{
 
-    private String teamName;
-    private List<T> teamMembers = new ArrayList<>();
+    private final String teamName;
+    private final List<T> teamMembers = new ArrayList<>();
     private int totalWins = 0;
     private int totalLosses = 0;
     private int totalTies = 0;

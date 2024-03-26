@@ -2,7 +2,7 @@ package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_08_Generics.Course04
 
 public class Park extends Point{
 
-    private String name;
+    private final String name;
 
     public Park(String name, String location) {
         super(location);

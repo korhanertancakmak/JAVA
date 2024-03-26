@@ -3,13 +3,13 @@ package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_08_Generics.Course08
 import java.util.Random;
 
 public class Student {
-    private String name;
-    private String course;
-    private int yearStarted;
+    private final String name;
+    private final String course;
+    private final int yearStarted;
 
     protected static Random random = new Random();
-    private static String[] firstNames = {"Ann", "Bill", "Cathy", "John", "Korhan"};
-    private static String[] courses = {"C++", "Java", "Python"};
+    private static final String[] firstNames = {"Ann", "Bill", "Cathy", "John", "Korhan"};
+    private static final String[] courses = {"C++", "Java", "Python"};
 
     public Student() {
         int lastNameIndex = random.nextInt(65, 91);
