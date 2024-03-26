@@ -94,6 +94,11 @@ What we will learn from this Path:
 
 ## [8. Generics]()
 
+### [a. Generics Part-I]()
+### [b. Generics Part-II]()
+### [c. Generics Part-III]()
+### [d. Generics Challenge]()
+
     * Generics
     * Comparable vs Comparator
     * Wildcards, and type eresure
