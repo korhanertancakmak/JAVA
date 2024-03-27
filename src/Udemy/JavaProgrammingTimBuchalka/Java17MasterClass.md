@@ -109,12 +109,9 @@ What we will learn from this Path:
 ### [b. Non-Static Nested (Inner) Class](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#b-non-static-nested-inner-class)
 ### [c. Recover Bill's Burger Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#c-recover-bills-burger-challenge)
 ### [d. Inner Class Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#d-inner-class-challenge)
-
-    * Static Nested Classes
-    * Inner Classes
-        * Challenge-49: Playlist
-    * Local Classes
-    * Anonymous Classes
+### [e. Local Class]()
+### [f. Anonymous Class]()
+### [g. Local and Anonymous Class Challenge]()
 
 ## [10. Lambda Expressions]()
 
