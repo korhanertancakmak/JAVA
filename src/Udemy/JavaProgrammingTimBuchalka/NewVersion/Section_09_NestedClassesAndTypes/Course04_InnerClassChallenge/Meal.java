@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Meal {
-    private double price = 5.0;
+    private final double price = 5.0;
     //private Item burger;
-    private Burger burger;
-    private Item drink;
-    private Item side;
-    private double conversionRate;
+    private final Burger burger;
+    private final Item drink;
+    private final Item side;
+    private final double conversionRate;
 
 //Part-3
 /*
@@ -92,9 +92,9 @@ public class Meal {
 
     private class Item {
 
-        private String name;
-        private String type;
-        private double price;
+        private final String name;
+        private final String type;
+        private final double price;
 
         public Item(String name, String type) {
             this(name, type, type.equals("burger") ? Meal.this.price: 0);
@@ -179,7 +179,7 @@ public class Meal {
 */
 //End-Part-7
 
-        private List<Item> toppings = new ArrayList<>();
+        private final List<Item> toppings = new ArrayList<>();
 
         Burger(String name) {
             super(name, "burger", 5.0);

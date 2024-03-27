@@ -32,12 +32,12 @@ public class Meal {
     }
 
     //private double base = 5.0;
-    private double price = 5.0;
-    private Item burger;
-    private Item drink;
-    private Item side;
+    private final double price = 5.0;
+    private final Item burger;
+    private final Item drink;
+    private final Item side;
 
-    private double conversionRate;
+    private final double conversionRate;
 
     public Meal() {
         this(1);

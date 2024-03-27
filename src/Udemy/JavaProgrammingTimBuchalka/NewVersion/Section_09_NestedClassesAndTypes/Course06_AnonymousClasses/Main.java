@@ -47,8 +47,8 @@ public class Main {
 
         class DecoratedEmployee extends StoreEmployee implements Comparable<DecoratedEmployee> {
 
-            private String pigLatinName;
-            private Employee originalInstance;
+            private final String pigLatinName;
+            private final Employee originalInstance;
 
             public DecoratedEmployee(String pigLatinName, Employee originalInstance) {
                 this.pigLatinName = pigLatinName + " " + lastName;

@@ -110,9 +110,9 @@ public class Main {
 
         class MyEmployee {
 
-            Employee containedEmployee;
-            int yearsWorked;
-            String fullName;
+            final Employee containedEmployee;
+            final int yearsWorked;
+            final String fullName;
 
 //Part-5
 /*
