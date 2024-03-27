@@ -103,12 +103,12 @@ What we will learn from this Path:
 ### [g. Generic Methods and Wildcards](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#g-generic-methods-and-wildcards)
 ### [h. Generics Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#h-generics-challenge)
 
-## [9. Nested Classes and Types]()
+## [9. Nested Classes and Types](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#section-9-nested-classes)
 
-### [a. Static Nested Class]()
-### [b. Non-Static Nested (Inner) Class]()
-### [c. Recover Bill's Burger Challenge]()
-### [d. Inner Class Challenge]()
+### [a. Static Nested Class](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#a-static-nested-class)
+### [b. Non-Static Nested (Inner) Class](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#b-non-static-nested-inner-class)
+### [c. Recover Bill's Burger Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#c-recover-bills-burger-challenge)
+### [d. Inner Class Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#d-inner-class-challenge)
 
     * Static Nested Classes
     * Inner Classes

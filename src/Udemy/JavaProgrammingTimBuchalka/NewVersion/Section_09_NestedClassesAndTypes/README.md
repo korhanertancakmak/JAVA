@@ -972,7 +972,8 @@ giving your inner classes a lot more functionality.
 ## [d. Inner Class Challenge]()
 <div align="justify">
 
-I want you to start with the Bill's Burger code from [c](), 
+I want you to start with the Bill's Burger code from 
+[c](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#c-recover-bills-burger-challenge), 
 where we left off, and make the following enhancements to it:
 
 * Create another inner class, called Burger. 
@@ -984,13 +985,9 @@ which it should then delegate to its burger class.
 for a variable number of Strings to be entered, representing the toppings selected.
 * Allow toppings to be priced differently, some are free, some have an additional cost.
 * Print the toppings out along with the burger information.
-
 </div>
 
 
-<div align="justify">
-
-</div>
 
 
 <div align="justify">
