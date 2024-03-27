@@ -105,6 +105,11 @@ What we will learn from this Path:
 
 ## [9. Nested Classes and Types]()
 
+### [a. Static Nested Class]()
+### [b. Non-Static Nested (Inner) Class]()
+### [c. Recover Bill's Burger Challenge]()
+### [d. Inner Class Challenge]()
+
     * Static Nested Classes
     * Inner Classes
         * Challenge-49: Playlist
