@@ -109,9 +109,9 @@ What we will learn from this Path:
 ### [b. Non-Static Nested (Inner) Class](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#b-non-static-nested-inner-class)
 ### [c. Recover Bill's Burger Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#c-recover-bills-burger-challenge)
 ### [d. Inner Class Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#d-inner-class-challenge)
-### [e. Local Class]()
-### [f. Anonymous Class]()
-### [g. Local and Anonymous Class Challenge]()
+### [e. Local Class](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#e-local-class)
+### [f. Anonymous Class](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#f-anonymous-class)
+### [g. Local and Anonymous Class Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#g-local-and-anonymous-class-challenge)
 
 ## [10. Lambda Expressions]()
 
