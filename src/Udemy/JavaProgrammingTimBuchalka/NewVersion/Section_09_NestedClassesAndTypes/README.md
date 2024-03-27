@@ -969,7 +969,7 @@ a static enum or a static record, for example,
 giving your inner classes a lot more functionality. 
 </div>
 
-## [d. Inner Class Challenge]()
+## [d. Inner Class Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/Course04_InnerClassChallenge/README.md#inner-class-challenge)
 <div align="justify">
 
 I want you to start with the Bill's Burger code from 
@@ -987,11 +987,874 @@ for a variable number of Strings to be entered, representing the toppings select
 * Print the toppings out along with the burger information.
 </div>
 
-
-
-
+## [e. Local Class]()
 <div align="justify">
 
+Local classes are inner classes, but declared directly in a code block, 
+usually a method body. 
+Because of that, _they don't have access modifiers_, 
+and are only accessible to that method body while it's executing. 
+Like an inner class, they have access to all fields and methods on the enclosing class. 
+They can also access local variables and method arguments 
+that are final or effectively final.
+
+Let's review this code. 
+Let's have a little fun with this new type of nested class. 
+When I was a kid, we spoke in a code called pig Latin, 
+so I want to create a method that creates a special class of StoreEmployee. 
+
+```java  
+public class StoreEmployee extends Employee {
+
+    private String store;
+    public StoreEmployee() {
+    }
+
+    public StoreEmployee(int employeeId, String name, int yearStarted, String store) {
+        super(employeeId, name, yearStarted);
+        this.store = store;
+    }
+
+    @Override
+    public String toString() {
+        return "%-8s%s".formatted(store, super.toString());
+    }
+
+    public class StoreComparator<T extends StoreEmployee> implements Comparator<StoreEmployee>{
+
+        @Override
+        public int compare(StoreEmployee o1, StoreEmployee o2) {
+            int result = o1.store.compareTo(o2.store);
+            if (result == 0) {
+                return new EmployeeComparator<>("yearStarted").compare(o1, o2);
+            }
+            return result;
+        }
+    }
+}
+```
+
+This Employee will include a special pig latin name, and we'll then sort on that. 
+For those who don't know, pig Latin strips off the first letter, 
+and tacks it onto the end of the name or word, and adds the letters aye and y. 
+So my name, Tim, would become im-Tay, and Jane would become ane-Jay, for example. 
+Although this is a contrived example, I want you to imagine that 
+there might be times when you have access to data, 
+but want to create a computed attribute of your own, 
+or perform a specialized operation of your own. 
+This is one way to do it. 
+Later, when we get to streams, we'll learn more elegant and easier ways. 
+But let's see what this looks like. 
+I'll create a new static method on the **Main** class, 
+called add _PigLatinName_, that will accept a List.
+
+```java  
+public static void addPigLatinName(List<? extends StoreEmployee> list) {
+
+    class DecoratedEmployee extends StoreEmployee {
+        private final String pigLatinName;
+        private final Employee originalInstance;
+
+        public DecoratedEmployee(String pigLatinName, Employee originalInstance) {
+            //this.pigLatinName = pigLatinName;
+            this.pigLatinName = pigLatinName + " " + lastName;
+            this.originalInstance = originalInstance;
+        }
+
+        @Override
+        public String toString() {
+            //return super.toString();
+            return originalInstance.toString() + " " + pigLatinName;
+        }
+    }
+}
+```
+
+Hopefully, you'll remember, this is a generics wild card that 
+specifies an upper bound for this method parameter's type argument. 
+This means this method will only accept a List containing StoreEmployees,
+or any subtype of StoreEmployee.
+Next, I'm going to declare the local class, right here inside the method block. 
+I'll name this local class decoratedEmployee.
+Notice, there are no modifiers. 
+In fact, if I tried to use any here, I'd get a compiler error. 
+When I try to make it **public class**, I'd get an error which says 
+_modifier **public** not allowed here_. 
+But like any class, as I'm showing here, it can extend. 
+I can add attributes, which I'll do now. 
+I'm making these **private**. 
+However, the enclosing code in this method can still access this class's private fields, 
+even after this class declaration's closing bracket.
+First, I have the field that will hold the pigLatinName, 
+and another field that gets assigned the original StoreEmployee instance. 
+Now, I want to include a constructor. 
+I'll generate that, and for this constructor, 
+I only want these two additional fields, not the StoreEmployee fields.
+
+Ok, so next, I want to include the toString using the override features in IntelliJ. 
+I'll replace that super, and I really want to return the StoreEmployee's string 
+representation by calling its toString method, and appending this additional field, 
+_pigLatinName_. 
+You can see I've created an entire class, all within my method body. 
+Why would you want a class in a method? 
+Well, it's possible, even probable that you really want the ability 
+to create a class for just a single purpose. 
+In this case, the only purpose of this class is to add a derived field, 
+the pigLatinName, to an existing set of instances of StoreEmployees. 
+I don't want to reinvent the wheel or add this class to my library of classes. 
+I don't want anyone else to use it or extend it. 
+I only want it to exist for this one specific purpose.
+Now, I want to create a list of these DecoratedEmployee types, 
+and print them out. 
+I'm going to do this in this same method, 
+directly after the class declaration I just added.
+
+```java  
+List<DecoratedEmployee> newList = new ArrayList<>(list.size());
+
+for (var employee : list) {
+    String name = employee.getName();
+    String pigLatin = name.substring(1) + name.charAt(0) + "ay";
+    newList.add(new DecoratedEmployee(pigLatin, employee));
+}
+```
+
+First, I'll create a new list of DecoratedEmployees, 
+and I'll pass the size of the list as the initial capacity.
+Then I'll loop through the list passed to this method, 
+which is my list of store employees, and I'll set up
+instances of the new type of employee, adding them to my new list. 
+This code sets up a list of my local class, the DecoratedEmployee, 
+which you can think of as a wrapper class to the StoreEmployee 
+with one additional field. 
+This code shows how the pig latin name is derived. 
+The first character is removed, with the subString method, 
+and starting with 1 as the index. 
+And that first character is then retrieved with charAt, 
+and 0 as the index, and appended. 
+Finally, I end with A and Y, tacked on to that. 
+I'll print out each of my decorated employees with an enhanced for loop. 
+Ok, so that's the entire method. 
+I want to execute this from the main method.
+
+```java  
+public class Main {
+    public static void main(String[] args) {
+
+        List<Employee> employees = new ArrayList<>(List.of(
+                new Employee(10001, "Ralph", 2015),
+                new Employee(10005, "Carole", 2021),
+                new Employee(10022, "Jane", 2013),
+                new Employee(13151, "Laura", 2020),
+                new Employee(10050, "Jim", 2018)));
+
+        employees.sort(new Employee.EmployeeComparator<>("yearStarted").reversed());
+
+        for (Employee e : employees) {
+            System.out.println(e);
+        }
+
+        System.out.println("Store Members");
+        List<StoreEmployee> storeEmployees = new ArrayList<>(List.of(
+                new StoreEmployee(10015, "Meg", 2019, "Target"),
+                new StoreEmployee(10515, "Joe", 2021, "Walmart"),
+                new StoreEmployee(10105, "Tom", 2020, "Macys"),
+                new StoreEmployee(10215, "Marty", 2018, "Walmart"),
+                new StoreEmployee(10322, "Bud", 2016, "Target")));
+
+        var genericEmployee = new StoreEmployee();
+        var comparator = genericEmployee.new StoreComparator<>();
+        storeEmployees.sort(comparator);
+
+        for (StoreEmployee e : storeEmployees) {
+            System.out.println(e);
+        }
+
+        System.out.println("With Pig Latin Names");
+        addPigLatinName(storeEmployees);
+    }
+}
+```
+
+First, I'll print out a title, then I'll call the method. If I run that:
+
+```java  
+ ...(same)
+With Pig LAtin Names
+Macys   10105 Tom      2020 omTay
+Target  10322 Bud      2016 udBay
+Target  10015 Meg      2019 egMay
+Walmart 10215 Marty    2018 artyMay
+Walmart 10515 Joe      2021 oeJay
+```
+                   
+You can see my calculated Pig Latin name, printed out for each employee. 
+But let's sort by this name now. 
+How would I go about doing that? 
+You might say **Comparator**, since we've spent so much time with that interface. 
+But this time, I'm going to have this local class **implement Comparable**. 
+These local classes can implement interfaces, just like any other class. 
+I'll go back to this class, and add, **implements Comparable**, 
+and make the type argument equals to this new class **DecoratedEmployee**.
+
+```java  
+class DecoratedEmployee extends StoreEmployee implements Comparable<DecoratedEmployee> {
+    private final String pigLatinName;
+    private final Employee originalInstance;
+
+    public DecoratedEmployee(String pigLatinName, Employee originalInstance) {
+        //this.pigLatinName = pigLatinName;
+        this.pigLatinName = pigLatinName + " " + lastName;
+        this.originalInstance = originalInstance;
+    }
+
+    @Override
+    public String toString() {
+        //return super.toString();
+        return originalInstance.toString() + " " + pigLatinName;
+    }
+    @Override
+    public int compareTo(DecoratedEmployee o) {
+        //return 0;
+        return pigLatinName.compareTo(o.pigLatinName);
+    }
+}
+```
+
+So my compareTo method will compare these specific types. 
+This means I can use the Pig Latin name directly in this method without casting.
+Here, I want to compare the pig latin names on the current 
+instance with the one passed to it.
+
+```java  
+public static void addPigLatinName(List<? extends StoreEmployee> list) {
+
+    String lastName = "Piggy";
+    
+    class DecoratedEmployee extends StoreEmployee implements Comparable<DecoratedEmployee> {
+        private final String pigLatinName;
+        private final Employee originalInstance;
+
+        public DecoratedEmployee(String pigLatinName, Employee originalInstance) {
+            //this.pigLatinName = pigLatinName;
+            this.pigLatinName = pigLatinName + " " + lastName;
+            this.originalInstance = originalInstance;
+        }
+
+        @Override
+        public String toString() {
+            //return super.toString();
+            return originalInstance.toString() + " " + pigLatinName;
+        }
+
+        @Override
+        public int compareTo(DecoratedEmployee o) {
+            //return 0;
+            return pigLatinName.compareTo(o.pigLatinName);
+        }
+    }
+
+    List<DecoratedEmployee> newList = new ArrayList<>(list.size());
+
+    for (var employee : list) {
+        String name = employee.getName();
+        String pigLatin = name.substring(1) + name.charAt(0) + "ay";
+        newList.add(new DecoratedEmployee(pigLatin, employee));
+    }
+
+    newList.sort(null);
+
+    for (var dEmployee : newList) {
+        //System.out.println(dEmployee);
+        System.out.println(dEmployee.originalInstance.getName() + " " + dEmployee.pigLatinName);
+    }
+}
+```
+
+Finally, I want to make a call to sort my list of DecoratedEmployee 
+before I print them out. 
+Remember, if I pass null to the sort method on a list, 
+it will use the Comparable _compareTo_ method. 
+This is the same as if I had passed the result of the _Comparator.naturalOrder_ 
+method to sort. 
+Running that:
+
+```java  
+With Pig LAtin Names
+Walmart 10215 Marty    2018 artyMay
+Target  10015 Meg      2019 egMay
+Walmart 10515 Joe      2021 oeJay
+Macys   10105 Tom      2020 omTay
+Target  10322 Bud      2016 udBay
+```
+                    
+You can see that StoreEmployee have been sorted by the pig latin names, 
+in alphabetical order, so Marty, whose pig latin name is artyMay is first. 
+This local class decorated an existing class, meaning it added extra 
+functionality to the class, like this new derived field, 
+and also provided a way to sort by this new field. 
+This class both extended a class and implemented an interface. 
+It overrode the toString method and implemented the abstract method compareTo. 
+Ok, now, let me show you a couple of other things about local classes.
+
+```java  
+public DecoratedEmployee(String pigLatinName, Employee originalInstance) {
+    //this.pigLatinName = pigLatinName;
+    this.pigLatinName = pigLatinName + " " + lastName;
+    this.originalInstance = originalInstance;
+}
+```
+
+I'm first going to set up a local variable in my method, 
+and call that last name. 
+In the local class, I'm going to use this local variable in the class constructor code. 
+I'll add it to the end of the generated pig latin name.
+
+This is pretty neat that I can use local variables in the method, 
+or even method arguments to influence whatever I want to happen in this local class. 
+If I run this code now:
+
+```java  
+With Pig LAtin Names
+Walmart 10215 Marty    2018 artyMay Piggy
+Target  10015 Meg      2019 egMay Piggy
+Walmart 10515 Joe      2021 oeJay Piggy
+Macys   10105 Tom      2020 omTay Piggy
+Target  10322 Bud      2016 udBay Piggy
+```
+
+You can see Piggy as the last name for these pig latin names. 
+Let me go down to the last for loop,
+
+```java  
+for (var dEmployee : newList) {
+    //System.out.println(dEmployee);
+    System.out.println(dEmployee.originalInstance.getName() + " " + dEmployee.pigLatinName);
+}
+```
+
+And this time, I'm just going to print the original name and the pig latin name.
+You might be asking why this is interesting? 
+Because here, in both cases, I'm accessing private attributes on the local class, 
+the pigLatinName field, and the original Instance field. 
+I'm accessing these outside of the class declaration. 
+A method that has a local class can access any of that class's fields, 
+private or not, on any instances used in the method. 
+You may also be wondering why I'm using getName, on the original Instance, 
+and not on my Decorated Employee instance. 
+Well, I never actually set name on the decorated employee instances themselves,
+or any of the other store employee fields that were inherited. 
+Most of those fields were private with no getters or setters, so my class, 
+even though it was a subtype, had no access to these fields. 
+Finally, the last thing you need to understand is final and effective final variables. 
+This is because local variables can only be used in a local class 
+if they are final or effectively final. 
+So what does this mean?
+</div>
+
+### "Captured Variables" of the Local Classes
+<div align="justify">
+
+When you create an instance of a local class, 
+referenced variables used in the class, 
+from the enclosing code, are **captured**. 
+This means a copy is made of them, and the copy is stored with the instance. 
+This is done because the instance is stored in a different memory area, 
+then the local variables in the method. 
+For this reason, if a local class uses local variables, or method arguments, 
+from the enclosing code, these must be final or effectively final.
+</div>
+
+### Final Variables and Effectively Final
+<div align="justify">
+
+The code sample on below shows:
+
+```java  
+class ShowFinal {
+    private void doThis(final int methodArgument) {
+        final int Field30 = 30;
+    }
+}
+```
+
+* A method parameter, called methodArgument in the doThis method, declared as final.
+* And a local variable, in the method block, Field30, also declared with the key word final.
+
+In both these cases, this means you can't assign a different value
+once these are initialized. 
+These are **explicitly final**, and any of these could be used in a local class, because of this.
+</div>
+
+### Effectively Final
+<div align="justify">
+
+In addition to explicitly final variables, 
+you can also use **effectively final**variables in your local class.
+A local variable or a method argument is effectively final 
+if a value is assigned to them, and then never changed after that. 
+_Effectively final_ variables can be used in a local class.
+
+In my code, I can use the last name in my local class's constructor, 
+because I assigned it a value and never changed it. 
+But what if I assign it a different value, let's say at the end of the method? 
+Then, I'll get a compiler error where I use the local variable in the constructor of my local class. 
+If I hover over that error, IntelliJ tells me that 
+_lastName needs to be final or effectively final_. 
+Because I made changes to the value of that variable in the method, 
+even after the class declaration, this means the variable isn't effectively final, 
+and for that reason I can't use it in my class. 
+I'll revert that last change, so the code compiles.
+
+You may have noticed that IntelliJ has been giving us some warnings, or indication, 
+for some of our fields and variables that they might be final. 
+We'll be talking more about when to use final and when not to, 
+when we review the final modifier in an upcoming section. 
+For local classes, it's just important to recognize when a variable is not final 
+or effectively final, because you can't use it in the local class directly, 
+as I've demonstrated here.
+</div>
+
+### Additional Local Types
+<div align="justify">
+
+As of JDK 16, you can also create a local record, 
+interface and enum type, in your method block. 
+These are all implicitly static types, and therefore aren't inner classes, 
+or types, but static nested types. 
+The record was introduced in JDK16. 
+Prior to that release, there was no support for a local interface 
+or enum in a method block either. 
+You may see older tutorials saying you can't do this, 
+but know that this functionality is now available. 
+I'll be demonstrating an example of this later.
+</div>
+
+## [f. Anonymous Class]()
+<div align="justify">
+
+An anonymous class is a local class that doesn't have a name. 
+All the nested classes we've looked at so far have been created with a class declaration. 
+The anonymous class is never created with a class declaration, 
+but it's always instantiated as part of an expression. 
+Anonymous classes are used a lot less 
+since the introduction of Lambda Expressions in JDK 8.
+
+I had a student ask, why do we care about anonymous classes, 
+when we now have lambda expressions? 
+Aren't anonymous classes just legacy code? 
+It's true that since JDK 8, when lambda expressions were released, 
+they did start to replace anonymous class usage. 
+But there are still some use cases where an anonymous class might be a good solution. 
+And it's likely you'll be running across anonymous classes in older code. 
+I also think understanding anonymous classes leads 
+to a better understanding of lambda expressions.
+Because of these reasons, I do want to cover the anonymous class, 
+in the context of the other nested classes.
+
+I'm going to create a new class and call it RunMethods, 
+and I'll add a main method. 
+I'm going to use generic method in the main method:
+
+```java  
+public class RunMethods {
+
+    public static void main(String[] args) {
+        
+    }
+
+    public static <T> void sortIt(List<T> list, Comparator<? super T> comparator) {
+
+        System.out.println("Sorting with Comparator: " + comparator.toString());
+        list.sort(comparator);
+        for (var employee : list) {
+            System.out.println(employee);
+        }
+    }
+}
+```
+
+So this method called sortIt is generic and its type parameter, 
+I've named _T_, it takes two arguments. 
+The first has to be listed of type _T_. 
+The second argument is a Comparator, so I am doing here with this wildcard _?_. 
+This Comparator instead of specifying 
+that it's to be a Comparator with the same type as the list, 
+I'm using super here. 
+Remember that's a lower bounded wildcard and what it means is 
+that I can use a Comparator that's either the same type _T_, 
+or a super type of _T_. 
+This means if I'm sorting store employees, 
+I can still use an Employee Comparator as one of the arguments, 
+because Employee is a super type of Store Employee. 
+Hopefully that makes sense.
+And then, I'll sort the list, and print each employee. 
+In our examples so far in this project, we created three comparators. 
+One was a stand-alone or top level class, one was a static nested class on Employee, 
+and one was an inner class on StoreEmployee. 
+I want to use each of these now, first setting up local variables 
+for each of these comparators. 
+I'll start with the top-level class.
+
+```java  
+public class RunMethods {
+
+    public static void main(String[] args) {
+        
+        List<StoreEmployee> storeEmployees = new ArrayList<>(List.of(
+                new StoreEmployee(10015, "Meg", 2019, "Target"),
+                new StoreEmployee(10515, "Joe", 2021, "Walmart"),
+                new StoreEmployee(10105, "Tom", 2020, "Macys"),
+                new StoreEmployee(10215, "Marty", 2018, "Walmart"),
+                new StoreEmployee(10322, "Bud", 2016, "Target")));
+
+        var c0 = new EmployeeComparator<StoreEmployee>();
+        var c1 = new Employee.EmployeeComparator<StoreEmployee>();
+        var c2 = new StoreEmployee().new StoreComparator<StoreEmployee>();
+
+        sortIt(storeEmployees, c0);
+        sortIt(storeEmployees, c1);
+        sortIt(storeEmployees, c2);
+    }
+
+    public static <T> void sortIt(List<T> list, Comparator<? super T> comparator) {
+
+        System.out.println("Sorting with Comparator: " + comparator.toString());
+        list.sort(comparator);
+        for (var employee : list) {
+            System.out.println(employee);
+        }
+    }
+}
+```
+
+I had two options for Employee Comparator and note I selected the top level class. 
+So c0 is an instance of the top level **EmployeeComparator** class, 
+typed with the **StoreEmployee** class. 
+I'll add the other two comparators now. 
+The second variable, c1, uses the static nested class on the Employee class. 
+The third variable, c2, is using the inner class on StoreEmployee. 
+Remember that this syntax, **.new**, creates an instance of StoreEmployee first, 
+then uses that to create an instance of the inner class. 
+Now I'll invoke the sortIt method with the storeEmployees list, 
+and each of these comparators.
+
+First c0 variable, I'll copy that statement, 
+and paste it twice, right below it. 
+And then changing c0 to c1 and for the third one c0 to c2.
+As you can see from this code, 
+any of these comparators works with a **StoreEmployee** 
+when I pass it to the sortIt method. 
+If I run it:
+
+```java  
+Sorting with Comparator: domain.EmployeeComparator@b4c966a
+Target  10322 Bud      2016
+Walmart 10515 Joe      2021
+Walmart 10215 Marty    2018
+Target  10015 Meg      2019
+Macys   10105 Tom      2020
+Sorting with Comparator: domain.Employee$EmployeeComparator@37a71e93
+Target  10322 Bud      2016
+Walmart 10515 Joe      2021
+Walmart 10215 Marty    2018
+Target  10015 Meg      2019
+Macys   10105 Tom      2020
+Sorting with Comparator: domain.StoreEmployee$StoreComparator@7e6cbb7a
+Macys   10105 Tom      2020
+Target  10322 Bud      2016
+Target  10015 Meg      2019
+Walmart 10215 Marty    2018
+Walmart 10515 Joe      2021
+```
+
+The results are the same for the first two comparators, sorting by _name_. 
+The last is sorted by store, then _yearStarted_, 
+which is how we created that comparator. 
+In each case, you can see the string representation of each comparator, 
+which is the default _toString_ method for any object. 
+The first is an instance of the **EmployeeComparator** class. 
+The second is an instance of the nested class, **EmployeeComparator**, 
+on the Employee class. 
+The _$_ in the output you see here, indicates that the class following, 
+is for a nested class. 
+And you can see that also, for the **StoreComparator**, an inner class, 
+on Store Employee. 
+Ok, so next, I'll quickly create a local class in the main method 
+that acts as a comparator. 
+I'll insert this after my three local variables. 
+I'll put a comment here this is a local class.
+
+```java  
+public class RunMethods {
+
+    public static void main(String[] args) {
+        
+        List<StoreEmployee> storeEmployees = new ArrayList<>(List.of(
+                new StoreEmployee(10015, "Meg", 2019, "Target"),
+                new StoreEmployee(10515, "Joe", 2021, "Walmart"),
+                new StoreEmployee(10105, "Tom", 2020, "Macys"),
+                new StoreEmployee(10215, "Marty", 2018, "Walmart"),
+                new StoreEmployee(10322, "Bud", 2016, "Target")));
+
+        var c0 = new EmployeeComparator<StoreEmployee>();
+        var c1 = new Employee.EmployeeComparator<StoreEmployee>();
+        var c2 = new StoreEmployee().new StoreComparator<StoreEmployee>();
+
+        // This is a local class
+        class NameSort<T> implements Comparator<StoreEmployee> {
+
+            @Override
+            public int compare(StoreEmployee o1, StoreEmployee o2) {
+                //return 0;
+                return o1.getName().compareTo(o2.getName());
+            }
+        }
+
+        var c3 = new NameSort<StoreEmployee>();
+
+        sortIt(storeEmployees, c0);
+        sortIt(storeEmployees, c1);
+        sortIt(storeEmployees, c2);
+    }
+
+    public static <T> void sortIt(List<T> list, Comparator<? super T> comparator) {
+
+        System.out.println("Sorting with Comparator: " + comparator.toString());
+        list.sort(comparator);
+        for (var employee : list) {
+            System.out.println(employee);
+        }
+    }
+}
+```
+
+And I want to implement the compareTo method in this local class, 
+using IntelliJ's tools to do that for me. 
+And I'll replace **return 0;**, with my own comparison, using names again.
+And now, I want another variable, c3, that is an instance of this local class. 
+And I'll invoke another call to the sort it method with this new local comparator.
+And running that;
+
+```java  
+----(same)
+Sorting with Comparator: RunMethods$1NameSort@7c3df479
+Target  10322 Bud      2016
+Walmart 10515 Joe      2021
+Walmart 10215 Marty    2018
+Target  10015 Meg      2019
+Macys   10105 Tom      2020
+```
+                            
+Notice the string representation of this last comparator.
+You can see that it includes the current class name, **RunMethods**, 
+then a _$_ sign with a number, and then my local class's name, **NameSort**. 
+You can see that, though it's a local class in a method block, 
+it's still a named class. 
+Now, how is an anonymous class different? 
+I'll create one, then we'll examine it. 
+I'll add a comment that this is an anonymous class.
+
+```java  
+public class RunMethods {
+
+    public static void main(String[] args) {
+        
+        List<StoreEmployee> storeEmployees = new ArrayList<>(List.of(
+                new StoreEmployee(10015, "Meg", 2019, "Target"),
+                new StoreEmployee(10515, "Joe", 2021, "Walmart"),
+                new StoreEmployee(10105, "Tom", 2020, "Macys"),
+                new StoreEmployee(10215, "Marty", 2018, "Walmart"),
+                new StoreEmployee(10322, "Bud", 2016, "Target")));
+
+        var c0 = new EmployeeComparator<StoreEmployee>();
+        var c1 = new Employee.EmployeeComparator<StoreEmployee>();
+        var c2 = new StoreEmployee().new StoreComparator<StoreEmployee>();
+
+        sortIt(storeEmployees, c0);
+        sortIt(storeEmployees, c1);
+        sortIt(storeEmployees, c2);
+        
+        // This is a local class
+        class NameSort<T> implements Comparator<StoreEmployee> {
+            @Override
+            public int compare(StoreEmployee o1, StoreEmployee o2) {
+                //return 0;
+                return o1.getName().compareTo(o2.getName());
+            }
+        }
+        var c3 = new NameSort<StoreEmployee>();
+        sortIt(storeEmployees, c3);
+
+        // This is anonymous class
+        var c4 = new Comparator<StoreEmployee>() {
+            @Override
+            public int compare(StoreEmployee o1, StoreEmployee o2) {
+                //return 0;
+                return o1.getName().compareTo(o2.getName());
+            }
+        };
+        sortIt(storeEmployees, c4);
+    }
+
+    public static <T> void sortIt(List<T> list, Comparator<? super T> comparator) {
+
+        System.out.println("Sorting with Comparator: " + comparator.toString());
+        list.sort(comparator);
+        for (var employee : list) {
+            System.out.println(employee);
+        }
+    }
+}
+```
+
+The first thing I want you to notice is that I'm getting an error in the statement of c4. 
+I'll deal with that shortly. 
+The second thing is that I'm creating the variable c4, 
+and immediately assigning it an instance, using the new keyword. 
+At first glance, this might look like I'm creating an instance of an interface, 
+the comparator interface. 
+Hopefully you remember I can't do that, we can't instantiate an interface directly. 
+For example, if I remove the opening and closing braces on that line, 
+the message I get back from IntelliJ is, _Comparator is abstract and can't be instantiated_.
+I'll put back the curly braces. 
+The message I'm getting is quite different now, indicating that 
+_I need to implement a method on this class_. 
+The class body, which is represented by these opening and closing curly braces, 
+is telling Java that this isn't an instance of an interface. 
+But actually, it's special syntax; that means this is an anonymous class being created 
+that implements Comparator. 
+And because this unnamed class is implementing an interface, 
+this means I still need to implement any abstract methods on that interface. 
+I'll do that for the _compareTo_ method. 
+And finally, I'll replace **return 0;** with the same comparison 
+I used for all these other comparators. 
+That's all I need to create an anonymous class that implements this interface. 
+To use it, I'll add another call to _sortList_.
+Running the code now:
+
+```java  
+Sorting with Comparator: RunMethods$1@7106e68e
+Target  10322 Bud      2016
+Walmart 10515 Joe      2021
+Walmart 10215 Marty    2018
+Target  10015 Meg      2019
+Macys   10105 Tom      2020
+```
+
+The string representation of this last comparator indicates 
+that it's a class local to the RunMethod class. 
+But it has no name, as you can see. 
+This is how java represents an anonymous class.
+
+An anonymous class is instantiated and assigned in a single statement. 
+The **new** keyword is used followed by any type. 
+This is **NOT** the type of the class being instantiated. 
+It's the superclass of the anonymous class, 
+or it's the interface this anonymous class will implement 
+as I'm showing here.
+
+```java  
+var c4 = new Comparator<StoreEmployee>() {};
+```
+                        
+In the first example above, the anonymous unnamed class 
+will implement the Comparator interface. 
+In the second example below, the anonymous class extends the Employee class, 
+meaning it's a subclass of Employee.
+
+```java  
+var e1 = new Employee {};
+```
+                        
+In both cases, it's important to remember the semicolon 
+after the closing bracket, because this is an expression, 
+not a declaration.
+
+Anonymous classes were a pretty fun feature in their heyday, 
+because you could create a type on the fly, 
+and pass it as a method argument. 
+What do I mean by that? 
+Well, I didn't really have to assign this bit of code to a variable. 
+Actually, let me invoke the sort it method, one more time.
+
+```java  
+sortIt(storeEmployees, (o1, o2) -> o1.getName().compareTo(o2.getName()));
+```
+
+Here, I'm creating an anonymous class directly as a method argument. 
+In other words, I'm using the anonymous class to create a bit of custom functionality, 
+and pass that functionality as an argument to a method, via the interface.
+This code is a little harder to read, 
+but you may see code like this that pre-dates lambda expressions. 
+You should recognize this as an on-th-fly anonymous class, 
+being passed as a method argument. 
+If I run this code, I again see 
+that this class is considered part of the RunMethods class, 
+and it's simply given a number. 
+Wouldn't it be nice if we did not have to go through 
+all of this effort to create these little classes, 
+anonymous or otherwise, that implement this one line of code, 
+which is really the thing we're interested in controlling and customizing.
+It's this one line of code, which ultimately the sort method is interested in, 
+in every one of these cases. 
+Creating a class that implements an interface, and overriding a method, 
+feels like a heavyweight solution to pass a small bit of custom functionality around. 
+Now notice, IntelliJ has grayed out the new Comparator part of this expression. 
+If I hover over that, it tells me 
+"_Anonymous new Comparator can be replaced with a lambda expression_" 
+and it gives me the option to replace with a lambda, so I'll select that. 
+That's a little easier on the eyes, in some ways, and it's also more visible 
+that it's this statement of code, that's ultimately being passed to the sortIt method. 
+If I run that:
+
+```java  
+Sorting with Comparator: RunMethods$$Lambda$28/0x0000000801006530@76fb509a
+Target  10322 Bud      2016
+Walmart 10515 Joe      2021
+Walmart 10215 Marty    2018
+Target  10015 Meg      2019
+Macys   10105 Tom      2020
+```
+
+The string representation indicates a Lambda expression 
+is the source of the comparator passed to the method. 
+In the next section of the course, I'm going to cover the lambda expression in a lot of details. 
+However, first I have a final challenge for you in this section, 
+which will help give you some extra experience with local and anonymous classes.
+</div>
+
+## [g. Local and Anonymous Class Challenge]()
+<div align="justify">
+
+First, you need to create a record named **Employee**, 
+that contains **First Name**, **Last Name**, and **hire date**. 
+We'll be using this record as a domain class, 
+which we'll pretend we don't have the luxury of changing.
+*  Set up a list of Employees with various names and hire dates in the main method.
+*  Set up a new method that takes this list of Employees as a parameter.
+*  Create a local class to wrap this class 
+(pass Employee to the constructor and include a field for this) 
+and add some calculated fields, such as full name, and years worked.
+*  Create a list of employees using your local class.
+*  Create an anonymous class to sort your local class employees, 
+by full name, or years worked.
+*  Print the sorted list.
+
+**Hint**: Here is another review of a date function, 
+which should help you with calculating years worked.
+
+```java  
+int currentYear = LocalDate.now().getYear();
+```
+                    
+We'll be covering dates and time thoroughly in our next section of the course. 
+Remember that a local class is a class declaration in a method block, 
+and you can create many instances of it, 
+so that's why your Employee wrapper class should be set up as a local class. 
+An anonymous class is a single instance of an unnamed class, 
+and you've seen an example of a Comparator already, 
+which you'll be doing that here.
 </div>
 
 
@@ -999,20 +1862,6 @@ for a variable number of Strings to be entered, representing the toppings select
 
 </div>
 
-
-<div align="justify">
-
-</div>
-
-
-<div align="justify">
-
-</div>
-
-
-<div align="justify">
-
-</div>
 
 
 
