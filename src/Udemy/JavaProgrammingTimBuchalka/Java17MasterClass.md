@@ -113,15 +113,12 @@ What we will learn from this Path:
 ### [f. Anonymous Class](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#f-anonymous-class)
 ### [g. Local and Anonymous Class Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#g-local-and-anonymous-class-challenge)
 
-## [Section-10: Lambda Expressions, Functional Interfaces, and Method Reference]()
+## [Section-10: Lambda Expressions, Functional Interfaces, and Method Reference](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_10_LambdaExpressionsAndFunctionalInterfaces/README.md#section-10-lambda-expressions-functional-interfaces-and-method-reference)
 
-### [a. Lambda Expressions]()
-### [b. Functional Interface]()
-### [c. Lambda Mini Challenges]()
+### [a. Lambda Expressions](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_10_LambdaExpressionsAndFunctionalInterfaces/README.md#a-lambda-expressions)
+### [b. Functional Interfaces](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_10_LambdaExpressionsAndFunctionalInterfaces/README.md#b-functional-interfaces)
+### [c. Lambda Mini Challenges](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_10_LambdaExpressionsAndFunctionalInterfaces/README.md#c-lambda-mini-challenges)
 
-    * Lambda Expressions
-    * Java's Functional Interfaces (Consumer & Predicate)   
-    * Function & Supplier Interfaces
     * Method Reference
     * Convenience Methods
 

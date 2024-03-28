@@ -1734,7 +1734,7 @@ These four sets of interfaces alone cover a lot of ground,
 and provide endless fertile ground for usage.
 </div>
 
-## [c. Lambda Mini Challenges]()
+## [c. Lambda Mini Challenges](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_10_LambdaExpressionsAndFunctionalInterfaces/Course06_LambdaMiniChallenges/README.md#lambda-mini-challenges)
 <div align="justify">
 This challenge lecture is going to be a little different, 
 and consist of several small tasks, to help you really practice creating 
