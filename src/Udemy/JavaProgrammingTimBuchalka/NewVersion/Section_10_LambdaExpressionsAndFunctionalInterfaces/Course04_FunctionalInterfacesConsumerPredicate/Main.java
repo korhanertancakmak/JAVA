@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_14_LambdaExpressionsAndFunctionalInterfaces.Course04_FunctionalInterfacesConsumerPredicate;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_10_LambdaExpressionsAndFunctionalInterfaces.Course04_FunctionalInterfacesConsumerPredicate;
 
 import java.util.ArrayList;
 import java.util.Arrays;

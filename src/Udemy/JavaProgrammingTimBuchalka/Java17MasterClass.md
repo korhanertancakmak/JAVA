@@ -115,6 +115,8 @@ What we will learn from this Path:
 
 ## [10. Lambda Expressions]()
 
+### [a. Consumer Interface]()
+
     * Lambda Expressions
     * Java's Functional Interfaces (Consumer & Predicate)   
     * Function & Supplier Interfaces
