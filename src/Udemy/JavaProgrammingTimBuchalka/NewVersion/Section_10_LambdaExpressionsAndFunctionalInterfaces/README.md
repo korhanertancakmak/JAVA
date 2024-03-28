@@ -188,9 +188,9 @@ with this lambda expression.
 Let's review this expression for a few minutes.
 The syntax of this lambda expression is on the left below.
 
-| Generated Lambda Expression                         | Comparator's Abstract Method  |
-|-----------------------------------------------------|-------------------------------|
-| ((o1, o2) -> o1.lastName().compareTo(o2.lastName()) | int compare(T o1, T o2)       |
+| Generated Lambda Expression                             | Comparator's Abstract Method  |
+|---------------------------------------------------------|-------------------------------|
+| ((o1, o2) &rarr; o1.lastName().compareTo(o2.lastName()) | int compare(T o1, T o2)       |
 
 This was passed directly as a method argument, for a parameter type that was a Comparator. 
 The Comparator's abstract method, compare, is shown here on the right side. 
@@ -226,9 +226,9 @@ where's the link between the compare method and this lambda expression?
 It's obvious in the anonymous class, because we override the compare method, 
 and return the result of that expression.
 
-| Anonymous Class                                                                                                                                                                                                                                                                                              | Lambda Expression                                     |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------|
-| new Comparator < Person > ( ) {<br/>&nbsp;&nbsp;&nbsp;&nbsp; @Override<br/>&nbsp;&nbsp;&nbsp;&nbsp; public int compare (Person o1, Person o2) {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return o1.lastName( ).compareTo(o2.lastName( ));<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <br/>} | (o1, o2) -> o1.lastName( ).compareTo(o2.lastName( )); |
+| Anonymous Class                                                                                                                                                                                                                                                                                              | Lambda Expression                                         |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------|
+| new Comparator < Person > ( ) {<br/>&nbsp;&nbsp;&nbsp;&nbsp; @Override<br/>&nbsp;&nbsp;&nbsp;&nbsp; public int compare (Person o1, Person o2) {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return o1.lastName( ).compareTo(o2.lastName( ));<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} <br/>} | (o1, o2) &rarr; o1.lastName( ).compareTo(o2.lastName( )); |
 
 We can see the two parameters and their types, and what the return value should be, 
 in the anonymous class. 
@@ -560,12 +560,12 @@ to summarize some of what I've just gone over.
 This table shows the different ways 
 to declare a single parameter in a lambda expression.
 
-| Lambda Expression                                | Description                                                 |
-|--------------------------------------------------|-------------------------------------------------------------|
-| element -> System.out.println(element);          | A single parameter without a type can omit the parentheses. |
-| (element) -> System.out.println(element);        | Parentheses are optional.                                   |
-| (String element) -> System.out.println(element); | Parentheses required if a reference type is specified.      |
-| (var element) -> System.out.println(element);    | A reference type can be var.                                |
+| Lambda Expression                                    | Description                                                 |
+|------------------------------------------------------|-------------------------------------------------------------|
+| element &rarr; System.out.println(element);          | A single parameter without a type can omit the parentheses. |
+| (element) &rarr; System.out.println(element);        | Parentheses are optional.                                   |
+| (String element) &rarr; System.out.println(element); | Parentheses required if a reference type is specified.      |
+| (var element) &rarr; System.out.println(element);    | A reference type can be var.                                |
 
 In the first example, a single parameter without a type can 
 omit the parentheses around the parameter. 
@@ -971,20 +971,20 @@ Let me try to summarize these on a couple of tables next.
 
 The rules for multiple parameters used in a lambda expression are shown here.
 
-| Lambda Expression                | Description                                                                                        |
-|----------------------------------|----------------------------------------------------------------------------------------------------|
-| (a, b) -> a + b;                 | Parentheses are always requires. Explicit types are not.                                           |
-| (Integer a, Integer b) -> a + b; | If you use an explicit type for one parameter, you must use explicit types for all the parameters. |
-| (var a, var b) -> a + b;         | If you use var for one parameter, you must use var for all parameters.                             |
+| Lambda Expression                    | Description                                                                                        |
+|--------------------------------------|----------------------------------------------------------------------------------------------------|
+| (a, b) &rarr; a + b;                 | Parentheses are always requires. Explicit types are not.                                           |
+| (Integer a, Integer b) &rarr; a + b; | If you use an explicit type for one parameter, you must use explicit types for all the parameters. |
+| (var a, var b) &rarr; a + b;         | If you use var for one parameter, you must use var for all parameters.                             |
 
 You can't mix and match var with explicit types, or omit var from one 
 or some of the parameters. 
 This table shows the two rules for returning from a lambda expression.
 
-| Lambda Expression                                                                         | Description                                                                                                                    |
-|-------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| (a, b) -> a + b;                                                                          | When not using curly braces, the return keyword is unnecessary, and will throw a compiler error.                               |
-| (a, b) -> {<br/>&nbsp;&nbsp;&nbsp; var c = a + b;<br/> &nbsp;&nbsp;&nbsp; return c;<br/>} | If you use a statement block, meaning you use the curly braces, a return is required if the function method has a return type. |
+| Lambda Expression                                                                             | Description                                                                                                                    |
+|-----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| (a, b) &rarr; a + b;                                                                          | When not using curly braces, the return keyword is unnecessary, and will throw a compiler error.                               |
+| (a, b) &rarr; {<br/>&nbsp;&nbsp;&nbsp; var c = a + b;<br/> &nbsp;&nbsp;&nbsp; return c;<br/>} | If you use a statement block, meaning you use the curly braces, a return is required if the function method has a return type. |
 </div>
 
 ### [BinaryOperator Interface]()
@@ -1066,9 +1066,9 @@ The Consumer interface takes one argument of any type.
 The BiConsumer interface takes two arguments of two different types. 
 Below, I show an example consumer lambda expression.
 
-| Example Lambda Expression for Consumer | Consumer Method  |
-|----------------------------------------|------------------|
-| s -> System.out.println(s)             | void accept(T t) |
+| Example Lambda Expression for Consumer  | Consumer Method  |
+|-----------------------------------------|------------------|
+| s &rarr; System.out.println(s)          | void accept(T t) |
 
 It takes one argument and executes a single statement. 
 No result is returned. 
@@ -1082,7 +1082,7 @@ var coords = Arrays.asList(
         new double[]{29.1566, -89.2495},
         new double[]{35.1556, -90.0659});
 
-        coords.forEach(s -> System.out.println(Arrays.toString(s)));
+coords.forEach(s -> System.out.println(Arrays.toString(s)));
 ```
 
 Getting back to the code, I want to set up an example that 
@@ -1352,7 +1352,7 @@ and that calls the test method on the filter instance
 to determine if an element should be removed. 
 This is a good reminder that an iterator allows the removal of an element being iterated over, 
 as this code demonstrates and which I covered in an earlier lecture. 
-You'll learn more, and be able to review many of the concepts 
+You'll learn more and be able to review many of the concepts 
 I've covered in real-world scenarios if you make it a practice 
 to see how Java implements its own code. 
 This ability to see Java's source code is a great learning tool. 
@@ -1393,9 +1393,9 @@ because the types of the arguments and results will be the same.
 Below, I'm showing an example of a lambda expression 
 which targets a **Function** interface.
 
-| Example            | Function Method | Variable Declaration for this example |
-|--------------------|-----------------|---------------------------------------|
-| s -> s.split(","); | R apply(T t)    | Function < String, String[]> f1;      |
+| Example                | Function Method | Variable Declaration for this example |
+|------------------------|-----------------|---------------------------------------|
+| s &rarr; s.split(","); | R apply(T t)    | Function < String, String[]> f1;      |
 
 This lambda expression takes a String, _s_, and splits that String on commas, 
 returning an array of String. 
@@ -1526,7 +1526,7 @@ first passing it the emptyStrings array,
 and then I'll include a lambda expression. 
 The parameter is _i_, which traditionally is the way to refer 
 to an array index in a loop, and on the right side of the arrow token, 
-I'm setting up a string, that includes the number, _i + 1_, 
+I'm setting up a string that includes the number, _i + 1_, 
 and a period _._ 
 Running that:
 
@@ -1744,25 +1744,43 @@ and then we can solve it together.
 Then I'll present the next one.
 </div>
 
-
-
+## [d. Lambda Expression Challenge]()
 <div align="justify">
 
+This challenge, is to exercise your skills with Arrays, ArrayLists,
+and the methods on these, which are targets
+for lambda expressions. 
+First, I want you to create an array of Strings, 
+which is populated with first names, in mixed case. 
+Include at least one name, which is spelled the same backwards, and forwards, 
+like Bob, or Anna. 
+Use _Arrays.setAll_, or _List.replaceAll_, to change the values in this array. 
+If you use List methods, you'll need _a list backed by the array_, 
+so that changes get made to the initial array. 
+In other words, I don't want you to make a copy of the array elements 
+for the first part of this challenge.
 
-```java  
+Using one of those two methods, perform the following functions 
+on the elements in the array, with appropriate lambda expressions.
 
-```
+* Transform names to all uppercases.
+* Add a randomly generated middle initial, and include a period.
+* Add a last name that is the reverse of the first name.
 
+Print your array or the array elements, after each change, 
+using the forEach method, at least once. 
+Finally, create a new modifiable ArrayList from your name array, 
+removing any names where the last name equals the first name. 
+Use _removeIf_ with a lambda expression to do this last operation. 
+You can create helper methods as needed to facilitate some of this functionality. 
+You can use single line, or multi-line lambda expressions. 
+Ignore IntelliJ's warnings and hints which prompt you 
+to replace any lambda expressions with method references for now. 
+We'll be reviewing method references in the next lecture.
 </div>
 
-<div align="justify">
 
 
-```java  
-
-```
-
-</div>
 
 <div align="justify">
 
