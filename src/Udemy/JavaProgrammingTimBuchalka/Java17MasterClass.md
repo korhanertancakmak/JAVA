@@ -113,9 +113,10 @@ What we will learn from this Path:
 ### [f. Anonymous Class](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#f-anonymous-class)
 ### [g. Local and Anonymous Class Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#g-local-and-anonymous-class-challenge)
 
-## [10. Lambda Expressions]()
+## [Section-10: Lambda Expressions, Functional Interfaces, and Method Reference]()
 
-### [a. Consumer Interface]()
+### [a. Lambda Expressions]()
+### [b. Functional Interface]()
 
     * Lambda Expressions
     * Java's Functional Interfaces (Consumer & Predicate)   
