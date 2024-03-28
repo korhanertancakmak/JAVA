@@ -1744,7 +1744,7 @@ and then we can solve it together.
 Then I'll present the next one.
 </div>
 
-## [d. Lambda Expression Challenge]()
+## [d. Lambda Expression Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_10_LambdaExpressionsAndFunctionalInterfaces/Course07_LambdaExpressionChallenge/README.md#lambda-expression-challenge)
 <div align="justify">
 
 This challenge, is to exercise your skills with Arrays, ArrayLists,
@@ -1778,8 +1778,6 @@ Ignore IntelliJ's warnings and hints which prompt you
 to replace any lambda expressions with method references for now. 
 We'll be reviewing method references in the next lecture.
 </div>
-
-
 
 
 <div align="justify">
