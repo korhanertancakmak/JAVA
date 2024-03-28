@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_14_LambdaExpressionsAndFunctionalInterfaces.Course06_LambdaMiniChallenges;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_10_LambdaExpressionsAndFunctionalInterfaces.Course06_LambdaMiniChallenges;
 
 import java.util.Arrays;
 import java.util.function.Consumer;

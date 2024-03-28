@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_14_LambdaExpressionsAndFunctionalInterfaces.Course10_MethodReferenceChallenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_10_LambdaExpressionsAndFunctionalInterfaces.Course10_MethodReferenceChallenge;
 
 import java.util.ArrayList;
 import java.util.Arrays;
