@@ -117,6 +117,7 @@ What we will learn from this Path:
 
 ### [a. Lambda Expressions]()
 ### [b. Functional Interface]()
+### [c. Lambda Mini Challenges]()
 
     * Lambda Expressions
     * Java's Functional Interfaces (Consumer & Predicate)   
