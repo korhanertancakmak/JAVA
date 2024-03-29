@@ -12,12 +12,6 @@ public class Main {
         //Collection<String> list = new ArrayList<>();
         //Collection<String> list = new TreeSet<>();
 
-//Part-7
-/*
-
-*/
-//End-Part-7
-
         Collection<String> list = new HashSet<>();
 
         String[] names = {"Anna", "Bob", "Carol", "David", "Edna"};

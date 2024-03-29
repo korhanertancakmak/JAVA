@@ -233,73 +233,109 @@ Let's look at this on chart for an interface we know pretty well by now, **List*
 ### List Interface
 <div align="justify">
 
-_______________________________
-                                            | <<Interface>>               |
-                                            | Collection [Base Interface] |
-                                            |_____________________________|
-                                            |_____________________________|
-                                                           ↑
-                                       ____________________↑_____________________
-                                       | <<Interface>>                          |
-                                       | List    [Derived Interface]            |
-                                       |________________________________________|
-                                       |  add(int index, E element)             |
-                                       |  get(int index)                        |
-                                       |  indexOf(Object o)                     |
-                                       |  lastIndexOf(Object o)                 |
-                                       |  ListIterator<E> listIterator()        |
-                                       |  of()                                  |
-                                       |  remove(int index)                     |
-                                       |  set(int index, E element)             |
-                                       |  sort(Comparator)                      |
-                                       |  subList(int fromIndex, int toIndex)   |
-                                       |________________________________________|
+![image03](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image03.png?raw=true)
 
-    This chart shows the List interface extending Collection. For simplicity, I'm not showing the Collection methods that
-    I showed on the previous chart. I'm only showing additional methods specifically declared on the List interface. We
-    covered most of these methods, but I wanted you to see here, that most of these are dealing with an index. A list can
-    be either indexed, as an ArrayList, or not, like a LinkedList, but a LinkedList is implemented to support all of these
-    methods as well. Derived interfaces may have specific ways to add, remove, get, and sort elements for their specific
-    type of collection, in addition to those defined on the Collection Interface itself. Now, let's look at the big picture
-    of interfaces, and some specific implementations.
-                                           
+This chart shows the List interface extending Collection. 
+For simplicity, I'm not showing the Collection methods that 
+I showed on the previous chart. 
+I'm only showing additional methods specifically declared on the List interface. 
+We covered most of these methods, but I wanted you to see here that 
+most of these are dealing with an index. 
+A list can be either indexed, as an ArrayList, or not, like a LinkedList, 
+but a LinkedList is implemented to support all of these methods as well. 
+Derived interfaces may have specific ways to add, remove, get, 
+and sort elements for their specific type of collection, 
+in addition to those defined on the Collection Interface itself. 
+Now, let's look at the big picture of interfaces
+and some specific implementations.
+A List is an ordered collection (also known as a sequence). 
+These can be sequenced in memory like an ArrayList,
+or maintain links to the next and previous values, as a LinkedList.                           
+</div>
+
+### Queue Interface
+<div align="justify">
+
+A Queue is a collection designed for holding elements prior to processing, 
+in other words, the processing order matters, 
+so the first and last positions, or the head and tail,
+are prioritized. 
+Most often these may be implemented as First In, First Out (FIFO), 
+but can be implemented like a Stack, as Last In First Out (LIFO) 
+which we've discussed.
+Remember a Deque supports both.
+</div>
+
+### Set Interface
+<div align="justify">
+
+A Set is a collection conceptually based off of mathematical sets. 
+Importantly, it contains no duplicate elements,
+and isn't naturally sequenced or ordered.
+You can think of a set as a kind of penned in chaotic grouping of objects.
+Java has three implementations,
+which I'll be reviewing in this section of the course in detail, 
+the HashSet, the TreeSet and the LinkedHashSet. 
+These are distinguished by the underlying way they store the elements in the set.
+A Sorted Set is a set that provides a total ordering of the elements.
+</div>
+
+### Map Interface
+<div align="justify">
+
+A Map is a collection that stores key and value pairs. 
+The keys are a set, and the values are a separate collection,
+where the key keeps a reference to a value. 
+Keys need to be unique, but values don't. 
+Elements in a tree are stored in a key value Node, also called an Entry. 
+In the sections coming up, we'll be looking at Set and Map, 
+and how they resemble and differ from **List**. 
+But before that, I want to talk about polymorphic algorithms.
+</div>
+
+### What's a polymorphic algorithm?
+<div align="justify">
+
+Oracle's documentation describes a polymorphic algorithm 
+as a piece of reusable functionality.
+At one time, most of these methods were provided to us, 
+as static methods, on a class called **java.util.Collections**. 
+Since JDK-8, and the advent of multiple interface enhancements, 
+some of these methods are now on the interfaces themselves, 
+as default or static methods. 
+But not all, so I'll be discussing this class, 
+and what it has to offer, in comparison to what's available on each collection class. 
+It's also important to understand that legacy code 
+will be using this class for some operations that can be done from the class itself. 
+I'll comment out that last line of code 
+so that the class still compiles. 
+
+```java  
+String[] names = {"Anna", "Bob", "Carol", "David", "Edna"};
+list.addAll(Arrays.asList(names));
+System.out.println(list);
+
+list.add("Fred");
+list.addAll(Arrays.asList("George", "Gary", "Grace"));
+System.out.println(list);
+System.out.println("Gary is in the list? " + list.contains("Gary"));
+
+list.removeIf(s -> s.charAt(0) == 'G');
+System.out.println(list);
+System.out.println("Gary is in the list? " + list.contains("Gary"));
+//list.sort();
+```
+
+Next, I'll be talking about this helper class and its methods. 
+There are some fun polymorphic algorithms on there I haven't covered,
+so I'll see you in that next section.
 </div>
 
 
+### What's a polymorphic algorithm?
+<div align="justify">
+
+
+</div>
+
         
-
-        A List is an ordered collection (also known as a sequence). These can be sequenced in memory like an ArrayList,
-    or maintain links to the next and previous values, as a LinkedList.
-
-                                                  The Queue
-
-        A Queue is a collection designed for holding elements prior to processing, in other words the processing order
-    matters, so the first and last positions, or the head and tail, are prioritized. Most often these may be implemented
-    as First In, First Out (FIFO), but can be implemented like a Stack, as Last In First Out (LIFO) which we've discussed.
-    Remember a Deque supports both.
-
-                                                   The Set
-
-        A Set is a collection conceptually based off of a mathematical set. Importantly, it contains no duplicate elements,
-    and isn't naturally sequenced or ordered. You can think of a set as a kind of penned in chaotic grouping of objects.
-    Java has three implementations, which I'll be reviewing in this section of the course in detail, the HashSet, the
-    TreeSet and the LinkedHashSet. These are distinguished by the underlying way they store the elements in the set. A
-    Sorted Set is a set that provides a total ordering of the elements.
-
-                                                   The Map
-
-        A Map is a collection that stores key and value pairs. The keys are a set, and the values are a separate collection,
-    where the key keeps a reference to a value. Keys need to be unique, but values don't. Elements in a tree are stored
-    in a key value Node, also called an Entry. In the videos coming up, we'll be looking at Set and Map, and how they
-    resemble and differ from List. But before that, I want to talk about polymorphic algorithms.
-
-                                        What's a polymorphic algorithm?
-
-        Oracle's documentation describes a polymorphic algorithm as a piece of reusable functionality. At one time, most
-    of these methods were provided to us, as static methods, on a class called java.util.Collections. Since JDK-8, and
-    the advent of multiple interface enhancements, some of these methods are now on the interfaces themselves, as default
-    or static methods. But not all, so I'll be discussing this class, and what it has to offer, in comparison to what's
-    available on each collection class. It's also important to understand that legacy code will be using this class for
-    some operations, that can be done from the class itself. I'll comment out that last line of code so that the class
-    still compiles. Next, I'll be talking about this helper class and its methods. There are some fun polymorphic algorithms
-    on there I haven't covered, so I'll see you in that next lecture.
