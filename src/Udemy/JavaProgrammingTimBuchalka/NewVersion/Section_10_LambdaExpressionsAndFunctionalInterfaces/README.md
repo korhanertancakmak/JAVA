@@ -1747,7 +1747,7 @@ Then I'll present the next one.
 ## [d. Lambda Expression Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_10_LambdaExpressionsAndFunctionalInterfaces/Course07_LambdaExpressionChallenge/README.md#lambda-expression-challenge)
 <div align="justify">
 
-This challenge, is to exercise your skills with Arrays, ArrayLists,
+This challenge is to exercise your skills with Arrays, ArrayLists,
 and the methods on these, which are targets
 for lambda expressions. 
 First, I want you to create an array of Strings, 
@@ -1779,6 +1779,735 @@ to replace any lambda expressions with method references for now.
 We'll be reviewing method references in the next lecture.
 </div>
 
+## [e. Method References]()
+<div align="justify">
+
+In some of the lambda expressions I've used so far, 
+I've written an operation or expression. 
+In others, I've simply referenced other named methods 
+like **System.out.println**, for example. 
+Java gives us an alternative syntax to use for this second kind of lambda, 
+that uses named methods. 
+These are called method references. 
+These provide a more compact, easier-to-read lambda expression 
+for methods that are already defined in a class. 
+For the last couple of lectures, for example, 
+I've been ignoring Intelli-J's warnings and hints 
+whenever I've used **System.out.println** in a lambda expression.
+That's because it can be replaced with a method reference.
+
+```java  
+List<String> list = new ArrayList<>(List.of( "Anna", "Bob", "Chuck", "Dave"));
+list.forEach(s -> System.out.println(s));
+```
+
+I'll set up a simple list of names, so List, type String, named list, 
+equals a new ArrayList, and I'll pass a List of Strings with values Anna, 
+Bob, Chuck, and Dave. 
+And as you've seen many times, I'll execute the _forEach_ method on **list**, 
+and pass the lambda expression that uses **System.out.println**. 
+You've probably noticed, IntelliJ's been highlighting this lambda expression 
+each time I've used it. 
+If I hover over that, it says _Lambda can be replaced with method reference_,
+and I can select that link, so I'll do that.
+
+```java  
+list.forEach(System.out::println);
+```
+
+That replaces my code with a different kind of expression. 
+This is probably going to be the most commonly used method reference you'll see.
+At first glance, it's not really obvious why a method reference has this syntax.
+
+| Lambda Expression              | Method Reference    |
+|--------------------------------|---------------------|
+| s &rarr; System.out.println(s) | System.out::println |
+
+A method reference abstracts the lambda expression even further, 
+eliminating the need to declare formal parameters.
+We also don't have to pass arguments to the method in question, in this case println. 
+A method reference has double colons, between the qualifying type, or object, 
+and the method name. 
+In this example of a Consumer interface, not only is the method inferred, 
+but the parameters are as well. 
+Does this mean you can use any method in method references?
+
+Methods which can be used, are based on the context of the lambda expression. 
+This means the method reference is again dependent on the targeted interface's method. 
+You can reference a static method in a class. 
+You can reference an instance method from either an instance external to the expression, 
+or an instance passed as one of the arguments.
+Or you can reference a constructor by using new as the method. 
+Method references can be used to increase the readability of your code. 
+The **System.out.println** method reference is an example of an instance method, 
+called on an external instance. 
+The instance is the _PrintStream_ object that gets returned from the _System.out_ method.
+</div>
+
+### Deferred Method Invocation
+<div align="justify">
+
+When you create variables that are lambda expressions or method references,
+it's important to remember that the code isn't invoked at that point.
+The statement or code block gets invoked at the point in the code
+that the targeted functional method is called.
+</div>
+
+<div align="justify">
+
+I'm going to add a method similar to the one I included in the lambda expressions lectures,
+called calculator.
+
+```java  
+private static <T> void calculator(BinaryOperator<T> function, T value1, T value2) {
+    T result = function.apply(value1, value2);
+    System.out.println("Result of operation: " + result);
+}
+```
+
+I'll make it private and static, and generic with a type T.
+It won't have a return type, so void, and I'm going
+to call it calculator with the first parameter a BinaryOperator,
+and 2 additional parameters, _value1_ and _value2_, also both type _T_.
+As I did before, inside this method, I'll call the Binary Operator's functional method,
+apply, on function, and this method will print the result, instead of returning it.
+In the main method,
+
+```java  
+calculator((a, b) -> a + b, 10, 25);
+```
+
+I'll set up a call to that method, using a lambda expression,
+which I also used previously that has two parameters,
+a and b, and returns a + b, and I'll also pass 10 and 25 to that method.
+Again, IntelliJ has highlighted part of this lambda expression.
+Hovering over that, you can see it still says I can replace this
+with a method reference, so let me do that.
+
+```java  
+calculator(Integer::sum, 10, 25);
+```
+
+That gets replaced with the method reference, Integer, colon-colon, sum.
+I don't think we talked about the _sum_ method,
+but it's simply a static method on the Integer wrapper class,
+that returns the sum of two integers, which obviously replaces the plus operator,
+when the operands are integers.
+You may or may not agree that this code is a little simpler to read
+than trying to look at the lambda expression itself.
+This is the second type of method reference,
+that uses a static method on a class with the class type as the reference on the left.
+Let's try that same exercise with decimal numbers.
+
+```java  
+calculator((a, b) -> a + b, 2.5, 7.5);
+```
+
+I'll call calculator with the same lambda expression,
+but pass some decimal values instead, 2.5 and 7.5.
+And again, IntelliJ is prompting me to turn this into a method reference, so I will:
+
+```java  
+calculator(Double::sum, 2.5, 7.5);
+```
+
+You can see it using the static method on Double this time,
+and this still produces 10.0 from the calculation.
+Before we look at the second type of instance method reference,
+which can be a little confusing, I want to look at using a method reference
+to instantiate a new instance of a class.
+I'll create a class above Main, called Plain old.
+
+```java  
+class PlainOld {
+
+    private static int last_id = 1;
+    private int id;
+    public PlainOld() {
+        id = PlainOld.last_id++;
+        System.out.println("Creating a PlainOld Object: id = " + id);
+    }
+}
+```
+
+I'll set up a public constructor for that, using IntelliJ generation tool to do that.
+Print creating a Plain Old Object.
+I now want to add a private static int variable that keeps track of the last id.
+I'll initialize that to 1.
+Create a field o this class ID.
+I'll set that field in the constructor, assigning the Plain Old last id to id, and
+incrementing the last id with a post-decrement operator.
+I'll also add id to the statement that gets printed there.
+Remember there's only one copy of last id, shared by all instances,
+so this code that is incrementing the shared value.
+
+```java  
+Supplier<PlainOld> reference1 = () -> new PlainOld();
+```
+
+In the main code, I want to create a local variable.
+Its type will be a **Supplier**.
+You'll remember this is a functional interface,
+that has the functional method, _get_, that takes no arguments,
+but returns an instance.
+I'll set this up, using a lambda expression that returns a new instance of a Plain Old class.
+Here, my variable is a Supplier, and I've
+used Plain Old as a type argument.
+I've assigned it a lambda expression with no arguments, which means I need to use
+the empty parentheses there.
+And with the expression itself to the right of the array token,
+this just calls new keyword with the class name, and empty parentheses.
+We know this calls the empty constructor, and will return a new instance
+of the PlainOld object.
+Here again, IntelliJ is indicating that I can make this code better,
+saying it can be replaced with a method reference, so I'll do that:
+
+```java  
+Supplier<PlainOld> reference1 = PlainOld::new;
+```
+
+This method reference is a special type, a constructor method reference.
+If I run this code like this, nothing happens though.
+I didn't see my constructor executed or see a statement that a PlainOld object was created.
+Why not?
+Well, a method reference, like lambda expression variables, is sort of like a method declaration.
+It's created and then used at a later time.
+It's not immediately executed at the time it's declared, it's deferred,
+and the code snippet gets passed around.
+
+```java  
+PlainOld newPojo = reference1.get();
+```
+
+How can I execute this method reference then?
+I could simply execute the get method on the variable,
+so I can set up another PlainOld variable, named new Pojo, and assign it to _reference1.get_.
+If I run that now:
+
+```java  
+---(same)
+Creating a PlainOld Object: id = 1
+```
+
+I can see that the constructor was executed.
+Why would you ever do this?
+Isn't it just simpler to call new on the PlainOld class, as we would any new instance?
+Yes, in this case it would be.
+Later we'll learn methods for creating a lot of instances at once.
+For now, I'll set up my own method that does a little bit of that.
+
+```java  
+private static PlainOld[] seedArray(Supplier<PlainOld> reference, int count) {
+
+    PlainOld[] array = new PlainOld[count];
+    Arrays.setAll(array, i -> reference.get());
+    return array;
+}
+```
+
+I'll make this private static, and it'll return an array of PlainOld instances.
+I'll call it a seed array, and the parameters will be Supplier called reference,
+and an int called count.
+Now, I'll set up an array variable in this method,
+and assign it new PlainOld with the count in brackets.
+I'll call _Arrays.setAll_, passing it my array, and a lambda expression,
+where i is the parameter, but instead of doing anything with i, in the lambda,
+I'll just call _reference.get_.
+I'll then return the array from this method.
+This code will assign every element in the array,
+whatever is the result of executing get for the lambda expression passed to this method.
+We've said this is going to be a PlainOld class,
+by making the array that type.
+Let me execute this from the main method, using my method reference as the Supplier variable.
+
+```java  
+System.out.println("Getting array");
+PlainOld[] pojo1 = seedArray(PlainOld::new, 10);
+```
+
+First I'll print out a descriptive statement, getting the array,
+and then I'll assign another local variable, pojo1,
+an array of PlainOld instances,
+and I'll assign that to the result of a call to this new method.
+I'll use a method reference as the first argument,
+and the number 10 as the second argument.
+And running that:
+
+```java  
+Getting array
+Creating a PlainOld Object: id = 2
+Creating a PlainOld Object: id = 3
+Creating a PlainOld Object: id = 4
+Creating a PlainOld Object: id = 5
+Creating a PlainOld Object: id = 6
+Creating a PlainOld Object: id = 7
+Creating a PlainOld Object: id = 8
+Creating a PlainOld Object: id = 9
+Creating a PlainOld Object: id = 10
+Creating a PlainOld Object: id = 11
+```
+
+You can see I've created 10 of these objects now, and put them in an array.
+We'll be revisiting suppliers and additional use cases for using them
+when we get to streams.
+</div>
+
+<div align="justify">
+
+So far, we talked about three of the four types of method references. 
+These were straight forward, but this last one can be harder to grasp. 
+First, I want to talk about some terminology 
+that will hopefully help you understand this last type of reference. 
+A Type Reference refers to a class name, an interface name, an enum name, 
+or a record name. 
+Remember that static methods are usually called using **Type References**, 
+but can also be called by instances in our code. 
+This is NOT true, however, for method references. 
+Static methods, in method references and lambda expressions, 
+must be invoked using a reference type only. 
+There are two ways to call an instance method.
+
+The first is when you refer to the method with an instance derived from the enclosing code. 
+This instance is declared outside the method reference. 
+The **System.out::println** method reference is an example. 
+You'll find that some websites call this instance a bounded receiver, 
+and I actually like that terminology as a differentiator. 
+A **Bounded Receiver** is an instance derived from the enclosing code, 
+used in the lambda expression, on which the method will be invoked.
+
+The second way is where the confusion starts. 
+The instance used to invoke the method will be the first argument passed 
+to the lambda expression or method reference when executed. 
+This is known in some places as the **Unbounded Receiver**. 
+It gets dynamically bound to the first argument, which is passed to the lambda expression, 
+when the method is executed. 
+Unfortunately, this looks an awful lot like a static method reference, 
+using a reference type. 
+This means there are two method references that resemble each other, 
+but have _two very different meanings_.
+
+The first actually does call a static method, and uses a reference type to do it. 
+We saw this earlier when we used the sum method on the Integer wrapper class.
+
+```java  
+Integer::sum
+```
+                                                    
+This is a Type Reference (Integer is the type), which will invoke a static method. 
+This is easy to understand. 
+But there is another, which you'll see when we start working 
+with String method references in particular. 
+Here, I show a method reference for the concat method on String.
+
+```java  
+String::concat
+```
+
+Now, we know by now I hope that the concat method isn't a static method on String. 
+Why is this method reference even valid?
+We could never call concat from the String class directly 
+because it needs to be called on a specific instance.
+As I just said that, instance methods can't be called using Reference Types. 
+But the example has shown right above, **String::concat**, is a special syntax, 
+when it's declared in the right context, meaning when it's associated to the
+right type of interface. 
+**String::concat** is valid when we use a method reference 
+in the context of an **unbounded receiver**.
+
+**NOTE**: Remember, the unbounded receiver means, the first argument becomes the instance used, 
+on which the method gets invoked.
+
+Any method reference that uses **String::concat** must be 
+in the context of a two-parameter functional method. 
+The first parameter is the String instance on which the _concat_ method gets invoked, 
+and the second argument is the String argument passed to the _concat_ method. 
+This will hopefully make more sense when you see it in code.
+
+```java  
+calculator((s1, s2) -> s1 + s2, "Hello ", "World");
+```
+
+I'm going to invoke my calculator method again, passing a different lambda expression. 
+This lambda will have two parameters, _s1_ and _s2_, and I'll use the **+** operator on them, 
+and I'll pass the strings, _hello_ and _world_, as the last two parameters to the calculator method.
+This looks like a simple addition operation, but it's not 
+because we're operating on Strings. 
+The **+** sign, when used with String operands, is a concatenation operator. 
+Running this code:
+
+```java  
+Result of operation: Hello World
+```
+            
+You can see that we get **Hello World** as the result of this.
+I'm going to change my lambda expression to use the _concat_ method, 
+instead of the **+** sign operator. 
+
+```java  
+calculator((s1, s2) -> s1.concat(s2), "Hello ", "World");
+```
+
+And executing that,
+
+```java  
+Result of operation: Hello World
+```
+
+I get the same results. 
+But once again, IntelliJ is requesting my attention, and sure enough, 
+it's saying _this could be a method reference_, so let me take that suggestion.
+
+```java  
+calculator(String::concat, "Hello ", "World");
+```
+
+But once again, IntelliJ is requesting my attention, and sure enough, 
+it's saying _this could be a method reference_, so let me take that suggestion. 
+Does this method reference give you pause? 
+Maybe not, since I just gave you a few notes on this topic, but wait, 
+how does this work again? 
+Notice that there are two parameters on the right side of the arrow token 
+for the version of _(s1, s2) -> s1.concat(s2)_, 
+the _concat_ method is invoked on the first argument, _s1_.
+The second argument, _s2_, is passed to the _concat_ method. 
+**String::concat** is exactly what the method reference will do implicitly, 
+because it's declared in the context of a 2-parameter function method. 
+How's that again? 
+
+```java  
+private static <T> void calculator(BinaryOperator<T> function, T value1, T value2) {
+
+    T result = function.apply(value1, value2);
+    System.out.println("Result of operation: " + result);
+}
+```
+
+The method calculator has as its first argument a **BinaryOperator**. 
+A BinaryOperator has a method, called **apply**, 
+that takes two arguments of the same type, 
+and returns a result, also of that same type. 
+Let me make this really clear, by setting up a local with the type BinaryOperator, 
+using String as its type argument.
+
+```java  
+BinaryOperator<String> b1 = (s1, s2) -> s1.concat(s2);
+BiFunction<String, String, String> b2 = (s1, s2) -> s1.concat(s2);
+```
+
+I'll assign it the same lambda expression I was using, _s1.concat_, passing it _s2_. 
+I could also make this a **BiFunction** interface, 
+using String for all three type arguments (which is all the BinaryOperator really does).
+I'll copy that last statement and paste it, changing BinaryOperator to BiFunction, 
+and I'll have to declare three types for a BiFunction.
+The first 2 are the method parameters, strings, and the last is the result type, 
+so String again. 
+I want to click on the gutter icon next to the last statement here, 
+on the **BiFunction** statement line, and show you the method, **apply;** 
+that has two parameters. 
+The two parameters in the targeted method are the very reason 
+we can use a method reference like **String::concat**. 
+Going back to the main method, I'll change both of these method references, 
+using IntelliJ's recommendation.
+
+```java  
+BinaryOperator<String> b1 = String::concat;
+BiFunction<String, String, String> b2 = String::concat;
+```
+
+What happens if I try to use an interface that has a method without two arguments?
+
+```java  
+UnaryOperator<String> u1 = String::concat;
+```
+
+IntelliJ is giving me an error there, on concat, 
+_Non-static method cannot be referenced from a static context_. 
+Are you confused? 
+Don't worry, this is definitely confusing for a while. 
+If I click the gutter icon next to the UnaryOperator line, I can see the method. 
+It's actually showing me the method on **Function**, 
+which ultimately **UnaryOperator** is, 
+but has the constraint that the returned type equals the method parameter type. 
+And you can see the method is **apply**, it has only one argument. 
+Only one argument is available to the method reference, 
+assigned to a variable of this type. 
+Well, with only one argument available, calling concat on the first argument,
+would leave us with no additional argument to pass to the concat method, 
+so it doesn't make any sense to use concat for this interface. 
+Let me try to type this out a lambda expression, 
+so I'll pop back to the Main.java file.
+
+```java  
+//UnaryOperator<String> u1 = String::concat;
+UnaryOperator<String> u1 = (s1, s2) -> s1.concat(s2);
+```
+                            
+This is an invalid lambda expression, and hopefully this is easier to understand. 
+For an **UnaryOperator**, there's no 2 available to it, 
+so we can't set this up s2, so I'll remove s2.
+
+```java  
+//UnaryOperator<String> u1 = String::concat;
+//UnaryOperator<String> u1 = (s1, s2) -> s1.concat(s2);
+UnaryOperator<String> u1 = (s1) -> s1.concat(s2);
+```
+
+And now you can see, the lambda expression has no idea what the variable s2 is. 
+This code doesn't work out of the box like this. 
+Java figures all of this out, and won't let us use **String::concat**, 
+for the Unary Operator. 
+But I can call a method on String that doesn't take a parameter, 
+for example, the instance method, toUpperCase.
+Let me do that now,
+
+```java  
+//UnaryOperator<String> u1 = String::concat;
+//UnaryOperator<String> u1 = (s1, s2) -> s1.concat(s2);
+//UnaryOperator<String> u1 = (s1) -> s1.concat(s2);
+UnaryOperator<String> u1 = (s1) -> s1.toUpperCase();
+```
+
+And that compiles, and I can now change that to a method reference, 
+so I'll do that. 
+**String::toUpperCase** again, the implicit argument is used 
+to invoke the toUpperCase method on. 
+The good news is that Java and IntelliJ figure most of this out for us. 
+The bad news is that this may be confusing for a while, 
+until you get the app froze of this.
+
+```java  
+System.out.println(b1.apply("Hello ","World"));
+System.out.println(b2.apply("Hello ","World"));
+System.out.println(u1.apply("Hello "));
+```
+
+I want to execute all of these method references next, 
+and I'll call the apply method on each of these three variables,
+passing each to _println_. 
+For _b1_ and _b2_, I'll pass two strings, _Hello_ and _World_. 
+For _u1_, I'll just pass one string, _Hello_. 
+And executing this:
+
+```java  
+---(same)
+Hello World
+Hello World
+HELLO
+```
+
+You can see the three output statements at the end. 
+The first 2 concatenated _Hello_ and _World_, 
+and the second changed _hello_ to uppercase.
+
+```java  
+String result = "Hello".transform(u1);
+System.out.println("Result = " + result);
+```
+
+Now, I want to introduce you to another method on String, 
+one I haven't shared with you yet.
+This method is named transform, and takes first a Function with a String type, 
+as an argument.
+And it returns an object.
+Let's use this, to test a method reference or two. 
+First, I already have a **UnaryOperator** variable set up, 
+which is a derivative of the Function interface. 
+This means I can simply pass my variable _u1_ 
+to the transform method on a string.
+I'll set up a local variable, result, 
+also a String and assign it the result of calling 
+the _transform_ method on the string "_Hello_", 
+and I'll pass my _u1_ variable to that transform method. 
+The transform method isn't required to return a String. 
+It does, in this case, because we've defined the variable 
+to be aUnaryOperator with a String type argument.
+This means String is used as the argument, 
+and returns a String as well. 
+Running this code:
+
+```java  
+---(same)
+Result = HELLO
+```
+
+You can see I get the result with hello all in uppercase.
+
+```java  
+result = result.transform(String::toLowerCase);
+System.out.println("Result = " + result);
+```
+
+I'll just pass a method reference directly executing transform on the result variable, 
+and passing it **String::toLowerCase**.
+This will take the result and apply this method reference, 
+and make it all lowercase now, which you can see when I run it:
+
+```java  
+---(same)
+Result = hello
+```
+
+You're not restricted to returning a String from this method. 
+Let's try another method reference. 
+First, I'll create a Function variable, _f0_, 
+which will take a String and return a Boolean. 
+I'll assign this, the method reference **String::isEmpty**.
+
+```java  
+Function<String, Boolean> f0 = String::isEmpty;
+boolean resultBoolean = result.transform(f0);
+System.out.println("Result = " + resultBoolean);
+```
+
+Next, I want a boolean variable, and I'll call this result boolean, 
+and that gets assigned the result of the transform method with 
+the _f0_ variable on the result string. 
+You can see with this code, I'm specifying a local variable, 
+a Function with two different type arguments, _String_ and _Boolean_. 
+The last argument describes the type of the result. 
+I could have passed the method reference directly to the transform method, 
+but I wanted you to see this declaration 
+because it describes the result a bit more clearly. 
+Java could have inferred all of this. 
+Running this code,
+
+```java  
+---(same)
+Result = false
+```
+            
+You can see the last output statement. 
+That's because the string variable, _result_ wasn't empty. 
+Ok, so I hope that was interesting and helpful to you. 
+We're going to be using lambda expressions a lot over 
+the next sections of the course, 
+and method references where appropriate.
+
+| Type                                                                      | Syntax                                                | Method Reference Example | Corresponding Lambda Expression   |
+|---------------------------------------------------------------------------|-------------------------------------------------------|--------------------------|-----------------------------------|
+| static method                                                             | ClassName::staticMethodName(p1, p2, ..., pn)          | Integer::sum             | (p1, p2) &rarr; p1 + p2           |
+| instance method of a particular (Bounded) object                          | ContainingObject::instanceMethodName(p1, p2, ..., pn) | System.out.println       | p1 &rarr; System.out.println(p1)  |
+| instance method of an arbitrary (Unbounded) object (as determined by p1)" | ContainingType[=p1]::instanceMethodName(p2, ..., pn)  | String::concat           | (p1, p2) &rarr; p1.concat(p2)     |
+| constructor                                                               | ClassName::new                                        | LPAStudent::new          | ( ) &rarr; LPAStudent()           |
+
+This chart shows the four different types of method references, 
+with method reference examples, and a corresponding lambda expression.
+
+<table>
+    <th></th>
+    <th>No args</th>
+    <th colspan="3" align="center">One Argument</th>
+    <tr>
+        <td>Types of Method References</td>
+        <td>Supplier</td>
+        <td>Predicate</td>
+        <td>Consumer</td>
+        <td>Function(UnaryOperator)</td>
+    </tr>
+    <tr> 
+        <td>Reference Type (Static)</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr><tr> 
+        <td>Reference Type (Constructor)</td>
+        <td>Employer::new</td>
+        <td></td>
+        <td>n/a</td>
+        <td>Employee::new</td>
+    </tr><tr> 
+        <td>Bounded Retriever (Instance)</td>
+        <td></td>
+        <td></td>
+        <td>System.out::println</td>
+        <td></td>
+    </tr><tr> 
+        <td>Unbounded Retriever (Instance)</td>
+        <td>n/a</td>
+        <td>String::isEmpty</td>
+        <td>List::clear</td>
+        <td>String::length</td>
+    </tr>
+</table>
+
+This chart shows some of the valid ways to use method references 
+when assigned to different interface types. 
+These interface types have no arguments in the case of a **Supplier**,
+and one argument for the other interfaces.
+If a cell is empty, it's not because it's not valid, 
+but there are many possibilities. 
+**N/a** means not applicable, so a Supplier or an interface method 
+that has no arguments, can never be a target for the unbounded receiver
+type of method reference.
+
+
+<table>
+    <th></th>
+    <th colspan="3" align="center">Two Argument</th>
+    <tr>
+        <td>Types of Method References</td>
+        <td>BiPredicate</td>
+        <td>BiConsumer</td>
+        <td>BiFunction(BinaryOperator)</td>
+    </tr>
+    <tr> 
+        <td>Reference Type (Static)</td>
+        <td></td>
+        <td></td>
+        <td>Integer::sum</td>
+    </tr><tr> 
+        <td>Reference Type (Constructor)</td>
+        <td></td>
+        <td></td>
+        <td>Employee::new</td>
+    </tr><tr> 
+        <td>Bounded Retriever (Instance)</td>
+        <td></td>
+        <td>System.out::printf</td>
+        <td>new Random()::nextInt</td>
+    </tr><tr> 
+        <td>Unbounded Retriever (Instance)</td>
+        <td>String::equals</td>
+        <td>List::add</td>
+        <td>String::concat, String::split</td>
+    </tr>
+</table>
+
+        
+This chart shows some of the valid ways to use method references 
+when assigned to different interface types. 
+These interface types have two arguments,
+and therefore it's more common to see the unbounded retriever method 
+references used for these.
+</div>
+
+## [f. Method Reference Challenge]()
+<div align="justify">
+
+At the end of the last lecture, I introduced you 
+to the transform method on String. 
+In this challenge, I want you to explore what you can do with that method. 
+First, create an array of names, in mixed case, 
+as you did in the Lambda Expression Challenge. 
+Create a list of Function interfaces, or alternately UnaryOperator, 
+which will contain all the operations you want executed on each name in your array. 
+Do something similar to what we did in the Lambda Expression challenge:
+
+* Make each name upper case,
+* Add a random middle initial,
+* Add a last name, which should be the reverse of the first.
+
+In addition to this, add some custom transformations of your own. 
+Use a mix of lambda expressions and method references. 
+Create a method that takes the name array, and the function list, 
+and applies each function to each name, 
+using the transform method on String, to do this. 
+All changes should be applied to the original array. 
+Make sure you explore as many transformations as you can, 
+trying as many different types of method references as you can think of.
+</div>
+
 
 <div align="justify">
 
@@ -1789,14 +2518,6 @@ We'll be reviewing method references in the next lecture.
 
 </div>
 
-<div align="justify">
-
-
-```java  
-
-```
-
-</div>
 
 <div align="justify">
 
