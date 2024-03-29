@@ -216,7 +216,7 @@ Other interfaces are derived from it,
 and implementations (or concrete classes) implement the derived interfaces, 
 like List and Set. 
 
-![image02](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image03.png?raw=true)
+![image02](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image02.png?raw=true)
 
 This chart above shows the interface hierarchy.
 It's also showing the implementations or concrete classes that
