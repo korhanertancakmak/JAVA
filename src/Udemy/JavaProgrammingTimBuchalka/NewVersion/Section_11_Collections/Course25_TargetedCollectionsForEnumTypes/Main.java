@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course25_TargetedCollectionsForEnumTypes;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_11_Collections.Course25_TargetedCollectionsForEnumTypes;
 
 import java.util.*;
 

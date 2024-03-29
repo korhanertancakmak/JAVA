@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_15_Collections.Course21_HashMapChallengePart1;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_11_Collections.Course21_HashMapChallengePart1;
 
 import java.util.Arrays;
 import java.util.HashMap;
