@@ -248,6 +248,9 @@ and sort elements for their specific type of collection,
 in addition to those defined on the Collection Interface itself. 
 Now, let's look at the big picture of interfaces
 and some specific implementations.
+
+![image04](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image04.png?raw=true)
+
 A List is an ordered collection (also known as a sequence). 
 These can be sequenced in memory like an ArrayList,
 or maintain links to the next and previous values, as a LinkedList.                           
@@ -264,6 +267,8 @@ Most often these may be implemented as First In, First Out (FIFO),
 but can be implemented like a Stack, as Last In First Out (LIFO) 
 which we've discussed.
 Remember a Deque supports both.
+
+![image05](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image05.png?raw=true)
 </div>
 
 ### Set Interface
@@ -273,6 +278,9 @@ A Set is a collection conceptually based off of mathematical sets.
 Importantly, it contains no duplicate elements,
 and isn't naturally sequenced or ordered.
 You can think of a set as a kind of penned in chaotic grouping of objects.
+
+![image06](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image06.png?raw=true)
+
 Java has three implementations,
 which I'll be reviewing in this section of the course in detail, 
 the HashSet, the TreeSet and the LinkedHashSet. 
@@ -287,6 +295,9 @@ A Map is a collection that stores key and value pairs.
 The keys are a set, and the values are a separate collection,
 where the key keeps a reference to a value. 
 Keys need to be unique, but values don't. 
+
+![image07](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image07.png?raw=true)
+
 Elements in a tree are stored in a key value Node, also called an Entry. 
 In the sections coming up, we'll be looking at Set and Map, 
 and how they resemble and differ from **List**. 
@@ -332,7 +343,7 @@ so I'll see you in that next section.
 </div>
 
 
-### What's a polymorphic algorithm?
+### java.util.Collections Methods
 <div align="justify">
 
 
