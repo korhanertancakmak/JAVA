@@ -119,8 +119,9 @@ What we will learn from this Path:
 ### [b. Functional Interfaces](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_10_LambdaExpressionsAndFunctionalInterfaces/README.md#b-functional-interfaces)
 ### [c. Lambda Mini Challenges](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_10_LambdaExpressionsAndFunctionalInterfaces/README.md#c-lambda-mini-challenges)
 ### [d. Lambda Expression Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_10_LambdaExpressionsAndFunctionalInterfaces/README.md#d-lambda-expression-challenge)
-
-    * Convenience Methods
+### [e. Method References](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_10_LambdaExpressionsAndFunctionalInterfaces/README.md#e-method-references)
+### [f. Method Reference Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_10_LambdaExpressionsAndFunctionalInterfaces/README.md#f-method-reference-challenge)
+### [g. Convenience Methods on Functional Interface](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_10_LambdaExpressionsAndFunctionalInterfaces/README.md#g-convenience-methods-on-functional-interface)
 
 ## [11. Java Collections]()
 
