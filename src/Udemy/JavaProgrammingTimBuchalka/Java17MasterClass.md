@@ -120,7 +120,6 @@ What we will learn from this Path:
 ### [c. Lambda Mini Challenges](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_10_LambdaExpressionsAndFunctionalInterfaces/README.md#c-lambda-mini-challenges)
 ### [d. Lambda Expression Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_10_LambdaExpressionsAndFunctionalInterfaces/README.md#d-lambda-expression-challenge)
 
-    * Method Reference
     * Convenience Methods
 
 ## [11. Java Collections]()

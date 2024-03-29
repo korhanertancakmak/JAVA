@@ -2309,7 +2309,7 @@ one I haven't shared with you yet.
 This method is named transform, and takes first a Function with a String type, 
 as an argument.
 And it returns an object.
-Let's use this, to test a method reference or two. 
+Let's use this to test a method reference or two. 
 First, I already have a **UnaryOperator** variable set up, 
 which is a derivative of the Function interface. 
 This means I can simply pass my variable _u1_ 
@@ -2508,22 +2508,516 @@ Make sure you explore as many transformations as you can,
 trying as many different types of method references as you can think of.
 </div>
 
-
+## [g. Convenience Methods on Functional Interface]()
 <div align="justify">
 
+In this lecture, we'll learn how to do something similar, 
+using what are called convenience methods. 
+These are default methods on some of the functional interfaces 
+I've been covering in the last few lectures. 
+The Consumer, Predicate, and Function interface all come with these methods, 
+as does the Comparator, which I'll also include here.
 
 ```java  
-
+String name = "Tim";
+Function<String, String> uCase = String::toUpperCase;
+System.out.println(uCase.apply(name));
 ```
 
-</div>
-
-
-<div align="justify">
-
+I'll create a couple of local variables here. 
+First a String, and second a Function, that has two String types, called _uCase_. 
+I'll set that to Tim. 
+I'll set this to the method reference, **String::toUpperCase**. 
+And I'll print out the result of the apply method on that function, 
+passing it my name. 
+Running this code:
 
 ```java  
-
+TİM
 ```
 
+You shouldn't be surprised to see this printed out, all in uppercase.
+This function interface has two default methods.
+The first is called, and then, which lets us chain functions, one to another. 
+I'm going to set up a couple more lambda expressions next.
+
+```java  
+Function<String, String> lastName = s -> s.concat(" Buchalka");
+Function<String, String> uCaseLastName = uCase.andThen(lastName);
+System.out.println(uCaseLastName.apply(name));
+```
+
+The first will concatenate my last name to a string. 
+The second will execute the first function variable, 
+which I called _uCase_, and then chain a call to the method, 
+appropriately called _andThen_, passing it the second variable, _lastName_. 
+What this does is, execute _uCase_, and then executes last name, 
+using the result of _uCase_ as input. 
+Running that:
+
+```java  
+TİM Buchalka
+```
+            
+You can see that _tim_ was capitalized, and then _buchalka_ was concatenated. 
+In addition to the _andThen_ method, this interface also has a _compose_ method.
+
+```java  
+uCaseLastName = uCase.compose(lastName);
+System.out.println(uCaseLastName.apply(name));
+```
+
+I'll execute _compose_ on the _uCase_ function, 
+again with last name as an argument. 
+And print it out. 
+What does compose do? 
+The opposite of the _andThen_ method, actually. 
+Here, it will execute the _lastName_ lambda first, then executes _uCase_.
+Let's confirm that. 
+Running this code:
+
+```java  
+TİM BUCHALKA
+```
+
+You can see my full name in capital letters. 
+For that to have occurred, my last name had to be concatenated first, 
+and the upper case method reference applied after that. 
+You can use either, in the context of your code, 
+which best fits the situation. 
+The compose method is only available to lambda expressions
+that target either a **Function**, or a **UnaryOperator** interface. 
+**BiFunction**, **BinaryOperator**, and other function category interfaces 
+that take a _primitive_ don't support the compose method.
+Now, your chained lambdas or method references don't have to return all same types 
+within the chain. 
+Let me show you what I mean.
+
+```java  
+Function<String, String[]> f0 = uCase
+        .andThen(s -> s.concat(" Buchalka"))
+        .andThen(s -> s.split(" "));
+System.out.println(Arrays.toString(f0.apply(name)));
+```
+
+I'll set up another variable, aFunction, and call it _f0_. 
+This will be the result of two chained calls to the _andThen_ method, 
+first on the _uCase_ function, 
+and passing the lambda expression to concatenate _Buchalka_ to the name. 
+Then a call to split the string as the second lambda. 
+By now, you know this will return an array of Strings. 
+Print the result, using **Arrays.toString**. 
+In this code, you can see by my last declared type arguments, String[], 
+what I expect to be returned, an array of String. 
+The first expression, _uCase_, a method reference, 
+takes a string and returns a string.
+The second expression, a lambda, takes a string 
+(the result from the previous method reference) and returns a String.
+The final method takes a string, and returns an array of String though. 
+I hope you can see that the interim methods don't have to return the same result, 
+only the last expression has to return the declared type argument. 
+You can see the array printed in my output when I run this.
+
+```java  
+[TİM, Buchalka]
+```
+
+I'll copy those statements in the previous Function variable above, 
+and paste them below. 
+I want to change the second type argument, from an array of string, 
+to just a String again, and I want to change f0 to f1. 
+
+```java  
+Function<String, String> f1 = uCase
+        .andThen(s -> s.concat(" Buchalka"))
+        .andThen(s -> s.split(" "))
+        .andThen(s -> s[1].toUpperCase() + ", " + s[0]);
+System.out.println(f1.apply(name));
+```
+
+And after the lambda with the _split_ method,
+I'll remove the semicolon and insert a new line. 
+Now, I'll chain another call to _andThen_,
+passing a lambda, that will take 
+the second element of the array element which is its input, 
+make it uppercase. 
+Then the expression adds a comma, and finally the first element of the array. 
+What's different here, and interesting, is the input to this expression 
+is an array of String with first name at index 0, and last name at index 1. 
+IntelliJ, if you have hints turned on, is really helpful 
+when you are chaining function lambda expressions like this. 
+It will tell you what the inferred types of the interim expressions are. 
+The lambda expressions in the first invocation of _andThen_ is a function 
+that takes a _string_ and returns a _string_. 
+The second takes a String and returns a String array. 
+Running this code,
+
+```java  
+BUCHALKA, TİM
+```
+
+You can see my name is all in caps, but with my last name listed first, 
+with a comma, then my first name. 
+Let's try one more.
+
+```java  
+Function<String, Integer> f2 = uCase
+        .andThen(s -> s.concat(" Buchalka"))
+        .andThen(s -> s.split(" "))
+        .andThen(s -> String.join(", ", s))
+        .andThen(String::length);
+System.out.println(f2.apply(name));
+```
+
+I'll again copy the first three of the previous function. 
+I want to change the return type, the second type argument
+to an Integer, and _f1_ to _f2_. 
+Now, I'll add two more chained calls to the _andThen_ method,
+with different lambda expressions.
+The first lambda will join a string array into a string, 
+delimited by a comma followed by a space. 
+The second is a method reference that returns the length of the input string. 
+I'll print the result of this chain of functionality.
+Now, look at the IntelliJ hints, 
+specifically the second type argument of each inferred function. 
+You can see it goes from a String, to a String array, and back to a String, 
+in the hints shown here. 
+But the ultimate return type is Integer, which is how I set up the declaration.
+Again, it doesn't matter what the parameters or return types are,
+in the interim expressions, as long as the one chaining to the other 
+is passing the expected data. 
+Running that:
+
+```java  
+13
+```
+            
+I get the length of my name, the length is 13. 
+You can imagine, for the last challenge, 
+instead of cycling through a list of functions, 
+we could write code chaining functions like this. 
+Ok, so those are the 2 convenience methods provided to us on the Function interface. 
+The _andThen_ method is also available on the **BiFunction**, 
+and **BinaryOperator**, but not for any interfaces that have a primitive argument, 
+like **IntFunction**, **DoubleFunction**, or **LongFunction**. 
+The **Consumer** and **BiConsumer** interfaces, as well as the primitive versions of Consumer, 
+also have an _andThen_ method. 
+Remember a **consumer** doesn't return any data, 
+so whatever the input is at the start of the chain, 
+will remain the input for any following chained expressions.
+
+```java  
+String[] names = {"Ann", "Bob", "Carol"};
+Consumer<String> s0 = s -> System.out.print(s.charAt(0));
+Consumer<String> s1 = System.out::println;
+```
+
+I'll set up an array of a couple of names. 
+Next, I want two consumer variables, assigning 1 lambda expression, 
+and one method reference. 
+This lambda prints the first character of a string. 
+This method reference is a call to the _println_ method on **System.out**. 
+The first expression will print the first letter of the name. 
+The second expression prints the entire name with a newline. 
+In this case, nothing gets returned from these methods, 
+and therefore, _s_, is always the value of the parameter 
+passed to the functional method.
+
+```java  
+Arrays.asList(names).forEach(s0
+        .andThen(s-> System.out.print(" - "))
+        .andThen(s1));
+```
+
+Now I'll loop through my names, 
+and execute a chain of _andThen_ methods. 
+The lambda expression I'm passing to the 
+_forEach_ is a compound statement with multiple _andThen_ calls, 
+chained together. 
+If I run this:
+
+```java  
+A - Ann
+B - Bob
+C - Carol
+```
+            
+I get the first initial of each name printed, 
+from the s0 lambda, a hyphen **-** from the lambda passed 
+to the first call of the andThen method, 
+and then the full name,
+which is the result of the _s1_ variable being passed 
+to the last _andThen_ call. 
+If you had a series of methods with void return types, 
+you can imagine chaining them this way, 
+executing a variety of different methods on an array of Strings like this.
+
+Ok, now let's look at the convenience methods on **Predicate**. 
+These are completely different because **Predicate** returns a boolean value. 
+These methods allow you to create compound test expressions 
+that evaluate to a single boolean value. 
+The names of these three methods are:
+
+1. negate
+2. and
+3. or
+
+To try these outs, I'll set up four Predicate variables,
+each with a different lambda expression. 
+This lambda tests if the input string equals **TIM**, all in caps. 
+This second one checks if the input string equals **Tim**, ignoring case.
+The third one checks if the string starts with **T**. 
+Finally, the fourth lambda will be true if the string ends in an **e**.
+Now, I want to set up a combined predicate, using the _or_ method, 
+and I can do this by calling the _or_ method on one predicate variable, 
+and passing it another.
+
+```java  
+Predicate<String> p1 = s -> s.equals("TIM");
+Predicate<String> p2 = s -> s.equalsIgnoreCase("Tim");
+Predicate<String> p3 = s -> s.startsWith("T");
+Predicate<String> p4 = s -> s.endsWith("e");
+```
+
+I'll call this new variable _combined1_, and assign it "_p1.or_", 
+passing p2 to the _or_ method. 
+
+```java  
+Predicate<String> combined1 = p1.or(p2);
+System.out.println("combined1 = " + combined1.test(name));
+```
+
+And I'll print it out.
+Here, this code will test if either of the predicate _p1_ or _p2_ is true, 
+and return true if either is true. 
+Running that:
+
+```java  
+combined1 = true
+```
+
+I get _combined1_ is true, when I test it against my name in mixed case. 
+This test is true on the _p2_ predicate, which tests equality with equalsIgnoreCase.
+Ok, now I want to test the "and" method with p3 and p4 variables. 
+
+```java  
+Predicate<String> combined2 = p3.and(p4);
+System.out.println("combined2 = " + combined2.test(name));
+```
+
+Running that:
+
+```java  
+combined2 = false
+```
+
+I get it as false when we run it for _tim_, 
+because _tim_ doesn't end with an _e_.
+
+```java  
+Predicate<String> combined3 = p3.and(p4).negate();
+System.out.println("combined3 = " + combined3.test(name));
+```
+
+And what if now, I wanted the opposite result of a test? 
+I can simply chain a call to the _negate_ method. 
+My next variable, _combined3_, will do what _combined2_ did, 
+but additionally chain negate to it. 
+Negate takes no parameters and simply returns the opposite result of the result 
+from the previous functions. 
+And print out the result. 
+And running the code:
+
+```java  
+combined3 = true
+```
+            
+I get the opposite value of _combined2_, _combined3_ equals true. 
+So that might be useful down the road. 
+Predicates are going to be used a lot more when we get to streams, 
+but don't forget this kind of functionality, 
+could be useful in the _removeIf_ method on lists as well, for example.
+
+Let me show you the methods we just worked with all above, in one chart to summarize. 
+
+| Category of Interface | Convenience method example   | Notes                                                        |
+|-----------------------|------------------------------|--------------------------------------------------------------|
+| Function              | function1.andThen(function2) | Not implemented on IntFunction, DoubleFunction, LongFunction |
+| Function              | function2.compose(function1) | Only implemented on Function & UnaryOperator                 |
+| Consumer              | consumer1.andThen(consumer2) |                                                              |
+| Predicate             | predicate1.and(predicate2)   |                                                              |
+| Predicate             | predicate1.or(predicate2)    |                                                              |
+| Predicate             | predicate1.negate()          |                                                              |
+
+
+
+For _andThen_, and _compose_ in the function category of interfaces, 
+any Interim Functions are not required to have the same type arguments. 
+Instead, one function's output becomes the next function's input, 
+and the next function's output is not constrained to any specific type, 
+except the last function executed.
+The Consumer's _andThen_ method is different, 
+because it never returns a result, 
+so you use this when you're chaining methods independent of one another. 
+The **Predicate** methods always return a boolean, 
+which will combine the output of the two expressions, 
+to obtain a final boolean result.
+
+I covered two of Comparator's static methods, _naturalOrder_, and _reverseOrder_ earlier. 
+Now, I want to cover the additional convenience methods, 
+since as you can see from this table, many take a functional interface instance as an argument.
+
+| Type of Method | Method Signature                                   |
+|----------------|----------------------------------------------------|
+| static         | Comparator "comparing" (Function keyExtractor)     |
+| static         | Comparator naturalOrder()                          |
+| static         | Comparator reverseOrder()                          |
+| default        | Comparator "thenComparing" (Comparator other)      |
+| default        | Comparator "thenComparing" (Function keyExtractor) |
+| default        | Comparator reversed()                              |
+
+There is a comparing static method, and an overloaded default method named, 
+_thenComparing_, and finally a default _reversed_ method. 
+Let's look at these in some code.
+
+```java  
+record Person(String firstName, String lastName) {}
+```
+
+Continuing with the code from where we left off, 
+I'm now going to include a record in the main method. 
+I did something similar, creating a record as an inner class,
+but now, I'm going to create a local record, as part of this main method. 
+This record will be called **Person** and have two String fields, 
+first name and last name.
+And this is valid to do. 
+Next, I'll set up an ArrayList of a few persons some fictional characters.
+
+```java  
+List<Person> list = new ArrayList<>(Arrays.asList(
+        new Person("Peter", "Pan"),
+        new Person("Peter", "PumpkinEater"),
+        new Person("Minnie", "Mouse"),
+        new Person("Mickey", "Mouse")
+));
+```
+
+My declared type is a List of **Person**, the name of my list is _list_, 
+and I create a new arraylist, created from a bunch of Person instances.
+My persons will be Peter Pan, Peter Pumpkin Eater, and Mickey and Minnie Mouse. 
+Now, I have my list, I want to sort it. 
+I can do that with the sort method on list, passing it a lambda expression, 
+representing a comparator.
+
+```java  
+list.sort((o1, o2) -> o1.lastName.compareTo(o2.lastName));
+list.forEach(System.out::println);
+```
+
+I'll pass it a lambda which you've seen before; that compares last names, 
+using _compareTo_ method in String. 
+I'll print each name in the list, after this sort. 
+Because my record is local to this method, I can directly access these record fields, 
+as I show here, referencing the field lastName on _o1_ and _o2_. 
+Running this:
+
+```java  
+Person[firstName=Minnie, lastName=Mouse]
+Person[firstName=Mickey, lastName=Mouse]
+Person[firstName=Peter, lastName=Pan]
+Person[firstName=Peter, lastName=PumpkinEater]
+```
+            
+I get my characters printed out in last name order. 
+But an easier way to do this is to use a static method on comparator, called _comparing_. 
+This method takes a Function as its method parameter, and returns a Comparator.
+I'll separate the output here.
+
+```java  
+System.out.println("------------------------------------");
+list.sort(Comparator.comparing(Person::lastName));
+list.forEach(System.out::println);
+```
+
+I'll call sort on **list** again, 
+but this time I want to pass it the result of executing the method, _comparing_, 
+on the **Comparator** interface type. 
+To this I pass a method reference, **Person::lastName**. 
+And I'll print the element sorted this way. 
+In this case, the method comparing is a static method on the interface, 
+so I call it directly from the **Comparator** type. 
+And I can pass it a method reference. 
+This reference implicitly accepts a Person instance, 
+and retrieves the lastName field from that instance. 
+Running that code,
+
+```java  
+------------------------------------
+Person[firstName=Minnie, lastName=Mouse]
+Person[firstName=Mickey, lastName=Mouse]
+Person[firstName=Peter, lastName=Pan]
+Person[firstName=Peter, lastName=PumpkinEater]
+```
+                
+I get the same results. 
+But what's even nicer, I can chain another convenience method, 
+called _thenComparing_, and pass a second method reference or lambda expression, 
+to do some multi-level sorting.
+
+```java  
+System.out.println("------------------------------------");
+list.sort(Comparator.comparing(Person::lastName)
+    .thenComparing(Person::firstName));
+list.forEach(System.out::println);
+```
+
+First, I'll copy those last three statements, and paste a copy below. 
+I'll remove the last parentheses and semicolon, from the second statement, 
+and then I'll add a new line. 
+Now, I'll chain a call to the thenComparing method, 
+and pass the method reference, Person firstName. 
+And if I run that:
+
+```java  
+------------------------------------
+Person[firstName=Mickey, lastName=Mouse]
+Person[firstName=Minnie, lastName=Mouse]
+Person[firstName=Peter, lastName=Pan]
+Person[firstName=Peter, lastName=PumpkinEater]
+```
+                
+I get my characters printed out sorted by last name, 
+then first name in this output, _Mickey_ comes before _Minnie_. 
+And finally I can take this sort, and simply reverse it.
+
+```java  
+System.out.println("------------------------------------");
+list.sort(Comparator.comparing(Person::lastName)
+    .thenComparing(Person::firstName).reversed());
+list.forEach(System.out::println);
+```
+
+I'll copy those last four lines above this and paste them. 
+Now, I can chain the _reverse_ method after the call to then comparing. 
+And now running that:
+
+```java  
+------------------------------------
+Person[firstName=Peter, lastName=PumpkinEater]
+Person[firstName=Peter, lastName=Pan]
+Person[firstName=Minnie, lastName=Mouse]
+Person[firstName=Mickey, lastName=Mouse]
+```
+                
+You can see the characters printed out in reverse from the previous sort. 
+These methods on Comparator certainly make it much easier 
+to create many different ways to sort. 
+I'll be using these methods moving forward
+when sorting custom classes or records. 
+Ok, so this lecture ends our discussion about lambda expressions,
+which have really changed the way developers write java code.
+We've already investigated some classes and interfaces 
+that are part of Collections, namely lists, ArrayList, linkedList and iterators. 
+In addition to these, there are other collections such as sets and maps, 
+and that's what I want to focus on in the next section.
 </div>
