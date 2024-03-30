@@ -27,7 +27,7 @@ The first thing I want to do is set up some rankings for
 card combinations. 
 Let me show you the rankings on a wiki-how page for this game. 
 If you don't know how to play this game and want to learn, 
-please search for it on [wikihow.com](www.wikihow.com). 
+please search for its on [wiki](https://www.wikihow.com/Main-Page). 
 The think to notice here are what's called the card ranks, 
 so the different combination of cards. 
 The high card is the lowest rank, and five of a kind is the highest.
@@ -147,7 +147,7 @@ I'll generate it with IntelliJ's default way of doing that,
 but will select none. 
 I'll rewrite the return part by using formatted String.
 And I'll pass the _playerNo_, the _score_, our enum, 
-which will print the score name, so two _Pair_, or 2 of a _kind_ 
+which will print the score name, so two _Pair_, or _2 of a kind,_ 
 for example. 
 I'll also print the ordinal value of the score. 
 I'll print the hand, and finally 
@@ -648,7 +648,7 @@ I'll retrieve the sublist, using the start and last indices I got.
 I'll add the sublist to my keepers list, or the cards
 I want to keep in my hand. Ok, that's how 
 I'm going to evaluate and score each player's hand.
-Now I'll get back to the PokerGame, and the startPlay method.
+Now I'll get back to the PokerGame and the startPlay method.
 
 ```java  
 public void startPlay() {
