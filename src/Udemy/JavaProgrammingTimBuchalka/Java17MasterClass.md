@@ -125,7 +125,10 @@ What we will learn from this Path:
 
 ## [11. Java Collections]()
 
-    * java.util.Collections Methods
+### [a. Collection Interface]()
+### [b. java.util.Collections Methods]()
+### [c. Card Game Challenge]()
+
         * suffle
         * reverse
         * sort

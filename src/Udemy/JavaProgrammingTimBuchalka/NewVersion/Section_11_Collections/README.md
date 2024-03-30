@@ -1800,7 +1800,7 @@ and I'll be covering these in sections
 they're more relevant.
 </div>
 
-## [c. Card Game Challenge]()
+## [c. Card Game Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/Course07_CollectionsChallenge_CardGamePart2/README.md#card-game-challenge)
 <div align="justify">
 
 I introduced you to quite a few methods 
@@ -1830,8 +1830,7 @@ that are important to the game.
 to achieve your results.
 </div>
 
-
-
+## [d. Equal and HashCode Methods]()
 <div align="justify">
 
 
