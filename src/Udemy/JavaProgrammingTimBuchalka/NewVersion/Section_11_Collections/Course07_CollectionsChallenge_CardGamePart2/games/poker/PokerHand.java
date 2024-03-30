@@ -9,11 +9,11 @@ import java.util.List;
 
 public class PokerHand {
 
-    private List<Card> hand;
-    private List<Card> keepers;
-    private List<Card> discards;
+    private final List<Card> hand;
+    private final List<Card> keepers;
+    private final List<Card> discards;
     private Ranking score = Ranking.NONE;
-    private int playerNo;
+    private final int playerNo;
 
     public PokerHand( int playerNo, List<Card> hand) {
         hand.sort(Card.sortRankReversedSuit());

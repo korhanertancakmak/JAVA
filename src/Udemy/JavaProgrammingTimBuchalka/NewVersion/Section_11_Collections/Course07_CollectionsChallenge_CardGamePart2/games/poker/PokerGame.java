@@ -8,9 +8,9 @@ import java.util.function.Consumer;
 public class PokerGame {
 
     private final List<Card> deck = Card.getStandardDeck();
-    private int playerCount;
-    private int cardsInHand;
-    private List<PokerHand> pokerHands;
+    private final int playerCount;
+    private final int cardsInHand;
+    private final List<PokerHand> pokerHands;
     private List<Card> remainingCards;
 
     public PokerGame(int playerCount, int cardsInHand) {
