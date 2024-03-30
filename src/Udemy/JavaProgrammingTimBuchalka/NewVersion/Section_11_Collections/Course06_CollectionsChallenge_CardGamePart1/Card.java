@@ -14,16 +14,6 @@ public record Card(Suit suit, String face, int rank) {
         }
     }
 
-//Part-4
-/*
-        and add a public static method, that'll return a specific comparator for me. I'll insert that after the enum, and
-    before the toString method. I'll make this public static with a type of Comparator, of type Card. The method will
-    return some chained convenience methods, Comparator.comparing, using Card's rank in a method reference, chained to
-    reversed, so my higher ranked cards will be listed first. I'll next chain then Comparing, using a method reference
-    for the suit. Now I want to code a new class, called PokerHand in the same poker package.
-*/
-//End-Part-4
-
     public static Comparator<Card> sortRankReversedSuit() {
         return Comparator.comparing(Card::rank).reversed().thenComparing(Card::suit);
     }
