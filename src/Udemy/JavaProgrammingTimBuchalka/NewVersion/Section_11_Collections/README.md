@@ -186,7 +186,7 @@ Not all collections are implicitly ordered,
 by the way you add the elements, 
 the insertion order in other words, like lists are. 
 What if I wanted to sort this? 
-Can I just call the sort method on list as we did before? 
+Can I just call the _sort_ method on **List** as we did before? 
 I'll add that statement, calling sort on my list variable 
 right below the last println. 
 
@@ -371,7 +371,7 @@ SPADE = 9824
 ```
 
 The card should have the following public static methods 
-to assist anyone using this class:
+to help anyone to use this class:
 
 * _getNumericCard_ which should return an instance of a Card, 
 based on the suit and number passed to it.
@@ -1408,7 +1408,7 @@ The index that came back was -53, not -1,
 but it still means the ten of hearts wasn't found. 
 Can you guess why? 
 If you scroll up and review my code, 
-you'll notice that, I reversed the original sort. 
+you'll notice that I reversed the original sort. 
 Now, I'm attempting to use binary search on a list 
 that isn't sorted the way I specified. 
 This is important.
@@ -1470,7 +1470,7 @@ The _binarySearch_ gives us a result,
 but not on that is reliable, 
 and that last statement again gives me an exception,
 when I try to retrieve an element with that _index = -53_. 
-I'll  revert to that last change,
+I'll revert to that last change,
 where I commented out the sort, 
 so this code compiles and runs.
 Ok, then, you might be asking which method should you use? 
@@ -1833,6 +1833,237 @@ to achieve your results.
 ## [d. Equal and HashCode Methods]()
 <div align="justify">
 
+I'll discuss two classes, HashSet and HashMap, 
+which are based on the hash codes of objects. 
+This can be a confusing topic for new programmers, 
+so I want to spend some extra time explaining it. 
+
+I showed you an image of an abstract set, 
+which showed chaotically placed elements. 
+Since sets are unique because they don't support duplicates, 
+adding an element always incurs the cost of first 
+checking for a match. 
+If your set is large or huge, this becomes a costly operation, 
+O(n), or linear time, 
+if you remember the Big-O notations I covered previously.
+A mechanism to reduce this cost is introduced by something called hashing. 
+If we created two buckets of elements, 
+and the element could consistently identify,
+which bucket it was stored in, then half could reduce the lookup. 
+If we created four buckets, we could reduce the cost by a quarter. 
+A hashed collection will optimally create a limited set of buckets, 
+to provide an even distribution of the objects 
+across the buckets in a full set. 
+A hash code can be any valid integer, 
+so it could be one of 4.2 billion valid numbers. 
+If your collection only contains 100 thousand elements, 
+you don't want to back it with a storage mechanism of 
+four billion possible placeholders.
+And you don't want to have to iterate through 100 thousand 
+elements one at a time to find a match or a duplicate.
+A hashing mechanism will take an integer hash code, 
+and a capacity declaration which specifies 
+the number of buckets to distribute the objects over. 
+It then translates the range of hash codes 
+into a range of bucket identifiers. 
+Hashed implementations use a combination of the hash code and other means, 
+to provide the most efficient bucketing system,
+to achieve this desired uniform distribution of the objects.
+</div>
+
+### Hashing Starts With Understanding Equality
+<div align="justify">
+
+To understand hashing in Java, I think it helps 
+to first understand the equality of objects. 
+I've touched on this in previous lectures, 
+but now I want to be sure you thoroughly understand 
+this subject because it matters when dealing with any hashed collections.
+There are two methods on **java.util.Object** that all objects inherit.
+
+| Testing for equality              | The hashcode Method   |
+|-----------------------------------|-----------------------|
+| public boolean equals(Object obj) | public int hashCode() |
+
+These are _equals_ and _hashCode_, 
+and I show the method signatures from Object here. 
+The implementation of equals on Object is shown here. 
+It simply returns _this == obj_.
+
+```java  
+public boolean equals(Object obj) {
+    return (this == obj);
+}
+```
+            
+Do you remember what _==_ means for Objects? 
+It means two variables have the _same reference to a single object in memory_. 
+Because both references are pointing to the same object, 
+then this is a good equality test. 
+Objects can be considered equal in other instances as well, 
+if their attribute values are equal, for example. 
+The String class overrides this method, 
+so that it compares all the characters in each String, 
+to confirm that two Strings are equal. 
+Let's review this in some code, 
+as the jumping off point for understanding the hash code.
+
+```java  
+String aText = "Hello";
+String bText = "Hello";
+String cText = String.join("l","He","lo");
+String dText = "He".concat("llo");
+String eText = "hello";
+```
+
+I'll set up a series of String local variables. 
+I'll set _a-text_ and _b-text_ to the same string literal, 
+so _Hello_ in double quotes. 
+I have _c-text_, and that's assigned the result of calling 
+_String.join_ with _l_, as the first argument,
+and _He_, and _lo_, as the next two arguments. 
+_d-text_ is the result of concatenating _llo_, 
+to the string literal _He_.
+Finally, _e-text_ is set to the string literal, 
+_hello_, but all lowercase this time. 
+Now, I'll create a list out of these strings, 
+so I can process them more easily.
+
+```java  
+List<String> hellos = Arrays.asList(aText, bText, cText, dText, eText);
+hellos.forEach(s -> System.out.println(s + ": " + s.hashCode()));
+```
+
+I'll call asList on the Arrays class, 
+passing it my list of Strings.
+Remember this takes a variable arguments list,
+so I can just list all my strings there. 
+Next, I'll print each of these Strings out, 
+along with their hashCodes.
+Running this code:
+
+```java  
+Hello: 69609650
+Hello: 69609650
+Hello: 69609650
+Hello: 69609650
+hello: 99162322
+```
+
+I've got five strings printed, 4 have the value _Hello_, 
+with a capital _H_, and one is _hello_ with a lower case _h_.
+Notice that all four of the Strings with a capital _h_, 
+return the exact same hash code, 
+but the last one is different.
+Java doesn't care if these are different objects in memory 
+when it tests the equality of Strings, 
+using the equals method. 
+It just cares that the characters match, in one instance, 
+compared to another instance.
+
+```java  
+Set<String> mySet = new HashSet<>(hellos);
+System.out.println("mySet = " + mySet);
+System.out.println("# of elements = " + mySet.size());
+```
+
+Now, let's create a **Set** of strings. 
+I do that by declaring **Set** as the type, 
+with String as the type argument. 
+I'll call it my _set_ and assign it a new **HashSet**, 
+and I'll pass my _hellos_ list to the hash set constructor. 
+A hash set is a class that implements the **Set** interface 
+and tracks duplicates by their hash code. 
+Most collections allow the creation of another collection type, 
+by passing a different collection to the constructor, 
+as I'm doing here, passing a list to a set 
+but a Set's constructor allows any instance 
+that implements Collection to be passed to it. 
+Ok, now, I'll print out my set, and like a list, 
+I can pass that to a **System.out.println** statement. 
+I'll also print out the size of my set. 
+Running this code:
+
+```java  
+mySet = [Hello, hello]
+# of elements = 2
+```
+
+I get two elements in my set, _Hello_ with a capital _h_, 
+and _hello_ with a lower case _h_. 
+You can see the number of elements is 2, even though the list 
+I passed to the constructor had five references. 
+Let's loop through the elements and see 
+which String references are really in this set.
+
+```java  
+for (String setValue : mySet) {
+    System.out.print(setValue + ": ");
+    for (int i = 0; i < hellos.size(); i++) {
+        if (setValue == hellos.get(i)) {
+            System.out.print(i + ", ");
+        }
+    }
+    System.out.println(" ");
+}
+```
+
+I'll loop through the elements in the set, 
+using an enhanced for loop, printing the set value. 
+I'll loop through the string in the _hellos_ list, 
+using a traditional for loop. 
+I'm going to compare the String in the set with the String in the list, 
+and I want to use equals sign here, 
+because I'm really interested in whether 
+these instances are the same object in memory. 
+If they're the same reference, I'll print out the index of the element in the list. 
+I'll print a new line after a set element. 
+And running that code:
+
+```java  
+---(same)
+Hello: 0, 1,
+hello: 4,
+```
+
+I get three matches. 
+The first set element, _Hello_, with an uppercase _H_,
+is the same reference as the first two list elements, 
+at index 0 and 1. 
+The "_hello_" element with lowercase is the last element 
+in the Strings list. 
+The hash set will only add new references to its collection 
+if it doesn't find a match in its collection, 
+first using the _hashCode_ and then the object's equals method. 
+It uses hashCode to create a bucket identifier 
+to store the new reference. 
+I'll talk about the underlying mechanism of the hash set a bit later.
+
+Our code sets up five String reference variables, 
+but two of these referenced the same string object in memory,
+as shown here with _aText_ and _bText_ pointing to the same string instance.
+
+![image09]()
+
+When we passed our list of five strings to the **HashSet**, 
+it added only unique instances to its collection.
+It locates elements to match by first deriving which bucket to look through, 
+based on the hash code.
+It then compares those elements to the next element to be added, 
+with other elements in that bucket, using the _equals_ method. 
+Again, we'll talk about how Java implements the **HashSet** in a bit. 
+For now, I want you to understand how equality, 
+and the _hashCode_ go hand in hand, when using hashed collections. 
+Let's get back to the code and explore this a bit more.
+
+
+
+</div>
+
+
+
+<div align="justify">
+
 
 ```java  
 
@@ -1840,6 +2071,41 @@ to achieve your results.
 
 </div>
 
+<div align="justify">
+
+
+```java  
+
+```
+
+</div>
+
+<div align="justify">
+
+
+```java  
+
+```
+
+</div>
+
+<div align="justify">
+
+
+```java  
+
+```
+
+</div>
+
+<div align="justify">
+
+
+```java  
+
+```
+
+</div>
 
 <div align="justify">
 
