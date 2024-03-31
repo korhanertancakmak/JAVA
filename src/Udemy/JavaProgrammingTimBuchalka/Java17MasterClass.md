@@ -128,6 +128,8 @@ What we will learn from this Path:
 ### [a. Collection Interface]()
 ### [b. java.util.Collections Methods]()
 ### [c. Card Game Challenge]()
+### [d. Equal and HashCode Methods]()
+### [e. Set & Map Interfaces]()
 
         * suffle
         * reverse

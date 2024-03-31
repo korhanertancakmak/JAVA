@@ -7,23 +7,7 @@ import java.util.List;
 /*
                                       The Setup Challenge - The Contact Class
 
-        Like the code setup lecture of Collections CardGame I presented earlier, this another lecture which will set up
-    code for upcoming lectures on sets. As before, if you want an extra independent challenge, then stay with me, and try
-    this out. If you want to sit this one out, I'll review the code quickly at the start of the next lecture, and the code
-    will be here for you, if you want to do that.
 
-        In this example, "I'll be using HashSets as fields", and I'll use the "Scanner" class, which I've used many times
-    before, always passing System.in to the constructor. In this code, "I'll be using Scanner with just a String passed
-    to the constructor". It works similarly. If you want to see this in action, be sure to follow along. Eventually I'll
-    cover reading input from files, although this code won't be doing that. Using scanner this way, gives you a taste for
-    a way to do this, without the file complexities which I'll cover later. Again the purpose of having a separate video
-    here, to set up a bit of code, is to keep the new topic material more on point later.
-
-        In this Challenge, you want to create a Contact class, that has the fields, a String name, a HashSet of String
-    emails and phones. This class should have multiple constructors. The first just takes a name. The second should have
-    name, and a single email of type String. Next, another with 2 arguments, name, but this time a long, which represents
-    a 10 digit phone number. Lastly, the constructor that should do most of the work, the last in your chain, in other
-    words, should take name, a single email, and a single phone.
 
                         ________________________________________________________________
                         | Contact                         Phone Format: (nnn) nnn-nnnn |

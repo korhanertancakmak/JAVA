@@ -2327,7 +2327,6 @@ You see our set has all three cards in it,
 and the hash codes for each card are unique.
 </div>
 
-
 ### Creating HashCode Method
 <div align="justify">
 
@@ -2368,16 +2367,42 @@ These are the HashSet, LinkedHashSet, the HashMap, and LinkedHashMap.
 In addition, there's one legacy implementation, 
 the HashTable, which I won't be covering, 
 since there are more efficient implementations that replace this legacy class.
-
-
-
-```java  
-
-```
-
 </div>
 
+## [e. Set & Map Interfaces]()
 <div align="justify">
+
+Like the code setup lecture of Collections CardGame I presented earlier, 
+this is another lecture that will set up code 
+for upcoming lectures on sets. 
+
+In this example, _I'll be using HashSets as fields_, 
+and I'll use the **Scanner** class, 
+which I've used many times before, 
+always passing _System.in_ to the constructor. 
+In this code, _I'll be using **Scanner** with just 
+a String passed to the constructor_". 
+It works similarly.
+If you want to see this in action, be sure to follow along. 
+Eventually I'll cover reading input from files, 
+although this code won't be doing that. 
+Using scanner this way, gives you a taste for a way to do this, 
+without the file complexities which I'll cover later. 
+
+![image10]()
+
+In this lecture, you want to create a **Contact** class
+that has the fields, a String name, a HashSet of String emails and phones. 
+This class should have multiple constructors. 
+The first just takes a name. 
+The second should have name, and a single email of type String. 
+Next, another with two arguments, name, 
+but this time a long, which represents a 10-digit phone number. 
+Lastly, the constructor that should do most of the work, 
+the last in your chain, in other words, should take name, 
+a single email, and a single phone.
+
+
 
 
 ```java  
