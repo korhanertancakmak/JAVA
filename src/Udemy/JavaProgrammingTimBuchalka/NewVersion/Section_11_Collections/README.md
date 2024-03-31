@@ -2389,9 +2389,9 @@ although this code won't be doing that.
 Using scanner this way, gives you a taste for a way to do this, 
 without the file complexities which I'll cover later. 
 
-![image10]()
+![image10](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image10.png?raw=true)
 
-In this lecture, you want to create a **Contact** class
+In this setup code, you want to create a **Contact** class
 that has the fields, a String name, a HashSet of String emails and phones. 
 This class should have multiple constructors. 
 The first just takes a name. 
@@ -2402,15 +2402,870 @@ Lastly, the constructor that should do most of the work,
 the last in your chain, in other words, should take name, 
 a single email, and a single phone.
 
+This last constructor should do the following:
+* Add the email argument to the emails set, if email is not null.
+* Transform the phone argument, a long, (if it's not zero), 
+to a string in the format (123) 456–7890, for example.
+* Add the transformed phone to the phone set.
 
+This class should also include three public instance methods. 
+A getter for name, an override for the toString method will print the name, 
+set of emails, and set of phones in a simple form. 
+Finally, include a method called _mergeContactData_, 
+that takes a contact, and returns a new **Contact** instance, 
+which merges the current instance with the **Contact** passed. 
+I've only just started the conversation about **Sets** and **HashSets**, 
+but you should be able to set up emails and phones as shown 
+for this setup.
 
+The **ContactData** class is going to emulate getting data 
+from an external source, but instead of an external source, 
+I just want you to set this data up with two different text blocks, 
+in the format shown below. 
+This data purposely has duplicates.
+
+| Phone Data                | Email Data                           |
+|---------------------------|--------------------------------------|
+| Charlie Brown, 3334445555 | Mickey Mouse, mckmouse@gmail.com     |
+| Maid Marion, 1234567890   | Mickey Mouse, micky1@aws.com         |
+| Mickey Mouse, 9998887777  | Mickey Mouse, 9998887777             |
+| Mickey Mouse, 1247489758  | Robin Hood, rhood@gmail.com          |
+| Minnie Mouse, 4567805666  | Linus Van Pelt, lvpelt2015@gmail.com |
+| Robin Hood, 5647893000    | Daffy Duck, daffy@google.com         |
+| Robin Hood, 7899028222    |                                      |
+| Lucy Van Pelt, 5642086852 |                                      |
+| Mickey Mouse, 9998887777  |                                      |
+
+**Create a method named _getData_** that **takes a String type** 
+(either **phone** or **email**), and returns a List of **Contact**.
+Now, I'm going to use **Scanner** to parse the data in these text blocks. 
+My reason for using **Scanner**, is twofold.
+
+First, I want to demonstrate this variation, 
+and second, I want you to imagine this data coming 
+from an input file or a database. 
+IO and database access are for a later section, 
+but this code simulates getting data from an external source. 
+However, you do it, you want to parse this data, 
+create a contact for each row, and return the list. 
+You want to return the lists separately, meaning return a list of phones, 
+or a list of emails, based on the type passed to this method. 
+
+Now, I'll create the Contact class:
 
 ```java  
+public class Contact {
 
+    private String name;
+    private Set<String> emails = new HashSet<>();
+    private Set<String> phones = new HashSet<>();
+}
 ```
 
+And I'll put it in the same package. 
+I want three fields in this class, 
+which I described in the challenge info. 
+Name as string, emails, and phones both declared as sets, 
+and assigned new HashSet instances. 
+I'm going to make emails and phones both HashSets, 
+because I don't want duplicates in my contact data.
+
+```java  
+public Contact(String name) {
+    this(name, null);
+}
+
+public Contact(String name, String email) {
+    this(name, email, 0);
+}
+
+public Contact(String name, long phone) {
+    this(name, null, phone);
+}
+```
+
+Next, I want a series of constructors. 
+I'm going to set most of these up manually, 
+because my constructor arguments aren't going 
+to match up with my fields. 
+I'll use IntelliJ's tools to generate for the first one, 
+which has an argument for just name. 
+But I don't want to set the name field here.
+Instead, I want to chain another constructor 
+that I haven't yet created, one with two arguments,
+and I'll pass name, and null for email. 
+I'll add another constructor, has two arguments,
+the new argument is going to be String and email, 
+and I'm going to chain this to another constructor call, 
+to a three argument constructor, defaulting zero as the phone 
+as the third argument. 
+I'll add another constructor again, 
+I'll add phone as a long in the parameters, 
+and then I'll add it to the three constructor calls. 
+For the last constructor, I'm just going to manually type this one out 
+and talk through it. 
+As I stated in my challenge info, this will have name 
+and email, both strings, and a long for phone.
+
+```java  
+public Contact(String name, String email, long phone) {
+    this.name = name;
+    if (email != null) {
+        emails.add(email);
+    }
+    if (phone > 0) {
+        String p = String.valueOf(phone);
+        p = "(%s) %s-%s".formatted(p.substring(0, 3), p.substring(3, 6),
+                p.substring(6));
+        phones.add(p);
+    }
+}
+```
+
+Ok, the _name_ is straightforward; 
+I'm just assigning it to the method argument. 
+Next, I want to add the _email_ passed to this constructor,
+to the emails set on this class, 
+only if email is not equal to null. 
+Now, adding the phone is a bit more complicated,
+first of all because it's a long, and it needs to be a String, 
+formatted in a specific way. 
+If the phone number isn't greater than 0, I won't do anything. 
+If it is, I'll first create a String out of it, 
+using the value of method, passing it a long, the phone. 
+I'll now set up a formatted string, and pass the first three digits, 
+then the next three, and the final four, 
+which is how phone numbers are formatted in some US entries. 
+Then, I'll simply add that local variable to the phone set. 
+Ok, so that's all the constructors. 
+Now I have three methods I need to code.
+
+```java  
+public String getName() {
+    return name;
+}
+
+@Override
+public String toString() {
+    return "%s: %s %s".formatted(name, emails, phones);
+}
+```
+
+First a getter for _name_, so I'll generate that. 
+I also want a _toString_ method. 
+I'll use the override feature in IntelliJ, to generate that. 
+I want to replace that return line, 
+which is _return super.toString()_ with my own formatted String. 
+Like lists, I can pass sets right to _println_, 
+or to the formatted method, as I show here.
+
+```java  
+public Contact mergeContactData(Contact contact) {
+
+    Contact newContact = new Contact(name);
+    newContact.emails = new HashSet<>(this.emails);
+    newContact.phones = new HashSet<>(this.phones);
+    newContact.emails.addAll(contact.emails);
+    newContact.phones.addAll(contact.phones);
+    return newContact;
+}
+```
+
+Ok, I've got one last method. 
+That's public returns a Contact, 
+I'll name it _mergeContactData_, and it takes a Contact as an argument. 
+I'll create a local variable, also a contact, 
+and assign that a new Contact instance, 
+passing the name on the current instance to that constructor. 
+That gets returned from this method.
+But I also want to include the emails 
+and phones from both contacts, 
+so I'll set the emails on the new contact 
+to be a new hash set, passing it the current instance's emails. 
+I'll do the same thing for the phones, 
+passing it the phones which are on the current instance.
+At this juncture, this code is really just cloning the data, 
+by using all the data from the current instance, 
+to create a new contact. 
+To make it a merge, I want to add the emails and phones 
+from the contact passed to this method. 
+To do that, I can just call "_addAll_" on the new Contact's emails field, 
+and pass it the emails on the Contact that is passed to this method. 
+I'll do the same thing for the phones. 
+Ok, so that completes the Contact class. 
+Now I want to do the second part of the code setup, 
+and that's to create a ContactData class:
+
+```java  
+public class ContactData {
+
+    private static final String phoneData = """
+            Charlie Brown, 3334445555
+            Maid Marion, 1234567890
+            Mickey Mouse, 9998887777
+            Mickey Mouse, 1247489758
+            Minnie Mouse, 4567805666
+            Robin Hood, 5647893000
+            Robin Hood, 7899028222
+            Lucy Van Pelt, 5642086852
+            Mickey Mouse, 9998887777
+            """;
+
+    private static final String emailData = """
+            Mickey Mouse, mckmouse@gmail.com
+            Mickey Mouse, micky1@aws.com
+            Minnie Mouse, minnie@verizon.net
+            Robin Hood, rhood@gmail.com
+            Linus Van Pelt, lvpelt2015@gmail.com
+            Daffy Duck, daffy@google.com
+            """;
+    
+    public static List<Contact> getData(String type) {
+
+        List<Contact> dataList = new ArrayList<>();
+        Scanner scanner = new Scanner(type.equals("phone") ? phoneData : emailData);
+        while (scanner.hasNext()) {
+            String[] data = scanner.nextLine().split(",");
+            Arrays.asList(data).replaceAll(String::trim);
+            if (type.equals("phone")) {
+                dataList.add(new Contact(data[0], Long.parseLong(data[1])));
+            } else if (type.equals("email")) {
+                dataList.add(new Contact(data[0], data[1]));
+            }
+        }
+        return dataList;
+    }
+}
+```
+
+That would simulate a data reader of some kind. 
+In our case, this is just going to read data from static strings,
+but you could imagine we could read this data from ta file, 
+a database, or get it from some kind of service provider.
+Again, in the same package, I'll create a new class named **ContactData**. 
+I'll create two static text fields, using text blocks, 
+one for phone data, and one for email data. 
+Initially, both fields will be empty. 
+I'm just going to paste this data in.
+
+```java  
+public static List<Contact> getData(String type) {
+    List<Contact> dataList = new ArrayList<>();
+    Scanner scanner = new Scanner(type.equals("phone") ? phoneData : emailData);
+    while (scanner.hasNext()) {
+        String[] data = scanner.nextLine().split(",");
+        Arrays.asList(data).replaceAll(String::trim);
+        if (type.equals("phone")) {
+            dataList.add(new Contact(data[0], Long.parseLong(data[1])));
+        } else if (type.equals("email")) {
+            dataList.add(new Contact(data[0], data[1]));
+        }
+    }
+    return dataList;
+}
+```
+
+Ok, so next, I want a method to read this data, 
+emulating reading it from a file, 
+or retrieving it from an external source. 
+This is going to be a public static method called getData,
+it'll take a String, which will identify 
+if it's retrieving phone or email data, 
+and it'll return a List of contacts. 
+I'll set up a local variable, data list, 
+and instantiate a new array list. 
+I'll return this local variable from the method.
+Now, I'll set up my scanner variable. 
+If the type is phone, 
+I'll pass in the phoneData text block to the constructor. 
+If the type is email, I'll pass in the emailData text block. 
+You've seen **Scanner** before with _System.in_, 
+but it can also be used with any string, 
+including a multi-string text block, 
+which is what I'm doing here. 
+There are other ways to split this data by new lines and so forth,
+and I'll show you these examples in future code. 
+I wanted to write the code this way, 
+as a sort of mock file read if you will. 
+Now I can use the Scanner functionality 
+to treat the string like any input stream. 
+I'll use a while loop to continue looping 
+while hasNext on the scanner is true. 
+I'll call the nextLine to get the next string 
+and split that on a comma, 
+passing it to a local variable, data, an array of strings. 
+I'll pass the array to the asList method on Arrays, 
+so that I can use the replaceAll method,
+passing it the method reference for the trim method on String.
+This is going to trim leading and trailing whitespace, 
+from each of the strings in my text block. 
+I could have also used strip Indent there, 
+but I've formatted my text block itself without indents,
+so I won't worry about it, for simplicity. 
+Next, I want to create specific types of contacts, 
+based on the type passed.
+If the type is phone, I'll add a new Contact, 
+using the constructor that takes name, 
+which is the first comma delimited element, 
+in both of my text block elements. 
+I'll also pass it the phone number, 
+which I first need to parse, using parseLong on the long wrapper. 
+The phone number is the second comma delimited element, in my text block. 
+If the type is email, 
+I'll just pass the second comma delimited element as is, 
+which is the email as a string. 
+And that's it. 
+That's the setup. 
+I'll add a public static print method on the Main class.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+        List<Contact> emails =  ContactData.getData("email");
+        List<Contact> phones = ContactData.getData("phone");
+        printData("Phone List", phones);
+        printData("Email List", emails);
+    }
+    public static void printData(String header, Collection<Contact> contacts) {
+
+        System.out.println("----------------------------------------------");
+        System.out.println(header);
+        System.out.println("----------------------------------------------");
+        contacts.forEach(System.out::println);
+    }
+}
+```
+
+I'll call it _printData_, and it'll take a string, 
+a header, as well as a Collection, with a type of Contact.
+This prints the header between some separator lines,
+and then uses forEach to print each contact. 
+Next, I'll test this out.
+In the main method, I'll create a List, called emails, 
+and assign that the result of calling getData 
+on my ContactData class with emails as the type. 
+I'll repeat that for phone, invoking the same method, 
+but passing phone as the type. 
+I'll execute my new printData method to print first the emails, 
+and then the phones. 
+Running that:
+
+```java  
+----------------------------------------------
+Phone List
+----------------------------------------------
+Charlie Brown: [] [(333) 444-5555]
+Maid Marion: [] [(123) 456-7890]
+Mickey Mouse: [] [(999) 888-7777]
+Mickey Mouse: [] [(124) 748-9758]
+Minnie Mouse: [] [(456) 780-5666]
+Robin Hood: [] [(564) 789-3000]
+Robin Hood: [] [(789) 902-8222]
+Lucy Van Pelt: [] [(564) 208-6852]
+Mickey Mouse: [] [(999) 888-7777]
+----------------------------------------------
+Email List
+----------------------------------------------
+Mickey Mouse: [mckmouse@gmail.com] []
+Mickey Mouse: [micky1@aws.com] []
+Minnie Mouse: [minnie@verizon.net] []
+Robin Hood: [rhood@gmail.com] []
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Daffy Duck: [daffy@google.com] []
+```
+
+I'm getting the list of phone contacts, and the list of email contacts, 
+printed out neatly, You can see I have several _Mickey Mouses_ in both lists, 
+and a couple of _Robin Hoods_ in the phone list. 
+Ok, so that was the setup challenge. 
+I'll be using this code to explore sets, 
+and merging contacts using sets. 
+
+A Set is not implicitly ordered. 
+A Set contains no duplicates. 
+A Set may contain a single null element. 
+Sets can be useful because operations on them are rapid. 
+In fact, the lack of duplicates is the most important differentiator, 
+as there are ordered sets, such as the **LinkedHashSet**, and **TreeSet**.
+
+The **set** interface defines the basic methods 
+_add_, _remove_ and _clear_, to maintain the items in the set. 
+We can also check if a specific item is in the set using the contains method. 
+Interestingly enough, there's no way to retrieve an item from a set. 
+You can check if something exists, using _contains_, 
+and you can iterate over all the elements in the set,
+but attempting to get the 10th element, for example, 
+from a set isn't possible, with a single method.
+
+The best-performing implementation of the **Set** interface 
+is the **HashSet class**. 
+This class uses hashing mechanisms to store the items. 
+This means the hash code method is used 
+to support even distributions of objects in the set. 
+Oracle describes this class as offering constant time performance 
+for the basic operations (add, remove, contains and size).
+This assumes the hash function disperses the elements properly 
+among the buckets.
+Constant time has the Big O Notation O(1). 
+Although I haven't covered the Map and HashMap types yet, 
+the **HashSet** actually uses a **HashMap** in its own implementation,
+as of JDK 8. 
+Later, when I cover maps and hash maps, 
+I'll swing back and explain how the **HashSet** uses a hash map under
+its covers.
+
+In the lecture called Set Up for **Sets** and **Maps**, 
+I created code for a Contact class, 
+as well as code that simulated getting phone lists and email lists, 
+from an external source. 
+I have two classes set up in this code:
+
+1. The **Contact** class that consists of a name, a set of phones, 
+which are strings, and a set of emails, also strings.
+This class has only three methods on it. 
+The first two are a getter for name, a
+s well as an overridden _toString_ method.
+There's also a merge **Contact** Data method
+that has a contact as an argument, and creates a new contact. 
+It populates the new contact, first with the data on the current instance, 
+and then merges emails and phone numbers, from the contact passed to this method.
+
+2. The **ContactData** has one method on it, _getData_, 
+that takes a type, a String, and will return a list of Contact instances. 
+The _type_ can be _phone_ or _email_. 
+If I pass _phone_, I get a list of contacts each with a single phone number. 
+If I pass _email_, I get a list of contacts with a single email. 
+The data's stored as text blocks, simulating what each record might look like,
+in a comma-delimited file. 
+Data is read by a Scanner instance, constructed with one of these text blocks. 
+Every time I call getData on this class, 
+I'll get a new list with new instances of contacts.
+
+```java  
+List<Contact> emails =  ContactData.getData("email");
+List<Contact> phones = ContactData.getData("phone");
+printData("Phone List", phones);
+printData("Email List", emails);
+```
+
+I get the two lists from the ContactData, 
+and the contact info printed out. 
+Ok, so now imagine I've got a list of names with phone numbers,
+with my mobile phone contacts, 
+and also a list of email contacts from an internet provider.
+Now, I want to combine these contacts, 
+merging any duplicates into a single contact, 
+with multiple emails and phone numbers, on a single record. 
+To do this, I'll create two Sets:
+
+```java  
+Set<Contact> emailContacts = new HashSet<>(emails);
+Set<Contact> phoneContacts = new HashSet<>(phones);
+printData("Phone Contacts", phoneContacts);
+printData("Email Contacts", emailContacts);
+```
+
+Two **HashSets** to be specific, one for the phone data, 
+and one for the email data. 
+Like Lists, I start with the interface type as the variable type, 
+so **Set** here, and a type argument of **Contact**, in both cases. 
+The first variable, email contacts will be assigned a new **HashSet**, 
+constructed by passing the email list to it. 
+The phone contacts are the same, a new **Hashset** 
+but constructed using the phone list. 
+Most constructors of classes implementing the **Collection** interface,
+support a constructor that accepts a **Collection**. 
+You can see this lets me very quickly create anew hashSet from a list, 
+with one line of code. 
+I'll again use my printData method on this class, passing a header, 
+and the phone or email contacts. 
+The _printData_ method will take any **Collection** type, 
+meaning any instance of a class that implements **Collection**. 
+This lets me pass any list or a set to this method to get printed. 
+Let me run this.
+
+```java  
+----------------------------------------------
+Phone Contacts
+----------------------------------------------
+Lucy Van Pelt: [] [(564) 208-6852]
+Charlie Brown: [] [(333) 444-5555]
+Maid Marion: [] [(123) 456-7890]
+Robin Hood: [] [(564) 789-3000]
+Mickey Mouse: [] [(999) 888-7777]
+Minnie Mouse: [] [(456) 780-5666]
+----------------------------------------------
+Email Contacts
+----------------------------------------------
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Robin Hood: [rhood@gmail.com] []
+Mickey Mouse: [mckmouse@gmail.com] []
+Daffy Duck: [daffy@google.com] []
+Minnie Mouse: [minnie@verizon.net] []
+```
+
+Here, I hope you can see, 
+there are still duplicates in both of these sets, 
+but the order is different from the order that was in the list. 
+Can you guess why there's duplicates in these sets, 
+even though I just said earlier, 
+that **HashSets** won't have duplicates? 
+Well, duplicates are determined, for hashed collections, 
+first by the hash code, and then the _equals_ method. 
+In this instance, both the hash code method, 
+and the _equals_ method, are using Object's implementation. 
+This means each of these instances of contacts is considered unique, 
+by that definition. 
+In most cases, this is probably a good thing. 
+But since these are personal contacts, 
+I'm going to make a rule, that _contacts_ that have the same _name_ 
+are really the same person, 
+but with different data. 
+To implement this rule, 
+I want to go to the **Contact** class, 
+and generate both an _equals_ method, and a _hashCode_ method.
+
+```java  
+@Override
+public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Contact contact = (Contact) o;
+
+    return getName().equals(contact.getName());
+}
+@Override
+public int hashCode() {
+    return 33 * getName().hashCode();
+}
+```
+
+Instead of selecting the IntelliJ default, 
+I want to select **java.util.Objects.equals** 
+and hashCode (java 7 +). 
+I'll accept the defaults for the first two screens, 
+where all fields are selected. 
+In the third dialogue, where it says select all non-null fields, 
+I'm going to just select name here. 
+Now I want to examine these generated methods, in light of 
+what I've previously talked about. 
+First, let's look at the equals method.
+We've said before that if the references are equal,
+they're the same instance, 
+and we can return true in this case. 
+Next, the code checks if the object passed is a null, 
+or if the classes (or types) of the objects differ.
+If either of these conditions is true, then these are definitely not equal. 
+Since the class type was previously checked, 
+and found to be the same type as the current instance,
+we can safely cast the object _o_, to a contact. 
+Ok, so notice that for name, which is the only field
+I said was non-null, the code is directly calling the _equals_ method, 
+against the _getName_ results on both objects. 
+For the other two fields, the code is using another utility class, 
+called Objects, a class in the java util package.
+If I press control click on that class name, Objects, 
+I can see the comments in the code, 
+explaining that this is a utility class, 
+introduced in JDK 7. 
+This class provides static utility methods to handle nulls, 
+to generate equals results, and hash codes.
+Getting back to the code, you could guess that a contact is equal,
+based on the name, and if the other attributes aren't null,
+by matching on emails and phones.
+
+```java  
+@Override
+public int hashCode() {
+    return 33 * getName().hashCode();
+}
+```
+
+Now, look at the hash code method. 
+Here again, it's using the Objects class, 
+calling a hash method on that. 
+I'll press control click on the hash method next. 
+You can see here, this method takes a variable arguments parameter, 
+and this code simply passes those off to the hash Code method, 
+on **java.util.Arrays**. 
+And continuing, I'll press control click on _hashCode_ there. 
+From this, you see that Java, like IntelliJ, 
+creates a hash code using 31, as a multiplier for each values' hash code. 
+Ok, so there's no right way to generate these methods; 
+a lot will depend on your own organizations' standards. 
+I'll run my code again, with these methods in place now.
+
+```java  
+----------------------------------------------
+Phone Contacts
+----------------------------------------------
+Mickey Mouse: [] [(124) 748-9758]
+Charlie Brown: [] [(333) 444-5555]
+Maid Marion: [] [(123) 456-7890]
+Robin Hood: [] [(789) 902-8222]
+Minnie Mouse: [] [(456) 780-5666]
+Robin Hood: [] [(564) 789-3000]
+Mickey Mouse: [] [(999) 888-7777]
+Lucy Van Pelt: [] [(564) 208-6852]
+----------------------------------------------
+Email Contacts
+----------------------------------------------
+Mickey Mouse: [mckmouse@gmail.com] []
+Mickey Mouse: [micky1@aws.com] []
+Minnie Mouse: [minnie@verizon.net] []
+Robin Hood: [rhood@gmail.com] []
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Daffy Duck: [daffy@google.com] []
+```
+
+My set still contains duplicate names, 
+but Mickey Mouse only has one entry now, 
+for _(999) 888–7777_ in its phone number. 
+This means my contacts are distinct by the name, 
+all the emails, and all the phone numbers.
+
+Going back to the Contact class,
+I'll again delete both the _equals_ and _hashCode_ method. 
+I'll regenerate these,
+using Intelli-J's default template, 
+but in every instance, on each dialogue window, 
+I want to just check the name.
+Make sure to select name on the last dialogue,
+where it's not selected as a default.
+Now, here, _hashCode_ doesn't use a multiplier,
+but simply returns the name's hash code.
+This means a **Contact** instance, and a String, 
+which has the value Mickey Mouse, will result in the same hash code. 
+This is ok, but it's usually a good idea to have objects 
+which are a different class type, return different hash codes, 
+so I'm going to add my own multiplier here.
+I'll make it 33, a composite number, but some research indicates, 
+this multiplier can produce consistent results similar to 31.
+As with almost everything in software engineering, 
+there's debate over what the best multiplier might be. 
+I don't want you to think that 33 is better than 31, 
+it's just a different choice. 
+I know this will drive a couple of my students to go 
+and research that debate, and that's a good thing. 
+For my own small sets in this code, 
+it isn't really going to matter. 
+Now, if I run the code again:
+
+```java  
+----------------------------------------------
+Phone Contacts
+----------------------------------------------
+Lucy Van Pelt: [] [(564) 208-6852]
+Charlie Brown: [] [(333) 444-5555]
+Maid Marion: [] [(123) 456-7890]
+Robin Hood: [] [(564) 789-3000]
+Mickey Mouse: [] [(999) 888-7777]
+Minnie Mouse: [] [(456) 780-5666]
+----------------------------------------------
+Email Contacts
+----------------------------------------------
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Robin Hood: [rhood@gmail.com] []
+Mickey Mouse: [mckmouse@gmail.com] []
+Daffy Duck: [daffy@google.com] []
+Minnie Mouse: [minnie@verizon.net] []
+```
+                    
+I get only distinct records by name in each set. 
+My sets no longer have multiple records for a single contact name.
+Using this method to create my sets, however, 
+means I've lost a couple of phone numbers and emails in the process.
+To resolve that, I'm going to add two methods to the Contact class.
+
+```java  
+public void addEmail(String companyName) {
+
+    String[] names = name.split(" ");
+    String email = "%c%s@%s.com".formatted(name.charAt(0), names[names.length - 1],
+            companyName.replaceAll(" ", "").toLowerCase());
+    emails.add(email);
+}
+```
+
+The first method will generate and _add_ a company email 
+to the current instance's email set. 
+This will be public, void, called addEmail, 
+and take a string, company name. 
+This code splits the contact name into an array of strings,
+splitting on a space. 
+The email is made up of the first character of the name, 
+then the last string in the array,
+which I'm going to assume is the last name. 
+That's followed by the company name, 
+removing any spaces in it, and finally appending _.com_ to that. 
+Then I execute just the add method on the emails set, 
+passing this new String.
+To test this out, I'll add a call to this method in the main method.
+
+```java  
+int index = emails.indexOf(new Contact("Robin Hood"));
+Contact robinHood = emails.get(index);
+robinHood.addEmail("Sherwood Forest");
+System.out.println(robinHood);
+```
+
+But I want to first get _Robin Hood_ from the list of email contacts. 
+I can do this by first creating a new Contact,
+using just the name _Robin Hood_ now. 
+I can pass this new contact, 
+to the index-of method on the email list, 
+which returns the integer index, where that element is located the list. 
+Then I can use the get method on the list 
+to return the original email contact, which is what I want. 
+Now that I've got the original Robin Hood contact, 
+I'll add the company email to this record, 
+calling the addEmail method with the company name, 
+Sherwood Forest. 
+I'll add that statement before the _system.out.println_ statement. 
+If I run that:
+
+```java  
+----------------------------------------------
+Phone Contacts
+----------------------------------------------
+Lucy Van Pelt: [] [(564) 208-6852]
+Charlie Brown: [] [(333) 444-5555]
+Maid Marion: [] [(123) 456-7890]
+Robin Hood: [] [(564) 789-3000]
+Mickey Mouse: [] [(999) 888-7777]
+Minnie Mouse: [] [(456) 780-5666]
+----------------------------------------------
+Email Contacts
+----------------------------------------------
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Robin Hood: [rhood@gmail.com] []
+Mickey Mouse: [mckmouse@gmail.com] []
+Daffy Duck: [daffy@google.com] []
+Minnie Mouse: [minnie@verizon.net] []
+Robin Hood: [RHood@sherwoodforest.org, rhood@gmail.com] []
+```
+
+You can see my method works, and now I have two emails for Robin Hood, 
+one is _rhood@sherwoodforest.com_. 
+So what happens if I call that method again? 
+Actually, before I do that, 
+I want to change the _addEmail_ method on **contact**.
+
+```java  
+public void addEmail(String companyName) {
+
+    String[] names = name.split(" ");
+    String email = "%c%s@%s.com".formatted(name.charAt(0), names[names.length - 1],
+            companyName.replaceAll(" ", "").toLowerCase());
+    //emails.add(email);
+    if (!emails.add(email)) {
+        System.out.println(name + " already has email " + email);
+    } else {
+        System.out.println(name + " now has email " + email);
+    }
+}
+```
+
+The _add_ method on any collection instance returns a boolean 
+if the element is added successfully.
+I want to test that result here.
+I'll remove the _emails.add_ statement, 
+and replace it with an if statement, 
+that executes the add method on this set, 
+and tests the value returned, the negated value. 
+If add returns false, 
+I print that emails already have that value in its set, otherwise,
+I'll print that it was added. 
+Getting back to the main method,
+
+```java  
+int index = emails.indexOf(new Contact("Robin Hood"));
+Contact robinHood = emails.get(index);
+robinHood.addEmail("Sherwood Forest");
+robinHood.addEmail("Sherwood Forest");
+//System.out.println(robinHood);
+```
+
+I'll copy that first addEmail statement, 
+and paste a copy right below it. 
+Running this,
+
+```java  
+Robin Hood now has email RHood@sherwoodforest.com
+Robin Hood already has email RHood@sherwoodforest.com
+```
+
+You can see that the first time, _RHood@sherwoodforest.com_ was added, 
+but in the second instance, 
+the _add_ wasn't successful because that email is already there. 
+A better approach would have been to use the _contains_ method, 
+before I did all the work of generating the email string. 
+I'll do this in the next method I want to add to **Contact** Class:
+
+```java  
+public void replaceEmailIfExists(String oldEmail, String newEmail) {
+
+    if (emails.contains(oldEmail)) {
+        emails.remove(oldEmail);
+        emails.add(newEmail);
+    }
+}
+```
+
+I'm going to call, _replaceEmailIfExists_, 
+a public method with a _void_ return type. 
+This method takes two Strings,
+an old email, and a new email, both strings. 
+It checks the set to see if the old email is in the set, 
+using the contains method. 
+If the old email is in the set, then it removes that old email, 
+and adds the new email. 
+In other words, the new email only gets added 
+if the old email is found in the set first, 
+so it'd really a replacement. 
+Let's say I made a mistake, and now need to fix robin hood's email, 
+changing it from _sherwoodforest.com_, 
+to _sherwoodforest.org_. 
+Going to the main method,
+I'll add this statement 
+after the second _addEmail_ call. 
+
+```java  
+robinHood.replaceEmailIfExists("RHood@sherwoodforest.com", "RHood@sherwoodforest.org");
+System.out.println(robinHood);
+```
+
+Running that code,
+
+```java  
+Robin Hood: [RHood@sherwoodforest.org, rhood@gmail.com] []
+```
+                    
+You can see that I successfully replaced the company email, 
+with the dot org version, for Robin hood. 
+Unlike lists, the hash set implementation doesn't include a replacement
+or _replaceAll_ method. 
+Those are the basic functions on **set**, _add_, _remove_, and _contains_. 
+Now, there's no get method on a set. 
+If you want to get an element from the set, 
+you'll have to iterate through every element, 
+and look for a match manually. 
+And remember your **HashSet**'s not going to be ordered or sorted. 
+Sets are valuable for groups of elements, 
+when you'll be adding elements, removing duplicates, 
+checking if an element is in the list, 
+or other set operations I'll be covering shortly. 
+This isn't the collection you'd use, 
+if you mostly want to get elements from your collection, 
+and manipulating values. 
+
+Now, I'll talk about set operations 
+which are ways to evaluate relationships of elements in different sets.
 </div>
 
+### Set Operations
 <div align="justify">
 
 
