@@ -4800,25 +4800,24 @@ than _Archie_ in the set.
 Let me show you these methods on a table.
 
 <table>
-    <th rowspan="2"> Element passed as the argument </th>
+    <th rowspan="3"> Element passed as the argument </th>
     <th colspan="4" align="center"> Result From Methods</th>
-    <tr>
-        <th align="center"> floor(E) (&le;) </th>
-        <th align="center"> lower(E) (&lt;)</th>
-        <th align="center"> ceiling(E) (&ge;)</th>
-        <th align="center"> higher(E) (&gt;)</th>
-        <tr> In Set 
-            <td>Matched Element</td>
-            <td>Next Element &lt; Element <br> or null if none found</td>
-            <td>Matched Element</td>
-            <td>Next Element &gt; Element <br> or null if none found</td>
-        </tr>
-        <tr> Not in Set 
-            <td>Next Element &lt; Element</td>
-            <td>Next Element &lt; Element <br> or null if none found</td>
-            <td>Next Element &gt; Element</td>
-            <td>Next Element &gt; Element <br> or null if none found</td>
-        </tr>
+    <tr></tr>
+    <th align="center"> floor(E) (&le;) </th>
+    <th align="center"> lower(E) (&lt;)</th>
+    <th align="center"> ceiling(E) (&ge;)</th>
+    <th align="center"> higher(E) (&gt;)</th>
+    <tr> In Set 
+        <td>Matched Element</td>
+        <td>Next Element &lt; Element <br> or null if none found</td>
+        <td>Matched Element</td>
+        <td>Next Element &gt; Element <br> or null if none found</td>
+    </tr>
+    <tr> Not in Set 
+        <td>Next Element &lt; Element</td>
+        <td>Next Element &lt; Element <br> or null if none found</td>
+        <td>Next Element &gt; Element</td>
+        <td>Next Element &gt; Element <br> or null if none found</td>
     </tr>
 </table>
 
