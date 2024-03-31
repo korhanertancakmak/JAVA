@@ -129,7 +129,7 @@ What we will learn from this Path:
 ### [b. java.util.Collections Methods]()
 ### [c. Card Game Challenge]()
 ### [d. Equal and HashCode Methods]()
-### [e. Set & Map Interfaces]()
+### [e. Set Interfaces]()
 ### [f. Set Operations Challenge Setup]()
 ### [g. Set Operations Challenge]()
 

@@ -2369,7 +2369,7 @@ the HashTable, which I won't be covering,
 since there are more efficient implementations that replace this legacy class.
 </div>
 
-## [e. Set & Map Interfaces]()
+## [e. Set Interfaces]()
 <div align="justify">
 
 Like the code setup lecture of Collections CardGame I presented earlier, 
@@ -4251,8 +4251,865 @@ and returns the intersection of the sets.
 and removes the second argument's set from the first.
 </div>
 
-## [h. LinkedHashSet]()
+## [h. LinkedHashSet and TreeSet Interfaces]()
 <div align="justify">
+
+In the last section, we reviewed the **HashSet**, 
+and I've said before, that ordering is unspecified 
+and generally chaotic. 
+If you need an ordered set, 
+you'll want to consider either the **LinkedHashSet** 
+or the **TreeSet**. 
+
+A **LinkedHashSet** maintains the insertion order of the elements. 
+The **TreeSet** is a sorted collection, sorted 
+by the natural order of the elements, 
+or by specifying the sort during the creation of the set. 
+The **LinkedHashSet extends the HashSet** class. 
+It maintains relationships between elements 
+with the use of a doubly linked list between entries. 
+The **iteration order** is therefore 
+the same as the **insertion order** of the elements, 
+meaning the order is **predictable**. 
+All the methods for the **LinkedHashSet** are the same 
+as those for the **HashSet**. 
+Like **HashSet**, it provides constant-time performance, 
+O(1), for the _add_, _contains_ and _remove_ operations. 
+But like the _HashSet_, this assumes an efficient hashing function.
+
+![image19](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image18.png?raw=true)
+
+A **TreeSet**'s class uses a data structure 
+that's a derivative of what's called a binary search tree, 
+or **Btree** for short, which is based on the concept 
+and efficiencies of the binary search. 
+I've discussed the binarySearch method on the List, 
+as well as the **java.util.Collections** class, 
+and shown that this type of search is rapid, 
+if the elements are sorted. 
+This search iteratively tests the mid-range of a group of elements 
+to be searched, to quickly find its element in a collection.
+
+As elements are added to a **TreeSet**, 
+they're organized in the form of a tree, 
+where the top of the tree represents 
+that mid-point of the elements. 
+This tree shows a conceptual example, 
+using some of the character contacts from my last samples of code.
+Further binary divisions become nodes under that. 
+The **left** node and its children are elements 
+that are **less than** the parent node. 
+The **right** node and its children are elements 
+that are **greater than** the parent node. 
+Instead of looking through all the elements in the collection 
+to locate a match, this allows the tree to be quickly traversed, 
+each node a simple decision point. 
+Java's internal implementation uses a balanced tree data structure,
+called the red-black tree. 
+This class isn't about software engineering, 
+but if this topic interests you, 
+let me encourage you to explore software data structures. 
+The main point is the tree remains balanced as elements are added.
+</div>
+
+### TreeSet O Notation
+<div align="justify">
+
+You'll remember that O(1) is constant time, 
+meaning the time or cost of an operation doesn't change, 
+regardless of how many elements are processed. 
+O(n) is a linear time, meaning it grows in line 
+with the way the collection grows.
+Another notation is O(log(n)), 
+which means the cost falls somewhere 
+in between constant and linear time. 
+The **TreeSet** promises O(log(n)) 
+for the _add_, _remove_, and _contains_ operations, 
+compared to the **HashSet** 
+which has constant time O(1) for those same operations.
+</div>
+
+### TreeSet Interface
+<div align="justify">
+
+![image20](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image19.png?raw=true)
+
+A **TreeSet** can be declared or passed 
+to arguments typed with any of the interfaces shown on above. 
+This class is sorted and implements the **SortedSet** interface, 
+which has such methods as _first_, _last_, _headSet_ and _tailSet_, 
+and comparator.
+This set also implements the **NavigableSet** Interface, 
+so it has methods such as _ceiling_, _floor_, _higher_, _lower_, 
+_descendingSet_ and others. 
+The **TreeSet** gives us a lot more functionality, 
+but at a higher cost, than a **LinkedHashSet**, or a **HashSet**.
+You don't really have to understand the underlying data structure 
+to understand two important points.
+
+Elements which implement Comparable 
+(said to have a natural order sort, like Strings and numbers) 
+can be elements of a **TreeSet**. 
+If your elements don't implement Comparable, 
+you must pass a Comparator to the constructor.
+
+Let's jump into code, and start exploring the **TreeSet** class, 
+and how to use it. 
+I will not really spend much time on the **LinkedHashSet**, 
+since it doesn't differ significantly, as far as functionality, 
+from the **HashSet**. 
+Know that the **LinkedHashSet** provides a predictable iterable order, 
+and this incurred slightly more cost than a **HashSet**, 
+because of the doubly linked list structure that supports it. 
+Ok, I want to create a new class, apart from the **Main** class 
+to keep the **TreeSet** code separate, 
+so I'll create a **TreeSetMain** class.
+
+```java  
+public class TreeSetMain {
+
+    public static void main(String[] args) {
+        List<Contact> phones = ContactData.getData("phone");
+        List<Contact> emails = ContactData.getData("email");
+
+        NavigableSet<Contact> sorted = new TreeSet<>(phones);
+        sorted.forEach(System.out::println);
+    }
+}
+```
+
+I want to get the phone and email lists from the **ContactData** class.
+I'll set up two local variables, both lists. 
+The _phones_ variable will get assigned 
+the result of calling get data on **ContactData**, 
+passing phone as the **type**. 
+Emails get set the same way, but this time 
+I pass email to the _getData_ method as the **type**. 
+If I want the additional functionality of the **SortedSet** 
+or **NavigableSet**, then I need to declare my **Set** as one of these types. 
+I'm going to start out using the **NavigableSet** as my reference type, 
+the most specific of the interfaces, 
+because I want to cover all the methods unique 
+to both the **SortedSet** and **NavigableSet**. 
+I'll call this variable sorted, and assign a new **TreeSet**, 
+passing it my _phones_ list. 
+And I'll print the elements in that set out.
+This code compiles, but if I run it, 
+I get a familiar error, that _**Contact** cannot be cast to class **Comparable**_. 
+
+```java  
+public class TreeSetMain {
+
+    public static void main(String[] args) {
+        List<Contact> phones = ContactData.getData("phone");
+        List<Contact> emails = ContactData.getData("email");
+
+        //NavigableSet<Contact> sorted = new TreeSet<>(phones);
+        Comparator<Contact> mySort = Comparator.comparing(Contact::getName);
+        NavigableSet<Contact> sorted = new TreeSet<>(mySort);
+        sorted.addAll(phones);
+        sorted.forEach(System.out::println);
+    }
+}
+```
+
+This exception confirms what I stated before, 
+that elements must implement Comparable. 
+I can get around this requirement if I pass a **Comparator** to the constructor, 
+defining the sort, which I'll do next. 
+Now, the constructor that takes a Comparator is a single argument constructor, 
+so I'll create that, then add my phone contacts.
+I'll comment out that first statement. 
+Right below that, and before the for each statement, 
+I'll add a couple of lines.
+First, I'll create a comparator called _mySort_. 
+I'll set that to the result of calling 
+the _comparing_ method on comparator,
+using the method reference **contact::getMame**. 
+I'll again create a variable, with the type-**NavigableSet**, 
+type argument **Contact**, name is _sorted_, 
+and assign a new **TreeSet** to that, but this time, 
+I'm passing the _mySort_ variable to it. 
+I'll next use the _addAll_ method to add the phone contacts. 
+Ok, let me run that:
+
+```java  
+Charlie Brown: [] [(333) 444-5555]
+Lucy Van Pelt: [] [(564) 208-6852]
+Maid Marion: [] [(123) 456-7890]
+Mickey Mouse: [] [(999) 888-7777]
+Minnie Mouse: [] [(456) 780-5666]
+Robin Hood: [] [(564) 789-3000]
+```
+                
+And now you can see my phone contacts, in name order, 
+and without duplicates.
+Since we know Strings have a natural sort of order, 
+I'll create a TreeSet of those next. 
+
+```java  
+NavigableSet<String> justNames = new TreeSet<>();
+phones.forEach(c -> justNames.add(c.getName()));
+System.out.println(justNames);
+```
+
+I'm using the no args constructor in this case. 
+And I'll loop through my phone contacts, 
+adding each name of the contact to my set of strings. 
+And I can print that out. 
+Running this code works,
+
+```java  
+[Charlie Brown, Lucy Van Pelt, Maid Marion, Mickey Mouse, Minnie Mouse, Robin Hood]
+```
+                
+And my set of _justNames_ is sorted. 
+I can also pass in a sorted set 
+to the **TreeSet** constructor, and 
+since I already have one set up, sorted, 
+I'll pass that.
+
+```java  
+NavigableSet<Contact> fullSet = new TreeSet<>(sorted);
+fullSet.addAll(emails);
+fullSet.forEach(System.out::println);
+```
+
+Now, I'll create a new set, another **NavigableSet**, 
+called _fullSet_, and assign that a new **TreeSet**, 
+passing my sorted set to the constructor. 
+I'll add the _emails_ list, 
+passing them to the _addAll_ method on this set.
+And I'll print the elements out in the full set. 
+This compiles and runs:
+
+```java  
+Charlie Brown: [] [(333) 444-5555]
+Daffy Duck: [daffy@google.com] []
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Lucy Van Pelt: [] [(564) 208-6852]
+Maid Marion: [] [(123) 456-7890]
+Mickey Mouse: [] [(999) 888-7777]
+Minnie Mouse: [] [(456) 780-5666]
+Robin Hood: [] [(564) 789-3000]
+```
+                
+It shows that I now have a combined list of contacts, 
+in alphabetical order. 
+In this case, the sort was determined by the sort mechanism 
+of the TreeSet passed to the constructor. 
+In fact, there's a method on the SortedSet interface 
+that returns the comparator used in the set.
+
+```java  
+List<Contact> fullList = new ArrayList<>(phones);
+fullList.addAll(emails);
+fullList.sort(sorted.comparator());
+System.out.println("--------------------------");
+fullList.forEach(System.out::println);
+```
+
+I'll create a **List**, _fullList_, 
+assigning that a new array list passing it 
+my _phones_ list. 
+I'll add the _emails_ to the _fullList_, using _addAll_. 
+Now, I want to sort the same way the tree set is sorted, 
+by passing the result of calling the comparator method on the sorted set.
+I'll print a separator line. 
+And then I'll print my combined list. 
+And running this code:
+
+```java  
+--------------------------
+Charlie Brown: [] [(333) 444-5555]
+Daffy Duck: [daffy@google.com] []
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Lucy Van Pelt: [] [(564) 208-6852]
+Maid Marion: [] [(123) 456-7890]
+Mickey Mouse: [] [(999) 888-7777]
+Mickey Mouse: [] [(124) 748-9758]
+Mickey Mouse: [] [(999) 888-7777]
+Mickey Mouse: [mckmouse@gmail.com] []
+Mickey Mouse: [micky1@aws.com] []
+Minnie Mouse: [] [(456) 780-5666]
+Minnie Mouse: [minnie@verizon.net] []
+Robin Hood: [] [(564) 789-3000]
+Robin Hood: [] [(789) 902-8222]
+Robin Hood: [rhood@gmail.com] []
+```
+                        
+Notice that this list contains duplicates, 
+but I was able to sort in the same way as the set, 
+alphabetically by the name. 
+Next, I want to show you the _first_, _last_, _pollFirst_ 
+and _pollLast_ methods on this class. 
+But before I do that, I also want 
+to get the minimum and maximum values of this set.
+
+```java  
+Contact min = Collections.min(fullSet, fullSet.comparator());
+Contact max = Collections.max(fullSet, fullSet.comparator());
+```
+
+You may remember there is a _min_, and _max_ method on 
+**java.util.Collections**, so I'll try to use those first, 
+passing the _fullSet_ to those methods. 
+You can see this code doesn't compile 
+when I try to use this version of the _min_ and _max_ methods, 
+because I still haven't implemented Comparable on **Contact**. 
+But there are overloaded versions of these methods, 
+that let me pass a comparator, and I can actually get this from the set itself, 
+as I showed you earlier. 
+I'll add **fullSet.comparator()** in both of those method calls. 
+This code compiles and runs, 
+and I'll print the results in just a minute. 
+But actually, the **SortedSet** interface includes 
+_first_ and _last_ methods, and I'll demonstrate them next.
+
+```java  
+Contact first = fullSet.first();
+Contact last = fullSet.last();
+
+System.out.println("--------------------------");
+System.out.printf("min = %s, first=%s %n", min.getName(), first.getName());
+System.out.printf("max = %s, last=%s %n", max.getName(), last.getName());
+System.out.println("--------------------------");
+```
+
+I'll create two variables, both **Contacts**, 
+and I'll set first to the result of calling 
+the _first_ method on _fullSet_.
+I'll call _last_ on _fullSet_ 
+and assign that to my variable called _last_. 
+These methods give me the same results 
+as the methods on **Collections**, 
+and are the preferred way to get this data, 
+but I did want you to see the alternative, 
+which you might again see in legacy code. 
+I'll print these out next, printing the name of the min value, 
+then the name of the first variable. 
+And I'll do that for the _max_, and _last_ variables too. 
+And I'll include another line of dashes.
+Running this code,
+
+```java  
+--------------------------
+min = Charlie Brown, first=Charlie Brown
+max = Robin Hood, last=Robin Hood
+--------------------------
+First element = Charlie Brown: [] [(333) 444-5555]
+Last element = Robin Hood: [] [(564) 789-3000]
+```
+
+You can see both elements are the same, 
+meaning _min_ and _first_ get the same element, 
+and _max_ and _last_ also get the same element. 
+In addition to _first_ and _last_ methods, 
+there's also the _pollFirst_, and _pollLast_ methods.
+
+```java  
+NavigableSet<Contact> copiedSet = new TreeSet<>(fullSet);
+System.out.println("First element = " + copiedSet.pollFirst());
+System.out.println("Last element = " + copiedSet.pollLast());
+copiedSet.forEach(System.out::println);
+System.out.println("--------------------------");
+```
+
+These remove the _first_ or _last_ sorted element 
+from the set, and the methods return the removed element. 
+To test this, I first want to create a copy of the set, 
+so I'll create a new **NavigableSet** variable, 
+called copied set, setting that to a new **TreeSet** 
+with the _fullSet_ passed to the constructor. 
+I'll print out what I get back, 
+from executing _pollFirst_, and do the same for _pollLast_. 
+Then I'll print all the set elements, 
+and a separator line. 
+Running this code:
+
+```java  
+First element = Charlie Brown: [] [(333) 444-5555]
+Last element = Robin Hood: [] [(564) 789-3000]
+Daffy Duck: [daffy@google.com] []
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Lucy Van Pelt: [] [(564) 208-6852]
+Maid Marion: [] [(123) 456-7890]
+Mickey Mouse: [] [(999) 888-7777]
+Minnie Mouse: [] [(456) 780-5666]
+--------------------------
+```
+                
+You can see I get the same result as 
+I did with the _first_ and _last_ methods, 
+but with one crucial difference.
+The elements are first removed from the set, 
+which you can see here, 
+when I print out the elements in the copied set.
+_Charlie Brown_ and _Robin Hood_ are no longer in the set. 
+Ok, this feels like a good place to end this lecture. 
+I've introduced you to the **TreeSet**, 
+which implements both the **SortedSet** 
+and the **NavigableSet**.
+This set has _first_ and _last_ methods 
+which retrieve the first sorted element, 
+and the last sorted element. 
+The _pollFirst_ and _pollLast_ methods
+do the same thing, but in addition, 
+they remove the element from the set. 
+In the next lecture, I'll be covering 
+additional methods unique to the navigable set 
+as well as a few on the sorted set interface.
+</div>
+
+### TreeSet Methods
+<div align="justify">
+
+Previously, we looked at different ways 
+to instantiate a **TreeSet**, 
+and confirmed that the elements were ordered
+when printed out. 
+I covered the _first_ and _last_ methods, 
+as well as the _pollFirst_ and _pollLast_ methods. 
+In this section, I want to cover additional functionality unique 
+to this kind of set. 
+The next set of methods I'll look at, 
+identify the closest match in a set, 
+to the value you pass to the method. 
+
+```java  
+Contact daffy = new Contact("Daffy Duck");
+Contact daisy = new Contact("Daisy Duck");
+Contact snoopy = new Contact("Snoopy");
+Contact archie = new Contact("Archie");
+```
+
+First, I'll set up a couple of individual contacts,
+one for Daffy Duck who is a contact in my set. 
+And one for Daisy Duck who isn't. 
+I'll also include two others, 
+who are also not in the set, 
+snoopy who would be last, 
+if inserted in the tree set. 
+And Archie who would be first, 
+if inserted.
+Ok, so now I have all the test cases 
+I need to test the navigation methods, 
+_higher_, _lower_, _ceiling_ and _floor_.
+
+```java  
+for (Contact c : List.of(daffy, daisy, last, snoopy)) {
+    System.out.printf("ceiling(%s)=%s%n", c.getName(), fullSet.ceiling(c));
+    System.out.printf("higher(%s)=%s%n", c.getName(), fullSet.higher(c));
+}
+System.out.println("--------------------------");
+```
+
+I'm going to loop through a list of contacts, 
+which include _daffy_, _daisy_, 
+the contact I got back from the last method, 
+meaning the last contact in the set, and snoopy. 
+I want to execute _ceiling_ on each of those, 
+and print out what comes back from that method. 
+After that, I'll execute the _higher_ method, 
+passing each of the contacts, and print that, 
+so we can look at the results of _ceiling_ and _higher_, 
+using the same contact. 
+I'll end that by printing a separator line.
+Running this code,
+
+```java  
+--------------------------
+ceiling(Daffy Duck)=Daffy Duck: [daffy@google.com] []
+higher(Daffy Duck)=Linus Van Pelt: [lvpelt2015@gmail.com] []
+ceiling(Daisy Duck)=Linus Van Pelt: [lvpelt2015@gmail.com] []
+higher(Daisy Duck)=Linus Van Pelt: [lvpelt2015@gmail.com] []
+ceiling(Robin Hood)=Robin Hood: [] [(564) 789-3000]
+higher(Robin Hood)=null
+ceiling(Snoopy)=null
+higher(Snoopy)=null
+```
+                    
+You can see the results for each different argument. 
+Daffy is in the **TreeSet**, 
+so _ceiling_ returns _Daffy_, 
+because you can think of _ceiling_ as returning the element, 
+that is either greater than 
+or equal to the element passed. 
+But the _higher_ method never returns the value 
+that's equal to it in a set, 
+it always returns the next greater element, 
+so I get _Linus_ there. 
+But for _Daisy_, because she's not in the set at all, 
+_higher_ and _ceiling_ 
+both return the same result, _Linus_. 
+Now look what happens if we pass the last element. 
+Again, _ceiling_ will return the element 
+that equals the value passed, so that's Robin Hood. 
+Higher returns a null. 
+With _Snoopy_, both _ceiling_ and _higher_ return null, 
+because _Snoopy_ isn't in the set, 
+and there aren't any elements greater than snoopy.
+
+```java  
+for (Contact c : List.of(daffy, daisy, first, archie)) {
+    System.out.printf("floor(%s)=%s%n", c.getName(), fullSet.floor(c));
+    System.out.printf("lower(%s)=%s%n", c.getName(), fullSet.lower(c));
+}
+System.out.println("--------------------------");
+```
+
+I'll repeat these tests for the _floor_ and _lower_ methods next. 
+I'll copy that last for loop, 
+and following separator line. 
+I want to still test _daffy_ and _daisy_, 
+but now I want to test first, rather than last, 
+and I want to use _Archie_ instead of _snoopy_. 
+Inside the loop, I'll change _ceiling_ to _floor_ in both instances, 
+and on the next line, I'll change _higher_ to _lower_, 
+in two instances. 
+And running that,
+
+```java  
+--------------------------
+floor(Daffy Duck)=Daffy Duck: [daffy@google.com] []
+lower(Daffy Duck)=Charlie Brown: [] [(333) 444-5555]
+floor(Daisy Duck)=Daffy Duck: [daffy@google.com] []
+lower(Daisy Duck)=Daffy Duck: [daffy@google.com] []
+floor(Charlie Brown)=Charlie Brown: [] [(333) 444-5555]
+lower(Charlie Brown)=null
+floor(Archie)=null
+lower(Archie)=null
+```
+            
+You can see that _floor_ is similar to _ceiling_. 
+It returns the element that's equal to the argument passed, 
+if that element's in the set.
+Here, I get _Daffy_ back for the first call to _floor_,
+but the _lower_ method returns the element just lower 
+than the element passed, so I get _Charlie Brown_. 
+I get the same results, when I run the methods 
+for _Daisy Duck_, getting _Daffy Duck_ back in both cases. 
+Daffy's the element that's just lower 
+than _Daisy_ would be if she were in the set. 
+Notice that when I pass in the first element (_Charlie Brown_), 
+_floor_ gives that element back, 
+but I get _null_ from the _lower_ method. 
+When I pass _Archie_, I get _null_ back 
+from both methods, because there is no element less 
+than _Archie_ in the set. 
+Let me show you these methods on a table.
+
+<table>
+    <th rowspan="2"> Element passed as the argument </th>
+    <th colspan="4" align="center"> Result From Methods</th>
+    <tr>
+        <th align="center"> floor(E) (&le;) </th>
+        <th align="center"> lower(E) (&lt;)</th>
+        <th align="center"> ceiling(E) (&ge;)</th>
+        <th align="center"> higher(E) (&gt;)</th>
+        <tr> In Set 
+            <td>Matched Element</td>
+            <td>Next Element &lt; Element <br> or null if none found</td>
+            <td>Matched Element</td>
+            <td>Next Element &gt; Element <br> or null if none found</td>
+        </tr>
+        <tr> Not in Set 
+            <td>Next Element &lt; Element</td>
+            <td>Next Element &lt; Element <br> or null if none found</td>
+            <td>Next Element &gt; Element</td>
+            <td>Next Element &gt; Element <br> or null if none found</td>
+        </tr>
+    </tr>
+</table>
+
+All the methods shown on this table take an element as an argument, 
+and return an element in the set, the closest match to the element passed. 
+_Lower_ returns an element immediately from the set 
+that is less than the method argument, or _null_ if the argument 
+is the minimum element in the set. 
+_Floor_ returns elements respectively less than, 
+or less than or _equal_, to the method argument. 
+_Higher_ returns an element that is immediately greater 
+than the method argument in the set, or _null_ 
+if the argument is the maximum element in the set. 
+_Ceiling_ returns an element in the set 
+that is greater than or equal to the method argument. 
+The _lower_ and _higher_ methods will never return 
+the same element as the method argument. 
+Ok, so I've shown you the closest matches methods. 
+I want you to think back to some code in some of the challenges 
+we've done in this section, and how you might use methods like this. 
+Perhaps, in the card game, knowing what the next card in a sorted hand would be, 
+in a player's hand, would make it easier 
+to look for straights and flushes, as an example.
+
+```java  
+NavigableSet<Contact> descendingSet = fullSet.descendingSet();
+descendingSet.forEach(System.out::println);
+System.out.println("--------------------------");
+```
+
+Now, let's look at a few other methods 
+that return different sets. 
+All of these sets are backed by the original set used to create them. 
+First, I can get a descending set,
+by a method of that name on the **TreeSet**. 
+I'll set up a local variable, setting it 
+to the result of calling _descendingSet_, on _fullSet_. 
+I'll use for each, to print all the elements, 
+and include a separator line. 
+Running that code,
+
+```java  
+--------------------------
+Robin Hood: [] [(564) 789-3000]
+Minnie Mouse: [] [(456) 780-5666]
+Mickey Mouse: [] [(999) 888-7777]
+Maid Marion: [] [(123) 456-7890]
+Lucy Van Pelt: [] [(564) 208-6852]
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Daffy Duck: [daffy@google.com] []
+Charlie Brown: [] [(333) 444-5555]
+```
+            
+You can see the set printed out in descending sorted order. 
+The set that's returned is backed by the original set, 
+so any changes to the _fullSet_ will be reflected in this set, 
+and vice versa. 
+Let's confirm that by making a change to this descending set.
+
+```java  
+Contact lastContact = descendingSet.pollLast();
+System.out.println("Removed " + lastContact);
+descendingSet.forEach(System.out::println);
+System.out.println("--------------------------");
+fullSet.forEach(System.out::println);
+System.out.println("--------------------------");
+```
+
+I'll use _pollLast_ on the _descendingSet_ 
+and assign it to a local variable, 
+a **Contact** named _lastContact_. 
+I'll print out the element that got removed, the _lastContact_. 
+Then I'll print out the _descendingSet_, and a separator line.
+After that, I'll print the original set, _fullSet_, 
+and another separator line. 
+Running this,
+
+```java  
+--------------------------
+Removed Charlie Brown: [] [(333) 444-5555]
+Robin Hood: [] [(564) 789-3000]
+Minnie Mouse: [] [(456) 780-5666]
+Mickey Mouse: [] [(999) 888-7777]
+Maid Marion: [] [(123) 456-7890]
+Lucy Van Pelt: [] [(564) 208-6852]
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Daffy Duck: [daffy@google.com] []
+--------------------------
+Daffy Duck: [daffy@google.com] []
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Lucy Van Pelt: [] [(564) 208-6852]
+Maid Marion: [] [(123) 456-7890]
+Mickey Mouse: [] [(999) 888-7777]
+Minnie Mouse: [] [(456) 780-5666]
+Robin Hood: [] [(564) 789-3000]
+--------------------------
+```
+            
+You can see that _Charlie Brown_ was removed 
+and returned from the _pollLast_ method. 
+After that, the descending list is printed, 
+and now it goes from _Robin Hood_ to _Daffy Duck_, 
+_Charlie_ isn't listed. 
+The output from printing the _fullSet_, 
+which is still ordered alphabetically, 
+doesn't have _Charlie Brown_ either. 
+Whatever you do to the _descendingSet_ 
+will be reflected in the set that backs it, 
+in my case the _fullSet_. 
+We can also get subsets from the head, 
+or beginning, of the sorted set, 
+or the tail or end of the sorted set.
+
+```java  
+Contact marion = new Contact("Maid Marion");
+var headSet = fullSet.headSet(marion);
+headSet.forEach(System.out::println);
+System.out.println("--------------------------");
+
+var tailSet = fullSet.tailSet(marion);
+tailSet.forEach(System.out::println);
+System.out.println("--------------------------");
+```
+
+To test this, I'll create another contact variable, 
+named _Marion_, and assign that a new instance of a Contact,
+with the name of _Maid Marion_. 
+These methods take an element of the type in the set, 
+so I'll pass the _Marion_ contact 
+to the _headset_ method on _fullSet_. 
+I'll return the result to a local variable named _headSet_, 
+I'm just using var here for simplicity. 
+I'll call the _forEach_ method on that subset. 
+I'll include a separator line after that. 
+Now, I want to copy and paste those last three statements. 
+I'll change _headSet_ to _tailSet_ in both cases on the first statement. 
+Again on the second statement, 
+I'll change _headset_ to _tailSet_. 
+Running this code,
+
+```java  
+--------------------------
+Daffy Duck: [daffy@google.com] []
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Lucy Van Pelt: [] [(564) 208-6852]
+--------------------------
+Maid Marion: [] [(123) 456-7890]
+Mickey Mouse: [] [(999) 888-7777]
+Minnie Mouse: [] [(456) 780-5666]
+Robin Hood: [] [(564) 789-3000]
+--------------------------
+```
+
+You can see the results of these two methods. 
+The first, the _headSet_, 
+when passed the _Maid Marion_ contact, 
+returned all the elements less than _Maid Marion_. 
+The second the _tailSet_, when passed the same contact, 
+returned all the elements after _Maid Marion_, 
+but also included the _maid Marion_ record. 
+_headSet_ is exclusive by default, 
+meaning it will exclude the element passed. 
+But _tailSet_ is inclusive by default, 
+meaning it will include the element 
+I can change the default behavior, 
+by using the overloaded versions, 
+and passing a boolean value to each, 
+to determine if the element passed, should be included.
+
+```java  
+Contact marion = new Contact("Maid Marion");
+//var headSet = fullSet.headSet(marion);
+var headSet = fullSet.headSet(marion, true);
+headSet.forEach(System.out::println);
+System.out.println("--------------------------");
+
+//var tailSet = fullSet.tailSet(marion);
+var tailSet = fullSet.tailSet(marion, false);
+tailSet.forEach(System.out::println);
+System.out.println("--------------------------");
+```
+
+I'll edit the statement that executes _headset_, 
+and I'll pass true as a second argument. 
+For the _tailSet_ statement, I'll pass false 
+as the second argument. 
+And rerunning that:
+
+```java  
+--------------------------
+Daffy Duck: [daffy@google.com] []
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Lucy Van Pelt: [] [(564) 208-6852]
+Maid Marion: [] [(123) 456-7890]
+--------------------------
+Mickey Mouse: [] [(999) 888-7777]
+Minnie Mouse: [] [(456) 780-5666]
+Robin Hood: [] [(564) 789-3000]
+--------------------------
+```
+
+I've now got _Maid Marion_ in the _headset_, 
+but she's no longer in the _tailSet_, 
+so these second arguments can override the default behavior. 
+You can chain these methods together 
+to get a subset in the middle, 
+but it's far easier to just use the subSet method on **NavigableSet**, 
+which I'll do next.
+
+```java  
+Contact linus = new Contact("Linus Van Pelt");
+var subset = fullSet.subSet(linus, marion);
+subset.forEach(System.out::println);
+```
+
+I'll create a new contact named _Linus_, 
+with a name of _Linus Van Pelt_. 
+And I'll execute the subset method on my full set, 
+passing first _Linus_, and second _Marion_. 
+I'll assign that to a variable, using var as my type, 
+and _subset_ as the name. 
+I'll call the _forEach_ method to print each element in the _subset_. 
+And running that:
+
+```java  
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Lucy Van Pelt: [] [(564) 208-6852]
+```
+
+Now I just get _Linus_ and _Lucy_, 
+so this _subSet_ method includes the first contact, 
+_Linus_, and excludes the second contact, _Marion_. 
+Like _headSet_ and _tailSet_, there's an overloaded version, 
+so I can specify the inclusive flag for both elements passed. 
+
+```java  
+Contact linus = new Contact("Linus Van Pelt");
+//var subset = fullSet.subSet(linus, marion);
+var subset = fullSet.subSet(linus, false, marion, true);
+subset.forEach(System.out::println);
+```
+
+I'll add false as the second argument, which should exclude _Linus_, 
+and true in the fourth argument which should include _Marion_ in the _subset_. 
+And running the code again:
+
+```java  
+Lucy Van Pelt: [] [(564) 208-6852]
+Maid Marion: [] [(123) 456-7890]
+```
+            
+I've now excluded _Linus_ this time, 
+but I've got _Maid Marion_. 
+Let me show you these methods on a table, and review them.
+
+| sub set methods                                                                                                        | Inclusive                                                                          | Description                                                                                                |
+|------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+| headSet(E toElement)<br/> headSet(E toElement, boolean inclusive                                                       | toElement is exclusive if not specified                                            | returns all elements less than the passed toElement (unless inclusive is specifically included).           |
+| tailSet(E fromElement)<br/> tailSet(E toElement, boolean inclusive                                                     | fromElement is inclusive if not specified                                          | returns all elements greater than or equal to the fromElement (unless inclusive is specifically included). |
+| subSet(E fromElement, E toElement)<br/> subSet(E fromElement, boolean frominclusive, E toElement, boolean toInclusive) | fromElement is inclusive if not specified, toElement is exclusive if not specified | returns elements greater than or equal to the fromElement and less than toElement.                         |
+
+All three methods, _headSet_, _tailSet_ and _subSet_ 
+return a subset of elements, backed by the original set. 
+The _headSet_ method will return all elements at the head 
+(or the elements that are less than) the argument passed to it. 
+It won't include the element passed unless you use the overloaded version, 
+as true as your second argument. 
+The _tailSet_ method will return all elements from the passed element to the tail 
+(or all elements greater than or equal) 
+to the argument passed. 
+It is inclusive of the element passed if it's in the set.
+The _subset_ takes two arguments, a _fromElement_ and a _toElement_, 
+and returns a subset that includes the _fromElement_, 
+and all records less than the _toElement_. 
+This method also has an overloaded version to specify 
+different inclusion flags, then the default.
+
+When would you use a TreeSet?
+The _TreeSet_ does offer many advantages in terms of built-in functionality 
+over the other two Set implementations, 
+but it does come at a higher cost.
+If your number of elements is not large, 
+or you want a collection that's sorted, 
+and continuously re-sorted as you add and remove elements, 
+and that shouldn't contain duplicate elements, 
+the _TreeSet_ is a good alternative to the ArrayList.
+</div>
+
+## [i. TreeSet Challenge]()
+<div align="justify">
+
 
 
 ```java  
@@ -4261,7 +5118,6 @@ and removes the second argument's set from the first.
 
 </div>
 
-
 <div align="justify">
 
 
@@ -4270,17 +5126,6 @@ and removes the second argument's set from the first.
 ```
 
 </div>
-
-
-<div align="justify">
-
-
-```java  
-
-```
-
-</div>
-
 
 <div align="justify">
 
