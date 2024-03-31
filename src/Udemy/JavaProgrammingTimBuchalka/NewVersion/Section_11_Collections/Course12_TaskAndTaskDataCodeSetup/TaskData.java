@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class TaskData {
 
-    private static String tasks = """
+    private static final String tasks = """
             Infrastructure, Logging, HIGH
             Infrastructure, DB Access, MEDIUM
             Infrastructure, Security, HIGH
@@ -20,7 +20,7 @@ public class TaskData {
             Data Access, Set Up Access Policy, Low
             """;
 
-    private static String annsTasks = """
+    private static final String annsTasks = """
             Infrastructure, Security, HIGH, In Progress
             Infrastructure, Password Policy,MEDIUM, In Progress
             Research, Cloud solutions, MEDIUM, In Progress
@@ -36,7 +36,7 @@ public class TaskData {
             Data Access, Write Views, Low, In Progress
             """;
 
-    private static String carolsTasks = """
+    private static final String carolsTasks = """
             Infrastructure, Logging, High, In Progress
             Infrastructure, DB Access, Medium
             Infrastructure, Password Policy, Medium

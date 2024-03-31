@@ -1848,7 +1848,7 @@ O(n), or linear time,
 if you remember the Big-O notations I covered previously.
 A mechanism to reduce this cost is introduced by something called hashing. 
 If we created two buckets of elements, 
-and the element could consistently identify,
+and the element could consistently identify
 which bucket it was stored in, then half could reduce the lookup. 
 If we created four buckets, we could reduce the cost by a quarter. 
 A hashed collection will optimally create a limited set of buckets, 
@@ -2439,7 +2439,7 @@ This data purposely has duplicates.
 **Create a method named _getData_** that **takes a String type** 
 (either **phone** or **email**), and returns a List of **Contact**.
 Now, I'm going to use **Scanner** to parse the data in these text blocks. 
-My reason for using **Scanner**, is twofold.
+My reason for using **Scanner** is twofold.
 
 First, I want to demonstrate this variation, 
 and second, I want you to imagine this data coming 
@@ -2701,7 +2701,7 @@ This is going to trim leading and trailing whitespace,
 from each of the strings in my text block. 
 I could have also used strip Indent there, 
 but I've formatted my text block itself without indents,
-so I won't worry about it, for simplicity. 
+so I won't worry about it for simplicity. 
 Next, I want to create specific types of contacts, 
 based on the type passed.
 If the type is phone, I'll add a new Contact, 
@@ -2824,8 +2824,8 @@ I have two classes set up in this code:
 1. The **Contact** class that consists of a name, a set of phones, 
 which are strings, and a set of emails, also strings.
 This class has only three methods on it. 
-The first two are a getter for name, a
-s well as an overridden _toString_ method.
+The first two are a getter for name, 
+as well as an overridden _toString_ method.
 There's also a merge **Contact** Data method
 that has a contact as an argument, and creates a new contact. 
 It populates the new contact, first with the data on the current instance, 
@@ -2873,8 +2873,8 @@ so **Set** here, and a type argument of **Contact**, in both cases.
 The first variable, email contacts will be assigned a new **HashSet**, 
 constructed by passing the email list to it. 
 The phone contacts are the same, a new **Hashset** 
-but constructed using the phone list. 
-Most constructors of classes implementing the **Collection** interface,
+but constructed using the phone list.
+Most constructors of classes implementing the **Collection** interface
 support a constructor that accepts a **Collection**. 
 You can see this lets me very quickly create anew hashSet from a list, 
 with one line of code. 
@@ -2911,7 +2911,7 @@ but the order is different from the order that was in the list.
 Can you guess why there's duplicates in these sets, 
 even though I just said earlier, 
 that **HashSets** won't have duplicates? 
-Well, duplicates are determined, for hashed collections, 
+Well, duplicates are determined for hashed collections, 
 first by the hash code, and then the _equals_ method. 
 In this instance, both the hash code method, 
 and the _equals_ method, are using Object's implementation. 
@@ -2919,7 +2919,7 @@ This means each of these instances of contacts is considered unique,
 by that definition. 
 In most cases, this is probably a good thing. 
 But since these are personal contacts, 
-I'm going to make a rule, that _contacts_ that have the same _name_ 
+I'm going to make a rule that _contacts_ that have the same _name_ 
 are really the same person, 
 but with different data. 
 To implement this rule, 
@@ -3470,8 +3470,8 @@ and that's because multiple records were not added,
 and it's the first record that's added, 
 that remains in the set. 
 In other words, a duplicate element won't replace the current element. 
-In this case, when I added the phone contacts 
-for Mickey, Minnie, and Robin Hood, those records were ignored, 
+In this case, when I added the phone contacts
+for Mickey, Minnie, and Robin Hood, those records were ignored 
 because the set already had records for them in it. 
 I can switch the order of the way I intersect around, 
 and I'll show that to you next.
@@ -3947,7 +3947,7 @@ The second field is _description_, or task description.
 The third is a _priority_, meaning 
 we have to get this text to match our priority enum values 
 when we load the data. 
-Scrolling down to look at ann's and bob's data, 
+Scroll down to look at ann's and Bob's data, 
 you can see there's a fourth field, 
 a _status_, and that's in mixed case. 
 Again, we'll have to transform that string into the enum type 
@@ -4193,7 +4193,7 @@ that you'll need to complete the Set Operations Challenge,
 which is coming up next.
 </div>
 
-## [g. Set Operations Challenge] ()
+## [g. Set Operations Challenge]()
 <div align="justify">
 
 In the last section, I walked through creating a **Task** class, 
@@ -4203,45 +4203,54 @@ which we'll be using here.
 
 ![image18](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image17.png?raw=true)
 
-This class diagram shows you the two classes. Task has five fields, two with enum types shown. Task is unique by the
-project and description fields combined. Task implements comparable, and is sorted by project then description. Some
-test data was set up on the TaskData class, and you can get this data by calling TaskData.getData, passing it the
-names, Ann, Bob, or Carol, or some other string, like "all", to get all tasks. If you didn't see the last lecture,
-take a minute to get familiar with the data, set up as four text blocks, on the TaskData class. In addition to this
-code, I included a couple of methods on the Main class to print sorted collections, with a descriptive header. One
-takes a comparator of your choice. The other doesn't, meaning the elements will get sorted by the Comparable sort.
+This class diagram shows you the two classes. 
+**Task** has five fields, two with enum types shown. 
+Task is unique by the project and description fields combined. 
+Task implements comparable, and is sorted by project then description.
+Some test data was set up on the TaskData class, 
+and you can get this data by calling _TaskData.getData_, 
+passing it the names, _Ann_, _Bob_, or _Carol_, or some other string, 
+like _all_, to get all tasks. 
+If you didn't see the last section, take a minute to get familiar with the data, 
+set up as four text blocks, on the **TaskData** class. 
+In addition to this code, I included a couple of methods in the **Main** class 
+to print sorted collections, with a descriptive header. 
+One takes a comparator of your choice. 
+The other doesn't, meaning the elements will get sorted by the **Comparable** sort.
 
-                                            Set Operations Challenge
+Let's say you're a new manager of a team 
+that consists of three team members working under you, 
+_Ann_, _Bob_, and _Carol_.
+Each of these developers is working on a set of tasks. 
+The management of the tasks has been a manual process, 
+and you don't really have a good way of knowing whose working on what, 
+how things are prioritized, or 
+how evenly the work is distributed. 
+You've asked all your developers to submit 
+what they're working on to you. 
+You also have a primary set of tasks, 
+which your own boss sent to you. 
+I've included this data in a csv file, 
+and it's built into the **TaskData** class. 
+You'll be using that data to answer the following questions.
 
-        Let's say you're a new manager, of a team that consists of three team members working under you, Ann, Bob, and Carol.
-    Each of these developers is working on a set of tasks. The management of the tasks has been a manual process, and you
-    don't really have a good way of knowing whose working on what, how things are prioritized, or how evenly the work is
-    distributed. You've asked all your developers to submit what they're working on to you. You also have a master set
-    of tasks, which your own boss sent to you. I've included this data in a csv file, and it's built into the TaskData
-    class. You'll be using that data, to answer the following questions.
-
-    * What is the full task list? This is the list of all tasks described by your manager or boss, and any additional
-    tasks the employees have, that may not be on that list.
-
-    * Which tasks are assigned to at least one of your 3 team members?
-
-    * Which tasks still need to be assigned?
-
-    * Which tasks are assigned to multiple employees?
-
-    To do some of this work, create three methods on your Main class. Be sure the sets you pass to these methods, don't
-    mutate in these methods. In other words, return a new set.
-
-    * Create a getUnion method, that takes a List of Sets, and will return the union of all the sets.
-
-    * Create a getIntersect method, that takes two Sets, and returns the intersection of the sets.
-
-    * Create a getDifference method, that takes two Sets, and removes the second argument's set from the first.
-```java  
-
-```
-
+* What is the full task list? 
+This is the list of all tasks described by your manager or boss, 
+and any additional tasks the employees have that may not be on that list.
+* Which tasks are assigned to at least one of your 3 team members?
+* Which tasks still need to be assigned?
+* Which tasks are assigned to multiple employees?
+To do some of this work, create three methods in your **Main** class. 
+Be sure the sets you pass to these methods don't mutate in these methods. 
+In other words, return a new set. 
+* Create a getUnion method that takes a List of Sets, 
+and will return the union of all the sets.
+* Create a getIntersect method that takes two Sets,
+and returns the intersection of the sets. 
+* Create a getDifference method that takes two Sets, 
+and removes the second argument's set from the first.
 </div>
+
 
 
 <div align="justify">

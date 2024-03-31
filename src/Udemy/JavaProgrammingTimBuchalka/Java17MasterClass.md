@@ -130,16 +130,9 @@ What we will learn from this Path:
 ### [c. Card Game Challenge]()
 ### [d. Equal and HashCode Methods]()
 ### [e. Set & Map Interfaces]()
+### [f. Set Operations Challenge Setup]()
+### [g. Set Operations Challenge]()
 
-        * suffle
-        * reverse
-        * sort
-        * indexOfSubList
-        * binarySearch
-        * frequency
-        * min, max, and rotate
-    * Sets & HashSet
-    * Set Operations
     * LinkedHashSet and TreeSet
     * Map Interface
     * HashMap
