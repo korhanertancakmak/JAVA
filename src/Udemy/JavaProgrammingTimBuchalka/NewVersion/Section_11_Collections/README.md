@@ -2043,7 +2043,7 @@ Our code sets up five String reference variables,
 but two of these referenced the same string object in memory,
 as shown here with _aText_ and _bText_ pointing to the same string instance.
 
-![image09](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image09.png?raw=true)
+![image10](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image09.png?raw=true)
 
 When we passed our list of five strings to the **HashSet**, 
 it added only unique instances to its collection.
@@ -2389,7 +2389,7 @@ although this code won't be doing that.
 Using scanner this way, gives you a taste for a way to do this, 
 without the file complexities which I'll cover later. 
 
-![image10](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image10.png?raw=true)
+![image11](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image10.png?raw=true)
 
 In this setup code, you want to create a **Contact** class
 that has the fields, a String name, a HashSet of String emails and phones. 
@@ -3268,12 +3268,981 @@ which are ways to evaluate relationships of elements in different sets.
 ### Set Operations
 <div align="justify">
 
+So, I used a **HashSet** to control 
+what went in a set, and what didn't,
+by manipulating the _equals_ and _hashcode_ methods. 
+Now, I'll be explaining a little bit about **Set Operations**, 
+first what they are, and second, why you'd want to use them.
+When you're trying to understand data in multiple sets, 
+you might want to get the data in all the sets,
+that's in every set, or the data where there's no overlap. 
+The collection interface's bulk operations 
+(_addAll_, _retainAll_, _removeAll_, and _containAll_)
+can be used to perform these set operations.
 
+Sets are often represented as circles or ovals, 
+with elements inside, on what is called a **Venn Diagram**. 
+Here, I'm showing two sets that have no elements in common.
+
+![image12](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image11.png?raw=true)
+
+This _venn diagram_ shows some of the cartoon characters 
+of the Peanuts and Mickey Mouse cartoons. 
+Because the characters are distinct for each set, 
+the circles representing the sets don't overlap, or intersect.
+
+![image13](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image12.png?raw=true)
+
+This diagram shows two sets of characters that do overlap. 
+Let's say that Goofy and Snoopy have guest appearances 
+in the other's holiday special show. 
+The intersection of these sets is represented 
+by the area where the two circles (sets) overlap, 
+and contains the elements that are shared by both sets. 
+Goofy and Snoopy are both in Set A and Set B, in other words. 
+_Venn Diagrams_ are an easy way to quickly see
+how elements in multiple sets relate to each other.
+</div>
+
+### Union A u B
+<div align="justify">
+
+The union of two or more sets will return elements 
+that are in any or all of the sets, removing any duplicates.
+These may look familiar because these are the sets I had 
+when I left off in the code in the last lecture.
+
+![image14](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image13.png?raw=true)
+
+The table shown here is showing my two sets, names on an email list, 
+and names on a phone numbers list. 
+The overlap is names that are on both lists. 
+In the example shown above, 
+all names on the email list 
+and phone list will be included in a union of the two sets. 
+However, Minnie, Mickie and Robin Hood, 
+which are the only elements included in both sets,
+are included in the resulting set only once. 
+If you have any experience with Structured Query Language, 
+or SQL, you'll already be familiar with the union command, 
+which joins two datasets in the same way described here. 
+Java doesn't have a union method on Collections, 
+but the addAll bulk function, 
+when used on a Set, 
+can be used to create a union of multiple sets.
+
+Getting back to the code, 
+I left off with two sets, phone contacts and email contacts. 
+A union of these two sets should give us a set 
+that consists of distinct contacts, by contact name. 
+To perform a union, I can use the bulk operation, _addAll_. 
+I'll first create a new Set, called union A, B, a **HashSet**, 
+with a no args constructor.
+
+```java  
+Set<Contact> unionAB = new HashSet<>();
+unionAB.addAll(emailContacts);
+unionAB.addAll(phoneContacts);
+printData("(A ∪ B) Union of emails (A) with phones (B)", unionAB);
+```
+
+I'm going to stick to the convention on
+my notes, where A is the emails set, 
+and the B is the phones. 
+I'll use the _addAll_ method on the unionAB set, 
+to add first _emailContacts_. 
+I'll do the same thing, _unionAB.addAll()_, 
+passing it _phoneContacts_.
+Lastly, I'll call _printData_, with a header saying 
+this is the union of emails, A, and phones, B. 
+There's a special _ascii_ character, _\u222A_,
+that represents the union character, 
+that looks like a _U_, and I'll include that. 
+If I type _\u222A_ in my text, Intelli-J highlights 
+that unicode character, 
+and prompts me to replace it with the actual character, 
+so I'll do that.
+Running this code:
+
+```java  
+----------------------------------------------
+(A ∪ B) Union of emails (A) with phones (B)
+----------------------------------------------
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Lucy Van Pelt: [] [(564) 208-6852]
+Charlie Brown: [] [(333) 444-5555]
+Maid Marion: [] [(123) 456-7890]
+Robin Hood: [RHood@sherwoodforest.org, rhood@gmail.com] []
+Mickey Mouse: [mckmouse@gmail.com] []
+Daffy Duck: [daffy@google.com] []
+Minnie Mouse: [minnie@verizon.net] []
+```
+                        
+I get the union of these sets, 
+and there are no duplicates by name. 
+These operations combined the two different sets of contacts 
+into a single set of unique contacts. 
+Again, I've lost some information 
+where I had multiples, 
+the other phone numbers and emails, I mean. 
+But if you ever just need a distinct set of elements 
+from multiple sets, this union operation can give you that information. 
+At this point, it would be nice to know 
+which contacts overlap the sets. 
+This information might allow me to process those records 
+in a different way, perhaps capturing the additional emails 
+and phone numbers, for example.
+</div>
+
+### Intersect A n B
+<div align="justify">
+
+The intersection of two or more sets will return only the elements the sets have in common.
+
+![image15](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image14.png?raw=true)
+
+These are shown in the overlapping area of the sets on this table, 
+the intersecting includes Mickey and Minnie Mouse, and Robin Hood.
+
+```java  
+Set<Contact> intersectAB = new HashSet<>(emailContacts);
+intersectAB.retainAll(phoneContacts);
+printData("(A ∩ B) Intersect emails (A) and phones (B)", intersectAB);
+```
+
+Let's try this out with our same two sets. 
+I'll start out by creating a local variable, 
+a Set I'm calling intersectAB.
+I'll again assign that a new instance of **HashSet**, 
+but this time I'm just going to pass 
+my email contacts set directly to that constructor. 
+I'll execute _retainAll_ on the intersected set, 
+passing it the phone contacts. 
+And I'll print the result. 
+The ascii character for the _intersect_ operator is _\u2229_, 
+it looks like an upside down _u_, 
+and I want to include that as part of my message, A intersect B. 
+I'll again take IntelliJ's suggestion, 
+and just convert the unicode escape sequence 
+to the actual character. 
+On the first line, this time, 
+I'm simply passing my first set 
+to the constructor of my new set. 
+In fact, if I control click _HashSet_ there, 
+the code will be displayed in another editor session, 
+showing me how it's implemented. 
+And you can see, this constructor simply calls _addAll_ there. 
+You maybe also noticed it's creating a new _HashMap_, 
+assigning it to a map field on this _HashSet_ class, 
+in the first statement. 
+I said before that the _HashSet_ uses a _HashMap_ in its implementation, 
+and this is obvious here. 
+These two classes are tightly interwoven in current versions of Java. 
+But regardless of the underlying way the _HashSet_ implements 
+its collection, and there's never any guarantee in Java 
+that the implementation won't change, 
+the behavior of the **HashSet** will be consistent. 
+This means duplicates aren't supported, 
+the collection won't be ordered, 
+and hashing will be used to provide close to constant time access. 
+Ok, so getting back to the main method, 
+the other thing to see there is that I used _retainAll_, 
+and passed it the email contacts. 
+Running that code,
+
+```java  
+----------------------------------------------
+(A ∩ B) Intersect emails (A) and phones (B)
+----------------------------------------------
+Robin Hood: [RHood@sherwoodforest.org, rhood@gmail.com] []
+Mickey Mouse: [mckmouse@gmail.com] []
+Minnie Mouse: [minnie@verizon.net] []
+```
+                    
+I get what's called the intersection, 
+where the two sets intersect, 
+and the result is the elements the sets 
+have in common. 
+This gives me the 3 contacts that are on both lists, 
+Mickey, Minnie, and Robin Hood. 
+Notice that the contacts all have emails, 
+and that's because multiple records were not added, 
+and it's the first record that's added, 
+that remains in the set. 
+In other words, a duplicate element won't replace the current element. 
+In this case, when I added the phone contacts 
+for Mickey, Minnie, and Robin Hood, those records were ignored, 
+because the set already had records for them in it. 
+I can switch the order of the way I intersect around, 
+and I'll show that to you next.
+
+```java  
+Set<Contact> intersectBA = new HashSet<>(phoneContacts);
+intersectBA.retainAll(emailContacts);
+printData("(B ∩ A) Intersect phones (B) and emails (A)", intersectBA);
+```
+
+I'll copy those last three statements and paste them below. 
+I'll change my set name to intersectBA, in all three statements. 
+I'll pass phone contacts to the constructor this time, 
+so those are the first set of elements included.
+I'll change phone contacts to email contacts 
+when I call the retainAll method. 
+I'll also change my message to say this is B intersect A, 
+Intersect of phones (Bin parentheses) and emails, (A, in parentheses).
+Running that code,
+
+```java  
+----------------------------------------------
+(B ∩ A) Intersect phones (B) and emails (A)
+----------------------------------------------
+Robin Hood: [] [(564) 789-3000]
+Mickey Mouse: [] [(999) 888-7777]
+Minnie Mouse: [] [(456) 780-5666]
+```
+
+I get the same set of contacts, the same set of three cartoon characters. 
+I mean, Mickey, Robin, and Minnie. 
+The extra data, the data that wasn't included in the equality test, 
+is different here though, so now I get phone numbers. 
+That's because the first contact records added for these three, 
+had the phone data on them. 
+Even though I flipped the sets in my intersection set, 
+the result was the same, returning Mickey, Robin, and Minnie.
+</div>
+
+### Asymmetric Differences
+<div align="justify">
+
+The ability to evaluate sets, A intersect B 
+and get the same result as B intersect A, 
+means that the intersect operation is a symmetric set operation. 
+Union is also a symmetric operation. 
+It doesn't matter if you do A Union B, or B union A, 
+the final set of elements will all be the same set of names. 
+Another useful evaluation might be to identify 
+which elements are in one set, but not the other. 
+This is called a set difference.
+
+A difference subtracts elements in common from one set and another, 
+leaving only the distinct elements from the first set as the result.
+
+![image16](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image15.png?raw=true)
+
+This is an asymmetric operation because if we take Set A 
+and subtract Set B from it, we'll end up with a different set of elements 
+than if we take Set B and subtract Set A. 
+The sets from these two operations won't result in the same elements.
+Let's see what this looks like in our code. 
+
+```java  
+Set<Contact> AMinusB = new HashSet<>(emailContacts);
+AMinusB.removeAll(phoneContacts);
+printData("(A - B) emails (A) - phones (B)", AMinusB);
+```
+
+I'm going to copy the intersectAB's three statements, 
+and paste a copy at the end of the main method. 
+I'll change intersectAB to AMinusB on all three lines. 
+On the second line, I'll change retainAll to removeAll. 
+On the third line, I'll change the intersect character
+to a minus sign, and I'll just say this is emails, A, minus phones, B. 
+Running this code:
+
+```java  
+----------------------------------------------
+(A - B) emails (A) - phones (B)
+----------------------------------------------
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Daffy Duck: [daffy@google.com] []
+```
+
+This tells us that Linus and Daffy are the only two records in the email list 
+that aren't in the phones list.
+
+```java  
+Set<Contact> BMinusA = new HashSet<>(phoneContacts);
+BMinusA.removeAll(emailContacts);
+printData("(B - A) phones (B) - emails (A)", BMinusA);
+```
+
+Now let me copy those last three statements 
+and paste them right below. 
+I want to change the Set name A, Minus B, 
+in all three statements to B Minus A. 
+I'll also change the first statement, 
+and pass it phone contacts, instead of email contacts, 
+to the constructor. 
+In the second statement, I want to pass email contacts there, 
+instead of phone contacts, so I'm reversing the direction if you will. 
+I'll change my header to say B minus A, phones (B) - emails (A). 
+Running that code,
+
+```java  
+----------------------------------------------
+(B - A) phones (B) - emails (A)
+----------------------------------------------
+Lucy Van Pelt: [] [(564) 208-6852]
+Charlie Brown: [] [(333) 444-5555]
+Maid Marion: [] [(123) 456-7890]
+```
+                    
+You now see that the set of contacts is a different set of characters all together, 
+Lucy Van Pelt, Charlie Brown, and Maid Marion.
+</div>
+
+### Symmetric Differences
+<div align="justify">
+
+Now, let's look at what's called the set symmetric difference. 
+This is really the union of the two asymmetric set differences. 
+You can think of the set symmetric difference,
+as the elements from all sets that don't intersect.
+
+![image17](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image16.png?raw=true)
+
+On this table, these are the elements that are represented in the intersection. 
+This data can be retrieved in one of two ways.
+
+```java  
+Set<Contact> symmetricDiff = new HashSet<>(AMinusB);
+symmetricDiff.addAll(BMinusA);
+printData("Symmetric Difference: phones and emails", symmetricDiff);
+```
+
+The first would be to do a union of our two difference sets, 
+AMinusB and BMinusA, so I'll do that next. 
+I'll set up a new set, and call it symmetric Diff, 
+assigning it a new HashSet, and passing A, 
+minus B to that constructor. 
+I'll call add all, on the symmetricDiff set, and pass it B Minus A. 
+I'll print out that this is the Symmetric Difference of phones and emails. 
+Running that,
+
+```java  
+----------------------------------------------
+Symmetric Difference: phones and emails
+----------------------------------------------
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Lucy Van Pelt: [] [(564) 208-6852]
+Charlie Brown: [] [(333) 444-5555]
+Maid Marion: [] [(123) 456-7890]
+Daffy Duck: [daffy@google.com] []
+```
+
+I get the five contacts that don't intersect, 
+the union of my two asymmetric differences set. 
+
+```java  
+Set<Contact> symmetricDiff2 = new HashSet<>(unionAB);
+symmetricDiff2.removeAll(intersectAB);
+printData("Symmetric Difference: phones and emails", symmetricDiff2);
+```
+
+The other way to get these same set of elements is 
+to take the unioned set, and subtract the intersected set. 
+I'll first create a set, called symmetric diff2, 
+a hash set constructed by passing the unionAB set, to it. 
+I'll execute remove all on that set, passing it the intersectAB set. 
+And I'll print the same text, as previously, 
+but pass this new set, symmetric Diff2. 
+And running that,
+
+```java  
+----------------------------------------------
+Symmetric Difference: phones and emails
+----------------------------------------------
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Lucy Van Pelt: [] [(564) 208-6852]
+Charlie Brown: [] [(333) 444-5555]
+Maid Marion: [] [(123) 456-7890]
+Daffy Duck: [daffy@google.com] []
+```
+                    
+I get the same results this way. 
+Ok, so that covers the most commonly set operations, 
+and the difference between symmetric operations 
+and asymmetric operations. 
+I hope you can start to imagine how you might use these combinations 
+to drive processing, based on the relationships of the data in multiple sets. 
+</div>
+
+## [f. Set Operations Challenge Setup]()
+<div align="justify">
+
+Part of the upcoming challenge on Set Operations 
+will be using a **Task** class. 
+This is a fairly simple class, with multiple attributes, 
+some with enums. 
+This will be very similar to the Contact Data set up lecture 
+I did earlier, which produced lists. 
+In this case, I'll be getting different sets of tasks, 
+and instead of using Scanner to parse text block strings, 
+I'll use methods on String. 
+I'm also going to implement Comparable in **Task**. 
+If you feel you need more experience working with Comparable or enums, 
+then this is a good opportunity to do it. 
+If you just want to concentrate on the set operations part of the challenge, 
+you can skip this setup lecture.
+
+You'll want to create a class that represents a **Task**. 
+It should have:
+
+* an assignee.
+* a project name.
+* a task description.
+* a status (assigned, in progress, or not yet assigned).
+* a priority, High, Low, or Medium.
+
+Each of these attributes should be editable. 
+A task is uniquely identified by its project name and description. 
+The task should implement Comparable, 
+so that tasks are sorted by project name and description. 
+The **TaskData** class will be used to set up 
+and return some test data. 
+If you want to use my data, it can be found in a csv file, 
+and consists of the following:
+
+* All tasks identified by the manager.
+* Tasks identified by Ann that she's working on or plans to work on.
+* Tasks which Bob says have been assigned to him.
+* Tasks Carol is doing, as reported by herself.
+
+This class should have a getData method 
+that returns a Set of **Tasks**. 
+This method should take a String, either the name of one of the employees 
+to get a specific set, or _all_ to get the full task set.
+
+I've created h a **Main** class and _main_ method. 
+Before I do anything with that, I'll start by creating a **Task** class.
+
+```java  
+enum Priority {HIGH, MEDIUM, LOW}
+enum Status {IN_QUEUE, ASSIGNED, IN_PROGRESS}
+
+public class Task {
+
+    private String project;
+    private String description;
+    private String assignee;
+    private Priority priority;
+    private Status status;
+}
+```
+
+I'm going to include two enums in this source file. 
+You'll remember I can do this, as long as I don't make them public.
+I'll call the first enum, **Priority**, and its constants will be 
+_HIGH_, _MEDIUM_, and _LOW_, in that order. 
+My second enum is **Status**, and that's going to have
+_IN_QUEUE_, which will be the default status of any new task. 
+I'll also include _ASSIGNED_, and _IN_PROGRESS_. 
+Right now, I'm not going to worry about other statuses, 
+like completed. 
+I've said I want five fields in this **task** class, 
+and they'll all be _private_. 
+The first three are strings, 
+and the first of those, I'm going to call _project_. 
+Each task will belong to some project. 
+Next, description, which just describes a unit of work.
+Then, the _assignee_ or the employee completing the task. 
+_Priority_, with my **Priority** enum type for that, 
+so this could be _low_, _medium_ or _high_. 
+_Status_ will be the type **Status**, my other enum type.
+
+```java  
+public Task(String project, String description, String assignee, Priority priority,
+            Status status) {
+    this.project = project;
+    this.description = description;
+    this.assignee = assignee;
+    this.priority = priority;
+    this.status = status;
+}
+
+public Task(String project, String description, String assignee, Priority priority) {
+    this(project, description, assignee, priority,
+            assignee == null ? Status.IN_QUEUE : Status.ASSIGNED);
+}
+```
+
+I'll generate some constructors, the first will have all five fields. 
+The second constructor will have all fields except status. 
+I'm going to remove all the statements in this generated constructor. 
+I want to replace all that by chaining a call to the five argument constructors. 
+I'll simply pass along the arguments for the first four. 
+For the status, if the assignee is null, 
+I'll say it's _IN_QUEUE_; otherwise, it's _ASSIGNED_. 
+I'll create another constructor, my third,
+and for this one, I want the fields, _project_, 
+_description_, and _priority_. 
+Again, I'll remove the statements in there.
+I'll chain a constructor call here too, 
+this time to the four argument constructors, 
+passing _null_ as the third argument to that, 
+which is the _assignee_. 
+That chained constructor will, in turn, 
+set the status to _IN_QUEUE_, 
+because the assignee is _null_. 
+I'll generate getters and setters for all five fields. 
+I may want to use the getters as field references for
+other sorting mechanisms, 
+from outside of this class. 
+You can also imagine task fields changing quite a bit over time,
+so we'll want a way to set data on a task.
+
+```java  
+@Override
+public String toString() {
+    return "%-20s %-25s %-10s %-10s %s".formatted(project, description, priority, assignee, status);
+}
+```
+
+I'll also generate a _toString_ method. 
+I'm going to replace that generated code, 
+returning a formatted string instead, 
+with all five fields passed as parameters. 
+I'll print a first _project_, then _description_, 
+then _priority_. 
+Finally, the _assignee_ and the _status_. 
+I said I wanted my tasks to be unique by project 
+and description.
+
+```java  
+@Override
+public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Task task = (Task) o;
+
+    if (!getProject().equals(task.getProject())) return false;
+    return getDescription().equals(task.getDescription());
+}
+
+@Override
+public int hashCode() {
+    int result = getProject().hashCode();
+    result = 31 * result + getDescription().hashCode();
+    return result;
+}
+```
+
+This means I want to generate the equals and hashCode methods, 
+using only those two fields, 
+so I'll need to deselect all other fields in the first popup. 
+I want to select them on the last popup, 
+because they should never be null.
+Finally, I want to implement Comparable on this class, 
+so I'll scroll up to the **Task** declaration 
+and include implements Comparable. 
+
+```java  
+public class Task implements Comparable<Task> 
+```
+
+I should always specify a type argument 
+when I implement comparable, 
+and here it should be **Task**, the current class. 
+I've got an error 
+because I haven't yet implemented the abstract method on Comparable.
+I'll use IntelliJ's help to do that.
+
+```java  
+@Override
+public int compareTo(Task o) {
+
+    int result = this.project.compareTo(o.project);
+    if (result == 0) {
+        result = this.description.compareTo(o.description);
+    }
+    return result;
+}
+```
+        
+That gives me the default implementation, 
+which just _returns 0_. 
+I want to compare two fields in this class. 
+I'll start by creating a local variable, int result,
+and assign that the comparison of the project fields, 
+on this and on the argument passed. 
+If the result is zero, the project names are the same. 
+In that case, I want to then sort by the task description. 
+I'll assign the result to be the comparison of the description 
+fields on these objects. 
+And I'll return the result. 
+That finishes the code for the task class, at this point. 
+Setting up all these methods manually can be quite tedious, 
+so thank goodness for IntelliJ's tools here, 
+that help us with this boilerplate code. 
+Now that I've got the Task class, I want to load up some data, 
+into tasks, and put them in sets. 
+I'll do this with a **TaskData** class, so I'll create that.
+
+```java  
+public class TaskData {
+
+    private static String tasks = """
+            Infrastructure, Logging, HIGH
+            Infrastructure, DB Access, MEDIUM
+            Infrastructure, Security, HIGH
+            Infrastructure, Password Policy, MEDIUM
+            Data Design, Task Table, MEDIUM
+            Data Design, Employee Table, MEDIUM
+            Data Design, Cross Reference Tables, HIGH
+            Data Design, Encryption Policy, HIGH
+            Data Access, Write Views, Low
+            Data Access, Set Up Users, Low
+            Data Access, Set Up Access Policy, Low
+            """;
+
+    private static String annsTasks = """
+            Infrastructure, Security, HIGH, In Progress
+            Infrastructure, Password Policy,MEDIUM, In Progress
+            Research, Cloud solutions, MEDIUM, In Progress
+            Data Design, Encryption Policy, HIGH
+            Data Design, Project Table, MEDIUM
+            Data Access, Write Views, Low, In Progress
+            """;
+
+    private static String bobsTasks = """
+            Infrastructure, Security, High, In Progress
+            Infrastructure, Password Policy, Medium
+            Data Design, Encryption Policy, High
+            Data Access, Write Views, Low, In Progress
+            """;
+
+    private static String carolsTasks = """
+            Infrastructure, Logging, High, In Progress
+            Infrastructure, DB Access, Medium
+            Infrastructure, Password Policy, Medium
+            Data Design, Task Table, High
+            Data Access, Write Views, Low
+            """;
+}
+```
+
+I'll set up an empty text block, 
+private and static on this class, 
+called _tasks_.
+I'm going to paste some data in here, 
+in just a minute, 
+but first I want to copy that empty text block, 
+and paste it, renaming it, _annsTasks_. 
+I'll paste that again, and name this one _bobsTasks_. 
+And one more time, pasting that,
+and renaming it to _carolsTasks_. 
+I'm going to use the data from the csv file, 
+and paste all tasks in the first text block. 
+I'll repeat that process for Ann's tasks. 
+Next, I'll copy and paste Bob's tasks. 
+Finally, I'll repeat that for Carol's tasks. 
+Any time you get data from anywhere, 
+you should spend a few minutes 
+getting familiar with it.
+You'll notice this data comes in two different ways. 
+For the full task list, there are three comma-delimited fields, 
+the first is _project_, and it appears the list is sorted by this field. 
+The second field is _description_, or task description. 
+The third is a _priority_, meaning 
+we have to get this text to match our priority enum values 
+when we load the data. 
+Scrolling down to look at ann's and bob's data, 
+you can see there's a fourth field, 
+a _status_, and that's in mixed case. 
+Again, we'll have to transform that string into the enum type 
+we've got for Status. 
+Also, there's no assignee field in this data.
+That's going to have to be derived by the field itself. 
+In other words, ann's Task will all need to default Ann as the assignee. 
+Now that we've got an understanding of this data, 
+I want to create the getTasks method.
+
+```java  
+public static Set<Task> getTasks(String owner) {
+
+    Set<Task> taskList = new HashSet<>();
+    String user = ("ann,bob,carol".contains(owner.toLowerCase())) ? owner : null;
+
+    String selectedList = switch (owner.toLowerCase()) {
+        case "ann" -> annsTasks;
+        case "bob" -> bobsTasks;
+        case "carol" -> carolsTasks;
+        default -> tasks;
+    };
+
+    for (String taskData : selectedList.split("\n")) {
+        String[] data = taskData.split(",");
+        Arrays.asList(data).replaceAll(String::trim);
+
+        Status status = (data.length <= 3) ? Status.IN_QUEUE :
+                Status.valueOf(data[3].toUpperCase()
+                        .replace(' ', '_'));
+
+        Priority priority = Priority.valueOf(data[2].toUpperCase());
+        taskList.add(new Task(data[0], data[1], user, priority, status));
+    }
+
+    return taskList;
+}
+```
+
+It's going to be public and static, 
+so users can call it by qualifying the class name, **TaskData**. 
+It's going to return a Set of tasks, 
+and it's going to take a String, the owner, or assignee. 
+I'll set up a local variable, that's the variable 
+that'll get returned from this method, so it's declared as a Set, 
+but it's going to be a hash set instance.
+Since I have a limited set of users, 
+I'll just list their names in a comma-delimited string, 
+and use the contains method to determine if the name passed, 
+ignoring the case, is one of those names. 
+If it is, I'll use the method argument as the user or the assigned person, 
+otherwise I'll set that to null. 
+I want to return my local variable at the end of this method.
+Of course, I'm not done with this method. 
+There's a bit more work to do.
+
+I need to figure out which text block to use, 
+and that's again determined by the method argument, the owner. 
+This time I'll switch on an owner, again, calling a lower case. 
+If Ann was passed to this, I'll set selected List to ann's Tasks. 
+If it was Bob, I'll pass back bobs Tasks. 
+If Carol, then it's Carol's tasks. 
+And if it wasn't any of those, I'll pass back the full task list, 
+so just tasks.
+
+Now that I've got the right data, based on the owner, 
+meaning I have the text block I want to process, 
+I need to split each text block by lines. 
+I did this in an earlier example, 
+using a Scanner instance and its nextLine method.
+Here I'm simply going to use the split method on String, 
+and pass it the escape sequence for a new line, backslash n.
+I'm going to loop through every line, 
+which I get from this split method. 
+After I have the line, I want to split by commas to get the field data. 
+I'll trim every field's data, using replace all, 
+which you've seen me do before. 
+Ok, so I've got all my data in an array. 
+Before I can create an instance of a Task, 
+I want to transform status, 
+which you'll remember was in the fourth place in a record that had a status. 
+If there are less than three fields, 
+I'll default the status to the in queue constant. 
+Otherwise, I will pass the value of the status data field 
+to the Status enums value of method. 
+I want to make the string pass all upper cases, 
+and replace spaces with underscores. 
+Getting the priority enum constant is similar, 
+but a little simpler. 
+All records should have this field, 
+and I just want it to be upper case. 
+Now, I can create the task, passing it the first field, project, 
+the second field, description, the user variable, 
+and my priority and status variables, which are now both enum constants. 
+I'm creating the task and adding it to the task list set at the same time. 
+There are a lot of things that could go wrong with this method, 
+but again I'm just keeping it simple here for the sake of time. 
+To make it more robust, you'd want to check the data for nulls, 
+and empty strings, or lines that don't have enough data, and so on.
+With this code, we can get data from our source with a parameterized
+call of a static method on this class. 
+Getting back to the **main** class,
+
+```java  
+private static void sortAndPrint(String header, Collection<Task> collection) {
+    sortAndPrint(header, collection, null);
+}
+
+private static void sortAndPrint(String header, Collection<Task> collection, Comparator<Task> sorter) {
+
+    String lineSeparator = "_".repeat(90);
+    System.out.println(lineSeparator);
+    System.out.println(header);
+    System.out.println(lineSeparator);
+
+    List<Task> list = new ArrayList<>(collection);
+    list.sort(sorter);
+    list.forEach(System.out::println);
+}
+```
+
+I'm going to add a method that will sort and print tasks. 
+I'll make this private and static, and call it sort and print. 
+It will take a header or description of the collection, 
+a collection containing tasks, and a comparator I'm calling sorter. 
+I'll set up 90 dashes, separator line as a variable. 
+I'll print my 90 dashes, followed by the header, 
+followed by another string of dashes. 
+To sort, I'd need to use a sortable set,
+which I haven't covered yet, so I'm going to set up a list here, 
+an array list and pass it the collection, the method argument. 
+I can call sort directly on an ArrayList, and pass it the sorter, a comparator. 
+And I'll just print out each element of the sorted list. 
+I also want to add an overloaded version of this method 
+that doesn't take a Comparator. 
+I'll insert this above the first method. 
+I'll chain a call to the sort and print method, 
+but pass null as the comparator, the last argument.
+Remember, I made the **Task** Comparable,
+so if I call _list.sort_ with a null, 
+and the list has elements that implement Comparable, 
+it will get sorted using **Comparable**'s _compareTo_ method.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+        Set<Task> tasks = TaskData.getTasks("all");
+        sortAndPrint("All Tasks", tasks);
+
+        Set<Task> annsTasks = TaskData.getTasks("Ann");
+        sortAndPrint("Ann's Tasks", annsTasks);
+    }
+}
+```
+
+I'll create a **Set**, named tasks 
+and call get tasks on task data, 
+passing all as the owner. 
+I'll invoke my sortAndPrint method, with a header,
+passing it tasks. 
+Ok, so I can run this and see the full task list, 
+sorted by my Comparable sort, project first, then description.
+I'll copy and paste those two lines of code. 
+I'll change tasks to ann's tasks, and all to Ann, on the first statement. 
+I'll change the header to Ann's Tasks, 
+and I want to again change tasks to ann's Tasks, 
+on the second statement. 
+If I run that:
+
+```java  
+__________________________________________________________________________________________
+All Tasks
+__________________________________________________________________________________________
+Data Access          Set Up Access Policy      LOW        null       IN_QUEUE
+Data Access          Set Up Users              LOW        null       IN_QUEUE
+Data Access          Write Views               LOW        null       IN_QUEUE
+Data Design          Cross Reference Tables    HIGH       null       IN_QUEUE
+Data Design          Employee Table            MEDIUM     null       IN_QUEUE
+Data Design          Encryption Policy         HIGH       null       IN_QUEUE
+Data Design          Task Table                MEDIUM     null       IN_QUEUE
+Infrastructure       DB Access                 MEDIUM     null       IN_QUEUE
+Infrastructure       Logging                   HIGH       null       IN_QUEUE
+Infrastructure       Password Policy           MEDIUM     null       IN_QUEUE
+Infrastructure       Security                  HIGH       null       IN_QUEUE
+__________________________________________________________________________________________
+Ann's Tasks
+__________________________________________________________________________________________
+Data Access          Write Views               LOW        Ann        IN_PROGRESS
+Data Design          Encryption Policy         HIGH       Ann        IN_QUEUE
+Data Design          Project Table             MEDIUM     Ann        IN_QUEUE
+Infrastructure       Password Policy           MEDIUM     Ann        IN_PROGRESS
+Infrastructure       Security                  HIGH       Ann        IN_PROGRESS
+Research             Cloud solutions           MEDIUM     Ann        IN_PROGRESS
+```
+
+I'll now get Ann's tasks printed out. 
+For good measure, I'll change the way I want this sorted.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+        Set<Task> tasks = TaskData.getTasks("all");
+        sortAndPrint("All Tasks", tasks);
+
+        Comparator<Task> sortByPriority = Comparator.comparing(Task::getPriority);
+        Set<Task> annsTasks = TaskData.getTasks("Ann");
+        //sortAndPrint("Ann's Tasks", annsTasks);
+        sortAndPrint("Ann's Tasks", annsTasks, sortByPriority);
+    }
+}
+```
+
+I'll add a local variable, a Comparator, 
+with a type argument task. 
+I'll call it sort of priority. 
+I'll assign it the result of calling comparing, on Comparator, 
+with the method reference _Task::getPriority_. 
+I want to change the call to sort and Print on that last statement,
+where I print ann's tasks, and include the sort by priority 
+as an additional argument. 
+Rerunning the code,
+
+```java  
+__________________________________________________________________________________________
+Ann's Tasks
+__________________________________________________________________________________________
+Data Design          Encryption Policy         HIGH       Ann        IN_QUEUE
+Infrastructure       Security                  HIGH       Ann        IN_PROGRESS
+Infrastructure       Password Policy           MEDIUM     Ann        IN_PROGRESS
+Research             Cloud solutions           MEDIUM     Ann        IN_PROGRESS
+Data Design          Project Table             MEDIUM     Ann        IN_QUEUE
+Data Access          Write Views               LOW        Ann        IN_PROGRESS
+```
+                
+I get Ann's task sorted by priority there, 
+with the highest priority tasks list first. 
+If I had set up my enum to go from Low to High,
+instead of High to Low, these would have been sorted in reverse. 
+Ok, so these are the classes 
+that you'll need to complete the Set Operations Challenge, 
+which is coming up next.
+</div>
+
+## [g. Set Operations Challenge] ()
+<div align="justify">
+
+In the last section, I walked through creating a **Task** class, 
+which I'll be using in this challenge. 
+And I created a TaskData class to return four different sets of data, 
+which we'll be using here.
+
+![image18](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image17.png?raw=true)
+
+This class diagram shows you the two classes. Task has five fields, two with enum types shown. Task is unique by the
+project and description fields combined. Task implements comparable, and is sorted by project then description. Some
+test data was set up on the TaskData class, and you can get this data by calling TaskData.getData, passing it the
+names, Ann, Bob, or Carol, or some other string, like "all", to get all tasks. If you didn't see the last lecture,
+take a minute to get familiar with the data, set up as four text blocks, on the TaskData class. In addition to this
+code, I included a couple of methods on the Main class to print sorted collections, with a descriptive header. One
+takes a comparator of your choice. The other doesn't, meaning the elements will get sorted by the Comparable sort.
+
+                                            Set Operations Challenge
+
+        Let's say you're a new manager, of a team that consists of three team members working under you, Ann, Bob, and Carol.
+    Each of these developers is working on a set of tasks. The management of the tasks has been a manual process, and you
+    don't really have a good way of knowing whose working on what, how things are prioritized, or how evenly the work is
+    distributed. You've asked all your developers to submit what they're working on to you. You also have a master set
+    of tasks, which your own boss sent to you. I've included this data in a csv file, and it's built into the TaskData
+    class. You'll be using that data, to answer the following questions.
+
+    * What is the full task list? This is the list of all tasks described by your manager or boss, and any additional
+    tasks the employees have, that may not be on that list.
+
+    * Which tasks are assigned to at least one of your 3 team members?
+
+    * Which tasks still need to be assigned?
+
+    * Which tasks are assigned to multiple employees?
+
+    To do some of this work, create three methods on your Main class. Be sure the sets you pass to these methods, don't
+    mutate in these methods. In other words, return a new set.
+
+    * Create a getUnion method, that takes a List of Sets, and will return the union of all the sets.
+
+    * Create a getIntersect method, that takes two Sets, and returns the intersection of the sets.
+
+    * Create a getDifference method, that takes two Sets, and removes the second argument's set from the first.
 ```java  
 
 ```
 
 </div>
+
 
 <div align="justify">
 
@@ -3284,6 +4253,7 @@ which are ways to evaluate relationships of elements in different sets.
 
 </div>
 
+
 <div align="justify">
 
 
@@ -3292,6 +4262,17 @@ which are ways to evaluate relationships of elements in different sets.
 ```
 
 </div>
+
+
+<div align="justify">
+
+
+```java  
+
+```
+
+</div>
+
 
 <div align="justify">
 

@@ -4,8 +4,7 @@ import java.util.*;
 
 //Part-1
 /*
-        In the last lecture, I walked through creating a Task class, which I'll be using in this challenge. And I created
-    a TaskData class to return four different sets of data, which we'll be using here.
+
 
                 _________________________
                 | Task                  |       _____________________________________________
@@ -31,40 +30,7 @@ import java.util.*;
                 | getTasks("Ann"|"Bob"|"Carol"|"all): Set<Task>    |
                 |__________________________________________________|
 
-    This class diagram shows you the two classes. Task has five fields, two with enum types shown. Task is unique by the
-    project and description fields combined. Task implements comparable, and is sorted by project then description. Some
-    test data was set up on the TaskData class, and you can get this data by calling TaskData.getData, passing it the
-    names, Ann, Bob, or Carol, or some other string, like "all", to get all tasks. If you didn't see the last lecture,
-    take a minute to get familiar with the data, set up as four text blocks, on the TaskData class. In addition to this
-    code, I included a couple of methods on the Main class to print sorted collections, with a descriptive header. One
-    takes a comparator of your choice. The other doesn't, meaning the elements will get sorted by the Comparable sort.
 
-                                            Set Operations Challenge
-
-        Let's say you're a new manager, of a team that consists of three team members working under you, Ann, Bob, and Carol.
-    Each of these developers is working on a set of tasks. The management of the tasks has been a manual process, and you
-    don't really have a good way of knowing whose working on what, how things are prioritized, or how evenly the work is
-    distributed. You've asked all your developers to submit what they're working on to you. You also have a master set
-    of tasks, which your own boss sent to you. I've included this data in a csv file, and it's built into the TaskData
-    class. You'll be using that data, to answer the following questions.
-
-    * What is the full task list? This is the list of all tasks described by your manager or boss, and any additional
-    tasks the employees have, that may not be on that list.
-
-    * Which tasks are assigned to at least one of your 3 team members?
-
-    * Which tasks still need to be assigned?
-
-    * Which tasks are assigned to multiple employees?
-
-    To do some of this work, create three methods on your Main class. Be sure the sets you pass to these methods, don't
-    mutate in these methods. In other words, return a new set.
-
-    * Create a getUnion method, that takes a List of Sets, and will return the union of all the sets.
-
-    * Create a getIntersect method, that takes two Sets, and returns the intersection of the sets.
-
-    * Create a getDifference method, that takes two Sets, and removes the second argument's set from the first.
 */
 //End-Part-1
 
