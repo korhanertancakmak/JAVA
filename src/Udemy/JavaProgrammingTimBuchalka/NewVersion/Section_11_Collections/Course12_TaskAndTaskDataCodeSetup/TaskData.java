@@ -29,7 +29,7 @@ public class TaskData {
             Data Access, Write Views, Low, In Progress
             """;
 
-    private static String bobsTasks = """
+    private static final String bobsTasks = """
             Infrastructure, Security, High, In Progress
             Infrastructure, Password Policy, Medium
             Data Design, Encryption Policy, High

@@ -4193,7 +4193,7 @@ that you'll need to complete the Set Operations Challenge,
 which is coming up next.
 </div>
 
-## [g. Set Operations Challenge]()
+## [g. Set Operations Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/Course13_SetOperationsChallenge/README.md#set-operations-challenge)
 <div align="justify">
 
 In the last section, I walked through creating a **Task** class, 
@@ -4251,8 +4251,7 @@ and returns the intersection of the sets.
 and removes the second argument's set from the first.
 </div>
 
-
-
+## [h. LinkedHashSet]()
 <div align="justify">
 
 
