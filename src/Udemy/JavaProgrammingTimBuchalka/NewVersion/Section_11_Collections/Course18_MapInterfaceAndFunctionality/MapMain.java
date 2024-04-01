@@ -7,56 +7,9 @@ import java.util.Map;
 
 //Part-1
 /*
-                                           The Map Interface and Functionality
 
-        I'm going to leave the collection side of the java collections framework for now, and look at the Map interface,
-    and the Java classes that implement it. The map interface is part of the collections framework, even though it doesn't
-    derive from, or implement, the Collection interface.
 
-                                    __________________                                      __________________
-                                    | <<Interface>>  |                                      | <<Interface>>  |
-                                    | Collection     |                                      | Map            |
-                                    |________________|                                      |________________|
-                    ------------------------↑------------------------                       |Implementations:|
-            ________↑_________      ________↑_________      ________↑_________              |HashMap         |
-            | <<Interface>>  |      | <<Interface>>  |      | <<Interface>>  |              |LinkedHashMap   |
-            | List           |      | Set            |      | Queue          |              |________________|
-            |________________|      |________________|      |________________|                      ↑
-            |Implementations:|      |Implementations:|              ↑                       ________↑_________
-            |LinkedList      |      |HashSet         |              ↑                       | <<Interface>>  |
-            |ArrayList       |      |LinkedHashSet   |              ↑                       | SortedMap      |
-            |________________|      |________________|      ________↑_________              |________________|
-                                            ↑               | <<Interface>>  |              |Implementations:|
-                                    ________↑_________      | Deque          |              |TreeMap         |
-                                    | <<Interface>>  |      |________________|              |________________|
-                                    | SortedSet      |      |Implementations:|
-                                    |________________|      |ArrayDeque      |
-                                    |Implementations:|      |LinkedList      |
-                                    |TreeSet         |      |________________|
-                                    |________________|
 
-    From this diagram above, you can obviously see the Map is out here on its own. A map in the collections framework
-    is another data structure. Although it's still a grouping of elements, it's different, because elements are stored
-    with keyed references.
-
-            Collection Interface                                    Map Interface
-            interface Collection<E> extends Iterable<E>             interface Map<K, V>
-
-    This means a Map requires two type arguments, as you can see above, where I'm showing the root interface, Collection,
-    compared to the Map interface. The Map has K for it's key type, and V for the value type. As with any generic classes,
-    the only restriction on these types is, they must be reference types, and not primitives. The map interface replaces
-    the now obsolete dictionary abstract class. And like the class that it replaces, it maps one key to one value. A
-    language dictionary is a classic example of a map, with the keys being the words in the dictionaries, and the values
-    would be the definitions of the words. Now unfortunately, the analogy falls down a bit with the English language. And
-    the reason for that is, many English words have the same meanings. So the word "put", for example, has 4 definitions,
-    2 as a verb, and 2 as a noun. A Java Map can't contain duplicate keys, so I couldn't have four keys, all named "put",
-    in my map. Each key can only map to a single value, so I couldn't reference 4 different string descriptions for the
-    key "put", without aggregating the descriptions into a collection of some sort. In the next few lectures, I'll be looking
-    at 3 of the Java classes that implement the map interface, the "HashMap", the "LinkedHashMap", and the "TreeMap". The
-    HashMap is unordered, the LinkedHashMap is ordered by insertion order, and the TreeMap is a sorted map. I want to continue
-    with the contact merge example I used in the Set discussion, so I've got my SetsAndMaps Project pulled up. Remember
-    this has a Contact class that represents either a phone or email contact, or both. A Map is a much easier data structure
-    to work with, if you're doing updates, to a keyed item.
 */
 //End-Part-1
 

@@ -129,11 +129,12 @@ What we will learn from this Path:
 ### [b. java.util.Collections Methods]()
 ### [c. Card Game Challenge]()
 ### [d. Equal and HashCode Methods]()
-### [e. Set Interfaces]()
+### [e. Set Interface]()
 ### [f. Set Operations Challenge Setup]()
 ### [g. Set Operations Challenge]()
 ### [h. LinkedHashSet and TreeSet Interfaces]()
 ### [i. TreeSet Challenge]()
+### [j. Map Interface]()
 
     * Map Interface
     * HashMap
