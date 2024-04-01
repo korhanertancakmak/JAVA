@@ -132,8 +132,9 @@ What we will learn from this Path:
 ### [e. Set Interfaces]()
 ### [f. Set Operations Challenge Setup]()
 ### [g. Set Operations Challenge]()
+### [h. LinkedHashSet and TreeSet Interfaces]()
+### [i. TreeSet Challenge]()
 
-    * LinkedHashSet and TreeSet
     * Map Interface
     * HashMap
     * LinkedHashMap and TreeMap

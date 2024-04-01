@@ -5109,13 +5109,65 @@ the _TreeSet_ is a good alternative to the ArrayList.
 ## [i. TreeSet Challenge]()
 <div align="justify">
 
+In this challenge, you'll be creating a **Theatre** class, 
+that has a set of _seats_. 
+The **Seat** class should be a nested class on the **Theatre** class. 
+A Seat should be constructed with a row character and an integer, 
+that represents the _seat_ number within the row. 
+Each **Seat** should have a string, a seat number, 
+in the format _A005_, where **A** is the row number, 
+and **005** is the seat number within the row, 
+It should be zero padded up to three digits. 
+**Seat** should also have a field, 
+a _boolean_, indicating 
+if the seat is reserved or not.
 
+The **theatre** class should have three fields, 
+theatre name, an integer for seats in row, 
+how many seats are in a single row in other words, 
+and a field for the seats themselves. 
+This last field should be a **TreeSet**. 
+A Theatre instance should be constructed with the theatre name, 
+the number of rows in the theatre, 
+and the number of seats total in the theatre. 
+For simplicity, assume there are a uniform number of seats in every row, 
+and the number of rows should never exceed _26_, 
+so the rows will be labeled _A_ through _Z_.
 
-```java  
+You should create the seats, and number them, 
+as part of the initialization of a **theatre** class. 
+The **theatre** class should also have a _printSeatMap_ method 
+that prints each seat, 
+with each row printed on a separate line. 
+You should allow a booking agent to reserve a single seat, 
+and the printed seat map should show which seats are reserved. 
+If you want an extra challenge, create a second method on theatre, 
+that lets an agent specify.
 
-```
+* the number of reservations being requested.
+* a range of rows (from _A_ to _C_ for example, for front row seats).
+* a range of seats (a number greater than or equal to one, and less than 
+or equal to the rows per seat).
 
+For example, if there are 10 seats in each row, 
+you could assume the aisle seats are 1 and 9. 
+Maybe your buyer isn't interested in an aisle seat, 
+so they should be able to specify two through nine 
+as the range of seat numbers. 
+The seats that get reserved 
+should be contiguous within a row.
+
+The bonus is to create a second method on the **Theatre** class, 
+that lets an agent reserve a number of seats, contiguous within a row. 
+The parameters should be:
+
+* the number of reservations being requested.
+* a range of rows (from _A_ to _C,_ for example, for front row seats).
+* a range of seats (a number greater than or equal to one, 
+and less than or equal to the rows per seat).
 </div>
+
+
 
 <div align="justify">
 
