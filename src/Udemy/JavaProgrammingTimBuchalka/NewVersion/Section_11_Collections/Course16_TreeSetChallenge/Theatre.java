@@ -7,7 +7,7 @@ public class Theatre {
 
     class Seat implements Comparable<Seat> {
 
-        private String seatNum;
+        private final String seatNum;
         private boolean reserved;
 
         public Seat(char rowChar, int seatNo) {
@@ -25,9 +25,9 @@ public class Theatre {
         }
     }
 
-    private String theatreName;
-    private int seatsPerRow;
-    private NavigableSet<Seat> seats;
+    private final String theatreName;
+    private final int seatsPerRow;
+    private final NavigableSet<Seat> seats;
     //private Set<Seat> seats;
 
     public Theatre(String theatreName, int rows, int totalSeats) {
