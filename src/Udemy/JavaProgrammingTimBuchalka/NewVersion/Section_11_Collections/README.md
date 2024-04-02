@@ -5175,35 +5175,976 @@ and look at the **Map** interface, and the Java classes that implement it.
 The **map** interface is part of the **collections** framework, 
 even though it doesn't derive from, or implement, the **Collection** interface.
 
-![image21]()
+![image21](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image20.png?raw=true)
 
 From this diagram above, you can obviously see the Map is out here on its own. A map in the collections framework
 is another data structure. Although it's still a grouping of elements, it's different, because elements are stored
 with keyed references.
 
-            Collection Interface                                    Map Interface
-            interface Collection<E> extends Iterable<E>             interface Map<K, V>
+| Collection Interface                        | Map Interface       |
+|---------------------------------------------|---------------------|
+| interface Collection<E> extends Iterable<E> | interface Map<K, V> |
 
-    This means a Map requires two type arguments, as you can see above, where I'm showing the root interface, Collection,
-    compared to the Map interface. The Map has K for it's key type, and V for the value type. As with any generic classes,
-    the only restriction on these types is, they must be reference types, and not primitives. The map interface replaces
-    the now obsolete dictionary abstract class. And like the class that it replaces, it maps one key to one value. A
-    language dictionary is a classic example of a map, with the keys being the words in the dictionaries, and the values
-    would be the definitions of the words. Now unfortunately, the analogy falls down a bit with the English language. And
-    the reason for that is, many English words have the same meanings. So the word "put", for example, has 4 definitions,
-    2 as a verb, and 2 as a noun. A Java Map can't contain duplicate keys, so I couldn't have four keys, all named "put",
-    in my map. Each key can only map to a single value, so I couldn't reference 4 different string descriptions for the
-    key "put", without aggregating the descriptions into a collection of some sort. In the next few lectures, I'll be looking
-    at 3 of the Java classes that implement the map interface, the "HashMap", the "LinkedHashMap", and the "TreeMap". The
-    HashMap is unordered, the LinkedHashMap is ordered by insertion order, and the TreeMap is a sorted map. I want to continue
-    with the contact merge example I used in the Set discussion, so I've got my SetsAndMaps Project pulled up. Remember
-    this has a Contact class that represents either a phone or email contact, or both. A Map is a much easier data structure
-    to work with, if you're doing updates, to a keyed item.
+This means a **Map** requires two type arguments, as you can see above, 
+where I'm showing the root interface, **Collection**, compared to the **Map** interface. 
+The **Map** has _K_ for its _key_ type, and _V_ for the _value_ type. 
+As with any generic classes, the only restriction on these types is, 
+they must be reference types, and not primitives. 
+The map interface replaces the now obsolete dictionary abstract class. 
+And like the class that it replaces, it maps one key to one value. 
+A language dictionary is a classic example of a map, 
+with the keys being the words in the dictionaries, 
+and the values would be the definitions of the words. 
+Now unfortunately, the analogy falls down a bit with the English language. 
+And the reason for that is, many English words have the same meanings. 
+So the word _put_, for example, has four definitions, 2 as a verb, and 2 as a noun. 
+A Java **Map** can't contain duplicate keys, so I couldn't have four keys, 
+all named _put,_ in my map. 
+Each key can only map to a single value, 
+so I couldn't reference four different string descriptions 
+for the key _put_, without aggregating the descriptions into a collection of some sort. 
+In the next few lectures, I'll be looking at 3 of the Java classes that implement the map interface, 
+the **HashMap,** the **LinkedHashMap,** and the **TreeMap.** 
+The **HashMap** is unordered, the **LinkedHashMap** is ordered by insertion order, 
+and the **TreeMap** is a sorted map. 
+I want to continue with the contact merge example I used in the **Set** discussion.
+Remember this has a **Contact** class that represents either a phone or email contact, or both. 
+A **Map** is a much easier data structure to work with if you're doing updates to a keyed item.
+
+```java  
+public class MapMain {
+
+    public static void main(String[] args) {
+
+        List<Contact> phones = ContactData.getData("phone");
+        List<Contact> emails = ContactData.getData("email");
+
+        List<Contact> fullList = new ArrayList<>(phones);
+        fullList.addAll(emails);
+        fullList.forEach(System.out::println);
+        System.out.println("-----------------------------");
+    }
+}
+```
+
+I'll create a new Class, called **MapMain**, 
+and I'll create a _main_ method in that. 
+First, I want to get a list of phone and email contacts, creating a combined list. 
+I've done this before, soI'll set this up real quickly. 
+I'm going to have two lists, one for phones, 
+getting that from get data on the **ContactData** class, 
+first passing phone for the type. 
+For the _emails_ list, I'll do the same thing, but pass the type email. 
+I'll create a full list, assigning that a new instance of an ArrayList, 
+and passing that _phones_. 
+Next I'll add the _emails_ list. 
+And I'll print those elements out with a separator line.
+
+```java  
+Charlie Brown: [] [(333) 444-5555]
+Maid Marion: [] [(123) 456-7890]
+Mickey Mouse: [] [(999) 888-7777]
+Mickey Mouse: [] [(124) 748-9758]
+Minnie Mouse: [] [(456) 780-5666]
+Robin Hood: [] [(564) 789-3000]
+Robin Hood: [] [(789) 902-8222]
+Lucy Van Pelt: [] [(564) 208-6852]
+Mickey Mouse: [] [(999) 888-7777]
+Mickey Mouse: [mckmouse@gmail.com] []
+Mickey Mouse: [micky1@aws.com] []
+Minnie Mouse: [minnie@verizon.net] []
+Robin Hood: [rhood@gmail.com] []
+Linus Van Pelt: [lvpelt2015@gmail.com] []
+Daffy Duck: [daffy@google.com] []
+-----------------------------
+```
+                    
+And I get a list, with duplicate records, 
+one for each phone number and email record, 
+each record in other words. 
+Records in a list are by default in insertion order, 
+and include all duplicates.
+Now, I want to create my first map, 
+and I'm going to start with a hash map. 
+I have to specify two type arguments when I do this, 
+the first type is the type of the key, 
+and the second is the type of the value, or collection element.
+
+```java  
+Map<String, Contact> contacts = new HashMap<>();
+
+for (Contact contact : fullList) {
+    contacts.put(contact.getName(), contact);
+}
+contacts.forEach((k, v) -> System.out.println("key=" + k + ", value= " + v));
+```
+
+I'll use Map as my reference type, 
+and my key is going to be the contact name so string, 
+and the value is going to be a **Contact** record. 
+I'll assign a new instance of the **HashMap** to that, 
+with nothing passed to the constructor.
+Unlike the classes with **Collection** at their root, 
+**Map** implementations don't have an _addAll_ method, 
+and I can't simply pass collection types to the constructor, 
+only other map types. 
+To add my Contacts, I'm going to loop through the full list, 
+and use the _put_ method on my hash map. 
+The _put_ method takes a _key_ and a _value_, 
+and inserts what's called an Entry into the map. 
+I'll pass the name, using get name on **Contact**, as the _key_, 
+and my current contact as the _value_. 
+Now I want to print out my elements in the map. 
+There are multiple ways to do that, but I'll start with the for each method
+on the map itself, on contacts, and pass it a lambda expression. 
+This lambda expression requires two arguments, one for the _key_, 
+and one for the _value_, and I'll call those _k_ and _v_ for simplicity,
+and to save a little space. 
+My expression will just print the _key_ and the _value_ here. 
+Running this class's main method:
+
+```java  
+key=Lucy Van Pelt, value= Lucy Van Pelt: [] [(564) 208-6852]
+key=Linus Van Pelt, value= Linus Van Pelt: [lvpelt2015@gmail.com] []
+key=Minnie Mouse, value= Minnie Mouse: [minnie@verizon.net] []
+key=Maid Marion, value= Maid Marion: [] [(123) 456-7890]
+key=Charlie Brown, value= Charlie Brown: [] [(333) 444-5555]
+key=Robin Hood, value= Robin Hood: [rhood@gmail.com] []
+key=Daffy Duck, value= Daffy Duck: [daffy@google.com] []
+key=Mickey Mouse, value= Mickey Mouse: [micky1@aws.com] []
+```
+                    
+You can see the _keys_ are the contact names, 
+and the _values_ are the contact records.
+These elements aren't in any particular order. 
+Also notice that there's no duplicates of either _key_ or _value_. 
+Keys must be unique, but also, I want you to see 
+that _Mickey_'s contact has an email,
+and not a phone number. 
+Why is that, when the ArrayList, fullList, listed _Mickey_ records 
+with the phone numbers first? 
+Wouldn't this mean that the first _Mickey_ record, 
+with phone number 999, 888, 7777, would have been added first, 
+and other records ignored? 
+You'll remember that when we called add, on a set, it would return true or false,
+false if the element wasn't added, because it was already in the set.
+The map's _put_ method is different from the set's _add_ method, 
+because the _put_ method always puts the element in the map. 
+If the key is not in the map, the key and value are added. 
+If the key is in the map, the value is replaced, 
+and the previous value is returned from the put method. 
+For a map, this means the last element in your list, 
+is the one that ends up in your map, which is what happened here. 
+There are other methods for adding elements to the map, 
+and I'll discuss each of these in turn in a bit.
+
+```java  
+System.out.println("-----------------------------");
+System.out.println(contacts.get("Charlie Brown"));
+System.out.println(contacts.get("Chuck Brown"));
+```
+
+But before that, something about a map that makes it so nice is 
+I can simply use the key value to look up my contact. 
+I'll do that next, so first I'll print a separation line. 
+Then I'll print the result of the get method, 
+and for a map, I pass the key to that, 
+so I'll pass the string Charlie Brown. 
+Running that:
+
+```java  
+-----------------------------
+Charlie Brown: [] [(333) 444-5555]
+```
+                        
+You can see the get method successfully retrieved 
+my _Charlie Brown_ contact record. 
+If _Charlie Brown_ is not a key in the map, 
+the get method would return a null. 
+JDK8 introduced a method called _getOrDefault_, 
+which will replace that _null_ value with a default value. 
+Let's look at that for a moment.
+First, I'll use the get method and pass it _Chuck Brown_, 
+passing that directly to a **System.out.println** method. 
+And you can see when I run that:
+
+```java  
+null
+```
+                        
+It just prints a null. 
+There may be some cases where you're chaining methods, for example, 
+where you really don't want a null back, 
+because it will cause a null reference exception to occur.
+
+```java  
+Contact defaultContact = new Contact("Chuck Brown");
+System.out.println(contacts.getOrDefault("Chuck Brown", defaultContact));
+```
+
+I'll create a default contact for _Chuck Brown_, 
+by just passing his name to the Contact constructor. 
+Here, I'll use the _get_ or _default_ method, 
+with the _Chuck Brown_ key, but also pass it the defaultContact. 
+If I run that code:
+
+```java  
+Chuck Brown: [] []
+```
+                    
+You can see that gives me a Contact record back 
+for _Chuck Brown_ with no other data. 
+It's important to remember, though that _Chuck Brown_ never gets added to the map, 
+that contact is just there, the defaultContact, as a convenience.
+
+```java  
+System.out.println("-----------------------------");
+contacts.clear();
+for (Contact contact : fullList) {
+    Contact duplicate = contacts.put(contact.getName(), contact);
+    if (duplicate != null) {
+        System.out.println("duplicate = " + duplicate);
+        System.out.println("current = " + contact);
+    }
+}
+contacts.forEach((k, v) -> System.out.println("key=" + k + ", value= " + v));
+```
+
+The _put_ method will also return a _null_ 
+if the element isn't found in the map, 
+or the element if it is. 
+I'll add another separator line, and now, 
+I'll clear the _contacts_ map of elements. 
+I'll again loop through the contacts. 
+This time I'll assign the outcome of the _put_ method to a local variable. 
+If that's not _null_, I'll print the value that came back, 
+as well as the current value, which is the value 
+that always gets put in the map. 
+In this code, I can recognize a duplicate if something other 
+than null is returned from the put method. 
+Running this code:
+
+```java  
+-----------------------------
+duplicate = Mickey Mouse: [] [(999) 888-7777]
+current = Mickey Mouse: [] [(124) 748-9758]
+duplicate = Robin Hood: [] [(564) 789-3000]
+current = Robin Hood: [] [(789) 902-8222]
+duplicate = Mickey Mouse: [] [(124) 748-9758]
+current = Mickey Mouse: [] [(999) 888-7777]
+duplicate = Mickey Mouse: [] [(999) 888-7777]
+current = Mickey Mouse: [mckmouse@gmail.com] []
+duplicate = Mickey Mouse: [mckmouse@gmail.com] []
+current = Mickey Mouse: [micky1@aws.com] []
+duplicate = Minnie Mouse: [] [(456) 780-5666]
+current = Minnie Mouse: [minnie@verizon.net] []
+duplicate = Robin Hood: [] [(789) 902-8222]
+current = Robin Hood: [rhood@gmail.com] []
+```
+                    
+It prints duplicate records by name, as well as the record 
+that I'm iterating over, the current contact. 
+I can use this bit of information to my advantage, 
+especially since my goal is to merge my contacts. 
+First, I'll comment out those two print statements in this loop
+
+```java  
+System.out.println("-----------------------------");
+contacts.clear();
+for (Contact contact : fullList) {
+Contact duplicate = contacts.put(contact.getName(), contact);
+    if (duplicate != null) {
+        //System.out.println("duplicate = " + duplicate);
+        //System.out.println("current = " + contact);
+        contacts.put(contact.getName(), contact.mergeContactData(duplicate));
+    }
+}
+contacts.forEach((k, v) -> System.out.println("key=" + k + ", value= " + v));
+```
+
+I'll call my _mergeContactData_ method when this situation occurs, 
+and then put the new contact that comes back from that, in the map. 
+I'll make another call to the _put_ method on contacts,
+using the same key, and then pass a call to _mergeContactData_ 
+as the expression for the second argument. 
+If I pass that the duplicate entry, 
+I'll get a new contact with the current and duplicate data merged. 
+I want to copy that _forEach_ statement that prints the whole map out, 
+and paste it after this loop. 
+Can you guess what the results of this will be now? 
+If I run that:
+
+```java  
+-----------------------------
+key=Lucy Van Pelt, value= Lucy Van Pelt: [] [(564) 208-6852]
+key=Linus Van Pelt, value= Linus Van Pelt: [lvpelt2015@gmail.com] []
+key=Minnie Mouse, value= Minnie Mouse: [minnie@verizon.net] [(456) 780-5666]
+key=Maid Marion, value= Maid Marion: [] [(123) 456-7890]
+key=Charlie Brown, value= Charlie Brown: [] [(333) 444-5555]
+key=Robin Hood, value= Robin Hood: [rhood@gmail.com] [(789) 902-8222, (564) 789-3000]
+key=Daffy Duck, value= Daffy Duck: [daffy@google.com] []
+key=Mickey Mouse, value= Mickey Mouse: [micky1@aws.com, mckmouse@gmail.com] [(124) 748-9758, (999) 888-7777]
+```
+                    
+You can see I have a distinct listing of my contacts, 
+with merged emails, and phone numbers. 
+You can see _Mickey Mouse_ has two distinct emails, 
+and two distinct phone numbers.
+Merging my contacts was quick work, using a hash map. 
+Now, let's say I did not really want to merge these elements, 
+but I also don't want each additional matching record to replace the initial entry either. 
+In other words, I don't want to replace the value every time I do a put.
+
+```java  
+System.out.println("-----------------------------");
+contacts.clear();
+
+for (Contact contact : fullList) {
+    contacts.putIfAbsent(contact.getName(), contact);
+}
+contacts.forEach((k, v) -> System.out.println("key=" + k + ", value= " + v));
+```
+
+First, I'll add two statements, a separation line 
+and a call to clear the map again. 
+I'm going to copy that first for loop, 
+and paste that at the end of this main method. 
+And instead of put, I'll use another method, called _putIfAbsent_,
+which is a default method on the **Map** interface. 
+I'll run this real quick, then talk about 
+the differences between _put_ and _putIfAbsent_.
+
+```java  
+-----------------------------
+key=Lucy Van Pelt, value= Lucy Van Pelt: [] [(564) 208-6852]
+key=Linus Van Pelt, value= Linus Van Pelt: [lvpelt2015@gmail.com] []
+key=Minnie Mouse, value= Minnie Mouse: [] [(456) 780-5666]
+key=Maid Marion, value= Maid Marion: [] [(123) 456-7890]
+key=Charlie Brown, value= Charlie Brown: [] [(333) 444-5555]
+key=Robin Hood, value= Robin Hood: [] [(564) 789-3000]
+key=Daffy Duck, value= Daffy Duck: [daffy@google.com] []
+key=Mickey Mouse, value= Mickey Mouse: [] [(999) 888-7777]
+```
+                    
+Looking at the results of my map, 
+you can see that Mickey's record reflects the first record 
+I had in my full list, meaning this record has the phone number 999, 888, 7777. 
+The _put_ if _absent_ method won't put an updated value in the map, 
+it just ignores the element, 
+if it already finds something in the map for the key. 
+Again, this method returns an element if one is already in the map for the key, 
+but the method doesn't replace it with the current element. 
+It returns null if this is the first time an entry is being added 
+to the map for that key. 
+And now, If I wanted to merge contacts in this case, 
+I could do something similar, 
+so I'll copy the statements above, and paste them below.
+
+```java  
+System.out.println("-----------------------------");
+contacts.clear();
+
+for (Contact contact : fullList) {
+    Contact duplicate = contacts.putIfAbsent(contact.getName(), contact);
+    if (duplicate != null) {
+        contacts.put(contact.getName(), contact.mergeContactData(duplicate));
+    }
+}
+contacts.forEach((k, v) -> System.out.println("key=" + k + ", value= " + v));
+```
+
+In this loop, I want to assign what comes back from _put_ 
+If Absent, to a local variable, and again I'll call that duplicate. 
+I'll add an if statement, checking if duplicate isn't null, 
+and if it isn't, I'll now make a call to put here. 
+I'll put my merged contact, again merging the current contact, 
+with the duplicate variable. 
+And running that code:
+
+```java  
+-----------------------------
+key=Lucy Van Pelt, value= Lucy Van Pelt: [] [(564) 208-6852]
+key=Linus Van Pelt, value= Linus Van Pelt: [lvpelt2015@gmail.com] []
+key=Minnie Mouse, value= Minnie Mouse: [minnie@verizon.net] [(456) 780-5666]
+key=Maid Marion, value= Maid Marion: [] [(123) 456-7890]
+key=Charlie Brown, value= Charlie Brown: [] [(333) 444-5555]
+key=Robin Hood, value= Robin Hood: [rhood@gmail.com] [(789) 902-8222, (564) 789-3000]
+key=Daffy Duck, value= Daffy Duck: [daffy@google.com] []
+key=Mickey Mouse, value= Mickey Mouse: [micky1@aws.com, mckmouse@gmail.com] [(124) 748-9758, (999) 888-7777]
+```
+                
+I again get my contacts, nicely merged. 
+There's still another method, introduced in JDK8, 
+that I can use, rather than doing this kind of check, 
+with put or putIfAbsent. 
+That's the merge method. 
+It also takes a key, and a value, 
+but the third parameter is a **BiFunction** interface, 
+meaning it's a target for a lambda expression 
+that takes two parameters, and returns a result.
+
+```java  
+System.out.println("-----------------------------");
+contacts.clear();
+fullList.forEach(contact -> contacts.merge(contact.getName(), contact,
+    (previous, current) -> {
+        System.out.println("prev: " + previous + " : current" + current);
+        Contact merged = previous.mergeContactData(current);
+        System.out.println("merged: " + merged);
+        return merged;
+        }
+    ));
+contacts.forEach((k, v) -> System.out.println("key=" + k + ", value= " + v));
+```
+
+I'll print another separator line yet, and clear my contacts map. 
+Now, I'll loop through my full list, but this time I'm going to do it 
+with the _forEach_ method. 
+And that takes a lambda expression, and in there, 
+I'm just going to call merge on the contacts map,
+passing the current contacts name, then the current contact.
+I need to follow that with another lambda expression. 
+I'll leave a placeholder here for a minute. 
+Finally, I'll print the elements in the contacts map after this call. 
+Again, this next lambda is a Function Interface, 
+and in this case my two types and result are 
+all going to be the same type, Contact. 
+I need to set up two parameters in my lambda,
+and I'm going to call them previous and current, 
+and now I'll set up a multi-line lambda, so an opening bracket. 
+I want to print out the previous and the current contacts. 
+I'll call merge contact data to merge the data on my two contacts. 
+I'll print the merged contact and return it from this nested lambda expression. 
+This looks like a lot, but bears with me a minute here.
+There's a reason I'm using the forEach method, 
+and not the enhanced for loop, 
+which might have been a little bit easier to see. 
+Running this code:
+
+```java  
+-----------------------------
+prev: Mickey Mouse: [] [(999) 888-7777] : currentMickey Mouse: [] [(124) 748-9758]
+merged: Mickey Mouse: [] [(124) 748-9758, (999) 888-7777]
+prev: Robin Hood: [] [(564) 789-3000] : currentRobin Hood: [] [(789) 902-8222]
+merged: Robin Hood: [] [(789) 902-8222, (564) 789-3000]
+prev: Mickey Mouse: [] [(124) 748-9758, (999) 888-7777] : currentMickey Mouse: [] [(999) 888-7777]
+merged: Mickey Mouse: [] [(124) 748-9758, (999) 888-7777]
+prev: Mickey Mouse: [] [(124) 748-9758, (999) 888-7777] : currentMickey Mouse: [mckmouse@gmail.com] []
+merged: Mickey Mouse: [mckmouse@gmail.com] [(124) 748-9758, (999) 888-7777]
+prev: Mickey Mouse: [mckmouse@gmail.com] [(124) 748-9758, (999) 888-7777] : currentMickey Mouse: [micky1@aws.com] []
+merged: Mickey Mouse: [micky1@aws.com, mckmouse@gmail.com] [(124) 748-9758, (999) 888-7777]
+prev: Minnie Mouse: [] [(456) 780-5666] : currentMinnie Mouse: [minnie@verizon.net] []
+merged: Minnie Mouse: [minnie@verizon.net] [(456) 780-5666]
+prev: Robin Hood: [] [(789) 902-8222, (564) 789-3000] : currentRobin Hood: [rhood@gmail.com] []
+merged: Robin Hood: [rhood@gmail.com] [(789) 902-8222, (564) 789-3000]
+key=Linus Van Pelt, value= Linus Van Pelt: [lvpelt2015@gmail.com] []
+key=Lucy Van Pelt, value= Lucy Van Pelt: [] [(564) 208-6852]
+key=Minnie Mouse, value= Minnie Mouse: [minnie@verizon.net] [(456) 780-5666]
+key=Maid Marion, value= Maid Marion: [] [(123) 456-7890]
+key=Daffy Duck, value= Daffy Duck: [daffy@google.com] []
+key=Robin Hood, value= Robin Hood: [rhood@gmail.com] [(789) 902-8222, (564) 789-3000]
+key=Charlie Brown, value= Charlie Brown: [] [(333) 444-5555]
+key=Mickey Mouse, value= Mickey Mouse: [micky1@aws.com, mckmouse@gmail.com] [(124) 748-9758, (999) 888-7777]
+```
+
+You can now see the progression of the merge happening, 
+with both the previous, current and merged contact printed out. 
+If I just look at Mickey Mouse's progression, 
+I can see that the map started out with the 999 phone contacts, 
+then it merged that with the number 124, 
+and it continues to merge any elements where the key already exists in the map.
+Then I've got the full map printed after that, 
+and all my elements are again nicely merged. 
+Ok, so let's clean this code up a bit, 
+and get rid of the print statements in my lambda expression. 
+I want to collapse this multi-line lambda into a single line lambda expression. 
+Next, I'll remove the opening bracket, and the new line.
+
+```java  
+System.out.println("-----------------------------");
+contacts.clear();
+fullList.forEach(contact -> contacts.merge(contact.getName(), contact,
+        (previous, current) -> previous.mergeContactData(current);
+    ));
+contacts.forEach((k, v) -> System.out.println("key=" + k + ", value= " + v));
+```
+
+I want to remove _Contact merged=_, and the ending _semicolon_. 
+After that, I'll remove the return statement altogether, and the closing bracket.
+And running this:
+
+```java  
+key=Linus Van Pelt, value= Linus Van Pelt: [lvpelt2015@gmail.com] []
+key=Lucy Van Pelt, value= Lucy Van Pelt: [] [(564) 208-6852]
+key=Minnie Mouse, value= Minnie Mouse: [minnie@verizon.net] [(456) 780-5666]
+key=Maid Marion, value= Maid Marion: [] [(123) 456-7890]
+key=Daffy Duck, value= Daffy Duck: [daffy@google.com] []
+key=Robin Hood, value= Robin Hood: [rhood@gmail.com] [(789) 902-8222, (564) 789-3000]
+key=Charlie Brown, value= Charlie Brown: [] [(333) 444-5555]
+key=Mickey Mouse, value= Mickey Mouse: [micky1@aws.com, mckmouse@gmail.com] [(124) 748-9758, (999) 888-7777]
+```
+                    
+The result is the same, but IntelliJ is telling me 
+I can even make this more succinct. 
+You can see that _previous.mergeContactData_ is highlighted. 
+I'll hover over that, and there it says 
+I can replace this entire lambda expression with a method reference, so I will.
+
+```java  
+System.out.println("-----------------------------");
+contacts.clear();
+fullList.forEach(contact -> contacts.merge(contact.getName(), contact,
+        Contact::mergeContactData
+    ));
+contacts.forEach((k, v) -> System.out.println("key=" + k + ", value= " + v));
+```
+
+This gives us the exact same results.
+That's a neat little bit of code, that lets me merge a bunch of contacts from
+an ArrayList, into a HashMap, with a single statement. 
+Who doesn't love one statement of code, that does all the work for us.
+
+In the last section, so far, I covered the _put_, _putIfAbsent_, 
+and _merge_ methods. 
+Somewhat similar to those, are the _compute_, _computeIfPresent_, 
+and _computeIfAbsent_. 
+Like the _merge_ method, these are default methods 
+that were added to the **Map** interface with JDK 8. 
+The _compute_ and _computeIfAbsent_ methods take two values 
+for their _BiFunction_ as well, 
+ut these represent the _key_ and the _value_, not two contacts.
+Let's look at this in action.
+
+```java  
+System.out.println("-----------------------------");
+for (String contactName : new String[] {"Daisy Duck", "Daffy Duck", "Scrooge McDuck"}) {
+    contacts.compute(contactName, (k, v) -> new Contact(k));
+}
+contacts.forEach((k, v) -> System.out.println("key=" + k + ", value= " + v));
+```
+
+This time, I don't want to clear my map. 
+I'll loop through an array of names. 
+One name, _Daffy Duck_, is already a contact in my list, 
+but the other two aren't. 
+And this method takes a _BiFunction_, 
+so I've got a lambda expression that has parameters, 
+_k_ for the key and _v_ for value. 
+I'll just return a new Contact, using the constructor 
+that only takes a name, passing that my k argument, the key in other words. 
+Running this code,
+
+```java  
+-----------------------------
+key=Linus Van Pelt, value= Linus Van Pelt: [lvpelt2015@gmail.com] []
+key=Lucy Van Pelt, value= Lucy Van Pelt: [] [(564) 208-6852]
+key=Daisy Duck, value= Daisy Duck: [] []
+key=Minnie Mouse, value= Minnie Mouse: [minnie@verizon.net] [(456) 780-5666]
+key=Maid Marion, value= Maid Marion: [] [(123) 456-7890]
+key=Daffy Duck, value= Daffy Duck: [] []
+key=Robin Hood, value= Robin Hood: [rhood@gmail.com] [(789) 902-8222, (564) 789-3000]
+key=Charlie Brown, value= Charlie Brown: [] [(333) 444-5555]
+key=Scrooge McDuck, value= Scrooge McDuck: [] []
+key=Mickey Mouse, value= Mickey Mouse: [micky1@aws.com, mckmouse@gmail.com] [(124) 748-9758, (999) 888-7777]
+```
+                    
+You can see, I've got two new contacts, _Daisy Duck_ and _Scrooge McDuck_, 
+with no emails or phone numbers. 
+But now look at _Daffy Duck_, I've also erased his previous information, 
+and replaced it with a brand-new contact record. 
+_Compute_ is like the _put_ method in this way, 
+replacing what's in the map with the result of 
+the _BiFunction_, or lambda expression.
+Maybe that's not what I really want to do. 
+I can replace my _compute_ method with a _computeIfAbsent_ call there.
+
+```java  
+System.out.println("-----------------------------");
+for (String contactName : new String[] {"Daisy Duck", "Daffy Duck", "Scrooge McDuck"}) {
+    //contacts.compute(contactName, (k, v) -> new Contact(k));
+    contacts.computeIfAbsent(contactName, (k, v) -> new Contact(k));
+}
+contacts.forEach((k, v) -> System.out.println("key=" + k + ", value= " + v));
+```
+
+But that doesn't compile. 
+The _computeIfAbsent_ method only takes a _key_ value as an argument, 
+so I need to change this code once more. 
+I'll just use _k_ as the parameter, with my lambda expression. 
+I could keep the parentheses around that, 
+but I kind of prefer it with no parentheses 
+when it's a single parameter like this.
+
+```java  
+System.out.println("-----------------------------");
+for (String contactName : new String[] {"Daisy Duck", "Daffy Duck", "Scrooge McDuck"}) {
+    //contacts.compute(contactName, (k, v) -> new Contact(k));
+    contacts.computeIfAbsent(contactName, k -> new Contact(k));
+}
+contacts.forEach((k, v) -> System.out.println("key=" + k + ", value= " + v));
+```
+
+And notice, I can replace that with a method reference, 
+but I don't want to do that right now. 
+This code compiles now and runs it:
+
+```java  
+key=Linus Van Pelt, value= Linus Van Pelt: [lvpelt2015@gmail.com] []
+key=Lucy Van Pelt, value= Lucy Van Pelt: [] [(564) 208-6852]
+key=Daisy Duck, value= Daisy Duck: [] []
+key=Minnie Mouse, value= Minnie Mouse: [minnie@verizon.net] [(456) 780-5666]
+key=Maid Marion, value= Maid Marion: [] [(123) 456-7890]
+key=Daffy Duck, value= Daffy Duck: [daffy@google.com] []
+key=Robin Hood, value= Robin Hood: [rhood@gmail.com] [(789) 902-8222, (564) 789-3000]
+key=Charlie Brown, value= Charlie Brown: [] [(333) 444-5555]
+key=Scrooge McDuck, value= Scrooge McDuck: [] []
+key=Mickey Mouse, value= Mickey Mouse: [micky1@aws.com, mckmouse@gmail.com] [(124) 748-9758, (999) 888-7777]
+```
+                    
+You can see _Daisy_ and _Scrooge_ there hasn't been touched, 
+but _Daffy Duck_ has a new record. 
+
+```java  
+System.out.println("-----------------------------");
+for (String contactName : new String[] {"Daisy Duck", "Daffy Duck", "Scrooge McDuck"}) {
+    contacts.computeIfPresent(contactName, (k, v) -> {
+        v.addEmail("Fun Place"); return v; });
+}
+contacts.forEach((k, v) -> System.out.println("key=" + k + ", value= " + v));
+```
+
+Going back to the map main method, I want to use _computeIfPresent_, 
+for my same list of duck contacts. 
+I'm going to say all my duck contacts, 
+work at a family owned business called fun place. 
+I'll copy and paste the codes.
+I want to remove the statement in the for loop, 
+replacing that with a call to _computeIfPresent_. 
+Like the first _compute_ method, the first parameter is the _key_, 
+and the next is a function, and like _compute_, it's a _bifunction_ 
+that takes both the _key_ and the _value_. 
+Here, I've got a multi-line lambda, 
+and I'll execute _addEmail_ on the element, 
+passing it _Fun Place_ as the company name, 
+and I'll return the updated contact. 
+Running this code,
+
+```java  
+-----------------------------
+Daisy Duck now has email DDuck@funplace.com
+Daffy Duck now has email DDuck@funplace.com
+Scrooge McDuck now has email SMcDuck@funplace.com
+key=Linus Van Pelt, value= Linus Van Pelt: [lvpelt2015@gmail.com] []
+key=Lucy Van Pelt, value= Lucy Van Pelt: [] [(564) 208-6852]
+key=Daisy Duck, value= Daisy Duck: [DDuck@funplace.com] []
+key=Minnie Mouse, value= Minnie Mouse: [minnie@verizon.net] [(456) 780-5666]
+key=Maid Marion, value= Maid Marion: [] [(123) 456-7890]
+key=Daffy Duck, value= Daffy Duck: [daffy@google.com, DDuck@funplace.com] []
+key=Robin Hood, value= Robin Hood: [rhood@gmail.com] [(789) 902-8222, (564) 789-3000]
+key=Charlie Brown, value= Charlie Brown: [] [(333) 444-5555]
+key=Scrooge McDuck, value= Scrooge McDuck: [SMcDuck@funplace.com] []
+key=Mickey Mouse, value= Mickey Mouse: [micky1@aws.com, mckmouse@gmail.com] [(124) 748-9758, (999) 888-7777]
+```
+                    
+You can see that now all my duck contacts had a new email added, 
+but my email logic's not very good, since _Daisy_ and _Daffy_ have the same email. 
+The _compute_ methods give you a lot of functionality, 
+for adding elements that aren't in the map, 
+replacing values already keyed, 
+resetting all elements in the map to some default value, 
+or executing some code on the map elements that do exist. 
+Next, I want to fix the two _Ducks_ with the same email, 
+using yet another default method on the **Map** interface, 
+this one called _replaceAll_. 
+This method is similar to the _replaceAll_ method on the **List** interface, 
+except for a map, this takes a _bifunction_ that has two arguments. 
+It takes the _key_ and _value_, 
+and the function should return an object the same type as the value.
+
+```java  
+System.out.println("-----------------------------");
+contacts.replaceAll((k, v) -> {
+    String newEmail = k.replaceAll(" ", "") + "@funplace.com";
+    v.replaceEmailIfExists("DDuck@funplace.com", newEmail);
+    return v;
+});
+contacts.forEach((k, v) -> System.out.println("key=" + k + ", value= " + v));
+```
+
+I'll start with a separator line, followed 
+by calling _replaceAll_ on my _contacts_ map. 
+I'll call my parameters _k_ and _v_, for _key_ and _value_, 
+as usual, and start a multi-line lambda. 
+I want a new email, that's made up of the contact name with spaces removed, 
+then appends _@funplace.com_ to the name, 
+which will make it a unique email name for my contacts. 
+And then I execute the _replaceEmailIfExists_ method on contact, 
+passing the old email, and the new email. 
+Finally, I return that resulting contact, 
+which is my lambda parameter, _v_. 
+Ok, so this code isn't really very efficient, 
+since I'm calling _replaceAll_ on every single entry in the map, 
+when I really only want to replace the email of two contacts. 
+I did want to show you, however, that you can execute this method on the entire map, 
+just like the list's _replaceAll_ method. 
+Running this code,
+
+```java  
+-----------------------------
+key=Linus Van Pelt, value= Linus Van Pelt: [lvpelt2015@gmail.com] []
+key=Lucy Van Pelt, value= Lucy Van Pelt: [] [(564) 208-6852]
+key=Daisy Duck, value= Daisy Duck: [DaisyDuck@funplace.com] []
+key=Minnie Mouse, value= Minnie Mouse: [minnie@verizon.net] [(456) 780-5666]
+key=Maid Marion, value= Maid Marion: [] [(123) 456-7890]
+key=Daffy Duck, value= Daffy Duck: [daffy@google.com, DaffyDuck@funplace.com] []
+key=Robin Hood, value= Robin Hood: [rhood@gmail.com] [(789) 902-8222, (564) 789-3000]
+key=Charlie Brown, value= Charlie Brown: [] [(333) 444-5555]
+key=Scrooge McDuck, value= Scrooge McDuck: [SMcDuck@funplace.com] []
+key=Mickey Mouse, value= Mickey Mouse: [micky1@aws.com, mckmouse@gmail.com] [(124) 748-9758, (999) 888-7777]
+```
+                
+You can see that _Daisy_ and _Daffy_'s emails have been updated, 
+but all other contact emails are untouched. 
+In addition to _replaceAll_, I can replace just a single element 
+in the map, by either matching on _key_ alone, or both _key_ and _value_.
+Let's say I have a contact where the name is _Daisy Jane Duck_, 
+with an email of _daisyj@duck.com_.
+
+```java  
+System.out.println("-----------------------------");
+Contact daisy = new Contact("Daisy Jane Duck", "daisyj@duck.com");
+
+Contact replacedContact = contacts.replace("Daisy Duck", daisy);
+System.out.println("daisy = " + daisy);
+System.out.println("replacedContact = " + replacedContact);
+contacts.forEach((k, v) -> System.out.println("key=" + k + ", value= " + v));
+```
+
+I'll set up that record here. 
+I'll create a new contact, _daisy_, 
+and pass that _Daisy Jane Duck_ as the name, 
+and _daisyj@duck.com_ as the email. 
+Now, I want to add this contact to my map, for _Daisy Duck_, 
+ignoring any middle name or initial. 
+I'll call _replace_ on my _contacts_ map, passing the _key_, _Daisy Duck_, 
+and my new contact _daisy_. 
+I'll assign the result to a variable called _replacedContact_. 
+And I'll print _Daisy_. 
+Then the _replacedContact_. 
+Finally, all the key value pairs in my map. 
+Running that code,
+
+```java  
+-----------------------------
+daisy = Daisy Jane Duck: [daisyj@duck.com] []
+replacedContact = Daisy Duck: [DaisyDuck@funplace.com] []
+key=Linus Van Pelt, value= Linus Van Pelt: [lvpelt2015@gmail.com] []
+key=Lucy Van Pelt, value= Lucy Van Pelt: [] [(564) 208-6852]
+key=Daisy Duck, value= Daisy Jane Duck: [daisyj@duck.com] []
+key=Minnie Mouse, value= Minnie Mouse: [minnie@verizon.net] [(456) 780-5666]
+key=Maid Marion, value= Maid Marion: [] [(123) 456-7890]
+key=Daffy Duck, value= Daffy Duck: [daffy@google.com, DaffyDuck@funplace.com] []
+key=Robin Hood, value= Robin Hood: [rhood@gmail.com] [(789) 902-8222, (564) 789-3000]
+key=Charlie Brown, value= Charlie Brown: [] [(333) 444-5555]
+key=Scrooge McDuck, value= Scrooge McDuck: [SMcDuck@funplace.com] []
+key=Mickey Mouse, value= Mickey Mouse: [micky1@aws.com, mckmouse@gmail.com] [(124) 748-9758, (999) 888-7777]
+```
+                    
+You can see the new _daisy_ contact, 
+and the _replacedContact_ was the one that was in the map already. 
+But this code replaced that in the map, with the new daisy, 
+with the name _Daisy Jane Duck_. 
+There's no rule that says the contact name has to match the _key_, and right now, 
+they don't for this record. 
+The _replace_ method has an overloaded version, which lets you specify 
+that you only want to replace the value in the map if both the _keys_ and _values_ match.
+
+```java  
+System.out.println("-----------------------------");
+Contact updatedDaisy = replacedContact.mergeContactData(daisy);
+System.out.println("updatedDaisy = " + updatedDaisy);
+boolean success = contacts.replace("Daisy Duck", replacedContact, updatedDaisy);
+if (success) {
+    System.out.println("Successfully replaced element");
+} else {
+    System.out.printf("Did not match on both key: %s and value: %s %n"
+             .formatted("Daisy Duck", replacedContact));
+}
+contacts.forEach((k, v) -> System.out.println("key=" + k + ", value= " + v));
+```
+
+To set this up, I'll add a separator line, 
+then I'm going to merge my two daisy contacts, 
+_daisy_ and _replacedContact_, assigning the result to a variable, _updatedDaisy_. 
+Then I'll print _updatedDaisy_. 
+Next, I want a boolean flag called _success_, 
+and I'll assign that the result of calling _contacts.replace_, 
+with _Daisy Duck_ still as my _key_, and _replacedContact_ as the second argument, 
+and _updatedDaisy_ as the third. 
+I'll add an if then else statement, based on that _success_ variable.
+If _success_ is true, meaning the _replace_ was successful, 
+I'll print that the code successfully _replaced_ element. 
+Otherwise, I'll print that the code did not match both _key_ and _value_, 
+and print those both out. 
+I'll end by printing out the contacts in my map. 
+Running that code:
+
+```java  
+-----------------------------
+updatedDaisy = Daisy Duck: [daisyj@duck.com, DaisyDuck@funplace.com] []
+Did not match on both keys: Daisy Duck and value: Daisy Duck: [DaisyDuck@funplace.com] []
+key=Linus Van Pelt, value= Linus Van Pelt: [lvpelt2015@gmail.com] []
+key=Lucy Van Pelt, value= Lucy Van Pelt: [] [(564) 208-6852]
+key=Daisy Duck, value= Daisy Jane Duck: [daisyj@duck.com] []
+key=Minnie Mouse, value= Minnie Mouse: [minnie@verizon.net] [(456) 780-5666]
+key=Maid Marion, value= Maid Marion: [] [(123) 456-7890]
+key=Daffy Duck, value= Daffy Duck: [daffy@google.com, DaffyDuck@funplace.com] []
+key=Robin Hood, value= Robin Hood: [rhood@gmail.com] [(789) 902-8222, (564) 789-3000]
+key=Charlie Brown, value= Charlie Brown: [] [(333) 444-5555]
+key=Scrooge McDuck, value= Scrooge McDuck: [SMcDuck@funplace.com] []
+key=Mickey Mouse, value= Mickey Mouse: [micky1@aws.com, mckmouse@gmail.com] [(124) 748-9758, (999) 888-7777]
+```
+                    
+You can see the merged contact, _updatedDaisy_, with the name _Daisy Duck_, 
+but with two emails. 
+You can see that the code to replace Daisy, 
+testing the key _Daisy Duck_ and the record that's in _replacedContact_, wasn't successful. 
+Remember that a contact is considered equal if they have the same name. 
+Our map's daisy record now has _Daisy Jane Duck_ as the name, 
+and that doesn't match the name of the _replacedContact_, 
+which was the original record. 
+You can see that when I printed out the map, the _key_ says _Daisy Duck_, 
+but the _value_ shows _Daisy Jane Duck_. 
+
+```java  
+System.out.println("-----------------------------");
+Contact updatedDaisy = replacedContact.mergeContactData(daisy);
+System.out.println("updatedDaisy = " + updatedDaisy);
+//boolean success = contacts.replace("Daisy Duck", replacedContact, updatedDaisy);
+boolean success = contacts.replace("Daisy Duck", daisy, updatedDaisy);
+if (success) {
+    System.out.println("Successfully replaced element");
+} else {
+    System.out.printf("Did not match on both key: %s and value: %s %n"
+             .formatted("Daisy Duck", replacedContact));
+}
+contacts.forEach((k, v) -> System.out.println("key=" + k + ", value= " + v));
+```
+
+I'll change my arguments, swapping _replacedContact_ with just _daisy_, 
+the contact that has _Daisy Jane_. 
+Running that code,
+
+```java  
+-----------------------------
+updatedDaisy = Daisy Duck: [daisyj@duck.com, DaisyDuck@funplace.com] []
+Successfully replaced element
+key=Linus Van Pelt, value= Linus Van Pelt: [lvpelt2015@gmail.com] []
+key=Lucy Van Pelt, value= Lucy Van Pelt: [] [(564) 208-6852]
+key=Daisy Duck, value= Daisy Duck: [daisyj@duck.com, DaisyDuck@funplace.com] []
+key=Minnie Mouse, value= Minnie Mouse: [minnie@verizon.net] [(456) 780-5666]
+key=Maid Marion, value= Maid Marion: [] [(123) 456-7890]
+key=Daffy Duck, value= Daffy Duck: [daffy@google.com, DaffyDuck@funplace.com] []
+key=Robin Hood, value= Robin Hood: [rhood@gmail.com] [(789) 902-8222, (564) 789-3000]
+key=Charlie Brown, value= Charlie Brown: [] [(333) 444-5555]
+key=Scrooge McDuck, value= Scrooge McDuck: [SMcDuck@funplace.com] []
+key=Mickey Mouse, value= Mickey Mouse: [micky1@aws.com, mckmouse@gmail.com] [(124) 748-9758, (999) 888-7777]
+```
+
+I see that this _successfully replaced element_. 
+And looking at the data in the _Daisy Duck_ record, 
+I am back to just _Daisy Duck_ as the name, and I have two emails, 
+so this is the merged contact that replaced the previous record. 
+Those are the two overloaded _replace_ methods. 
+Similarly, there are also two overloaded versions of the _remove_ method. 
+The first _remove_ method takes a key, and returns the value that was removed, 
+or _null_, if a value doesn't exist for that key.
+The second _remove_ method takes both a _key_ and a _value_. 
+It only removes the element from the map if the key is in the map, 
+and the element to be removed equals the value passed. 
+This method returns a boolean. 
+Let's look at this one next.
+
+```java  
+System.out.println("-----------------------------");
+success = contacts.remove("Daisy Duck", daisy);
+if (success) {
+    System.out.println("Successfully removed element");
+} else {
+    System.out.printf("Did not match on both key: %s and value: %s %n".formatted("Daisy Duck", daisy));
+}
+contacts.forEach((k, v) -> System.out.println("key=" + k + ", value= " + v));
+```
+
+This is going to look very similar to the code above. 
+I'll print a separator line. 
+I'll assign the result of the _remove_ method 
+that takes two arguments to the _success_ variable. 
+I'm going to pass the _key_, _Daisy Duck_ 
+and the contact record, _daisy_, 
+which I set up with the name _Daisy Jane Duck_. 
+If that comes back true, I'll print out that the code _successfully removed the element_. 
+Otherwise, I'll print out that it _did not match_, 
+and print both the _key_ and _value_.
+And I'll end by again printing all key value elements in the map. 
+Running that code,
+
+```java  
+-----------------------------
+Did not match on both key: Daisy Duck and value: Daisy Jane Duck: [daisyj@duck.com] []
+key=Linus Van Pelt, value= Linus Van Pelt: [lvpelt2015@gmail.com] []
+key=Lucy Van Pelt, value= Lucy Van Pelt: [] [(564) 208-6852]
+key=Daisy Duck, value= Daisy Duck: [daisyj@duck.com, DaisyDuck@funplace.com] []
+key=Minnie Mouse, value= Minnie Mouse: [minnie@verizon.net] [(456) 780-5666]
+key=Maid Marion, value= Maid Marion: [] [(123) 456-7890]
+key=Daffy Duck, value= Daffy Duck: [daffy@google.com, DaffyDuck@funplace.com] []
+key=Robin Hood, value= Robin Hood: [rhood@gmail.com] [(789) 902-8222, (564) 789-3000]
+key=Charlie Brown, value= Charlie Brown: [] [(333) 444-5555]
+key=Scrooge McDuck, value= Scrooge McDuck: [SMcDuck@funplace.com] []
+key=Mickey Mouse, value= Mickey Mouse: [micky1@aws.com, mckmouse@gmail.com] [(124) 748-9758, (999) 888-7777]
+```
+
+I get the statement that they did not match on the _key_ and the _value_. 
+The _value_ in the map doesn't include _Jane_ in the name, so it doesn't match. 
+Like the _replace_ method that returns a boolean, 
+this version of the _remove_ method must find the _key_ in the map. 
+It won't remove the element, though, unless it's considered equal 
+to the element passed as the second argument.
+
+</div>
+
+
+
+
+<div align="justify">
+
+
 ```java  
 
 ```
 
 </div>
+
+
+<div align="justify">
+
+
+```java  
+
+```
+
+</div>
+
+
+<div align="justify">
+
+
+```java  
+
+```
+
+</div>
+
 
 <div align="justify">
 
