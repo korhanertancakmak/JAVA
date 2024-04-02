@@ -38,16 +38,6 @@ public class Contact {
         return name;
     }
 
-//Part-12
-/*
-        That will return the contact's name listed as the last name, comma, then first name. I'll add this just under the
-    get Name method, and call it get name last first. This will return the last part of the name, from the last space to
-    the end of the String, followed by a comma, then followed by the first part of the name, from the beginning of the
-    string to the first space. What's nice about getting the values back as a collection, is you can pass this to any other
-    type of class that implements a Collection. That's what I want to do next. Getting back to the MapViewsMain class,
-*/
-//End-Part-12
-
     public String getNameLastFirst() {
         return name.substring(name.indexOf(" ") + 1) + ", " +
                 name.substring(0, name.indexOf(" "));
