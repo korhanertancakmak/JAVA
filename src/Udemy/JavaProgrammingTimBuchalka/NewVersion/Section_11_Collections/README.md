@@ -6773,6 +6773,502 @@ to include more places, or change the descriptions
 or destinations available.
 </div>
 
+## [m. LinkedHashMap and TreeMap Interfaces]()
+<div align="justify">
+
+Like the **Set** interface, which has **LinkedHashSet** 
+and **TreeSet** implementations, 
+the **Map** interface has the **LinkedHashMap** 
+and **TreeMap** classes. 
+The **LinkedHashMap** is a key value entry collection, 
+whose keys are ordered by insertion order.
+The **TreeMap** is sorted by its keys,
+so a key needs to implement **Comparable**, 
+or be initialized, with a specified **Comparator**.
+Let's take a look at these in code. 
+I've created a **Main** class and _main_ method. 
+I'm going to start by creating a **Student** Class.
+Before I work on this, I'm going to set up two records, 
+the first is for **Course**, 
+this will be the courses a student will enrol in. 
+
+```java  
+record Course(String courseId, String name, String subject) {}
+
+record Purchase (String courseId, int studentId, double price, int yr, int dayOfYear) {
+
+    public LocalDate purchaseDate() {
+        return LocalDate.ofYearDay(yr, dayOfYear);
+    }
+
+}
+```
+
+I'll include these in the **Student.java** file for simplicity. 
+**Course** will have three fields, all strings, _courseId_, _name_ and _subject_. 
+The second record will be for a course purchase, 
+so I'll call it **Purchase**. 
+I want this to have five fields. 
+The first is the _courseId_, an identifier for the course 
+they'll be purchasing, an integer for the _studentId_, 
+and a double for the _price_ of the course. 
+In addition to that, I want a _year_, and a _dayOfYear_, 
+both integers. 
+The _year_ will just be the year of the purchase, 
+and _dayOfYear_ is an integer, which is between 1 and 365.
+These two pieces of information can give us a date. 
+I'll add a method to this record, called _purchaseDate_, 
+it's public and will return a type, **LocalDate**, 
+which I've used once or twice before. 
+I'll be covering dates in great detail,
+in an upcoming section, so this is a preview of things to come. 
+**LocalDate** has a static method, named, of year day,
+that takes an integer for a _year_, and an integer for the _dayOfYear_, 
+and returns a date instance. 
+I'll be using this date, a bit later, as a key in my map. 
+Let's get back to the **Student** class, and set up a few fields.
+
+```java  
+public class Student {
+
+    public static int lastId = 1;
+
+    private String name;
+    private int id;
+    private List<Course> courseList;
+
+    public Student(String name, List<Course> courseList) {
+        this.name = name;
+        this.courseList = courseList;
+        id = lastId++;
+    }
+
+    public Student(String name, Course course) {
+        this(name, new ArrayList<>(List.of(course)));
+    }
+
+    public void addCourse(Course course) {
+        courseList.add(course);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+
+        String[] courseNames = new String[courseList.size()];
+        Arrays.setAll(courseNames, i -> courseList.get(i).name());
+        return "[%d] : %s".formatted(id, String.join(", ", courseNames));
+    }
+}
+```
+
+First, I want a static int, _lastId_, 
+and I'll assign that an initial value of 1.
+You've seen me do this quite often, with student or employee classes, 
+because I want id assigned, as part of the construction of the object. 
+The _lastId_ used gets stored in this field.
+Students need a _name_. 
+The id field is going to get automatically assigned,
+using the static last id, when a new Student is created. 
+And students will have a list of courses. 
+I'll set up two constructors, the first will have _name_ 
+and _courseList_ as arguments. 
+I'll add another statement to this constructor,
+to set the id. 
+This gets assigned the value in last id, my static field. 
+I'll increment _lastId_ after the assignment,
+so I use a post-fix increment. 
+I'm going to copy this constructor, 
+and paste a copy right below the first constructor.
+I'll change the second argument. 
+The type will be my **Course** record, 
+and its name will be course in lower case. 
+This is going to let me create a new student, 
+with just a name and single course. 
+I'll remove all the statements that are there,
+and instead chain a call to the first constructor. 
+I'll pass name, and a new ArrayList, 
+which will include the one course passed to this constructor. 
+Next, I'll create two getters, one for name, 
+and one for the student's id. 
+I'll include a method to add a course, 
+so public, void, add **Course**, and that has one parameter, a _course_. 
+And I'll simply call **courseList.add** passing it the course argument.
+
+Lastly, I'll add a _toString_ method by generating the override. 
+I'll replace that statement with a bit of code.
+First, I'll set up a String array, called _courseName_, 
+and it'll be the same size as the course list field. 
+This is just going to house the course names. 
+I'll use _Arrays.setAll_, to populate my string arrays, 
+using a lambda expression, and using the index, 
+to get the course, and ultimately its name, 
+which goes in my local array. 
+From the lambda, I'll return a formatted string that has the student id, 
+and the course name list. 
+Finally, I'll use join on my local string array, to create a comma-delimited 
+list of course names. 
+Ok, so that's enough setup, to let me simulate students
+registering for my courses, for example. 
+Getting back to the **Main** class,
+
+```java  
+public class Main {
+    private static Map<String, Purchase> purchases = new LinkedHashMap<>();
+    private static NavigableMap<String, Student> students = new TreeMap<>();
+
+    public static void main(String[] args) {
+        
+    }
+}
+```
+
+I'm going to set up two different maps, but both are private and static. 
+The first, I'm going to declare with a reference type of just Map, 
+the key will be a String, and the value is going to be a **Purchase** records. 
+I'll call this map, _purchases_. 
+I'll assign it a new instance of a **LinkedHashMap**, 
+and no arguments for the constructor. 
+For the second map, I'm going to make the reference type **NavigableMap**, 
+with the key as String, and the value will be **Student**. 
+I'll call this student, and make it a new **TreeMap**. 
+Using **NavigableMap** as the reference type is similar 
+to the way I used **NavigableSet** when I was working with a **TreeSet**. 
+This means I'll have access to all the additional methods,
+on both the **NavigableMap** interface, and the **SortedMap** interface. 
+Next, I'll include a method on this class, called _addPurchase_.
+
+```java  
+private static void addPurchase(String name, Course course, double price) {
+
+    Student existingStudent = students.get(name);
+    if (existingStudent == null) {
+        existingStudent = new Student(name, course);
+        students.put(name, existingStudent);
+    } else {
+        existingStudent.addCourse(course);
+    }
+
+    int day = purchases.size() + 1;
+    String key = course.courseId() + "_" + existingStudent.getId();
+    int year = LocalDate.now().getYear();
+    Purchase purchase = new Purchase(course.courseId(), existingStudent.getId(), price, year, day);
+    purchases.put(key, purchase);
+}
+```
+
+I'll make that static and void. 
+I'll pass a _name_, the student name, a _Course_, and a **price**, 
+the price the student paid for that course. 
+I'll create a local variable, called _existingStudent_, 
+and try to get that from my _student_ map, using the _name_. 
+If that's _null_, the student's not in the map, so it's a new student. 
+In this case, I'll create a new instance of a **Student** 
+using the constructor with _name_ and one _course_. 
+I'll put this new student in my map, with the _name_ as a key. 
+If I did find the student in the _student_ map, 
+I'm just going to add the course to this _existingStudent_.
+This code is going to let me keep track of my students, 
+and which courses they're taking. 
+Next, I want to do the same for _purchases_. 
+I'm going to set up two local variables, _day_ and _key_. 
+For now, I'll set day equal to the number of _purchases_ I've had, plus one. 
+I'll explain this in just a minute. 
+The key for my purchase map is a combination of the _courseId_, 
+and the student id. 
+To get the current year, I can use **LocalDate**, 
+and its _now_ method, which gives me the current date 
+from the system clock in the default time-zone. 
+I can chain the _getYear_ method to that call, 
+which will give me back an integer for the current year.
+Now I want a new instance of the **Purchase** record. 
+I'll pass that the course id, the student id, the price, 
+the current year, and my day variable, 
+which is just a number from 1 to whatever the maximum number of purchases is. 
+Finally, I'll put the purchase in the purchase map, using my key.
+Now, I can go up to the main method.
+
+```java  
+public class Main {
+    private static Map<String, Purchase> purchases = new LinkedHashMap<>();
+    private static NavigableMap<String, Student> students = new TreeMap<>();
+
+    public static void main(String[] args) {
+
+        Course jmc = new Course("jmc101", "Java Master Class", "Java");
+        Course python = new Course("pyt101", "Python Master Class", "Python");
+
+        addPurchase("Mary Martin", jmc, 129.99);
+        addPurchase("Andy Martin", jmc, 139.99);
+        addPurchase("Mary Martin", python, 149.99);
+        addPurchase("Joe Jones", jmc, 149.99);
+        addPurchase("Bill Brown", python, 119.99);
+
+        purchases.forEach((key, value) -> System.out.println(key + ": " + value));
+        System.out.println("-----------------------");
+        students.forEach((key, value) -> System.out.println(key + ": " + value));
+    }
+}
+```
+
+I'll set up a couple of courses, the first for my Java master class. 
+I'll use my **Course** record, 
+and I'll give this some kind course id, like jmc101, 
+and that's my Java master class, and the language is going to be Java.
+I'll assign that to a local variable I'll call jmc. 
+I'll do the same thing for the python master class, 
+creating a local variable called python. 
+I want to add some purchases next. 
+I'll start out with five students, 
+calling the _addPurchase_ method, passing the student name, 
+the course, and a price for each. 
+So my first student will be Mary Martin, and jmc is the
+course, and I'll just put 129.99 in there.
+I'll repeat that for Andy Martin, jmc, 139.99. 
+And let's say Mary's also taking python, and her price, 149 and 99. 
+Now Joe Jones, jmc, and his price. 
+And Bill Brown, python, and a price for that. 
+My prices might be different based on special coupons and sales prices. 
+I want to print my purchases, and my students now. 
+I'll use the _forEach_ method on the map to do it, 
+and print the key and value, of my purchases. 
+And I'll do something similar, this time for my students. 
+Running this code:
+
+```html  
+jmc101_1: Purchase[courseId=jmc101, studentId=1, price=129.99, yr=2023, dayOfYear=1]
+jmc101_2: Purchase[courseId=jmc101, studentId=2, price=139.99, yr=2023, dayOfYear=2]
+pyt101_1: Purchase[courseId=pyt101, studentId=1, price=149.99, yr=2023, dayOfYear=3]
+jmc101_3: Purchase[courseId=jmc101, studentId=3, price=149.99, yr=2023, dayOfYear=4]
+pyt101_4: Purchase[courseId=pyt101, studentId=4, price=119.99, yr=2023, dayOfYear=5]
+-----------------------
+Andy Martin: [2] : Java Master Class
+Bill Brown: [4] : Python Master Class
+Joe Jones: [3] : Java Master Class
+Mary Martin: [1] : Java Master Class, Python Master Class
+```
+
+I've got five purchases, and four unique students. 
+The purchase map's a Linked Hash Map,
+which means it's ordered by insertion order. 
+This is why I wanted the day of Year, 
+for this first test case, to be equal to the purchase size.
+This makes it a bit easier to see that 
+the entries are listed in insertion order, 
+which is the order of a **LinkedHashMap**. 
+But my students are in alphabetical order. 
+My key was student name, and that's how the students are sorted.
+You can see the student id, and the courses 
+being taken by each student, and right now, 
+only _Mary_ is taking more than one course.
+Ok, so that's the difference between 
+how a **TreeMap** is sorted, 
+and how a **LinkedHashMap** is ordered.
+What's kind of nice about a map is that
+most of the time you'll be using simpler types as keys, 
+although that's not always going to be true. 
+But the simpler types, like the strings 
+I use for my key in my tree map here, 
+have a natural order, and already implement Comparable. 
+Next, I want to go to the _addPurchase_ method, on the Main class,
+and change my expression for setting the day. 
+
+```java  
+private static void addPurchase(String name, Course course, double price) {
+
+    Student existingStudent = students.get(name);
+    if (existingStudent == null) {
+        existingStudent = new Student(name, course);
+        students.put(name, existingStudent);
+    } else {
+        existingStudent.addCourse(course);
+    }
+
+    //int day = purchases.size() + 1;
+    int day = new Random().nextInt(1, 5);
+    String key = course.courseId() + "_" + existingStudent.getId();
+    int year = LocalDate.now().getYear();
+    Purchase purchase = new Purchase(course.courseId(), existingStudent.getId(), price, year, day);
+    purchases.put(key, purchase);
+}
+```
+
+I could use the _LocalDate.now_ feature 
+and get day of the year for the current year, 
+but I want to mock up my data a little bit. 
+I just want to limit the options for this, 
+to be the first 4 days of the year. 
+I'll change the expression after the assignment operator. 
+This time, I'll make a call on a new random instance, 
+and execute the next int on that, passing 1 through 5. 
+This will return numbers 1 through 4, 
+which means the possible days of the year, for this test, 
+are going to be January 1 through January 4.
+
+I'm interested in understanding my sales for each day, 
+so what I'll do is, create a new map, 
+a local variable here, in the main method.
+
+```java  
+public class Main {
+    private static Map<String, Purchase> purchases = new LinkedHashMap<>();
+    private static NavigableMap<String, Student> students = new TreeMap<>();
+
+    public static void main(String[] args) {
+
+        Course jmc = new Course("jmc101", "Java Master Class", "Java");
+        Course python = new Course("pyt101", "Python Master Class", "Python");
+
+        addPurchase("Mary Martin", jmc, 129.99);
+        addPurchase("Andy Martin", jmc, 139.99);
+        addPurchase("Mary Martin", python, 149.99);
+        addPurchase("Joe Jones", jmc, 149.99);
+        addPurchase("Bill Brown", python, 119.99);
+
+        addPurchase("Chuck Cheese", python, 119.99);
+        addPurchase("Davey Jones", jmc, 139.99);
+        addPurchase("Eva East", python, 139.99);
+        addPurchase("Fred Forker", jmc, 139.99);
+        addPurchase("Greg Brady", python, 129.99);
+
+        purchases.forEach((key, value) -> System.out.println(key + ": " + value));
+        System.out.println("-----------------------");
+        students.forEach((key, value) -> System.out.println(key + ": " + value));
+        
+        
+        NavigableMap<LocalDate,List<Purchase>> datedPurchases = new TreeMap<>();
+
+        for (Purchase p : purchases.values() ) {
+            datedPurchases.compute(p.purchaseDate(),
+                    (pdate, plist) -> {
+                        List<Purchase> list = (plist == null) ? new ArrayList<>() : plist;
+                        list.add(p);
+                        return list;
+                    });
+        }
+        datedPurchases.forEach((key, value) -> System.out.println(key + ": " + value));
+    }
+}
+```
+
+Again, I'll set this up using a **NavigableMap** reference type. 
+This map should be keyed by a date, a local date, 
+and the value is going to be a list of my purchases for that day. 
+I'll assign that to a new instance of a **TreeMap**.
+To populate this map, I'll loop through my purchase map's values, 
+which are all purchases. 
+I'm going to execute the _compute_ method on my new map, _datedPurchases_, 
+passing it first the key, which is going to be the _purchaseDate_, 
+and that's really a method on the **Purchase** record. 
+I'll set up my lambda expression, using the key, 
+the purchase date in other words, and the current value, 
+a list, which I'll call _plist_. 
+In the body block of the lambda expression,
+I'll set up a local variable, a list of purchases, 
+and call that simply _list_. 
+I'll assign it the result of a ternary operator,
+so if _plist_ is null, which it will be 
+if this is the first entry for the date, 
+I'll assign list a new Arraylist instance. 
+If this is already in the map, _plist_ won't be _null_, 
+so I'll return _plist_. 
+I'll add the current purchase record to the list variable. 
+Lastly, I'll return p list from this lambda, 
+and that's what gets put into the map.
+That's the code that sets up my map by dates, 
+so next, I'll print the entries out, by each key value, or each date.
+If I run that, I'll get different purchases for different days each time I run this. 
+What I want you to see, though, is that my map is organized, in chronological order. 
+Let me add some new students to make this more interesting.
+I'll add five more students, dividing them between the python class 
+and the java class, with various prices and names.
+I'll set up _Chuck Cheese_, to take python. 
+_Davey Jones_, jmc. 
+_Eva East_, python. 
+_Fred Forker_, jmc, 
+and _Greg Brady_, python. 
+Since I have a larger set of students, 
+I'm going to change the day local variable in my _addPurchase_ method.
+I'll have the random method pick one of the first 14 days, 
+so I'll change 5 to 15 there. 
+I'll run that:
+
+```html  
+jmc101_1: Purchase[courseId=jmc101, studentId=1, price=129.99, yr=2023, dayOfYear=5]
+jmc101_2: Purchase[courseId=jmc101, studentId=2, price=139.99, yr=2023, dayOfYear=1]
+pyt101_1: Purchase[courseId=pyt101, studentId=1, price=149.99, yr=2023, dayOfYear=5]
+jmc101_3: Purchase[courseId=jmc101, studentId=3, price=149.99, yr=2023, dayOfYear=10]
+pyt101_4: Purchase[courseId=pyt101, studentId=4, price=119.99, yr=2023, dayOfYear=7]
+pyt101_5: Purchase[courseId=pyt101, studentId=5, price=119.99, yr=2023, dayOfYear=1]
+jmc101_6: Purchase[courseId=jmc101, studentId=6, price=139.99, yr=2023, dayOfYear=14]
+pyt101_7: Purchase[courseId=pyt101, studentId=7, price=139.99, yr=2023, dayOfYear=5]
+jmc101_8: Purchase[courseId=jmc101, studentId=8, price=139.99, yr=2023, dayOfYear=11]
+pyt101_9: Purchase[courseId=pyt101, studentId=9, price=129.99, yr=2023, dayOfYear=6]
+-----------------------
+Andy Martin: [2] : Java Master Class
+Bill Brown: [4] : Python Master Class
+Chuck Cheese: [5] : Python Master Class
+Davey Jones: [6] : Java Master Class
+Eva East: [7] : Python Master Class
+Fred Forker: [8] : Java Master Class
+Greg Brady: [9] : Python Master Class
+Joe Jones: [3] : Java Master Class
+Mary Martin: [1] : Java Master Class, Python Master Class
+2023-01-01: [Purchase[courseId=jmc101, studentId=2, price=139.99, yr=2023, dayOfYear=1], Purchase[courseId=pyt101, studentId=5, price=119.99, yr=2023, dayOfYear=1]]
+2023-01-05: [Purchase[courseId=jmc101, studentId=1, price=129.99, yr=2023, dayOfYear=5], Purchase[courseId=pyt101, studentId=1, price=149.99, yr=2023, dayOfYear=5], Purchase[courseId=pyt101, studentId=7, price=139.99, yr=2023, dayOfYear=5]]
+2023-01-06: [Purchase[courseId=pyt101, studentId=9, price=129.99, yr=2023, dayOfYear=6]]
+2023-01-07: [Purchase[courseId=pyt101, studentId=4, price=119.99, yr=2023, dayOfYear=7]]
+2023-01-10: [Purchase[courseId=jmc101, studentId=3, price=149.99, yr=2023, dayOfYear=10]]
+2023-01-11: [Purchase[courseId=jmc101, studentId=8, price=139.99, yr=2023, dayOfYear=11]]
+2023-01-14: [Purchase[courseId=jmc101, studentId=6, price=139.99, yr=2023, dayOfYear=14]]
+```
+                
+And that gives me 10 students, with various purchases, 
+for the first two weeks of this year. 
+Again, this will change each time I run it. 
+In this lecture, I've shown you examples of using a **LinkedHashMap**, 
+as well as a **TreeMap**. 
+For the tree map, I've used a String as a key, 
+but I've used **LocalDate** as a key as well. 
+</div>
+
+
+<div align="justify">
+
+
+```java  
+
+```
+
+</div>
+
+
+<div align="justify">
+
+
+```java  
+
+```
+
+</div>
+
+
+<div align="justify">
+
+
+```java  
+
+```
+
+</div>
+
 
 <div align="justify">
 
