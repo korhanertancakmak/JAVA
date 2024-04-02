@@ -6708,19 +6708,69 @@ which was one of the first adventure games
 that came out years and years ago. 
 Feel free to google that if you want to find out more information about this game.
 
+![image24](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image23.png?raw=true)
 
+The game starts with the user standing in a road, 
+in the center of the map. 
+North would take the user to the Forest and South, 
+would take the user to the Valley, East would be the well house, 
+and West would be the Hill. 
+For simplicity, we'll just support North, West, South and East compass directions, 
+so each location will only have up to at most, 
+four directions to choose from. 
+In other words, we won't support diagonal moves, 
+such as moving Northeast, although you're welcome to code your game that way. 
+You'll want to use two HashMaps in this challenge, 
+one for the board locations, and one for the next places data.
 
-The game starts, with the user standing in a road, in the center of the map. North would take the user to the Forest
-    and South, would take the user to the Valley, East would be the well house, and West would be the Hill. For simplicity,
-    we'll just support North, West, South and East compass directions, so each location will only have up to at most, four
-    directions to choose from. In other words, we won't support diagonal moves, such as moving Northeast, although you're
-    welcome to code your game that way. You'll want to use two HashMaps in this challenge, one for the board locations,
-    and one for the next places data.
+This table shows one way to structure your data, 
+but feel free to come up with your own configuration 
+if you'd prefer to. 
+Use a HashMap for the game board locations, keyed on a short descriptor,
+road or stream, for example, or some other key of your choice. 
+Your Location class should have a location description, 
+and could also have a field, a **HashMap**, to store next places to go from there. 
+The next places Map should be keyed by the compass direction, 
+and its value should be the key to the next location. 
+As an example, the stream location will have a next places map,
+which has two entries. 
+The first entry will have a key of W or West, 
+and the value will be valley (or whatever key you would use, 
+to get the valley data from the board locations map).
 
 ```java  
-
+*** You're standing inside a well house for a small sprint ***
+    From here, you can see:
+        * A road to the West (W)
+        * A lake to the North (N)
+        * A stream to the South (S)
+    Select Your Compass Direction (Q to quit) >>
 ```
 
+Use the console to describe to the player 
+what their current location is (starting at the road), 
+and show them what options they have to go from here. 
+Feel free to edit the descriptions 
+and make them as detailed as you want. 
+Prompt the player to enter the direction they want to go next. 
+You can accept the whole word, east, or just the letter e. 
+You can let the user know what lies ahead, 
+by giving them a hint about the next place, or not. 
+For example, you could tell them they could go either East or West, 
+and offer no hints. 
+Continue to play until the user quits, Q for quit, for example. 
+I've included some starting data as a csv file (or comma-separated file), 
+if you want to use that, you can cut and paste it for now, 
+and set it up in a text block, for example. 
+Or you can set up your own set of data from scratch. 
+I'm showing a sample of what the console display might look like above. 
+This is a suggestion only to help you understand how the game might work.
+
+A bonus part of the challenge is to allow customizations 
+to the board locations, as well as the next place directions.
+For example, your player should be able to add custom board locations, 
+to include more places, or change the descriptions 
+or destinations available.
 </div>
 
 
