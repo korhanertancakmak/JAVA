@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class Contact {
 
-    private String name;
+    private final String name;
     private Set<String> emails = new HashSet<>();
     private Set<String> phones = new HashSet<>();
 

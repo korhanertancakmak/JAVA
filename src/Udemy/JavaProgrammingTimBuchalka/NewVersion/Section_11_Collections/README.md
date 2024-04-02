@@ -6114,7 +6114,7 @@ It won't remove the element, though, unless it's considered equal
 to the element passed as the second argument.
 </div>
 
-### HashMap Implementation
+## [k. HashMap Implementation]()
 <div align="justify">
 
 The _view_, or _view_ collection as Java calls it, 
@@ -6699,9 +6699,23 @@ At this point, I've covered the major functionality on the **Map** interface,
 using the **HashMap** to do it. 
 </div>
 
-
+## [l. HashMap Challenge]()
 <div align="justify">
 
+In this challenge, you'll be creating a text-based game, using a **HashMap**. 
+This game will be loosely based on the original **Colossal Cave Adventure**, 
+which was one of the first adventure games 
+that came out years and years ago. 
+Feel free to google that if you want to find out more information about this game.
+
+
+
+The game starts, with the user standing in a road, in the center of the map. North would take the user to the Forest
+    and South, would take the user to the Valley, East would be the well house, and West would be the Hill. For simplicity,
+    we'll just support North, West, South and East compass directions, so each location will only have up to at most, four
+    directions to choose from. In other words, we won't support diagonal moves, such as moving Northeast, although you're
+    welcome to code your game that way. You'll want to use two HashMaps in this challenge, one for the board locations,
+    and one for the next places data.
 
 ```java  
 

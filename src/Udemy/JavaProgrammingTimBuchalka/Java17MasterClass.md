@@ -135,8 +135,8 @@ What we will learn from this Path:
 ### [h. LinkedHashSet and TreeSet Interfaces]()
 ### [i. TreeSet Challenge]()
 ### [j. Map Interface]()
+### [k. HashMap Implementation]()
 
-    * Map Interface
     * HashMap
     * LinkedHashMap and TreeMap
 
