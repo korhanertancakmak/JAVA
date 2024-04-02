@@ -6,13 +6,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-
-//Part-10
-/*
-
-*/
-//End-Part-10
-
         String myLocations = """        
                 lake,at the edge of Lake Tim,E:ocean,W:forest,S:well house,N:cave
                 ocean,on Tim's beach before an angry sea,W:lake
