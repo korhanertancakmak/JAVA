@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class Main {
-    private static Map<String, Purchase> purchases = new LinkedHashMap<>();
-    private static NavigableMap<String, Student> students = new TreeMap<>();
+    private static final Map<String, Purchase> purchases = new LinkedHashMap<>();
+    private static final NavigableMap<String, Student> students = new TreeMap<>();
 
     public static void main(String[] args) {
 

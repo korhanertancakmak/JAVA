@@ -19,9 +19,9 @@ public class Student {
 
     public static int lastId = 1;
 
-    private String name;
-    private int id;
-    private List<Course> courseList;
+    private final String name;
+    private final int id;
+    private final List<Course> courseList;
 
     public Student(String name, List<Course> courseList) {
         this.name = name;
