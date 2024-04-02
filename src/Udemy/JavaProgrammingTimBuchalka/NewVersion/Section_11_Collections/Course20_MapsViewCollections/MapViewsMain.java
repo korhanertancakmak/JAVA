@@ -4,22 +4,10 @@ import java.util.*;
 
 //Part-1
 /*
-                                                What's a view?
-
-        The view, or view collection as Java calls it, doesn't store elements but depends on a backing collection that
-    stores the data elements. You saw this with the headSet, tailSet and subSet methods on Sets. You're also very familiar
-    now, with a list backed by an array, a view we get back, when we use the Arrays.asList method, to get an array in
-    the form of a list. You'll remember when we make changes to that list, the changes are reflected in the underlying
-    array, and vice versa. The functionality available to us on the list, is limited to features supported by the backing
-    storage, so for a list backed by an array, we can't add or remove elements as an example.
 
                                         The Purpose of view Collections
 
-        Some of you might be familiar with database views which hide the details of the underlying data structures, to
-    make it easier for clients to use the data. These view collections serve a similar purpose. They let us manipulate
-    the collections, without really having to know exact details, about the storage of the data. In other words, we don't
-    have to keep learning new methods, to manipulate data. As long as we can get a collection view of the data, we can use
-    many of the collection methods, to simplify our work.
+
 
                ___________________________________
                | <<Interface>>                   |

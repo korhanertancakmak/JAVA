@@ -4426,7 +4426,7 @@ First, I'll create a comparator called _mySort_.
 I'll set that to the result of calling 
 the _comparing_ method on comparator,
 using the method reference **contact::getMame**. 
-I'll again create a variable, with the type-**NavigableSet**, 
+I'll again create a variable with the type-**NavigableSet**, 
 type argument **Contact**, name is _sorted_, 
 and assign a new **TreeSet** to that, but this time, 
 I'm passing the _mySort_ variable to it. 
@@ -4688,9 +4688,9 @@ one for Daffy Duck who is a contact in my set.
 And one for Daisy Duck who isn't. 
 I'll also include two others, 
 who are also not in the set, 
-snoopy who would be last, 
+_snoopy_ who would be last, 
 if inserted in the tree set. 
-And Archie who would be first, 
+And _Archie_ who would be first, 
 if inserted.
 Ok, so now I have all the test cases 
 I need to test the navigation methods, 
@@ -5109,7 +5109,7 @@ the _TreeSet_ is a good alternative to the ArrayList.
 ## [i. TreeSet Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/Course16_TreeSetChallenge/README.md#treeset-challenge)
 <div align="justify">
 
-In this challenge, you'll be creating a **Theatre** class, 
+In this challenge, you'll be creating a **Theatre** class 
 that has a set of _seats_. 
 The **Seat** class should be a nested class on the **Theatre** class. 
 A Seat should be constructed with a row character and an integer, 
@@ -5123,13 +5123,13 @@ a _boolean_, indicating
 if the seat is reserved or not.
 
 The **theatre** class should have three fields, 
-theatre name, an integer for seats in row, 
+theatre name, an integer for seats in a row, 
 how many seats are in a single row in other words, 
 and a field for the seats themselves. 
 This last field should be a **TreeSet**. 
 A Theatre instance should be constructed with the theatre name, 
 the number of rows in the theatre, 
-and the number of seats total in the theatre. 
+and the number of total seats in the theatre. 
 For simplicity, assume there are a uniform number of seats in every row, 
 and the number of rows should never exceed _26_, 
 so the rows will be labeled _A_ through _Z_.
@@ -5177,8 +5177,10 @@ even though it doesn't derive from, or implement, the **Collection** interface.
 
 ![image21](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image20.png?raw=true)
 
-From this diagram above, you can obviously see the Map is out here on its own. A map in the collections framework
-is another data structure. Although it's still a grouping of elements, it's different, because elements are stored
+From this diagram above, you can obviously see the Map is out here on its own.
+A map in the **collections** framework
+is another data structure. 
+Although it's still a grouping of elements, it's different because elements are stored
 with keyed references.
 
 | Collection Interface                        | Map Interface       |
@@ -5601,13 +5603,13 @@ I'll print another separator line yet, and clear my contacts map.
 Now, I'll loop through my full list, but this time I'm going to do it 
 with the _forEach_ method. 
 And that takes a lambda expression, and in there, 
-I'm just going to call merge on the contacts map,
+I'm just going to call merge on the _contacts_ map,
 passing the current contacts name, then the current contact.
 I need to follow that with another lambda expression. 
 I'll leave a placeholder here for a minute. 
-Finally, I'll print the elements in the contacts map after this call. 
+Finally, I'll print the elements in the _contacts_ map after this call. 
 Again, this next lambda is a Function Interface, 
-and in this case my two types and result are 
+and in this case, my two types and result are 
 all going to be the same type, Contact. 
 I need to set up two parameters in my lambda,
 and I'm going to call them previous and current, 
@@ -5750,7 +5752,7 @@ key=Mickey Mouse, value= Mickey Mouse: [micky1@aws.com, mckmouse@gmail.com] [(12
                     
 You can see, I've got two new contacts, _Daisy Duck_ and _Scrooge McDuck_, 
 with no emails or phone numbers. 
-But now look at _Daffy Duck_, I've also erased his previous information, 
+But now, look at _Daffy Duck_, I've also erased his previous information, 
 and replaced it with a brand-new contact record. 
 _Compute_ is like the _put_ method in this way, 
 replacing what's in the map with the result of 
@@ -6110,18 +6112,37 @@ Like the _replace_ method that returns a boolean,
 this version of the _remove_ method must find the _key_ in the map. 
 It won't remove the element, though, unless it's considered equal 
 to the element passed as the second argument.
-
 </div>
 
-
-
-
+### HashMap Implementation
 <div align="justify">
 
+The _view_, or _view_ collection as Java calls it, 
+doesn't store elements but depends on a backing collection 
+that stores the data elements. 
+You saw this with the _headSet_, _tailSet_ 
+and _subSet_ methods on **Sets**. 
+You're also very familiar now with a list backed by an array, 
+a _view_ we get back, when we use the _Arrays.asList_ method,
+to get an array in the form of a list. 
+You'll remember when we make changes to that list, 
+the changes are reflected in the underlying array, and vice versa. 
+The functionality available to us on the list is limited 
+to features supported by the backing storage, so for a list backed by an array, 
+we can't add or remove elements as an example.
 
-```java  
+Some of you might be familiar with database views 
+which hide the details of the underlying data structures, 
+to make it easier for clients to use the data. 
+These view collections serve a similar purpose. 
+They let us manipulate the collections, without really having 
+to know exact details about the storage of the data. 
+In other words, we don't have to keep learning new methods 
+to manipulate data. 
+As long as we can get a collection view of the data, 
+we can use many of the collection methods to simplify our work.
 
-```
+![image22]()
 
 </div>
 
