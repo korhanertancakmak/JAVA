@@ -565,6 +565,9 @@ Let's say I want my lake to have a different description,
 and I want to add some additional destinations from the _Lake_, 
 in addition to the two that are already set up. 
 Let me show this to you this. 
+
+![image25](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image24.png?raw=true)
+
 _Lake_ is already in my map, but I want to customize it,
 first by describing it, naming it _Lake Tim_, 
 and then adding two additional destinations from there, 

@@ -6699,7 +6699,7 @@ At this point, I've covered the major functionality on the **Map** interface,
 using the **HashMap** to do it. 
 </div>
 
-## [l. HashMap Challenge]()
+## [l. HashMap Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/Course21_HashMapChallengePart1/README.md#hashmap-challenge)
 <div align="justify">
 
 In this challenge, you'll be creating a text-based game, using a **HashMap**. 

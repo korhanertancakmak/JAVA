@@ -30,7 +30,7 @@ public class AdventureGame {
     private record Location(String description, Map<Compass, String> nextPlaces) {}
 
     private String lastPlace;
-    private Map<String, Location> adventureMap = new HashMap<>();
+    private final Map<String, Location> adventureMap = new HashMap<>();
 
     public AdventureGame() {
     }
