@@ -42,7 +42,6 @@ except maps, and I'll explain why in this section.
 </div>
 
 ## [a. Collection Interface]()
-
 <div align="justify">
 
 The Collection interface is the root of the collection hierarchy. 
@@ -6663,7 +6662,7 @@ for (var node : nodeSet) {
 }
 ```
 
-Then, I'll also include that for the node, in the if statement. Running that code,
+Then, I'll also include that for the node in the if statement. Running that code,
 
 ```java  
 java.util.HashMap$EntrySet
@@ -6882,7 +6881,7 @@ I'll set up two constructors, the first will have _name_
 and _courseList_ as arguments. 
 I'll add another statement to this constructor,
 to set the id. 
-This gets assigned the value in last id, my static field. 
+These gets assigned the value in last id, my static field. 
 I'll increment _lastId_ after the assignment,
 so I use a post-fix increment. 
 I'm going to copy this constructor, 
@@ -7246,9 +7245,9 @@ In the last section, I created two maps of data, one,
 a **LinkedHashMap** of purchases made, and the other, 
 a **TreeMap** of my enrolled students. 
 Because I used **LinkedHashMap**, purchases are stored
-in the order they were made, which is pretty good in general, 
-but I also created a sorted tree map, 
-keying on purchase date, and maintaining a list of purchases 
+in the order they were made, which is pretty good in general. 
+However, I also created a sorted tree map, 
+keying on purchase date, and maintained a list of purchases 
 by each distinct date. 
 
 In this section, I'm going to use that last map 
@@ -7348,7 +7347,7 @@ I'm calling this variable _weeklyCounts_, and since I want it sorted,
 I'll make it a new tree map. 
 Next, I'll loop through each entry of my period data. 
 I'll first print the key and value. 
-Next, I'll add the code, that actually keeps track of my counts 
+Next, I'll add the code that actually keeps track of my counts 
 by course id for this period. 
 I'll loop through the elements in the value variable, 
 remember this is a list of purchases, so I'll loop through purchases for each date. 
@@ -7516,50 +7515,557 @@ while (previousEntry != null) {
     lastDate = prevDate;
 }
 ```
-                                     LocalDate prevDate = datedPurchases.lowerKey(lastDate);
-                                     previousEntry = datedPurchases.lowerEntry(lastDate);
-                                                                to
-                                     LocalDate prevDate = datedPurchases.floorKey(lastDate);
-                                     previousEntry = datedPurchases.floorEntry(lastDate);
 
-    If I run this code, I'll be stuck in an infinite loop. Why's this? Remember, the lower method on Set always returned
-    the element that was less than the method argument, but the floor method gets the value, that's less than, or equal
-    to, the method argument. This is true for these methods as well. In this case, the floorEntry method just keeps
-    returning the same element each time, as does the floor key, because it finds an element whose key is equal to that
-    key. I'll revert those last changes, so that my code runs again. While I'm at it, I might as well give Map's last
-    and higher methods a try. I'll also use this to show you another map view collection, the descendingMap. First, I'll
-    use the descending Map method, to get my purchases, in the reverse order, reversed by date which is my key.
-
-</div>
-
-
-<div align="justify">
-
+If I run this code, I'll be stuck in an infinite loop. 
+Why's this? 
+Remember, the _lower_ method on **Set** always returned
+the element that was less than the method argument, 
+but the _floor_ method gets the value, that's less than, 
+or equal to, the method argument. 
+This is true for these methods as well. 
+In this case, the _floorEntry_ method just keeps returning 
+the same element each time, as does the _floor_ key, 
+because it finds an element whose key is equal to that key.
+I'll revert those last changes, so that my code runs again. 
+While I'm at it, I might as well give Map's last and higher methods a try. 
+I'll also use this to show you another map view collection, the _descendingMap_. 
+First, I'll use the _descendingMap_ method to get my purchases 
+in the reverse order, reversed by date which is my key.
 
 ```java  
+System.out.println("-----------------------");
+var reversed = datedPurchases.descendingMap();
 
+LocalDate firstDate = reversed.firstKey();
+var nextEntry = reversed.firstEntry();
+
+while (nextEntry != null) {
+    List<Purchase> lastDaysData = nextEntry.getValue();
+    System.out.println(firstDate + " purchases : " + lastDaysData.size());
+
+    LocalDate nextDate = reversed.higherKey(firstDate);
+    nextEntry = reversed.higherEntry(firstDate);
+    firstDate = nextDate;
+}
 ```
 
-</div>
-
-
-<div align="justify">
-
+I'll put a separator line here. 
+I'll use _var_ as the type for the _reversed_ local variable, 
+and assign that _datedPurchases.descendingMap_. 
+This code is going to look very similar to the code I just showed you, 
+where I looped through my entries, using lower key, 
+and lower entry to process the data. 
+I'll set up two local variables, as I did before. 
+The first one, a **LocalDate**, first date, 
+gets assigned what I get back, from _reversed.firstKey_. 
+I want to use the _reversed_ map I just created, 
+to get the first key, and not the _datedPurchases_ map. 
+Because this map is in reverse order, 
+I can produce the same output, but use different methods. 
+The next variable is _nextEntry_, and that's what I get back, 
+from calling the _firstEntry_ method on the _reversed_ map. 
+I'll set up a while loop, checking to see
+if _nextEntry_ is not _null_ for this loop. 
+I'll set up a local variable for my list of daily purchases. 
+I'll print the date and number of purchases like before. 
+I'll set up another local variable in my loop, 
+and this time I'm going to call it _nextDate_, 
+and instead of calling lowerKey, I'll use the higher key method here. 
+Because my map's in reversed order, 
+higher is going to return the next most current date and purchases. 
+_nextEntry_ gets assigned what I get back,
+from the higher entry method, using whatever is in _firstDate_. 
+I'll reassign _firstDate_ to the _nextDate_. 
+If I run that code, I get the same results, 
+as the previous while loop, this time by using a _reversed_ map,
+and the _first_ and _higher_ methods. 
+For good measure, I'll also print out my original map after this loop.
 
 ```java  
-
+System.out.println("-----------------------");
+datedPurchases.forEach((key, value) -> System.out.println(key + ": " + value));
 ```
 
-</div>
-
-
-<div align="justify">
-
+I'll add a separator line, 
+and use the _forEach_ method on my _datedPurchases_ map, 
+to print that data again. 
+Running that, I can confirm that my _datedPurchases_ map hasn't changed at all. 
+Now, I'll make two minor changes to this last bit of code. 
+First, I'll copy the statement, pasting a copy just below it, and I'll comment out.
 
 ```java  
+System.out.println("-----------------------");
+var reversed = datedPurchases.descendingMap();
 
+LocalDate firstDate = reversed.firstKey();
+//var nextEntry = reversed.firstEntry();
+var nextEntry = reversed.pollFirstEntry();
+
+while (nextEntry != null) {
+    List<Purchase> lastDaysData = nextEntry.getValue();
+    System.out.println(firstDate + " purchases : " + lastDaysData.size());
+
+    LocalDate nextDate = reversed.higherKey(firstDate);
+    //nextEntry = reversed.higherEntry(firstDate);
+    nextEntry = reversed.pollFirstEntry();
+    firstDate = nextDate;
+}
 ```
 
+I'll do the same thing for the next statement, 
+pasting a copy below, and commenting the first statement out.
+In both these cases, where I'm assigning _nextEntry_, 
+I want to use a different method, 
+replacing both with the same expression. 
+In the first case, I'm changing first entry, to poll first entry method. 
+In the second, I'm replacing the call to higher entry, 
+also replacing it with _pollFirstEntry_. 
+Remember that _pollFirstEntry_ doesn't take any arguments. 
+How does this work? 
+Well, let me run it, and see what I get.
+
+```html  
+-----------------------
+2023-01-13 purchases : 2
+2023-01-12 purchases : 1
+2023-01-10 purchases : 1
+2023-01-08 purchases : 1
+2023-01-06 purchases : 1
+2023-01-05 purchases : 2
+2023-01-03 purchases : 1
+2023-01-02 purchases : 1
+-----------------------
+```
+                    
+You can see, my output looks the same for the loop results. 
+Using this method gave me the same result. 
+But there's a really important difference. 
+Can you see it? 
+Remember, I've got code after this loop, 
+to print the information in my _datedPurchases_ map. 
+So why didn't that data get printed out? 
+There are two important things you need to remember,
+which is why I'm showing you this particular example. 
+First, you need to understand that the _poll_ methods, 
+_pollFirstEntry_ and _pollLastEntry_, remove data from the map 
+on each later call. 
+These aren't just an alternate way to get the first and last entry, 
+because they're also mutating the map. 
+And secondly, the reversed map is a view. 
+The true source is my _datedPurchases_ map. 
+When I execute the _poll_ methods on the reversed map, 
+those operations are actually occurring on the _datedPurchases_ map. 
+If you're not really careful, when you use these views, 
+you could really mess things up for code using the _datedPurchases_ map later on. 
+Views are very helpful, but they can also get you in trouble, 
+if you don't remember that's what they are. 
+I'll put up a table and list the Map's view collections. 
+They're very similar to **TreeSet**'s, 
+but there are separate views for the keys and the entries.
+
+<table>
+    <th> View collection methods </th>
+    <th> Notes </th>
+    <tr>
+        <td> entrySet(), keySet(), values()</td>
+        <td> Provides views of mappings, keys and values. 
+             These are views available to map, and just the Treemap. 
+             I include them here to remind you. 
+             These are <b>views</b>.
+        </td>
+    </tr>
+    <tr>
+        <td> descendingKeySet()<br/> descendingKeyMap()</td>
+        <td> Provides reversed order key set or map, 
+             reversed by the key values. 
+        </td>
+    </tr>
+    <tr>
+        <td> headMap(K key) <br/> 
+             headMap(K key, boolean inclusive) <br/>
+             tailMap(K key) <br/>
+             tailMap(K key, boolean inclusive)
+        </td>
+        <td> Provides views of either the first or last parts of the map, divided by the key passed. <br/>
+             The <b>head</b> map is by default <b>EXCLUSIVE</b> of all elements higher or equal to the key. <br/>
+             The <b>tail</b> map is by default <b>INCLUSIVE</b> of all elements higher or equal to the key. <br/>
+        </td>
+    </tr>
+    <tr>
+        <td> subMap(K fromKey, K toKey) <br/> 
+             subMap(K fromKey, boolean inclusive, K toKey, boolean inclusive) <br/>
+        </td>
+        <td> Provides a view of a contiguous section of the map, 
+             higher or equal to the fromKey and lower than the toKey, so the <b>toKey is EXCLUSIVE.</b> <br/>
+             The overloaded version allows you to determine the inclusivity you want for both keys. <br/>
+        </td>
+    </tr>
+</table>
+
+The _entrySet_, _keySet_, and _values_ methods 
+return views of the mappings, keys, and values respectively. 
+These are views available to any map, 
+and not just the **TreeMap**. 
+I include them here, to remind you; these are still views.
+Manipulating the collections returned from these methods 
+will be manipulating the source map. 
+The _descendingKeySet_ and _descendingKeyMap_ methods provide reversed order views, 
+reversed by the key values. 
+The _headMap_ and _tailMap_ methods provide views of either 
+the first or last parts of the map, spliced or divided by 
+the key argument that's passed. 
+The head map is by default, _EXCLUSIVE_ of all elements higher 
+or equal to the key. 
+The tail map is, by default, _INCLUSIVE_ of all elements higher 
+or equal to the key. 
+The _subMap_ method provides a view of a contiguous subsection of the map,
+higher or equal to the _fromKey_, and lower than the _toKey_, 
+so the _toKey_ is _EXCLUSIVE_. 
+The overloaded version allows you to determine the inclusivity 
+you want for both keys. 
+</div>
+
+## [n. EnumSet and EnumMap Collections]()
+<div align="justify">
+
+Before we move on, I want to talk about two more classes 
+in the **collections** framework, specifically created to
+support enum types more efficiently. 
+You can use any **List**, **Set**, or **Map**, 
+with an enum constant. 
+The **EnumSet**, and **EnumMap**, each has a special implementation 
+that differs from the **HashSet** or **HashMap**. 
+These implementations make these two types extremely compact and efficient. 
+There's no special list implementation for enum types.
+
+The **EnumSet** is a specialized Set implementation for use with enum values. 
+All the elements in an **EnumSet** must come from a single enum type. 
+The **EnumSet** is abstract, meaning we can't instantiate it directly. 
+It comes with many factory methods to create instances. 
+In general, this set has much better performance than using a **HashSet**, 
+with an enum type.
+Bulk operations (such as _containsAll_ and _retainAll_) should run very quickly, 
+in constant time, O(1) if they're run on an **EnumSet**, 
+and their argument is an **EnumSet**.
+
+The **EnumMap** is a specialized **Map** implementation for use with enum type keys. 
+The keys must all come from the same enum type, and they're ordered naturally 
+by the ordinal value of the enum constants. 
+This map has the same functionality as a **HashMap**, with O(1) for basic operations. 
+The enum key type is specified during construction of the **EnumMap**, 
+either explicitly by passing the key type's class, or implicitly by passing another **EnumSet**. 
+In general, this map has better performance than using a **HashMap** with an enum type.
+Let's review some of the things you can do when you combine enums with these collections. 
+I've created a **Main** class and _main_ method.
+I'm going to create an enum type in this class, called **WeekDay**. 
+This enum will just have all the days in the week.
+
+```java  
+public class Main {
+
+    enum WeekDay {SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY}
+
+    public static void main(String[] args) {
+        List<WeekDay> annsWorkDays = new ArrayList<>(List.of(WeekDay.MONDAY,
+                WeekDay.TUESDAY, WeekDay.THURSDAY, WeekDay.FRIDAY));
+
+        var annsDaysSet = EnumSet.copyOf(annsWorkDays);
+        System.out.println(annsDaysSet.getClass().getSimpleName());
+    }
+}
+```
+
+Let's say I'm interested in assigning work days to different employees. 
+I already have an employee named _Ann_, so I'll set up a list of the days she works. 
+The list type will be the enum type, **weekDay**, 
+I'll call the variable _annsWorkDays_, and that will be a new ArrayList, 
+created using the list dot of method, with _Monday_, _Tuesday_, _Thursday_ and _Friday_. 
+I'm going to use Ann's work days to figure out what kind of coverage 
+I'll need for other employees I want to hire. 
+First, let me use one of the factory methods on the EnumSet, to create a set of Ann's work days. 
+I'll set my type to var right now. 
+I'll call this variable _annsDaysSet_. 
+I'll assign that the result of the _EnumSet.copyOf_ method, with _annsWorkDays_. 
+This method will take any collection type. 
+Then, I want to print out the actual type of the instance I get back. 
+Before I run it, notice that the inferred type is an **EnumSet**, with the type of _WeekDay_. 
+The **EnumSet** is an abstract class, as I said before, 
+so if I want to know what the set type really is, I'll need to run this code. 
+Running this,
+
+```html  
+RegularEnumSet
+```
+
+You can see my instance is a **RegularEnumSet**.
+
+Enum sets are represented internally as bit vectors, 
+which is just a series of ones and zeros. 
+A one indicates that the enum constant 
+(with an ordinal value that is equal 
+to the index of the bit) is in the set. 
+A zero indicates the enum constant is not in the set. 
+Using _bit_ vector allows all set operations to use math, 
+which makes it rapid.
+A **RegularEnumSet** uses a single long as its _bit_ vector, 
+which means it can contain a maximum of 64 bits,
+representing 64 enum values. 
+A **JumboEnumSet** gets returned if you have more than 64 enums.
+
+![image26](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image25.png?raw=true)
+
+This is a visual representation of the EnumSet for Ann's work days. 
+Its size is 7, for the 7 possible values (based on the number of 
+constants in the WeekDay Enum). 
+Any weekday that's part of her set will be set to 1, 
+at the index that corresponds to the weekday ordinal value. 
+_MONDAY_ has an ordinal value of 1 in our **WeekDays** enum, 
+and the value in the underlying _bit_ vector, at position 1, is a 1.
+This means _MONDAY_ is part of Ann's **EnumSet**. 
+Ok, so let's get back to the code and explore this class a little more.
+
+```java  
+annsDaysSet.forEach(System.out::println);
+```
+
+I'll print AnnsDaysSet out each day on its own line. 
+Running this,
+
+```html  
+RegularEnumSet
+MONDAY
+TUESDAY
+THURSDAY
+FRIDAY
+```
+                    
+Ann's workdays are printed out, in the order as defined in the Enum. 
+This is another advantage of using just a **HashSet** with an enum type, 
+because the set is naturally ordered by the ordinal value. 
+We can create a **Set** for all the enum values, using another factory method, _allOf_. 
+
+```java  
+var allDaysSet = EnumSet.allOf(WeekDay.class);
+System.out.println("---------------------");
+allDaysSet.forEach(System.out::println);
+```
+
+I'll set up a local variable, again using var, named all days set, 
+and assign that _EnumSet.allOf_, and pass that the _WeekDay.class_. 
+I'll print a separator line for clarity. 
+I'll print each element. 
+Running that:
+
+```html  
+---------------------
+SUNDAY
+MONDAY
+TUESDAY
+WEDNESDAY
+THURSDAY
+FRIDAY
+SATURDAY
+```
+                    
+It just prints out all the days in our enum, in order. 
+You might be wondering why that's useful, 
+since that's data we can just get, using enum's values methods. 
+Hold that thought for a minute.
+
+```java  
+Set<WeekDay> newPersonDays = EnumSet.complementOf(annsDaysSet);
+System.out.println("---------------------");
+newPersonDays.forEach(System.out::println);
+```
+
+First, I want to show you another method, called _complementOf_. 
+I'll set up a Set of **WeekDay** this time, 
+calling it new person days. 
+I'll assign that the result of enum set's static method, _complementOf_, 
+and passing it _annsDaysSet_.
+Again, I'll output a separator line. 
+And print what that gives me. 
+Running this:
+
+```html  
+---------------------
+SUNDAY
+WEDNESDAY
+SATURDAY
+```
+                
+I get _Sunday_, _Wednesday_, and _Saturday_, 
+so what did this really do? 
+What set math operation is this? 
+This is a difference of the full set of 
+all possible work days, minus ann's set, isn't it? 
+I can get the same results with the _removeAll_ bulk function, 
+which I'll do next.
+
+```java  
+Set<WeekDay> anotherWay = EnumSet.copyOf(allDaysSet);
+anotherWay.removeAll(annsDaysSet);
+System.out.println("---------------------");
+anotherWay.forEach(System.out::println);
+```
+
+I'll make a copy of the full set, and call it _anotherWay_. 
+I'll call the _removeAll_ method, on that, passing it _annsDaysSet_. 
+And I'll print this set out. 
+Running that:
+
+```html  
+---------------------
+SUNDAY
+WEDNESDAY
+SATURDAY
+```
+
+You can see I get the same result.
+It was a lot easier to use the _complementOf_ method. 
+I didn't have to create a set of all elements, 
+or call the remove all method. 
+One other creation method is the _range_ method.
+
+```java  
+Set<WeekDay> businessDays = EnumSet.range(WeekDay.MONDAY, WeekDay.FRIDAY);
+System.out.println("---------------------");
+businessDays.forEach(System.out::println);
+```
+
+I'll set up a new variable called _businessDays_. 
+I'll set that to the result of enum set dot range, 
+passing it _Monday_ and _Friday_. 
+I'll print those out.
+
+```html  
+---------------------
+MONDAY
+TUESDAY
+WEDNESDAY
+THURSDAY
+FRIDAY
+```
+                
+You can get all the days between _Monday_ and _Friday_, 
+including both _Monday_ and _Friday_. 
+All other operations on this set are the same as those 
+I covered with the **HashSet**, so I won't go through them here.
+
+```java  
+Map<WeekDay, String[]> employeeMap = new EnumMap<>(WeekDay.class);
+
+employeeMap.put(WeekDay.FRIDAY, new String[]{"Ann", "Mary", "Bob"});
+employeeMap.put(WeekDay.MONDAY, new String[]{"Mary", "Bob"});
+employeeMap.forEach((k, v) -> System.out.println(k + " : " + Arrays.toString(v)));
+```
+
+Let's now look at the **EnumMap**.
+This class is not abstract, so I can create an instance of it 
+directly using _new_, but unlike other **Map** implementations, 
+it does not have a no args constructor. 
+I'll create a map, keyed by _WeekDay_, 
+and each mapped element will be an array of string. 
+That array will be the names of my employees who work those days. 
+I'll assign that a new **EnumMap** instance, 
+and pass it the _WeekDay.class_. 
+Now, I have an empty enum map. 
+I can add elements in the usual way, 
+with _put_, _putAll_, _putIfAbsent_, _computeIfPresent_, 
+_replaceAll_, and the other many methods of a Map. 
+I'll just use the _put_ method. 
+I'll add Friday's crew, _Ann_, _Mary_ and _Bob_. 
+I'll next add Monday's crew, _Mary_ and _Bob_.  
+I'll print this data out. 
+
+```html  
+---------------------
+MONDAY
+TUESDAY
+WEDNESDAY
+THURSDAY
+FRIDAY
+MONDAY : [Mary, Bob]
+FRIDAY : [Ann, Mary, Bob]
+```
+
+Notice here that these are again ordered by the week day, 
+without me having to use a **SortedMap**. 
+I also didn't have to insert them in order, 
+like I would have if I had used a **LinkedHashMap**. 
+Again, I won't cover all the methods 
+I've covered previously with the **HashMap**. 
+This class has all those methods, and works very similarly 
+to a **HashMap** with a key type that's an enum. 
+But it's more efficient, and it's naturally ordered. 
+</div>
+
+## [o. Collections Framework Challenge]()
+<div align="justify">
+
+Using some combination of the classes in the **Collections** Framework, 
+see if you can create the classes and methods shown below.
+
+![image27](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image26.png?raw=true)
+
+I'm purposely excluding types and relationships here. 
+This is called a conceptual model, where you start by drawing
+the needs of the system, and identifying fields and methods. 
+The information on this diagram should be enough to get you started. 
+A product's information is defined by its manufacturer, 
+so assume the information on **Product** isn't mutable.
+A _sku_ is short for stock keeping unit, and is a unique identifier for the product. 
+The _category_ should be one of a defined set of categories, 
+like product or dairy, for example, for a grocery item. 
+The **InventoryItem** is the store's information specific to the product, 
+like the price and quantities of each product in stock.
+
+* _qtyTotal_: The total quantity is the amount that's still in stock, 
+so it could be in any of your carts, on your aisles, or in your warehouse.
+* _qtyReserved_: The qty that's reserved is the product in the carts, but not yet sold.
+* _qtyRecorder_: The qty reorder amount is what you'd use to order more product.
+* _qtyLow_: The low quantity is the trigger, or threshold, to order more product. 
+When the low qty is reached, your system should order more products.
+
+The **cart** type has an _id_, and a collection of _products_ 
+that changes as a shopper puts in new items, 
+or removes them from their cart. 
+The cart will have a date, and also a type, 
+to indicate if the type is physical or virtual.
+Each of the fields on the **Store** class is collections. 
+Which you choose is up to you. 
+_Inventory_ is a collection of **InventoryItems**. 
+_Carts_ is a collection of **carts**. 
+The _aisleInventory_ is the inventory displayed 
+physically on store shelves. 
+You can assume aisles can be keyed by the product category. 
+Your store should have a method to abandon physical and virtual carts, 
+if the date associated with the cart is different from the current date.
+
+Try to use a variety of **Collections** Framework 
+implementations and methods. 
+Think about the fields that would use collections, 
+and the types you have to choose from. 
+You can also use collections to help you manage some 
+functionality in the methods. 
+Remember the three interfaces, **List**, **Set**, and **Map**,
+and the classes that implement these interfaces. 
+Do you need to allow duplicates in the collection? 
+Do you need things to be sorted? 
+Is insertion order good enough? 
+Do you need a way to organize the data into a key value system, 
+to make some operations easier?
+What methods on the Collections classes might be useful 
+for some of this functionality? 
+Would set math be useful? 
+Or would navigational methods be simpler? 
+Are there any methods on the Collections class that 
+would make sense to use here? 
+This may sound like a lot,
+but take it one type at a time, 
+and one operation at a time. 
+Collections are such an important Java topic, 
+so take time here to challenge yourself as much as possible.
 </div>
 
 

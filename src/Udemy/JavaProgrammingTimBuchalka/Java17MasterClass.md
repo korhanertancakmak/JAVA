@@ -137,9 +137,9 @@ What we will learn from this Path:
 ### [j. Map Interface]()
 ### [k. HashMap Implementation]()
 ### [l. HashMap Challenge]()
-
-    * HashMap
-    * LinkedHashMap and TreeMap
+### [m. LinkedHashMap and TreeMap Interfaces]()
+### [n. EnumSet and EnumMap Collections]()
+### [o. Collections Framework Challenge]()
 
 ## [12. Immutable and Sealed Classes]()
 
