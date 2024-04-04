@@ -344,7 +344,7 @@ so I'll see you in that next section.
 ## [b. java.util.Collections Methods]()
 <div align="justify">
 
-In this lecture, I want to set up a Card class, 
+In this section, I want to set up a Card class, 
 which will be used to create a deck of playing cards. 
 I'll be using these cards, and decks of cards, 
 to demonstrate many of the methods on **java.util.Collections**. 
@@ -663,7 +663,7 @@ you might find useful.
 I'll examine some of these in code, 
 and compare them to the methods on the interfaces now available.
 
-In the last lecture, I created some code I'll be using in this lecture, 
+In the last section, I created some code I'll be using in this section, 
 and a couple of the ones that follow. 
 I'll briefly discuss it here, 
 for those of you who decided to skip that walk through.
@@ -685,7 +685,7 @@ In a standard deck, the lowest card, a two, is 0,
 because an **Ace** is usually the highest value card, 
 though an ace can represent a one sometimes. 
 The **Card** has static helper functions 
-I'll be using in the code in this lecture, one
+I'll be using in the code in this section, one
 to get an instance of a numeric card, 
 one to get an instance of a face card. 
 In addition, I can get a list of cards,
@@ -1082,7 +1082,7 @@ as the first argument.
 If your elements implement Comparable, 
 that would be it. 
 But if they don't, or you want to force an alternative sort,
-you can pass a **Comparator**, as we've seen in previous lectures. 
+you can pass a **Comparator**, as we've seen in previous sections. 
 My Card record doesn't implement Comparable, 
 and let's say, for whatever reason, I don't want it to.
 
@@ -1875,7 +1875,7 @@ to achieve this desired uniform distribution of the objects.
 
 To understand hashing in Java, I think it helps 
 to first understand the equality of objects. 
-I've touched on this in previous lectures, 
+I've touched on this in previous sections, 
 but now I want to be sure you thoroughly understand 
 this subject because it matters when dealing with any hashed collections.
 There are two methods on **java.util.Object** that all objects inherit.
@@ -2358,7 +2358,7 @@ let me encourage you to do some research on this topic.
 For the rest of you, remember that 
 if you are using your own classes in hashed collections, 
 you'll want to override both the equals and the hashCode methods. 
-I'll be covering this quite a bit over the next couple of lectures, 
+I'll be covering this quite a bit over the next couple of sections, 
 so you'll have more time to get exposed to these concepts. 
 Java supports four hashed collections implementation, 
 which we'll be looking at coming up. 
@@ -2371,9 +2371,9 @@ since there are more efficient implementations that replace this legacy class.
 ## [e. Set Interface]()
 <div align="justify">
 
-Like the code setup lecture of Collections CardGame I presented earlier, 
-this is another lecture that will set up code 
-for upcoming lectures on sets. 
+Like the code setup section of Collections CardGame I presented earlier, 
+this is another section that will set up code 
+for upcoming sections on sets. 
 
 In this example, _I'll be using HashSets as fields_, 
 and I'll use the **Scanner** class, 
@@ -2814,7 +2814,7 @@ Later, when I cover maps and hash maps,
 I'll swing back and explain how the **HashSet** uses a hash map under
 its covers.
 
-In the lecture called Set Up for **Sets** and **Maps**, 
+In the section called Set Up for **Sets** and **Maps**, 
 I created code for a Contact class, 
 as well as code that simulated getting phone lists and email lists, 
 from an external source. 
@@ -3309,7 +3309,7 @@ how elements in multiple sets relate to each other.
 The union of two or more sets will return elements 
 that are in any or all of the sets, removing any duplicates.
 These may look familiar because these are the sets I had 
-when I left off in the code in the last lecture.
+when I left off in the code in the last section.
 
 ![image14](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image13.png?raw=true)
 
@@ -3673,7 +3673,7 @@ Part of the upcoming challenge on Set Operations
 will be using a **Task** class. 
 This is a fairly simple class, with multiple attributes, 
 some with enums. 
-This will be very similar to the Contact Data set up lecture 
+This will be very similar to the Contact Data set up section 
 I did earlier, which produced lists. 
 In this case, I'll be getting different sets of tasks, 
 and instead of using Scanner to parse text block strings, 
@@ -3682,7 +3682,7 @@ I'm also going to implement Comparable in **Task**.
 If you feel you need more experience working with Comparable or enums, 
 then this is a good opportunity to do it. 
 If you just want to concentrate on the set operations part of the challenge, 
-you can skip this setup lecture.
+you can skip this setup section.
 
 You'll want to create a class that represents a **Task**. 
 It should have:
@@ -4645,7 +4645,7 @@ The elements are first removed from the set,
 which you can see here, 
 when I print out the elements in the copied set.
 _Charlie Brown_ and _Robin Hood_ are no longer in the set. 
-Ok, this feels like a good place to end this lecture. 
+Ok, this feels like a good place to end this section. 
 I've introduced you to the **TreeSet**, 
 which implements both the **SortedSet** 
 and the **NavigableSet**.
@@ -4655,7 +4655,7 @@ and the last sorted element.
 The _pollFirst_ and _pollLast_ methods
 do the same thing, but in addition, 
 they remove the element from the set. 
-In the next lecture, I'll be covering 
+In the next section, I'll be covering 
 additional methods unique to the navigable set 
 as well as a few on the sorted set interface.
 </div>
@@ -5204,7 +5204,7 @@ all named _put,_ in my map.
 Each key can only map to a single value, 
 so I couldn't reference four different string descriptions 
 for the key _put_, without aggregating the descriptions into a collection of some sort. 
-In the next few lectures, I'll be looking at 3 of the Java classes that implement the map interface, 
+In the next few sections, I'll be looking at 3 of the Java classes that implement the map interface, 
 the **HashMap,** the **LinkedHashMap,** and the **TreeMap.** 
 The **HashMap** is unordered, the **LinkedHashMap** is ordered by insertion order, 
 and the **TreeMap** is a sorted map. 
@@ -7232,7 +7232,7 @@ Mary Martin: [1] : Java Master Class, Python Master Class
 And that gives me 10 students, with various purchases, 
 for the first two weeks of this year. 
 Again, this will change each time I run it. 
-In this lecture, I've shown you examples of using a **LinkedHashMap**, 
+In this section, I've shown you examples of using a **LinkedHashMap**, 
 as well as a **TreeMap**. 
 For the tree map, I've used a String as a key, 
 but I've used **LocalDate** as a key as well. 
