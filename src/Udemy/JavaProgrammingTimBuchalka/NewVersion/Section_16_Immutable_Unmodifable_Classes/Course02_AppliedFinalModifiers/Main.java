@@ -1,7 +1,7 @@
-package CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course02_AppliedFinalModifiers;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course02_AppliedFinalModifiers;
 
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course02_AppliedFinalModifiers.consumer.specific.ChildClass;
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course02_AppliedFinalModifiers.generic.BaseClass;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course02_AppliedFinalModifiers.consumer.specific.ChildClass;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_Immutable_Unmodifable_Classes.Course02_AppliedFinalModifiers.generic.BaseClass;
 
 public class Main {
 
@@ -23,34 +23,6 @@ public class Main {
         childReferredToAsBase.recommendedStatic();
         System.out.println("--------------------");
         child.recommendedStatic();
-
-//Part-1
-/*
-        In the last lecture, I left off, having created three static methods on the BaseClass, that pretty much did the
-    same thing as the instance methods. I called these static methods, using instance references, in my main method. What
-    I mean by that is, I called these static methods using variable references, and not the specific class names, as is
-    usual when calling static methods. IntelliJ's trying to get my attention by highlighting each of these. This code ran
-    and executed fine. I'll run it again now.
-
-                --------------------
-                [BaseClass.recommendedStatic] BEST Way to Do it
-                [BaseClass.optionalStatic]: Optional
-                [BaseClass.mandatoryStatic]: MANDATORY
-                --------------------
-                [BaseClass.recommendedStatic] BEST Way to Do it
-                [BaseClass.optionalStatic]: Optional
-                [BaseClass.mandatoryStatic]: MANDATORY
-                --------------------
-                [BaseClass.recommendedStatic] BEST Way to Do it
-                [BaseClass.optionalStatic]: Optional
-                [BaseClass.mandatoryStatic]: MANDATORY
-
-    The last three segments in the output, are the results from executing those static methods, using the variable references.
-    Because these static methods are declared only on BaseClass right now, all three segments have the same output. What
-    I'll do next is open up the BaseClass, and copy the entire public static method, called recommendedStatic, and going
-    back to the ChildClass, I'll paste that at the end of the class.
-*/
-//End-Part-1
 
         System.out.println("--------------------");
         BaseClass.recommendedStatic();
