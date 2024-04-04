@@ -22,6 +22,9 @@ public class Store {
 Once I've got that, I'm going to set up some of my other types.
 First, I want an enum, **Category**, and for that,
 I'll just create a new Java class, pick enum, and call it _Category_.
+
+![image28](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image27.png?raw=true)
+
 I'll set up some constants, in the order a store might be laid out,
 so maybe _PRODUCE_, _dairy_, _cereal_, _meat_, and _beverage_ to start with.
 
@@ -168,6 +171,9 @@ I'll generate that with Control+O.
 Then I'll replace the call to super _toString_. 
 I'm just going to return a formatted string with 
 _product_, _price_, _qtyTotal_, and _qtyReserved_. 
+
+![image29](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image28.png?raw=true)
+
 Ok, the next class is **Cart**.
 
 ```java  
@@ -352,6 +358,9 @@ I'll generate that with alt+Insert, and select everything but the _type_.
 That's good enough for the **Cart** class. 
 I have the **Cart** and **Inventory** Classes, 
 as well as the **Product** record, and a couple of enums.
+
+![image30](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/images/image29.png?raw=true)
+
 Now, I'm going to implement the **Store** with its multiple different 
 collections.
 
