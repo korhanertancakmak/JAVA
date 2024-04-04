@@ -1,0 +1,4 @@
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Immutable_Unmodifable_Classes.Course14_FinalChallengeOfSection.sealed;
+
+public final class FinalKid extends SpecialAbstractClass {
+}
