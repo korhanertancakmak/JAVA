@@ -529,26 +529,366 @@ that method declared on the **Child** class?
 
 I have a **Base** class, with one static method, called _doClassMethod_. 
 I also have one instance method, called _doObjectMethod_. 
-The child class has its own copies of these methods, with the same signatures. 
-The child class hides the base class's static method, _doClassMethod_. 
-The child overrides the base class's instance method, _doObjectMethod_.
+The **child** class has its own copies of these methods, 
+with the same signatures. 
+The **child** class hides the base class's static method, _doClassMethod_. 
+The **child** overrides the base class's instance method, _doObjectMethod_.
 
-        Now, consider we have three declarations. X is declared as a BaseClass, and refers to an instance of a BaseClass.
-    Y is declared as a BaseClass, and is referring to an instance of a Child class. In this case, BaseClass is the reference
-    type, and Child is the instance or runtime type. Z is declared as a Child, and is referring to an instance of a Child
-    class. When you execute a static method on an instance, the reference type determines which method is called, the one
-    on BaseClass, or the one on Child. What this means is, even though Y is really a child instance, it doesn't matter
-    for static methods. Static methods are based on the reference, so in this example, X and Y would both execute the static
-    method declared on the Base class. Instance methods are called, based on the runtime type of the instance, and not
-    the declared type. This means that Y and Z execute the doObjectMethod on Child, because they're both instances of the
-    Child class.
+![image02](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/images/image02.png?raw=true)
 
-                        Recommendation: Always use the type, to invoke the static method
+Now, consider we have three declarations. 
+_X_ is declared as a **BaseClass**, and refers to an instance of a **BaseClass**.
+_Y_ is declared as a **BaseClass**, and is referring to an instance of a **Child** class. 
+In this case, **BaseClass** is the reference type, 
+and **Child** is the instance or runtime type. 
+_Z_ is declared as a **Child**, and is referring to an instance of a **Child** class. 
+When you execute a static method on an instance, 
+the reference type determines which method is called, 
+the one on **BaseClass**, or the one on **Child**. 
+What this means is, even though _Y_ is really a child instance, 
+it doesn't matter for static methods. 
+Static methods are based on the reference, so in this example, 
+_X_ and _Y_ would both execute the static method declared on the **Base** class. 
+Instance methods are called, based on the runtime type of the instance, 
+and not the declared type. 
+This means that _Y_ and _Z_ execute the _doObjectMethod_ on **Child**, 
+because they're both instances of the **Child** class.
 
-        Best practice recommends always using the type reference, when executing a static method. If you're hiding a
-    static method on a parent class, make sure you understand what the implications are, for doing this. If you stick
-    to using a qualifier, the type reference, to execute the specific static method, you'll avoid the confusion shown on
-    the previous paragraph. Ok, so now I want to go back to my code. Going main method,
+**Recommendation**: Always use the type to invoke the static method
+
+Best practice recommends always using the type reference 
+when executing a static method. 
+If you're hiding a static method on a parent class, 
+make sure you understand what the implications are for doing this. 
+If you stick to using a qualifier, the type reference, 
+to execute the specific static method, 
+you'll avoid the confusion shown in the previous paragraph. 
+Ok, so now I want to go back to my code. 
+Going main method,
+
+```java  
+System.out.println("--------------------");
+BaseClass.recommendedStatic();
+ChildClass.recommendedStatic();
+```
+
+Even though IntelliJ really wants me to change this code, 
+I'll leave it the way it is.
+The message that I get is, 
+_static member is accessed via instance reference_, 
+and this behavior, as I just mentioned, isn't recommended. 
+How should I call this code? 
+Well, I can simply use the class types. 
+I'll output another dashed line first. 
+I'll simply call the _recommendedStatic_ method on the **BaseClass**. 
+I'll also do the same with that method on **ChildClass**. 
+And running that:
+
+```html  
+--------------------
+[BaseClass.recommendedStatic] BEST Way to Do it
+[BaseClass.optionalStatic]: Optional
+[BaseClass.mandatoryStatic]: MANDATORY
+[Child.recommendedStatic] BEST Way to Do it
+[BaseClass.optionalStatic]: Optional
+```
+                    
+You can see each method was called, on the qualifying type, 
+with a lot less confusion this time. 
+You can also make a static method _final_. 
+Let's do this on the **BaseClass**, 
+to the _recommendedStatic_ method.
+Remember this is the method that the **ChildClass** is hiding. 
+I'll include the _final_ keyword on the declaration of 
+that method on **BaseClass**. 
+Now I'll go back to the **Child** class, and just like 
+when I made an instance method _final_, 
+I get an error on this static method. 
+Making the static method _final_ on the **BaseClass** means 
+subclasses can't hide that method.
+If I look at that error on the **ChildClass**, 
+it says _I can't override this method_. 
+Why doesn't it say hide? 
+Well, the IDE doesn't really know if I'm trying to override 
+or hide this method. 
+If I remove the static keyword, 
+I get the exact same message, but for a completely different reason. 
+This is because I can't create a method on a subclass, 
+an instance method, when the parent's method is static. 
+Let me revert that change, so that this method is static again, 
+and I'll go back over to the **BaseClass**. 
+IntelliJ is highlighting the _final_ keyword, 
+and gives me a pretty uninformative message, 
+_static method declared final_. 
+This is not a compiler error, just a warning, and in fact, 
+there could be valid reasons for making a static method _final_ sometimes, 
+preventing subclasses from creating their own versions.
+If you do see this warning though, use it as a reminder to think about 
+other ways to design your classes. 
+For example, maybe making the whole class _final_ is a better option, 
+and I'll be covering _final_ classes in just a bit. 
+For now, I'll remove the _final_ keyword, 
+so that my **ChildClass** can hide this method. 
+Next, I want to revisit _final_ variables. 
+I discussed these a little bit when I talked about using _final_, 
+or _effectively final_ variables, in lambda expressions.
+
+```java  
+private static void doXYZ(String x, int y) {
+
+    final String c = x + y;
+    System.out.println("c = " + c);
+}
+```
+
+I'll start with declaring a _final_ local variable in a block of code. 
+To demonstrate this, I'll create a new method on the **Main** class, 
+private static void, _doXYZ_. 
+It'll have two parameters, a string I'll call _x_, and an int I'll call _y_. 
+I'll use the _final_ keyword, before my local variable declaration, 
+so final String _c_, and I'll assign _x + y_ to that. 
+And I'll print out _c_. 
+I'll call this from the main method.
+
+```java  
+String xArgument = "This is all I've got to say about Section ";
+doXYZ(xArgument, 12);
+```
+
+I'll set up a local variable, _xArgument_, setting that to the text. 
+_This is all I've got to say about Section_.
+I'll pass that variable, and the integer 16, 
+to the _doXYZ_ method. 
+Ok, so running this code:
+
+```html  
+c = This is all I've got to say about Section 12
+```
+
+There are not really any surprises there. 
+It prints _This is all I've got to say about Section 12_. 
+This code would work the same, 
+whether I declared this variable _final_ or not, 
+and that's because the local variable _c_ is _effectively final_. 
+That just means I'm not assigning a different value to _c_, 
+after the initial assignment.
+If I add code to assign _c_ to _x_, for example, 
+as the last statement in this method. 
+You can see this is a problem, and I get the error, 
+**cannot assign a value to final variable _c_**. 
+I'll revert to that last change, removing that statement. 
+You might be wondering why you'd want to use the _final_ keyword, 
+when the compiler can figure out that it's _effectively final_? 
+Well, maybe you plan to use the variable in lambda expressions. 
+By specifying _final_, you're informing future developers 
+that this variable needs to remain unchanged. 
+In addition to local variables, I can make method parameters _final_ as well. 
+Let me do that next.
+
+```java  
+private static void doXYZ(String x, int y) {
+
+    final String c = x + y;
+    System.out.println("c = " + c);
+    x = c;
+}
+```
+
+Now, I'm going to assign a new value to the variable _x_. 
+I'll assign _c_ to _x_ here. 
+Again, I can't do this if the method parameter is declared as _final_. 
+I'll remove the final keyword from the method parameter. 
+The truth is, declaring immutable type parameters _final_, 
+like I just did here, isn't going to buy much. 
+Let me show you why.
+
+```java  
+String xArgument = "This is all I've got to say about Section ";
+//doXYZ(xArgument, 16);
+
+System.out.println("After Method, xArgument: " + xArgument);
+```
+
+I'll print out the value of the _xArgument_ variable, 
+after the call to this method. 
+Ok, so if I run this:
+
+```html  
+After Method, xArgument: This is all I've got to say about Section
+```
+
+You can see that the value in _xArgument_ didn't change. 
+Its value is the same before, and after the method call. 
+In the method, I reassigned the value of the method argument _x_, 
+but it had no effect outside of this method. 
+This reference, _x_ will go out of scope when the method ends. 
+Let's see what happens if I do something similar, 
+with a mutable object I've shown you this before, 
+but let me set this up.
+
+```java  
+private static void doXYZ(String x, int y, StringBuilder z) {
+
+    final String c = x + y;
+    System.out.println("c = " + c);
+    x = c;
+    z.append(y);
+    z = new StringBuilder("This is a new reference");
+}
+```
+
+First, I'll add a parameter to the _doXYZ_ method, 
+**StringBuilder** I'll call _z_. 
+I'll add a statement at the end of this method, that appends _y_, 
+the integer, to the string builder argument. 
+
+```java  
+StringBuilder zArgument = new StringBuilder("Only saying this: Section ");
+doXYZ(xArgument, 12, zArgument);
+System.out.println("After Method, xArgument: " + xArgument);
+System.out.println("After Method, zArgument: " + zArgument);
+```
+
+In the main method, I'll set up a **StringBuilder**,
+calling it _zArgument_, initializing that to the text, 
+only saying this Section. 
+I'll pass the _zArgument_ to my method. 
+I'll then print the value after the method. 
+If I run this:
+
+```html  
+After Method, zArgument: Only saying this: Section 12
+```
+                    
+The output says that _after method, zArgument:  
+Only saying this: Section 12_. 
+Before the method, it did not include 12. 
+This means the method had a side effect on my **StringBuilder** variable. 
+After the method finishes execution, my _zArgument_ is different. 
+What would happen if I made that third parameter _final_? 
+Let me do that, I'll put final before the **StringBuilder** type. 
+
+```java  
+private static void doXYZ(String x, int y, final StringBuilder z) {
+
+    final String c = x + y;
+    System.out.println("c = " + c);
+    x = c;
+    z.append(y);
+    //z = new StringBuilder("This is a new reference");
+}
+```
+
+I don't have any compiler errors. 
+Maybe you expected to see one on that last statement in this method.
+If I run this code, we can see; nothing's changed I get the exact same result. 
+There are still side effects, and my _zArgument_ value was changed. 
+What good is _final_ then when it's used with a method parameter?
+First, I'll comment out that last line. 
+
+```java  
+//z = new StringBuilder("This is a new reference");
+```
+
+Instead of using the append method on the _zArgument_, 
+I'll reassign it to a new **StringBuilder** instance, with different text. 
+Now I've got a compiler error. 
+Like before, I can't assign a new variable, meaning I can't reassign it, 
+to the method parameter _z_. 
+I'll comment out that last line, 
+and I'll uncomment the line above that, 
+leaving this method with side effects. 
+Using _final_ with a method parameter isn't going to change 
+whether a method has side effects or not. 
+It will simply produce a compiler error 
+if you try to reassign a method parameter's value. 
+This is an important distinction. 
+It's important to understand when you use _final_ 
+it doesn't mean the variable is immutable at that point. 
+It means you can't assign or reassign a new instance,
+or variable or expression to it, after the initialization. 
+If you use _final_ for a local variable in a code block, 
+you can only initialize it fully, or assign it a value, just once. 
+Any other additional assignments will result in a compiler error. 
+If you use final for method parameters, 
+this means you cannot assign any values 
+to the method parameters in the code.
+Remember that method arguments get initialized implicitly 
+when the method is invoked. 
+I'll cover _final_ fields and _final_ classes, 
+when I cover topics more specific to designing immutable classes. 
+Now, let's talk about why change isn't always a good thing.
+
+We have made an example of a mutating method, a method with side effects. 
+I passed a **StringBuilder**object, a mutable object, and the method changed its value. 
+Before I try another example, for the sake of completeness, 
+I wanted to mention that the warning on the parameter _y_, for this method, 
+is not related to our discussion about the _final_ keyword. 
+If I hover over _y_ now, you can see the warning is 
+about _y's value never changing_. 
+That's because we call the _doXYZ_ method once only, with a literal value of 12. 
+Right, let's try another example. 
+I'll create a **Logger** class to emulate a class from an external library.
+
+```java  
+public class Logger {
+    public static void logToConsole(CharSequence message) {
+
+        LocalDateTime dt = LocalDateTime.now();
+        System.out.printf("%1$tD %1$tT : %2$s%n", dt, message);
+        if (message instanceof StringBuilder sb) {
+            sb.setLength(0);
+        }
+
+    }
+}
+```
+
+I want a method on this class. 
+This is going to be public, static, and void, called _logToConsole_, 
+and take a **CharSequence** called _message_. 
+This means it can take either a **String** or **StringBuilder** argument. 
+I'll use the **LocalDateTime** class, which is like **LocalDate**, 
+but it maintains information about both date and time, not just date alone. 
+It also has a now method to get the current date and time. 
+I'll print a formatted string, using this date time field and the _message_, 
+the method argument. 
+Let me pause here to show you a useful page on formatting date and time, 
+and where to get information about more format specifiers.
+
+**R**: Time formatted for the 24-hour clock as `%tH:%tM`.  
+**T**: Time formatted for the 24-hour clock as `%tH:%tM:%tS`.  
+**r**: Time formatted for the 12-hour clock as `%tI:%tM:%tS %Tp`. 
+The location of the morning or afternoon marker (`%Tp`)  
+**D**: Date formatted as `%tm/%td/%ty`.  
+**F**: ISO 8601 complete date formatted as `%tY-%tm-%td`.  
+**c**: Date and time formatted as `%ta %tb %td %tT %tZ %tY`, e.g. `Sun Jul 20 16:17:00 EDT 1969`.  
+
+There are many ways to format date and time. 
+A couple of standardized ones are shown here. 
+These apply to the formatted method on **String**, as well as the _printf_ method. 
+The specifier for any date or time data is `%t`. 
+That is followed by any one of these conversion characters, 
+and you can see there are many. 
+Capital _D_ and Capital _T_ are also easy to remember, 
+so I'm going to use these. 
+Capital _T_ gives you the time formatted for the 24-hour clock, 
+in the format of the hour colon, the minute colon, and the second. 
+Capital _D_ gives you the Date as month slash day slash year.
+
+                                               Format Specifier Description
+                                        %[argument_index$][flags][width]conversion
+
+    This explains the code I'm using in a bit more detail. It's common when using date time conversions, to use the
+    argument index feature, which is called "Explicit Indexing". This lets you list your date time variable just once as
+    an argument. You then use an index, to tell the formatter, which argument is used for which specifier. If you do use
+    an argument index, you need to use it for all specifiers,
+
+                                "%1$tD %1$tT : %2$s %n".formatted(LocalDateTime.now(), message)
+
+    which I'm showing on this example, using 2 for the message, String argument. I thought it was important to review the
+    format specifiers a bit, especially for date time. This seemed like a good place to do it, even though it's a bit off
+    topic. Let's get back to the code, and back on topic.
 </div>
 
 

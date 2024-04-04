@@ -1,8 +1,8 @@
-package CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course03_WhenChangeIsGood;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Immutable_Unmodifable_Classes.Course03_WhenChangeIsGood;
 
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course03_WhenChangeIsGood.consumer.specific.ChildClass;
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course03_WhenChangeIsGood.external.util.Logger;
-import CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course03_WhenChangeIsGood.generic.BaseClass;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Immutable_Unmodifable_Classes.Course03_WhenChangeIsGood.consumer.specific.ChildClass;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Immutable_Unmodifable_Classes.Course03_WhenChangeIsGood.external.util.Logger;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Immutable_Unmodifable_Classes.Course03_WhenChangeIsGood.generic.BaseClass;
 
 public class Main {
 
@@ -34,17 +34,6 @@ public class Main {
         doXYZ(xArgument, 16, zArgument);
         System.out.println("After Method, xArgument: " + xArgument);
         System.out.println("After Method, zArgument: " + zArgument);
-
-//Part-1
-/*
-        In the last lecture, I ended with an example of a mutating method, a method with side effects. I passed a StringBuilder
-    object, a mutable object, and the method changed its value. Before I try another example, for the sake of completeness,
-    I wanted to mention that the warning on the parameter y, for this method, is not related to our discussion about the
-    final keyword. If I hover over y now, you can see the warning is about y's value never changing. That's because we
-    call the doXYZ method once only, with a literal value of 16. right, let's try another example. I'll create a Logger
-    class, to emulate a class from an external library.
-*/
-//End-Part-1
 
         StringBuilder tracker = new StringBuilder("Step 1 is abc");
         Logger.logToConsole(tracker.toString());
