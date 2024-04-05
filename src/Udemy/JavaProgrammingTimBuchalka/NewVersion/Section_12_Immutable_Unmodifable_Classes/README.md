@@ -876,27 +876,1390 @@ Capital _T_ gives you the time formatted for the 24-hour clock,
 in the format of the hour colon, the minute colon, and the second. 
 Capital _D_ gives you the Date as month slash day slash year.
 
-                                               Format Specifier Description
-                                        %[argument_index$][flags][width]conversion
+![image03](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/images/image03.png?raw=true)
 
-    This explains the code I'm using in a bit more detail. It's common when using date time conversions, to use the
-    argument index feature, which is called "Explicit Indexing". This lets you list your date time variable just once as
-    an argument. You then use an index, to tell the formatter, which argument is used for which specifier. If you do use
-    an argument index, you need to use it for all specifiers,
+This explains the code I'm using in a bit more detail. 
+It's common when using date time conversions, 
+to use the argument index feature, which is called _Explicit Indexing_. 
+This lets you list your date time variable just once as an argument. 
+You then use an index to tell the formatter, 
+which argument is used for which specifier. 
+If you do use an argument index, you need to use it for all specifiers,
+which I'm showing on this example, using 2 for the message, String argument. 
+I thought it was important to review the format specifiers a bit, 
+especially for date time. 
+This seemed like a good place to do it, 
+even though it's a bit off the topic. 
+Let's get back to the code, and back on the topic.
 
-                                "%1$tD %1$tT : %2$s %n".formatted(LocalDateTime.now(), message)
+```java  
+LocalDateTime dt = LocalDateTime.now();
+System.out.printf("%1$tD %1$tT : %2$s%n", dt, message);
+if (message instanceof StringBuilder sb) {
+    sb.setLength(0);
+}
+```
 
-    which I'm showing on this example, using 2 for the message, String argument. I thought it was important to review the
-    format specifiers a bit, especially for date time. This seemed like a good place to do it, even though it's a bit off
-    topic. Let's get back to the code, and back on topic.
+I'll add one more bit of code to this method. 
+I'll next check instance of operator to see if it's a string builder.
+If it is, it gets assigned to the variable, _sb_. 
+Next, I'll call set length on this, passing _0_. 
+This truncates the data in that stringBuilder. 
+Ok, so wait; why would a logging statement do this? 
+Well, hopefully it never would. 
+The point is, unless you examine every line of code, 
+you don't really know if a method you're using
+might have side effects. 
+I'll now call this from my main method.
+
+```java  
+StringBuilder tracker = new StringBuilder("Step 1 is abc");
+Logger.logToConsole(tracker);
+tracker.append(", Step 2 is xyz.");
+Logger.logToConsole(tracker);
+System.out.println("After logging, tracker = " + tracker);
+```
+
+First, I'll create a new **StringBuilder** variable, _tracker_, 
+and assign that a new instance, constructing it with the text, 
+_step 1 is abc_. 
+I'll call _logToConsole_, on **Logger**, passing it _tracker_. 
+I'll continue processing, appending data to the _tracker_ variable. 
+I'll execute _logToConsole_ again. 
+Then I'll print the text, after logging, and print out _tracker_. 
+If you were just reading this code, you might guess 
+that you'd get _Step 1 is abc_, a comma, 
+then _Step 2 is xyz_, printed out, after logging messages. 
+Let me run this:
+
+```html  
+12/03/23 22:20:16 : Step 1 is abc
+12/03/23 22:20:16 : , Step 2 is xyz.
+After logging, tracker =
+```
+
+There you can see the logged statements, 
+with date and time in common formats, and after that, the message. 
+After _logging_, _tracker_ variable is empty. 
+That could be a pretty confusing result. 
+The _logToConsole_ method has a pretty nasty side effect. 
+It clears my **StringBuilder** instance, 
+after each log statement is output. 
+Are you really going to have 
+to worry about every library class you use? 
+Probably not, but there are some steps you can take, 
+which is called defensive coding, to minimize risk. 
+One simple thing I can do with this code is pass 
+a string to the log message, and not the reference. 
+Let me change how I invoke those methods, 
+and instead of passing tracker, I'll pass _tracker.toString_. 
+
+```java  
+StringBuilder tracker = new StringBuilder("Step 1 is abc");
+Logger.logToConsole(tracker.toString());
+tracker.append(", Step 2 is xyz.");
+Logger.logToConsole(tracker.toString());
+System.out.println("After logging, tracker = " + tracker);
+```
+
+Rerunning this code now:
+
+```html  
+12/03/23 22:20:16 : Step 1 is abc
+12/03/23 22:20:16 : Step 1 is abc, Step 2 is xyz.
+After logging, tracker = Step 1 is abc, Step 2 is xyz.
+```
+                    
+My results make a lot more sense. 
+After logging, tracker equals _Step 1 is abc, Step 2 is xyz_, 
+so this code had no unintended consequences, or side effects, 
+from calling logToConsole. 
+It's straightforward to forget that method arguments are copies of references. 
+This is especially easy to overlook when you're dealing with collections and arrays. 
+I'll be talking about making defensive copies in an upcoming section, 
+but right now, let's explore another problem caused by mutable objects. 
+I'll create a new class and call it MainMailer:
+
+```java  
+public class MainMailer {
+
+    public static void main(String[] args) {
+        String[] names = {"Ann Jones", "Ann Jones Ph.D.", "Bob Jones M.D.",
+                "Carol Jones", "Ed Green Ph.D.", "Ed Green M.D.", "Ed Black"};
+    }
+}
+```
+
+And I'll add a _main_ method with the `pvsm` shortcut. 
+In this class, I'll have a list containing duplicate names,
+then use a map to keep track of the counts for each distinct name. 
+I'll also write some code to standardize names, 
+which would be called prior to mailing,
+to clean up names before they get printed on an envelope. 
+I'll start with an array of names, an array of Strings. 
+I'll include two versions of Ann Jones, one with,
+and one without the PhD suffix, and I'll have Bob Jones, MD. 
+Next a simple Carol Jones, and then two Ed Greens, 
+one's a PhD and one's an MD, and finally Ed Black. 
+I'll set up a private static method, 
+that creates a random list of these names.
+
+```java  
+private static List<StringBuilder> getNames(String[] names) {
+
+    List<StringBuilder> list = new ArrayList<>();
+    int index = 3;
+    for (String name : names) {
+        for (int i = 0; i < index; i++) {
+            list.add(new StringBuilder(name));
+        }
+        index++;
+    }
+    return list;
+}
+```
+
+It'll return a List of **StringBuilder** objects, 
+I'll call it _getNames_, and it takes an array of strings 
+I'll set up a local variable, this is the _list_ I'll return,
+and I want it to be an Arraylist. 
+I'll use an index to determine how many names to add to my _list_ 
+for each distinct name. 
+I'll return the _list_ from this method.
+In this loop, I'm going to add a number of the same names to my _list_, 
+determined by the value in my index variable. 
+I could just add five of each, for example, 
+but this will make the output a bit more interesting. 
+A nested loop will loop from 0 to the current index value. 
+I'll add a new **StringBuilder** instance to the _list_, 
+using the name to construct it. 
+I'll increment the index after each name, 
+so that I get a different number of names for each name in the array. 
+Getting back to the main method:
+
+```java  
+List<StringBuilder> population = getNames(names);
+Map<StringBuilder, Integer> counts = new TreeMap<>();
+population.forEach(s -> {
+    counts.merge(s, 1, Integer::sum);
+});
+System.out.println(counts);
+```
+
+I'll first create a local variable, _population_, 
+again a list of _StringBuilder_. 
+I'll assign that the result of calling my _getNames_ method, 
+passing it the _names_ array. 
+That should give me a long list of names, 
+with a lot of duplicates.
+Next, I'll set up a map of the counts of duplicate names. 
+The key will be a _StringBuilder_, 
+and the value's going to be an integer. 
+I'll call this variable counts, 
+and set it to a new instance of a tree map, 
+so this map will be **SORTED**.
+To populate the map, I'll loop through _population_. 
+Using map's merge method lets me 
+add a new name with a value of 1 if it's a name not yet in the map, 
+or increment the value already in the map if it is there. 
+After this, I'll just print my map. 
+If I run that:
+
+```html  
+{Ann Jones=3, Ann Jones Ph.D.=4, Bob Jones M.D.=5, Carol Jones=6, Ed Black=9, Ed Green M.D.=8, Ed Green Ph.D.=7}
+```
+                    
+I get counts for each distinct name. 
+Remember the suffixes are included in the name, 
+and that makes them unique. 
+My population has 3 Ann Jones, but 4 Ann Jones that have PhD's, 
+so some pretty smart Ann Jones. 
+You can see each name has a different count 
+because of the way I set up my population list. 
+Just to confirm, I'll print out the number of PhD Ann Jones 
+I have on the map.
+
+```java  
+StringBuilder annJonesPhd = new StringBuilder("Ann Jones Ph.D.");
+System.out.println("There are " + counts.get(annJonesPhd) + " records for " + annJonesPhd);
+```
+
+First, I'll set up a local string builder, setting that to Ann Jones Ph.D. 
+I'll use the get method to get the count of how many ann Jones with PhD  
+there are in my population. 
+Running that:
+
+```html  
+There are 4 records for Ann Jones Ph.D.
+```
+
+I can see that I get four records for Ann Jones PhD, so that's good. 
+Ok, now let's say it's our job, to mail a flyer to this population. 
+It's our company's policy to remove suffixes, 
+before printing the name on the envelope, for privacy purposes, 
+so I'll create a method called standardize names.
+
+```java  
+private static List<StringBuilder> standardizeNames(List<StringBuilder> list) {
+
+    List<StringBuilder> newList = new ArrayList<>();
+    for (var name : list) {
+        for (String suffix : new String[]{"Ph.D.", "M.D."}) {
+            int startIndex = -1;
+            if ((startIndex = name.indexOf(suffix)) > -1) {
+                name.replace(startIndex - 1, startIndex + suffix.length(), "");
+            }
+        }
+        newList.add(name);
+    }
+    return newList;
+}
+```
+
+I'll make it private static, it returns a list, and takes a _list_. 
+I'll set up a new ArrayList. 
+I'll loop through the list, the method argument. 
+I'll add code here in just a minute. 
+I'll return my new list of standardized names back.
+I want to loop through a list of possible suffixes.
+Right now I only have a PhD and MD, but you can imagine others could be added. 
+I need a local variable to hold an index. 
+I'll check if the suffix is in the name, and pass that index back.
+If it's greater than - 1, there's a matching suffix, 
+and I want to strip that out. 
+I'll replace the suffix with an empty string. 
+And I'll add the cleaned-up name to my new list.
+I'll call this from the main method, and print out the cleaned names.
+
+```java  
+List<StringBuilder> cleanedNames = standardizeNames(population);
+System.out.println(cleanedNames);
+```
+
+Running this,
+
+```html  
+[Ann Jones, Ann Jones, Ann Jones, Ann Jones, Ann Jones, Ann Jones, Ann Jones, Bob Jones, Bob Jones, Bob Jones, Bob Jones, Bob Jones, Carol Jones, Carol Jones, Carol Jones, Carol Jones, Carol Jones, Carol Jones, Ed Green, Ed Green, Ed Green, Ed Green, Ed Green, Ed Green, Ed Green, Ed Green, Ed Green, Ed Green, Ed Green, Ed Green, Ed Green, Ed Green, Ed Green, Ed Black, Ed Black, Ed Black, Ed Black, Ed Black, Ed Black, Ed Black, Ed Black, Ed Black]
+```
+        
+You can see I have a long list of names, 
+and no suffixes on any of them. 
+If I was working with real mailing data, 
+I'd have an address somewhere, and I'd address the envelope 
+with this simplified name, and the address. 
+Let's say I've successfully mailed my population, 
+and now I want to target all Ann Jones PhD records again, 
+for some reason. 
+In fact, I'm just going to copy that statement
+and paste it below.
+
+```java  
+System.out.println("There are " + counts.get(annJonesPhd) + " records for " + annJonesPhd);
+```
+
+If I run
+
+```html  
+There are null records for Ann Jones Ph.D.
+```
+                
+That, I would expect to get the same amount I got 
+before I standardized the names, but I'm getting null back. 
+I'll print out my counts map next.
+
+```java  
+System.out.println(counts);
+```
+
+Running that,
+
+```html  
+{Ann Jones=3, Ann Jones=4, Bob Jones=5, Carol Jones=6, Ed Black=9, Ed Green=8, Ed Green=7}
+```
+                    
+I see something very weird. 
+My tree map's names have all lost their suffixes. 
+Not only that, it looks like I have duplicate keys in my tree map. 
+There are two entries for Ann Jones, each with a different count, 
+and also Ed Green is showing the same thing. 
+That's ugly. 
+What will I get if I try to look up just Ann Jones?
+
+```java  
+StringBuilder annJones = new StringBuilder("Ann Jones");
+System.out.println("There are " + counts.get(annJones) + " records for " + annJones);
+```
+
+I'll create a new String builder variable, called ann jones, 
+and assign that a new instance with just the text ann jones. 
+I'll print out the same message as before, 
+but use this new variable to get the counts from the treemap. 
+Running that
+
+```html  
+{Ann Jones=3, Ann Jones=4, Bob Jones=5, Carol Jones=6, Ed Black=9, Ed Green=8, Ed Green=7}
+There are 4 records for Ann Jones
+```
+                
+You can see I do get _counts_, 
+but it's the _counts_ for only 
+one of the Ann Jones entries. 
+This map is really messed up. 
+Let me try something else. 
+I'll loop through the map entries and see what I get.
+
+```java  
+System.out.println("-----------------------");
+counts.forEach((k, v) -> System.out.println(k + " : " + v));
+```
+
+I'll print a separator line. 
+I'll call for each on counts, and remember that means 
+I have key and value as the arguments, and I'll print those. 
+If I run that:
+
+```html  
+-----------------------
+Ann Jones : 3
+Ann Jones : 4
+Bob Jones : 5
+Carol Jones : 6
+Ed Black : 9
+Ed Green : 8
+Ed Green : 7
+```
+                    
+I do get each entry, each key, with individual counts.
+Now, let me loop through the key set instead.
+
+```java  
+System.out.println("-----------------------");
+counts.keySet().forEach(k -> System.out.println(k + " : " + counts.get(k)));
+```
+
+I'll print another separator line. 
+I can use keySet to loop through my map's keys. 
+I'll print k, the key, then use it to get counts for that key. 
+Now running that:
+
+```html  
+-----------------------
+Ann Jones : 3
+Ann Jones : 4
+Bob Jones : 5
+Carol Jones : 6
+Ed Black : 9
+Ed Green : 8
+Ed Green : 7
+-----------------------
+Ann Jones : 4
+Ann Jones : 4
+Bob Jones : 5
+Carol Jones : 6
+Ed Black : 9
+Ed Green : 8
+Ed Green : 8
+```
+                    
+I see that I get two different results 
+I get different keys and values 
+when I loop through the map's entries, 
+comparing that to when I looped through the keys, 
+and use that key to get the values. 
+That's not good. 
+The standardized Names method, 
+which seemed harmless enough, 
+has produced a very ugly side effect on my map of StringBuilders. 
+It didn't matter what collection my StringBuilders were in. 
+They were all referring to the same group of instances in memory.
+A change to one variable in any collection will change that instance in memory. 
+If that instance's a key to a mapped collection, you get into this ugly situation. 
+This is why you should use an immutable object for keys in a map, 
+so that this never happens. 
+Ok, so these are two examples of side effects, 
+and the dangers that are possible if you're using mutable objects 
+but not programming defensively. 
+The good news is that there are strategies for managing change, 
+so you can reduce or eliminate side effects.
+
+Java provides mechanisms to control changes and extensibility of your code, 
+at many different levels. 
+You can prevent:
+
+* Changes to data in Instance fields, 
+which is called the state of the object, 
+by not allowing clients or subclasses to have access to these fields.
+* Changes to methods by not allowing code to override or hide existing functionality.
+* Your classes from being extended. 
+You can also prevent Instantiation of your classes.
+
+I'll be reviewing each of these, in turn, over the next couple of sections.
 </div>
 
+## [b. Immutable Classes]()
+<div align="justify">
+
+So far, I've covered several examples of 
+how using immutable objects can leave you open 
+to unintended side effects. 
+In this section, I'll show you one way to minimize these, 
+the immutable Object.
+
+* An immutable object doesn't change state once it's created.
+* An immutable object is a secure object, 
+meaning calling code can't maliciously or mistakenly alter it.
+* An immutable object simplifies concurrency design, 
+which we'll cover later.
+
+Here we can describe the strategies of creating a class 
+that when used, produces immutable objects.
+
+* Make instance fields private and final.
+* Do not define any setter methods.
+* Create defensive copies in any getters.
+* Use a constructor or factory method to set data, 
+making copies of mutable reference data.
+* Mark the class final, or make all constructors private.
+
+I'll walk through the first four of these strategies in code. 
+I'll discuss final classes and private constructors in upcoming sections. 
+I've created the **Main** class. 
+Let's imagine that we're creating a genealogy program, 
+and we're tracking people, names, birthdays and kids. 
+I'll start out with a **Person** class.
+
+```java  
+public class Person {
+
+    private String name;
+    private String dob;
+    private Person[] kids;
+
+    @Override
+    public String toString() {
+
+        String kidString = "n/a";
+        if (kids != null) {
+            String[] names = new String[kids.length];
+            Arrays.setAll(names, i -> names[i] = kids[i] == null ? "" : kids[i].name);
+            kidString = String.join(", ", names);
+        }
+        return name + ", dob = " + dob + ", kids = " + kidString;
+    }
+}
+```
+
+I'll add some fields, using basic encapsulation techniques. 
+For this exercise, I'm just going to have _name_, 
+date of birth, _dob_, and I'll just make that a string. 
+And I'll have a field, _kids_, an array of my person class. 
+I'll generate both getters and setters for all the fields. 
+I'll also generate a _toString_ method, but select none for the fields.
+I'll add some code to print out the person data. 
+First, I want to deal with printing out the _kids_ information.
+If there are no kids, I'll print `n/a`, for not applicable. 
+If there are kids, I'll set up a _names_ array, 
+because I only want to print a list of the kids names. 
+I'll return name, date of birth and the kid string. 
+Next, I'll add the code to populate the _names_ array, 
+and build the kid string. 
+I'll use the _setAll_ method on the **Arrays** helper class, 
+to populate my _names_ array. 
+The parameter for the lambda is an integer, an _index_. 
+I'll first use that to get the child from the kids array. 
+That could be _null_, so I'll use a ternary to check for that, 
+and set the name to an empty String, otherwise I'll set it to the kid's name. 
+I'll use the _join_ method on **String**, joining all the kids names by a comma. 
+Ok, so this is a typical class, pretty well encapsulated. 
+The only way to access the data is with getters and setters. 
+I didn't even set up a constructor. 
+I'll create a couple of persons for my genealogy database, 
+in the _main_ method.
+
+```java  
+Person jane = new Person();
+jane.setName("Jane");
+Person jim = new Person();
+jim.setName("Jim");
+Person joe = new Person();
+joe.setName("Joe");
+Person john = new Person();
+john.setName("John");
+john.setDob("05/05/1900");
+john.setKids(new Person[]{jane, jim, joe});
+System.out.println(john);
+```
+
+Since I didn't declare any constructors, 
+the only one I can use is the default no args constructor. 
+Jane will be one of the kids. 
+I'll just set her name for now. 
+And I'll do the same for jim. 
+And Joe. 
+These will be the three kids of John. 
+Finally, John, will be the father. 
+I'll set John's data by using the setters, first name, and date of birth.
+I'll use set Kids to pass an array of **Persons** with an array initializer, 
+passing jane, jim and joe. 
+Finally, I want to print John's data. 
+This is a perfectly reasonable way to create a class, 
+though it's somewhat tedious to create a new person. 
+If I run this:
+
+```html  
+John, dob = 05/05/1900, kids = Jane, Jim, Joe
+```
+
+I see that I have John, date of birth is May 5th, 1900, 
+and his kids were Jane, Jim and Joe. 
+The object, John, is definitely not immutable. 
+I can use the setters to change any data on the object. 
+
+```java  
+john.setName("Jacob");
+john.setKids(new Person[]{new Person(), new Person()});
+System.out.println(john);
+```
+
+I'll change John's name to jacob, for example. 
+I'll also use the set kids method, 
+passing it two new instances of persons, 
+constructed with no data. 
+And I'll print john out. 
+Running that:
+
+```html  
+Jacob, dob = 05/05/1900, kids = null, null
+```
+
+You can see that john is no longer named John, 
+and his kids are now nameless, and there's only two of them. 
+Again, depending on what the case for your genealogy application is, 
+this may be a valid way to design your class. 
+Lets at least create two constructors, 
+to make the job of creating _persons_ a little easier. 
+Back on the person class,
+
+```java  
+public Person(String name, String dob, Person[] kids) {
+    this.name = name;
+    this.dob = dob;
+    this.kids = kids;
+}
+
+public Person(String name, String dob) {
+    this(name, dob, null);
+}
+```
+
+I'll generate the first with all three fields. 
+The second constructor will just have name and date of birth, dob.
+I want to remove those statements. 
+Instead, I'll chain a call to the other constructor, 
+and pass null as the _kids_ argument. 
+Now let's say, I really don't want the code 
+to change name or date of birth, 
+after the _person_ object is constructed. 
+To protect against this, I'll remove the setters for those two fields. 
+First, I'll remove the _setName_ method, 
+then I'll remove the _setdob_ method. 
+Getting back to the _main_ method in **Main**,
+
+```java  
+Person jane = new Person("Jane", "01/01/1930");
+Person jim = new Person("Jim", "02/02/1932");
+Person joe = new Person("Joe", "03/03/1934");
+
+Person[] johnsKids = {jane, jim, joe};
+Person john = new Person("John", "05/05/1900", johnsKids);
+
+System.out.println(john);
+```
+
+My code no longer compiles. 
+I'm going to comment all this code out. 
+I'll now create my _Persons_, 
+using the new constructors. 
+For the first instance, I'll pass Jane, 
+and I'll include a birthdate, Jan. 1, 1930. 
+For Jim, maybe he's two years younger than Jane, so Feb. 2, 1932. 
+Next, Joe, and let's use March 3, 1934. 
+To set up John, I want to create an array of _persons_ for his kids. 
+I'll set up an array variable, _johnsKids_, 
+using an initializer with jane, jim and joe. 
+I'll create John, with the constructor that takes three arguments, 
+John for name, birthday 5.5.1900, and _johnsKids_. 
+I'll print John out. 
+If I run that code:
+
+```html  
+John, dob = 05/05/1900, kids = Jane, Jim, doe
+```
+
+I get the same as before. 
+The code is a little more succinct, and easier to read. 
+I can't change the name or date of birth, 
+but I can still set the kids. 
+Let me try that.
+
+```java  
+john.setKids(new Person[]{new Person("Ann", "04/04/1930")});
+System.out.println(john);
+```
+
+I'll set the kids to a new in place array, initialized to a new Person, 
+Ann, born 4.4.1930. 
+And I'll print John again. 
+Running that:
+
+```html  
+John, dob = 05/05/1900, kids = Jane, Jim, doe
+John, dob = 05/05/1900, kids = Ann
+```
+
+You can see John's kids have been completely changed. 
+Let's adjust the kids a bit more.
+
+```java  
+Person[] kids = john.getKids();
+kids[0] = jim;
+System.out.println(john);
+```
+
+First, I'll set up a local variable, 
+and assign it the result of calling getKids in **Person**. 
+I'll set this first kid to my jim instance, 
+and print John's information. 
+Running that:
+
+```html  
+John, dob = 05/05/1900, kids = Jane, Jim, doe
+John, dob = 05/05/1900, kids = Ann
+John, dob = 05/05/1900, kids = Jim
+```
+
+John's kid has changed from Ann to Jim. 
+This could be a problem. 
+You might not expect your client to change the kids data, 
+outside of Person's operations, to do it.
+
+```java  
+kids = null;
+System.out.println(john);
+```
+
+What if I assign my local variable, kids, to null? 
+Does that have any effect on John's kids? 
+Running this code has no effect on Jim's kids, so that's a good thing. 
+This means reassigning the reference, or setting it to null,
+from the client or calling code, doesn't change kids.
+
+```java  
+john.setKids(kids);
+System.out.println(john);
+```
+
+I'll call set kids, and pass the kids variable, 
+which we know is null. 
+And print John again. 
+Running this code:
+
+```html  
+John, dob = 05/05/1900, kids = Jane, Jim, doe
+John, dob = 05/05/1900, kids = Ann
+John, dob = 05/05/1900, kids = Jim
+John, dob = 05/05/1900, kids = Jim
+John, dob = 05/05/1900, kids = n/a
+```
+
+You can see I've managed to remove all John's kids I could only do it, 
+by calling the method on Person, 
+so that's at least some control going back to the **Person** class. 
+This is a very common kind of class, 
+where some parts of the class are mutable. 
+Next, I'll create a **Person** record, in comparison.
+
+```java  
+public record PersonRecord(String name, String dob, PersonRecord[] kids) {
+
+    public PersonRecord(String name, String dob) {
+        this(name, dob, new PersonRecord[20]);
+    }
+
+    @Override
+    public String toString() {
+
+        String kidString = "n/a";
+        if (kids != null) {
+            String[] names = new String[kids.length];
+            Arrays.setAll(names, i -> names[i] = kids[i] == null ? "" : kids[i].name);
+            kidString = String.join(", ", names);
+        }
+        return name + ", dob = " + dob + ", kids = " + kidString;
+    }
+}
+```
+
+A record solves a lot of the problems 
+for designing an immutable object, but not all.
+My record, **PersonRecord**, will have the same three fields 
+as the **Person** class, _name_, _dob_, and _kids_, but for the _kids_, 
+the type will be **Person** record. 
+We want a constructor for just name and date of birth. 
+I'll generate a constructor using the standard IntelliJ tools, 
+but watch what happens when I generate a constructor in a Record. 
+We get these three options, Compact Constructor, Canonical Constructor, and Custom. 
+We're going to ignore the first two options, and select Custom here, 
+which will lead us to the standard dialog you normally see. 
+Later in this section, I'll discuss the first two options. 
+Instead of passing a zero element array, I'll change 0 to 20. 
+This means I have a placeholder for 20 possible kids. 
+Now, I'm going to copy the _toString_ method I had on **Person**,
+and paste it here, on this record. 
+Ok, so that's all I need to do right now. 
+I'll create a new class called **MainRecord**, and add a _main_ method.
+
+```java  
+public class MainRecord {
+
+    public static void main(String[] args) {
+
+        PersonRecord jane = new PersonRecord("Jane", "01/01/1930");
+        PersonRecord jim = new PersonRecord("Jim", "02/02/1932");
+        PersonRecord joe = new PersonRecord("Joe", "03/03/1934");
+
+        PersonRecord[] johnsKids = {jane, jim, joe};
+        PersonRecord john = new PersonRecord("John", "05/05/1900", johnsKids);
+
+        System.out.println(john);
+    }
+}
+```
+
+I want to copy the code in the **Main** class, _main_ method, 
+and paste it in **Main** record. 
+I want to replace all references to **Person** with _PersonRecord_. 
+Running this code:
+
+```html  
+John, dob = 05/05/1900, kids = Jane, Jim, Joe
+```
+                
+I get the same output I did originally when using the **Person** class.
+
+```java  
+PersonRecord johnCopy = new PersonRecord("John", "05/05/1900");
+System.out.println(johnCopy);
+```
+
+I'll create another john variable, _johnCopy_, 
+and assign that a new _PersonRecord_, 
+with the same name and date of birth as the first John, but no kids. 
+Running that:
+
+```html  
+John, dob = 05/05/1900, kids = Jane, Jim, Joe
+John, dob = 05/05/1900, kids = , , , , , , , , , , , , , , , , , , , ,
+```
+                
+You can see it looks a little weird 
+because I'm printing 19 commas and no kids names, 
+because of the way I have it coded. 
+I initialized kids to be an array of 20-Person records, 
+and each array element is initialized to a null reference. 
+I can't set the kids on this record, but I can change them, 
+which is why I set this up this way. 
+Let me do that.
+
+```java  
+PersonRecord[] kids = johnCopy.kids();
+kids[0] = jim;
+kids[1] = new PersonRecord("Ann", "04/04/1936");
+System.out.println(johnCopy);
+```
+
+I'll create a new local variable, a person record array called kids, 
+and assign that johnCopy's kids. 
+I'll set the first element to jim, and the second to a new person record, ann. 
+I'll print John's copy. 
+And now, running this code:
+
+```html  
+John, dob = 05/05/1900, kids = Jane, Jim, Joe
+John, dob = 05/05/1900, kids = , , , , , , , , , , , , , , , , , , , ,
+John, dob = 05/05/1900, kids = Jim, Ann, , , , , , , , , , , , , , , , , , ,
+```
+
+You can see I can set and change the kids in the kids array on my record, 
+meaning these instances are mutable. 
+For this reason, you can't assume, just because you're using a record, 
+or setting up a record, that the record is immutable.
+If the fields were all immutable types, yes, 
+but if you're using arrays or collections, or mutable types, 
+then you can't use a record, and prevent side effects, 
+without implementing any defensive measures. 
+A record satisfies several of the requirements for an immutable class design. 
+It uses private final instance fields, it has a constructor to set the data, 
+and it doesn't have any setters. 
+What's missing is, it's not creating defensive copies. 
+Let's add this to the **PersonRecord**.
+
+```java  
+@Override
+public PersonRecord[] kids() {
+    return kids == null ? null : Arrays.copyOf(kids, kids.length);
+}
+```
+
+I'll add a getter, picking the _kids_ field. 
+I'll replace return kids with a statement that first checks 
+if the kids are null. 
+If so it returns null, 
+otherwise it will return a copy of the array, I'll use `Arrays.copyOf`, 
+that takes an array, and the length of the array we want to copy. 
+If I rerun my code in the **MainRecord** class,
+
+```html  
+John, dob = 05/05/1900, kids = Jane, Jim, Joe
+John, dob = 05/05/1900, kids = , , , , , , , , , , , , , , , , , , , ,
+John, dob = 05/05/1900, kids = , , , , , , , , , , , , , , , , , , , ,
+```
+                
+You can see, whatever I'm doing in the client code, 
+it's not changing the value of the kids array on _JohnCopy_. 
+Now, you may feel like you've created a type that's immutable, 
+but don't congratulate yourself just yet. 
+Going back to **MainRecord** _main_ method,
+
+```java  
+johnsKids[0] = new PersonRecord("Ann", "04/04/1936");
+System.out.println(john);
+```
+
+Consider this minor change, 
+where I'll change my local variable johnsKids, 
+element 0 to a new Person, say _Ann_, born April 4, 1936. 
+This code happens long after I created John, with his kids. 
+If I run this code:
+
+```html  
+John, dob = 05/05/1900, kids = Jane, Jim, Joe
+John, dob = 05/05/1900, kids = , , , , , , , , , , , , , , , , , , , ,
+John, dob = 05/05/1900, kids = , , , , , , , , , , , , , , , , , , , ,
+John, dob = 05/05/1900, kids = Ann, Jim, Joe
+```
+                
+You can see I'm able to change John's data, his kids array, 
+by changing the array variable, I used to construct the record. 
+This means I need a constructor that will create a copy of the array passed 
+before I assign it. 
+I won't do this here, for this record, but I wanted you to see 
+there are several reasons why a record might not be truly immutable.
+Of course, there are many cases where you want to support some mutability, 
+but this should be designed not by accident.
+If your class must be mutable, you should still use some of these techniques 
+to minimize mutability!
+
+So we looked at a pretty normal Joe first, with getters and setters, 
+and a no argument constructor. 
+I compared that to a record, which has a lot of built-in support 
+for the design of immutable classes. 
+A record, though, is still not perfect, because the getters, 
+if not altered, will return references to mutable objects. 
+In addition, I showed you how I can pass a reference to the constructor, 
+and then change data, using that reference, afterward, 
+producing possibly unwanted side effects. 
+I'll now create a truly immutable class. 
+You might still be asking; 
+don't I want the ability to change the genealogy data? 
+Maybe but let's say our use case is simply 
+to print the data we get, or process the data 
+for some statistical program. 
+We're not in the business of writing a genealogy program, 
+just a web page that will display the information or statistics. 
+If the data's mutable, it might affect our results badly. 
+I'm going to copy the **Person** class, the Joe, 
+and create a copy from that class, named **PersonImmutable**.
+
+```java  
+public class PersonImmutable {
+
+    private final String name;
+    private final String dob;
+    protected final PersonImmutable[] kids;
+}
+```
+
+The first suggestion listed I've shown several times, 
+the strategies for creating an immutable class, 
+is to make all fields private, which they already are, 
+and _final_, which I'll do next. 
+I'll make all three of my private fields _final_. 
+This causes a compiler error in the _setKids_ method. 
+Once the kids field is initialized, it can't be reassigned,
+and that's what it's trying to do in the set method here. 
+I'll get rid of this setter method next, 
+which is actually the second suggestion, 
+to eliminate setters in your class. 
+By making your fields final, the compiler can check 
+if your methods do attempt to mutate these fields. 
+The third recommendation is to make defensive copies 
+in all of your getters. 
+Does this make sense in getters that return immutable types? 
+No, probably not, but I do have a getter 
+that returns a reference to an array.
+
+```java  
+public PersonImmutable[] getKids() {
+    return kids == null ? null : Arrays.copyOf(kids, kids.length);
+}
+```
+
+I've already established, this is mutable, 
+in both the **Person** and **PersonRecord** examples. 
+Like I did in the person record example previously, 
+I'll change this code. 
+I'm going to return null if the array is null, 
+or a copy of the array if it isn't. 
+The next strategy is to use constructors to populate data, 
+and this class already does that. 
+I did show you, with the record example that even 
+that might not be good enough. 
+You'll want to make a defensive copy of the input if it's mutable, 
+which prevents the client from maintaining a reference to it, 
+and altering it later. 
+I demonstrated that scenario with my _johnsKids_ array, 
+that I passed to the constructor.
+To prevent this, I'll do something similar in the constructor, 
+to what I did in the getter.
+
+```java  
+public PersonImmutable(String name, String dob, PersonImmutable[] kids) {
+    this.name = name;
+    this.dob = dob;
+    this.kids = kids == null ? null : Arrays.copyOf(kids, kids.length);
+}
+
+public PersonImmutable(String name, String dob) {
+    this(name, dob, null);
+}
+```
+
+I'll return the result of the same ternary operation 
+I used in the getter, returning null if the argument is null,
+or an array copy if not. 
+Let's set up some of these. 
+First, I'll add a new package, and call that **external**. 
+I'm going to copy the **MainRecord** class, 
+and paste that in this new package, **MainImmutable**.
+
+```java  
+class MainImmutable {
+
+    public static void main(String[] args) {
+
+        PersonImmutable jane = new PersonImmutable("Jane", "01/01/1930");
+        PersonImmutable jim = new PersonImmutable("Jim", "02/02/1932");
+        PersonImmutable joe = new PersonImmutable("Joe", "03/03/1934");
+
+        PersonImmutable[] johnsKids = {jane, jim, joe};
+        PersonImmutable john = new PersonImmutable("John", "05/05/1900", johnsKids);
+
+        System.out.println(john);
+
+        PersonImmutable johnCopy = new PersonImmutable("John", "05/05/1900");
+        System.out.println(johnCopy);
+
+
+        PersonImmutable[] kids = johnCopy.kids();
+        kids[0] = jim;
+        kids[1] = new PersonImmutable("Ann", "04/04/1936");
+        System.out.println(johnCopy);
+
+
+        johnsKids[0] = new PersonImmutable("Ann", "04/04/1936");
+        System.out.println(john);
+    }
+}
+```
+
+I'll replace **PersonRecord** with **PersonImmutable**. 
+I have one error here, where I'm referencing _johnCopy_ 
+and trying to access kids, with the record accessor method. 
+
+```java  
+//PersonImmutable johnCopy = new PersonImmutable("John", "05/05/1900");
+//System.out.println(johnCopy);
+
+//PersonImmutable[] kids = johnCopy.kids();
+PersonImmutable[] kids = john.getKids();
+kids[0] = jim;
+kids[1] = new PersonImmutable("Ann", "04/04/1936");
+//System.out.println(johnCopy);
+System.out.println(john);
+
+johnsKids[0] = new PersonImmutable("Ann", "04/04/1936");
+System.out.println(john);
+```
+
+I actually want to change _johnCopy_ to _john_ here, 
+and _kids_ to _getKids_.
+I'll just print john. 
+In fact, I don't need _johnCopy_ for this exercise, 
+so I'll remove the two statements, so it's less confusing. 
+I used this copy because my array had been initialized to 20 
+null records in the constructor, 
+I could reassign any of those elements, 
+but that's not applicable here. 
+Running this code:
+
+```html  
+John, dob = 05/05/1900, kids = Jane, Jim, Joe
+John, dob = 05/05/1900, kids = Jane, Jim, Joe
+John, dob = 05/05/1900, kids = Jane, Jim, Joe
+```
+
+I need to make sure I'm running _main_ on this **MainImmutable** class, 
+you can see that John's kids don't get changed by any of this code, 
+once I initially constructed John with the kids, Joe, Jim and Jane. 
+It didn't matter if I changed the variable _johnsKids_ afterward,
+or if I assigned a local variable to the result of get kids, 
+and made changes to that. 
+Using defensive copies in the constructor, and in the getter, 
+has protected my array of kids on this class, from side effects. 
+Now, do I have an immutable class? 
+Well, of course, the answer to that is always, it depends. 
+Let's now say, I've handed this class off to someone else, 
+who wants to build a subclass, 
+let's say a **LivingPerson** class. 
+First, this developer will make two changes 
+to our **PersonImmutable** class, without consulting us.
+One of the changes is to add a constructor, 
+what's called a copy constructor, 
+which takes as an argument, an object of the same type. 
+Our new developer is going to make this a protected constructor, 
+so that's a good thing, and he'll assign its fields 
+to those values on the person instance, passed to this constructor. 
+I'll set:
+
+```java  
+this.name = person.name
+this.dob = person.dob
+this.kids = person.kids
+```
+
+With this code, a subclass can easily construct a new person, 
+using another person to do it, basically making a copy of the method argument. 
+Now this developer wants to be able to access kids directly from the subclass, 
+so he'll change the access modifier on kids to _protected_ from _private_.
+
+```java  
+private final PersonImmutable[] kids;
+protected final PersonImmutable[] kids;
+```
+                                                
+For good measure, I'll change the two string methods, 
+and use the get method for _dob_, which will allow 
+my subclasses to override it. 
+There doesn't seem to be any real harm in these minor changes. 
+In fact, if I try to create a new **PersonImmutable** instance, 
+using this constructor from my **MainImmutable** class, I can't do it. 
+Let me demonstrate that.
+
+```java  
+PersonImmutable johnCopy = new PersonImmutable(john);
+```
+
+I'll try to set up a new variable, _johnCopy_, 
+and instantiate that using the new constructor, passing john to it.
+I can't do this, since **MainImmutable** isn't in the same package, 
+and it's not a subclass, nor will it be. 
+I'll revert that last statement, removing it. 
+Now, let's imagine this developer creates a subclass, 
+called **LivingPerson**, and let's put this in a **domain** package.
+
+```java  
+public class LivingPerson extends PersonImmutable {
+    
+    public LivingPerson(String name, PersonImmutable[] kids) {
+        super(name, null, kids == null ? new PersonImmutable[10] : Arrays.copyOf(kids, 10));
+    }
+
+    public LivingPerson(PersonImmutable person) {
+        super(person);
+    }
+
+    @Override
+    public String getDob() {
+        return null;
+    }
+}
+```
+
+This class is going to extend **PersonImmutable**, 
+but have special functionality for a **LivingPerson**. 
+In fact, this class will hide _birthdate_ data for a living person. 
+A date of birth is considered personally identifiable information,
+and needs to be handled differently for living persons. 
+Rather than have to deal with all these requirements, 
+this class is going to make sure that _birthdate_ is null.
+I'll generate two constructors, picking the one with all three arguments, 
+and then the copy constructor, the one 
+that takes person immutable as an argument. 
+This gives me two constructors, that simply make calls to the super constructors, 
+with the same set of arguments. 
+I want to change the first constructor, first removing _dob_ as a parameter. 
+Since I want the ability to add a new child on this class,
+I'm going to change the _kids_ array a little bit.
+The way I'll do this is, if the kids are _null_, 
+I'll set kids to a new array of 10 persons. 
+If the kids aren't _null_,
+I'll copy the _kids_ into a 10-element array.
+Next, I'll override the getter method, for date of birth. 
+I'll replace the call to the super getter, 
+and just return _null_ instead, 
+I don't want to expose the date of birth, in other words. 
+Getting back to the **MainImmutable** class,
+
+```java  
+LivingPerson johnLiving = new LivingPerson(john.getName(), john.getKids());
+System.out.println(johnLiving);
+```
+
+I'll create a living person, well, 
+I'll just say John is an extraordinary person, and he's still living. 
+I'll create a variable called _johnLiving_ 
+and assign that a new instance of a **LivingPerson**, 
+passing John's names and kids to that. 
+And I'll print _johnLiving_ out. 
+If I run this:
+
+```html  
+John, dob = null, kids = Jane, Jim, Joe, , , , , , ,
+```
+                
+The goal's been achieved, I have a living person, 
+and I'm not including birthdate in the output. 
+You can also see the extra commas there, 
+which indicates there are null entries, waiting for new kids. 
+Let's say I want to add a child to my living person as well, 
+in the case of a new child being born or adopted.
+I'll create a new method on **LivingPerson**:
+
+```java  
+public void addKid(PersonImmutable person) {
+    for (int i = 0; i < kids.length; i++) {
+        if (kids[i] == null) {
+            kids[i] = person;
+            break;
+        }
+    }
+}
+```
+
+Public void, _addKid_, that takes a **PersonImmutable** type. 
+I'll loop through the _kids_. 
+As soon as I find a _null_ entry,
+I'll assign that to the _person_ argument. 
+And I'll break out of this. 
+I'll test this out, getting back to the **MainImmutable** class.
+
+```java  
+LivingPerson anne = new LivingPerson("Ann", null);
+johnLiving.addKid(anne);
+System.out.println(johnLiving);
+```
+
+First, I'll set up a new **LivingPerson**, _Ann_, 
+passing _null_ as her kids. 
+Next, I'll call the _addKid_ method on _johnLiving_ 
+and pass _anne_. 
+And I'll print _johnLiving_ again. 
+Running that:
+
+```html  
+John, dob = null, kids = Jane, Jim, Joe, Ann, , , , , ,
+```
+                
+You can see the last statement, and it now includes _Ann_ 
+as the fourth element. 
+This code works as designed, and all is well. 
+But is it really? 
+Let's now say another developer comes along,
+maybe these classes went out as a library or something. 
+Anyway, this developer is going to create a new subclass, 
+extending **PersonImmutable**. 
+I'll create a new class, **PersonOfInterest** 
+in a package called **hacker**.
+
+```java  
+public class PersonOfInterest extends PersonImmutable {
+
+    public PersonOfInterest(PersonImmutable person) {
+        super(person);
+    }
+
+    @Override
+    public PersonImmutable[] getKids() {
+        return super.kids;
+    }
+}
+```
+
+I'll have this class extend **PersonImmutable**. 
+I'll insert a constructor, the copy constructor. 
+I also want to override the _getKids_ method. 
+I'll make one minor, but important change. 
+I'm not going to return `super.getkids`.
+Instead, because I'm a subclass and _kids_ is protected, 
+I can access _kids_ directly from this subclass, 
+so I'll just return kids, the field on super. 
+This is all my subclass needs to get access to my data. 
+Let me show you how, in the **MainImmutable** class.
+
+```java  
+PersonOfInterest johnCopy = new PersonOfInterest(john);
+System.out.println(johnCopy);
+```
+
+First, I'll create a Person of Interest, calling that _johnCopy_, 
+and assign that to a new instance of **PersonOfInterest**, 
+and print that out. 
+Running that:
+
+```html  
+John, dob = 05/05/1900, kids = Jane, Jim, Joe
+```
+
+You can see the last statement, which has all the same data as _John_, 
+the original, as you might expect.
+
+```java  
+kids = johnCopy.getKids();
+kids[1] = anne;
+System.out.println(johnCopy);
+System.out.println(john);
+```
+
+Now I'll get the kids from this copy, 
+and assign that to a variable I set up earlier, _kids_. 
+I'll assign this variable's first element to be _anne_. 
+I'll print the _johnCopy_ again. 
+And for good measure, I'll print _john_ now too. 
+Running that code:
+
+```html  
+John, dob = 05/05/1900, kids = Jane, Jim, Joe
+John, dob = 05/05/1900, kids = Jane, Ann, Joe
+John, dob = 05/05/1900, kids = Jane, Ann, Joe
+```
+
+You can see, something bad has happened. 
+_Ann_ is listed as the second child of both _johnCopy_ and _John_, 
+in the last two output statements. 
+This means that both **PersonImmutable** and **PersonOfInterest** are mutable. 
+Maybe we don't care about **PersonOfInterest**, 
+but for **PersonImmutable**, we spent some time trying to design it, 
+so it wouldn't be. 
+Our new developer made two pretty big mistakes. 
+First, opening a field up for access, even for subclasses, 
+needs some extra thought, especially when you're dealing with reference types 
+to mutable data. 
+What would have happened if the new copy constructor, 
+simply chained to another constructor? 
+Let's go change that, in the **PersonImmutable** class.
+
+```java  
+protected PersonImmutable(PersonImmutable person) {
+    this.name = person.name;
+    this.dob = person.dob;
+    this.kids = person.kids;
+}
+```
+
+I'll remove the three assignment statements.
+
+```java  
+protected PersonImmutable(PersonImmutable person) {
+    this(person.getName(), person.getDob(), person.getKids());
+}
+```
+
+I'll replace that by chaining to the constructor, 
+using the getters on person to get the data from the method arguments.
+Running the **MainImmutable** class again:
+
+```html  
+John, dob = 05/05/1900, kids = Jane, Jim, Joe
+John, dob = 05/05/1900, kids = Jane, Ann, Joe
+John, dob = 05/05/1900, kids = Jane, Jim, Joe
+```
+                    
+You can see that change has protected _John_, 
+the original John's kids, 
+because of the defensive copy made in the constructor
+that it was chained to. 
+The code can still get a reference and 
+change the **PersonOfInterest**'s kids. 
+Another protection mechanism would be to make the method _getKids_ **final**, 
+in the **PersonImmutable** class, 
+so I'll do that. 
+Going back to the **PersonOfInterest** class:
+
+```java  
+public final PersonImmutable[] getKids() {
+    return kids == null ? null : Arrays.copyOf(kids, kids.length);
+}
+```
+
+You can see that I have an error on this method, 
+so I can't override it. 
+I'll remove that method. 
+It's true I could create another named method to return _super.kids_, 
+but this method wouldn't be **polymorphic**, 
+used by some other unsuspecting code. 
+Later I'll be introducing you to sealed classes, 
+which gives you more control over who can subclass our classes. 
+But you should be aware that allowing your classes to be subclassed, 
+and providing access to fields through the use of a protected modifier, 
+can provide opportunities for unwanted side effects. 
+What really is the definition of a defensive copy?
+The next challenge will go into detail about 
+the definition of a defensive copy.
+</div>
+
+## [c. Immutable Classes Challenge]()
+<div align="justify">
+
+In this challenge, you should create a **BankAccount** class. 
+This should have a type, indicating the type of account,
+like **Checking** or **Savings** or some other type. 
+It should have a balance, the initial dollar amount in the account. 
+You should also create a **BankCustomer** that has a customer name, 
+a customer id, and a List of accounts. 
+You should use the techniques I discussed in the last section, 
+to design these classes. 
+Create a couple of instances of bank customers, 
+confirming that you can't change a **Customer**'s data at all, 
+after it's initialized. 
+Create a subclass of the bank customer,
+and confirm that the subclass can't tamper 
+with the customer's data as well.
+
+I'm going to use these two classes in challenges coming up, 
+so make sure to either create your own classes, 
+or walk through it with me. 
+</div>
 
 
 <div align="justify">
 
 
 ```java  
+
+```
+
+```html  
 
 ```
 
@@ -911,14 +2274,7 @@ Capital _D_ gives you the Date as month slash day slash year.
 
 ```
 
-</div>
-
-
-
-<div align="justify">
-
-
-```java  
+```html  
 
 ```
 
@@ -933,14 +2289,7 @@ Capital _D_ gives you the Date as month slash day slash year.
 
 ```
 
-</div>
-
-
-
-<div align="justify">
-
-
-```java  
+```html  
 
 ```
 
@@ -952,6 +2301,10 @@ Capital _D_ gives you the Date as month slash day slash year.
 
 
 ```java  
+
+```
+
+```html  
 
 ```
 

@@ -143,6 +143,10 @@ What we will learn from this Path:
 
 ## [12. Immutable and Sealed Classes]()
 
+### [a. Final Modifier]()
+### [b. Immutable Classes]()
+### [c. Immutable Classes Challenge]()
+
     * The final Modifier
     * Immutable Classes and Objects
     * Record Constructors
