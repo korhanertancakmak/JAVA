@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_16_Immutable_Unmodifable_Classes.Course06_DefensiveShallowDeepCopies;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Immutable_Unmodifable_Classes.Course06_DefensiveShallowDeepCopies;
 
 import java.util.Arrays;
 

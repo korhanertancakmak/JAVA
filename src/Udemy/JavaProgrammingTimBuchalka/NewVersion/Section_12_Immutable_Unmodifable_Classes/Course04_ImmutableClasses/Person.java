@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 public class Person {
 
-    private String name;
-    private String dob;
+    private final String name;
+    private final String dob;
     private Person[] kids;
 
     public Person(String name, String dob, Person[] kids) {
