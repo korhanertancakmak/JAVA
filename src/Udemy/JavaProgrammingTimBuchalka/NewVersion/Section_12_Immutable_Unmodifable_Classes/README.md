@@ -2251,40 +2251,1160 @@ so make sure to either create your own classes,
 or walk through it with me. 
 </div>
 
-
+## [d. Defensive Copies]()
 <div align="justify">
 
+So far, I've shown you examples of returning defensive copies, of a list and an array,
+from getter methods. 
+I also made a defensive copy of an array, 
+before I assigned it to my array field, in a constructor.
+
+![image04](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/images/image04.png?raw=true)
+
+This demonstration is using a defensive copy as input.
+When you pass mutable types to an immutable object, 
+a defensive copy should be made. 
+The defensive copy should then be assigned 
+to the instance field.
+
+![image05](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/images/image05.png?raw=true)
+
+This demonstration's using a defensive copy as output. 
+When you retrieve data, you should first make a defensive copy, 
+and pass the defensive copy back to the calling code. 
+Making a copy sounds easy enough, but unfortunately, 
+that too isn't always perfectly straightforward.
+
+![image06](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/images/image06.png?raw=true)
+
+This demonstration is showing you two very different copies of an array. 
+A shallow copy only makes a copy of the structure, 
+and not a copy of the elements in the structure.
+A deep copy makes a copy of both the structure, 
+and copies of each element in that structure.
+
+![image07](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/images/image07.png?raw=true)
+
+When you use copy methods on interfaces and helper classes, 
+the copy that's made will probably be a shallow copy.
+A shallow copy of an array means a new array structure is created 
+with the same number of indexed positions. 
+Each indexed position is assigned the same value in the previous array, 
+at that same position. 
+A copy of the referenced element isn't made. 
+You can see in the diagram above that both arrays have indexed references, 
+pointing to the same set of instances in memory.
+
+![image08](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/images/image08.png?raw=true)
+
+Deep copies usually have to be manually implemented if you need it. 
+This slide demonstrates a deep copy of an array.
+Each array element has been cloned for the array copy. 
+Deep copies may need to be applied to arrays and collections,
+as well as composite classes, to ensure immutability. 
+It's not just arrays and collections you need to worry about.
+A class can be composed of other classes, 
+meaning its fields are instances of classes.
+
+![image09](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/images/image09.png?raw=true)
+
+When you clone or copy this type of object, 
+you may also need to copy or clone the class's more complex fields.
+This diagram above shows a shallow copy of an instance of a composite class, 
+comparing it to a deep copy.
+
+![image10](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/images/image10.png?raw=true)
+
+Nesting of a composite class can be multi-leveled, 
+as I show here with the JKL instance. 
+_JKL_ is a field on **XYZ**, which is a field on our Object. 
+The deep copy created new instances of **ABC**, and **XYZ**, 
+the fields on the object, as well as a copy Object. 
+It didn't, however, make a deep copy of **XYZ**, 
+which is why _JKL_ is still referencing the same instance, 
+in the original **XYZ**. 
+Hopefully you can see that when we start making deep copies, 
+we may need to recursively copy fields which contain other fields. 
+Let's get back to code, and start looking at making copies, 
+and different ways to do this. 
+I've created the usual **Main** class and _main_ method.
+First, I want to create a record, named **Person**, 
+and right now I just want to have two fields, _name_ and _dob_, 
+for date of birth, both **Strings**. 
+I'll just put this record in the Main.java file.
 
 ```java  
+record Person (String name, String dob, Person[] kids) {
 
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", kids=" + Arrays.toString(kids) +
+                '}';
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+        Person joe = new Person("Joe", "01/01/1961");
+        Person jim = new Person("Jim", "02/02/1962");
+        Person jack = new Person("Jack", "03/03/1963");
+        Person jane = new Person("Jane", "04/04/1964");
+        Person jill = new Person("Jill", "05/05/1965");
+
+        Person[] persons = {joe, jim, jack, jane, jill};
+        Person[] personsCopy = Arrays.copyOf(persons, persons.length);
+
+        for (int i = 0; i < 5; i++) {
+            if (persons[i] == personsCopy[i]) {
+                System.out.println("Equal References" + persons[i]);
+            }
+        }
+    }
+}
 ```
+
+I'll create five instances of these persons. 
+I'll start with the first, _Joe_, 
+and make his birthday Jan 1, 1961.
+I'm going to copy that and paste it four times. 
+The first time, I'll change _joe_ to _jim_, 
+both the variable name, 
+and the name passed to the construction of the record, 
+and I'll change the date to Feb. 2, 1962. 
+The next one, I'll change to _jack_, 
+and the date March 3, 1963. 
+After that, I want _jane_, and birthdate April 4, 1964. 
+Finally, _jill_, birthday, May 5, 1965. 
+Now I want an array of these persons, 
+and I'll just use an array initializer, 
+with my five-person instances above. 
+I'll now create a copy, a shallow copy of my _Persons_ array. 
+This should be familiar to you 
+if you followed the last section. 
+The **Person** record has two fields, both **Strings**. 
+Here, I'm making a shallow copy. 
+A deep copy of the record would be unnecessary since 
+there's no way to mutate these person records. 
+To confirm that the two arrays are referencing the same records, 
+I'll set up a for loop. 
+I'll loop through the five elements. 
+I'll compare the element in the person array, 
+with the element in _personsCopy_, at the same indexed position. 
+I'll use `==`, the equality operator, 
+which checks whether the references are equal, 
+and not whether the values are equal. 
+If the references are equal, I'll print that out. 
+If I run that code:
+
+```html  
+Equal References Person[name = Joe, dob=01/01/1961]
+Equal References Person[name = Jim, dob=01/01/1962]
+Equal References Person[name = Jack, dob=01/01/1963]
+Equal References Person[name = Jane, dob=01/01/1964]
+Equal References Person[name = Jill, dob=01/01/1965]
+```
+
+You can see that both arrays are referencing 
+the same object for all five elements. 
+Now, I'm going to change my **Person** record.
+
+```java  
+Person joe = new Person("Joe", "01/01/1961", null);
+Person jim = new Person("Jim", "02/02/1962", null);
+Person jack = new Person("Jack", "03/03/1963", new Person[]{joe, jim});
+Person jane = new Person("Jane", "04/04/1964", null);
+Person jill = new Person("Jill", "05/05/1965", new Person[]{joe, jim});
+
+Person[] persons = {joe, jim, jack, jane, jill};
+Person[] personsCopy = Arrays.copyOf(persons, persons.length);
+
+for (int i = 0; i < 5; i++) {
+    if (persons[i] == personsCopy[i]) {
+        System.out.println("Equal References " + persons[i]);
+    }
+}
+```
+
+Like before, I'll include an additional field, 
+_kids_, an array of **Person**. 
+I'll also generate a _toString_ method, 
+and I only want to include _name_ and _kids_ in that. 
+Next, in the _main_ method, I need to include _kids_, 
+for each of my _person_ records. 
+First, I'll include nulls for _joe_, _jim_, and _jane_. 
+Although the _birthdates_ are wrong, 
+I'll make _joe_ and _jim_ the children of both _jack_ and _jill_. 
+Again, running this code:
+
+```html  
+Equal References Person{name='Joe', kids=null}
+Equal References Person{name='Jim', kids=null}
+Equal References Person{name='Jack', kids=[Person{name='Joe', kids=null}, Person{name='Jim', kids=null}]}
+Equal References Person{name='Jane', kids=null}
+Equal References Person{name='Jill', kids=[Person{name='Joe', kids=null}, Person{name='Jim', kids=null}]}
+```
+
+I get the data that all the references are still the same. 
+I do have kids for _jack_ and _jill_, the same kids, _Joe_ and _Jim_.
+What this output means is 
+that I still have a shallow copy of my array, the copy I made on:
+
+```java  
+Person[] personsCopy = Arrays.copyOf(persons, persons.length);
+```
+
+Now, I'll get jill's kids, 
+_Jill_ is the last element in my copied array, so element 4, 
+and I'll chain the kids accessor method to that. 
+
+```java  
+Person joe = new Person("Joe", "01/01/1961", null);
+Person jim = new Person("Jim", "02/02/1962", null);
+Person jack = new Person("Jack", "03/03/1963", new Person[]{joe, jim});
+Person jane = new Person("Jane", "04/04/1964", null);
+Person jill = new Person("Jill", "05/05/1965", new Person[]{joe, jim});
+
+Person[] persons = {joe, jim, jack, jane, jill};
+Person[] personsCopy = Arrays.copyOf(persons, persons.length);
+
+var jillsKids = personsCopy[4].kids();
+jillsKids[1] = jane;
+
+for (int i = 0; i < 5; i++) {
+    if (persons[i] == personsCopy[i]) {
+        System.out.println("Equal References " + persons[i]);
+    }
+}
+```
+
+I'll change the second child for _Jill_, from _jim_ to _jane_. 
+Running this code:
+
+```html  
+Equal References Person{name='Joe', kids=null}
+Equal References Person{name='Jim', kids=null}
+Equal References Person{name='Jack', kids=[Person{name='Joe', kids=null}, Person{name='Jim', kids=null}]}
+Equal References Person{name='Jane', kids=null}
+Equal References Person{name='Jill', kids=[Person{name='Joe', kids=null}, Person{name='Jane', kids=null}]}
+```
+
+All the references are still the same, 
+but what I want you to see is that 
+Jill's second child is listed as _Jane_ now.
+My code prints the reference from the original array, 
+so these aren't the copies. 
+Hopefully, this example helps you see 
+why shallow copies of arrays could cause real problems 
+when your array elements are mutable. 
+You know how to make this record immutable, 
+but let's just say, for some reason, 
+we don't want to make this record immutable. 
+Instead, I want to make a deep copy of my array. 
+How would I go about doing that?
+
+```java  
+Person joe = new Person("Joe", "01/01/1961", null);
+Person jim = new Person("Jim", "02/02/1962", null);
+Person jack = new Person("Jack", "03/03/1963", new Person[]{joe, jim});
+Person jane = new Person("Jane", "04/04/1964", null);
+Person jill = new Person("Jill", "05/05/1965", new Person[]{joe, jim});
+
+Person[] persons = {joe, jim, jack, jane, jill};
+//Person[] personsCopy = Arrays.copyOf(persons, persons.length);
+Person[] personsCopy = new Person[5];
+
+for (int i = 0; i < 5; i++) {
+    Person current = persons[i];
+    var kids = current.kids();
+    personsCopy[i] = new Person(current.name(), current.dob(), kids);
+}
+
+var jillsKids = personsCopy[4].kids();
+jillsKids[1] = jane;
+
+for (int i = 0; i < 5; i++) {
+    if (persons[i] == personsCopy[i]) {
+        System.out.println("Equal References " + persons[i]);
+    }
+}
+```
+
+I could do it manually, which I'll do first. 
+I'll comment out the `Arrays.copyOf` statement.
+I'll create a new persons array, calling it _personsCopy_ as before, 
+and initialize that to a new array, with five elements. 
+I'll loop from `i = 0` to i less than 5. 
+I'll set up a couple of local variables, 
+so current will be the current array element, 
+and I'll set kids to `current.kids`. 
+I'll create a new **person** record, passing it currents name, 
+date of birth, and the kids variable.
+That gets assigned to my _personsCopy_ array element 
+at the same index. 
+Ok, so I have a new record for every array element. 
+Running this code:
 
 ```html  
 
 ```
 
-</div>
-
-
-
-<div align="justify">
-
+What I want you to see is that 
+I don't have any output at all. 
+Remember, my code only prints records 
+if the references in the arrays are the same. 
+Since nothing is printed, 
+this confirms I've created new instances 
+for my copied array's indexed elements. 
+In other words, I've made a deep copy of the array. 
+But what does my data look like?
 
 ```java  
-
+System.out.println(persons[4]);
+System.out.println(personsCopy[4]);
 ```
+
+I'll print the last element of each array. 
+First persons, with index 4, 
+then persons copy, 
+using index 4 again.
+Running my code again:
 
 ```html  
-
+Person{name='Jill', kids=[Person{name='Joe', kids=null}, Person{name='Jane', kids=null}]}
+Person{name='Jill', kids=[Person{name='Joe', kids=null}, Person{name='Jane', kids=null}]}
 ```
 
+I can see my data is the same for both records. 
+But I made a copy of the **person** record, 
+so why did the change I made, changing Jill's kid to _Jane_, 
+show up in both of these records? 
+Well, even though my person records are different,
+Jill's kids were not cloned when I made a copy of _Jill_. 
+This means _Jill_ and _Jill_'s copy are referencing 
+the same array of kids. 
+This is an example of the problem 
+I showed you on the diagrams, where nesting can be quite deep. 
+I really made a shallow copy of _Jill_,
+but I need to make a deep one.
+
+```java  
+Person joe = new Person("Joe", "01/01/1961", null);
+Person jim = new Person("Jim", "02/02/1962", null);
+Person jack = new Person("Jack", "03/03/1963", new Person[]{joe, jim});
+Person jane = new Person("Jane", "04/04/1964", null);
+Person jill = new Person("Jill", "05/05/1965", new Person[]{joe, jim});
+
+Person[] persons = {joe, jim, jack, jane, jill};
+Person[] personsCopy = new Person[5];
+
+for (int i = 0; i < 5; i++) {
+    Person current = persons[i];
+    //var kids = current.kids();
+    var kids = current.kids() == null ? null : Arrays.copyOf(current.kids(), current.kids().length);
+    personsCopy[i] = new Person(current.name(), current.dob(), kids);
+}
+
+var jillsKids = personsCopy[4].kids();
+jillsKids[1] = jane;
+
+for (int i = 0; i < 5; i++) {
+    if (persons[i] == personsCopy[i]) {
+        System.out.println("Equal References " + persons[i]);
+    }
+}
+
+System.out.println(persons[4]);
+System.out.println(personsCopy[4]);
+```
+
+I'll change the statement 
+where I'm setting kids in my for loop, 
+to give me the result of a ternary operation.
+If the kids array is _null_, I'll return _null_, 
+otherwise, I'll return a copy of the _kids_ array. 
+Running that:
+
+```html  
+Person{name='Jill', kids=[Person{name='Joe', kids=null}, Person{name='Jim', kids=null}]}
+Person{name='Jill', kids=[Person{name='Joe', kids=null}, Person{name='Jane', kids=null}]}
+```
+
+I now have code that doesn't have side effects 
+for my original array of _persons_. 
+The original wasn't changed, only the copy of _Jill_, 
+with it's an own copy of kids, got changed. 
+I have other options for creating deep copies. 
+I could create a copy constructor, 
+which I discussed earlier. 
+I'll go to my **person** record:
+
+```java  
+record Person (String name, String dob, Person[] kids) {
+
+    public Person(Person p) {
+        this(p.name, p.dob, p.kids == null ? null : Arrays.copyOf(p.kids, p.kids.length));
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", kids=" + Arrays.toString(kids) +
+                '}';
+    }
+}
+```
+
+And add a custom constructor selecting no fields. 
+I'll add an argument, a **Person** type, 
+and call it just _p_, to save some room. 
+You'll notice that's giving me a compiler error.
+We'll talk about record constructors a little more coming up, 
+but to make this work, I have to call what's called the canonical,
+or the generated, constructor. 
+I'll call this passing _name_, and _dob_ from the method argument, 
+and I'll pass that ternary operation, 
+passing _null_ if _kids_ is _null_, otherwise, 
+doing a copy of the kids array on _p_. 
+Now, I can get back to the _main_ method.
+
+```java  
+Person joe = new Person("Joe", "01/01/1961", null);
+Person jim = new Person("Jim", "02/02/1962", null);
+Person jack = new Person("Jack", "03/03/1963", new Person[]{joe, jim});
+Person jane = new Person("Jane", "04/04/1964", null);
+Person jill = new Person("Jill", "05/05/1965", new Person[]{joe, jim});
+
+Person[] persons = {joe, jim, jack, jane, jill};
+Person[] personsCopy = new Person[5];
+
+for (int i = 0; i < 5; i++) {
+    //Person current = persons[i];
+    //var kids = current.kids() == null ? null : Arrays.copyOf(current.kids(), current.kids().length);
+    //personsCopy[i] = new Person(current.name(), current.dob(), kids);
+    personsCopy[i] = new Person(persons[i]);
+}
+
+var jillsKids = personsCopy[4].kids();
+jillsKids[1] = jane;
+
+for (int i = 0; i < 5; i++) {
+    if (persons[i] == personsCopy[i]) {
+        System.out.println("Equal References " + persons[i]);
+    }
+}
+
+System.out.println(persons[4]);
+System.out.println(personsCopy[4]);
+```
+
+I can remove the first statements in the loop 
+where I'm copying the person data.
+Now, I'll use the copy constructor I just created, 
+so I can call new **Person**, 
+and pass the element on the _persons_ array at the same index.
+If I run my code:
+
+```html  
+Person{name='Jill', kids=[Person{name='Joe', kids=null}, Person{name='Jim', kids=null}]}
+Person{name='Jill', kids=[Person{name='Joe', kids=null}, Person{name='Jane', kids=null}]}
+```
+                
+I get the same result as before. 
+I can simplify my code even further, 
+and instead of the for loop, 
+I can use the `Arrays.setAll` method.
+
+```java  
+Person joe = new Person("Joe", "01/01/1961", null);
+Person jim = new Person("Jim", "02/02/1962", null);
+Person jack = new Person("Jack", "03/03/1963", new Person[]{joe, jim});
+Person jane = new Person("Jane", "04/04/1964", null);
+Person jill = new Person("Jill", "05/05/1965", new Person[]{joe, jim});
+
+Person[] persons = {joe, jim, jack, jane, jill};
+Person[] personsCopy = new Person[5];
+Arrays.setAll(personsCopy, i -> new Person(persons[i]));
+
+/*
+for (int i = 0; i < 5; i++) {
+    personsCopy[i] = new Person(persons[i]);
+}
+*/
+
+var jillsKids = personsCopy[4].kids();
+jillsKids[1] = jane;
+
+for (int i = 0; i < 5; i++) {
+    if (persons[i] == personsCopy[i]) {
+        System.out.println("Equal References " + persons[i]);
+    }
+}
+
+System.out.println(persons[4]);
+System.out.println(personsCopy[4]);
+```
+
+I'll remove the for loop. 
+I'll insert a statement there.
+
+```java  
+Person[] personsCopy = new Person[5];
+Arrays.setAll(personsCopy, i -> new Person(persons[i]));
+```
+
+Running that:
+
+```html  
+Person{name='Jill', kids=[Person{name='Joe', kids=null}, Person{name='Jim', kids=null}]}
+Person{name='Jill', kids=[Person{name='Joe', kids=null}, Person{name='Jane', kids=null}]}
+```
+
+Again, I get the same results. 
+Finally, there's a clone method on arrays. 
+I'll comment out the two statements I have here.
+
+```java  
+//Person[] personsCopy = new Person[5];
+//Arrays.setAll(personsCopy, i -> new Person(persons[i]));
+
+Person[] personsCopy = persons.clone();
+```
+
+Instead, I'll simply call clone on my _persons_ array. 
+Running that code:
+
+```html  
+Equal References Person{name='Joe', kids=null}
+Equal References Person{name='Jim', kids=null}
+Equal References Person{name='Jack', kids=[Person{name='Joe', kids=null}, Person{name='Jim', kids=null}]}
+Equal References Person{name='Jane', kids=null}
+Equal References Person{name='Jill', kids=[Person{name='Joe', kids=null}, Person{name='Jane', kids=null}]}
+Person{name='Jill', kids=[Person{name='Joe', kids=null}, Person{name='Jane', kids=null}]}
+Person{name='Jill', kids=[Person{name='Joe', kids=null}, Person{name='Jane', kids=null}]}
+```
+
+You can see this clone method on the array, 
+only performs a shallow copy. 
+Ok, so hopefully this cleared up any questions 
+you might have about what shallow and deep copies really are. 
+It's important to try to figure out 
+when you need to create a deep copy and how deep 
+when you're creating defensive copies. 
 </div>
 
-
-
+## [e. Unmodifiable Collections]()
 <div align="justify">
 
+In the last couple of sections, 
+I've been using mostly arrays, 
+to demonstrate side effects, 
+and to discuss mutable and immutable instances, 
+as well as deep and shallow copies. 
+Now, I want to focus on Collections, 
+rather than Arrays, and talk about issues unique 
+to these types. 
+For this session, 
+I'll create a class called Student.
 
+```java  
+public class Student {
+
+    private final String name;
+    private final StringBuilder studentNotes;
+
+    public Student(String name, StringBuilder studentNotes) {
+        this.name = name;
+        this.studentNotes = studentNotes;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public StringBuilder getStudentNotes() {
+        return studentNotes;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name='" + name + '\'' +
+                ", studentNotes=" + studentNotes +
+                '}';
+    }
+}
+```
+
+I'll add two fields, a **String** for _name_, 
+and a **StringBuilder** for _studentNotes_. 
+I'll make both private and final.
+I've said before that when we use the _final_ modifier,
+we need to initialize the fields. 
+I'll be talking about alternate initialization methods later, 
+but the usual method is a constructor, 
+and I'll generate that here, with both fields.
+I want getters for my two fields, so I'll generate those. 
+I'll generate a _toString_ method, with both of these fields.
+Ok, that's my **Student** class, 
+and now I'll get back to the **Main** class, _main_ method.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+        StringBuilder bobsNotes = new StringBuilder();
+        StringBuilder billsNotes = new StringBuilder("Bill struggles with generics");
+
+        Student bob = new Student("Bob", bobsNotes);
+        Student bill = new Student("Bill", billsNotes);
+
+        List<Student> students = new ArrayList<>(List.of(bob, bill));
+
+        students.forEach(System.out::println);
+        System.out.println("-----------------------");
+    }
+}
+```
+
+First, I'll create a couple of **StringBuilder** objects, 
+one for _bobsNotes_, and I'll just create an empty **stringBuilder**.
+I'll set up _billsNotes_, with a note that _Bill struggles with generics_. 
+Now, I'll use these to create my **Student** instances. 
+First, a new student, named _bob_, and I'll include _bobsNotes_. 
+Next, _Bill_, and I'll pass _billsNotes_ this time. 
+I want a list of my two students, so I'll set up a new ArrayList, 
+and pass that my two students, using the `List.Of` method. 
+And I'll just print my students out, 
+including a separation line. 
+Running this:
+
+```html  
+Student{name='Bob', studentNotes=}
+Student{name='Bill', studentNotes=Bill struggles with generics}
+-----------------------
+```
+                    
+There shouldn't be any surprises here.
+Next, I'll insert a statement 
+after I create the list, 
+but before I print the information, 
+appending some information to Bob's notes. 
+
+```java  
+bobsNotes.append("Bob was one of my first students.");
+```
+
+I'll add that Bob was one of my first students. 
+Running this code now,
+
+```html  
+Student{name='Bob', studentNotes=Bob was one of my first students.}
+Student{name='Bill', studentNotes=Bill struggles with generics}
+-----------------------
+```
+
+You can see I successfully changed Bob's information, 
+several lines after I created the instance of Bob. 
+This, by definition, means **Student** is mutable. 
+Hopefully you know how to fix this, 
+making a defensive copy in the constructor of Student, 
+but right now, I want to leave it like this.
+
+```java  
+List<Student> studentsFirstCopy = new ArrayList<>(students);
+
+studentsFirstCopy.forEach(System.out::println);
+System.out.println("-----------------------");
+```
+
+I'm going to create a copy of my student list. 
+I'll do this by simply creating a new array list, 
+passing the previous list to it. 
+List of **Student**, I'll call it _studentsFirstCopy_, 
+and set that to a _new_. 
+I'll copy the last two statements,
+where I'm printing students, and paste a copy just below, 
+and just change _students_ to _studentsFirstCopy_. 
+If I run this again:
+
+```html  
+-----------------------
+Student{name='Bob', studentNotes=Bob was one of my first students.}
+Student{name='Bill', studentNotes=Bill struggles with generics}
+-----------------------
+```
+                
+You'll see the same behavior. 
+Bob has notes in the copy as well, 
+even though I made my copy of the list 
+before I made this edit. 
+Passing a list to a constructor of a new list 
+isn't going to perform a deep copy of your elements, 
+it's a shallow copy. 
+But doing this gives you a list that you can edit, 
+adding new elements, or clearing elements,
+so it's a modifiable list. 
+I'll add a new student to my new list, 
+the students First copy.
+
+```java  
+studentsFirstCopy.add(new Student("Bonnie", new StringBuilder()));
+studentsFirstCopy.sort(Comparator.comparing(Student::getName));
+studentsFirstCopy.forEach(System.out::println);
+System.out.println("-----------------------");
+```
+
+I'll add an element to my copied list, 
+passing a new Student Instance, 
+with _Bonnie_ as the name, 
+and an empty **stringBuilder** for notes. 
+If I run this code:
+
+```html  
+Student{name='Bob', studentNotes=Bob was one of my first students.}
+Student{name='Bill', studentNotes=Bill struggles with generics}
+-----------------------
+Student{name='Bob', studentNotes=Bob was one of my first students.}
+Student{name='Bill', studentNotes=Bill struggles with generics}
+Student{name='Bonnie', studentNotes=}
+-----------------------
+```
+                
+My second list has _Bonnie_, 
+but my first list is unchanged. 
+But again, because _student_ isn't immutable, 
+I can change bonnie's notes after the construction of bonnie, 
+and this change will affect the list.
+
+```java  
+StringBuilder bonniesNotes = studentsFirstCopy.get(2).getStudentNotes();
+bonniesNotes.append("Bonnie is taking 3 of my courses");
+studentsFirstCopy.forEach(System.out::println);
+System.out.println("-----------------------");
+```
+
+I'll set up a new **StringBuilder** variable 
+called _bonniesNotes_. 
+That gets assigned notes from the third element 
+on the copied list, so this is Bonnie's notes. 
+I'll make a change to this local variable, 
+and append a note that _Bonnie is taking 3 of my courses_. 
+Running my code again,
+
+```html  
+-----------------------
+Student{name='Bob', studentNotes=Bob was one of my first students.}
+Student{name='Bill', studentNotes=Bill struggles with generics}
+Student{name='Bonnie', studentNotes=Bonnie is taking 3 of my courses}
+-----------------------
+```
+                
+You can see this note is part of my Bonnie object in my second list. 
+To get an unmodifiable collection, 
+I'll use the `List.copyOf` method.
+
+```java  
+List<Student> studentsSecondCopy = List.copyOf(students);
+
+studentsSecondCopy.forEach(System.out::println);
+System.out.println("-----------------------");
+```
+
+I'll set up another variable, students second copy, 
+and assign that the result of calling `list.copyOf`, 
+with my _students_ list as an argument to that. 
+I'll again copy and paste the last two statements, 
+and I'll change _studentsFirstCopy_ to _studentsSecondCopy_. 
+And running this code:
+
+```html  
+-----------------------
+Student{name='Bob', studentNotes=Bob was one of my first students.}
+Student{name='Bill', studentNotes=Bill struggles with generics}
+Student{name='Bonnie', studentNotes=Bonnie is taking 3 of my courses}
+-----------------------
+Student{name='Bob', studentNotes=Bob was one of my first students.}
+Student{name='Bill', studentNotes=Bill struggles with generics}
+-----------------------
+```
+                    
+You can see I again have a copy of my first list.
+There's a very significant difference 
+between _studentsFirstCopy_ and _studentsSecondCopy_.
+
+```java  
+studentsSecondCopy.add(new Student("Bonnie", new StringBuilder()));
+```
+
+I'll copy the **stringBuilder** statement for _studentsFirstCopy_ 
+and paste a copy directly below it, 
+changing _studentsFirstCopy_ to _studentsSecondCopy_. 
+This code compiles, but if I run it:
+
+```html  
+Exception in thread "main" java.lang.UnsupportedOperationException
+at java.base/java.util.ImmutableCollections.uoe(ImmutableCollections.java:142)
+```
+                
+It throws an exception, unsupported operation exception. 
+For an unmodifiable list, I really can't make any modifications
+to the list. 
+For example, in addition to being unable to remove or add elements, 
+I also cannot reassign an element.
+
+```java  
+//studentsSecondCopy.add(new Student("Bonnie", new StringBuilder()));
+studentsSecondCopy.set(0, new Student("Bonnie", new StringBuilder()));
+studentsSecondCopy.sort(Comparator.comparing(Student::getName));
+```
+
+I'll modify that last statement, instead of adding _Bonnie_, 
+I'll try to replace element 0 with this new student. 
+Running this:
+
+```html  
+Exception in thread "main" java.lang.UnsupportedOperationException
+at java.base/java.util.ImmutableCollections.uoe(ImmutableCollections.java:142)
+```
+                
+I get the same exception.
+I'll comment that line out. 
+
+```java  
+//studentsSecondCopy.add(new Student("Bonnie", new StringBuilder()));
+//studentsSecondCopy.set(0, new Student("Bonnie", new StringBuilder()));
+studentsSecondCopy.sort(Comparator.comparing(Student::getName));
+```
+
+Next, I want to try and sort my students in this copy. 
+I'll pass a Comparator, since _student_ doesn't implement Comparable, 
+and I want to sort by the student name. 
+Once again, running this:
+
+```html  
+Exception in thread "main" java.lang.UnsupportedOperationException
+at java.base/java.util.ImmutableCollections.uoe(ImmutableCollections.java:142)
+```
+
+I still get an unsupported operation exception, 
+so I can't even sort an immutable collection. 
+You might have noticed the package name in the stack trace,
+`java.util.ImmutableCollections`. 
+This behavior, and these errors, 
+would have you believe that this copy of the list is immutable, 
+but in truth, I did mutate data in one of the elements again 
+this is the notes on bob by using _append_ method. 
+Although the unmodifiable list prevents many alterations, 
+it can't prevent all the data from mutating. 
+If the element itself has mutable fields, 
+code can get references to that data, 
+as I've shown you in this example.
+
+**NOTE**: Unmodifiable collections are NOT immutable collections.
+
+It is crucial to understand that 
+unmodifiable collections are NOT immutable collections. 
+They become immutable collections, 
+if the elements in the collections themselves are fully immutable. 
+They are collections with limited functionality 
+that can help us minimize mutability. 
+You can't remove, add or clear elements 
+from an immutable collection. 
+You also can't replace or sort elements. 
+Mutator methods will throw an _UnsupportedOperationException_.
+You can't create this type of collection with _nulls_. 
+
+```java  
+//studentsSecondCopy.add(new Student("Bonnie", new StringBuilder()));
+//studentsSecondCopy.set(0, new Student("Bonnie", new StringBuilder()));
+//studentsSecondCopy.sort(Comparator.comparing(Student::getName));
+studentsFirstCopy.sort(Comparator.comparing(Student::getName));
+```
+
+I want to change that last statement, 
+from sorting _studentsSecondCopy_ to _studentsFirstCopy_. 
+This code runs:
+
+```html  
+-----------------------
+Student{name='Bill', studentNotes=Bill struggles with generics}
+Student{name='Bob', studentNotes=Bob was one of my first students.}
+Student{name='Bonnie', studentNotes=Bonnie is taking 3 of my courses}
+-----------------------
+Student{name='Bob', studentNotes=Bob was one of my first students.}
+Student{name='Bill', studentNotes=Bill struggles with generics}
+-----------------------
+```
+                
+And you can see the second list is sorted by name.
+There's one more method I want to look at in comparison, 
+and that's the unmodifiable list on java util collections.
+
+```java  
+List<Student> studentsThirdCopy = Collections.unmodifiableList(students);
+studentsThirdCopy.forEach(System.out::println);
+System.out.println("-----------------------");
+```
+
+I'll set up a list, _studentsThirdCopy_, 
+and assign that to `Collections.unmodifiableList`, 
+and pass it my students. 
+Once again, I'll copy and paste the last two statements in my _main_ method, 
+this time changing _studentsSecondCopy_ to _studentsThirdCopy_. 
+Running this code:
+
+```html  
+-----------------------
+Student{name='Bob', studentNotes=Bob was one of my first students.}
+Student{name='Bill', studentNotes=Bill struggles with generics}
+-----------------------
+Student{name='Bill', studentNotes=Bill struggles with generics}
+Student{name='Bob', studentNotes=Bob was one of my first students.}
+Student{name='Bonnie', studentNotes=Bonnie is taking 3 of my courses}
+-----------------------
+Student{name='Bob', studentNotes=Bob was one of my first students.}
+Student{name='Bill', studentNotes=Bill struggles with generics}
+-----------------------
+Student{name='Bob', studentNotes=Bob was one of my first students.}
+Student{name='Bill', studentNotes=Bill struggles with generics}
+-----------------------
+```
+                
+My last list looks just like my first and third, 
+so it's an accurate copy. 
+Now, let's try a couple of operations on this copy. 
+
+```java  
+studentsThirdCopy.set(0, new Student("Bonnie", new StringBuilder()));
+```
+
+I'll uncomment set method for studentsSecondCopy, 
+and change _studentsSecondCopy_ to _studentsThirdCopy_.
+I'll run this:
+
+```html  
+Exception in thread "main" java.lang.UnsupportedOperationException
+at java.base/java.util.Collections$UnmodifiableList.set
+```
+
+And here again, I get _UnsupportedOperationException_. 
+Is there any difference between these copies?
+
+```java  
+List<Student> studentsSecondCopy = List.copyOf(students);
+List<Student> studentsThirdCopy = Collections.unmodifiableList(students);
+```
+                
+And the one I got back,
+
+```java  
+studentsThirdCopy.set(0, new Student("Bonnie", new StringBuilder()));
+```
+                
+From calling copy of on List? 
+Or is it just a legacy method on Collections 
+you don't need to care about? 
+Actually, there's a significant difference between 
+what you get back from these two methods. 
+I'll again comment that last line out. 
+
+```java
+students.add(new Student("Bonnie", new StringBuilder()));
+```
+
+I'm going to add _Bonnie_ to my original _list_ here next. 
+I'll insert this before I edit _bobsNotes_. 
+And I'll call add on my _students_ list, 
+the original list, adding _Bonnie_. 
+Now, running this code:
+
+```html  
+-----------------------
+Student{name='Bob', studentNotes=Bob was one of my first students.}
+Student{name='Bill', studentNotes=Bill struggles with generics}
+-----------------------
+Student{name='Bob', studentNotes=Bob was one of my first students.}
+Student{name='Bill', studentNotes=Bill struggles with generics}
+Student{name='Bonnie', studentNotes=}
+-----------------------
+```
+                
+What do you notice about the last two lists in the output? 
+One has Bonnie, and one doesn't. 
+When we use the copy of method, 
+we get a copy of the original list. 
+This means changes to the original list 
+aren't going to have any effects on our copy. 
+Again, that's with the warning that the elements are purely immutable.
+That aside, you can see that adding _Bonnie_ to _students_ 
+did not add _Bonnie_ to _studentsSecondCopy_. 
+We manually added _Bonnie_ to _studentsFirstCopy_, 
+another copy earlier. 
+But the last list, the list we got back from `Collections.unmodifiable` list, 
+_studentsThirdCopy_, has _Bonnie_ in it. 
+This method doesn't return a copy it actually returns a view, 
+an unmodifiable view, of the backing list. 
+This list, _studentsThirdCopy_, is always going to reflect 
+what's in the **Students** list, 
+but I could pass this view to consumers. 
+This feature creates a kind of window, if you will, 
+to the most current state of a list, 
+without allowing a client to modify it.
+In other words, you can pass a reference to a mutating list, 
+but prevent changes through that particular reference. 
+Let me show you a table now, with the unmodifiable collections available to us.
+
+|      | Unmodifiable Copy of Collection                                 | Unmodifiable View of Collection                                                                              |
+|------|-----------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| List | List.copyOf<br/>List.of                                         | Collections.unmodifiableList                                                                                 |
+| Set  | Set.copyOf<br/>Set.of                                           | Collections.unmodifiableSet<br/>Collections.unmodifiableNavigableSet<br/>Collections.unmodifiableSortedSet   |
+| Map  | Map.copyOf<br/>Map.entry(K k, V v)<br/>Map.of<br/>Map.ofEntries | Collections.unmodifiableMap<br/>Collections.unmodifiableNavigableMap<br/>Collections.unmodifiableSortableMap |
+
+The three primary Collection interfaces, **List**, **Set** or **Map**, 
+have methods to get an unmodifiable copy on the specific interface,
+related to the collection type, as shown. 
+In addition, the `java.util.Collections` class offers methods 
+to get unmodifiable views as shown. 
+These methods allow us to get closer to the ideal of immutability 
+if it's needed. 
+</div>
+
+## [f. Unmodifiable Collections Challenge]()
+<div align="justify">
+
+In an earlier challenge, we created an immutable **BankCustomer** 
+and **BankAccount** class. 
+We'll be building on that code here.
+If you didn't do that challenge, 
+let me encourage you to go back and work through it. 
+We ended up with two classes as shown here.
+
+
+
+
+                        _______________________________             _______________________________
+                        | BankCustomer                |             | BankAccount                 |
+                        |_____________________________|             |_____________________________|
+                        | name: String                |<>-----------| accountType: AccountType    |
+                        | customerId: int             |             | balance: double             |
+                        | List<BankAccount> accounts  |             |_____________________________|
+                        |_____________________________|
+
+    The getters, constructors and two string methods, aren't shown on this diagram. These are the classes we'll be starting
+    with, in this challenge. Now, let's Imagine that we work on a team, with different developers.
+
+                                                                            _______________________________
+                                                                            | Transaction                 |
+                                                                            |_____________________________|
+        * One team creates the data transfer objects (DTOs)                 | routingNumber: int          |
+                                                                            | customerId: int             |
+                                                                            | transactionId: long         |
+                                                                            | transactionAmount: double   |
+                                                                            |_____________________________|
+
+    which will be used by a framework, to retrieve data from and commit data to, a database. Let's assume they use software
+    to generate these classes, from their data model. We want to emulate this, so we first want to Create a "Transaction"
+    class in a dto package, that might mirror a data table. This class should have the fields shown above. "Include getters
+    and setters" for all fields. Data transfer objects generally have both, to support two way communication with database
+    entities. "Include a constructor" that takes all fields, for ease of use.
+
+                                   Current                              After Modifications (An Example)
+                        _______________________________        _________________________________________________
+                        | BankAccount                 |        | BankAccount                                   |
+                        |_____________________________|        |_______________________________________________|
+                        | accountType: AccountType    |        | accountType: AccountType                      |
+                        | balance: double             |        | balance: double                               |
+                        |_____________________________|        | Map<Long, Transaction>: transactions          |
+                                                               |_______________________________________________|
+                                                               | getTransactions: Map<Long, Transaction>       |
+                                                               |   commitTransaction(int routingNumber,        |
+                                                               |     long transactionId, String customerId,    |
+                                                               |       double amount)                          |
+                                                               |_______________________________________________|
+
+        For this challenge, you'll modify your BankAccount class. First, you'll want to change the balance so that it's
+    mutable. Include a Transaction Collection. I'm showing a Map on my class diagram, but if you want to use another
+    collection, that's good too. Provide a getter, or accessor method, for the transaction data. Provide a method to
+    adjust the balance, and add the transaction data to the transaction collection. I'll be doing this in a single method
+    called commitTransaction as shown. You'll also need to Modify your BankCustomer class.
+
+                                   Current                              After Modifications (An Example)
+                        _______________________________        _________________________________________________
+                        | BankCustomer                |        | BankCustomer                                  |
+                        |_____________________________|        |_______________________________________________|
+                        | name: String                |        | name: String                                  |
+                        | customerId: int             |        | customerId: int                               |
+                        | List<BankAccount> accounts  |        | List<BankAccount> accounts                    |
+                        |_____________________________|        |_______________________________________________|
+                                                               | getCustomerId: String                         |
+                                                               | getAccounts: List<Bank Account>               |
+                                                               | getAccount(AccountType type): Account         |
+                                                               |_______________________________________________|
+
+    Return the customer id as a 15 digit string, with leading zeros. Design this class, so that code in other packages
+    can't instantiate a new Bank Customer. Return a defensive copy of the accounts, from the getAccounts method. Include
+    a getAccount method to return just one account, based on account type, either savings or checking. Assume a customer
+    will have one checking account and one savings account.
+
+                        _________________________________________________
+                        | Bank                                          |
+                        |_______________________________________________|
+                        | routingNumber: int                            |
+                        | lastTransactionId: long                       |
+                        | Map<String, BankCustomer> customers           |
+                        |_______________________________________________|
+                        | getCustomer(String id): BankCustomer          |
+                        | addCustomer(String name,                      |
+                        |             double checkingInitialDeposit,    |
+                        |             double savingsInitialDeposits)    |
+                        | doTransaction(String id, AccountType type,    |
+                        |               double amount)                  |
+                        |_______________________________________________|
+
+        Next, you want to create a Bank class, that has a routing number, and a collection of customers, as well as an
+    integer that holds the next transaction id to be assigned. You should be able to look up a customer by a customer id,
+    a 15 character String. Transaction id's should be assigned, by using the lastTransactionId field, on this instance
+    of the bank.  A negative amount is a withdrawal, and a positive amount is a deposit. Don't let the customer's account
+    balance go below zero. In the Main class's main method. Create a bank instance, and add a customer. Let a client get
+    a BankCustomer instance by a customer id, and review transactions from a single selected account. These transactions
+    should "not be modifiable", or susceptible to side effects. You should only be able to perform a withdrawal or deposit
+    of funds, through the Bank Instance, passing the customer id as a String, the type of account this transaction will
+    be against, and the amount. In other words, the main method should not have access to the commit transaction code on
+    the Bank Account itself.
+
+               _________________________________________________             _________________________________________________
+               | BankCustomer                                  |             | Bank                                          |
+               |_______________________________________________|             |_______________________________________________|
+               | name: String                                  |             | routingNumber: int                            |
+               | customerId: int                               |             | lastTransactionId: long                       |
+       |-----<>| List<BankAccount> accounts                    |-----------<>| Map<String, BankCustomer> customers           |
+       |       |_______________________________________________|             |_______________________________________________|
+       |       | getCustomerId: String                         |             | getCustomer(String id): BankCustomer          |
+       |       | getAccounts: List<Bank Account>               |             | addCustomer(String name,                      |
+       |       | getAccount(AccountType type): Account         |             |             double checkingInitialDeposit,    |
+       |       |_______________________________________________|             |             double savingsInitialDeposits)    |
+       |                                                                     | doTransaction(String id, AccountType type,    |
+       |                                                                     |               double amount)                  |
+       |                                                                     |_______________________________________________|
+       |
+       |       _________________________________________________             _______________________________
+       |       | BankAccount                                   |             | Transaction                 |
+       |       |_______________________________________________|             |_____________________________|
+       |       | accountType: AccountType                      |             | routingNumber: int          |
+       |       | balance: double                               |             | customerId: int             |
+       |------ | List<BankAccount> accounts                    |<>---------- | transactionId: long         |
+               |_______________________________________________|             | transactionAmount: double   |
+               | getTransactions: Map<Long, Transaction>       |             |_____________________________|
+               |   commitTransaction(int routingNumber,        |
+               |     long transactionId, String customerId,    |
+               |       double amount)                          |
+               |_______________________________________________|
+
+    You might want to leave this diagram up as you're coding your own solution, to help you see the big picture.
 ```java  
 
 ```

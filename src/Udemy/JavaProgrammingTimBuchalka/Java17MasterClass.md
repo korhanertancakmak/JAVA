@@ -146,9 +146,10 @@ What we will learn from this Path:
 ### [a. Final Modifier]()
 ### [b. Immutable Classes]()
 ### [c. Immutable Classes Challenge]()
+### [d. Defensive Copies]()
+### [e. Unmodifiable Collections]()
+### [f. Unmodifiable Collections Challenge]()
 
-    * The final Modifier
-    * Immutable Classes and Objects
     * Record Constructors
     * Enum Constructors
     * Sealed Classes
