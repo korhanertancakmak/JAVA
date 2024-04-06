@@ -2848,7 +2848,7 @@ I'll be talking about alternate initialization methods later,
 but the usual method is a constructor, 
 and I'll generate that here, with both fields.
 I want getters for my two fields, so I'll generate those. 
-I'll generate a _toString_ method, with both of these fields.
+I'll generate a _toString_ method with both of these fields.
 Ok, that's my **Student** class, 
 and now I'll get back to the **Main** class, _main_ method.
 
@@ -3218,7 +3218,7 @@ students.add(new Student("Bonnie", new StringBuilder()));
 
 I'm going to add _Bonnie_ to my original _list_ here next. 
 I'll insert this before I edit _bobsNotes_. 
-And I'll call add on my _students_ list, 
+And I'll call _add_ on my _students_ list, 
 the original list, adding _Bonnie_. 
 Now, running this code:
 
@@ -3302,7 +3302,7 @@ to create a **Transaction** class in a _dto_ package
 that might mirror a data table. 
 This class should have the fields shown above. 
 _Include getters and setters_ for all fields. 
-Data transfer objects generally have both, 
+Data transfer objects generally have both 
 to support two-way communication with database entities. 
 _Include a constructor_ that takes all fields for ease of use.
 
@@ -3849,7 +3849,7 @@ And I'll add a _toString_ method, using Alt+Ins again, and select _none_.
 And I'll just replace the generated code, returning _super.toString_, 
 and concatenating the _birthOrder_ String to that. 
 Getting back to my main method,
-I have to include the number of siblings for the parent instance, 
+I have to include the number of siblings for the parent instance:
 
 ```java  
 public class Main {
@@ -3903,7 +3903,7 @@ I'll cut it, and paste it right below Child no args constructor.
 Notice the compiler errors I'm getting, in the initializer block, 
 on this field in the if statements.
 If I hover over one of those, it says Illegal forward reference.
-I can't reference a field that has not been initialized, 
+I can't reference a field that has not been initialized 
 in my initializer block. 
 I'll revert that change, putting the birth order statement back top. 
 In addition to an instance initializer block, 
@@ -4204,7 +4204,7 @@ You can only edit or validate the method arguments
 because the final fields have yet to be assigned. 
 I'll comment that last statement. 
 I'll next change that last statement, and instead of just dob, 
-I'll try to execute replace on this.dob.
+I'll try to execute _replace_ on `this.dob`.
 
 ```java  
 public Person {
@@ -4432,7 +4432,7 @@ all its constants are initialized,
 which means the constructor was called for each constant.
 Now, let's use the javap tool to examine what an enum really is, 
 under the hood. 
-I'll type in javap, then dash p 
+I'll type in javap, then dash p,
 which means I want all members printed, 
 including private and package private ones. 
 I'll include the path, 
@@ -4564,7 +4564,7 @@ private Rev3_EnumConstructor.Generation(int, int);
 
 This hasn't changed much, 
 except it has the two instance fields, _startYear_ and _endYear_. 
-And there on the third to last line, 
+And there, on the third to last line, 
 is the new signature for the constructor. 
 You can see each parameter type is an int.
 It's also private, even though I didn't include an access modifier. 
@@ -4682,8 +4682,8 @@ GEN_Z {
 I'll do this with Gen z, adding a class body, 
 by including a starting and ending curly brace.
 Ok, so what happens if I just add a `System.out.println` statement there? 
-I want this to print out, special for gen z. 
-But this doesn't compile. 
+I want this to print out, special for gen z, 
+but this doesn't compile. 
 If you thought about GEN Z as a class, 
 you'd realize that what I'm really doing here is,
 inserting a line of code in a class body. 
@@ -4712,7 +4712,7 @@ maybe a different approach would make more sense.
 Ok, so I think that covers constructors for records and enums. 
 </div>
 
-## [h. Game Console Challenge]()
+## [h. Game Console Challenge Setup]()
 <div align="justify">
 
 In this challenge, I'll set up some code 
@@ -4791,7 +4791,7 @@ The _addPlayer_ method takes a string for _name_,
 creates a **player** instance, 
 adds it to the **Game**'s player list, 
 and returns that index. 
-The executeGameAction will call the **Predicate**'s test method, 
+The executeGameAction will call the **Predicate**'s test method 
 on the lambda expression in the action field, 
 returning the boolean result. 
 The _printPlayer_ and _quitGame_ methods, 
@@ -4800,53 +4800,569 @@ Include getter and helper methods as appropriate.
 Finally, create your own simple game, and player type, 
 and test some methods on the **GameConsole**.
 
+![image17](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/images/image17.png?raw=true)
 
+Here is a model of the types I just explained, 
+which I'll be building now. 
+I'm going to start with the Player interface, in **game** package.
 
-                                    _______________________________
-                                    | <<Interface>>               |
-                                    |    Player                   |
-                                    |_____________________________|
-                                    | bane(): String              |
-                                    |_____________________________|
-                                                ↑
-                                                ↑
-               _______________________________________________________________________
-               | Game<T extends Player>                                              |
-               |_____________________________________________________________________|
-               | gameName: String                                                    |
-               | players: List<Player>                                               |
-               | standardActions:Map<Character,GameAction> standardActions           |
-               |_____________________________________________________________________|          _______________________________
-               | abstract CreateNewPlayers(String name): T                           |          | GameAction                  |
-               | abstract getGameActions(int playerIndex): Map<Character,GameAction> |          |_____________________________|
-               | ----------------------------------------------                      |<>--------| key: char                   |
-               | addPlayer(String name): int                                         |          | prompt: String              |
-               | executeGameAction(int player, GameAction action): boolean           |          | action: Predicate<Integer>  |
-               | printPlayer(int player): boolean                                    |          |_____________________________|
-               | quitGame(int player): boolean                                       |
-               |_____________________________________________________________________|
-                                                ↑
-                                                ↑
-                           _________________________________________________
-                           | GameConsole<T extends Game<? extends Player>> |
-                           |_______________________________________________|
-                           | game: T                                       |
-                           | static scanner: Scanner                       |
-                           |_______________________________________________|
-                           | addPlayer(): int                              |
-                           | playGame(int playerIndex)                     |
-                           |_______________________________________________|
-
-        Here is a model of the types I just explained, which I'll be building now. I've created the usual Main class and
-    main method. I'm going to start with the Player interface, in game package.
 ```java  
+public interface Player {
 
+    String name();
+}
 ```
+
+I'll include one method, _name_, that would match a record's accessor method, 
+if it had a field called _name_. 
+I'm going to reference this method in **Game**, for any **Player** type. 
+That's all I need for the interface. 
+This type gives me a way to describe all kinds of game players. 
+Next I'll create the **GameAction** record:
+
+```java  
+public record GameAction(char key, String prompt, Predicate<Integer> action) {
+}
+```
+
+Again in the same **game** package. 
+I only want three fields, _key_, _prompt_, and _action_. 
+I've said that _key_ should be a **char**, and _prompt_ a **String**. 
+_Action_ is going to be a functional interface type. 
+I could've chosen from several different ones, 
+but I chose **Predicate**, 
+because I want the game to continue until some condition is met. 
+Any one of these game options could end the game. 
+I'm using **Integer** as the type, 
+because that lets me get a player from the _players_ list,
+and execute methods on **Player** as part of a game's method. 
+This will become clearer later, as I set up the data. 
+Now, I want to build the **Game** class, in the same package.
+
+```java  
+public abstract class Game<T extends Player> {
+
+    private final String gameName;
+    private final List<T> players = new ArrayList<>();
+    private Map<Character, GameAction> standardActions = null;
+}
+```
+
+I'll make this both _abstract_ and _generic_. 
+I'lI have to define the **type**, 
+and I'll put that in angle brackets, using _T_ as my type parameter, 
+and that needs to extend **Player**. 
+My game will be a container for _players_ 
+if that helps you think about it that way. 
+I'll add my three fields. 
+I'll have a _gameName_. 
+I'll set up and **ArrayList** for _players_, and initialize it here.
+I want a standard set of actions that every game might have, 
+like quit, or info. 
+For now, I'll initialize this to _null_. 
+The first two will be _final_ 
+because I want to use the techniques we've been discussing,
+making this class as immutable as possible.
+The third, the key map, will vary by the type of game and user.
+
+```java  
+public Game(String gameName) {
+    this.gameName = gameName;
+}
+
+public String getGameName() {
+    return gameName;
+}
+
+public Map<Character, GameAction> getStandardActions() {
+    if (standardActions == null) {
+        standardActions = new LinkedHashMap<>(Map.of(
+                'I',
+                new GameAction('I', "Print Player Info", i -> this.printPlayer(i)),
+                'Q',
+                new GameAction('Q', "Quit Game", this::quitGame)
+        ));
+    }
+    return standardActions;
+}
+
+public abstract T createNewPlayer(String name);
+
+public abstract Map<Character, GameAction> getGameActions(int playerIndex);
+```
+
+Now, I'll generate a constructor, using just the _gameName_. 
+I'll generate a getter for _gameName_ and _standardActions_.
+I'll create my two abstract methods:
+
+* The first method, _createNewPlayer_ has a return type of just _T_, 
+and that takes a string _name_.
+* Next, the method returns a map; _key_ is **character**, _value_ is a **GameAction**. 
+The name is _getGameActions_, and takes a _playerIndex_. 
+This means game actions could be unique for each player.
+
+Any subclasses extending this class have to write 
+their own custom implementations for these methods.
+
+Next, I'll focus on the _getStandardActions_ method 
+that I generated earlier. 
+I'll insert an if statement before the return statement. 
+This will check if the _standardActions_ map is _null_ first. 
+If it is, it will populate it with two standard actions, 
+_I_ for information, 
+and that will call a _printPlayer_ method on the game, 
+and _Q_ to quit, which will call _quitGame_ on the game. 
+I'll make this a **LinkedHashMap**, 
+so instructions get printed in insertion order. 
+I'll use `Map.of`, which lets me pass a series of keys and values, in order. 
+It takes first a key, then value, then the next key, 
+and the next value, and so on. 
+The first key is _I_. 
+This will be a key to the map, as well as a field on the **GameAction** record. 
+The prompt for this will be _Print Player Info_, 
+and the method will be _printPlayer_, called on the current **game** instance. 
+I'll use a regular lambda expression here, 
+so you can see the parameter is an integer, 
+and I'll call a method on this class, 
+that takes an integer and returns a boolean, the _printPlayer_ method.
+
+Next, I'll have _Q_ to quit the game. 
+The prompt is _quit game_, and the method will be _quitGame_. 
+The lambdas I'm using here won't compile, 
+until I include those methods on this class. 
+I'll do that in just a bit. 
+First, I'll add the _addPlayer_ method:
+
+```java  
+final int addPlayer(String name) {
+
+    T player = createNewPlayer(name);
+    if (player != null) {
+        players.add(player);
+        return players.size() - 1;
+    }
+    return -1;
+}
+```
+
+That takes a _name_ and returns an integer, the _playerIndex_. 
+I don't want subclasses to have their own versions, 
+so I'll make it _final_. 
+I want my game console to have access to it, 
+so I'll make it package private,
+meaning no access modifier. 
+I'll first call the abstract method, _createNewPlayer_, 
+and assign that to the _T_ type parameter. 
+Each subclass will have to implement the _createNewPlayer_ method, 
+producing the right type of player for the game. 
+If this isn't _null_, I'll add it to the _players_ list. 
+To return the player's index, I'll get the last index. 
+If we were multithreading, 
+this wouldn't be a safe way to get a player's index. 
+Otherwise, I'll return -1.
+
+```java  
+protected final T getPlayer(int playerIndex) {
+    return players.get(playerIndex);
+}
+
+public boolean executeGameAction(int player, GameAction action) {
+    return action.action().test(player);
+}
+
+public boolean printPlayer(int playerIndex) {
+
+    Player player = players.get(playerIndex);
+    System.out.println(player);
+    return false;
+}
+
+public boolean quitGame(int playerIndex) {
+
+    Player player = players.get(playerIndex);
+    System.out.println("Sorry to see you go, " + player.name());
+    return true;
+}
+```
+
+Next, I want a method to get a player, by the _playerIndex_. 
+This method will be _protected_, 
+so subclasses can use it, but _final_, 
+so they can't override it. 
+I'll return the player, from the _players_ list, for that index.
+
+Continuing on, I'll add the _executeGameAction_ method, 
+making it public and not final, 
+because subclasses may want additional functionality. 
+This will be executing lambda expressions or method references 
+that return a boolean and take an integer. 
+I'll have this method do the same, 
+but I'll also include a game action parameter. 
+I'll return the result of the predicate lambda in the action record. 
+A predicate method is _test_, 
+and it takes the type we declared, so an integer, 
+but I can pass an int, because of auto boxing there.
+
+Finally, I want to implement the two methods in my game action records. 
+First, the _printPlayer_ method, which has to match the Boolean Predicate, 
+returning a boolean and taking an integer. 
+I'll get the player from the private players list, using player index. 
+I'll print the player string, and just return false. 
+Requesting info should probably never end the game.
+
+Next, I need the _quitGame_, with the same return type and integer parameter. 
+Again, I'll get the player by index. 
+I'll print sorry to see you go, 
+using the player's name. 
+I'll return true every time, 
+because this should end the game. 
+Ok, that's everything except the **GameConsole** class itself. 
+Ok, now it's time to build the **GameConsole**. 
+I'll put this class in the **game** package again.
+
+```java  
+public class GameConsole<T extends Game<? extends Player>> {
+    private final T game;
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public GameConsole(T game) {
+        this.game = game;
+    }
+
+    public int addPlayer() {
+
+        System.out.print("Enter your playing name: ");
+        String name = scanner.nextLine();
+
+        System.out.printf("Welcome to %s, %s!%n".formatted(game.getGameName(), name));
+        return game.addPlayer(name);
+    }
+}
+```
+
+This class has one type argument, so _T_, 
+and that extends **Game**. 
+Since **Game** is also generic, 
+I need to identify valid ranges of types for this **Game**. 
+Here, I'll use a _wildcard_, to specify the type,
+since I'm using the **Game**, and not just declaring it. 
+I'll use an upper-bound wildcard, so extends **Player** there.
+
+This class has one instance field, the _game_, type _T_, 
+and that'll be _private_ and _final_. 
+I'll make the _scanner_ private static and final here. 
+I'll generate a constructor, and pass the **game** instance, 
+so I'll pick game there.
+
+Next, I want to code the _addPlayer_ method, 
+which has to get the player's name from the console. 
+This will return an int, again the player's index in the player list. 
+First, this should prompt the user for their playing name. 
+Then wait for the user to respond. 
+Once I have the _name_, I'll print out a welcome message. 
+Then I'll return what comes back
+from the `game.addPlayer` method.
+
+```java  
+public void playGame(int playerIndex) {
+
+    boolean done = false;
+    while (!done) {
+        var gameActions = game.getGameActions(playerIndex);
+        System.out.println("Select from one of the following Actions: ");
+        for (Character c : gameActions.keySet()) {
+            String prompt = gameActions.get(c).prompt();
+            System.out.println("\t" + prompt + " (" + c + ")");
+        }
+        System.out.print("Enter Next Action: ");
+
+        char nextMove = scanner.nextLine().toUpperCase().charAt(0);
+        GameAction gameAction = gameActions.get(nextMove);
+
+        if (gameAction != null) {
+            System.out.println("-------------------------------------------");
+            done = game.executeGameAction(playerIndex, gameAction);
+            if (!done) {
+                System.out.println("-------------------------------------------");
+            }
+        }
+    }
+}
+```
+
+After this, I want to implement _playGame_. 
+This is public and void, and takes a player index. 
+I want to set a local variable, _done_, to false. 
+My while loop will keep going until this becomes true. 
+I'll get the _gameActions_ from the _game_. 
+These may change for a player as play continues, 
+so I'll call this inside the while loop. 
+The first thing I need to do, in the loop, 
+is show the available options. 
+I'll print out a statement that 
+these are the actions to choose from. 
+I'll loop through the keys of my game actions map. 
+I'll get the prompt. 
+I'll print that prompt, and the key, 
+which is the keystroke that will execute that action.
+After all the options are listed, 
+I'll prompt the user to pick an action.
+
+Next, I'll get the letter from the user, 
+you've seen me do this multiple times, 
+I'll use nextLine on scanner, 
+making it upper case, and getting the first character. 
+The input is the key to get the action from the map. 
+If I find game action in the map for the key entered, 
+I'll first print a separator line. 
+Then I execute game action on that. 
+If that returns a false, it means the game isn't yet over. 
+I'll print another separator line,
+so it separates the action that just occurred 
+from the options to be picked from. 
+Ok, that's my generic game console. 
+I'll quickly test this by creating a **shooter** game 
+that will have shooters as players.
+
+```java  
+public record Shooter(String name) implements Player {
+
+    boolean findPrize() {
+
+        System.out.println("Prize found, score should be adjusted.");
+        return false;
+    }
+
+    boolean useWeapon(String weapon) {
+
+        System.out.println("You Shot your " + weapon);
+        return false;
+    }
+}
+```
+
+I'll make the **shooter** a record, 
+putting it in the **game** package. 
+This record has one field, 
+a _name_ and implements **Player**. 
+I'll include two additional methods 
+that would emulate some kind of shooter action in a game. 
+I'll make these _package-private_, 
+so that only classes in this package can call these methods.
+First, I'll code _findPrize_, this will return a boolean. 
+I'll just print that a prize was found, 
+and score needs to be adjusted. 
+I'll return false, because we don't want the game to end 
+if the player finds a prize. 
+The next one will be _useWeapon_, 
+and return a boolean, but it'll take a weapon. 
+I'll just print out what weapon it is. 
+An again return false.
+Ok, that's good enough for the shooter test. 
+Finally, I'll add a new class, the **ShooterGame**.
+
+```java  
+public class ShooterGame extends Game<Shooter> {
+
+    public ShooterGame(String gameName) {
+        super(gameName);
+    }
+
+    @Override
+    public Shooter createNewPlayer(String name) {
+        return new Shooter(name);
+    }
+
+    @Override
+    public Map<Character, GameAction> getGameActions(int playerIndex) {
+
+        var map = new LinkedHashMap<>(Map.of(
+                'F',
+                new GameAction('F', "Find Prize", this::findPrize),
+                'S',
+                new GameAction('S', "Use your gun", this::useWeapon)
+        ));
+        map.putAll(getStandardActions());
+        return map;
+    }
+}
+```
+
+I'll have that extend the **Game**, 
+with a type argument of **Shooter**. 
+I have an error, 
+and that's because I have to implement Game's abstract methods. 
+If I hover over that, I can pick implement methods. 
+I'll pick both methods in the popup. 
+I want to replace return _null_, in the _createNewPlayer_ method. 
+I'll return a new instance of the **Shooter** record,
+passing that _name_.
+For the _getGameActions_ method, 
+I'll replace that return statement altogether. 
+In this method, I'll add some **GameAction** records, 
+as well as include the standard ones, set up on **Game**. 
+I'll first create a new map variable, using var, 
+rather than be specific about that somewhat complicated type, 
+and call it map. 
+I'll assign that a new **LinkedHashMap** instance, 
+and again I want to use the `Map.of` method, 
+passing it key value pairs, as separate elements.
+If a user presses _f_, they'll be looking for a prize, 
+and that will call this game's find method, 
+which I'll add shortly.
+If a user presses _S_, they'll be shooting 
+or using their weapon, and I'll call the _useWeapon_ method, 
+again I'll add that in a minute.
+
+Next, I want to add the standard actions. 
+Remember, these are quit and information, 
+so I still want this. 
+I want them listed after my own options,
+which is why I'm using **LinkedHashMap;** 
+otherwise, the order wouldn't be guaranteed.
+Finally, I'll return this new map. 
+I've still got an error there 
+that there's no default constructor, 
+so I'll select create a constructor matching super. 
+Finally, I'll implement the two methods 
+I used in those game options, 
+starting with _findPrize_ first.
+
+```java  
+public boolean findPrize(int playerIndex) {
+    return getPlayer(playerIndex).findPrize();
+}
+
+public boolean useWeapon(int playerIndex) {
+    return getPlayer(playerIndex).useWeapon("pistol");
+}
+```
+
+All my methods on **Game**, 
+that are actionable menu items, 
+have to return a boolean, and take an integer, 
+I'll get the player by index, 
+and chain the shooter's _findPrize_ method to that. 
+Lastly, I'll implement the _useWeapon_ method.
+Much like the _findPrize_ method. 
+This time, I'll call _useWeapon_ on the **shooter**, 
+passing it _pistol_. 
+The methods on any of the player implementations 
+don't have to have the same return type, 
+or parameters required of the game's actionable methods. 
+Here, you can see that my shooter's _useWeapon_ method 
+takes a string representing a weapon. 
+Ok, that was a bit of setup, 
+but I'll be using this in the future. 
+Let's test this out. 
+I'll go to the **Main** class _main_ method:
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        var console = new GameConsole<>(new ShooterGame("The Shootout Game"));
+
+        int playerIndex = console.addPlayer();
+        console.playGame(playerIndex);
+    }
+}
+```
+
+And set up a new game _console_. 
+I'll take advantage of type inference, 
+and use _var_, call the variable console,
+and assign that a new **GameConsole**, 
+passing a new **ShooterGame**, with the game title. 
+I'll call console add player, and pass the index 
+back to a player index variable. 
+Lastly, I'll call play game on console, 
+passing it that player index.
+If I run this:
+
 ```html  
-
+Enter your playing name:
 ```
-</div>
 
+I can see the console prompting me for my player name.
+I'll enter Tim here:
+
+```html  
+Welcome to The Shootout Game, Tim!
+Select from one of the following Actions:
+    Use your gun (S)
+    Find Prize (F)
+    Quit Game (Q)
+    Print Player Info (I)
+Enter Next Action:
+```
+                    
+And now I see the welcome message, 
+and I can see all the options available, 
+so that's kind of neat. 
+I'll try finding a prize, so _F_.
+
+```html  
+-------------------------------------------
+Prize found, score should be adjusted.
+-------------------------------------------
+Select from one of the following Actions:
+    Use your gun (S)
+    Find Prize (F)
+    Quit Game (Q)
+    Print Player Info (I)
+Enter Next Action:
+```
+                    
+Now I get the message that a prize was found, 
+and the score should be adjusted, 
+and my options are printing again. 
+Let me try shooting _S_.
+
+```html  
+-------------------------------------------
+You Shot your pistol
+-------------------------------------------
+Select from one of the following Actions:
+    Use your gun (S)
+    Find Prize (F)
+    Quit Game (Q)
+    Print Player Info (I)
+Enter Next Action:
+```
+                    
+And now the message, 
+you shot your pistol. 
+Now, I'll select _I_, 
+to get the shooter information.
+
+```html  
+-------------------------------------------
+Shooter[name=Tim]
+-------------------------------------------
+Select from one of the following Actions:
+    Use your gun (S)
+    Find Prize (F)
+    Quit Game (Q)
+    Print Player Info (I)
+Enter Next Action:
+```
+                    
+That just prints my record's default string representation, 
+so you can see the player's a shooter, with my name. 
+And now I'll quit, _q_.
+
+```html  
+-------------------------------------------
+Sorry to see you go, Tim
+```
+
+That does quit, so that's good, 
+and the game tells me it's _sorry to see me go_. 
+That's our game console class. 
+I'm going to use this in the next couple of sections. 
+</div>
 
 
 <div align="justify">
