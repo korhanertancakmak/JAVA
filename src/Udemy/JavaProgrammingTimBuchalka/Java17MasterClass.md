@@ -149,6 +149,7 @@ What we will learn from this Path:
 ### [d. Defensive Copies]()
 ### [e. Unmodifiable Collections]()
 ### [f. Unmodifiable Collections Challenge]()
+### [g. Constructors]()
 
     * Record Constructors
     * Enum Constructors

@@ -3273,7 +3273,7 @@ These methods allow us to get closer to the ideal of immutability
 if it's needed. 
 </div>
 
-## [f. Unmodifiable Collections Challenge]()
+## [f. Unmodifiable Collections Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/Course08_UnmodifiableCollectionsChallenge/README.md)
 <div align="justify">
 
 In an earlier challenge, we created an immutable **BankCustomer** 
@@ -3360,6 +3360,977 @@ as you're coding your own solution,
 to help you see the big picture.
 </div>
 
+## [g. Constructors]()
+<div align="justify">
+
+Ok, what's left to know about constructors? 
+Let me encourage you not to skip this section. 
+Maybe you were surprised to learn in this section 
+that you can create private or package private constructors, 
+and this prevents classes from extending your class. 
+Perhaps you didn't know that using a _final_ modifier 
+on your instance fields is going to force you 
+to assign a value either in a constructor, 
+or in another code block I haven't covered yet, 
+an **initializer**.
+These topics are a bit more advanced, 
+and now that you've mastered the basics, 
+it's time to look at these additional features. 
+In this section, I'll be covering:
+
+* Initializing final fields.
+* Initializers, both static and instance.
+* Record and enum constructors.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        Parent parent = new Parent();
+        Child child = new Child();
+    }
+}
+```
+
+I've created **Main** class, 
+and I'll create another class called **Parent**.
+This is all I need to create an instance of this class, 
+and I'll do that in my _main_ method. 
+I have a new object, not particularly useful, 
+an instance of the **Parent** type. 
+Maybe you remember that 
+Java has created an implicit constructor for me, 
+the no args constructor. 
+This invisible constructor is kind of important. 
+Let me show you why. 
+Next, I'll create a **child** class, 
+and I'll put this in a different package, **external**.
+
+```java  
+public class Child extends Parent {
+    
+}
+```
+
+I'll have this class extend the Parent class. 
+This class compiles, and again, 
+I can create a new instance of this **child** class 
+in my _main_ method. 
+The point here is you don't ever have 
+to create a constructor to instantiate a class.
+It's only when you start doing so that it gets complicated. 
+I'll add some fields to the **Parent** class.
+
+```java  
+public class Parent {
+
+    private String name;
+    private String dob;
+}
+```
+
+I'll make them private, so _name_, 
+and date of birth or _dob_ for short, 
+both strings at the moment. 
+I'll quickly add getters and setters for both fields.
+I'll also include a _toString_ method, 
+selecting none for fields. 
+I'll change this, replacing that return statement, 
+with one that prints the name and date of birth. 
+Now my objects are a little more interesting. 
+If I go to the _main_ method:
+
+```java  
+Parent parent = new Parent();
+Child child = new Child();
+
+System.out.println("Parent: " + parent);
+System.out.println("Child: " + child);
+```
+
+I'll print both the _child_ and _parent_ out. 
+I can run this code:
+
+```html  
+Parent: name='Jane Doe', dob='01/01/1950'
+Child: name='Jane Doe', dob='02/02/1920'
+```
+                    
+And I see that my name and date of birth, 
+for both the **Parent** and **Child** have been 
+initialized to _null_.
+
+```java  
+public class Parent {
+
+    private final String name;
+    private final String dob;
+}
+```
+
+Now, I'll make my fields final.
+Those two changes give me four compiler errors.
+First, I've got errors on the field declarations themselves. 
+Second, I've got errors in my setter methods. 
+This is a reminder that when you use final fields, 
+you must initialize them. 
+When they weren't _final_, they were initialized to _null_, 
+but now I can't run this code without specifically assigning 
+values to these two fields. 
+I also can't ever reassign them, 
+so these setter methods, which do that, 
+aren't going to compile. 
+First, I'll remove the two setter methods. 
+Now, I'm going to add a code block directly 
+after the declaration of these two fields.
+I'll assign the name _John Doe_ to _name_. 
+I'll set the date of birth to January 1st, 1900.
+
+```java  
+public class Parent {
+
+    private final String name;
+    private final String dob;
+
+    {
+        name = "John Doe";
+        dob = "01/01/1900";
+        System.out.println("In Parent Initializer");
+    }
+}
+```
+
+Before I talk about this, 
+first notice this eliminated my compiler errors, 
+and I can run my main method.
+
+```html  
+Parent: name='Jane Doe', dob='01/01/1900'
+Child: name='Jane Doe', dob='02/02/1900'
+```
+
+My _parent_ and _child_ now both have those values in their fields. 
+What is this random block of code, 
+thrown in at the class level like this? 
+This is an **instance initializer**.
+
+An _instance initializer_ is a block of code declared 
+directly in a class body. 
+This code gets executed when an instance of the class is created. 
+_Instance initializers_ are executed 
+before any code in class constructors is executed.
+You can have multiple initializer blocks. 
+They will be executed in the order they are declared. 
+I'm going to now add a constructor to this **Parent** class. 
+I'll include that after the initializer block there:
+
+```java  
+public class Parent {
+
+    private final String name;
+    private final String dob;
+
+    {
+        name = "John Doe";
+        dob = "01/01/1900";
+        System.out.println("In Parent Initializer");
+    }
+
+    public Parent(String name, String dob) {
+        //this.name = name;
+        //this.dob = dob;
+        System.out.println("In Parent Constructor");
+    }
+}
+```
+
+And I'll generate it, selecting both fields.
+But this constructor has an error on both assignments. 
+Hovering over name, you can see it says, 
+_name might already have been assigned to_. 
+That's because it was in the initializer block.
+I'll comment out both of those assignments in the constructor. 
+I'll next include a statement to the console in the initializer. 
+I'll just print _In Parent Initializer_. 
+I'll put one in the constructor too. 
+This time, I'll print _in parent constructor_. 
+Getting back to the main code:
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        Parent parent = new Parent();
+        Child child = new Child();
+
+        System.out.println("Parent: " + parent);
+        System.out.println("Child: " + child);
+    }
+}
+```
+
+You'll notice I have a compiler error, 
+where I'm trying to instantiate the **Parent** class. 
+What happened to my implicit no args constructor? 
+Remember, once you create an explicit constructor, 
+Java will no longer provide you with the implicit one. 
+If I want a no args constructor now, 
+I have to manually add it. 
+Let me do that, getting back to the **Parent** class, 
+
+```java  
+public class Parent {
+
+    private final String name;
+    private final String dob;
+
+    {
+        name = "John Doe";
+        dob = "01/01/1900";
+        System.out.println("In Parent Initializer");
+    }
+
+    public Parent() {
+        System.out.println("In Parent's No Args Constructor");
+    }
+
+    public Parent(String name, String dob) {
+        //this.name = name;
+        //this.dob = dob;
+        System.out.println("In Parent Constructor");
+    }
+}
+```
+
+I'll generate and insert it above the one with two parameters. 
+I'll add a `system.out.println` statement into this constructor. 
+I'll print that this is _the parent's no args constructor_. 
+Running this code:
+
+```html  
+In Parent Initializer
+In Parent's No Args Constructor
+In Parent Initializer
+In Parent's No Args Constructor
+Parent: name='Jane Doe', dob='01/01/1900'
+Child: name='Jane Doe', dob='02/02/1900'
+```
+                        
+What I want you to notice is, that first, 
+both the initializer, and the no args constructor were run.
+They were run for both the **Parent** and the **Child** classes.
+Importantly, the initializer block ran first. 
+The _instance initializer_ might be a good place 
+to initialize default values, 
+but it's probably not a great place to initialize 
+final instance fields. 
+By doing this, I can't now change those values in my constructors. 
+Think about that for a minute. 
+It's probably likely that's exactly 
+what I want to do in my constructors, initialize instance fields, 
+from the constructor arguments.
+I'll comment out the two assignments in the initializer block for now. 
+
+```java  
+public class Parent {
+
+    private final String name;
+    private final String dob;
+
+    {
+        //name = "John Doe";
+        //dob = "01/01/1900";
+        System.out.println("In Parent Initializer");
+    }
+
+    /*
+    public Parent() {
+        System.out.println("In Parent's No Args Constructor");
+    }
+    */
+
+    public Parent(String name, String dob) {
+        this.name = name;
+        this.dob = dob;
+        System.out.println("In Parent Constructor");
+    }
+}
+```
+
+
+And I'll uncomment the ones in my constructor.
+I still have a problem though, a compiler error on my final fields. 
+I can't assign values to the fields, only in one constructor, 
+and not the other. 
+The truth is, I do not really want that no args constructor, 
+so I'll comment that out I'll get back to the _main_ method, 
+and pass in data for the Parent.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        //Parent parent = new Parent();
+        Parent parent = new Parent("Jane Doe", "01/01/1950", 4);
+        Child child = new Child();
+
+        System.out.println("Parent: " + parent);
+        System.out.println("Child: " + child);
+    }
+}
+```
+
+But I have another problem, and that's with my **Child** class. 
+Let's go to that class, and see what IntelliJ is telling us here.
+_There's no default constructor on **Parent**_. 
+When I added a _custom constructor_, 
+the implicit one wasn't generated, 
+and I commented out the one I generated. 
+Without it, we can't have a subclass 
+that does not declare a constructor.
+Let me add an explicit constructor 
+that looks like the one Java would generate for me, 
+so this is a little easier to understand.
+
+```java  
+public class Child extends Parent {
+
+    public Child() {
+        super();
+    }
+}
+```
+                                    
+This constructor has the same problem, but it's more obvious. 
+Calling super with no arguments is the problem. 
+Hovering over that, it says, _Expected two arguments but found zero_.
+
+```java  
+public class Child extends Parent {
+
+    public Child() {
+        super("Jane Doe", "02/02/1920");
+    }
+}
+```
+
+I'll pass some default values here, passing Jane Doe, 
+and this time February 2, 1920. 
+Now my code compiles again and runs.
+
+```html  
+In Parent Initializer
+In Parent Constructor
+In Parent Initializer
+In Parent Constructor
+Parent: name='Jane Doe', dob='01/01/1950'
+Child: name='Jane Doe', dob='02/02/1920'
+```
+
+I want to add another field to Parent:
+
+```java  
+protected final int siblings;
+
+public Parent(String name, String dob, int siblings) {
+    this.name = name;
+    this.dob = dob;
+    this.siblings = siblings;
+    System.out.println("In Parent Constructor");
+}
+```
+
+Called number of kids, and I'll make this protected, 
+so my subclasses can directly access it. 
+It will be an int, and I'll make it final. 
+I don't want a setter because it's final, 
+but I do want to add this to my one constructor.
+I'll add siblings to the parameter list of this constructor. 
+I'll assign that to my instance field.
+`this.siblings = siblings;`. 
+Now, I'll go back to the **Child** class.
+
+```java  
+public class Child extends Parent {
+
+    private final int birthOrder = getBirthOrder();
+    private final String birthOrderString;
+
+    {
+        if (siblings == 0) {
+            birthOrderString = "Only";
+        } else if (birthOrder == 1) {
+            birthOrderString = "First";
+        } else if (birthOrder == (siblings + 1)) {
+            birthOrderString = "Last";
+        } else {
+            birthOrderString = "Middle";
+        }
+        System.out.println("Child: Initializer, birthOrder = " + birthOrder +
+                ", birthOrderString = " + birthOrderString);
+    }
+
+    public Child() {
+        super("Jane Doe", "02/02/1920",5);
+        System.out.println("Child: Constructor");
+    }
+
+    private final int getBirthOrder() {
+
+        if (siblings == 0) return 1;
+        return new Random().nextInt(1, siblings + 2);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", " + birthOrderString + " child";
+    }
+}
+```
+
+I want two private and final fields in this class, an integer, 
+birth order, and a birth order string. 
+Again, this class won't compile unless these final fields are initialized. 
+Another way to initialize a final instance field is to call a final method. 
+I'll create a private final method called _getBirthOrder_ that returns an int. 
+If the number of siblings is 0, I'll just return 1.
+I'll return a new random number, between one and the siblings. 
+I'll add two to the sibling number, so that I get a number 
+between one and the number of actual kids, the parents might have had. 
+Notice here I'm accessing number of kids, a field this class inherits from **Parent**. 
+I can access this field during construction or initialization, 
+because the parent's constructor is called first, 
+before this code is executed, so this field should be assigned a value by this point. 
+I can now assign my birth Order value to what I get back from this method.
+
+Now that I have the birth order, 
+I want to set up the _BirthOrderString_, such as _First_ child, 
+_Only_ child, _Middle_ child or _Last_ child. 
+I'll do this with an _instance initializer_ block. 
+I'll check if the number of siblings is equal to 0. 
+If it is, I'll set _birthOrderString_ to _Only_. 
+Now, notice that although I have code setting _birthOrderString_ in this initializer, 
+I still have a compiler error, on the declaration of that field. 
+And the message is the same, _**birthOrderString** might not have been initialized_. 
+Why do I get this, when I have code to initialize it, in this initializer code block?
+
+Well, consider what happens if the number of siblings is not 0. 
+In that case, _birthOrderString_ has no value, and since it's final, 
+this is an invalid situation, and the compiler recognizes that. 
+I need to fully initialize _birthOrderString_ by providing a value 
+in all possible conditions. 
+I could complete this with an if-else, but I want multiple conditions,
+so I'll continue. 
+I'll add a condition to see if the birth order is 1. 
+And if so, that means this will be the first born, 
+so I'll set birth order string to first. 
+Again, I still have the error. 
+Because I used else if, there are still other possible unmet conditions. 
+I'll continue with the rest of the conditions.
+If the birth order is equal to the number of siblings plus 1, 
+then this means the _birthOrderString_ should be _last_. 
+For any other condition, this must be a _middle_ child. 
+Now, when I added that last else condition, 
+the compiler error was resolved. 
+I want to add a println statement in this initializer code. 
+I'll print that this is the initializer code in the child, 
+and print the birth order, and the birth order string. 
+Now, my constructor needs to include a number of siblings, 
+so I'll change it.
+In the no args constructor, 
+I'll pass 5 as the number of siblings for _Jane Doe_.
+I want to include a println statement as well.
+I'll print that this is the **Child** Constructor.
+
+And I'll add a _toString_ method, using Alt+Ins again, and select _none_. 
+And I'll just replace the generated code, returning _super.toString_, 
+and concatenating the _birthOrder_ String to that. 
+Getting back to my main method,
+I have to include the number of siblings for the parent instance, 
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        //Parent parent = new Parent();
+        //Parent parent = new Parent("Jane Doe", "01/01/1950");
+        Parent parent = new Parent("Jane Doe", "01/01/1950", 4);
+        Child child = new Child();
+
+        System.out.println("Parent: " + parent);
+        System.out.println("Child: " + child);
+    }
+}
+```
+
+And for that I'll just put 4 in there. 
+Running this code,
+
+```html  
+In Parent Initializer
+In Parent Constructor
+In Parent Initializer
+In Parent Constructor
+Child: Initializer, birthOrder = 6, birthOrderString = Last
+Child: Constructor
+Parent: name='Jane Doe', dob='01/01/1950'
+Child: name='Jane Doe', dob='02/02/1920', Last child
+```
+
+I want you to notice a couple of things. 
+The first two statements were generated 
+when I created the parent instance. 
+The next two statements were generated 
+when I created the child instance, 
+so the parent's initializer is called, 
+and then the constructor. 
+After this, the child's initializer's code is executed, 
+and then the code in the child constructor. 
+The child initializer was not called 
+before the birth order initialization though. 
+Any assignments that occur 
+before the declaration of the initialization block 
+get assigned before that block is executed. 
+I can confirm this because I was able 
+to use birth order in the initialization block code. 
+Now I'll move that statement:
+
+I'll cut it, and paste it right below Child no args constructor.
+Notice the compiler errors I'm getting, in the initializer block, 
+on this field in the if statements.
+If I hover over one of those, it says Illegal forward reference.
+I can't reference a field that has not been initialized, 
+in my initializer block. 
+I'll revert that change, putting the birth order statement back top. 
+In addition to an instance initializer block, 
+there's also a static initializer.
+This block of code lets us initialize static variables, 
+and is called as part of the Class construction. 
+You'll remember there are no static constructors, 
+so this is a way to include code you want to occur, 
+while the class itself is being initialized. 
+I'll add a _static initializer_ to the **Parent** class.
+
+```java  
+static {
+    System.out.println("Parent static initializer: class being constructed");
+}
+```
+
+The _static_ keyword is crucial, 
+and the only differentiator between a _static initializer_ 
+and an _instance initializer_. 
+I'll just print out that this is the Parent's _static initializer_, 
+and the **Parent** Class is being constructed.
+Running the code with this addition:
+
+```html  
+Parent static initializer: class being constructed
+In Parent Initializer
+In Parent Constructor
+In Parent Initializer
+In Parent Constructor
+Child: Initializer, birthOrder = 2, birthOrderString = Middle
+Child: Constructor
+Parent: name='Jane Doe', dob='01/01/1950'
+Child: name='Jane Doe', dob='02/02/1920', Middle child
+```
+                            
+You see that statement was only printed once, 
+just before I used that class for any reason. 
+A _static initializer_ is called the first time 
+a class is referenced or constructed. 
+A class can have any number of static initialization blocks. 
+They can be declared anywhere in the class body. 
+They're called in the order they appear in the source code.
+You might use this to set up some environment data or log information 
+related to the class before it can be used. 
+Remember, this will get executed only during the class's construction 
+and not each instance's construction. 
+We covered final fields, initialization of final fields, 
+and the use of instance and static initializers. 
+You've seen that the no args constructor is implicitly created 
+only when an explicit constructor isn't declared. 
+
+Now, I want to look at record and enum constructors in some detail. 
+I'll create a record, and call it **Person**, and include _toStrings_, 
+a name and a date of birth, _dob_.
+
+```java  
+public record Person(String name, String dob) {
+    
+}
+```
+
+As you know, this is all we need to have an operational class, 
+whose fields (name and dob) are final. 
+The compiler inserts a constructor 
+when it generates the bytecode or class file. 
+It takes the same arguments in the same order 
+as those described in the **Person** record. 
+This constructor is called the _canonical constructor_. 
+Notice that if I want to generate a constructor, 
+IntelliJ wants me to select from one of three options. 
+**Record** Constructors come in three flavors.
+
+* The _Canonical_, or _Long_ constructor is the implicitly 
+generated constructor. 
+You can explicitly declare your own, 
+which means the implicit one won't get generated. 
+If you do declare your own, you must make sure 
+all fields get assigned a value.
+
+* The _Custom_ constructor is just an overloaded constructor. 
+It must explicitly call the canonical constructor as its first statement.
+
+* The _Compact_, or _Short_ constructor is a special kind of constructor, 
+used only on records. 
+It's a succinct way of explicitly declaring a _canonical_ constructor. 
+
+```java  
+public record Person(String name, String dob) {
+    public Person(String name, String dob) {
+        this.name = name;
+        this.dob = dob.replace('-', '/');
+    }
+}
+```
+
+Ok, so let's see what we can, and can't do with these.
+Getting back to my code, 
+I'm going to generate the _canonical_ constructor. 
+If this is all you're going to do, 
+you don't need to generate it, 
+but maybe you want to do some transformations or validation, 
+before the assignments.
+In my case, I want to replace any dashes in my _dob_ argument, 
+with forward slashes, before assigning this value to my _dob_ field. 
+To test this out, 
+I'll create an instance of this record in the _main_ method 
+and print that out.
+
+```java  
+Person joe = new Person("Joe", "01-01-1950");
+System.out.println(joe);
+```
+
+I'll pass Joe as the name, 
+and a date of birth string, with some dashes. 
+Running this code:
+
+```html  
+Parent static initializer: class being constructed
+In Parent Initializer
+In Parent Constructor
+In Parent Initializer
+In Parent Constructor
+Child: Initializer, birthOrder = 3, birthOrderString = Middle
+Child: Constructor
+Parent: name='Jane Doe', dob='01/01/1950'
+Child: name='Jane Doe', dob='02/02/1920', Middle child
+Person[name=Joe, dob=01/01/1950]
+```
+                            
+I get the default **String** printed for a record; 
+the _toString_ method is another implicitly generated method. 
+Getting back to the record,
+
+```java  
+public record Person(String name, String dob) {
+    public Person(String name, String dob) {
+        this.name = name;
+        //this.dob = dob.replace('-', '/');
+    }
+}
+```
+
+So what happens if I don't assign a value to the dob field 
+in this canonical constructor? 
+I'll comment out that second line, in my constructor. 
+IntelliJ flags that parameter, _dob_, in the **Record** parameter list, 
+as having a problem.
+Hovering over that, it reads, 
+_Record component dob might not be initialized in canonical constructor_.
+Maybe I could try an _instance initializer_ to set it.
+
+```java  
+public record Person(String name, String dob) {
+    public Person(String name, String dob) {
+        this.name = name;
+        //this.dob = dob.replace('-', '/');
+    }
+
+    {
+        this.dob = "01/01/1900";
+    }
+}
+```
+
+An _instance initializer_ starts with a block of code at the class level. 
+Here, I'll try to assign a string literal to the _dob_ field. 
+Now, I've got a different problem, 
+and that's because _instance initializers_ aren't allowed in records.
+The only place to make field assignments is 
+in this canonical constructor only. 
+Let me comment those last two changes.
+
+```java  
+public record Person(String name, String dob) {
+    public Person(String name, String dob) {
+        this.name = name;
+        this.dob = dob.replace('-', '/');
+        //this.dob = this.dob.trim();
+    }
+/*
+    {
+        this.dob = "01/01/1900";
+    }
+*/
+
+    public Person(Person p) {
+        this(p.name, p.dob);
+    }
+}
+```
+
+Let's say that now, I want to trim this string next, 
+and I'll just reassign this value back to the dob field.
+This isn't permitted either,
+because all fields on a record are final, so I can't do this. 
+I'll revert that, commenting that extra statement.
+I'll generate another constructor. 
+Note that the three options for _Constructors_ do not pop up here. 
+For now, I'll push the select _None_ button 
+and will explain why we don't get three options later in this section. 
+I'll pass a **Person** argument to this constructor. 
+I want this to be a copy constructor, in other words. 
+Ok, there's another problem, and it's that a non-canonical record constructor, 
+like this one, must delegate to another constructor. 
+I'll do that, passing _name_ from the person argument, 
+and the _dob_ as well. 
+Going back to the **Main** class,
+
+```java  
+Person joeCopy = new Person(joe);
+System.out.println(joeCopy);
+```
+
+I'll set up a test case in my main method. 
+I'll create a new local variable, joe copy, 
+and assign that a new instance of Person, 
+passing my joe variable to that constructor. 
+I'll print this joe copy out.
+Running that:
+
+```html  
+Person[name=Joe, dob=01/01/1950]
+Person[name=Joe, dob=01/01/1950]
+```
+                
+You can see this works, 
+and I've got a copy of Joe's data in my new variable. 
+Getting back to my **Person** record,
+
+```java  
+/*
+    public Person(String name, String dob) {
+        this.name = name;
+        this.dob = dob.replace('-', '/');
+        //this.dob = this.dob.trim();
+    }
+*/
+
+public Person {
+    if (dob == null) throw new IllegalArgumentException("Bad data");
+    dob = dob.replace('-', '/');
+}
+```
+
+Let's see what happens when I try to generate another constructor. 
+I don't have the three choices I had before. 
+I now can't create a compact or canonical constructor.
+I can only generate a custom contractor. 
+I'll close that popup without generating anything. 
+What happened to my other options? 
+Let me comment out that first constructor,
+the explicit canonical constructor.
+Now I'll press Alt+Ins again. 
+All my options are back. 
+So why is this? 
+When you declare an explicit canonical constructor, 
+you can't create another constructor. 
+You also can't create a compact constructor, 
+since it's intertwined with the implicitly created constructor.
+In this case, I now want to review the compact constructor, 
+so I'll select that. 
+What do you notice about this constructor? 
+It's missing parentheses `()`, 
+and that's what makes this significant and different. 
+This code gets inserted into the implicit canonical constructor 
+before any final fields are assigned. 
+The advantage of using this compact constructor is that 
+you can focus on just the custom bit of code, 
+and leave the boilerplate code to be generated.
+Let's say in this case, I want to check for null 
+before I replace any dashes in the date of birth variable. 
+I'll throw an _IllegalArgumentException_ if date of birth is null. 
+Otherwise, I'll replace the dashes with slashes. 
+Notice here that I'm referring to constructor arguments 
+that aren't explicitly declared by this compact constructor. 
+This constructor has access to all the named arguments of the canonical constructor,
+so in this case, name and dob.
+It can reassign values to these argument variables. 
+All of this is occurring without explicitly assigning these values 
+to the instance fields. 
+I never assign these arguments to the fields in other words, 
+but I'm not getting any errors. 
+What happens if I try to do that, meaning if I actually do the assignment.
+
+```java  
+public Person {
+    if (dob == null) throw new IllegalArgumentException("Bad data");
+    dob = dob.replace('-', '/');
+
+    //this.dob = dob;
+}
+```
+
+I get the error message, cannot assign a value to final variable _dob_. 
+You can only edit or validate the method arguments 
+because the final fields have yet to be assigned. 
+I'll comment that last statement. 
+I'll next change that last statement, and instead of just dob, 
+I'll try to execute replace on this.dob.
+
+```java  
+public Person {
+    if (dob == null) throw new IllegalArgumentException("Bad data");
+    dob = dob.replace('-', '/');
+    //dob = this.dob.replace('-', '/');
+
+    //this.dob = dob;
+}
+```
+
+This gives me another error, that `this.dob` might not have been initialized. 
+I can't use the final fields in any of my code here, 
+for the reason that this code will get called,
+before they actually get set. 
+I'll revert that too, and now I want to show you a summary of these rules.
+
+* You can't have both a compact constructor 
+and an explicit canonical constructor.
+* This constructor is declared with no parentheses, 
+so no arguments.
+* It has access to all the arguments of the canonical constructor. 
+Don't confuse the arguments with the instance fields!
+* You can't do assignments to the instance fields in this constructor.
+* The implicit canonical constructor's assignments occur
+after the execution of this code.
+
+Ok, I want to pause here a moment, 
+to introduce you to another command line tool, packaged with java.
+
+Java class file disassembler is **javap**. 
+It lists class members, by default just public 
+and protected members in the class file. 
+This helps us _see_ implicit code in the compiled class file. 
+You can see all the options we can use on this tool on oracle's site. 
+The only one I'll be demonstrating is `-p`, 
+which is short for `-private`, 
+and will show all members of a class,
+regardless of the access modifiers. 
+The default mode would only print the public and protected members. 
+This tool can be useful with types like records and enums, 
+that do have quite a bit of implicit code. 
+Let's play with this for just a minute.
+
+First, I need to identify where my class files are being created, 
+and you might remember we talked about this when you were setting up IntelliJ. 
+I'll expand the project panel, 
+and show you that my class files are generated in an out folder, 
+under the project folder. 
+I'll continue to expand these folders, 
+and you'll see I have three files under the folder 
+that matches my package structure. 
+These are the compiled classes. 
+What I'll do next is open a terminal session inside IntelliJ's IDE. 
+I can do this by selecting the tab at the bottom of the screen 
+where my output is displayed. 
+I'll select Terminal there. 
+Note that my Terminal window is expanded to show more output. 
+You may want to do the same by expanding the window in the usual way. 
+I am going to execute javap from this shell, 
+using the argument dash p then specifying the location of the class file.
+
+```java  
+javap -p out/production/.../Person
+```
+          
+I'm going to first show you the **Person** class, 
+which is my Record.
+`-p` shows all classes and members, 
+including private ones. 
+Note that this path `...` needs to exactly match the path 
+we say when I expanded the out folder earlier,
+including the right case for the project name. 
+Note also that the forward slashes will work on all operating systems,
+including windows. 
+Running this:
+
+```java  
+public final class Rev2_RecordConstructor.Person extends Rev2_RecordConstructor.Record {
+    private final java.lang.String name;
+    private final java.lang.String dob;
+    public Rev2_RecordConstructor.Person(java.lang.String, java.lang.String);
+    public Rev2_RecordConstructor.Person(Rev2_RecordConstructor.Person);
+    public final java.lang.String toString();
+    public final int hashCode();
+    public final boolean equals(java.lang.Object);
+    public java.lang.String name();
+    public java.lang.String dob();
+}
+```
+            
+You can see all the hidden implicit code 
+that gets generated for us on a record. 
+You can see the private final fields, 
+first the _name_, then _dob_. 
+The next two statements are the constructors, 
+the first is my custom constructor, 
+but the second is the implicit canonical constructor. 
+After that, there are the methods, _toString_,
+_hashCode_ and _equals_, as well as the accessor methods. 
+Ok, so you can see this output is helpful 
+to understand what code is being implicitly generated by the compiler.
+If you don't get this output on your computer, 
+but instead get an error about javap not being recognised or found, 
+it means that javap is not in your computer path, 
+and you need to add it. 
+Or more specifically, 
+the folder containing the javap executable is not in the path. 
+This is most likely a Windows issue, 
+as in Mac and Linux will add the path automatically 
+when the JDK is installed. 
+The folder you want to add 
+to the path is the bin subfolder in the Java development kit you installed. 
+I'll open up Windows 11 Settings here, and type "envir", 
+which is short for environment and choose Edit environment variables 
+for your account at the bottom. 
+Click Path and click Edit if you want to add the path. 
+
+
+
+
+
+
+</div>
+
+
 
 <div align="justify">
 
@@ -3367,11 +4338,9 @@ to help you see the big picture.
 ```java  
 
 ```
-
 ```html  
 
 ```
-
 </div>
 
 
@@ -3382,7 +4351,9 @@ to help you see the big picture.
 ```java  
 
 ```
+```html  
 
+```
 </div>
 
 
@@ -3393,7 +4364,9 @@ to help you see the big picture.
 ```java  
 
 ```
+```html  
 
+```
 </div>
 
 
@@ -3404,16 +4377,7 @@ to help you see the big picture.
 ```java  
 
 ```
-
-</div>
-
-
-
-<div align="justify">
-
-
-```java  
+```html  
 
 ```
-
 </div>
