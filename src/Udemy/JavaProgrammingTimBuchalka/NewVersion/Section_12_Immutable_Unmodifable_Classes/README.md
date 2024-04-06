@@ -3283,138 +3283,82 @@ If you didn't do that challenge,
 let me encourage you to go back and work through it. 
 We ended up with two classes as shown here.
 
+![image11](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/images/image11.png?raw=true)
 
+The getters, constructors, and _toString_ methods 
+aren't shown on this diagram. 
+These are the classes we'll be starting with, in this challenge. 
+Now, let's Imagine that we work on a team, with different developers.
 
+![image12](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/images/image12.png?raw=true)
 
-                        _______________________________             _______________________________
-                        | BankCustomer                |             | BankAccount                 |
-                        |_____________________________|             |_____________________________|
-                        | name: String                |<>-----------| accountType: AccountType    |
-                        | customerId: int             |             | balance: double             |
-                        | List<BankAccount> accounts  |             |_____________________________|
-                        |_____________________________|
+One team creates the data transfer objects (DTOs)
+which will be used by a framework 
+to retrieve data from and commit data to a database. 
+Let's assume they use software to generate these classes 
+from their data model. 
+We want to emulate this, so we first want 
+to create a **Transaction** class in a _dto_ package 
+that might mirror a data table. 
+This class should have the fields shown above. 
+_Include getters and setters_ for all fields. 
+Data transfer objects generally have both, 
+to support two-way communication with database entities. 
+_Include a constructor_ that takes all fields for ease of use.
 
-    The getters, constructors and two string methods, aren't shown on this diagram. These are the classes we'll be starting
-    with, in this challenge. Now, let's Imagine that we work on a team, with different developers.
+![image13](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/images/image13.png?raw=true)
 
-                                                                            _______________________________
-                                                                            | Transaction                 |
-                                                                            |_____________________________|
-        * One team creates the data transfer objects (DTOs)                 | routingNumber: int          |
-                                                                            | customerId: int             |
-                                                                            | transactionId: long         |
-                                                                            | transactionAmount: double   |
-                                                                            |_____________________________|
+For this challenge, you'll modify your **BankAccount** class. 
+First, you'll want to change the balance so that it's mutable. 
+Include a transaction Collection. 
+I'm showing a Map on my class diagram, 
+but if you want to use another collection, that's good too. 
+Provide a getter, or accessor method, for the transaction data. 
+Provide a method to adjust the balance, 
+and add the transaction data to the transaction collection. 
+I'll be doing this in a single method called **commitTransaction** as shown. 
+You'll also need to modify your **BankCustomer** class.
 
-    which will be used by a framework, to retrieve data from and commit data to, a database. Let's assume they use software
-    to generate these classes, from their data model. We want to emulate this, so we first want to Create a "Transaction"
-    class in a dto package, that might mirror a data table. This class should have the fields shown above. "Include getters
-    and setters" for all fields. Data transfer objects generally have both, to support two way communication with database
-    entities. "Include a constructor" that takes all fields, for ease of use.
+![image14](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/images/image14.png?raw=true)
 
-                                   Current                              After Modifications (An Example)
-                        _______________________________        _________________________________________________
-                        | BankAccount                 |        | BankAccount                                   |
-                        |_____________________________|        |_______________________________________________|
-                        | accountType: AccountType    |        | accountType: AccountType                      |
-                        | balance: double             |        | balance: double                               |
-                        |_____________________________|        | Map<Long, Transaction>: transactions          |
-                                                               |_______________________________________________|
-                                                               | getTransactions: Map<Long, Transaction>       |
-                                                               |   commitTransaction(int routingNumber,        |
-                                                               |     long transactionId, String customerId,    |
-                                                               |       double amount)                          |
-                                                               |_______________________________________________|
+Return the customer id as a 15-digit string, with leading zeros. 
+Design this class, so that code in other packages 
+can't instantiate a new **BankCustomer**. 
+Return a defensive copy of the accounts from the _getAccounts_ method. 
+Include a _getAccount_ method to return just one account, 
+based on an account type, either savings or checking. 
+Assume a customer will have one checking account and one savings account.
 
-        For this challenge, you'll modify your BankAccount class. First, you'll want to change the balance so that it's
-    mutable. Include a Transaction Collection. I'm showing a Map on my class diagram, but if you want to use another
-    collection, that's good too. Provide a getter, or accessor method, for the transaction data. Provide a method to
-    adjust the balance, and add the transaction data to the transaction collection. I'll be doing this in a single method
-    called commitTransaction as shown. You'll also need to Modify your BankCustomer class.
+![image15](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/images/image15.png?raw=true)
 
-                                   Current                              After Modifications (An Example)
-                        _______________________________        _________________________________________________
-                        | BankCustomer                |        | BankCustomer                                  |
-                        |_____________________________|        |_______________________________________________|
-                        | name: String                |        | name: String                                  |
-                        | customerId: int             |        | customerId: int                               |
-                        | List<BankAccount> accounts  |        | List<BankAccount> accounts                    |
-                        |_____________________________|        |_______________________________________________|
-                                                               | getCustomerId: String                         |
-                                                               | getAccounts: List<Bank Account>               |
-                                                               | getAccount(AccountType type): Account         |
-                                                               |_______________________________________________|
+Next, you want to create a **Bank** class that has a routing number, 
+and a collection of customers, as well as an integer 
+that holds the next transaction id to be assigned. 
+You should be able to look up a customer by a customer id, 
+a 15-character **String**. 
+Transaction id's should be assigned, by using the _lastTransactionId_ field, 
+on this instance of the bank. 
+A negative amount is a withdrawal, and a positive amount is a deposit. 
+Don't let the customer's account balance go below zero. 
+In the **Main** class's _main_ method. 
+Create a bank instance and add a customer. 
+Let a client get a **BankCustomer** instance by a customer id, 
+and review transactions from a single selected account. 
+These transactions should **not be modifiable**, 
+or susceptible to side effects. 
+You should only be able to perform a withdrawal 
+or deposit of funds, through the **Bank** Instance, 
+passing the customer id as a **String**, 
+the type of account this transaction will be against, and the amount. 
+In other words, the _main_ method should not have access 
+to the commit transaction code on the **BankAccount** itself.
 
-    Return the customer id as a 15 digit string, with leading zeros. Design this class, so that code in other packages
-    can't instantiate a new Bank Customer. Return a defensive copy of the accounts, from the getAccounts method. Include
-    a getAccount method to return just one account, based on account type, either savings or checking. Assume a customer
-    will have one checking account and one savings account.
+![image16](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/images/image16.png?raw=true)
 
-                        _________________________________________________
-                        | Bank                                          |
-                        |_______________________________________________|
-                        | routingNumber: int                            |
-                        | lastTransactionId: long                       |
-                        | Map<String, BankCustomer> customers           |
-                        |_______________________________________________|
-                        | getCustomer(String id): BankCustomer          |
-                        | addCustomer(String name,                      |
-                        |             double checkingInitialDeposit,    |
-                        |             double savingsInitialDeposits)    |
-                        | doTransaction(String id, AccountType type,    |
-                        |               double amount)                  |
-                        |_______________________________________________|
-
-        Next, you want to create a Bank class, that has a routing number, and a collection of customers, as well as an
-    integer that holds the next transaction id to be assigned. You should be able to look up a customer by a customer id,
-    a 15 character String. Transaction id's should be assigned, by using the lastTransactionId field, on this instance
-    of the bank.  A negative amount is a withdrawal, and a positive amount is a deposit. Don't let the customer's account
-    balance go below zero. In the Main class's main method. Create a bank instance, and add a customer. Let a client get
-    a BankCustomer instance by a customer id, and review transactions from a single selected account. These transactions
-    should "not be modifiable", or susceptible to side effects. You should only be able to perform a withdrawal or deposit
-    of funds, through the Bank Instance, passing the customer id as a String, the type of account this transaction will
-    be against, and the amount. In other words, the main method should not have access to the commit transaction code on
-    the Bank Account itself.
-
-               _________________________________________________             _________________________________________________
-               | BankCustomer                                  |             | Bank                                          |
-               |_______________________________________________|             |_______________________________________________|
-               | name: String                                  |             | routingNumber: int                            |
-               | customerId: int                               |             | lastTransactionId: long                       |
-       |-----<>| List<BankAccount> accounts                    |-----------<>| Map<String, BankCustomer> customers           |
-       |       |_______________________________________________|             |_______________________________________________|
-       |       | getCustomerId: String                         |             | getCustomer(String id): BankCustomer          |
-       |       | getAccounts: List<Bank Account>               |             | addCustomer(String name,                      |
-       |       | getAccount(AccountType type): Account         |             |             double checkingInitialDeposit,    |
-       |       |_______________________________________________|             |             double savingsInitialDeposits)    |
-       |                                                                     | doTransaction(String id, AccountType type,    |
-       |                                                                     |               double amount)                  |
-       |                                                                     |_______________________________________________|
-       |
-       |       _________________________________________________             _______________________________
-       |       | BankAccount                                   |             | Transaction                 |
-       |       |_______________________________________________|             |_____________________________|
-       |       | accountType: AccountType                      |             | routingNumber: int          |
-       |       | balance: double                               |             | customerId: int             |
-       |------ | List<BankAccount> accounts                    |<>---------- | transactionId: long         |
-               |_______________________________________________|             | transactionAmount: double   |
-               | getTransactions: Map<Long, Transaction>       |             |_____________________________|
-               |   commitTransaction(int routingNumber,        |
-               |     long transactionId, String customerId,    |
-               |       double amount)                          |
-               |_______________________________________________|
-
-    You might want to leave this diagram up as you're coding your own solution, to help you see the big picture.
-```java  
-
-```
-
-```html  
-
-```
-
+You might want to leave this diagram up 
+as you're coding your own solution, 
+to help you see the big picture.
 </div>
-
 
 
 <div align="justify">
