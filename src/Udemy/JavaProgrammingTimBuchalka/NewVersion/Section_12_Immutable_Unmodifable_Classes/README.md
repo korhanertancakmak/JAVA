@@ -4321,20 +4321,524 @@ to the path is the bin subfolder in the Java development kit you installed.
 I'll open up Windows 11 Settings here, and type "envir", 
 which is short for environment and choose Edit environment variables 
 for your account at the bottom. 
-Click Path and click Edit if you want to add the path. 
+Click **Path** and click **Edit** if you want to add the path. 
 
+Now, I want to look again at the enum type. 
+I didn't get too deep into them before, 
+because for the most part, 
+you'll probably be using them in their simplest form. 
+Usually, you'll use an enum as a list of named constants, 
+and sometimes the ordinal values are important. 
+I did show you how to include a method 
+in the body of the enum, 
+and use that method in code as well, 
+but I didn't cover constructors. 
+What does it mean if I set up a constructor on an enum? 
+Let me set this up. 
+First, I'll create a new Java class, 
+I'll pick enum as the type, and call that **Generation**.
 
+```java  
+public enum Generation {
 
+    GEN_Z,
+    MILLENNIAL,
+    GEN_X,
+    BABY_BOOMER,
+    SILENT_GENERATION,
+    GREATEST_GENERATION;
+    
+    Generation() {
+        System.out.println(this);
+    }
+}
+```
 
+I'll add my constants. 
+I'm going to set these up, one on each line. 
+You'll understand why in just a minute. 
+Each one of these represents a generational name, 
+so a range of birthdates, 
+that describe if a person is in one of these groups. 
+Hopefully you're somewhat familiar with these labels. 
+I have _GEN_Z_, and _MILLENNIAL_, _GEN_X_, then _BABY_BOOMER_,
+_SILENT_GENERATION_, and finally the _GREATEST_GENERATION_. 
+Each of these represents a range of birth years. 
+If you've got a young child, he or she is probably a _GEN_Z_, 
+and a grandparent might be a _BABY_BOOMER_, 
+or from the _SILENT_GENERATION_.
+Maybe you're a _MILLENNIAL_, or a _GEN_X_. 
+Like any class, I can generate a constructor for this enum. 
+I'll insert it after my constants list, and before the class's closing brace.
+Notice, after that's inserted, 
+that IntelliJ added a semicolon 
+after the _GREATEST_GENERATION_ constant. 
+Any time you add code to an enum,
+other than the constants, 
+you must include this semicolon. 
+Ok, so first, I'll just print a statement in this constructor. 
+I'll have the code print out the value of _this_. 
+Getting back to the main method:
 
+```java  
+Generation g;
+```
 
+Let's see what happens if I use this enum. 
+I won't even use it, 
+I'll just set up a local variable with that type to start. 
+If I run that code:
+
+```html  
+Parent static initializer: class being constructed
+In Parent Initializer
+In Parent Constructor
+In Parent Initializer
+In Parent Constructor
+Child: Initializer, birthOrder = 3, birthOrderString = Middle
+Child: Constructor
+Parent: name='Jane Doe', dob='01/01/1950'
+Child: name='Jane Doe', dob='02/02/1920', Middle child
+Person[name=Joe, dob=01/01/1950]
+Person[name=Joe, dob=01/01/1950]
+```
+                    
+There's no evidence that the enum constructor was ever called. 
+
+```java  
+//Generation g;
+Generation g = Generation.BABY_BOOMER;
+```
+
+Next, I'll assign a value to that local variable, 
+assigning it _BABY_BOOMER_. 
+Running this code,
+
+```html  
+Person[name=Joe, dob=01/01/1950]
+Person[name=Joe, dob=01/01/1950]
+GEN_Z
+MILLENNIAL
+GEN_X
+BABY_BOOMER
+SILENT_GENERATION
+GREATEST_GENERATION
+```
+
+You can see, the constructor didn't just run for the _BABY_BOOMER_, 
+it ran for each one of the enum constants. 
+When an Enum is initialized, 
+all its constants are initialized, 
+which means the constructor was called for each constant.
+Now, let's use the javap tool to examine what an enum really is, 
+under the hood. 
+I'll type in javap, then dash p 
+which means I want all members printed, 
+including private and package private ones. 
+I'll include the path, 
+where the class file is, and then just type **Generation**, 
+and then enter. 
+Running this:
+
+```html  
+Compiled from "Generation.java"
+public final class Rev3_EnumConstructor.Generation extends java.lang.Enum<Rev3_EnumConstructor.Generation> {
+    public static final Rev3_EnumConstructor.Generation GEN_Z;
+    public static final Rev3_EnumConstructor.Generation MILLENNIAL;
+    public static final Rev3_EnumConstructor.Generation GEN_X;
+    public static final Rev3_EnumConstructor.Generation BABY_BOOMER;
+    public static final Rev3_EnumConstructor.Generation SILENT_GENERATION;
+    public static final Rev3_EnumConstructor.Generation GREATEST_GENERATION;
+    private static final Rev3_EnumConstructor.Generation[] $VALUES;
+    public static Rev3_EnumConstructor.Generation[] values();
+    public static Rev3_EnumConstructor.Generation valueOf(java.lang.String);
+    private Rev3_EnumConstructor.Generation();
+    private Rev3_EnumConstructor.Generation[] $values();
+    static {}; 
+    }
+```
+                    
+You can see that **Generation** is a final class. 
+I'll be covering final classes shortly.
+This class extends a special class in Java, 
+a `java.lang.Enum`. 
+Now, what's so interesting is, 
+you can see that each one of my constants 
+is really a final static field 
+that has the same type as this enum, _Generation_. 
+Notice also that there's a constructor, 
+it's private, near the bottom of this output. 
+Let's see what else we can do here.
+
+```java  
+private final int startYear;
+private final int endYear;
+```
+
+It would be nice if I could include the corresponding year ranges, 
+associated with each enum constant. 
+I could set up a method, 
+as I did in a previous example, 
+and return the result of a switch expression, 
+which could be the year range. 
+But I really want the range to be two fields, 
+a start year, and an end year. 
+Turns out, I can add additional fields to an enum, 
+and use a constructor to populate them.
+As with most classes, I can add instance fields, 
+so I'll add a _startYear_ and an _endYear_. 
+I'll insert these before my constructor,
+but after my constant list. 
+I'm going to pass these as arguments 
+to the constructor next. 
+I'll assign the instance fields. 
+
+```java  
+Generation(int startYear, int endYear) {
+    this.startYear = startYear;
+    this.endYear = endYear;
+    System.out.println(this + " " + startYear + " - " + endYear);
+    System.out.println(this);
+}
+```
+
+I'll also print that year range out, 
+concatenating the two variables to my println statement.
+Now, look what these changes did 
+to my enum constant declarations. 
+Every single one is showing an error. 
+Because I created this explicit constructor, 
+the implicit no args one doesn't get created. 
+This means I have to pass values to the constructor 
+for each of these constants. 
+How do I do that? 
+Well, I can just define the arguments in parentheses, 
+after each constant name.
+
+```java  
+public enum Generation {
+
+    GEN_Z(2001, 2025),
+    MILLENNIAL(1981, 2000),
+    GEN_X(1965, 1980),
+    BABY_BOOMER(1946, 1964),
+    SILENT_GENERATION(1927, 1945),
+    GREATEST_GENERATION(1901, 1926);
+
+    Generation() {
+        System.out.println(this);
+    }
+}
+```
+
+I'll add 2001 and 2025 to _GEN_Z_, 
+these are the birthdate years, 
+the range of years, 
+that get a person labeled as part of the _GEN_Z_ generation. 
+I'll set _MILLENNIAL_ to be 1981 to 2000.
+_GEN_X_ is 1965 to 1980.
+_BABY_BOOMER_ is 1946 to 1964. 
+The _SILENT_GENERATION_ was born between 1927 and 1945. 
+Finally, the _GREATEST_GENERATION_ is 1901 to 1926.
+Now, my code compiles, and I can run it.
+
+```html  
+GEN_Z 2001 - 2025
+MILLENNIAL 1981 - 2000
+GEN_X 1965 - 1980
+BABY_BOOMER 1946 - 1964
+SILENT_GENERATION 1927 - 1945
+GREATEST_GENERATION 1901 - 1926
+```
+
+You can see that each one got constructed, 
+and includes the year range. 
+Let's run javap again. 
+I can just press the up arrow on that terminal session.
+
+```java  
+private int startYear;
+private int endYear;
+private Rev3_EnumConstructor.Generation(int, int);
+```
+
+This hasn't changed much, 
+except it has the two instance fields, _startYear_ and _endYear_. 
+And there on the third to last line, 
+is the new signature for the constructor. 
+You can see each parameter type is an int.
+It's also private, even though I didn't include an access modifier. 
+In fact, let me add the public modifier to that constructor.
+
+```java  
+public Generation(int startYear, int endYear) {
+```
+
+That gives me an error, so I'll hover over that, 
+and I see _the modifier public is not allowed here_. 
+Why not?
+Well, a constructor on an enum is implicitly private, 
+whether we declare it that way or not. 
+We can't declare a constructor here as either public or protected. 
+I'll revert that last statement. 
+The other thing that you should be aware of, 
+now that you know these constructors are private, 
+is that I can't create an instance of an enum. 
+Let me go back to the _main_ method, and demonstrate that.
+
+```java  
+Generation h = new Generation();
+Generation h = new Generation.BABY_BOOMER(1900, 2000);
+```
+
+I'll set up another local variable 
+and try to instantiate a new **Generation**. 
+IntelliJ tells me enum types can't be instantiated. 
+What about an enum constant? 
+I'll try to instantiate a new **Generation** Baby Boomer, 
+passing it a different range of values. 
+And that, too, isn't permissible. 
+So I'll just remove that last statement altogether.
+Getting back to the **Generation** enum,
+
+```java  
+private final int startYear;
+private final int endYear;
+```
+
+I want those instance fields to be _final_. 
+There won't be any need to change those values, 
+so I'll add final to each of those declaration statements. 
+I'll print that date ranges out in the _toString_ method:
+
+```java  
+@Override
+public String toString() {
+    return this.name() + " " + startYear + " - " + endYear;
+}
+```
+
+So I'll generate that, selecting none for fields. 
+I'll return `this.name`, and the year range from this method.
+I'll also change that println statement in the constructor, 
+just printing this alone again. 
+Running this code:
+
+```html  
+GEN_Z 2001 - 2025
+MILLENNIAL 1981 - 2000
+GEN_X 1965 - 1980
+BABY_BOOMER 1946 - 1964
+SILENT_GENERATION 1927 - 1945
+GREATEST_GENERATION 1901 - 1926
+```
+
+I get the same results. 
+You can have more than one constructor in an enum. 
+Again I'll generate a constructor:
+
+```java  
+Generation() {
+    this(2001, LocalDate.now().getYear());
+}
+```
+
+Insert it before this other constructor, 
+and select _none_ for the fields. 
+Now I've got an explicit no args constructor. 
+Like other classes, I can chain constructors, 
+so I'll chain the two args constructors, 
+passing 2001, and the current year, 
+which I get using `LocalDate.now`, with _getYear_. 
+Now, for the Gen z constant, I can remove the arguments,
+so that it'll execute the no args constructor. 
+I can define this with empty parentheses, 
+or I can remove them all together. 
+Running this code:
+
+```html  
+GEN_Z 2001 - 2023
+MILLENNIAL 1981 - 2000
+GEN_X 1965 - 1980
+BABY_BOOMER 1946 - 1964
+SILENT_GENERATION 1927 - 1945
+GREATEST_GENERATION 1901 - 1926
+```
+                        
+My gen z end year is the current year. 
+Now that you know that each constant 
+is really a Generation class, 
+you can actually include a class body for each, 
+or any of these.
+
+```java  
+GEN_Z {
+    {
+        System.out.println("-- SPECIAL FOR " + this + " --");
+    }
+},
+```
+
+I'll do this with Gen z, adding a class body, 
+by including a starting and ending curly brace.
+Ok, so what happens if I just add a `System.out.println` statement there? 
+I want this to print out, special for gen z. 
+But this doesn't compile. 
+If you thought about GEN Z as a class, 
+you'd realize that what I'm really doing here is,
+inserting a line of code in a class body. 
+I can't do that, but I can wrap it in another code block. 
+I'll add another set of starting and ending curly braces.
+This compiles, and what do you think I'm doing here? 
+Well, it's an instance initializer,
+for the GEN Z instance. 
+Let's run this code now:
+
+```html  
+GEN_Z 2001 - 2023
+-- SPECIAL FOR GEN_Z 2001 - 2023 --
+MILLENNIAL 1981 - 2000
+GEN_X 1965 - 1980
+BABY_BOOMER 1946 - 1964
+SILENT_GENERATION 1927 - 1945
+GREATEST_GENERATION 1901 - 1926
+```
+
+And here you can see that statement. 
+You can also declare methods in these constant class bodies. 
+It's generally not a good idea to make your enum too complex.
+If you need that much complexity, 
+maybe a different approach would make more sense.
+Ok, so I think that covers constructors for records and enums. 
 </div>
 
-
-
+## [h. Game Console Challenge]()
 <div align="justify">
 
+In this challenge, I'll set up some code 
+I plan to use in the remaining challenges and sections. 
+I'll again set this up as an independent challenge 
+if you want to try it on your own. 
 
+This code will be using generic types and lambda expressions, 
+and will be available as a resource in the upcoming sections. 
+The game console will be a container to execute some scanner code, 
+to drive a text-based game's play. 
+It'll collect a username, creating a player from that.
+It will start a while loop, displaying a menu of options for a user, 
+then solicit a user's response. 
+It'll execute a game or player method, based on a user's selected action, 
+and end the game if the action indicates the game is over.
+
+### GameConsole Class
+                                            
+This **GameConsole** class is a container for a game, 
+so it needs a type argument for a game field. 
+It should also have a static scanner field, 
+which uses `System.in` to get keyboard input. 
+You should implement two methods in this class.
+The _addPlayer_ method will prompt a user for their name, 
+read in the response from the scanner, 
+and delegate to the Game's _addPlayer_ method. 
+The _playGame_ method will display all available game options, 
+soliciting user input in a while loop, 
+then calling execute the action associated with the input. 
+The constructor should take a new instance of a **Game**.
+
+### The GameAction Record
+
+You'll also want to create a **GameAction** record with three fields. 
+There should be a key, a _char_ field, 
+which is the key a user would press to select the action. 
+Next, include a prompt, which is displayed to the user 
+to describe the specific action. 
+There should be an action field for a lambda expression or method reference. 
+I'll be using _Predicate_ with an Integer type argument. 
+The integer is the player's index in the player list. 
+A predicate always returns a boolean result. 
+This will be used to continue or end the play.
+
+### The Player Interface
+
+Next, you'll want to create a **Player** interface. 
+The **Player** interface will have a single abstract method, 
+_name_, that returns a **String**. 
+A game's player should implement this type.
+Use this type as a type parameter for **Game**.
+
+### The Game Class
+
+The **Game** class should be _abstract_ and _generic_, 
+the type parameter should be a type of **Player**. 
+This class should have three fields, a _gameName_, 
+a list of players, and a map of game actions. 
+Your **Game** class should have **two abstract methods** 
+you want any custom game to implement.
+
+* The method createNewPlayer will return a new instance of the type used for a player.
+* The method getGameActions will return a map 
+that associates a character a user would enter, with a prompt and an action to be taken.
+
+For example, if a user selects **Q**, 
+this should map to a GameAction record, 
+that has **QuitProgram** as the prompt, 
+and a lambda expression, calling the quit method on the game, 
+with a method reference, `this::quitGame`.
+
+This class should have _concrete methods_, 
+some of which might be overridden by subclasses. 
+The _addPlayer_ method takes a string for _name_, 
+creates a **player** instance, 
+adds it to the **Game**'s player list, 
+and returns that index. 
+The executeGameAction will call the **Predicate**'s test method, 
+on the lambda expression in the action field, 
+returning the boolean result. 
+The _printPlayer_ and _quitGame_ methods, 
+are the methods referenced in the **GameAction** records. 
+Include getter and helper methods as appropriate. 
+Finally, create your own simple game, and player type, 
+and test some methods on the **GameConsole**.
+
+
+
+                                    _______________________________
+                                    | <<Interface>>               |
+                                    |    Player                   |
+                                    |_____________________________|
+                                    | bane(): String              |
+                                    |_____________________________|
+                                                ↑
+                                                ↑
+               _______________________________________________________________________
+               | Game<T extends Player>                                              |
+               |_____________________________________________________________________|
+               | gameName: String                                                    |
+               | players: List<Player>                                               |
+               | standardActions:Map<Character,GameAction> standardActions           |
+               |_____________________________________________________________________|          _______________________________
+               | abstract CreateNewPlayers(String name): T                           |          | GameAction                  |
+               | abstract getGameActions(int playerIndex): Map<Character,GameAction> |          |_____________________________|
+               | ----------------------------------------------                      |<>--------| key: char                   |
+               | addPlayer(String name): int                                         |          | prompt: String              |
+               | executeGameAction(int player, GameAction action): boolean           |          | action: Predicate<Integer>  |
+               | printPlayer(int player): boolean                                    |          |_____________________________|
+               | quitGame(int player): boolean                                       |
+               |_____________________________________________________________________|
+                                                ↑
+                                                ↑
+                           _________________________________________________
+                           | GameConsole<T extends Game<? extends Player>> |
+                           |_______________________________________________|
+                           | game: T                                       |
+                           | static scanner: Scanner                       |
+                           |_______________________________________________|
+                           | addPlayer(): int                              |
+                           | playGame(int playerIndex)                     |
+                           |_______________________________________________|
+
+        Here is a model of the types I just explained, which I'll be building now. I've created the usual Main class and
+    main method. I'm going to start with the Player interface, in game package.
 ```java  
 
 ```
