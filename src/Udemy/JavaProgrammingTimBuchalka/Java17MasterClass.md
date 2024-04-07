@@ -150,10 +150,10 @@ What we will learn from this Path:
 ### [e. Unmodifiable Collections]()
 ### [f. Unmodifiable Collections Challenge]()
 ### [g. Constructors]()
-
-    * Record Constructors
-    * Enum Constructors
-    * Sealed Classes
+### [h. Game Console Challenge Setup]()
+### [i. Pirate Game Challenge]()
+### [j. Final Classes]()
+### [k. Sealed Classes]()
 
 ## [13. Streams]()
 

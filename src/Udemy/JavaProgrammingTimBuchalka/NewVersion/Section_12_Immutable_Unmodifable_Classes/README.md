@@ -5383,7 +5383,7 @@ I'm going to use this in the next couple of sections.
 ```
 </div>
 
-## [i. Pirate Game Challenge]()
+## [i. Pirate Game Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/Course11_PirateGameChallenge/README.md#pirate-game-challenge)
 <div align="justify">
 
 In this challenge, you'll want to create 
@@ -5446,25 +5446,351 @@ I'm going to put this new game,
 and related types, in the **pirate** package. 
 </div>
 
-
-
-
-
+## [j. Final Classes]()
 <div align="justify">
 
+In an earlier section, 
+I talked about _final_ methods 
+which can't be overridden, 
+and _final_ variables 
+which need to be initialized 
+but then can't be reassigned. 
+**Final Classes** are a similar concept. 
+Using the _final_ keyword on a class 
+means it can't be extended. 
+You declare a class **final** 
+if its definition is complete, 
+and no subclasses are desired or required.
+**Enums** and **Records** are _final_ classes, 
+as I showed you, 
+when I used the java class disassembler tool on those. 
+I've also showed you examples of 
+how subclasses can take advantage of mutable fields on parent classes,
+if the parent classes aren't implementing defensive code. 
+One of the easiest ways to prevent this, 
+is to make your class _final_. 
+I'll be using the **GameConsole** project 
+from the last challenges, in this section.
+
+In this project, I already have a record, **GameAction**, 
+and if you followed along in the last challenge, 
+you know I have a **Weapon** enum in the **pirate** package. 
+I'm going to create another class, and call this one **MainFinal**.
 
 ```java  
-
+class SpecialGameAction extends GameAction {
+    public SpecialGameAction(char key, String prompt, Predicate<Integer> action) {
+        super(key, prompt, action);
+    }
+}
 ```
+
+The first thing I'll test is 
+whether I can extend the **GameAction** record. 
+I'll include this as an additional class 
+in the java source file, and not a nested class. 
+I'll call it **SpecialGameAction**, 
+and that'll extend **GameAction**.
+IntelliJ is flagging this as an error, 
+and if I hover over that, 
+it says _there's no default constructor available_.
+That's maybe not the message you might have expected, 
+so now I'll actually try to run this code, 
+which will attempt to compile it first.
+
 ```html  
-
+java: cannot inherit from final GameAction
 ```
+                
+Here, I get java's message, 
+_cannot inherit from final GameAction_. 
+**GameAction**'s a record, 
+so I can't use it in any `extends` clause for another class. 
+If I hover over **GameAction** again, 
+I'll now select _Create_ constructor matching _super_.
+And that will generate a constructor for me.
+Now I get the error from IntelliJ, 
+that makes more sense, 
+_cannot inherit from final .game.GameAction_. 
+I'll revert that last change, removing that constructor. 
+I'll change **GameAction** to **Weapon**, 
+my enum from the last challenge:
+
+```java  
+class SpecialGameAction extends Weapon {}
+```
+
+And again, I get the same message from IntelliJ, 
+about no _default_ constructor. 
+If I attempt to run it:
+
+```html  
+java: cannot inherit from final .pirate.Weapon
+```
+                
+I get the same compiler error 
+as I did with the record, 
+just a different type. 
+Ok, so hopefully 
+there are no surprises there. 
+We can't extend records or enums. 
+I'll remove that statement. 
+Next, I'll create another class 
+in this source file, **SpecialGameConsole**, 
+that extends **GameConsole**.
+
+```java  
+class SpecialGameConsole<T extends Game<? extends Player>> extends GameConsole<Game<? extends Player>> {
+    public SpecialGameConsole(Game<? extends Player> game) {
+        super(game);
+    }
+}
+```
+
+Since **GameConsole** is generic, 
+I want this to also be generic, 
+so I'll declare it in the same way as **GameConsole**,
+but when I extend it, I specify the type argument, 
+a **Game**, with the same wildcard for player.
+Ok, here, I'm getting the same error 
+as when I tried to use a record in the `extends` class, 
+but this time, the message is accurate in this case, 
+so I'll just click on _Create_ constructor matching _super_. 
+I'll set up a local variable 
+to use this new class in my _main_ method.
+
+```java  
+public class MainFinal {
+    public static void main(String[] args) {
+        SpecialGameConsole<PirateGame> game = new SpecialGameConsole<>(new PirateGame("Pirate Game"));
+    }
+}
+```
+
+I'll set the type argument to my **PirateGame**, 
+the name of the variable is simply _game_. 
+I'll make it a new instance of the **SpecialGameConsole**, 
+passing it the new **PirateGame**. 
+I can run this code.
+
+```html  
+Loading Data...
+Finished Loading Data.
+```
+
+I'll see the _Loading Data_, 
+and _Finished loading data_ messages 
+from the **PirateGame**. 
+I'll make the constructor on **SpecialGameConsole**, 
+to have a private access modifier.
+
+```java  
+class SpecialGameConsole<T extends Game<? extends Player>> extends GameConsole<Game<? extends Player>> {
+    //public SpecialGameConsole(Game<? extends Player> game) {
+    private SpecialGameConsole(Game<? extends Player> game) {
+        super(game);
+    }
+}
+```
+
+I'm sure I showed you this before, 
+but changing the access modifier on a constructor 
+lets you control who can create instances of your class. 
+If you make it _private_, like I did here, 
+nobody can instantiate an instance of this class. 
+You can see the error in the _main_ method of **MainFinal**, 
+that this class has _private_ access. 
+Making a constructor _private_ has the same effect, 
+as far as initializing new instances, 
+as making your class abstract. 
+I'll revert that change to the constructor, 
+and next add the abstract modifier to my class.
+
+```java
+//class SpecialGameConsole<T extends Game<? extends Player>> extends GameConsole<Game<? extends Player>> {
+abstract class SpecialGameConsole<T extends Game<? extends Player>> extends GameConsole<Game<? extends Player>> {
+    public SpecialGameConsole(Game<? extends Player> game) {
+        super(game);
+    }
+}
+```
+
+You can see I still have an error 
+when I try to instantiate **SpecialGameConsole**, 
+but this time the error is 
+_the class is abstract, it can't be instantiated_. 
+Again, I'll revert that last change, 
+removing the _abstract_ modifier from the **SpecialGameConsole**. 
+I've also shown you that making a constructor package-private, 
+has much the same effect, outside the package.
+
+```java
+//public class GameConsole<T extends Game<? extends Player>> {
+class GameConsole<T extends Game<? extends Player>> {
+```
+
+If I go to my **GameConsole** class, 
+and I remove the _public_ access modifier. 
+Jumping back to the **SpecialGameConsole** class, 
+I've got an error on the constructor in that class, 
+and it's that the constructor is not _public_. 
+Making all your constructors package-private is 
+effectively making your class _final_, 
+because your subclasses can't chain 
+any of super's constructors at that point. 
+If I go back to **GameConsole** 
+and make that _protected_, 
+as recommended by that IntelliJ popup.
+
+```java
+//public class GameConsole<T extends Game<? extends Player>> {
+//class GameConsole<T extends Game<? extends Player>> {
+protected class GameConsole<T extends Game<? extends Player>> {
+```
+
+That cleans up the problem for my subclass, 
+and I can again create my subclass without errors. 
+This does create a problem in my **Main** class, 
+which instantiates a **GameConsole**. 
+
+```java
+//var console = new GameConsole<>(new ShooterGame("The Shootout Game"));
+//int playerIndex = console.addPlayer();
+//console.playGame(playerIndex);
+
+//var console = new GameConsole<>(new PirateGame("The Pirate Game"));
+//int playerIndex = console.addPlayer();
+//console.playGame(playerIndex);
+```
+
+I'll comment that code out right now. 
+I'll go back to the **GameConsole** class, 
+and next I'll add the _final_ keyword to the class declaration.
+
+```java
+//public class GameConsole<T extends Game<? extends Player>> {
+//class GameConsole<T extends Game<? extends Player>> {
+//protected class GameConsole<T extends Game<? extends Player>> {
+protected final class GameConsole<T extends Game<? extends Player>> {
+```
+
+Popping back over to our custom class, 
+there's an error in **SpecialGameConsole** class,
+and because I've already got a constructor declared, 
+I get the message which really is the crux of the problem. 
+_Cannot inherit from final GameConsole_. 
+If you're not purposely planning 
+to allow your classes to be extended,
+its best practice to make them _final_. 
+I'm going to comment out my **SpecialGameConsole** class. 
+I'll change my _main_ method:
+
+```java
+public class MainFinal {
+    public static void main(String[] args) {
+        //SpecialGameConsole<PirateGame> game = new SpecialGameConsole<>(new PirateGame("Pirate Game"));
+        GameConsole<PirateGame> game = new GameConsole<>(new PirateGame("Pirate Game"));
+    }
+}
+```
+
+To use the **GameConsole** 
+and not the **SpecialGameConsole**. 
+Because I made the constructor protected, 
+I can't create a new **GameConsole** from this class, 
+as we saw earlier in the **Main** class. 
+
+```java
+//public class GameConsole<T extends Game<? extends Player>> {
+//class GameConsole<T extends Game<? extends Player>> {
+//protected class GameConsole<T extends Game<? extends Player>> {
+//protected final class GameConsole<T extends Game<? extends Player>> {
+public final class GameConsole<T extends Game<? extends Player>> {
+```
+
+I'll switch back to **GameConsole** and make that public again. 
+My code compiles and runs as before.
+Making the class _final_ doesn't prevent client code 
+from creating instances of the class or using the class. 
+It just means no other class can extend it. 
+Next, I want to jump over to the **Game** class.
+
+```java
+//public Game(String gameName) {this.gameName = gameName;}
+private Game(String gameName) {this.gameName = gameName;}
+```
+
+I declared this class _public_ and _abstract_, 
+and gave it a _public_ constructor. 
+Let's see what happens if I make that constructor private.
+I don't get any errors on this class, 
+but if I open up either the **PirateGame** 
+or **ShooterGame**, 
+you can see these both have errors, 
+on the call to the _super_ constructor. 
+In this case, I've created an _abstract_ class 
+that nobody can extend, by making that constructor _private_. 
+That's probably not what I really wanted to happen. 
+You might have some _private_ constructors on an _abstract_ class, 
+but you don't want them all to be _private_, 
+which is the situation I've created here.
+Instead, I'll revert that last change on **Game**, 
+making the constructor _public_ again. 
+I could make it _protected_, 
+but it's not really necessary to make it more restrictive, 
+since an _abstract_ class won't ever be instantiated. 
+Only a subclass will. 
+Now, what happens if I add the _final_ keyword to this class?
+
+```java
+//public abstract class Game<T extends Player> {
+public final abstract class Game<T extends Player> {
+```
+
+IntelliJ doesn't like that. 
+_Illegal combination of modifiers, **final** and **abstract**_. 
+What this means is, the two modifiers mean the exact opposite thing.
+A final modifier means your class is complete, 
+and it not only doesn't need to be extended,
+but you don't want it to be. 
+An abstract modifier means your class isn't complete, 
+it probably has methods that aren't complete, 
+and they'll only be implemented by subclasses. 
+I'll revert that last change, 
+removing the _final_ modifier.
+
+| Operations                              | Final Class | Abstract Class | Private Constructors Only | Protected Constrıctors Only                           |
+|-----------------------------------------|-------------|----------------|---------------------------|-------------------------------------------------------|
+| Instantiate a new instance              | yes         | no             | no                        | yes, but only subclasses, and classes in same package |
+| A subclass can be declared successfully | no          | yes            | no                        | yes                                                   |
+
+
+I'll show a quick summary on a table. 
+_Private_ constructors will prevent 
+both a new instance and a new subclass 
+from being created.
+_Protected_ constructors will prevent 
+an instance from being created 
+outside a subclass or the package. 
+The _final_ and _abstract_ modifiers are incompatible 
+and wouldn't be used in the same declaration. 
+You can see that if you don't want your class 
+to be instantiated, you can either make it _abstract_ 
+or use a more restrictive access modifier on the class. 
+Now, let's consider the **Game** class for a moment. 
+It's abstract, which means I intend it to be subclassed. 
+But what if I only wanted this class extended by my own games, 
+and wanted to disallow it for all others? 
+How would I go about doing this? 
+I can't do it with access modifiers. 
+Later I'll be talking about the modular JDK, 
+and controlling visibility of code with module techniques. 
+There's still another method, 
+and that's with a feature that became available in JDK 17, 
+called **Sealed Classes**. 
 </div>
 
-
-
-
-
+## [k. Sealed Classes]()
 <div align="justify">
 
 
