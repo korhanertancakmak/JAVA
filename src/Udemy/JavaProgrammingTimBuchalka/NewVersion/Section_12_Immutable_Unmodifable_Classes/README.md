@@ -5793,10 +5793,138 @@ called **Sealed Classes**.
 ## [k. Sealed Classes]()
 <div align="justify">
 
+JDK17 introduced a new modifier, **sealed**, 
+for our classes and interfaces. 
+This modifier can be used for 
+both outer types and nested types. 
+When used, a **permits** clause is also required in most cases,
+which lists the allowed subclasses.
+Subclasses can be nested classes, 
+classes declared in the same file, 
+classes in the same package, 
+or if using Java's modules, in the same module. 
+I'll be covering Java's modules later in the course. 
+What this means, though, for this specific conversation, 
+is that all our code is so far, since JDK9, 
+is part of what's called, the unnamed default module.
+Because of this, I can't use subclasses in the _permits_ clause 
+that are in other packages. 
+A sealed class and its direct subclasses create a circular reference. 
+I'll be explaining what that means in a bit. 
+I want to go back to the **Game** class, 
+in the **GameConsole** project I've been using.
 
 ```java  
-
+//public abstract class Game<T extends Player> {
+sealed abstract class Game<T extends Player> {
 ```
+
+I'll add the modifier **sealed** on the **Game** class. 
+IntelliJ doesn't like that change. 
+Hovering over that, I get the message 
+_Sealed class permits clause must contain all subclasses_. 
+I have two subclasses already, **ShooterGame** and **PirateGame**,
+so I'll add a _permits_ clause manually, 
+and include both of those. 
+The _permits_ clause should be the last clause of the class declaration, 
+listed after any _extends_ or _implements_ clauses. 
+I've got errors though, one on **PirateGame**, 
+and one on the **ShooterGame** in this clause. 
+If I hover over **PirateGame**, 
+I get the message 
+_Class is not allowed to extend sealed class from another package_. 
+Our **PirateGame** class is in the **pirate** package, 
+so this isn't permitted, 
+but **ShooterGame** is so let's see what that error says. 
+I'll hover over that. 
+This message tells me that 
+_all sealed class subclasses must either be final, sealed or non-sealed_. 
+Actually, If I try to run my **Main** File _main_ method here, 
+I get the compiler error that is a bit more enlightening, 
+that _the code is all in the unnamed module_. 
+If I'm going to use the sealed class functionality, 
+I have to do it for a class in the same package as **Game**. 
+This message confirms that our code is in an _unnamed_ module, 
+as I mentioned before. 
+Now, I'm going to copy my **Game** class, 
+and create a new class from that,
+also in the **game** package. 
+I want to call the copy, **SealedGame**. 
+I'll go back to the original **Game** class 
+and revert the last changes, 
+removing the _sealed_ modifier 
+and the _permits_ clause. 
+Now, going to my new **SealedGame** class,
+
+I'll first remove the **PirateGame** 
+from the _permits_ clause. 
+Because **PirateGame** is in another package, 
+I can't include it here. 
+I can include the **ShooterGame**, 
+but first I need to change the declaration 
+to extend the **SealedGame**, and not **Game**. 
+When I do that, I get the error 
+all sealed, non-sealed or final modifiers expected.
+IntelliJ is suggesting I make **ShooterGame** _final_, 
+and I'll do that. 
+This clears up my errors for the **ShooterGame**, 
+and **SealedGame**. 
+You can't make a class sealed, 
+without first adding a modifier to a subclass 
+if you haven't already included 
+one of the three valid ones. 
+Are you confused by these interdependencies?
+
+Using the _sealed_ keyword, 
+requires the parent class 
+to _declare its subclasses_, 
+using a _permits_ clause.
+This means the parent class has to know 
+about every direct subclass, 
+and these have to exist, 
+in the same package in this case. 
+In addition, the _sealed_ keyword puts 
+a requirement on all the subclasses 
+that were declared in the _permits_ clause.
+It requires each subclass 
+to declare one of the three valid modifiers 
+for a class extending a sealed class.
+These are _final_, _sealed_ or _non-sealed_.
+
+
+
+                                       ____________________________________
+                                       | sealed class X permits A, B, C   |
+                                       |__________________________________|                                                             NOT
+                                       |__________________________________|                                                          PERMITTED
+                                                         ↑→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→XXXXXXXXXXXXX→→→→→↓
+                    ↓←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←↑→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→↓                             _________________↓___________
+         ___________↓___________        _________________↑__________________          _________________↓___________                 | class D extends X         |
+         | final class A       |       | sealed class B permits E         |          | non-sealed class C        |                  |___________________________|
+         |_____________________|       |__________________________________|          |___________________________|                  |___________________________|
+         |_____________________|       |__________________________________|          |___________________________|
+                    X                                   ↑                                           ↑
+                    X                                   ↑                                   ↑→→→→→→→↑←←←←←←←←↑
+                   None                        _________↑___________                        ↑                ↑
+                                               | final class E     |                   _____↑____       _____↑____
+                                               |___________________|                   |class F |       |class G |
+                                               |___________________|                   |________|       |________|
+                                                        X
+                                                        X
+                                                       None
+
+        On this diagram, I have a parent class X, declared as a sealed class, and permitting only classes A, B and C to
+    subclass it. For that reason class D, which may exist and extends X, but won't compile. You'll have to either add D
+    to the permits clause on X, or remove D from the hierarchy in some way. As I've stated several times, all subclasses
+    declared in the permits clause, must be declared as final, sealed or non-sealed. Declaring a class final, means no
+    other subclasses can extend that class, as I show with class A, on this diagram. A subclass declared with a sealed
+    modifier, shown here with class B, must in turn use a permits clause. Its subclasses in turn, have to use one of the
+    three valid modifiers. Lastly, a subclass can use the non-sealed modifier, as shown with class C. This means it's
+    basically unsealing itself for all it's subclasses. This one at first sounds like a bit of a mystery. Why would you
+    allow subclasses to unseal, what you said should be sealed?. We'll look at each of these in turn. I think the scenario
+    we've currently set up is the easiest to understand. Basically, we're allowing a few classes, in the same package,
+    to extend our special SealedGame, and that's where the subclassing stops. I'm going to go to my ShooterGame,
+
 ```html  
 
 ```
