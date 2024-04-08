@@ -1,4 +1,5 @@
 # Java 17 Masterclass: Start Coding in 2024 by Tim Buchalka
+<div align="justify">
 
 What we will learn from this Path:
 * Learn the core Java skills needed to apply for Java developer positions
@@ -11,6 +12,7 @@ What we will learn from this Path:
   Java EE, Android development and more.
 * Obtain proficiency in Java 17, as well as older versions including Java 11
   and Java 8.
+</div>
 
 ## [1. Expressions, Statements and More](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#section-1-expressions-statements-and-more)
 
@@ -141,20 +143,20 @@ What we will learn from this Path:
 ### [n. EnumSet and EnumMap Collections](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/README.md#n-enumset-and-enummap-collections)
 ### [o. Collections Framework Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/README.md#o-collections-framework-challenge)
 
-## [12. Immutable and Sealed Classes](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#section-11-immutable-and-sealed-classes)
+## [12. Immutable and Sealed Classes](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#section-11-immutable-and-sealed-classes)
 
-### [a. Final Modifier](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#a-final-modifier)
-### [b. Immutable Classes](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#b-immutable-classes)
-### [c. Immutable Classes Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#c-immutable-classes-challenge)
-### [d. Defensive Copies](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#d-defensive-copies)
-### [e. Unmodifiable Collections](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#d-defensive-copies)
-### [f. Unmodifiable Collections Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#f-unmodifiable-collections-challenge)
-### [g. Constructors](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#g-constructors)
-### [h. Game Console Challenge Setup](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#h-game-console-challenge-setup)
-### [i. Pirate Game Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#i-pirate-game-challenge)
-### [j. Final Classes](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#j-final-classes)
-### [k. Sealed Classes](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#k-sealed-classes)
-### [l. The Final Section Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#l-the-final-section-challenge)
+### [a. Final Modifier](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#a-final-modifier)
+### [b. Immutable Classes](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#b-immutable-classes)
+### [c. Immutable Classes Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#c-immutable-classes-challenge)
+### [d. Defensive Copies](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#d-defensive-copies)
+### [e. Unmodifiable Collections](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#d-defensive-copies)
+### [f. Unmodifiable Collections Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#f-unmodifiable-collections-challenge)
+### [g. Constructors](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#g-constructors)
+### [h. Game Console Challenge Setup](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#h-game-console-challenge-setup)
+### [i. Pirate Game Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#i-pirate-game-challenge)
+### [j. Final Classes](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#j-final-classes)
+### [k. Sealed Classes](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#k-sealed-classes)
+### [l. The Final Section Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#l-the-final-section-challenge)
 
 ## [13. Streams]()
 
