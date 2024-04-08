@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course03_StreamSources;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_Streams.Course03_StreamSources;
 
 import java.util.*;
 import java.util.stream.IntStream;

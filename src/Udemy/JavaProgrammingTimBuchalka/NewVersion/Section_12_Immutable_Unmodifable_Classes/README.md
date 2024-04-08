@@ -6206,17 +6206,3 @@ Change your code so that a pirate only visits a new town
 after they've found all the loot in the current town.
 </div>
 
-
-
-
-
-<div align="justify">
-
-
-```java  
-
-```
-```html  
-
-```
-</div>

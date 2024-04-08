@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course05_IntermediateOperationsPart1;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_Streams.Course05_IntermediateOperationsPart1;
 
 import java.util.Random;
 import java.util.stream.IntStream;

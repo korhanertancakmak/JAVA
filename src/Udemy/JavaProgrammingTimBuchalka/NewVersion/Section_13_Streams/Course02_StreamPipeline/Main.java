@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course02_StreamPipeline;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_Streams.Course02_StreamPipeline;
 
 import java.util.ArrayList;
 import java.util.Collections;

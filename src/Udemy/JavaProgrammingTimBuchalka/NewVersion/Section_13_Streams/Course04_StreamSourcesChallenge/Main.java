@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course04_StreamSourcesChallenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_Streams.Course04_StreamSourcesChallenge;
 
 import java.util.Arrays;
 import java.util.Random;

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_17_Streams.Course01_StreamInAction;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_Streams.Course01_StreamInAction;
 
 import java.util.ArrayList;
 import java.util.Collections;
