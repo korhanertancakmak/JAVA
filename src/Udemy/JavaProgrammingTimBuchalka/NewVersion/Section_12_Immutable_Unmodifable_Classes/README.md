@@ -1,4 +1,4 @@
-# [Section-11: Immutable and Sealed Classes]()
+# [Section-12: Immutable and Sealed Classes]()
 
 ## [a. Final Modifier]()
 <div align="justify">
@@ -6148,7 +6148,7 @@ but I have one last challenge for you.
 I'll be again visiting the **PirateGame** for this.
 </div>
 
-## [l. The Final Section Challenge]()
+## [l. The Final Section Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/Course14_FinalChallengeOfSection/README.md#the-final-section-challenge)
 <div align="justify">
 
 In this challenge, you'll be adding functionality 
