@@ -3,13 +3,6 @@ package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_12_Immutable_Unmodif
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-//Part-2
-/*
-        And revert it, so that it again extends the unsealed Game class. I'll leave the final modifier there. Next, I'll
-    just delete the SealedGame class. I'll create a new class in sealed package, calling it Special Abstract Class.
-*/
-//End-Part-2
-
 public final class ShooterGame extends Game<Shooter> {
 
     public ShooterGame(String gameName) {

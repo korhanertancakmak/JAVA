@@ -5470,7 +5470,7 @@ if the parent classes aren't implementing defensive code.
 One of the easiest ways to prevent this, 
 is to make your class _final_. 
 I'll be using the **GameConsole** project 
-from the last challenges, in this section.
+from the last challenges in this section.
 
 In this project, I already have a record, **GameAction**, 
 and if you followed along in the last challenge, 
@@ -5891,58 +5891,319 @@ to declare one of the three valid modifiers
 for a class extending a sealed class.
 These are _final_, _sealed_ or _non-sealed_.
 
+![image19](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/images/image19.png?raw=true)
 
-
-                                       ____________________________________
-                                       | sealed class X permits A, B, C   |
-                                       |__________________________________|                                                             NOT
-                                       |__________________________________|                                                          PERMITTED
-                                                         ↑→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→XXXXXXXXXXXXX→→→→→↓
-                    ↓←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←↑→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→↓                             _________________↓___________
-         ___________↓___________        _________________↑__________________          _________________↓___________                 | class D extends X         |
-         | final class A       |       | sealed class B permits E         |          | non-sealed class C        |                  |___________________________|
-         |_____________________|       |__________________________________|          |___________________________|                  |___________________________|
-         |_____________________|       |__________________________________|          |___________________________|
-                    X                                   ↑                                           ↑
-                    X                                   ↑                                   ↑→→→→→→→↑←←←←←←←←↑
-                   None                        _________↑___________                        ↑                ↑
-                                               | final class E     |                   _____↑____       _____↑____
-                                               |___________________|                   |class F |       |class G |
-                                               |___________________|                   |________|       |________|
-                                                        X
-                                                        X
-                                                       None
-
-        On this diagram, I have a parent class X, declared as a sealed class, and permitting only classes A, B and C to
-    subclass it. For that reason class D, which may exist and extends X, but won't compile. You'll have to either add D
-    to the permits clause on X, or remove D from the hierarchy in some way. As I've stated several times, all subclasses
-    declared in the permits clause, must be declared as final, sealed or non-sealed. Declaring a class final, means no
-    other subclasses can extend that class, as I show with class A, on this diagram. A subclass declared with a sealed
-    modifier, shown here with class B, must in turn use a permits clause. Its subclasses in turn, have to use one of the
-    three valid modifiers. Lastly, a subclass can use the non-sealed modifier, as shown with class C. This means it's
-    basically unsealing itself for all it's subclasses. This one at first sounds like a bit of a mystery. Why would you
-    allow subclasses to unseal, what you said should be sealed?. We'll look at each of these in turn. I think the scenario
-    we've currently set up is the easiest to understand. Basically, we're allowing a few classes, in the same package,
-    to extend our special SealedGame, and that's where the subclassing stops. I'm going to go to my ShooterGame,
-
-```html  
-
-```
-</div>
-
-
-
-
-
-<div align="justify">
-
+On this diagram, I have a parent class **X**, 
+declared as a sealed class, 
+and permitting only classes **A**, **B** and **C** 
+to subclass it. 
+For that reason, class **D**, 
+which may exist and extends **X**, 
+but won't compile. 
+You'll have to either add **D** 
+to the _permits_ clause on **X**, 
+or remove **D** from the hierarchy in some way. 
+As I've stated several times, 
+all subclasses declared in the _permits_ clause 
+must be declared as _final_, _sealed_ or _non-sealed_. 
+Declaring a class _final_ means no other subclasses 
+can extend that class, as I show with class **A**, 
+on this diagram. 
+A subclass declared with a _sealed_ modifier, 
+shown here with class **B**, must in turn use a _permits_ clause. 
+Its subclasses, in turn, have to use one of the three valid modifiers. 
+Lastly, a subclass can use the non-sealed modifier, 
+as shown with class **C**.
+This means it's basically unsealing itself for all its subclasses. 
+This one at first sounds like a bit of a mystery.
+Why would you allow subclasses to unseal 
+what you said should be sealed?. 
+We'll look at each of these in turn. 
+I think the scenario we've currently set up 
+is the easiest to understand. 
+Basically, we're allowing a few classes, 
+in the same package, to extend our special **SealedGame**, 
+and that's where the subclassing stops. 
+I'm going to go to my **ShooterGame**,
+And revert it, so that it again extends 
+the unsealed **Game** class. 
+I'll leave the _final_ modifier there. 
+Next, I'll just delete the **SealedGame** class. 
+I'll create a new class in _sealed_ package, 
+calling it _SpecialAbstractClass_.
 
 ```java  
-
+public sealed abstract class SpecialAbstractClass permits FinalKid, NonSealedKid, SealedKid, SpecialAbstractClass.Kid {
+    final class Kid extends SpecialAbstractClass {
+    }
+}
 ```
-```html  
 
+I'll add the _sealed_ and _abstract_ modifiers to this class. 
+And right away, I'm in a position where it's expected,
+that I'll know what my subclasses are, 
+and I need to declare them for this sealed class. 
+Before I add any subclasses in this package, 
+I want to first include a nested class. 
+I'll declare a class called **Kid** here, 
+and I'll have that extend the outer class, 
+the **SpecialAbstractClass** class. 
+I get an error on the **Kid** declaration, 
+with the message that 
+_kid has to be declared final, sealed or non-sealed_, 
+so I'll make that _final_ here. 
+Now this code compiles, but why is that?
+I haven't included a _permits_ clause, 
+so why is this ok? 
+Well, there's one exception, 
+where we don't have to declare a _permits_ clause, 
+and that's if all your subclasses are nested classes. 
+You can optionally still include it. 
+I'll add it here, and specify **Kid** in the clause. 
+But that's giving me an error, 
+_Cannot resolve symbol, **Kid**_. 
+As it turns out, 
+when you use a subclass in a _permits_ clause, 
+you have to use the qualifying name, 
+meaning you have to qualify it 
+with the outer class name, 
+which I'll do now. 
+I'll reference **Kid** as **SpecialAbstractClass.kid**. 
+Now this compiles, and all is well. 
+Next, I'll create the three different flavors of subclasses, 
+external to this class next.
+
+```java  
+public final class FinalKid extends SpecialAbstractClass {
+}
 ```
+
+First, I'll create a **FinalKid** class 
+in the same package, so in sealed. 
+I'll include the _final_ modifier, 
+and have it extend the **SpecialAbstractClass** class. 
+For now, that's not going to compile, 
+until I add this class to the _permits_ 
+clause on **SpecialAbstractClass**,
+which I'll do in just a minute. 
+I'll create the other two classes first.
+
+```java  
+public sealed class SealedKid extends SpecialAbstractClass {
+}
+```
+
+Next will be **SealedKid**. 
+I'll add the sealed
+modifier on this one, 
+and have it extend **SpecialAbstractClass**. 
+
+```java  
+public non-sealed class NonSealedKid extends SpecialAbstractClass {
+}
+```
+
+The last one will be called **NonSealedKid**. 
+I'll add the _non-sealed_ modifier, 
+and again extend the **SpecialAbstractClass**. 
+Ok, so I'll now go add these three, 
+to the _permits_ clause, on the **SpecialAbstractClass**. 
+If I hover over that error on the class name, 
+IntelliJ gives me the options 
+to add missing subclasses to the _permits_ clause. 
+I'll add a new line after the comma here, 
+so you can see the entire declaration. 
+Notice that I have an error on **SealedKid**, 
+because it's sealed. 
+I have to specify a _permits_ clause on that class. 
+I'll go to the **SealedKid** class.
+
+```java  
+final class GrandKid extends SealedKid {
+
+}
+```
+
+Instead of adding a _permits_ clause here, 
+I'll add a nested class **GrandKid**. 
+I'll make the class _final_, 
+and have it extend **SealedKid**. 
+If I go back to the **SpecialAbstractClass**:
+
+```java  
+public sealed abstract class SpecialAbstractClass permits FinalKid, NonSealedKid, SealedKid, SpecialAbstractClass.Kid {
+    final class Kid extends SpecialAbstractClass {
+    }
+}
+```
+
+Let's see what happens if I now try 
+to remove this class's nested class 
+from the _permits_ clause. 
+I'll do that now. 
+Actually, I can't do that now. 
+Omitting the _permits_ clause 
+or a class from the clause, 
+only works if you don't have 
+other non-nested classes extending 
+this sealed class. 
+Ok, these rules seem complicated, 
+but the main thing to remember is, 
+there's a circular relationship 
+between a sealed class, and its subclasses. 
+A sealed class has to have knowledge of its subclasses, 
+which an unsealed class doesn't. 
+An unsealed class can have many unknown subclasses.
+I'll revert that last change. 
+Maybe you noticed that I didn't have 
+to declare Grand kid in this clause. 
+Only direct subclasses are required 
+to be named in the _permits_ clause. 
+Ok, so the last thing it would be nice 
+to understand about sealed classes 
+is this business about allowing a non-sealed subclass. 
+Let's create one more class, **FreeGrandKid**.
+
+```java  
+public class FreeGrandKid extends NonSealedKid {
+}
+```
+
+I'll have this extend the **NonSealedKid**. 
+Now, this is allowed. 
+That seems kind of weird, doesn't it? 
+Let's see if we can figure out why Java allowed this. 
+First of all, there's probably always an exception to every rule, 
+and often these exceptions are discovered very late. 
+Having the ability to change a subclass to non-sealed, 
+is a way to control a branch of your hierarchy. 
+Remember the subclass has to either be part of your own package or module. 
+This means that when you permit a non-sealed class, 
+you're making a very conscious decision, 
+to allow extensibility for that specific branch. 
+When would you do this? 
+I guess I could come up with a couple of use cases 
+if I tried hard enough.
+Maybe you might allow a trusted vendor, 
+access to this non-sealed branch. 
+This would enable them to include value-adds,
+on top of your base set of widgets. 
+You could provide the non-sealed class. 
+Now, I need to talk about _sealed_ interfaces. 
+Like a class, you can seal an interface, 
+specifying who gets to implement your interface.
+I'll create a sealed interface, 
+called **SealedInterface**, in the **sealed** package. 
+
+```java  
+public sealed interface SealedInterface permits BetterInterface, StringChecker {
+
+    boolean testData(Predicate<String> p, String... strings);
+}
+```
+
+I'll add a single abstract method, 
+which will take a predicate functional interface for a String, 
+and a variable argument with _strings_. 
+This method could be used 
+to test some kind of relationship for a set of strings.
+I'll create a class that implements this, 
+and I'll call that _StringChecker_ again in the same package. 
+I'll add the implements **SealedInterface** to the class declaration. 
+I'll implement the method using IntelliJ tools. 
+That's all I need for my purposes. 
+I'll also extend my _SealedInterface_ with a **BetterInterface**. 
+That will extend **SealedInterface**.
+Now, I'll seal my **SealedInterface**, 
+adding the _sealed_ keyword. 
+I'll hover over that and select the link
+in that popup to add missing subclasses. 
+Now notice, it added a _permits_ clause, 
+and here it has the interface that extends **SealedInterface**. 
+That's **BetterInterface**, 
+but it also has my **StringChecker** class, 
+that implements the **SealedInterface**. 
+Similarly to a sealed class, 
+I have to go back to both those types, 
+and decide if they're final, sealed or non-sealed.
+For an interface, the final modifier isn't valid. 
+An interface, by its nature, is a contract of abstracted methods.
+For the **BetterInterface**, 
+I can only choose between sealed or non-sealed. 
+I'll go with non-sealed here, for simplicity's sake. 
+For the class that implements **SealedInterface**, 
+I have all three options. 
+I'll go to my **StringChecker** class, and make that final. 
+Ok, so that's one of Java's newer features. 
+I've demonstrated, in this section of the course,  
+that extensibility might inadvertently expose your code 
+to problematic subclasses. 
+This access could provide access 
+to the internal state of your objects, 
+leading to intentional or unintentional mutability. 
+Using sealed types gives you another level of control, 
+by allowing you to choose which types can leverage your code. 
+This lecture ends our section on immutability, 
+but I have one last challenge for you. 
+I'll be again visiting the **PirateGame** for this.
+</div>
+
+## [l. The Final Section Challenge]()
+<div align="justify">
+
+In this challenge, you'll be adding functionality 
+to the **PirateGame** we've been working on for several sections.
+You'll be adding hidden treasure, 
+town features, and opponents. 
+A town feature will affect the health of your pirate.
+For example, if your pirate runs into an alligator, 
+you may want to subtract health points. 
+If he finds a fresh water spring, 
+you'll probably increase his health. 
+As your pirate finds loot, each item should increase his score. 
+Each town will have different loot and different features.
+
+In this challenge, I want you to abstract 
+some functionality of your Pirate player to a Combatant class.
+This means you should make a copy of Pirate, 
+calling it Combatant, and placing it in the pirate package.
+This class should be abstract, and contain most of Pirate's fields 
+(like name, weapon, and game data), 
+as well as methods related to these fields. 
+The Pirate class should extend Combatant.
+You'll also create a couple of other Combatant classes, 
+such as Islander and Soldier. 
+You should seal the Combatant class. 
+For the town loot and features. 
+You'll create two enums, both with constructors. 
+The first, Loot, defines pirate treasure such as gold coins or pearl necklaces, 
+each with its own worth, that when found, will increase your pirate's score. 
+The second enum, Feature, should describe some town features 
+that will either add to the pirate's health, or subtract from it. 
+Features should have a health value (positive or negative), 
+so that when a pirate runs into this feature, 
+his health is adjusted accordingly. 
+Some examples of features might be an Alligator 
+with a large negative health value, or a Pineapple with a small positive adjustment. 
+Use a record to create a Town with the fields: 
+name, island, level, loot, features, and opponents. 
+The last three can be any Collection. 
+Create a compact constructor to initialize randomized lists of loot and features.
+These lists should contain only a portion of the ones available on each enum. 
+You should also add an opponent or two in this constructor. 
+Next, you'll add a custom constructor that takes a name, 
+and additional items to be tracked, in the game data map. 
+At least one of the opponents should use their weapon 
+when your pirate uses his. 
+Randomize part of the use weapon method,
+so that opponents only occasionally hit each other, 
+and deduct points from each's health accordingly. 
+Change PirateGame's loadData method 
+to load up a List of Town, instead of Strings. 
+Change your game's menu items to include a Find Loot option, 
+and an Experience Town Feature option. 
+Change your code so that a pirate only visits a new town 
+after they've found all the loot in the current town.
 </div>
 
 
