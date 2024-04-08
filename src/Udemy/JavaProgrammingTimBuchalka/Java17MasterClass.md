@@ -160,7 +160,10 @@ What we will learn from this Path:
 
 ## [13. Streams]()
 
-    * The Structure of Stream Pipeline
+### [a. Stream In Action]()
+### [b. Stream Pipeline]()
+### [c. Stream Sources]()
+
     * Intermediate Operations
     * Terminal Operations
     * Streams to Maps
