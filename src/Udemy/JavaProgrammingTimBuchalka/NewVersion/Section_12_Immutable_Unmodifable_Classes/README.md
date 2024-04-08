@@ -6135,7 +6135,7 @@ For the class that implements **SealedInterface**,
 I have all three options. 
 I'll go to my **StringChecker** class, and make that final. 
 Ok, so that's one of Java's newer features. 
-I've demonstrated, in this section of the course,  
+I've demonstrated, in this section of the course  
 that extensibility might inadvertently expose your code 
 to problematic subclasses. 
 This access could provide access 
