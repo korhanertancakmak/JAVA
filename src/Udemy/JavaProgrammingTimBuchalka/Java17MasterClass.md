@@ -165,6 +165,7 @@ What we will learn from this Path:
 ### [c. Stream Sources]()
 ### [d. Stream Sources Challenge]()
 ### [e. Intermediate Operations]()
+### [f. Terminal Operations]()
 
     * Terminal Operations
     * Streams to Maps

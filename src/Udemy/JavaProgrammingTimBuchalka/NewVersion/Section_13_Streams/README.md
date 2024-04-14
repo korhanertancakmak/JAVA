@@ -2216,11 +2216,514 @@ You've seen _forEach_, but there are many others.
 ## [f. Terminal Operations]()
 <div align="justify">
 
+We've covered a lot of ground in this section, 
+using just one terminal operation, _forEach_. 
+Now it's time to see why stream processes 
+are such a welcome feature, 
+as I show you other terminal operations 
+we can use.
 
+| Matching and Searching | Transformations and Type Reductions | Statistical (Numeric) Reductions | Processing     |
+|------------------------|-------------------------------------|----------------------------------|----------------|
+| allMatch               | collect                             | **average**                      | forEach        |
+| anyMatch               | reduce                              | count                            | forEachOrdered |
+| *findAny*              | toArray                             | *max*                            |                |
+| *findFirst*            | toList                              | *min*                            |                |
+| noneMatch              |                                     | **sum**                          |                |
+|                        |                                     | **summaryStatistics**            |                |
+
+*Returns an Optional instance  
+**Available on DoubleStreams, IntStream, LongStreams
+
+This table has them categorized by the result. 
+Some are designed to find matches, 
+most of which are targets for a **Predicate** lambda expression. 
+Some are designed to transform stream data into a collection, 
+or some other reference type. 
+Others are aggregate information, 
+to count elements, or find a minimum or maximum value, 
+and don't take arguments.
+The primitive streams have average and sum as well, 
+and a _summaryStatistics_ operation 
+which gives you _count_, _min_, _max_, _average_ 
+and _sum_ in one result. 
+A couple of these operations return a special type, 
+called an **Optional**. 
+We have a section coming up on the **Optional** class. 
+And we've talked about _forEach_, 
+but there's also a _forEachOrdered_ operation. 
+A reduction operation is a special type of terminal operation. 
+Stream elements are processed 
+to produce a single output. 
+The result can be a primitive type, like a long, 
+in the case of the count operation. 
+The result can be a reference type, 
+like **Optional** or one of the **Statistics** types 
+I'll be covering shortly. 
+It can also be any type of your choice, such as an array, 
+a list, or some other type. 
+I want to start by looking at some of the statistical
+reduction methods. 
+Let's look at some code.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        var result = IntStream
+                .iterate(0, i -> i <= 1000, i -> i = i + 10)
+                .summaryStatistics();
+        System.out.println("Result = " + result);
+    }
+}
+```
+
+I'll use an **IntStream** in this example. 
+Like any stream, 
+I can use the _iterate_ method on that, 
+and I'll pass 0 as the seed. 
+I'll make the condition less than equal to 1000, 
+and I'll increment by 10 each time. 
+I'll use the _summaryStatistics_ operation. 
+I'll print the result. 
+I've again used type inference, 
+and you can see from IntelliJ's inlay hints 
+the result is inferred to be an _IntSummaryStatistics_ type. 
+I'll run this:
+
+```html  
+Result = IntSummaryStatistics{count=101, sum=50500, min=0, average=500.0, max=1000}
+```
+
+And see what I get. 
+There you can see that the type gets printed out, 
+so _IntSummaryStatistics_, 
+with data about this stream. 
+In this process, I had 101 stream elements 
+the sum was 50500, the minimum value was zero. 
+The average is an even 500, 
+and the max value was 1000. 
+That's kind of a useful operation. 
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        var result = IntStream
+                .iterate(0, i -> i <= 1000, i -> i = i + 3)
+                .summaryStatistics();
+        System.out.println("Result = " + result);
+    }
+}
+```
+
+Let's try this code again, but this time,
+I'll change the number I'm incrementing by, from 10 to 3. 
+Running that:
+
+```html  
+Result = IntSummaryStatistics{count=334, sum=166833, min=0, average=499,500000, max=999}
+```
+
+We get a different set of stats, 
+I have more elements, 
+and the statistics are different. 
+Using this operation would be a good place to start 
+when you get a set of data, 
+and you want to try to start to understand it. 
+Remember, if you have a stream of instances, 
+you can stream any data field to an int or double stream, 
+using one of the map operations, 
+and then use this terminal operation to give you a quick overview. 
+You can also individually call the _count_, _sum_, _min_,
+_max_ and _average_ terminal operations, 
+but I'll show you these after I cover the **Optional** class, 
+which is returned from several of these methods. 
+I'll show another example of code, to evaluate leap year data, 
+between the years 2000 and 2025.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+        
+
+        var leapYearData = IntStream
+                .iterate(2000, i -> i <= 2025, i -> i = i + 1)
+                .filter(i -> i % 4 == 0)
+                .peek(System.out::println)
+                .summaryStatistics();
+        System.out.println("Leap Year Data = " + leapYearData);
+    }
+}
+```
+
+I'll set up another variable, _leapYearData_. 
+Again I'll use _iterate_, with 2000 as the starting year, 
+and 2025 as the maximum year. 
+I'll increment each next year by 1.
+A leap year is evenly divisible by 4, 
+so I'll use the modulus operator to filter. 
+If i mod 4 is equal to zero, 
+then it's evenly divisible by 4 and a leap year. 
+I'll get statistics first. 
+And I'll print those out If I run this:
+
+```html  
+Leap Year Data = IntSummaryStatistics{count=7, sum=14084, min=2000, average=2012,000000, max=2024}
+```
+
+I can see that there are 7 leap years between 2000 and 2025, 
+with 2000 being the minimum year, 
+and 2024 being the maximum.
+In fact, this is a good place for the peek operation, 
+because it might be nice to see what those years are.
+I'll insert that after the filter operation, 
+but before summary statistics. 
+I'll print out the filtered numbers here.
+Running that:
+
+```html  
+2000
+2004
+2008
+2012
+2016
+2020
+2024
+Leap Year Data = IntSummaryStatistics{count=7, sum=14084, min=2000, average=2012,000000, max=2024}
+```
+
+I get the 7 leap years printed out first. 
+You can see that peek is useful 
+when you're doing reductions. 
+It gives you a window into what is happening. 
+I can use terminal operations 
+to return information about the aggregated data set.
+
+| Return Type                                                                | Terminal Operations | Stream                                    |
+|----------------------------------------------------------------------------|---------------------|-------------------------------------------|
+| long                                                                       | count()             | ALL                                       |
+| Optional                                                                   | max()               | ALL                                       |
+| Optional                                                                   | min()               | ALL                                       |
+| OptionalDouble                                                             | average()           | DoubleStream<br/>IntStream<br/>LongStream |
+| double<br/>int<br/>long                                                    | sum()               | DoubleStream<br/>IntStream<br/>LongStream |
+| DoubleSummaryStatistics<br/>IntSummaryStatistics<br/>LongSummaryStatistics | summaryStatistics() | DoubleStream<br/>IntStream<br/>LongStream |
+
+The methods shown on this table have no arguments. 
+They all return numerical data, either directly, 
+or in specialized types to hold that data. 
+I'll show examples of the rest of these 
+after the Optional lecture. 
+Before that, I want to talk about methods 
+for matching elements on a specific condition.
+
+| Return Type | Method                                     | Description                                                          |
+|-------------|--------------------------------------------|----------------------------------------------------------------------|
+| boolean     | allMatch(Predicate<? super T> predicate)   | Returns true if all stream elements meet the condition specified.    |
+| boolean     | anyMatch(Predicate<? super T> predicate)   | Returns true there is at least one match to the condition specified. |
+| boolean     | noneMatch(Predicate<? super T> predicate)  | This operation returns true if no elements match.                    |
+
+There are three terminal operations 
+that let you get an overall sense of 
+what your stream elements contain, 
+based on some specified condition. 
+These all return a boolean, 
+and take a **Predicate** as an argument. 
+You can think of these as ways
+to ask true or false questions about the data set, 
+the stream, as a whole. 
+The _allMatch_ operation returns true 
+if every stream element meets the condition specified. 
+_AnyMatch_ returns true, 
+if there is a single stream element meeting the condition. 
+Lastly, _noneMatch_ returns true 
+if no elements can be found that match the condition. 
+I'm going to quickly create a **Seat** record again.
+
+```java  
+public record Seat(char rowMarker, int seatNumber, boolean isReserved) {
+    public Seat(char rowMarker, int seatNumber) {
+        this(rowMarker, seatNumber, new Random().nextBoolean());
+        //this(rowMarker, seatNumber, false);
+    }
+}
+```
+
+I'll generate a custom constructor next, 
+and this will just have two fields, 
+_rowMarker_ and _seatNumber_. 
+Instead of passing false as the _isReserved_ value, 
+I want to pass a randomly generated boolean. 
+I'll replace false with new `Random()`, 
+and call _nextBoolean_ on that. 
+Getting back to the _main_ method:
+
+```java  
+Seat[] seats = new Seat[100];
+Arrays.setAll(seats, i -> new Seat((char) ('A' + i / 10), i % 10 + 1));
+Arrays.asList(seats).forEach(System.out::println);
+```
+
+Instead of creating a stream, 
+I'm going to first create an array of seats. 
+I'll start with a new **Seat** array, 
+with 100 null references. 
+This seat creation code is basically the same 
+as I used before, in the intermediate operations section, 
+so the row marker will be _A_ through _J_ in this case, 
+depending on the value of _i_. 
+The seat number itself will be 1 through 10. 
+I'll print those out, to confirm the data is 
+what I expect it to be. 
+If I run this code:
+
+```html  
+Seat[rowMarker=A, seatNumber=1, isReserved=false]
+Seat[rowMarker=A, seatNumber=2, isReserved=false]
+                    ...
+Seat[rowMarker=J, seatNumber=9, isReserved=false]
+Seat[rowMarker=J, seatNumber=10, isReserved=false]
+```
+
+I can confirm that my seat rows start with _A_, and end with _J_, 
+and that the seat numbers are a number between 1 and 10.
+I can also see the random nature of the seats that are reserved. 
+I'm going to use this array as the source of my streams.
+
+```java  
+long reservationCount = Arrays
+    .stream(seats)
+    .filter(Seat::isReserved)
+    .count();
+System.out.println("reservationCount = " + reservationCount);
+```
+
+I want to use the _count_ operation first, 
+to see how many reserved seats I have total. 
+The other statistics aren't that interesting in this case. 
+I'll start with a long variable, 
+which is what the _count_ operation returns. 
+I'll use `Arrays.stream`, 
+and pass my _seats_ array to create a source. 
+Next, I want to count only reserved seats, 
+so I'll use `Seat::isReserved` in my _filter_ operation. 
+I'll use the _count_ terminal operation. 
+I'll print out the number of reserved seats. 
+Running that code:
+
+```html  
+reservationCount = 54
+```
+
+I should get a different count each time I run it, 
+since I'm randomly reserving these seats. 
+Next, I'll demonstrate each of the matching terminal operations.
+
+```java  
+boolean hasBookings = Arrays
+    .stream(seats)
+    .anyMatch(Seat::isReserved);
+System.out.println("hasBookings = " + hasBookings);
+```
+
+For the first, I'll create a boolean variable called _hasBookings_, 
+and assign that to the result of my stream pipeline. 
+The source will again be my _seats_ array. 
+I don't have to filter with an intermediate operation, 
+when I use these operations because the predicate is built in. 
+I can call _anyMatch_, passing it the same predicate,
+the method reference.
+I'll print this out. 
+This operation just checks to see 
+if there's at least one element that's reserved.
+Running this:
+
+```html  
+hasBookings = true
+```
+
+I can see that it's found some matches, 
+and that _hasBookings_ equals **true**, 
+which you'd expect for the randomly generated
+reserved field. 
+I'll copy that last segment of code and paste a copy below.
+
+```java  
+boolean fullyBooked = Arrays
+    .stream(seats)
+    .allMatch(Seat::isReserved);
+System.out.println("fullyBooked = " + fullyBooked);
+```
+
+In the copied code, I'll change _hasBookings_, 
+my local variable name, to _fullyBooked_. 
+I'll change the terminal operation _anyMatch_, to _allMatch_. 
+Lastly, I'll change my print statement, 
+to print _fullyBooked_ equals, 
+and use _fullyBooked_ as the variable that gets printed. 
+Running this code:
+
+```html  
+fullyBooked = false
+```
+
+My _reservationCount_ will change, 
+but _hasBookings_ should still be true. 
+_FullyBooked_ though will be false, 
+since the random process I'm using to book seats, 
+is unlikely to reserve every seat. 
+Similar to _allMatch_ is _noneMatch_, 
+so let me copy those last couple of statements 
+and paste a copy below.
+
+```java  
+boolean eventWashedOut = Arrays
+    .stream(seats)
+    .noneMatch(Seat::isReserved);
+System.out.println("eventWashedOut = " + eventWashedOut);
+```
+
+This time I'll change the local variable to be _eventWashedOut_. 
+I'll change _allMatch_ to _noneMatch_. 
+And I'll print out _eventWashedOut_ equals, 
+and include the variable there. 
+Running this code:
+
+```html  
+eventWashedOut = false
+```
+
+You can see that _eventWashedOut_ is **false** as well. 
+Like _fullyBooked_, 
+the random generation is likely to return several booked seats. 
+I'll go back to the **Seat** record, 
+and comment out that call to the canonical constructor. 
+I'll copy and paste it below, changing the random part, 
+to just **true**, meaning every seat will be reserved. 
+This means the event is sold out, so if I run this, 
+I get _reservationCount_ is 100, and _hasBookings_ equals **true**. 
+Now, even though _fullyBooked_ is _true_, 
+_eventWashedOut_ is still **false**. 
+I'll change the seat constructor one more time, 
+passing just **false** this time.
+Running this code, I get a different story. 
+There are no reservations, _hasBookings_ is **false**, 
+_fullyBooked_ is certainly **false**, 
+and _eventWashedOut_ is **true**. 
+These three conditions cover every scenario, 
+and allow you to use stream terminal operations, 
+to get information about all elements in that stream. 
+I still have two more types of terminal operations to cover, 
+I'll bring this to a close here. 
+I'll talk about the _Transform_ 
+and _Process_ terminal operations next. 
+However, first I want to set up some code that 
+I'll be using for the remainder of the sections, 
+and that will be used in a challenge for you 
+on the terminal operations we've looked at so far. 
+You can use the next section as an additional challenge. 
+You can also skip ahead, 
+and import the code that I'll be creating, 
+in the challenge section on terminal operations.
+</div>
+
+## [g. Streaming Student Project]()
+<div align="justify">
+
+In the code ahead, 
+I'll be setting up a couple of familiar classes, 
+a **Student**, and a **Course**. 
+I'll be mocking up a lot of students 
+to put some of the stream operations into practice. 
+Again, you can choose to approach this 
+as an additional challenge, 
+or you could just follow along, 
+or even skip over these setup sections. 
+This code is very basic,
+with only the use of the Stream's generate method 
+used at the very end. 
+I'll also be using **LocalDate**, 
+and a class called **Period**, 
+I haven't used before, 
+to get the number of months elapsed 
+between two dates.
+
+![image06](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/images/image06.png?raw=true)
+
+The **course** type should have a course code, 
+a course title, and a lecture count.
+You can make this an immutable class.
+
+![image07](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/images/image07.png?raw=true)
+
+Each student will have a **courseEngagement** instance, 
+for every **course** they're enrolled in. 
+It should have the fields for the **course**, 
+the enrollment date, the engagement type, 
+the last lecture, and the last activity date. 
+It should have the usual getters, 
+plus getters for calculated fields as shown here. 
+The _getMonthsSinceActive_ method should return
+the months elapsed, from the last course activity.
+
+The _getPercentComplete_ method should use the last lecture, 
+and the lecture count on course, 
+to return a percentage complete. 
+The _watchLecture_ method would get called 
+when a student engaged in the course,
+and should update fields on the engagement record.
+It takes a lecture number, and an activity date.
+
+![image08](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/images/image08.png?raw=true)
+
+The **Student** class should have a student id, 
+and demographic data, like country code, year enrolled, 
+age at time of enrollment, gender, 
+and a programming experience flag. 
+Your **student** should also have a map of **CourseEngagements**,
+keyed by course code. 
+Include getters for all of these fields.
+
+In addition to the usual getters, 
+add getter methods for calculated fields, 
+like _getYearsSinceEnrolled_, and _getAge_.
+Include the getters, 
+_getMonthsSinceActive_ and _getPercentComplete_, 
+that take a course code, and return data, 
+from the matching **CourseEngagement** record. 
+Add an overloaded version of _getMonthsSinceActive_, 
+to get the least number of inactive months, from all courses.
+
+You should have overloaded _addCourse_ methods, 
+one that takes a specified activity date, 
+and one that will instead default to the current date. 
+Include the method, _watchLecture_, 
+that takes a course code,
+a lecture number and an activity year and month, 
+and calls the method of the same name, 
+on the **courseEngagement** record.
+
+Finally, create a static factory method on this class, 
+_getRandomStudent_, that will return a new instance of **Student**,
+with random data, populating a student's fields. 
+Make sure to pass courses to this method, 
+and pass them to the student constructor. 
+For each course, call _watchLecture_, 
+with a random lecture number, 
+and activity year and month, 
+so that each Student will have different activity for each course.
+</div>
+
+
+<div align="justify">
 
 ```java  
 
 ```
+
 
 
 ```html  
@@ -2236,18 +2739,6 @@ You've seen _forEach_, but there are many others.
 ```
 
 
-```html  
-
-```
-</div>
-
-
-<div align="justify">
-
-```java  
-
-```
-
 
 ```html  
 
@@ -2261,18 +2752,6 @@ You've seen _forEach_, but there are many others.
 
 ```
 
-
-```html  
-
-```
-</div>
-
-
-<div align="justify">
-
-```java  
-
-```
 
 
 ```html  
