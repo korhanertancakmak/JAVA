@@ -163,8 +163,9 @@ What we will learn from this Path:
 ### [a. Stream In Action]()
 ### [b. Stream Pipeline]()
 ### [c. Stream Sources]()
+### [d. Stream Sources Challenge]()
+### [e. Intermediate Operations]()
 
-    * Intermediate Operations
     * Terminal Operations
     * Streams to Maps
     * Maps to Streams (Using flatMap)

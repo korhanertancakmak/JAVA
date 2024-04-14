@@ -1251,7 +1251,7 @@ it probably wouldn't make sense
 why you'd want to use these. 
 </div>
 
-## [d. Stream Sources Challenge]()
+## [d. Stream Sources Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/Course04_StreamSourcesChallenge/README.md#stream-sources-challenge)
 <div align="justify">
 
 In the last section, 
@@ -1291,6 +1291,942 @@ or using other intermediate operations I haven't yet mentioned,
 but if you want a good challenge, you can play around with this one.
 </div>
 
+## [e. Intermediate Operations]()
+<div align="justify">
+
+Up until now, I've kind of glossed over intermediate operations. 
+For one thing, most aren't that complicated 
+or challenging to understand. 
+I've used _filter_, _limit_, _map_ and _sorted_ in my examples. 
+I also showed you a quick example of using 
+_distinct_ in the last challenge.
+
+| Return Type | Operation                                                                                                                            |
+|-------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| Stream<T>   | distinct()                                                                                                                           |
+| Stream<T>   | filter(Predicate<? super T> predicate)<br/> takeWhile(Predicate<? super T> predicate)<br/> dropWhile(Predicate<? super T> predicate) |
+| Stream<T>   | limit(long maxSize)                                                                                                                  |
+| Stream<T>   | map(Function<? super T, ? extends R> mapper)                                                                                         |
+| Stream<T>   | peek(Consumer<? super T> action)                                                                                                     |
+| Stream<T>   | skip(long n)                                                                                                                         |
+| Stream<T>   | sorted()<br/> sorted(Comparator<? super T> comparator)                                                                               |
+
+As you can see from this table, 
+the operations you've already seen briefly 
+cover half of the basic operations available
+to your stream pipelines.
+
+| Return Type | Operation                                                                                                                           | Description                                                                                                                                                                                                                                                                        |
+|-------------|-------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Stream<T>   | distinct()                                                                                                                          | Removes duplicate values from the Stream.                                                                                                                                                                                                                                          |
+| Stream<T>   | filter(Predicate<? super T> predicate<br/> takeWhile(Predicate<? super T> predicate)<br/> dropWhile(Predicate<? super T> predicate) | These methods allow you to reduce the elements in the output stream.<br/> Elements that match the filter's Predicate are kept in the outgoing stream, for the filter and takeWhile operations.<br/> Elements will be dropped until or while the dropWhile's predicate is not true. |
+| Stream<T>   | limit(long maxSize)                                                                                                                 | This reduces your stream to the size specified in the argument.                                                                                                                                                                                                                    |
+| Stream<T>   | skip(long n)                                                                                                                        | This method skips elements, meaning they won't be part of the resulting stream.                                                                                                                                                                                                    |
+
+I'll start by talking about the set of operations
+that may change the number of elements in the resulting stream.
+In this group, the first is the _distinct_ operation, 
+which removes any duplicate values. 
+This operation depends on the stream type's equals method, 
+to determine the uniqueness of a stream element. 
+Next, there is _filter_ which takes a conditional statement 
+that evaluates to true or false, 
+usually based on some attribute of the stream element. 
+Elements that match an operation's _predicate_, 
+meaning the condition returns true for that element, 
+are kept in the outgoing stream, 
+for both the _filter_ and _takeWhile_ operations.
+In contrast, elements will be dropped from the stream, 
+until or while the operation, 
+_dropWhile_'s predicate is not true. 
+You've already seen the _limit_ operation in action. 
+This defines the exact size of the stream, 
+cutting off the stream elements 
+when this size has been reached. 
+This operation usually turns infinite streams into finite streams. 
+The _skip_ method allows you to skip a certain number of elements,
+meaning they won't be in the outgoing stream. 
+Let's see what we can do with some of these in code.
+
+```java  
+IntStream.iterate((int) 'A', i -> i <= (int) 'z', i -> i + 1)
+    .forEach(d -> System.out.printf("%c ", d));
+
+System.out.println();
+```
+
+I'm going to start with the _ABC_'s. 
+I'll use `IntStream.iterate`, 
+casting the capital letter _A_ 
+to an integer value.
+This lets me do integer math easier on my stream. 
+This also means my Stream is made up of integer primitives. 
+I'll use the three parameter version of _iterate_, 
+so my second argument is a predicate lambda. 
+I want to continue to produce integers for the stream, 
+until I get to the integer value of a lowercase _z_. 
+To do this, I'll make this condition test 
+that the value of _i_ is less than or equal 
+to whatever the integer value of lowercase _z_ might be. 
+Finally, the last argument is a **UnaryOperator**, 
+and that's just going to increment 
+each subsequent value by one. 
+I'm going to get integers representing any characters 
+between uppercase _A_ and lowercase _z_. 
+I'll print that out, using _printf_. 
+I can pass an int to a character specifier, 
+as I show here. 
+Here is another example of a pipeline, 
+that has no _intermediate_ operations.
+If I run this:
+
+```html  
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _ ` a b c d e f g h i j k l m n o p q r s t u v w x y z
+```
+
+You can see, I get a couple of characters 
+that aren't alphabetical characters.
+
+```java  
+IntStream.iterate((int) 'A', i -> i <= (int) 'z', i -> i + 1)
+    .filter(Character::isAlphabetic)
+    .forEach(d -> System.out.printf("%c ", d));
+
+System.out.println();
+```
+
+I'll filter those out. 
+The Character wrapper provides a method, 
+called _isAlphabetic_, 
+that takes an integer, 
+and returns a boolean, 
+so this is a perfect opportunity 
+for a method reference. 
+Running this:
+
+```html  
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z
+```
+
+Gives us just the uppercase and lowercase alphabet now. 
+Let's say that next:
+
+```java  
+IntStream.iterate((int) 'A', i -> i <= (int) 'z', i -> i + 1)
+    .filter(Character::isAlphabetic)
+    .dropWhile(i -> Character.toUpperCase(i) <= 'E')
+    .forEach(d -> System.out.printf("%c ", d));
+
+System.out.println();
+```
+
+I don't want any letters, from _A_ through _E_. 
+This can be done with an additional _filter_ 
+I can add the code to my first lambda expression, 
+or I can include an additional _filter_ operation, 
+which is what I'll do here. 
+In this case, I can use another method 
+on the **Character** wrapper class, to uppercase, 
+that takes an integer, 
+and compare that to the character, a literal _E_. 
+If the value is greater than _E_, 
+it will be part of the output stream. 
+There's really no limit 
+to the number of _intermediate_ operations you specify, 
+and you can use one operation many times, 
+and in any order you want. 
+Again, these operations are a specification to the stream processor. 
+The processor may decide it's more efficient 
+to join those two conditions together, 
+in the black box of the stream process. 
+This is why we have to stop thinking of these operations as methods, 
+because in some cases, 
+they'll never be used in the way we define them, 
+but will be optimized by the stream processing code. 
+Running this code now:
+
+```html  
+F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z
+```
+
+you can see I get the result I wanted, 
+regardless of the way the processor decided 
+to get that work done.
+
+```java  
+IntStream.iterate((int) 'A', i -> i <= (int) 'z', i -> i + 1)
+    .filter(Character::isAlphabetic)
+    .skip(5)
+    .forEach(d -> System.out.printf("%c ", d));
+
+System.out.println();
+```
+
+If I only wanted to skip the capital letters, _a_, 
+through _e_, I could use the _skip_ method. 
+I'll comment out that second _filter_, to show you that. 
+Next I'll add skip as the second operation, skipping 5. 
+Running this:
+
+```html  
+F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z
+F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z
+```
+
+You can see this operation did exactly that, 
+it skipped the first five generated elements, 
+and my letters start with a capital _F_. 
+You might ask why you'd do this, 
+and this probably isn't a very good example, 
+since I could just change my iterate method to do this.
+
+```java  
+IntStream.iterate((int) 'A', i -> i <= (int) 'z', i -> i + 1)
+    .filter(Character::isAlphabetic)
+    .dropWhile(i -> i <= 'E')
+    .forEach(d -> System.out.printf("%c ", d));
+
+System.out.println();
+```
+
+You'll definitely encounter situations though, 
+when you want to skip elements in a stream. 
+There are two other methods 
+that let you fine tune what gets skipped 
+or what gets included, _takeWhile_ and _dropWhile_. 
+I'll remove out the skip 5 statement, 
+and next include a _dropWhile_ statement 
+that will do the same thing. 
+This operation takes a predicate 
+and will filter out any elements 
+while they match this condition. 
+Unlike _filter_, this predicate is only evaluated for elements, 
+until it first becomes false. 
+I'll explain what I mean by that in more detail, in just a minute. 
+Here, I'll drop any characters 
+that are less than or equal to a capital letter _E_. 
+If I run this:
+
+```html  
+F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z
+```
+
+I get the same output as with skip 5, 
+but this method gives you a lot more control. 
+As I said, this will continue 
+to exclude elements until this predicate turns false.
+
+```java  
+IntStream.iterate((int) 'A', i -> i <= (int) 'z', i -> i + 1)
+    .filter(Character::isAlphabetic)
+    .dropWhile(i -> Character.toUpperCase(i) <= 'E')
+    .forEach(d -> System.out.printf("%c ", d));
+
+System.out.println();
+```
+
+I'll change my predicate to ignore the case 
+by making the character uppercase before I test it. 
+Running this:
+
+```html  
+F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z
+```
+
+The output didn't change. 
+Did you expect the letters, _a_ through _e_, 
+in lowercase to be dropped? 
+Well, that's where the word 
+while in the operation name becomes important. 
+This happens until the predicate becomes false the first time,
+and then that condition is no longer checked. 
+Think of this as a mini while loop. 
+It'll drop data until the condition becomes false, 
+and then it moves past the loop altogether. 
+Its job in the pipeline is complete, and won't be revisited.
+If you combine this with a take while operation, 
+you can effectively describe a range of elements you want.
+
+```java  
+IntStream.iterate((int) 'A', i -> i <= (int) 'z', i -> i + 1)
+    .filter(Character::isAlphabetic)
+    .dropWhile(i -> Character.toUpperCase(i) <= 'E')
+    .takeWhile(i -> i < 'a')
+    .forEach(d -> System.out.printf("%c ", d));
+
+System.out.println();
+```
+
+In this case, I'll take elements 
+while they are less than a lowercase _a_. 
+Running this:
+
+```html  
+F G H I J K L M N O P Q R S T U V W X Y Z
+```
+
+You can see I get letters _F_ through _Z_, in uppercase. 
+The _dropWhile_ and _takeWhile_ work well with ordered streams. 
+If the stream isn't ordered, 
+oracle tells us the result will be non-deterministic, 
+meaning the results may differ upon subsequent executions. 
+Finally, there's the _distinct_ operation.
+
+```java  
+IntStream.iterate((int) 'A', i -> i <= (int) 'z', i -> i + 1)
+    .filter(Character::isAlphabetic)
+    .map(Character::toUpperCase)
+    .distinct()
+    .forEach(d -> System.out.printf("%c ", d));
+
+System.out.println();
+```
+
+First, I'll comment out the _dropWhile_ and _takeWhile_ operations. 
+I'll use a simple _map_ function, 
+to map all elements to an upper case letter, 
+then I'll insert the _distinct_ operation after that. 
+Again, this is probably not the most logical piece of code, 
+but it does demonstrate how _distinct_ works. 
+I'll run this 
+
+```html  
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+```
+
+And confirm I only get _A_ to _Z_ here.
+For another example, 
+I'll generate some random letters instead. 
+First, I'll print out a new line to separate
+the output. 
+
+```java  
+System.out.println();
+Random random = new Random();
+
+Stream.generate(() -> random.nextInt((int)'A', (int)'Z' + 1))
+    .limit(50)
+    .distinct()
+    .sorted()
+    .forEach(d -> System.out.printf("%c ", d));
+
+System.out.println();
+```
+
+For another example, 
+I'll generate some random letters instead. 
+First, I'll print out a new line to separate the output. 
+I'll set up a local variable, _random_, 
+a new instance of the **Random** class. 
+I'll create a **Stream** source.
+I'm going to use **Stream** 
+this time instead of **IntStream**, 
+so that you can see I can use **Stream** 
+with integers somewhat seamlessly. 
+Java will do all the auto boxing and unboxing required. 
+I'll execute `Stream.generate`, 
+which takes a supplier, so it has no arguments, 
+but returns a value. 
+In this case, I want to return 
+the result of the `random.nextInt` method.
+I like to just pass the characters, 
+casting them to ints, so it's clearer 
+that I'm focusing on character values. 
+Since this is a random generator, on an infinite stream, 
+I'm going to set a limit of 50. 
+Now I'll call `distinct`. 
+I'll then sort my integers. 
+And I'll print them out.
+
+```html  
+A B D E G H J K L M N O Q R S T U V X Y Z
+```
+
+I chose 50 to limit the stream 
+because I don't want to actually get 
+a full set of characters each time. 
+Using fifty as the limit means 
+the probability of producing a nearly 
+full alphabetical set, is less than likely. 
+Running this multiple times, 
+you'll see that I get most of the letters 
+when I use 50, as the limiting number. 
+I won't usually get a full alphabet.
+
+```java  
+Stream.generate(() -> random.nextInt((int)'A', (int)'Z' + 1))
+    .limit(50)
+    .sorted()
+    .forEach(d -> System.out.printf("%c ", d));
+```
+
+If I remove `distinct`, 
+I'll see every letter generated, but in order. 
+Running that:
+
+```html  
+A A B C C C D D D E E E F F H I I J J K K L L L L M M M M M N O O P P R T T T T T T U W W X X Y Y Z
+```
+
+You can see the results without `distinct`. 
+If these pipelines are starting 
+to feel like database queries to you, 
+that's for good reason. 
+The Java API designers designed the **Stream** 
+to let you process data in a declarative way, 
+much like a structured query language or SQL in a database. 
+Again, this lets you say _what should happen_, 
+and _not actually how it will happen_. 
+If you've had experience querying databases, 
+you might be familiar with 
+the _limit_ and _distinct_ keywords,
+available in some database query languages. 
+The _filter_ operation represents your where clause, 
+and sorted would be your order by clause, and so on. 
+When we get to _terminal_ operations, 
+you'll see there are aggregate functions commonly
+used in queries as well, 
+such as _max_, _min_, _count_ and so on. 
+</div>
+
+### Intermediate Operations that operate on every element
+<div align="justify">
+
+| Return Type | Operation                                             | Description                                                                                                                                                                                                                           |
+|-------------|-------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Stream<R>   | map(Function<? super T, ? extends R> mapper)          | This is a function applied to every element in the stream. Because it's a function, the return type can be different, which has the effect of transforming the stream to a different stream of different types.                       |
+| Stream<T>   | peek(Consumer<? super T> action)                      | This function does not change the stream, but allows you to perform some interim consumer function while pipeline is processing.                                                                                                      |
+| Stream<T>   | sorted()<br/>sorted(Comparator<? super T> comparator) | There are two versions of sorted.<br/> The first uses the naturalOrder sort, which means elements in the stream must implement Comparable.<br/>If your element don't use Comparable, you'll want to use sorted and pass a Comparator. |
+
+In the last two examples of stream pipelines, 
+I used _map_ and _sorted_. 
+It's kind of hard not to use these 
+in many cases.
+Much of what you want to do in a stream processing 
+pipeline is to _filter_, _transform_, and _sort_. 
+The _map_ function is both straightforward and powerful. 
+It can turn one stream into another kind,
+and since we can use as many _map_ operations, 
+as we want, we could do a lot with this one operation. 
+It can be as complex or simple as you want it to be as well.
+
+The _peek_ method is aptly named 
+because it's commonly used to print elements in interim operations, 
+so you can get an understanding of what is really happening. 
+Of course, you're not limited to just printing output. 
+This operation is susceptible to intentional, 
+or unintentional, side effects.
+
+Finally, there's the sorted operation. 
+We've covered sorted a lot with collections, 
+and this operation is similarly structured 
+to the sort method on implemented collections. 
+You can use it without specifying an argument 
+for elements that implement the **Comparable** interface. 
+If you want a different kind of sort, 
+or the elements in your stream don't implement **Comparable**, 
+you'd pass a Comparator. 
+The sorted method gets complicated when you use parallel streams, 
+but I'll cover those complexities in the **concurrency** section of the course.
+
+I want to examine the _map_ operation in a little more detail. 
+First, though, I'm going to create a **Seat** record for the examples 
+I'll be using in this section.
+
+```java  
+public record Seat(char rowMarker, int seatNumber, double price) {
+
+    public Seat(char rowMarker, int seatNumber) {
+        this(rowMarker, seatNumber, rowMarker > 'C' && (seatNumber <= 2 || seatNumber >= 9) ? 50 : 75);
+    }
+
+    @Override
+    public String toString() {
+        return "%c%03d %.0f".formatted(rowMarker, seatNumber, price);
+    }
+}
+```
+
+You may remember in previous sections, 
+I created collections of theater **Seats**. 
+I want to do something similar 
+to demonstrate some of the stream operations. 
+I'll create a new Java class, a record, 
+and just call that **Seat**. 
+It will have the fields _rowMarker_, _seatNumber_, 
+and
+a _price_ of the seat. 
+_RowMarker_ will be a letter, 
+_seatNumber_ will be an int,
+and _price_ will be a double. 
+I'll generate a custom constructor, 
+and for that, I just want the first two fields,
+_rowMarker_, and _seatNumber_. 
+I'll change this code. 
+First, I want to insert the _seatNumber_, 
+before the zero. 
+Next, I'll replace 0 with a ternary operator, 
+to set up a pricing rule for seats. 
+All seats will be $75, 
+but I'll have the outer seats, 
+seats 1 and 2, and seats 9 and 10 be discounted, 
+after row _C_. 
+I'll check that _rowMarker_ is greater 
+than a literal _C_ character. 
+I'll use a conditional _and_, 
+and next check the seat number values.
+That's it for the constructor.
+
+Next, I want a _toString_ method, 
+and I'll generate that with _ALT+INSERT_, 
+and _Select None_ for fields. 
+I'm going to return a formatted **String**. 
+The seat number will be in the format, of _B001_, 
+for example, so I'll print the row marker
+with a character specifier. 
+That'll be followed by the seat number 
+with an integer specifier, with a width of 3, 
+but I want leading zeros, so I make that zero 3. 
+Finally, the price has a float identifier. 
+I'll ignore any decimal value when this is printed, 
+so I make that `.0f`. 
+Ok, that's a pretty simple record. 
+This pricing mechanism is a bit flawed,
+since my seat numbers may not always be from 1 to 10 
+under some circumstances, but it's good enough for this test.
+Getting back to the **Main** class and the _main_ method,
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        System.out.println();
+        int maxSeats = 100;
+        int seatsInRow = 10;
+        var stream = Stream.iterate(0, i -> i < maxSeats, i -> i + 1)
+                .map(i -> new Seat((char) ('A' + i / seatsInRow), i % seatsInRow + 1));
+
+        stream.forEach(System.out::println);
+    }
+}
+```
+
+I'll first print a new line. 
+I'll set _maxSeats_ to 100, 
+and _seatsInRow_ to 10. 
+I'm going to create a stream variable,
+using _var_ as the type for simplicity. 
+I'll use `Stream.iterate`, starting with zero. 
+I want to generate numbers up to the
+_maxSeats_ value, which I made 100. 
+The third parameter is a function lambda, 
+and it just increments by one. 
+These parameters kind of remind 
+you of a traditional for loop, don't they? 
+Here, I'm going to return new instances of the
+**Seat** record, and instead of using _generate_, 
+I'm doing this with _iterate_, 
+saying how many seats I want. 
+Then I'm going to use _map_, 
+to return a new **Seat** record. 
+I can figure out the row's character,
+by using the integer on the stream,
+and dividing that by the seats in this row. 
+For example, _i_ divided by _seatsInRow_, 
+will be 0 for the first 10 seats,
+so they'll be in row _A_, 
+it'll be 1 from the next 10 seats, 
+so they'll all be _B_, and so on. 
+Next, I need the seat number.
+I don't want to use the stream's integer value, 
+because each seat number is numbered from 1 to 10. 
+Again, I can figure this out with a simple math equation. 
+I can use the modulus of _i_ with _seatsInRow_ and add one. 
+When _i_ is 0 or 10, or 20, the seat number is 1, 
+the first seat in the row. 
+When _i_ is 9, or 19, the modulus returns 9, 
+and adding 1 makes this 10, which is the last seat in the row. 
+Finally, I'll print these records out. 
+Ok, so I purposely wanted my terminal
+operation, as a separate statement. 
+This lets me demonstrate a couple of things using IntelliJ's inlay hints. 
+You can see my local stream variable's type 
+has been inferred to be, a `Stream<Seat>` there. 
+In the code I'm showing you here, 
+I start out with a `Stream<Integer>`, 
+which then becomes a `Stream<Seat>`. 
+If I run this:
+
+```html  
+A001 75
+A002 75
+.
+.
+I008 75
+I009 50
+I010 50
+J001 50
+J002 50
+J003 75
+.
+J008 75
+J009 50
+J010 50
+```
+
+I can see all my seats printed. 
+Most of the seats are priced at $75, 
+but after row C, you can start seeing discount seats, 
+the seats that have a seat number of _001_, or _002_, 
+as well as those that are _009_, or _010_.
+
+```java  
+var stream1 = Stream.iterate(0, i -> i < maxSeats, i -> i + 1)
+                .map(i -> new Seat((char) ('A' + i / seatsInRow), i % seatsInRow + 1))
+                .map(Seat::toString);
+
+stream1.forEach(System.out::println);
+```
+
+Now, I'll do another _map_, 
+and put that after the first one, 
+in this pipeline. 
+I'll remove the closing semicolon.
+I'll add another _map_ operation, 
+and return a method reference, `Seat::toString`. 
+This will return a **String**. 
+I can confirm this by examining 
+the inlay hint for my stream variable again. 
+This always shows me the final stream type. 
+IntelliJ has an inlay hint now, 
+after the first _map_ operation, 
+which tells me that at that point 
+my **Stream** had **Seat** elements in it. 
+Also notice that after the _iterate_ method, 
+it's showing me that I started with a `Stream<Integer>`. 
+I'll change this map to return a stream of the prices, 
+so I'll just change _toString_, to simply price. 
+
+```java  
+var stream1 = Stream.iterate(0, i -> i < maxSeats, i -> i + 1)
+                .map(i -> new Seat((char) ('A' + i / seatsInRow), i % seatsInRow + 1))
+                //.map(Seat::toString)
+                .map(Seat::price);
+
+stream1.forEach(System.out::println);
+```
+
+IntelliJ tells me the result
+is a Stream<Double>, 
+or double wrapper instances. 
+In addition to **Streams** 
+that take any type, 
+I've already demonstrated
+that Java has primitive streams for ints, 
+doubles and longs. 
+I can switch to these in a pipeline 
+that started out as a **Stream**. 
+To do this, I can use specialized _map_ functions, 
+and I'll show you this next. 
+
+```java  
+var stream1 = Stream.iterate(0, i -> i < maxSeats, i -> i + 1)
+        .map(i -> new Seat((char) ('A' + i / seatsInRow), i % seatsInRow + 1))
+        //.map(Seat::toString)
+        //.map(Seat::price);
+        .mapToDouble(Seat::price);
+
+stream1.forEach(System.out::println);
+```
+
+In this case, I want to
+use an operation called _mapToDouble_, 
+rather than _map_. 
+Now look at the resulting stream type. 
+It's not a `Stream<Double>`, 
+but a new Stream type, a _DoubleStream_. 
+This is a special stream 
+that handles primitive doubles. 
+It can be a lot more efficient 
+to process a large number of doubles 
+with this type of stream, 
+rather than incur the overhead 
+or additional memory required 
+when operating on a double wrapper. 
+I'll add another _map_ operation. 
+
+```java  
+var stream1 = Stream.iterate(0, i -> i < maxSeats, i -> i + 1)
+        .map(i -> new Seat((char) ('A' + i / seatsInRow), i % seatsInRow + 1))
+        //.map(Seat::toString)
+        //.map(Seat::price);
+        //.mapToDouble(Seat::price);
+        .map("%.2f"::formatted);
+
+stream1.forEach(System.out::println);
+```
+
+First, I'll again remove the last semicolon. 
+Now I'll include an additional _map_ operation. 
+This time I want the price, 
+but as a formatted string. 
+I'll have a formatted float specifier, 
+allowing for two decimals, 
+and use the formatted method. 
+I can do this with a method reference too. 
+When using stream pipelines, 
+often times the method references are easier to read, 
+to get a gist of what is happening. 
+IntelliJ is flagging this _map_ operation as an error. 
+Hovering over that, 
+I get the message bad return type in method reference. 
+Cannot convert `java.lang.String` to double. 
+When you use a _DoubleStream_, 
+all your _map_ operations have to return a double. 
+To map to something other than a double, 
+I'll have to use another specialty _map_ operation, 
+called _mapToObj_. 
+
+```java  
+var stream1 = Stream.iterate(0, i -> i < maxSeats, i -> i + 1)
+        .map(i -> new Seat((char) ('A' + i / seatsInRow), i % seatsInRow + 1))
+        .map(Seat::toString);
+        //.map(Seat::price)
+        //.mapToDouble(Seat::price)
+        //.map("%.2f"::formatted);
+        .mapToObj("%.2f"::formatted);
+
+stream1.forEach(System.out::println);
+```
+
+I'll replace that last _map_ operation with _mapToObj_. 
+The stream inlay hint, shows the resulting stream, 
+is now a Stream again, with a String type. 
+Let's pause here a minute to look at a table.
+
+<table>
+  <tr>
+     <th> Special Primitive Streams </th>
+     <th> Mapping from Reference Type to Primitive </th>
+     <th> Mapping from Primitive Stream to Reference Type </th>
+  </tr>
+  <tr>
+     <td rowspan="2">DoubleStream</td>
+     <td rowspan="2">mapToDouble(ToDoubleFunction<? super T> mapper)</td>
+     <td>mapToObj(DoubleFunction<? extends U> mapper)</td>
+     <tr>
+         <td>boxed()</td>
+     </tr>
+  </tr>
+  <tr>
+     <td rowspan="2">IntStream</td>
+     <td rowspan="2">mapToInt(ToIntFunction<? super T> mapper)</td>
+     <td>mapToObj(IntFunction<? extends U> mapper)</td>
+     <tr>
+         <td>boxed()</td>
+     </tr>
+  </tr>
+  <tr>
+     <td rowspan="2">LongStream</td>
+     <td rowspan="2">mapToLong(ToLongFunction<? super T> mapper)</td>
+     <td>mapToObj(LongFunction<? extends U> mapper)</td>
+     <tr>
+         <td>boxed()</td>
+     </tr>
+  </tr>
+</table>
+
+In addition to the generic **Stream**, 
+that lets you stream any reference type, 
+Java has three primitive streams. 
+These are **DoubleStream**, **IntStream**,
+and **LongStream**. 
+To change to a primitive stream, 
+you choose a corresponding _mapTo_ operation 
+as shown in the second column, on this table. 
+To switch to a double stream, you'd use _mapToDouble_. 
+_MapToInt_ will result in using an _IntStream_, 
+and _LongStream_ comes from _mapToLong_. 
+To switch back to a generically typed stream, 
+you use _mapToObj_. 
+Alternately, you can use `boxed()`. 
+I'll show you that next.
+
+```java  
+var stream2 = Stream.iterate(0, i -> i < maxSeats, i -> i + 1)
+        .map(i -> new Seat((char) ('A' + i / seatsInRow), i % seatsInRow + 1))
+        .boxed()
+        .mapToObj("%.2f"::formatted);
+
+stream2.forEach(System.out::println);
+```
+
+I'll add a _boxed_ operation 
+before the last mapToObj operation. 
+Now, I have an error on _MapToObj_, 
+and because I used _boxed_ above it, 
+I can simply make that _map_ here. 
+
+```java  
+var stream2 = Stream.iterate(0, i -> i < maxSeats, i -> i + 1)
+        .map(i -> new Seat((char) ('A' + i / seatsInRow), i % seatsInRow + 1))
+        .boxed()
+        //.map("%.2f"::formatted);
+        .sorted();
+
+stream2.forEach(System.out::println);
+```
+
+I'll switch _mapToObj_ back to _map_. 
+The primitive streams have many of the same operations, 
+but do include a few extra terminal operations 
+specific to their numeric types. 
+I'll cover these in the next section. 
+I think the _sorted_ operation is pretty self-explanatory, 
+but let me comment out some of these extra _map_ operations, 
+and I'll give that a quick test. 
+I'll add _sorted_ after the _map_. 
+When I run this:
+
+```html  
+Exception in thread "main" java.lang.ClassCastException: 
+class Seat cannot be cast to class java.lang.Comparable
+```
+
+I get an exception, and that's 
+because my record does not implement **Comparable**. 
+I can simply pass a **Comparator** here,
+so I'll do that.
+
+```java  
+var stream3 = Stream.iterate(0, i -> i < maxSeats, i -> i + 1)
+        .map(i -> new Seat((char) ('A' + i / seatsInRow), i % seatsInRow + 1))
+        .sorted(Comparator.comparing(Seat::price).thenComparing(Seat::toString));
+
+stream3.forEach(System.out::println);
+```
+
+I want to first sort by the lowest seat price, 
+and then the seat numbers string. 
+I'll use **Comparator**'s convenience methods 
+to build this, so I'll start with comparing, 
+passing that the method reference for **Seat** price. 
+I'll chain the then _Comparing_ method to that. 
+For that method, I want to pass the method reference 
+for the _toString_ method. 
+Running that code:
+
+```html  
+D001 50
+D002 50
+..
+J009 50
+J010 50
+..
+A001 75
+A002 75
+A003 75
+..
+J007 75
+J008 75
+```
+
+I get my lowest priced seats listed first, 
+_D001_, _D002_, _D009_ and so on.
+Lastly, I want to finish up this section 
+with a quick look at _peek_.
+
+```java  
+var stream4 = Stream.iterate(0, i -> i < maxSeats, i -> i + 1)
+        .map(i -> new Seat((char) ('A' + i / seatsInRow), i % seatsInRow + 1))
+        .sorted(Comparator.comparing(Seat::price).thenComparing(Seat::toString))
+        .skip(5)
+        .limit(10)
+        .peek(s -> System.out.println("--> " + s));
+
+//stream4.forEach(System.out::println);
+```
+
+_Peek_ takes a **Consumer**, 
+and therefore its purpose is not 
+to have any side effects on stream members. 
+In fact, the Java docs state 
+that _peek_ mainly exists to support debugging, 
+to see elements, as they flow past a certain point in a pipeline. 
+First, I'll comment out the last statement, 
+meaning the _forEach_ statement. 
+I'll use _peek_, but for this example, 
+I just want to do it on a limited set, 
+so I'll skip the first 5 
+and limit the output to just 10,
+and now I'll include _peek_, 
+printing out each generated record. 
+Running this code:
+
+```html  
+
+```
+
+I don't get any output at all. 
+This is a reminder 
+that _peek_ is still an intermediate operation too, 
+and because of lazy streams, 
+it won't process until I include a terminal operation. 
+I'll uncomment that last line of code in this method. 
+Running this:
+
+```html  
+--> E002 50
+E002 50
+--> E009 50
+E009 50
+--> E010 50
+E010 50
+--> F001 50
+F001 50
+--> F002 50
+F002 50
+--> F009 50
+F009 50
+--> F010 50
+F010 50
+--> G001 50
+G001 50
+--> G002 50
+G002 50
+--> G009 50
+G009 50
+```
+
+I can see the output from the _peek_ operation, 
+which includes the arrow. 
+You wouldn't probably use _peek_ in a stream pipeline 
+if your terminal operation is _forEach_ with a _println_ like this. 
+There are terminal operations that aggregate data 
+and give you a single result, 
+and _peek_ is often valuable in those circumstances, 
+to try to understand the stream pipeline process. 
+Ok, there are a couple of others,
+but I'll come back to those after I review terminal operations.
+In the next section, I'll cover these. 
+You've seen _forEach_, but there are many others.
+</div>
+
+## [f. Terminal Operations]()
+<div align="justify">
+
+
+
+```java  
+
+```
+
+
+```html  
+
+```
+</div>
 
 
 <div align="justify">
@@ -1306,9 +2242,6 @@ but if you want a good challenge, you can play around with this one.
 </div>
 
 
-
-
-
 <div align="justify">
 
 ```java  
@@ -1322,7 +2255,17 @@ but if you want a good challenge, you can play around with this one.
 </div>
 
 
+<div align="justify">
 
+```java  
+
+```
+
+
+```html  
+
+```
+</div>
 
 
 <div align="justify">
