@@ -2630,7 +2630,7 @@ and import the code that I'll be creating,
 in the challenge section on terminal operations.
 </div>
 
-## [g. Streaming Student Project]()
+## [g. Streaming Student Project](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/Course08_StreamingStudentsProject/README.md#streaming-student-project)
 <div align="justify">
 
 In the code ahead, 
@@ -2717,18 +2717,53 @@ and activity year and month,
 so that each Student will have different activity for each course.
 </div>
 
-
+## [h. Terminal Operations Challenge]()
 <div align="justify">
 
-```java  
+In this challenge, 
+you'll use the terminal operations shown on the table below, 
+in combination with some of the intermediate operations 
+you've learned about.
 
-```
+| Return Type      | Terminal Operations                       |
+|------------------|-------------------------------------------|
+| long             | count()                                   |
+| DoubleStatistics | summaryStatistics()                       |
+| boolean          | allMatch(Predicate<? super T> predicate)  |
+| boolean          | anyMatch(Predicate<? super T> predicate)  |
+| boolean          | noneMatch(Predicate<? super T> predicate) |
 
+You'll be using these to answer 
+some questions about a series of students. 
+It contains a Student class with demographic data. 
+This class has a factory method 
+to generate a new instance of a **Student**, 
+using random data.
+This factory method will also generate some random activity, 
+for each course passed as an argument, to the **Student** constructor.
 
+Your challenge is to create a source for a stream of **Students**.
 
-```html  
+- Use the static method on Student as the Supplier.
+- Use a large enough number to get a variety of Student data, 
+no less than 1000 students, for example.
+- Use a combination of the intermediate and terminal operations we've covered so far, to answer the following questions.
+     * How many male and female students are in the group?
+     * How many students fall into the three age ranges, 
+less than age 30, between 30 and 60, and lastly, over 60 years old? 
+Use summaryStatistics on student's age to get a better idea of how old the student population is. 
+     * What countries are the students from? 
+Print a distinct list of the country codes. 
+     * Are there students that are still active, 
+that have been enrolled for more than 7 years? 
+Use one of the match terminal operations to answer this question.
 
-```
+Next, select five of the students above, 
+and print their information out. 
+Imagine that maybe you'd like to send them a special coupon, 
+for being long time learners, and clients of yours. 
+Remember, you can use _peek_ to help you understand your stream processing, 
+if you don't feel confident about your results.
 </div>
 
 

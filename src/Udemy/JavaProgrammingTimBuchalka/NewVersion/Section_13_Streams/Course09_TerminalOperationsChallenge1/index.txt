@@ -1,7 +1,0 @@
-Directory Contents: 
-D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_17_Streams\Course09_TerminalOperationsChallenge1
-D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_17_Streams\Course09_TerminalOperationsChallenge1\Course.java
-D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_17_Streams\Course09_TerminalOperationsChallenge1\CourseEngagement.java
-D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_17_Streams\Course09_TerminalOperationsChallenge1\Main.java
-D:\JAVA_STUDY\JAVA_CLASSES\UDEMY_CLASSES\JAVA Programming MasterClass Tim Buchalka\PROGRAMS\Courses\.\src\CourseCodes\NewSections\Section_17_Streams\Course09_TerminalOperationsChallenge1\Student.java
-Generated: 2023-12-15T21:55:26.918052300
