@@ -2717,7 +2717,7 @@ and activity year and month,
 so that each Student will have different activity for each course.
 </div>
 
-## [h. Terminal Operations Challenge]()
+## [h. Terminal Operations Challenge-1](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/Course09_TerminalOperationsChallenge1/README.md#terminal-operations-challenge)
 <div align="justify">
 
 In this challenge, 
@@ -2766,6 +2766,717 @@ Remember, you can use _peek_ to help you understand your stream processing,
 if you don't feel confident about your results.
 </div>
 
+## [i. Collector and Collectors Class]()
+<div align="justify">
+
+In the last section, 
+we looked at some simple results of processing stream elements. 
+We used _count_ and _summaryStatistics_ operations, 
+which are **reduction** terminal operations.
+
+**Reduction operations** combine the contents of a stream, 
+to return a value, 
+or they can return a collection. 
+On this table, I want to show you some additional terminal operations,
+and their return types and signatures.
+
+| Return Type                       | Terminal Operations                                                                                                                                                                                |
+|-----------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| R<br/>R                           | collect(Collector<? super T.A.R> collector)<br/> collect(Supplier < R > supplier, BiConsumer<R, ? super T> accumulator, BiConsumer<R, R> combiner)                                                 |
+| Optional< T > <br/>T<br/> < U > U | reduce(BinaryOperator < T > accumulator)<br/> reduce(T identity, BinaryOperator < T > accumulator)<br/> reduce(U identity, BiFunction<U, ? super T, U> accumulator, BinaryOperator < U > combiner) |
+| Object[]<br/> A[]                 | toArray()<br/> toArray(IntFunction<A[ ]> generator)                                                                                                                                                |
+| List<T>                           | toList()                                                                                                                                                                                           |
+
+Some of these signatures, namely the parameters, 
+look pretty cryptic. 
+Don't let this intimidate or overwhelm you.
+Hopefully you recognize many of these types, 
+which are functional interfaces you know by now. 
+You can see the **Supplier**, the **BiConsumer**, 
+the **BinaryOperator**, the **BiFunction**, 
+and the **IntFunction**, in these parameters. 
+This tells you we'll be using lambdas 
+or method references with these operations. 
+This is the important part of the signature, 
+and I would recommend ignoring the generic types, 
+as you consider these. 
+Let me show you the same set of operations, 
+without the generics in the signature.
+
+| Return Type                  | Terminal Operations                                                                                                                                             |
+|------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| R<br/>R                      | collect(Collector collector)<br/> collect(Supplier supplier, BiConsumer accumulator, BiConsumer combiner)                                                       |
+| Optional <br/>T<br/> < U > U | reduce(BinaryOperator accumulator)<br/> reduce(T identity, BinaryOperator accumulator)<br/> reduce(U identity, BiFunction accumulator, BinaryOperator combiner) |
+| Object[]<br/> A[]            | toArray()<br/> toArray(IntFunction generator)                                                                                                                   |
+| List                         | toList()                                                                                                                                                        |
+
+Ok, this view of each method is a little easier on the eyes 
+and brain, I think. 
+There is one interface I haven't talked about yet, 
+and that's the **Collector**, 
+which you can see in the first collect operation. 
+This is not a functional interface, 
+but there are helper methods on another class, 
+named **Collectors**, with an _s_, 
+that provide these special types, 
+that let us create collections of any kind. 
+I'll be covering this interface in more detail, 
+as I review these methods. 
+Starting from the bottom and working upwards, 
+you can see _toList_ there. 
+**List** is one of the most common types 
+you'd put stream elements into, 
+so Java provided a terminal operation 
+to give us a **List** back. 
+We can also get arrays of objects, 
+or arrays of types we declare, 
+using one of the two **Array** operations.
+What's not so obvious, 
+when you look at the _reduce_ 
+and _collect_ operations, 
+is that we can also get back **Maps**, **Sets**, 
+or any other resulting type 
+we want from those operations. 
+In some ways, lambdas and streams are a whole new language, 
+living inside Java. 
+You never have to use them at all, 
+Java existed before these features were included. 
+Once you do understand them though, 
+I think you'll appreciate them. 
+Let's get started. 
+I'm back in the **StreamingStudents** project, 
+because there's a lot in this code to practice on. 
+At the end of the challenge section, 
+I left off with identifying five long-term students.
+
+```java  
+Arrays.stream(students)
+    .filter(s -> (s.getAge() - s.getAgeEnrolled() >= 7) && (s.getMonthsSinceActive() < 12))
+    .filter(s -> !s.hasProgrammingExperience())
+    .limit(5)
+    .toList()
+    .forEach(System.out::println); // It's not a stream anymore, List<Student>
+```
+
+Now, I want to do something, 
+or process these students in some way, 
+so I want to get these five students into some
+kind of container type. 
+In this case, I'll use the _toList_ terminal operation, 
+inserting it after the _limit_ operation,
+in my last pipeline. 
+I'll put that just before the _forEach_ statement. 
+This compiles, and you might be wondering why,
+because I have _toList_, 
+and _forEach_ in the same pipeline here. 
+Are both of these terminal operations? 
+Wouldn't the second one cause an exception? 
+Let me run this code:
+
+```html  
+Student{studentId=4, countryCode='GB', yearEnrolled=2015, ageEnrolled=44, gender='U', programmingExperience=false, engagementMap={JMC=JMC: Kas 2023 Lecture 15 [1], PYMC=PYMC: Mar 2017 Lecture 7 [81]}}
+Student{studentId=49, countryCode='CN', yearEnrolled=2015, ageEnrolled=86, gender='M', programmingExperience=false, engagementMap={JMC=JMC: Kas 2023 Lecture 11 [1], PYMC=PYMC: Mar 2017 Lecture 5 [81]}}
+Student{studentId=135, countryCode='CN', yearEnrolled=2015, ageEnrolled=40, gender='U', programmingExperience=false, engagementMap={JMC=JMC: Ağu 2023 Lecture 2 [4], PYMC=PYMC: Kas 2019 Lecture 21 [49]}}
+Student{studentId=175, countryCode='US', yearEnrolled=2016, ageEnrolled=57, gender='M', programmingExperience=false, engagementMap={JMC=JMC: Nis 2016 Lecture 20 [92], PYMC=PYMC: Şub 2023 Lecture 19 [10]}}
+Student{studentId=219, countryCode='US', yearEnrolled=2016, ageEnrolled=70, gender='U', programmingExperience=false, engagementMap={JMC=JMC: May 2023 Lecture 20 [7], PYMC=PYMC: Mar 2016 Lecture 24 [93]}}
+```
+
+It runs fine, 
+and I get the five students printed out. 
+This is because the last _forEach_ 
+is not technically part of the stream pipeline at all. 
+In fact, if you've got IntelliJ's Inlay hints turned on, 
+you can see the inlay hint after the _toList_ operation. 
+It tells us that at this point, we have a **List** of **students**, 
+and it's not a stream anymore. 
+The _forEach_ call here is a method on that list, 
+and not a terminal operation on the stream. 
+In this scenario, the _List_ method provides an unmodifiable list, 
+restricting your ability to perform further operations, 
+or chain additional methods. 
+Instead, it's more likely you'd want to assign 
+the result of your list to some variable, 
+so I'll do that next:
+
+```java  
+List<Student> longTimeLearners = Arrays.stream(students)
+        .filter(s -> (s.getAge() - s.getAgeEnrolled() >= 7) && (s.getMonthsSinceActive() < 12))
+        .filter(s -> !s.hasProgrammingExperience())
+        .limit(5)
+        .toList();
+```
+
+I'll set up a local variable assignment. 
+I'll use **List** with **Student**, 
+and call it _longTimeLearners_, 
+and assign it the result of the stream pipeline. 
+I'll add a semicolon after the terminal operation, 
+_toList_, and remove the _forEach_ statement altogether.
+Again, the returned list is unmodifiable. 
+But now you have a concrete collection of elements
+you could pass to other methods, 
+as long as they don't attempt to modify the original list. 
+I can always pass this list to the constructor, 
+of a new **ArrayList** or **LinkedList**, 
+if I want my own modifiable list. 
+Let's look at the _toArray_ operation next.
+
+```java  
+var longTimeLearners1 = Arrays.stream(students)
+        .filter(s -> (s.getAge() - s.getAgeEnrolled() >= 7) && (s.getMonthsSinceActive() < 12))
+        .filter(s -> !s.hasProgrammingExperience())
+        .limit(5)
+        .toArray(size -> new Student[size]);
+```
+
+First, I'll change my variable type to just _var_. 
+I'll change the _toList_ operation, 
+making it _toArray_, without passing that any arguments. 
+This compiles, but again let's see what IntelliJ's inlay hints can tell us. 
+I'm getting back an array of **Object**, 
+which is basically an untyped array. 
+I know every object is a **Student** in this stream, 
+but if I want to access a **Student** method on these array elements, 
+I'd have to cast that to a **Student** array. 
+There's an overloaded version of this operation, 
+that lets us specify the type of array we want back. 
+It takes an **IntFunction** type, which means, 
+it takes an int as a parameter, 
+and then returns an instance of something else. 
+This means I can use the parameter
+to create a new array of **Student**, 
+and use that argument value, as the size of the array. 
+I'll use the variable name, _size_, 
+as the parameter variable name in my lambda, 
+to make this really clear.
+I can then use this _size_, 
+and pass that to the array construction code. 
+This means it goes in the square brackets
+when I declare a new array of **Student**. 
+IntelliJ is telling me there's a better way to represent this, 
+but I wanted you to see it this way first, 
+so it's easier to see what's happening.
+
+```java  
+var longTimeLearners2 = Arrays.stream(students)
+        .filter(s -> (s.getAge() - s.getAgeEnrolled() >= 7) && (s.getMonthsSinceActive() < 12))
+        .filter(s -> !s.hasProgrammingExperience())
+        .limit(5)
+        .toArray(Student[]::new);
+```
+
+Now let's use IntelliJ's popup 
+to change that to a method reference. 
+This is probably the first time I've showed you 
+an array instantiation as a method reference. 
+It's doing exactly what I showed you in the lambda expression. 
+This is another example of the unbounded receiver method reference type. 
+In this case, the unbounded receiver is the array size, 
+and it's used in the array's specialized construction statement. 
+Now, the inlay hint is telling me 
+I'm getting back an array of **Student**, 
+because of this minor change. 
+I can also use the _reduce_ terminal operation 
+to give me a list back. 
+I'll copy all code and paste that below.
+
+```java  
+var learners = Arrays.stream(students)
+        .filter(s -> (s.getAge() - s.getAgeEnrolled() >= 7) && (s.getMonthsSinceActive() < 12))
+        .filter(s -> !s.hasProgrammingExperience())
+        .limit(5)
+        .collect(Collectors.toList());
+
+Collections.shuffle(learners);
+```
+
+I'll change the name of my variable to just learners. 
+I'll replace the _toArray_ operation with _collect_, 
+and I'm going to pass the result of calling a method 
+on that Collectors helper class. 
+In this case, it has a _toList_ method also. 
+Now, IntelliJ is giving me a warning on that. 
+If I hover over that, the message is that this can be simplified
+and replaced with just the **Stream**'s _toList_ terminal operation. 
+There's a crucial difference between these two operations, 
+between the **Stream**'s _toList_ operation, 
+and the _collect_ operation; 
+that take's `Collectors.toList` as an argument. 
+In fact, I'll add a statement after this, 
+I'll call `Collections.shuffle` on my _learners_ list. 
+You'll remember this just shuffles up values in the list. 
+Ok, now the warning disappears. 
+That's because IntelliJ can tell I want to modify this list. 
+The collect terminal operation returns mutable reductions, 
+as I've demonstrated here. 
+I can run this code without any errors. 
+If I changed that operation back to the _toList_ call:
+
+```java  
+var learners = Arrays.stream(students)
+        .filter(s -> (s.getAge() - s.getAgeEnrolled() >= 7) && (s.getMonthsSinceActive() < 12))
+        .filter(s -> !s.hasProgrammingExperience())
+        .limit(5)
+        .toList();
+
+Collections.shuffle(learners);
+```
+
+I would get a warning on that call to shuffle, 
+and I'd get an exception if I tried to run it. 
+There are two versions of the _collect_ method,
+as I showed you on the first couple of operations in the table. 
+This one, that I'm showing you here, takes one argument 
+with a type of **Collector**. 
+I was able to get this by calling the _toList_ method, 
+on the **Collectors** class.
+
+So what's a **Collector** anyway? 
+Let's go look at that interface, 
+I'll pull it up in the api documentation. 
+There are three really important things on that page 
+I want to point out. 
+First, the Interface has three type parameters.
+
+* _T_ is the type of input elements to the reduction, 
+so this is the type of your stream elements.
+* _A_ is the mutable type you want to collect elements into. 
+This can be a single type, like a **StringBuilder**, or a collection type, like **List**.
+* _R_ is the final result type of the reduction operation.
+
+The second two types are usually the same, 
+meaning your result type(_R_) is often the same type 
+you've been accumulating elements(_A_) into, 
+but you're not limited to that. 
+The second really important thing is that 
+this is a mutable reduction operation. 
+I already demonstrated this to you, 
+with the list I got back from the collect operation, 
+in my last code sample.
+
+Lastly, a **Collector** is specified by four functions 
+that work together, to accumulate entries, 
+into a mutable result container.
+
+* The supplier, accumulator, and combiner methods are 
+the primary methods you'll be using, to build a result container.
+* There is also a less used method, called the finisher, 
+that provides a way to do a final transformation 
+on the fully combined accumulated instance created.
+
+Let's look at the abstract methods on this interface. 
+I'll select methods, then abstract methods at the top of this page. 
+And there they are, the four methods just discussed, 
+and one additional one. 
+This interface means 
+we could create our own implementations of a **Collector** interface, 
+and implement these methods. 
+But Java has done this work for us, 
+for most of the types we'd want to use. 
+These are supplied as static methods, in the **Collectors** class. 
+Additionally, rather than implement a class, 
+there is an overloaded version of the _collect_ method. 
+This provides a way to specify code for the **supplier**, 
+the **accumulator** and the **combiner**. 
+This means we can just pass lambda expressions
+or method references, rather than build a type 
+that implements the **Collector** interface. 
+Let's look at the **Collectors** class now.
+
+First, there's a list here of the most common usages, with examples. 
+You see there at the top, is an example using the `Collectors.toList` 
+method I used in my own example. 
+I'll again select the method tab at the top of the screen.
+There are a lot of methods here, and this can seem quite overwhelming. 
+But look at the names, they start with things like _averaging_, 
+_filtering_, _groupingBy_, _joining_, and _partitioningBy_, to name a few. 
+Again, this is the language you'd see in data queries. 
+You can do a lot with just a few of these in your arsenal, 
+and that's what I'm going to show you next. 
+Now, we'll start exploring the _collect_ and _reduce_ operations, 
+and some of the **Collectors** methods.
+
+I'll create a new class called **MainCollect**. 
+This way I can keep the collect code in a single place. 
+I'll include a _main_ method in this class. 
+I'll copy the code to create the two courses, 
+from the **Main** class's _main_ method.
+
+```java  
+public class MainCollect {
+
+    public static void main(String[] args) {
+
+        Course pymc = new Course("PYMC", "Python Masterclass");
+        Course jmc = new Course("JMC", "Java Masterclass");
+
+        List<Student> students = Stream.generate(() -> Student.getRandomStudent(jmc, pymc))
+                        .limit(1000)
+                        .toList();
+    }
+}
+```
+
+Instead of setting up an array 
+and populating it with the randomly generated students, 
+this time I'll stream students, with the _generate_ method, 
+into a list, using _toList_. 
+At this point, I really don't want to modify 
+my first collection of students once I have them,
+so getting back an unmodifiable list is fine. 
+I'll start with a **List** of **Students**, called _students_. 
+I'll call `Stream.generate` 
+and pass it almost the same lambda expression I used, 
+in the _setAll_ method for the array in the **Main** class's _main_ method. 
+Here, its type is **Supplier**, 
+which means it takes no arguments. 
+It starts with empty parentheses, 
+and then returns random students from that static method on **Student**. 
+I'll limit this to 1000 _students_. 
+And I'll call _toList_, 
+which gives me a list of **Students**, 
+in the order they were created.
+
+```java  
+Set<Student> australianStudents = students.stream()
+        .filter((s) -> s.getCountryCode().equals("AU"))
+        .collect(Collectors.toSet());
+System.out.println("# of Australian Students = " + australianStudents.size());
+```
+
+Next, I want to get a set of my Australian students. 
+I'll set up a local variable, a **Set**, 
+with a type argument of **Student**, 
+and call it _australianStudents_. 
+I'll start by getting a stream from my _students_ list. 
+I'll filter, using _getCountryCode_ on _student_, 
+and testing for "AU". 
+Now, I'll _collect_ to a set, 
+using `Collectors.toSet`. 
+I'll print out the number of students in my set. 
+This method is a lot like `Collectors.toList`, 
+but it returns a HashSet. 
+If I run this code:
+
+```html  
+# of Australian Students = 147
+```
+
+I'll get a different number of Aussie students each time, 
+but that number should be about a seventh of the total students. 
+Next, I want another set, called _underThirty_:
+
+```java  
+Set<Student> underThirty = students.stream()
+        .filter((s) -> s.getAgeEnrolled() < 30)
+        .collect(Collectors.toSet());
+System.out.println("# of Under Thirty Students = " + underThirty.size());
+```
+
+For students who enrolled when they were under thirty at the time. 
+I'll copy the statements above and paste a copy just below. 
+I'll change the variable name to _underThirty_. 
+I'll change the condition I'm filtering on 
+to check if the age enrolled is less than 30. 
+Lastly, I want the text that gets printed out, 
+to print the under thirty students, 
+and use the `underThirty.size`. 
+Ok, so this is just a different query 
+about our student population. 
+Running this several times:
+
+```html  
+# of Under Thirty Students = 187
+```
+
+I'll get a different number of under thirties. 
+Now let's say I want to understand 
+how many of the under thirties are also Australian.
+
+```java  
+Set<Student> youngAussies1 = new TreeSet<>(Comparator.comparing(Student::getStudentId));
+youngAussies1.addAll(australianStudents);
+youngAussies1.retainAll(underThirty);
+youngAussies1.forEach((s) -> System.out.print(s.getStudentId() + " "));
+System.out.println();
+```
+
+If your population is huge, 
+and your sets are much smaller, 
+there's an argument for using some set math,
+rather than processing another stream pipeline. 
+Let's walk through an example of this first. 
+I'll create a new set,
+and call it young _youngAussies1_. 
+I want this to be a **TreeSet**, 
+and I want it ordered by student id, 
+so I can do this by passing a comparator 
+into the constructor of **TreeSet**. 
+I'll add all my australian students. 
+I'll retain all students who are also _underThirty_. 
+You'll remember this is really intersected of the two sets, 
+returning only the students who are in both sets. 
+I'll print each student's id out, in a single line, 
+separated by spaces, and finish with a newline.
+If I run this code:
+
+```html  
+45 53 74 107 147 150 283 299 309 350 419 420 439 447 485 510 511 520 560 616 636 693 698 731 758 805 817 824 848 852 859 968 974 1000
+```
+
+I'll get a list of students id's. 
+These are the students who are both from Australia 
+and were under thirty when they enrolled. 
+Now, let's do the same thing, but use a stream pipeline.
+
+```java  
+Set<Student> youngAussies2 = students.stream()
+        .filter((s) -> s.getAgeEnrolled() < 30)
+        .filter((s) -> s.getCountryCode().equals("AU"))
+        .collect(Collectors.toSet());
+
+youngAussies2.forEach((s) -> System.out.print(s.getStudentId() + " "));
+System.out.println();
+```
+
+I'll copy the underThirty stream pipeline 
+and paste it at the end of this method. 
+I'll change the variable name to _youngAussies2_. 
+I'll copy the filter from Australian students, 
+and paste that as a second filter in my new stream pipeline. 
+I'll also copy the two output statements, 
+pasting it at the end of this method. 
+I'll change _youngAussies1_ to _youngAussies2_. 
+I'll run that now:
+
+```html  
+45 53 74 107 147 150 283 299 309 350 419 420 439 447 485 510 511 520 560 616 636 693 698 731 758 805 817 824 848 852 859 968 974 1000
+309 848 74 420 299 974 1000 805 350 616 693 852 147 510 511 859 107 45 447 968 817 53 419 485 731 636 698 758 439 283 520 150 824 560
+```
+
+The good news is I get the same set of id's, 
+but the bad news is that the last set's not ordered. 
+Can't I just add sorted to the pipeline? Let me try that. 
+
+```java  
+Set<Student> youngAussies2 = students.stream()
+        .filter((s) -> s.getAgeEnrolled() < 30)
+        .filter((s) -> s.getCountryCode().equals("AU"))
+        //.sorted()
+        .collect(Collectors.toSet());
+
+youngAussies2.forEach((s) -> System.out.print(s.getStudentId() + " "));
+System.out.println();
+```
+
+I'll insert that 
+before the collect terminal operation. 
+Notice that IntelliJ has grayed out. 
+If I hover over that, 
+I get the message that 
+_sorted is redundant, because two **Set** doesn't depend on the sort order_. 
+The pipeline knows the set isn't ordered, 
+so it would be wasted effort to sort it here. 
+But let's say I really do want it sorted. 
+This means I want a **TreeSet**, and not a **HashSet**. 
+Is there a **Collectors** helper method for that? 
+Well, there isn't, at least not like the `Collectors.toSet` method. 
+This means that I could either pass this **HashSet** 
+to a **TreeSet** constructor later. 
+My other option is to use the overloaded version of _collect_. 
+Before I do that, I want to first go up to this _toSet_ method call, 
+and I'll _ctrl_ click on it. 
+This opens a window that shows me the code it's using. 
+You don't have to understand all of this 
+to understand a few important points. 
+Namely, that there are four parameters, 
+three are either method references or lambda expressions. 
+These are the three we'd use if we were to do something similar. 
+In truth, I do want to do something very similar, 
+using the alternate _collect_ method, 
+passing expressions that mirror these. 
+The first method reference in this code instantiates the new **HashSet**. 
+This is the **Supplier**. 
+The second method reference adds one element at a time to the **HashSet**. 
+This is the **Accumulator**. 
+The third is a lambda expression, and a little more complex. 
+Mainly what I want you to see is that 
+it's calling _addAll_ on the set, 
+so it's adding one collection, to another collection. 
+That's the **Combiner**. 
+That's enough information, to get us started, 
+so let's get back to the code.
+
+```java  
+Set<Student> youngAussies3 = students.stream()
+        .filter((s) -> s.getAgeEnrolled() < 30)
+        .filter((s) -> s.getCountryCode().equals("AU"))
+        //.sorted()
+        .collect(TreeSet::new, TreeSet::add, TreeSet::addAll);
+
+youngAussies3.forEach((s) -> System.out.print(s.getStudentId() + " "));
+System.out.println();
+```
+
+I'm going to remove `Collectors.toSet` as an argument, 
+in the _collect_ terminal operation. 
+I'll replace it with three arguments this time. 
+First, the **Supplier**. 
+You saw that the code we just looked at, 
+had `HashSet::new` for its supplier,
+so you'd imagine I could put `TreeSet::new` here, 
+which I'll do. 
+The second parameter is the **accumulator**, 
+and that would be the same as when I'd use the **HashSet**, 
+so I'll add _add_ as a method reference too. 
+The **combiner** might be a little confusing 
+because I haven't covered parallel streams, 
+or splitting up your streams to process them more efficiently.
+In this case, they'd need to be put back together, 
+and that's what this method would be needed for. 
+It joins the results of multiple stream's accumulated outputs, 
+into a single collection, 
+and this would be done using an _addAll_ method. 
+In our case, it's not likely to be used, but it's still required. 
+And that's it, we've set up our first _collect_ method with a **supplier**,
+**accumulator** and **combiner**. 
+Notice that the _sorted_ method isn't grayed out anymore,
+but it isn't needed either, so I'll remove it. 
+The tree set is ordered, as elements are added. 
+I'll run this:
+
+```html  
+Exception in thread "main" java.lang.ClassCastException: class Student cannot be cast to class java.lang.Comparable
+```
+
+But this doesn't work, I get an exception. 
+That's because **Student** doesn't implement **comparable**. 
+This is the same reason I had to set up the tree set 
+for the _youngAussies1_ variable, with my own **Comparator**. 
+I want to do that here, 
+but how do I do it? 
+Well, I can't use a method reference for the **Supplier** to do it.
+
+```java  
+Set<Student> youngAussies4 = students.stream()
+        .filter((s) -> s.getAgeEnrolled() < 30)
+        .filter((s) -> s.getCountryCode().equals("AU"))
+        .collect(() -> new TreeSet<>(Comparator.comparing(Student::getStudentId)), TreeSet::add, TreeSet::addAll);
+
+youngAussies4.forEach((s) -> System.out.print(s.getStudentId() + " "));
+System.out.println();
+```
+
+I need to change that first argument to use a lambda expression. 
+I'll start with the empty parentheses, 
+and after the arrow token, I'll have new **TreeSet**, 
+and in the constructor parentheses, I'll pass a **Comparator**. 
+I'll build this like I did before, 
+when I created the **TreeSet** for the _youngAussies1_ set. 
+If I run my code now:
+
+```html  
+45 53 74 107 147 150 283 299 309 350 419 420 439 447 485 510 511 520 560 616 636 693 698 731 758 805 817 824 848 852 859 968 974 1000
+309 848 74 420 299 974 1000 805 350 616 693 852 147 510 511 859 107 45 447 968 817 53 419 485 731 636 698 758 439 283 520 150 824 560
+45 53 74 107 147 150 283 299 309 350 419 420 439 447 485 510 511 520 560 616 636 693 698 731 758 805 817 824 848 852 859 968 974 1000
+```
+
+It works, and I get the same results from both sets. 
+The _collect_ method has two overloaded versions. 
+I show them here again, without showing the generic type parameters. 
+The first can be used by passing it the result of 
+any of the many factory methods, on the **Collectors** class. 
+I showed you _asList_, and _asSet_, 
+as two examples of static methods on that class. 
+The second is more complex, but gives you ultimate flexibility, 
+as you saw with the **TreeSet** example I just showed you. 
+You could also create your own **Collector** type 
+by writing a class that implements Collector, 
+overriding those abstract methods with custom functionality.
+
+```java  
+String countryList = students.stream()
+        .map(Student::getCountryCode)
+        .distinct()
+        .sorted()
+        .reduce("", (r, v) -> r + " " + v);
+System.out.println("countryList = " + countryList);
+```
+
+Lastly, I want to cover the _reduce_ terminal operation, 
+so let's get back to the code. 
+The _reduce_ method is different from _collect_, 
+because you're not accumulating elements into a container. 
+Instead, you're accumulating elements into a single type. 
+Let me show you an example of this. 
+I'll set up a variable called _countryList_ 
+and start a stream pipeline on students.
+I'll map to the country, using _getCountryCode_. 
+I only want _distinct_ countries. 
+I'll _sort_. 
+And now I'll seed this, with an empty string, 
+returning a concatenated string with the currently accumulated one, 
+plus the new value or country. 
+And I'll print that out. 
+Running this code:
+
+```html  
+countryList =  AU CA CN GB IN UA US
+```
+
+I'll get my country codes printed out as a single concatenated string. 
+You can imagine this would be useful 
+if you didn't know the _distinct_ values in some fields, 
+because this method lets you get them all in a single string. 
+Ok, so that covers the introduction 
+to the _collect_ and _reduce_ terminal operations. 
+These methods can be used 
+to do almost any kind of transformation you can think of. 
+I'll be covering more complex features as we move forward.
+</div>
+
+## [j. Terminal Operations Challenge-2]()
+<div align="justify">
+
+Create a new class called **MainChallenge**, 
+with a _main_ method that does the following:
+* Copy the two courses, _jmc_ and _pymc_, 
+from the **MainCollect**'s _main_ method, 
+passing both an additional argument 
+for the lecture count, so 50 for _pymc_, and 100 for _jmc_.
+* Add a third course, titled _Creating Games in Java_. 
+You don't have to pass a lecture count for this one.
+* Use `Stream.generate` or `Stream.iterate` to generate 5000 random students, 
+and create a list of these.
+* Use your _getPercentComplete_ method 
+to calculate the average percentage completed for all students 
+for just the Java Masterclass, using the _reduce_ terminal operation.
+
+Hint: **DoubleStream**, **LongStream**, and **IntStream** have 
+both an _average_ and a _sum_ terminal operation. 
+For this challenge, I'd like you to try to use _reduce_ instead, 
+to get a sum of the percentages. 
+You can divide that number, by the student population, 
+to get the overall average.
+
+* Use this result, multiplying it by 1.25, 
+to collect a group of students (either as a list, or a set). 
+These would be the students who've completed more than 
+three quarters of that average percentage.
+* Sort by the longest enrolled students who are still active, 
+because you're going to offer your new course 
+to 10 of these students for a trial run.
+* Add the new course to these ten students. 
+Make one change to the **Student**'s _getRandomStudent_ method, 
+using a minimum lecture of 30. 
+This will mean more students will have a completion rate greater 
+than 50% and will reduce the qualifying students considerably. 
+Imagine thanking these students, 
+as well as getting their opinion about the new course, 
+by inviting them to try this new course for free.
+</div>
+
+
 
 <div align="justify">
 
@@ -2779,6 +3490,67 @@ if you don't feel confident about your results.
 
 ```
 </div>
+
+
+
+<div align="justify">
+
+```java  
+
+```
+
+
+
+```html  
+
+```
+</div>
+
+
+
+<div align="justify">
+
+```java  
+
+```
+
+
+
+```html  
+
+```
+</div>
+
+
+
+<div align="justify">
+
+```java  
+
+```
+
+
+
+```html  
+
+```
+</div>
+
+
+
+<div align="justify">
+
+```java  
+
+```
+
+
+
+```html  
+
+```
+</div>
+
 
 
 <div align="justify">

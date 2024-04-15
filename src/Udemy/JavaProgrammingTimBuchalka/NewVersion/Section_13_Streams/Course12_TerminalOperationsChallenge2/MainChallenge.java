@@ -3,31 +3,6 @@ package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_13_Streams.Course12_
 import java.util.List;
 import java.util.stream.IntStream;
 
-//Part-1
-/*
-        Create a new class called MainChallenge, with a main method that does the following:
-            - Copy the two courses, jmc and pymc, from the MainCollect's main method, passing both an additional argument
-              for the lecture count, so 50 for pymc, and 100 for jmc.
-            - Add a third course, titled "Creating Games in Java". You don't have to pass a lecture count for this one.
-            - Use Stream.generate or Stream.iterate to generate 5000 random students, and create a list of these.
-            - Use your getPercentComplete method, to calculate the average percentage completed for all students for just
-              the Java Masterclass, using the reduce terminal operation.
-
-    Hint: DoubleStream, LongStream, and IntStream have both an average and a sum terminal operation. For this challenge,
-    I'd like you to try to use reduce instead, to get a sum of the percentages. You can divide that number, by the student
-    population, to get the overall average.
-
-            - Use this result, multiplying it by 1.25, to collect a group of students (either as a list, or a set). These
-              would be the students who've completed more than three quarters of that average percentage.
-            - Sort by the longest enrolled students who are still active, because you're going to offer your new course
-              to 10 of these students, for a trial run.
-            - Add the new course to these ten students. Make one change to the Student's getRandomStudent method, using
-              a minimum lecture of 30. This will mean more students will have a completion rate greater than 50% and will
-              reduce the qualifying students considerably. Imagine thanking these students, as well as getting their opinion
-              about the new course, by inviting them to try this new course for free.
-*/
-//End-Part-1
-
 public class MainChallenge {
 
     public static void main(String[] args) {

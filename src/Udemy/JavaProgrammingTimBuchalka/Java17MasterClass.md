@@ -14,7 +14,7 @@ What we will learn from this Path:
   and Java 8.
 </div>
 
-## [1. Expressions, Statements and More](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#section-1-expressions-statements-and-more)
+## [Section-1. Expressions, Statements and More](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#section-1-expressions-statements-and-more)
 
 ### [a. Statements, Keywords, Variables, Primitive Data Types](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#a-statements-keywords-variables-primitive-data-types)
 ### [b. Wrapper Classes](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#b-wrapper-classes)
@@ -23,7 +23,7 @@ What we will learn from this Path:
 ### [e. Access Modifiers, Classes, Methods](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#e-access-modifiers-classes-methods)
 ### [f. Method Overloading](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_01_ExpressionsStatementsMore/README.md#f-method-overloading)
 
-## [2. ControlFlow Statements](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/README.md#section-2-controlflow-statements)
+## [Section-2. Control Flow Statements](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/README.md#section-2-controlflow-statements)
 
 ### [a. The switch statement](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/README.md#a-the-switch-statement)
 ### [b. The For Statement](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_02_ControlFlow/README.md#b-the-for-statement)
@@ -54,7 +54,7 @@ What we will learn from this Path:
 ### [q. String Manipulation Methods](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#q-string-manipulation-methods)
 ### [s. The StringBuilder Class](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_03_OOP1/README.md#s-the-stringbuilder-class)
 
-## [4. Object-Oriented Programming (Part-II)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#section-4-object-oriented-programming-part-ii)
+## [Section-4. Object-Oriented Programming (Part-II)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#section-4-object-oriented-programming-part-ii)
 
 ### [a. Composition (Part-I)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#a-composition-Part-i)
 ### [b. Composition (Part-II)](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#b-composition-Part-ii)
@@ -68,7 +68,7 @@ What we will learn from this Path:
 ### [j. Bill's Burger(OOP Master) Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#j-bills-burgeroop-master-challenge)
 ### [k. Organizing Java Classes, Packages and Import Statements](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_04_OOP2/README.md#j-bills-burgeroop-master-challenge)
 
-## [5. Arrays](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#section-5-arrays)
+## [Section-5. Arrays](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#section-5-arrays)
 
 ### [a. Arrays](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#a-arrays)
 ### [b. java.util.Arrays Class and Binary Search](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_05_Arrays/README.md#b-javautilarrays-class-and-binary-search)
@@ -87,14 +87,14 @@ What we will learn from this Path:
 ### [g. Autoboxing Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#g-autoboxing-challenge)
 ### [h. Enumeration](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_06_ArrayList_LinkedList_Iterators_Autoboxing/README.md#h-enumeration)
 
-## [7. Abstraction in Java](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_07_Abstraction_in_Java/README.md#section-7-abstraction-in-java)
+## [Section-7. Abstraction in Java](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_07_Abstraction_in_Java/README.md#section-7-abstraction-in-java)
 
 ### [a. Generalization And Abstraction](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_07_Abstraction_Interface/README.md#a-generalization-and-abstraction)
 ### [b. Abstract Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_07_Abstraction_Interface/README.md#b-abstract-challenge)
 ### [c. Interfaces](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_07_Abstraction_Interface/README.md#c-interfaces)
 ### [d. Interfaces Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_07_Abstraction_Interface/README.md#d-interface-challenge)
 
-## [8. Generics]()
+## [Section-8. Generics]()
 
 ### [a. Generics Part-I](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#a-generics-part-i)
 ### [b. Generics Part-II](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#b-generics-part-ii)
@@ -105,7 +105,7 @@ What we will learn from this Path:
 ### [g. Generic Methods and Wildcards](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#g-generic-methods-and-wildcards)
 ### [h. Generics Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_08_Generics/README.md#h-generics-challenge)
 
-## [9. Nested Classes and Types](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#section-9-nested-classes)
+## [Section-9. Nested Classes and Types](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#section-9-nested-classes)
 
 ### [a. Static Nested Class](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#a-static-nested-class)
 ### [b. Non-Static Nested (Inner) Class](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_09_NestedClassesAndTypes/README.md#b-non-static-nested-inner-class)
@@ -125,7 +125,7 @@ What we will learn from this Path:
 ### [f. Method Reference Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_10_LambdaExpressionsAndFunctionalInterfaces/README.md#f-method-reference-challenge)
 ### [g. Convenience Methods on Functional Interface](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_10_LambdaExpressionsAndFunctionalInterfaces/README.md#g-convenience-methods-on-functional-interface)
 
-## [11. Java Collections](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/README.md#section-11-collections-framework)
+## [Section-11. Java Collections](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/README.md#section-11-collections-framework)
 
 ### [a. Collection Interface](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/README.md#a-collection-interface)
 ### [b. java.util.Collections Methods](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/README.md#b-javautilcollections-methods)
@@ -143,7 +143,7 @@ What we will learn from this Path:
 ### [n. EnumSet and EnumMap Collections](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/README.md#n-enumset-and-enummap-collections)
 ### [o. Collections Framework Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_11_Collections/README.md#o-collections-framework-challenge)
 
-## [12. Immutable and Sealed Classes](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#section-11-immutable-and-sealed-classes)
+## [Section-12. Immutable and Sealed Classes](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#section-11-immutable-and-sealed-classes)
 
 ### [a. Final Modifier](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#a-final-modifier)
 ### [b. Immutable Classes](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#b-immutable-classes)
@@ -158,7 +158,7 @@ What we will learn from this Path:
 ### [k. Sealed Classes](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#k-sealed-classes)
 ### [l. The Final Section Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#l-the-final-section-challenge)
 
-## [13. Streams]()
+## [Section-13. Streams]()
 
 ### [a. Stream In Action]()
 ### [b. Stream Pipeline]()
@@ -167,10 +167,15 @@ What we will learn from this Path:
 ### [e. Intermediate Operations]()
 ### [f. Terminal Operations]()
 ### [g. Streaming Student Project]()
+### [h. Terminal Operations Challenge-1]()
+### [i. Collector and Collectors Class]()
+### [j. Terminal Operations Challenge-2]()
 
-    * Terminal Operations
     * Streams to Maps
     * Maps to Streams (Using flatMap)
+
+
+
 
 ## [14. Some Useful Classes]()
 

@@ -6,14 +6,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-//Part-1
-/*
-        I'm still going to use the StreamingStudents project, but for this lecture, I'll create a new class called MainCollect.
-    This way I can keep the collect code in a single place. I'll include a main method in this class. I'll copy the code
-    to create the two courses, from the Main class's main method.
-*/
-//End-Part-1
-
 public class Main {
 
     public static void main(String[] args) {
