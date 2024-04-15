@@ -1251,7 +1251,7 @@ it probably wouldn't make sense
 why you'd want to use these. 
 </div>
 
-## [d. Stream Sources Challenge](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/Course04_StreamSourcesChallenge/README.md#stream-sources-challenge)
+## [d. Stream Sources Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/Course04_StreamSourcesChallenge/README.md#stream-sources-challenge)
 <div align="justify">
 
 In the last section, 
@@ -2630,7 +2630,7 @@ and import the code that I'll be creating,
 in the challenge section on terminal operations.
 </div>
 
-## [g. Streaming Student Project](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/Course08_StreamingStudentsProject/README.md#streaming-student-project)
+## [g. Streaming Student Project](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/Course08_StreamingStudentsProject/README.md#streaming-student-project)
 <div align="justify">
 
 In the code ahead, 
@@ -2717,7 +2717,7 @@ and activity year and month,
 so that each Student will have different activity for each course.
 </div>
 
-## [h. Terminal Operations Challenge-1](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/Course09_TerminalOperationsChallenge1/README.md#terminal-operations-challenge)
+## [h. Terminal Operations Challenge-1](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/Course09_TerminalOperationsChallenge1/README.md#terminal-operations-challenge)
 <div align="justify">
 
 In this challenge, 
@@ -3435,7 +3435,7 @@ to do almost any kind of transformation you can think of.
 I'll be covering more complex features as we move forward.
 </div>
 
-## [j. Terminal Operations Challenge-2]()
+## [j. Terminal Operations Challenge-2](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/Course12_TerminalOperationsChallenge2/README.md#terminal-operations-challenge-2)
 <div align="justify">
 
 Create a new class called **MainChallenge**, 
