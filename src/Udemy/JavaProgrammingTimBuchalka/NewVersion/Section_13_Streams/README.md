@@ -2018,7 +2018,6 @@ Let's pause here a minute to look at a table.
      <tr>
          <td>boxed()</td>
      </tr>
-  </tr>
   <tr>
      <td rowspan="2">IntStream</td>
      <td rowspan="2">mapToInt(ToIntFunction<? super T> mapper)</td>
@@ -2026,7 +2025,6 @@ Let's pause here a minute to look at a table.
      <tr>
          <td>boxed()</td>
      </tr>
-  </tr>
   <tr>
      <td rowspan="2">LongStream</td>
      <td rowspan="2">mapToLong(ToLongFunction<? super T> mapper)</td>
@@ -2034,7 +2032,6 @@ Let's pause here a minute to look at a table.
      <tr>
          <td>boxed()</td>
      </tr>
-  </tr>
 </table>
 
 In addition to the generic **Stream**, 
@@ -4387,7 +4384,7 @@ students.stream()
 
 It's a little easier to see now 
 that both the _sorted_ and _findFirst_ operations 
-aren't in this stream pipeline any more.
+aren't in this stream pipeline anymore.
 Instead, _sorted_ has been removed,
 and _findFirst_ has been replaced
 with this single terminal operation,
@@ -4451,7 +4448,7 @@ which has the same methods on it,
 as an optional, so I can still use _ifPresentOrElse_.
 I'll print the average under 21 there, 
 with the value, formatting that to two decimals.
-Otherwise, I'll print that I didn't find anyone under 21.
+Otherwise, I'll print that I did not find anyone under 21.
 Running that code:
 
 ```html  
@@ -5040,42 +5037,35 @@ and it's not possible to cover them all in a single section.
 Let me pull the API document up for this class, and select methods.
 Most of these make sense to use 
 when you're dealing with mapped collections.
-There are usually simpler reduction
-operations, for the other collections.
-Let's just read some of these method names to
-get an idea, of the kinds of things you could do.
-There's several averaging methods,
-so imagine a map keyed by country,
-and getting the average age
-of enrollment by each country.
-I showed you counting, and filtering.
-This filtering occurs within a grouped
-segment, which is different, than
-filtering on every stream element.
-We've also looked at grouping by, in this video,
-but here's joining, much like String
-joining, concatenating strings together.
-Here's maxBy and minBy, so you can
-imagine something like getting the
-maximum percentage complete, of each course,
+
+![image09](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/images/image09.png?raw=true)
+
+There are usually simpler reduction operations for the other collections.
+Let's read some of these method names 
+to get an idea of the kinds of things you could do.
+There are several averaging methods, so imagine a map keyed by country,
+and getting the average age of enrollment by each country.
+I showed you counting, and _filtering_.
+This filtering 
+`filtering(Predicate< ? super T> predicate, Collector <? super T, A, R> downstream)` 
+occurs within a grouped segment,
+which is different from _filtering_ on every stream element.
+We've also looked at _groupingBy_, in this section,
+but here's _joining_, much like **String** _joining_, 
+concatenating strings together.
+Here are _maxBy_ and _minBy_, so you can imagine something like
+getting the maximum percentage complete of each course,
 based on the student population you have.
-I'll stop there, and just encourage you,
-to explore the many methods on this class.
+I'll encourage you to explore the many methods in this class.
 The samples I've shown you here, in this code,
-will take you a pretty good distance
-with whatever you're trying to do.
-At some point though, you might be
-challenged with something a bit more complex
-You might find just the right solution, by
-using one of these other methods or variations.
-I'll continue to show you as many variations
-as possible, as the course continues, where
-the context presents an opportunity to do that.
-This feels like a good place to pause in this
-discussion, so I'll end this video here.
-In the next video, I'll talk about how
-to start with a map, and walk through all of
-it's elements, in a stream, so let's move on.
+will take you a pretty good distance with whatever you're trying to do.
+At some point, though, you might be having a disability 
+with something a bit more complex. 
+You might find just the right solution 
+by using one of these other methods or variations.
+I'll continue to show you as many variations as possible, 
+as the course continues, 
+where the context presents an opportunity to do that.
 </div>
 
 
