@@ -996,7 +996,7 @@ IntStream.iterate(1, n -> n + 1)
     .forEach(s -> System.out.print(s + " "));
 ```
 
-Another static method on the **Stream** class is _iterate_ 
+Another static method on the **Stream** class is _iterate,_ 
 which gives us the option of generating either 
 a finite or infinite stream. 
 I'll start with an example of an infinite stream. 
@@ -2762,7 +2762,7 @@ Next, select five of the students above,
 and print their information out. 
 Imagine that maybe you'd like to send them a special coupon, 
 for being long time learners, and clients of yours. 
-Remember, you can use _peek_ to help you understand your stream processing, 
+Remember, you can use _peek_ to help you understand your stream processing 
 if you don't feel confident about your results.
 </div>
 
@@ -2978,7 +2978,7 @@ I'm getting back an array of **Student**,
 because of this minor change. 
 I can also use the _reduce_ terminal operation 
 to give me a list back. 
-I'll copy all code and paste that below.
+I'll copy all the code and paste that below.
 
 ```java  
 var learners = Arrays.stream(students)
@@ -3304,7 +3304,7 @@ Mainly what I want you to see is that
 it's calling _addAll_ on the set, 
 so it's adding one collection, to another collection. 
 That's the **Combiner**. 
-That's enough information, to get us started, 
+That's enough information to get us started, 
 so let's get back to the code.
 
 ```java  
@@ -3476,49 +3476,1606 @@ as well as getting their opinion about the new course,
 by inviting them to try this new course for free.
 </div>
 
-
-
+## [k. What's Optional Class?]()
 <div align="justify">
 
-```java  
+You've seen Optional in the tables
+I've shown you on terminal operations.
+Optional is a generic class, whose purpose is to be a container 
+for a value which may or may not be _null_.
+It was created by Java's engineers 
+to address the problem of the _NullPointerException_, 
+which is one of the most common errors in Java.
+The Java documentation says this type is **primarily intended** 
+for use as a **method return type**, under specific conditions.
+Optional tries to solve the problem of when no result, 
+or no data, is a perfectly valid situation, vs. 
+when no result might really be an error.
+You can think of many situations
+where no data makes sense.
+Not everyone has a middle initial in their name, 
+or even a last name for that matter.
+No data for a birthdate may or may not be an exception. 
+For genealogy applications, it may not yet be known, 
+but for employment, it's required. 
+New inventory may not yet have a sales price. 
+Using a $0 price as a default, rather than no price 
+could lead to problems.
+These are just a few examples 
+where no value is an actual exception or error.
+Optional is a way of telling you 
+that a value may not be present, 
+therefore, you can ignore the value in processing.
+Optional is just another generic class,
+so you declare it like any other type, with type arguments.
+But you don't construct an Optional.
+Instead, you use one of the static factory methods 
+I'm showing here.
 
+| Factory Method                    | When to Use                                                                               | Best Practice Notes                                                                                                   |
+|-----------------------------------|-------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| Optional< T > empty()             | Use this method to create an Optional that you know has no value.                         | Never return null from a method that has Optional as a return type.                                                   |
+| Optional< T > of(T value)         | Use this method to create an Optional that you know has a value.                          | Passing null to this method raises a NullPointerException. Use ofNullable instead, if a possible value might be null. |
+| Optional< T > ofNullable(T value) | Use this method to create an Optional when you are uncertain if the value is null or not. |                                                                                                                       |
+
+
+These methods are _empty_, _of_, and _ofNullable_.
+These are easier to explain in code,
+so let's get back to that.
+I'll again continue with the **StreamingStudents** project.
+I'll create another class with a _main_ method, this one I'll call **MainOptional**.
+
+```java  
+public class MainOptional {
+
+    public static void main(String[] args) {
+
+        Course pymc = new Course("PYMC", "Python Masterclass");
+        Course jmc = new Course("JMC", "Java Masterclass");
+
+        List<Student> students = Stream.generate(() -> Student.getRandomStudent(jmc, pymc))
+                                        .limit(1000)
+                                        .collect(Collectors.toList());
+    }
+    
+    private static Optional<Student> getStudent(List<Student> list, String type) {
+        if (list == null || list.size() == 0) {
+            return null;
+        } else if (type.equals("first")) {
+            return Optional.of(list.get(0));
+        } else if (type.equals("last")) {
+            return Optional.ofNullable(list.get(list.size() - 1));
+        }
+        return Optional.ofNullable(list.get(new Random().nextInt(list.size())));
+    }
+}
 ```
 
+I'm going to copy some code from the **MainCollect** class.
+And then paste these in **MainOptional**'s _main_ method.
+I'll change _toList_ to the _collect_ operation instead,
+because I plan to make modifications to the list.
+I'll next add a private static method on this class.
+This method will return an **Optional**,
+with a type argument of **student**.
+It will take a **List** of students,
+as well as a string for the type of retrieval,
+which can be first, last, or any.
+If the list is _null_ or _empty_, I'll return _null_.
+If the type is _first_, I'll return an **Optional**, using `Optional.of`,
+and pass that the first element in the list.
+If the type is _last_, I'll again return `Optional.of`,
+with the last element in the list.
+If the type is anything else, I'll pick a random element,
+and pass that back in an **Optional** container.
+I'm going to ignore Java's warning on _null_ there, for the moment.
+Getting back to the _main_ method, I'll test this method out.
 
+```java  
+Optional<Student> o1 = getStudent(null, "first");
+System.out.println("Empty = " + o1.isEmpty() + ", Present = " + o1.isPresent());
+System.out.println(o1);
+```
+
+First, I'll set up an **Optional** variable, _o1_,
+and assign it the value I get,
+from invoking my _getStudent_ method,
+passing _null_ for the student list,
+and _first_ as the type.
+I'll execute two methods, _isEmpty_ and _isPresent_,
+on what I get back.
+And I'll simply print the optional instance, I get back.
+If I run this code:
 
 ```html  
-
+Exception in thread "main" java.lang.NullPointerException Cannot invoke "java.util.Optional.isEmpty()" 
+because "o1" is null at MainOptional.main
 ```
+
+I get a NullPointerException, even though I'm using **Optional**.
+**Optional** is only as good as the developer, coding the methods.
+The first rule for developers who use optional is,
+any method that returns an optional, should never return null.
+Instead, it should return an empty optional.
+IntelliJ had flagged it for me in my _getStudent_ method,
+and if I hover over that, the message is
+_Null is used for **Optional** type in return statement_.
+
+```java  
+private static Optional<Student> getStudent(List<Student> list, String type) {
+    if (list == null || list.size() == 0) {
+        //return null;
+        return Optional.empty();
+    } else if (type.equals("first")) {
+        return Optional.of(list.get(0));
+    } else if (type.equals("last")) {
+        return Optional.of(list.get(list.size() - 1));
+    }
+    return Optional.ofNullable(list.get(new Random().nextInt(list.size())));
+}
+```
+
+This is an easy fix,
+so I'll make that change in my method,
+and simply return `Optional.empty`,
+rather than _null_.
+If I run that code now:
+
+```html  
+Empty = true, Present = false
+Optinal.empty
+```
+
+I see the _isEmpty_ method returned **true**,
+and the _isPresent_ method returned **false**,
+and the **Optional** I get back is _empty_.
+I'll be talking about how to use **Optionals**,
+in just a bit, but for now,
+I want to explore **Optional** creation a little longer.
+
+```java  
+Optional<Student> o1 = getStudent(new ArrayList<>(), "first");
+System.out.println("Empty = " + o1.isEmpty() + ", Present = " + o1.isPresent());
+System.out.println(o1);
+```
+
+Next, I'll test my code
+by passing an empty _ArrayList_ instead.
+Running this code:
+
+```html  
+Empty = true, Present = false
+Optinal.empty
+```
+
+I get the same result as before, so that's good.
+I'll copy these three lines of code,
+and paste that just below.
+
+```java  
+Optional<Student> o2 = getStudent(students, "first");
+System.out.println("Empty = " + o2.isEmpty() + ", Present = " + o2.isPresent());
+System.out.println(o2);
+```
+
+I'll change _o1_ to _o2_, and this time,
+I'll pass my _students_ list in.
+I'll change _o1_ to _o2_
+in the `System.out.println` statements as well.
+Running this:
+
+```html  
+Empty = false, Present = true
+Optinal.[Student{studentId=1, countryCode='US', yearEnrolled=2019, ageEnrolled=42, gender='U', programmingExperience=true, engagementMap={JMC=JMC: Nov 2021 Lecture 37 [18], PYMC=PYMC: Feb 2020 Lecture 34 [39]}}]
+```
+
+I get the opposite result, for this instance,
+that _empty_ is **false**, and _present_ is **true**.
+I've also got a **Student** in the optional container.
+But what happens if one of my list elements is _null_?
+
+```java  
+students.add(0, null);
+Optional<Student> o2 = getStudent(students, "first");
+System.out.println("Empty = " + o2.isEmpty() + ", Present = " + o2.isPresent());
+System.out.println(o2);
+```
+
+I'll add _null_ to the beginning of my list,
+so I'll pass position 0 to the students dot add method,
+and null as the value.
+Running this code:
+
+```html  
+Empty = true, Present = false
+Optional.empty
+Exception in thread "main" java.lang.NullPointerException
+    at java.base/java.util.Objects.requireNonNull
+    at java.base/java.util.Optional.of
+    at MainOptional.getStudent
+    at MainOptional.main
+```
+
+I get another exception;
+this one is another _NullPointerException_.
+As it turns out,
+you can't create an **Optional** using the _of_ method,
+and pass it a _null_ value, which is what is happening here.
+
+```java  
+private static Optional<Student> getStudent(List<Student> list, String type) {
+    if (list == null || list.size() == 0) {
+        //return null;
+        return Optional.empty();
+    } else if (type.equals("first")) {
+        //return Optional.of(list.get(0));
+        return Optional.ofNullable(list.get(0));
+    } else if (type.equals("last")) {
+        //return Optional.of(list.get(list.size() - 1));
+        return Optional.ofNullable(list.get(list.size() - 1));
+    }
+    return Optional.ofNullable(list.get(new Random().nextInt(list.size())));
+}
+```
+
+Instead, I have to use the _ofNullable_ method,
+so let me change the three places where I use the of method,
+changing it to _ofNullable_, in each case.
+Running this code with these changes,
+
+```html  
+Empty = true, Present = false
+Optional.empty
+Empty = true, Present = false
+Optional.empty
+```
+
+I'll get an empty **Optional** back.
+I'll remove that line of code
+that adds a _null_ value to _students_.
+
+```java  
+//students.add(0, null);
+Optional<Student> o2 = getStudent(students, "first");
+System.out.println("Empty = " + o2.isEmpty() + ", Present = " + o2.isPresent());
+System.out.println(o2);
+```
+
+If I run that:
+
+```html  
+Empty = true, Present = false
+Optional.empty
+Empty = false, Present = true
+Optional.[Students{studentId=1, countryCode='GB', yearEnrolled=2017, ageEnrolled=87, gender='U', programmingExperience=true, engagementMap={JMC=JMC: Nov 2021 Lecture 37 [18], PYMC=PYMC: Feb 2020 Lecture 34 [39]}}]
+```
+
+I can see in the second case
+that the **Optional** isn't _empty_ and has a value,
+a student, but how do I go about accessing it?
+The **Optional** type has a _get_ method, as you might expect.
+Let's see what happens if I use it in both these cases.
+
+```java  
+System.out.println(o1.get());
+
+//students.add(0, null);
+Optional<Student> o2 = getStudent(students, "first");
+System.out.println("Empty = " + o2.isEmpty() + ", Present = " + o2.isPresent());
+System.out.println(o2);
+        
+System.out.println(o2.get());        
+```
+
+I'll add a `System.out.println` statement after
+each of the other, passing `o1.get` in the first case,
+and `o2.get` in the second one.
+I'll move the `o2.get` to the right place after the **Optional**.
+Again, I'll ignore IntelliJ's warnings, and run this:
+
+```html  
+Empty = true, Present = false
+Optional.empty
+Exception in thread "main" java.util.NoSuchElementException : No value present
+    at java.base/java.util.Optional.get
+    at MainOptional.main
+```
+
+I'm getting an exception, where I called `o1.get`.
+You can only call the _get_ method
+without getting this kind of exception
+if _isPresent_ is **true**.
+I'll comment this line out.
+
+```java  
+//System.out.println(o1.get());
+
+//students.add(0, null);
+Optional<Student> o2 = getStudent(students, "first");
+System.out.println("Empty = " + o2.isEmpty() + ", Present = " + o2.isPresent());
+System.out.println(o2);
+        
+System.out.println(o2.get());        
+```
+
+Running the code now:
+
+```html  
+Empty = true, Present = false
+Optional.empty
+Empty = false, Present = true
+Optional[Student{studentId=1, countryCode='AU', yearEnrolled=2021, ageEnrolled=27, gender='M', programmingExperience=false, engagementMap={JMC=JMC: Eki 2022 Lecture 31 [18], PYMC=PYMC: Şub 2023 Lecture 35 [14]}}]
+Student{studentId=1, countryCode='AU', yearEnrolled=2021, ageEnrolled=27, gender='M', programmingExperience=false, engagementMap={JMC=JMC: Eki 2022 Lecture 31 [18], PYMC=PYMC: Şub 2023 Lecture 35 [14]}}
+```
+
+I see that I do get the actual **Student** printed
+when I call `o2.get`.
+But what does this warning at `o2.get()` from IntelliJ say?
+If I hover over that, I see the message,
+_`Optional.get` without _isPresent_ check_.
+Ok, that means I'm calling _get_
+before checking the result of the method, _isPresent_.
+I can fix this if I wrap that call in an if block,
+first checking that _isPresent_ is **true**.
+
+```java
+Optional<Student> o2 = getStudent(students, "first");
+System.out.println("Empty = " + o2.isEmpty() + ", Present = " + o2.isPresent());
+System.out.println(o2);
+if (o2.isPresent()) {
+    System.out.println(o2.get());
+}
+```
+
+One warning goes away, and another appears, this time
+IntelliJ wants to tell me something about this conditional expression.
+This code can be replaced with a single expression in functional style.
+
+```java
+Optional<Student> o2 = getStudent(students, "first");
+System.out.println("Empty = " + o2.isEmpty() + ", Present = " + o2.isPresent());
+System.out.println(o2);
+o2.ifPresent(System.out::println);
+```
+
+I'll pick the option below that message,
+replace **Optional** presence condition
+with functional style expression.
+IntelliJ replaces that if statement block,
+with a single call, to an _ifPresent_ method,
+on the **Optional** instance.
+This method takes a **Consumer**,
+so I can pass the usual `println` method reference.
+
+```html  
+Empty = true, Present = false
+Optional.empty
+Empty = false, Present = true
+Optional[Student{studentId=1, countryCode='AU', yearEnrolled=2021, ageEnrolled=27, gender='M', programmingExperience=false, engagementMap={JMC=JMC: Eki 2022 Lecture 31 [18], PYMC=PYMC: Şub 2023 Lecture 35 [14]}}]
+Student{studentId=1, countryCode='AU', yearEnrolled=2021, ageEnrolled=27, gender='M', programmingExperience=false, engagementMap={JMC=JMC: Eki 2022 Lecture 31 [18], PYMC=PYMC: Şub 2023 Lecture 35 [14]}}
+```
+
+I get the same output as before.
+What happens if I copy that statement,
+and paste a copy.
+
+```java
+Optional<Student> o1 = getStudent(new ArrayList<>(), "first");
+System.out.println("Empty = " + o1.isEmpty() + ", Present = " + o1.isPresent());
+System.out.println(o1);
+o1.ifPresent(System.out::println);
+
+Optional<Student> o2 = getStudent(students, "first");
+System.out.println("Empty = " + o2.isEmpty() + ", Present = " + o2.isPresent());
+System.out.println(o2);
+o2.ifPresent(System.out::println);
+```
+
+I'll change _o2_ to _o1_.
+Running this:
+
+```html  
+Empty = true, Present = false
+Optional.empty
+Empty = false, Present = true
+Optional[Student{studentId=1, countryCode='UA', yearEnrolled=2015, ageEnrolled=56, gender='U', programmingExperience=false, engagementMap={JMC=JMC: Nis 2024 Lecture 36 [0], PYMC=PYMC: Ağu 2023 Lecture 33 [8]}}]
+Student{studentId=1, countryCode='UA', yearEnrolled=2015, ageEnrolled=56, gender='U', programmingExperience=false, engagementMap={JMC=JMC: Nis 2024 Lecture 36 [0], PYMC=PYMC: Ağu 2023 Lecture 33 [8]}}
+```
+
+It's a little harder to see,
+but I don't get any output from that call,
+and that's because that optional is empty.
+It didn't throw an exception though either.
+
+```java
+Optional<Student> o1 = getStudent(new ArrayList<>(), "first");
+System.out.println("Empty = " + o1.isEmpty() + ", Present = " + o1.isPresent());
+System.out.println(o1);
+o1.ifPresentOrElse(System.out::println);
+
+Optional<Student> o2 = getStudent(students, "first");
+System.out.println("Empty = " + o2.isEmpty() + ", Present = " + o2.isPresent());
+System.out.println(o2);
+o2.ifPresent(System.out::println);
+```
+
+There isn't an _ifEmpty_ method on **Optional**,
+but there is an _ifPresentOrElse_,
+so I'll change that first call to that.
+That gives me an error at the moment.
+I'll click on that method;
+then control click, to bring up that particular method's code.
+
+```java
+public void ifPresentOrElse(Consumer<? super T> action, Runnable emptyAction) {
+    if (value != null) {
+        action.accept(value);
+    } else {
+        emptyAction.run();
+    }
+}
+```
+
+Here, you can see this method takes a second parameter,
+a **Runnable** called _emptyAction_.
+I haven't covered **Runnable**, but let's follow the trail,
+so I'll control click on **Runnable**.
+
+```java
+@FunctionalInterface
+public interface Runnable {
+    
+    public abstract void run();
+}
+```
+
+Here, you can see it's another functional interface,
+so it's a target for lambda expressions.
+It doesn't take any parameters, and it doesn't return any.
+Getting back to my code:
+
+```java
+Optional<Student> o1 = getStudent(new ArrayList<>(), "first");
+System.out.println("Empty = " + o1.isEmpty() + ", Present = " + o1.isPresent());
+System.out.println(o1);
+o1.ifPresentOrElse(System.out::println, () -> System.out.println("---> Empty"));
+
+Optional<Student> o2 = getStudent(students, "first");
+System.out.println("Empty = " + o2.isEmpty() + ", Present = " + o2.isPresent());
+System.out.println(o2);
+o2.ifPresent(System.out::println);
+```
+
+I'll simply add a lambda that prints some text,
+I'll just print an arrow and the word Empty.
+Running this:
+
+```html  
+Empty = true, Present = false
+Optional.empty
+---> Empty
+Empty = false, Present = true
+Optional[Student{studentId=1, countryCode='UA', yearEnrolled=2015, ageEnrolled=56, gender='U', programmingExperience=false, engagementMap={JMC=JMC: Nis 2024 Lecture 36 [0], PYMC=PYMC: Ağu 2023 Lecture 33 [8]}}]
+Student{studentId=1, countryCode='UA', yearEnrolled=2015, ageEnrolled=56, gender='U', programmingExperience=false, engagementMap={JMC=JMC: Nis 2024 Lecture 36 [0], PYMC=PYMC: Ağu 2023 Lecture 33 [8]}}
+```
+
+You can see that this _Empty_ was printed
+on the third line of output.
+This method lets you have a single call,
+whether optional is empty or not,
+which helps promote consistent,
+concise, and more readable code.
+The _ifPresent_ and _ifPresentOrElse_methods provide a means
+for doing something with your **Optional** instance.
+They aren't used to retrieve the value from **Optional**,
+or assign it to another local variable,
+like the simple _get_ method does.
+We can still use _get_, as I've shown you,
+preferably with a test of the _isPresent_ method.
+Let me show you a slightly different version.
+
+```java
+Student firstStudent =(02.isPresent() ? o2.get() : null);
+long id = (firstStudent == null) ? -1 : firstStudent.getStudentId();
+System.out.println("firstStudent's id is " + id);
+```
+
+I'll use a ternary operator, to test _isPresent_,
+and if **true**,
+I'll assign the value of the first _Student_
+to the value in the **Optional** instance,
+otherwise I'll assign that _null_.
+Now, let's say I'm interested in the student's id,
+so I'll retrieve that,
+but I'm back having to check for nulls here.
+I'll print the _id_ out.
+I can run this as the code is written:
+
+```html  
+firstStudent's id is 1
+```
+
+And I'll get the output, first Student's id is 1.
+IntelliJ again is warning me, or prompting me
+to consider the way I've written this code.
+If I hover over that highlighted code,
+IntelliJ tells me,
+I can _replace this with a functional style expression_,
+so I'll select that link in this popup.
+
+```java
+//Student firstStudent =(02.isPresent() ? o2.get() : null);
+Student firstStudent = o2.orElse(null);
+long id = (firstStudent == null) ? -1 : firstStudent.getStudentId();
+System.out.println("firstStudent's id is " + id);
+```
+
+That changes my code from the ternary,
+to instead use a method called _orElse_.
+I'll remove the enclosing parentheses,
+since they were there to make the ternary easier to read.
+This is a special kind of _get_,
+if you will, that will get the value,
+but if the value isn't present,
+I can specify another default value, in this case _null_.
+Let's say I don't want to return a _null_ **Student**,
+as the other value,
+but maybe some dummy variable.
+
+```java
+private static Student getDummyStudent(Course... courses) {
+    
+    System.out.println("Getting the dummy student");
+    return new Student("NO", 1, 1, "U", false, courses);
+}
+```
+
+For this, I'm going to create a quick private static method
+that will return a dummy or fake **Student** instance.
+I need a parameter for courses
+because my **Student** constructor requires it.
+I'm going to print out that
+I'm in this method getting a dummy student.
+I'll return a mocked-up **student** instance.
+
+```java
+//Student firstStudent =(02.isPresent() ? o2.get() : null);
+//Student firstStudent = o2.orElse(null);
+Student firstStudent = o2.orElse(getDummyStudent(jmc));
+//long id = (firstStudent == null) ? -1 : firstStudent.getStudentId();
+long id = firstStudent.getStudentId();
+System.out.println("firstStudent's id is " + id);
+```
+
+Now, I'll change my code,
+and instead of returning _null_,
+I'll return the dummy instance.
+Notice that there's a warning on the next line,
+on the expression `firstStudent == null`.
+IntelliJ has figured out that
+_null_ is never going to be a valid option.
+I'll hover over that, and select
+the **Simplify** option there.
+If I run this code:
+
+```html  
+Getting the dummy student
+firstStudent's id is 1
+```
+
+It works the same, but with a notable difference.
+Even though my optional instance has a value, a valid **Student**,
+I see that the call to _getDummyStudent_ was made.
+If I pass a method invocation as an argument,
+as I'm doing in this code,
+that method gets called, whether I need that value or not.
+If you're processing data in a stream using an optional,
+this could impact performance greatly.
+The better alternative, in most cases,
+is to use the _orElseGet_ method,
+whose parameter is a target for a lambda expression.
+
+```java
+//Student firstStudent =(02.isPresent() ? o2.get() : null);
+//Student firstStudent = o2.orElse(null);
+//Student firstStudent = o2.orElse(getDummyStudent(jmc));
+Student firstStudent = o2.orElseGet(() -> getDummyStudent(jmc));
+//long id = (firstStudent == null) ? -1 : firstStudent.getStudentId();
+long id = firstStudent.getStudentId();
+System.out.println("firstStudent's id is " + id);
+```
+
+I'll change my code to use that instead.
+I'll comment out the original _orElse_ statement.
+I'll again set up my _firstStudent_ local variable,
+and assign it to a method on my **o2** instance,
+this time I'll call _orElseGet_.
+This method takes a **Supplier**,
+so I'll pass a lambda expression,
+which calls the _getDummyStudent_ method, passing _jmc_.
+Now, if I run this code:
+
+```html  
+Empty = true, Present = false
+Optional.empty
+---> Empty
+Empty = false, Present = true
+Optional[Student{studentId=1, countryCode='UA', yearEnrolled=2015, ageEnrolled=56, gender='U', programmingExperience=false, engagementMap={JMC=JMC: Nis 2024 Lecture 36 [0], PYMC=PYMC: Ağu 2023 Lecture 33 [8]}}]
+Student{studentId=1, countryCode='UA', yearEnrolled=2015, ageEnrolled=56, gender='U', programmingExperience=false, engagementMap={JMC=JMC: Nis 2024 Lecture 36 [0], PYMC=PYMC: Ağu 2023 Lecture 33 [8]}}
+firstStudent's id is 1
+```
+
+I don't get the message
+_Getting the dummy student_.
+The lambda expression's functional method
+does not get invoked,
+unless the optional is empty.
+
+```java
+public T orElse(T other) {
+    return value != null ? value : other;
+}
+
+public T orElseGet(Supplier<? extends T> supplier) {
+    return value != null ? value : supplier.get();
+}
+```
+
+If I control click that method,
+and scroll up a tiny bit,
+I can see both the _orElse_
+and the _orElseGet_ methods together on this screen.
+Looking at these together,
+hopefully makes it more obvious to you why,
+that first one is executing _getDummyStudent_ in either case.
+The _orElseGet_ method uses a ternary operator,
+and you'll remember, with a ternary,
+it's a special syntax for a conditional statement.
+When one condition is met,
+any code related to the other condition won't get executed or evaluated.
+Getting back to the code,
+there's one other thing
+that's kind of interesting in the **Optional** class
+I want to talk about.
+
+```java
+List<String> countries = students.stream()
+        .map(Student::getCountryCode)
+        .distinct()
+        .toList();
+
+Optional.of(countries)
+        .map(l -> String.join(",", l))
+        .filter(l -> l.contains("FR"))
+        .ifPresentOrElse(System.out::println, () -> System.out.println("Missing FR"));
+```
+
+This class has methods that seem
+to mirror some of the stream pipeline operations.
+Let me set up a little code to show you this.
+First, I'll use a stream operation
+to create a list of strings,
+to get distinct country codes for my list of students.
+Now, I'll create an instance of **Optional**,
+passing it that list of string.
+The optional has a _map_ method,
+so I can transform the value into something else,
+so here, I'll join my list of strings
+into a single comma delimited string.
+**Optional** has a _filter_ method too,
+so I'll check to see
+if the value contains the country code **FR**.
+This means if this is false,
+the value is going to be empty.
+I'll use _ifPresentOrElse_ to print either the country code list,
+or the message that _FR_ is missing.
+Running this code:
+
+```html  
+Empty = true, Present = false
+Optional.empty
+---> Empty
+Empty = false, Present = true
+Optional[Student{studentId=1, countryCode='UA', yearEnrolled=2015, ageEnrolled=56, gender='U', programmingExperience=false, engagementMap={JMC=JMC: Nis 2024 Lecture 36 [0], PYMC=PYMC: Ağu 2023 Lecture 33 [8]}}]
+Student{studentId=1, countryCode='UA', yearEnrolled=2015, ageEnrolled=56, gender='U', programmingExperience=false, engagementMap={JMC=JMC: Nis 2024 Lecture 36 [0], PYMC=PYMC: Ağu 2023 Lecture 33 [8]}}
+firstStudent's id is 1
+Missing FR
+```
+
+You can see I get the message, _Missing FR_,
+because _FR_ wasn't one of the country codes I used.
+These chained methods look an awful lot like a stream pipeline,
+but they're not.
+Because **Optional** is the resulting type of various terminal operations,
+these methods provide familiar functionality,
+similar to streams, for the **optional**'s value.
+I'll show you how to combine the pipeline stream I have here,
+with the optional code, as we explore a few more
+additional terminal and intermediate operations.
+
+Some developers took the **Optional** class
+and really ran with it,
+to try to solve for that most common exception,
+the _NullPointerException_.
+It's kind of important to remember that
+this type was designed to be a return type, from a method.
+You should exercise some caution trying to use it elsewhere,
+or for every getter or local variable, for example.
+
+* Wrapping elements in **Optional** will consume more
+  memory and has the possibility of slowing down execution.
+* Wrapping elements in **Optional** adds complexity,
+  and reduces readability of your code.
+* Optional is not serializable.
+  I haven't talked about this yet,
+  and will cover it when we talk about IO streams.
+* Using **Optional** for fields or method parameters is not recommended.
+
+Ok, so now that we know what **Optional** is,
+let's see how stream pipelines might use it.
 </div>
 
-
-
+## [l. Terminal Optional Operations]()
 <div align="justify">
 
-```java  
+In this section, I'll be covering the final few terminal operations,
+all of which return an **Optional**.
 
+| Return Type     | Terminal Operations                     |
+|-----------------|-----------------------------------------|
+| OptionalDouble  | average()                               |
+| Optional< T >   | findAny()                               |
+| Optional< T >   | findFirst()                             |
+| Optional< T >   | max(Comparator<? super T > comparator)  |
+| Optional< T >   | min(Comparator<? super T > comparator)  |
+| Optional< T >   | reduce(BinaryOperator< T > accumulator) |
+
+I have average, listed first.
+This operation is only available on the primitive streams, 
+**IntStream**, **LongStream**, and **DoubleStream**.
+It returns a special **Optional** type, 
+**OptionalDouble**,
+a container for a **double** primitive.
+There's also _findAny_ and _findFirst_,
+which are used in combination with a _filter_,
+to get a single element back from the stream.
+_Max_ and _min_ are somewhat self-explanatory.
+Lastly, there's another form of the _reduce_ method 
+that just takes an **accumulator**.
+Let's see what we can do with these, in some code.
+I'll again be using the **StreamingStudents** project.
+I'll create another class, **MainTerminalOptional**,
+so we have a fresh start,
+and that'll have a _main_ method.
+
+```java  
+public class MainTerminalOptional {
+
+    public static void main(String[] args) {
+
+        Course pymc = new Course("PYMC", "Python Masterclass");
+        Course jmc = new Course("JMC", "Java Masterclass");
+
+        List<Student> students =
+                Stream.generate(() -> Student.getRandomStudent(jmc, pymc))
+                        .limit(1000)
+                        .toList();
+
+     int minAge = 21;
+     students.stream()
+             .filter(s -> s.getAge() <= minAge)
+             .findAny()
+             .ifPresentOrElse(s -> System.out.printf("Student %d from %s is %d%n",
+                             s.getStudentId(), s.getCountryCode(), s.getAge()),
+                     () -> System.out.println("Didn't find anyone under " + minAge));
+    }
+}
 ```
 
-
+I'll switch over to **MainCollect**,
+and copy lines 14 through 20.
+Coming back to **MainTerminalOptional**,
+I'll paste that code in the _main_ method.
+After this, I'll start with a local variable called _minAge_, and set that to 21.
+I'll start a stream, using my _students_ list.
+I'll _filter_, by testing 
+if student's current age is less than 
+or equal to the minimum age.
+Next, I'll use the terminal operation, _findAny_.
+It doesn't take any arguments. 
+At this point, I have an optional result.
+I can chain methods on optional, 
+so I'll invoke _ifPresentOrElse_. 
+This takes two parameters.
+The first is what gets executed, 
+if the resulting stream had at least one value.
+The second parameter gets executed 
+if the stream is empty. 
+In the first instance, 
+I'll print the student id, the country code, 
+and the student age, of the one student that gets returned.
+Otherwise, I'll print out that 
+there were not any student records found, 
+for anyone under that min age.
+You can see, I don't have to assign anything to local variables, 
+or check for nulls.
+I can print information, from what looks like a seamless pipeline of code.
+If I run this:
 
 ```html  
-
+Student 52 from CN is 21
 ```
+
+I'll usually get a student id, with the country code and age.
+If I run it multiple times, 
+I'll get different data each time.
+The _findAny_ method returns any student on this stream.
+It's not guaranteed to be the first student found 
+in the stream's processing order.
+If you need the first in the stream order,
+you should use the _findFirst_ method instead.
+I'll copy the stream code, and paste that on below.
+
+```java  
+students.stream()
+        .filter(s -> s.getAge() <= minAge)
+        .findFirst()
+        .ifPresentOrElse(s -> System.out.printf("Student %d from %s is %d%n",
+                        s.getStudentId(), s.getCountryCode(), s.getAge()),
+                () -> System.out.println("Didn't find anyone under " + minAge));
+```
+
+I'll change _findAny_, to _findFirst_.
+If I run this code:
+
+```html  
+Student 66 from US is 20
+Student 66 from US is 20
+```
+
+I'll likely get the same value
+as the first pass through.
+Again, you can't count on _findAny_ 
+to always return the first stream element,
+so if you absolutely need the first instance, 
+make sure you use _findFirst_.
+I'll make another copy of the same code.
+
+```java  
+students.stream()
+        .filter(s -> s.getAge() <= minAge)
+        .sorted(Comparator.comparing(Student::getAge))
+        .findFirst()
+        .ifPresentOrElse(s -> System.out.printf("Student %d from %s is %d%n",
+                        s.getStudentId(), s.getCountryCode(), s.getAge()),
+                () -> System.out.println("Didn't find anyone under " + minAge));
+```
+
+Let's now say I want the youngest student,
+so I'll add a _sorted_ intermediate operation, 
+before the _findFirst_.
+Because my **Student** class doesn't implement **comparable**, 
+I need to pass a **Comparator**.
+I'll do that with `Comparator.comparing`,
+using the `Student::getAge` method reference.
+This code will run:
+
+```html  
+Student 8 from US is 20
+Student 8 from US is 20
+Student 151 from UA is 19
+```
+
+And in my case,
+I'll get the youngest student,
+rather than the student with the lowest student id 
+who's under 21.
+IntelliJ has something to say about this code, 
+which is why it's highlighted, so let me review that.
+This popup tells me that this code,
+the _findFirst_ operation, _can be replaced with **min**_.
+I'll choose to replace that with _min_.
+
+```java  
+students.stream()
+        .filter(s -> s.getAge() <= minAge)
+        .min(Comparator.comparing(Student::getAge))
+        .ifPresentOrElse(s -> System.out.printf("Student %d from %s is %d%n",
+                        s.getStudentId(), s.getCountryCode(), s.getAge()),
+                () -> System.out.println("Didn't find anyone under " + minAge));
+```
+
+It's a little easier to see now 
+that both the _sorted_ and _findFirst_ operations 
+aren't in this stream pipeline any more.
+Instead, _sorted_ has been removed,
+and _findFirst_ has been replaced
+with this single terminal operation,
+and that takes a **Comparator**, like _sorted_ did.
+The _min_ and _max_ operations always requires a **Comparator**.
+Running this:
+
+```html  
+Student 131 from GB is 21
+Student 131 from GB is 21
+Student 151 from CA is 18
+```
+
+I get the same behavior, 
+but you can see why this is a better alternative.
+It's much easier to understand the intention of the stream pipeline.
+I'll copy that last segment code again.
+
+```java  
+students.stream()
+        .filter(s -> s.getAge() <= minAge)
+        .max(Comparator.comparing(Student::getAge))
+        .ifPresentOrElse(s -> System.out.printf("Student %d from %s is %d%n",
+                        s.getStudentId(), s.getCountryCode(), s.getAge()),
+                () -> System.out.println("Didn't find anyone under " + minAge));
+```
+
+This time, I want to get the oldest student, 
+who is less than 21, so I can replace _min_ with _max_.
+Running that code:
+
+```html  
+Student 14 from IN is 19
+Student 14 from IN is 19
+Student 92 from US is 18
+Student 73 from CN is 21
+```
+
+I should get a student from my group who's closer to 21, 
+or who is exactly 21. 
+Let's next get the average age of the student's under 21.
+I'll start out the same, 
+so I'll copy the first two statements of my last pipeline.
+
+```java  
+students.stream()
+        .filter(s -> s.getAge() <= minAge)
+        .mapToInt(Student::getAge)
+        .average()
+        .ifPresentOrElse(a -> System.out.printf("Avg age under 21: %.2f%n", a),
+                        ()-> System.out.println("Didn't find anyone under " + minAge));
+```
+
+This time, I want to map to an **IntStream**, using age, 
+so I'll add a _mapToInt_ operation.
+I'll pass the method reference, `Student::getAge`. 
+Because now I have an **IntStream**,
+I can use the _average_ terminal operation.
+That operation returns an **OptionalDouble**,
+which has the same methods on it, 
+as an optional, so I can still use _ifPresentOrElse_.
+I'll print the average under 21 there, 
+with the value, formatting that to two decimals.
+Otherwise, I'll print that I didn't find anyone under 21.
+Running that code:
+
+```html  
+Student 296 from US is 19
+Student 296 from IN is 19
+Student 885 from GB is 18
+Student 579 from GB is 21
+Avg age under 21: 19.57
+```
+
+I can see I get a decimal value back,
+and that the average age is usually somewhere between 20 and 21.
+The last terminal operation I want to show you
+is a different form of the _reduce_ operation.
+This is a single parameter version that returns an **Optional**.
+I'll use it to give me
+the countries of my under 21 population,
+in a single comma delimited list.
+I'll start out the same, with a stream from students,
+and filtering by age less than
+or equal to the _minAge_,
+so I'll copy the first two statements of my previous pipeline.
+
+```java  
+students.stream()
+        .filter(s -> s.getAge() <= minAge)
+        .map(Student::getCountryCode)
+        .distinct()
+        .reduce((a, b) -> String.join(",", a, b))
+        .ifPresentOrElse(System.out::println,
+                        () -> System.out.println("None found"));
+```
+
+I'll chain a map to that, 
+to extract the country code.
+I've said I want a distinct list, 
+so I'll add _distinct_.
+I'll execute the _reduce_ method 
+that takes one parameter, a **BinaryOperator**.
+A **BinaryOperator** function takes two parameters of the same type.
+In this case, it's the type from the stream, so a **string**.
+This method accumulates a value in memory, 
+using the function I specify here.
+I'll use `String.join`, to join countries by a comma. 
+If something comes back, meaning optional has a value, 
+I'll print it. 
+Otherwise, I'll print _None found_.
+Let me run this.
+
+```html  
+Student 12 from US is 21
+Student 12 from US is 21
+Student 555 from GB is 18
+Student 12 from US is 21
+Avg age under 21: 20.10
+US,GB,IN,AU,CA,CN
+```
+
+I should get some country codes printed out
+in a comma-delimited list.
+If I run this several times,
+my country codes will change.
+What happens if I make the minAge 17, instead of 21, up on line 19?
+I'll go and change that.
+
+```java  
+int minAge = 17;
+```
+
+```html  
+Didn't find anyone under 17
+Didn't find anyone under 17
+Didn't find anyone under 17
+Didn't find anyone under 17
+Didn't find anyone under 17
+None found
+```
+
+I shouldn't ever get students that match these criteria, 
+so all the _orElse_ functions will get called 
+for all of these pipeline operations.
+If I make that 18 next:
+
+```java  
+int minAge = 18;
+```
+
+```html  
+Didn't find anyone under 18
+Didn't find anyone under 18
+Didn't find anyone under 18
+Didn't find anyone under 18
+Didn't find anyone under 18
+None found
+```
+I should be able to test both scenarios
+if I run this code multiple times.
+Sometimes I'll get students and a list of country codes.
+Sometimes I'll get the text, didn't find anyone under 18,
+and none found as the final output statement.
+
+```html  
+Student 735 from CA is 18
+Student 735 from CA is 18
+Student 735 from CA is 18
+Student 735 from CA is 18
+Student 735 from CA is 18
+Avg age under 21: 18.00
+CA
+```
+
+Now, let's take the code from the previous section 
+in the **MainOptional** class's _main_ method.
+I want the code from lines 38 to 47,
+and I'm going to paste that at the end
+of **MainTerminalOptional**'s _main_ method.
+
+```java  
+List<String> countries = students.stream()
+        .map(Student::getCountryCode)
+        .distinct()
+        .toList();
+
+Optional.of(countries)
+        .map(l -> String.join(",", l))
+        .filter(l -> l.contains("FR"))
+        .ifPresentOrElse(System.out::println,
+                        () -> System.out.println("Missing FR"));
+```
+
+I'm going to combine these two sections into a single statement.
+
+```java  
+students.stream()
+        .map(Student::getCountryCode)
+        .distinct()
+        .map(l -> String.join(",", l))
+        .filter(l -> l.contains("FR"))
+        .findAny()
+        .ifPresentOrElse(System.out::println, () -> System.out.println("Missing FR"));
+```
+
+First, I'll remove the assignment to the local variable.
+I'll remove lines 67 to 69,
+so I'm removing the _toList_ terminal operation, 
+and that `Optional.of` code.
+This code has one thing missing a terminal operation 
+before the _ifPresentOrElse_ call.
+I can actually use any of the terminal operations, 
+I've showed you in this section here.
+In this case, it probably just makes sense 
+to use _findAny_, 
+since I'm really just concerned with understanding
+if any of my younger students are from France.
+If I run this code:
+
+```html  
+Student 221 from CA is 18
+Student 221 from CA is 18
+Student 221 from CA is 18
+Student 221 from CA is 18
+Student 221 from CA is 18
+Avg age under 21: 18.00
+IN,GB,CA
+Missing FR
+```
+
+I should see _Missing FR_, 
+since FR wasn't one of my random country codes.
+
+```java  
+students.stream()
+        .map(Student::getCountryCode)
+        .distinct()
+        .map(l -> String.join(",", l))
+        .filter(l -> l.contains("AU"))
+        .findAny()
+        .ifPresentOrElse(System.out::println, () -> System.out.println("Missing AU"));
+```
+
+I'll change _FR_ to _AU_ here, 
+first in the contains statement, 
+and next, in the _println_ statement.
+I'll rerun that:
+
+```html  
+Student 239 from CA is 18
+Student 239 from CA is 18
+Student 239 from CA is 18
+Student 239 from CA is 18
+Avg age under 21: 18.00
+AU,UA
+AU
+```
+
+And hopefully get an under 18 student from Australia.
+I'll keep rerunning that until I do.
+The methods of **Optional** let you process 
+this instance with similar methods, 
+almost like it's just another part of the stream pipeline,
+though of course, it's not.
+Ok, so those were the last few terminal operations,
+and how to use them, with the **Optional** type.
 </div>
 
-
-
+## [m. Streams to Maps]()
 <div align="justify">
 
-```java  
+When I showed you intermediate operations in a previous section, 
+I covered the _collect_ method.
+I showed you examples of returning a list,
+and a **TreeSet**, ordered by a **Comparator**.
+In this section, I want to show you
+how to create a **Map** from a **stream**,
+using another method on the **Collectors** helper class.
 
+I'll again be using **StreamingStudents**, 
+and I'll start with a **MainMapping** class for these examples.
+I'll copy the code from the **MainChallenge** class, 
+so lines 11 through 18, to get a list of 5000 students.
+I'll paste this in my new class's _main_ method.
+
+```java  
+public class MainMapping {
+
+    public static void main(String[] args) {
+
+        Course pymc = new Course("PYMC", "Python Masterclass", 50);
+        Course jmc = new Course("JMC", "Java Masterclass", 100);
+        Course jgames = new Course("JGAME", "Creating games in Java");
+
+        List<Student> students = IntStream
+                .rangeClosed(1, 5000)
+                .mapToObj(s -> Student.getRandomStudent(jmc, pymc))
+                .toList();
+
+     var mappedStudents = students.stream()
+             .collect(Collectors.groupingBy(Student::getCountryCode));
+
+     mappedStudents.forEach((k, v) -> System.out.println(k + " " + v.size()));
+    }
+}
 ```
 
-
+I'll use this list of students to create a map, 
+that'll be keyed by country code,
+and have a **List** of students for each country.
+This is actually really easy, 
+thanks to methods on the **collectors** class.
+I'll use _var_ as my type, in the next couple of examples.
+Java can figure the type out, 
+and I think the code just looks a lot cleaner,
+without all the generic typing going on.
+I'll call my variable, _mappedStudents_, 
+and start out with a stream from the _students_ list.
+I'll use the _collect_ method, 
+then call a static method on **Collectors**, 
+this one is called _groupingBy_. 
+It takes a lambda expression, and here, 
+I'm just going to pass it the method reference 
+for _getCountryCode_ on **student**.
+I'll loop through the key value pairs, 
+on the resulting type, and print them out.
+First, look at the inlay hint,
+after the variable _mappedStudents_.
+My type is a **map**, with **String** as a key,
+and a **List** of **Students** as the entry value.
+The `Collectors.groupingBy` method returns a **Collector**, 
+that collects data into a map.
+This map gets keyed by the result of the **Function** lambda we provide, 
+so it's keyed by country code.
+Running this code, 
 
 ```html  
-
+AU 721
+IN 709
+GB 717
+CN 729
+UA 724
+CA 699
+US 701
 ```
+
+I'll be able to see how many students I have in each country.
+Ok, so I think that's pretty neat and super easy to do.
+Let's try another, this time getting the same map,
+but this time only for students age 25 or under.
+
+```java  
+System.out.println("-----------------------");
+int minAge = 25;
+var youngerSet = students.stream()
+        .collect(groupingBy(Student::getCountryCode, filtering(s -> s.getAge() <= minAge , toList())));
+
+youngerSet.forEach((k, v) -> System.out.println(k + " " + v.size()));
+```
+
+This code won't compile at first, but let me start it.
+I'll first print a separator line.
+After that, I'll set up a local variable, 
+named _minAge_ and set it to 25.
+Next, _var_, and a variable named _youngerSet_,
+and starting with a stream from _students_.
+I'll start as before, calling _collect_. 
+I'll use _groupingBy_ again, with the _getCountryCode_ method reference.
+Now, I'm including a second parameter to the _groupingBy_ method.
+This one expects a **predicate**, 
+and a collector's method to be executed, if that is true.
+This code doesn't compile.
+Do you know why not?
+It's because IntelliJ can't figure out what methods these are, 
+_groupingBy_ and _filtering_.
+I haven't qualified them with a type name like I did on line 21, 
+when I put `Collectors.groupingBy` there.
+I'm doing this on purpose.
+To fix this, I can use a static import,
+so that my code is easier to read.
+I've covered how to import other classes into your package, 
+using the import statement,
+so we can refer to types in other packages,
+without having to use a fully qualified name.
+`import static java.util.stream.Collectors.*`
+The static import statement is a similar idea.
+It lets you import one or more static members of a class.
+The **Collectors** class has well over 40 static methods on it.
+I can fully qualify each method call, 
+with the **Collectors** type name, 
+as you've seen me do so far.
+This can get a little tedious,
+and some would argue the code would be a lot more readable without it.
+I can use the static import statement,
+specifying the **Collectors** class, 
+with a wildcard to import all static members.
+I want to show you this next, 
+in case you're looking up examples in Java's documentation or elsewhere,
+and see code samples this way.
+
+```java  
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import static java.util.stream.Collectors.*;
+
+public class MainMapping {
+    public static void main(String[] args) {
+
+        Course pymc = new Course("PYMC", "Python Masterclass", 50);
+        Course jmc = new Course("JMC", "Java Masterclass", 100);
+        Course jgames = new Course("JGAME", "Creating games in Java");
+
+        List<Student> students = IntStream
+                .rangeClosed(1, 5000)
+                .mapToObj(s -> Student.getRandomStudent(jmc, pymc))
+                .toList();
+
+        var mappedStudents = students.stream()
+                .collect(Collectors.groupingBy(Student::getCountryCode));
+
+        mappedStudents.forEach((k, v) -> System.out.println(k + " " + v.size()));
+
+        System.out.println("-----------------------");
+        int minAge = 25;
+        var youngerSet = students.stream()
+                .collect(groupingBy(Student::getCountryCode, filtering(s -> s.getAge() <= minAge, toList())));
+
+        youngerSet.forEach((k, v) -> System.out.println(k + " " + v.size()));
+    }
+}
+```
+
+I'll add this on line 6, after all the other import statements.
+In this case, I'll do a static **import** of everything in the **Collectors** class.
+I can do this by using a wildcard, so `.*`.
+Scrolling back down, you can see that the last bit of code compiles.
+Now, I want to explain this line of code, line 29, I mean.
+In this case, I'm using an overloaded version of the _groupingBy_ method, on **Collectors**.
+This has a second parameter, which is a **Collector** type.
+This means I can use any of the methods on **Collectors** that return a **Collector** type,
+and this time, I'm using one called _filtering_.
+_Filtering_ takes a **predicate** as its first argument, and another **Collector** as its second.
+You can see this could go on for a while, this nesting of methods with **Collector** types, 
+inside of one another.
+Here, I'm making the **predicate** to check that age is less than 
+or equal to the min age. 
+I'm returning `Collectors.toList` method, as the collector on this.
+I'll copy that print statement on line 24, and paste it on line 32, 
+and I'll change that from _mappedStudents_, to _youngerSet_.
+I'll run this:
+
+```html  
+-----------------------
+AU 50
+IN 36
+GB 43
+CN 39
+UA 42
+US 32
+CA 35
+```
+
+And now I get the counts by country, for my students who are 25 years or younger.
+Now, imagine being able to read data from a file or database, 
+and running a couple of these simple stream pipelines,
+to give you information about the data.
+Some of you probably know how to do this, with operating system commands,
+or database commands, but it's nice to know;
+you can query data so easily like this.
+I want to show you two other commonly used collectors that return maps.
+
+```java  
+var experienced = students.stream()
+        .collect(partitioningBy(Student::hasProgrammingExperience));
+System.out.println("Experienced Students = " + experienced.get(true).size());
+```
+
+The next one returns a **Map** of **boolean** values, so
+you can split your population into two buckets,
+a bifurcated map, based on any condition of your choice.
+We can do this with the _partitioningBy_ method, on **Collectors**.
+I'll set up a new variable, _experienced_, 
+and use a stream on _students_. 
+I'll use _collect_, pass it _partitioningBy_ this time, 
+another static method on the **Collectors** class. 
+I'll pass the method reference for **Student**, 
+_hasProgrammingExperience_.
+I'll print out how many experienced students I have, 
+by using true as the key, to the resulting map, 
+which was partitioned with a **Boolean** wrapper.
+Running this:
+
+```html  
+-----------------------
+AU 35
+IN 31
+GB 38
+CN 37
+UA 36
+US 47
+CA 44
+Experienced Students = 2497
+```
+
+I'll get the number of students who said they had previous programming experience.
+This is usually a number, somewhere near the mid-point of my population, 
+so 2500 more or less.
+Let's say instead of a map that has a **List** of **Students**, 
+I really just want counts.
+There is another method, called counting on the **Collectors** class.
+I can use the overloaded version of _partitioningBy_, 
+that takes a **Collector** as it's second argument.
+I'll copy lines 34 through 36, and paste that just below.
+
+```java  
+var expCount = students.stream()
+        .collect(partitioningBy(Student::hasProgrammingExperience, counting()));
+System.out.println("Experienced Students = " + expCount.get(true));
+```
+
+I'll change experience to be _expCount_.
+I'll include a second argument to the _partitioningBy_ method,
+passing it counting with parentheses there.
+Remember that counting is a method on **Collectors**.
+In the output, I'll change _experienced_ to _expCount_, 
+and remove `.size()` there.
+I get the same result if I run it:
+
+```html  
+-----------------------
+AU 45
+IN 46
+GB 45
+CN 42
+UA 38
+US 40
+CA 37
+Experienced Students = 2488
+Experienced Students = 2488
+```
+
+As I did with my map of lists of _students_, 
+but maybe I don't really need all those lists in a map.
+Instead, I can just get counts like this.
+The _partitioningBy_ method takes a **Predicate** expression.
+In this example, I used a method reference,
+but I could also pass any expression I want, 
+that evaluates to a **boolean** value.
+Let's say I want to see _student_'s that have experience 
+that were active in the current month.
+I'll copy lines 38 through 40, and paste a copy below that.
+
+```java  
+var experiencedAndActive = students.stream()
+        .collect(partitioningBy(
+                s -> s.hasProgrammingExperience() && s.getMonthsSinceActive() == 0,
+                counting()));
+System.out.println("Experienced and Active Students = " + experiencedAndActive.get(true));
+```
+
+I'll change the name of the variable to _experiencedAndActive_.
+I'll add a new line after the opening parentheses after _partitioningBy_.
+Instead of a method reference, I want a more complex expression, 
+so I'll make this a lambda.
+I'll include _s_, the arrow token, and here, 
+I'll include an expression to check both _hasExperience_,
+and also if `getMonthsSinceActive() == 0` on a new line.
+Finally, I'll change the output, and put _experiencedAndActive_ there.
+I'll replace _expCount_ with _experiencedAndActive_.
+If I run that:
+
+```html  
+-----------------------
+AU 39
+IN 49
+GB 24
+CN 48
+UA 44
+US 39
+CA 50
+Experienced Students = 2471
+Experienced Students = 2471
+Experienced and Active Students = 790
+```
+
+I get a count of my experienced and recently active students.
+Lastly, I want to show you how to get a multi-leveled map.
+I'll start with a variable called _multiLevel_, and start another stream.
+
+```java  
+var multiLevel = students.stream()
+        .collect(groupingBy(Student::getCountryCode, groupingBy(Student::getGender)));
+
+multiLevel.forEach((key, value) -> { System.out.println(key);
+            value.forEach((key1, value1) -> System.out.println("\t" + key1 + " " + value1.size()));
+        });
+```
+
+I can pass _groupingBy_ as the first parameter, 
+with a method reference to _getCountryCode_. 
+I can pass a nested _groupingBy_, as the second parameter,
+which will return a **Map** within each **Country**.
+In this case, the nested _map_ will be keyed on gender.
+Printing this out is a little more complicated.
+I'll use for each on the _multiLevel_ variable,
+and that takes key and value.
+I'll print the key.
+The value I get back is another map, 
+so I'll repeat this process, using _forEach_ on the value.
+I'll indent, printing the key and value of the nested map.
+If I run this:
+
+```html  
+AU
+    U 221
+    F 237
+    M 256
+IN
+    U 221
+    F 227
+    M 248
+CN
+    U 226
+    F 244
+    M 249
+GB
+    U 251
+    F 218
+    M 252
+UA
+    U 229
+    F 235
+    M 244
+CA
+    U 241
+    F 237
+    M 227
+US
+    U 245
+    F 233
+    M 259
+```
+
+I get a better picture of my student population, 
+first by country, then by gender.
+There are many variations of the **Collectors** methods to use,
+and it's not possible to cover them all in a single section.
+Let me pull the API document up for this class, and select methods.
+Most of these make sense to use 
+when you're dealing with mapped collections.
+There are usually simpler reduction
+operations, for the other collections.
+Let's just read some of these method names to
+get an idea, of the kinds of things you could do.
+There's several averaging methods,
+so imagine a map keyed by country,
+and getting the average age
+of enrollment by each country.
+I showed you counting, and filtering.
+This filtering occurs within a grouped
+segment, which is different, than
+filtering on every stream element.
+We've also looked at grouping by, in this video,
+but here's joining, much like String
+joining, concatenating strings together.
+Here's maxBy and minBy, so you can
+imagine something like getting the
+maximum percentage complete, of each course,
+based on the student population you have.
+I'll stop there, and just encourage you,
+to explore the many methods on this class.
+The samples I've shown you here, in this code,
+will take you a pretty good distance
+with whatever you're trying to do.
+At some point though, you might be
+challenged with something a bit more complex
+You might find just the right solution, by
+using one of these other methods or variations.
+I'll continue to show you as many variations
+as possible, as the course continues, where
+the context presents an opportunity to do that.
+This feels like a good place to pause in this
+discussion, so I'll end this video here.
+In the next video, I'll talk about how
+to start with a map, and walk through all of
+it's elements, in a stream, so let's move on.
 </div>
 
 
