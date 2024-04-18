@@ -5068,19 +5068,368 @@ as the course continues,
 where the context presents an opportunity to do that.
 </div>
 
-
-
+## [n. Maps to Streams]()
 <div align="justify">
 
-```java  
+In the last section, I showed you many different ways to get maps, from a stream.
+There's one more intermediate operation I want to cover,
+before I finish this **Streams** section of the course, and that's the **flatMap**.
 
+The **flatMap** intermediate operation performs one-to-many transformations
+on elements in a stream pipeline.
+It's called **flatMap**,
+because it flattens results from a hierarchical collection
+into one stream of uniformly typed elements.
+
+```java  
+| Stream<R> | map(Function<T, R> mapper) | flatMap(Function<T, Stream> mapper) |
 ```
 
+Above, I'm showing the **flatMap** operation, next to the **map** operation, 
+with some of the generic typing removed for clarity.
+You can see these operations look very similar.
+The difference is in the return type of the function.
+For **map**, you return a different instance of an object.
+In this case, you're exchanging one type, for another, 
+for each element on the stream.
+For **flatMap**, you return a **Stream**, 
+which means you're exchanging one element,
+for a stream of elements back.
 
+Let's see why this is a big convenience, and examine it in the context of some code.
+I'm still using the **StreamingStudents** project,
+and the **MainMapping** class from the previous section.
+I left off in my code, with several different maps of my students.
+
+```java  
+public class MainMapping {
+
+    public static void main(String[] args) {
+
+        Course pymc = new Course("PYMC", "Python Masterclass", 50);
+        Course jmc = new Course("JMC", "Java Masterclass", 100);
+        Course jgames = new Course("JGAME", "Creating games in Java");
+
+        List<Student> students = IntStream
+                .rangeClosed(1, 5000)
+                .mapToObj(s -> Student.getRandomStudent(jmc, pymc))
+                .toList();
+
+        var mappedStudents = students.stream()
+                .collect(Collectors.groupingBy(Student::getCountryCode));
+
+        mappedStudents.forEach((k, v) -> System.out.println(k + " " + v.size()));
+
+        System.out.println("-----------------------");
+        int minAge = 25;
+        var youngerSet = students.stream()
+                .collect(groupingBy(Student::getCountryCode, filtering(s -> s.getAge() <= minAge, toList())));
+
+        youngerSet.forEach((k, v) -> System.out.println(k + " " + v.size()));
+
+        var experienced = students.stream()
+                .collect(partitioningBy(Student::hasProgrammingExperience));
+        System.out.println("Experienced Students = " + experienced.get(true).size());
+
+        var expCount = students.stream()
+                .collect(partitioningBy(Student::hasProgrammingExperience, counting()));
+        System.out.println("Experienced Students = " + expCount.get(true));
+
+        var experiencedAndActive = students.stream()
+                .collect(partitioningBy(s -> s.hasProgrammingExperience() && s.getMonthsSinceActive() == 0, counting()));
+        System.out.println("Experienced and Active Students = " + experiencedAndActive.get(true));
+
+        var multiLevel = students.stream()
+                .collect(groupingBy(Student::getCountryCode, groupingBy(Student::getGender)));
+
+        multiLevel.forEach((key, value) -> {
+            System.out.println(key);
+            value.forEach((key1, value1) ->
+                    System.out.println("\t" + key1 + " " + value1.size()));
+        });
+    }
+}
+```
+
+I have a map of country code, with lists of students in each of those buckets.
+I have a bifurcated map, partitioned by a boolean value, 
+with true representing my experienced students.
+I also have a map of nested maps, the top level key is country code,
+and the second level is gender.
+Now let's imagine this is how the data was delivered to us.
+It might have a couple of elements, 
+or it might have many millions or billions of records.
+
+```java  
+long studentCount = students.stream().count();
+```
+
+Let's start with counting how many elements we've got.
+First of all, you don't want to use streams for functionality;
+that can be easily deduced without them.
+Let me show you an example of that first.
+Let's say I'm a new developer and I just really like streams, 
+and I'm going to use them everywhere.
+I'll set up a new local variable, a long, called _studentCount_,
+and I'll use the count terminal operation on my students, by getting a stream first.
+Notice that IntelliJ has highlighted the count operation.
+Hovering over that, I get the message that 
+_this can simply be replaced with `Collection.size()`_.
+Why would I use count on a stream, 
+when I can just use the size method, on the _students_ list?
+Sometimes, it's easy to forget what's a stream,
+and what isn't, so luckily for us, 
+IntelliJ gives us reminders to pay attention.
+I'll revert the code, removing that last statement.
+But let's say I'm getting the data, in the experienced map,
+from a method, and I want to know how many students are in it.
+Getting just the size of that is just going to give me 2,
+because I have two keys in my map, **true** and **false**.
+I could get the count by looping through the values in my map,
+and accumulating the counts from the sizes that way.
+
+```java  
+long studentBodyCount = 0;
+for (var list : experienced.values()) {
+    studentBodyCount += list.size();
+}
+System.out.println("studentBodyCount = " + studentBodyCount);
+```
+
+I'll add that just for clarity, and pretend we don't know the size.
+I'll set up a variable that will keep a running count, 
+_studentBodyCount_, and initialize it to zero. 
+I'll loop through the values, and add the size to my _studentBodyCount_.
+And I'll print that out.
 
 ```html  
-
+studentBodyCount = 5000
 ```
+
+This code gives me the right count, which we really do know is 5000.
+How would I go about getting the count of students 
+who've been active in the last 3 months, using streams?
+That's a little more difficult to answer.
+First of all, maps don't have a stream method, 
+so you have to pick a view to stream on, 
+this could be the keys, or the values, or the entries.
+Let's first count our students on the map, using streams, without _filtering_.
+Doesn't this appear fairly straightforward?
+It's not as straightforward as you'd expect.
+If you try to use _count_, you probably figured out,
+it's hard to get a number other than two,
+the two elements keyed in your map, even if these are lists.
+I'll use the _sum_ operation on **IntStream** to do this.
+
+```java  
+studentBodyCount = experienced.values().stream() //Stream<List<...>>
+        .mapToInt(l -> l.size()) //IntStream
+        .sum();
+System.out.println("studentBodyCount = " + studentBodyCount);
+```
+
+I'll reassign the value I get from my pipeline to the _studentBodyCount_. 
+I'll call _mapToInt_, and map each value to an integer, 
+the size of the students in that keyed list.
+I can use _sum_, because I now have an int stream.
+I'll copy _println_, and paste it here.
+Running this code:
+
+```html  
+studentBodyCount = 5000
+studentBodyCount = 5000
+```
+
+I do get the right number of students, 5000 for the result, 
+and that wasn't too awful.
+I myself like it better than the for loop above it.
+Just for the record, for the rest of this section,
+I'm purposely going to ignore IntelliJ's hints, 
+to turn _lambdas into method references_.
+I feel like this code will be complex enough,
+without adding that extra level of indirection.
+
+Ok, now the question is, 
+how I would filter my students by an attribute on student in this code?
+At no time, do I have a stream of students, on which I can act.
+Because _map_ is one to one, 
+I can only examine the collection or list of students as a whole,
+or transform them into another singular unit.
+What if I mapped to a stream?
+I'll try that next.
+
+```java  
+studentBodyCount = experienced.values().stream() //Stream<List<...>>
+        .map(l -> l.stream()  //Stream<Stream<Student>>
+        .mapToInt(l -> l.size())  //size() error
+        .sum();
+System.out.println("studentBodyCount = " + studentBodyCount);
+```
+
+I'll insert an extra _map_ operation above **mapToInt**.
+I'll return a stream from the **List** of students I have here.
+First of all, this doesn't compile,
+but let's ignore that for a moment,
+and examine IntelliJ's inlay hints.
+Notice what I get back from the _map_ operation.
+I don't get a simple **Stream** of **Students**, 
+I get a **Stream**, which has a **Stream** of _students_.
+It's really still a one to one exchange.
+I'm still getting one element back,
+it just happens to be a stream.
+I get an error on the _mapToInt_ operation,
+because stream doesn't have a size.
+I can use this stream, though, 
+to reduce the elements in the stream to a single value,
+and even filter my students here.
+Let me show you that.
+
+```java  
+studentBodyCount = experienced.values().stream() //Stream<List<Student>>
+        .map(l -> l.stream()  
+            .filter(s -> s.getMonthsSinceActive() <= 3)
+            .count()) //Stream<Long>
+        .mapToInt(l -> l.size()) //IntStream, size() error
+        .sum();
+System.out.println("studentBodyCount = " + studentBodyCount);
+```
+
+First, I'll add a new line after the call to stream.
+I'll add a filter, and I only want students
+who have been active in the last 3 months.
+I'll use count to return how many there are.
+I still have a problem with _mapToInt_.
+
+```java  
+studentBodyCount = experienced.values().stream() //Stream<List<Student>>
+        .map(l -> l.stream()  
+            .filter(s -> s.getMonthsSinceActive() <= 3)
+            .count()) //Stream<Long>
+        //.mapToInt(l -> l.size())
+        .mapToLong(l -> l) //LongStream
+        .sum();
+System.out.println("studentBodyCount = " + studentBodyCount);
+```
+
+Here, I really want this to be _mapToLong_, 
+since that's what I get back from the _map_ operation.
+Now, I can just return the value on the stream, which is a **long**.
+That compiles, and runs.
+
+```html  
+studentBodyCount = 5000
+studentBodyCount = 5000
+studentBodyCount = 2162
+```
+
+I do get a count for the number of students 
+who've had some activity in the last 4 months.
+I don't know about you, but this code feels convoluted and ugly to me.
+Imagine now if I wanted the same information,
+but for a map like my multi-level map.
+I'm not going to code that, I think you've got the picture.
+What I'll do is this same thing,
+but use the _flatMap_ operation instead.
+
+```java  
+long count = experienced.values().stream() //Stream<List<...>>
+        .flatMap(l -> l.stream()) //Stream<Student>
+        .filter(s -> s.getMonthsSinceActive() <= 3)
+        .count();
+System.out.println("Active Students = " + count);
+```
+
+First, I'll set up a local variable, a **long**,
+called _count_, and I'll assign that the result of this pipeline process. 
+I'll start the same way, with `experienced.values.stream`.
+Now I'll call _flatmap_, rather than _map_, 
+and get a stream from each of my list values. 
+I'll filter, as part of the main stream's pipeline.
+I'll use the terminal operation count here. 
+And I'll print the value I get back.
+Before I run this, let's examine the inlay hints again.
+Notice what comes back from _flatMap_.
+My **Stream** which contained a bunch of **Lists**,
+now contains Students instead, 
+and not a stream of a stream of students.
+This means I'm getting back not just one element,
+but instead this could be zero to many elements back, 
+and all knitted together on one stream.
+This operation is called _flatMap_, 
+because I've flattened my tree structure into a simple list of **Students**.
+It feels a little backwards sometimes,
+because you're getting many elements back,
+but think about it as flattening the hierarchy of your source data.
+If I run this code:
+
+```html  
+studentBodyCount = 5000
+studentBodyCount = 5000
+studentBodyCount = 2186
+Active Students = 2186
+```
+
+I get the same results as before, as I did from the uglier map example.
+Now, I'll try to do this for the multi-level map.
+
+```java  
+count = multiLevel.values().stream() //Stream<Map<String, List<...>>>
+        .flatMap(map -> map.values().stream()) //Stream<List<Student>>
+        .filter(s -> s.getMonthsSinceActive() <= 3)
+        .count();
+System.out.println("Active Students in multiLevel = " + count);
+```
+
+I'll copy that last bit of code, 
+everything but the **long** type there, and paste it,
+I'll change _experienced_, to _multiLevel_.
+In the _flatMap_ operation, 
+I'll change the variable _l_, to _map_,
+so it's a bit more understandable,
+and I'll change `l.stream` to `map.values.stream`.
+This code doesn't compile,
+and if you look at the inlay hints, you can see,
+coming back from the _flatMap_ operation,
+I don't have a **Stream** of **Students**.
+I have a **Stream** of **List**.
+I haven't flattened this enough.
+I can do this one of two ways.
+
+```java  
+count = multiLevel.values().stream() //Stream<Map<String, List<Student>>>
+        .flatMap(map -> map.values().stream() //Stream<List<...>>
+                .flatMap(l -> l.stream())) //Stream<Student>
+        .filter(s -> s.getMonthsSinceActive() <= 3)
+        .count();
+System.out.println("Active Students in multiLevel = " + count);
+```
+
+In the _flatMap_ operation, 
+I can keep processing my _flattenedStream_ a little more.
+After the call to `map.values.stream`,
+I'll include a new line.
+Here, I'll make a call to _flatMap_ on this new stream,
+These are really lists,
+and I can get a stream from them, 
+making a call to _flatMap_ on this nested stream.
+This fixes my compiler error, 
+and I can run this code:
+
+```html  
+studentBodyCount = 5000
+studentBodyCount = 5000
+studentBodyCount = 2169
+Active Students = 2169
+Active Students in multiLevel = 2169
+```
+
+And I'll get the same number of active students,
+as I did in my experienced map.
+The _flatMap_ operation allows us to use a single pipeline stream,
+to do all our processing, instead of nesting stream pipelines, 
+as I had shown you previously.
+So, you should be able to see why you'd want to use this operation
+if you're dealing with structures of nested data.
 </div>
 
 

@@ -1,4 +1,4 @@
-# Java 17 Masterclass: Start Coding in 2024 by Tim Buchalka
+# **Java 17 Masterclass: Start Coding in 2024 by Tim Buchalka**
 <div align="justify">
 
 What we will learn from this Path:
@@ -170,6 +170,10 @@ What we will learn from this Path:
 ### [h. Terminal Operations Challenge-1]()
 ### [i. Collector and Collectors Class]()
 ### [j. Terminal Operations Challenge-2]()
+### [k. What's Optional Class?]()
+### [l. Terminal Optional Operations]()
+### [m. Streams to Maps]()
+### [n. Maps to Streams]()
 
     * Streams to Maps
     * Maps to Streams (Using flatMap)
