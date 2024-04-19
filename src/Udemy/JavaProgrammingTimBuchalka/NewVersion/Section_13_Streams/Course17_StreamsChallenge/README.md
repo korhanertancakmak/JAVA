@@ -188,7 +188,7 @@ Running this code:
 IntSummaryStatistics{count=10000, sum=20067, min=1, average=2,006700, max=3}
 ```
 
-I get more statistics, that the min is 1, 
+I get more statistics that the min is 1, 
 meaning every student is taking at least one course.
 The max is three, and the average is 2, 
 so that seems like a good distribution.
