@@ -175,7 +175,6 @@ What we will learn from this Path:
 ### [m. Streams to Maps]()
 ### [n. Maps to Streams]()
 
-    * Streams to Maps
     * Maps to Streams (Using flatMap)
 
 

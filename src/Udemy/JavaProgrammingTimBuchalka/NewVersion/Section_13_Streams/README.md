@@ -1226,16 +1226,16 @@ The _rangeClosed_ method in this example,
 produces numbers from 1, up to and including 100.
 Let me show you these stream creation methods on a summary table.
 
-| Method                                                                           | Finite              | Infinite                  |
-|----------------------------------------------------------------------------------|---------------------|---------------------------|
-| &nbsp;&nbsp;Collection.stream()                                                  | &nbsp;&nbsp;&nbsp;X |                           |
-| &nbsp;&nbsp;Arrays.stream((T[])                                                  | &nbsp;&nbsp;&nbsp;X |                           |
-| &nbsp;&nbsp;Stream.of(T...)                                                      | &nbsp;&nbsp;&nbsp;X |                           |
-| &nbsp;&nbsp;Stream.iterate(T seed, UnaryOperator<T> f)                           | &nbsp;&nbsp;&nbsp;X |                           |
-| &nbsp;&nbsp;Stream.iterate(T seed, Predicate<? super T> p, UnaryOperator<T> f)   | &nbsp;&nbsp;&nbsp;X |                           |
-| &nbsp;&nbsp;Stream.generate(Supplier<? extends T> s)                             |                     | &nbsp;&nbsp;&nbsp;&nbsp;X |
-| **IntStream.range(int startInclusive, int endExclusive)                          | &nbsp;&nbsp;&nbsp;X |                           |
-| **IntStream.rangeClosed(int startInclusive, int endExclusive)                    | &nbsp;&nbsp;&nbsp;X |                           |
+| Method                                                                            | Finite              | Infinite                  |
+|-----------------------------------------------------------------------------------|---------------------|---------------------------|
+| &nbsp;&nbsp;`Collection.stream()`                                                 | &nbsp;&nbsp;&nbsp;X |                           |
+| &nbsp;&nbsp;`Arrays.stream((T[])`                                                 | &nbsp;&nbsp;&nbsp;X |                           |
+| &nbsp;&nbsp;`Stream.of(T...)`                                                     | &nbsp;&nbsp;&nbsp;X |                           |
+| &nbsp;&nbsp;`Stream.iterate(T seed, UnaryOperator<T> f)`                          | &nbsp;&nbsp;&nbsp;X |                           |
+| &nbsp;&nbsp;`Stream.iterate(T seed, Predicate<? super T> p, UnaryOperator<T> f)`  | &nbsp;&nbsp;&nbsp;X |                           |
+| &nbsp;&nbsp;`Stream.generate(Supplier<? extends T> s)`                            |                     | &nbsp;&nbsp;&nbsp;&nbsp;X |
+| **`IntStream.range(int startInclusive, int endExclusive)`                         | &nbsp;&nbsp;&nbsp;X |                           |
+| **`IntStream.rangeClosed(int startInclusive, int endExclusive)`                   | &nbsp;&nbsp;&nbsp;X |                           |
 
 This table shows the eight methods 
 I covered in this section. 
@@ -1301,27 +1301,27 @@ I've used _filter_, _limit_, _map_ and _sorted_ in my examples.
 I also showed you a quick example of using 
 _distinct_ in the last challenge.
 
-| Return Type | Operation                                                                                                                            |
-|-------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| Stream<T>   | distinct()                                                                                                                           |
-| Stream<T>   | filter(Predicate<? super T> predicate)<br/> takeWhile(Predicate<? super T> predicate)<br/> dropWhile(Predicate<? super T> predicate) |
-| Stream<T>   | limit(long maxSize)                                                                                                                  |
-| Stream<T>   | map(Function<? super T, ? extends R> mapper)                                                                                         |
-| Stream<T>   | peek(Consumer<? super T> action)                                                                                                     |
-| Stream<T>   | skip(long n)                                                                                                                         |
-| Stream<T>   | sorted()<br/> sorted(Comparator<? super T> comparator)                                                                               |
+| Return Type  | Operation                                                                                                                                  |
+|--------------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| `Stream<T>`  | `distinct()`                                                                                                                               |
+| `Stream<T>`  | `filter(Predicate<? super T> predicate)`<br/> `takeWhile(Predicate<? super T> predicate)`<br/> `dropWhile(Predicate<? super T> predicate)` |
+| `Stream<T>`  | `limit(long maxSize)`                                                                                                                      |
+| `Stream<T>`  | `map(Function<? super T, ? extends R> mapper)`                                                                                             |
+| `Stream<T>`  | `peek(Consumer<? super T> action)`                                                                                                         |
+| `Stream<T>`  | `skip(long n)`                                                                                                                             |
+| `Stream<T>`  | `sorted()`<br/> `sorted(Comparator<? super T> comparator)`                                                                                 |
 
 As you can see from this table, 
 the operations you've already seen briefly 
 cover half of the basic operations available
 to your stream pipelines.
 
-| Return Type | Operation                                                                                                                           | Description                                                                                                                                                                                                                                                                        |
-|-------------|-------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Stream<T>   | distinct()                                                                                                                          | Removes duplicate values from the Stream.                                                                                                                                                                                                                                          |
-| Stream<T>   | filter(Predicate<? super T> predicate<br/> takeWhile(Predicate<? super T> predicate)<br/> dropWhile(Predicate<? super T> predicate) | These methods allow you to reduce the elements in the output stream.<br/> Elements that match the filter's Predicate are kept in the outgoing stream, for the filter and takeWhile operations.<br/> Elements will be dropped until or while the dropWhile's predicate is not true. |
-| Stream<T>   | limit(long maxSize)                                                                                                                 | This reduces your stream to the size specified in the argument.                                                                                                                                                                                                                    |
-| Stream<T>   | skip(long n)                                                                                                                        | This method skips elements, meaning they won't be part of the resulting stream.                                                                                                                                                                                                    |
+| Return Type  | Operation                                                                                                                                 | Description                                                                                                                                                                                                                                                                        |
+|--------------|-------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Stream<T>`  | `distinct()`                                                                                                                              | Removes duplicate values from the Stream.                                                                                                                                                                                                                                          |
+| `Stream<T>`  | `filter(Predicate<? super T> predicate`<br/> `takeWhile(Predicate<? super T> predicate)`<br/> `dropWhile(Predicate<? super T> predicate)` | These methods allow you to reduce the elements in the output stream.<br/> Elements that match the filter's Predicate are kept in the outgoing stream, for the filter and takeWhile operations.<br/> Elements will be dropped until or while the dropWhile's predicate is not true. |
+| `Stream<T>`  | `limit(long maxSize)`                                                                                                                     | This reduces your stream to the size specified in the argument.                                                                                                                                                                                                                    |
+| `Stream<T>`  | `skip(long n)`                                                                                                                            | This method skips elements, meaning they won't be part of the resulting stream.                                                                                                                                                                                                    |
 
 I'll start by talking about the set of operations
 that may change the number of elements in the resulting stream.
@@ -2400,14 +2400,14 @@ It gives you a window into what is happening.
 I can use terminal operations 
 to return information about the aggregated data set.
 
-| Return Type                                                                | Terminal Operations | Stream                                    |
-|----------------------------------------------------------------------------|---------------------|-------------------------------------------|
-| long                                                                       | count()             | ALL                                       |
-| Optional                                                                   | max()               | ALL                                       |
-| Optional                                                                   | min()               | ALL                                       |
-| OptionalDouble                                                             | average()           | DoubleStream<br/>IntStream<br/>LongStream |
-| double<br/>int<br/>long                                                    | sum()               | DoubleStream<br/>IntStream<br/>LongStream |
-| DoubleSummaryStatistics<br/>IntSummaryStatistics<br/>LongSummaryStatistics | summaryStatistics() | DoubleStream<br/>IntStream<br/>LongStream |
+| Return Type                                                                | Terminal Operations   | Stream                                    |
+|----------------------------------------------------------------------------|-----------------------|-------------------------------------------|
+| long                                                                       | `count()`             | ALL                                       |
+| Optional                                                                   | `max()`               | ALL                                       |
+| Optional                                                                   | `min()`               | ALL                                       |
+| OptionalDouble                                                             | `average()`           | DoubleStream<br/>IntStream<br/>LongStream |
+| double<br/>int<br/>long                                                    | `sum()`               | DoubleStream<br/>IntStream<br/>LongStream |
+| DoubleSummaryStatistics<br/>IntSummaryStatistics<br/>LongSummaryStatistics | `summaryStatistics()` | DoubleStream<br/>IntStream<br/>LongStream |
 
 The methods shown on this table have no arguments. 
 They all return numerical data, either directly, 
@@ -2417,11 +2417,11 @@ after the Optional lecture.
 Before that, I want to talk about methods 
 for matching elements on a specific condition.
 
-| Return Type | Method                                     | Description                                                          |
-|-------------|--------------------------------------------|----------------------------------------------------------------------|
-| boolean     | allMatch(Predicate<? super T> predicate)   | Returns true if all stream elements meet the condition specified.    |
-| boolean     | anyMatch(Predicate<? super T> predicate)   | Returns true there is at least one match to the condition specified. |
-| boolean     | noneMatch(Predicate<? super T> predicate)  | This operation returns true if no elements match.                    |
+| Return Type | Method                                      | Description                                                          |
+|-------------|---------------------------------------------|----------------------------------------------------------------------|
+| boolean     | `allMatch(Predicate<? super T> predicate)`  | Returns true if all stream elements meet the condition specified.    |
+| boolean     | `anyMatch(Predicate<? super T> predicate)`  | Returns true there is at least one match to the condition specified. |
+| boolean     | `noneMatch(Predicate<? super T> predicate)` | This operation returns true if no elements match.                    |
 
 There are three terminal operations 
 that let you get an overall sense of 
@@ -2722,13 +2722,13 @@ you'll use the terminal operations shown on the table below,
 in combination with some of the intermediate operations 
 you've learned about.
 
-| Return Type      | Terminal Operations                       |
-|------------------|-------------------------------------------|
-| long             | count()                                   |
-| DoubleStatistics | summaryStatistics()                       |
-| boolean          | allMatch(Predicate<? super T> predicate)  |
-| boolean          | anyMatch(Predicate<? super T> predicate)  |
-| boolean          | noneMatch(Predicate<? super T> predicate) |
+| Return Type      | Terminal Operations                         |
+|------------------|---------------------------------------------|
+| long             | `count()`                                   |
+| DoubleStatistics | `summaryStatistics()`                       |
+| boolean          | `allMatch(Predicate<? super T> predicate)`  |
+| boolean          | `anyMatch(Predicate<? super T> predicate)`  |
+| boolean          | `noneMatch(Predicate<? super T> predicate)` |
 
 You'll be using these to answer 
 some questions about a series of students. 
@@ -2777,12 +2777,12 @@ or they can return a collection.
 On this table, I want to show you some additional terminal operations,
 and their return types and signatures.
 
-| Return Type                       | Terminal Operations                                                                                                                                                                                |
-|-----------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| R<br/>R                           | collect(Collector<? super T.A.R> collector)<br/> collect(Supplier < R > supplier, BiConsumer<R, ? super T> accumulator, BiConsumer<R, R> combiner)                                                 |
-| Optional< T > <br/>T<br/> < U > U | reduce(BinaryOperator < T > accumulator)<br/> reduce(T identity, BinaryOperator < T > accumulator)<br/> reduce(U identity, BiFunction<U, ? super T, U> accumulator, BinaryOperator < U > combiner) |
-| Object[]<br/> A[]                 | toArray()<br/> toArray(IntFunction<A[ ]> generator)                                                                                                                                                |
-| List<T>                           | toList()                                                                                                                                                                                           |
+| Return Type                         | Terminal Operations                                                                                                                                                                                    |
+|-------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| R<br/>R                             | `collect(Collector<? super T.A.R> collector)`<br/> `collect(Supplier <R> supplier, BiConsumer<R, ? super T> accumulator, BiConsumer<R, R> combiner)`                                                   |
+| `Optional<T>` <br/>`T`<br/> `<U> U` | `reduce(BinaryOperator < T > accumulator)<br/> reduce(T identity, BinaryOperator < T > accumulator)`<br/> `reduce(U identity, BiFunction<U, ? super T, U> accumulator, BinaryOperator < U > combiner)` |
+| `Object[]`<br/> `A[]`               | `toArray()`<br/> `toArray(IntFunction<A[ ]> generator)`                                                                                                                                                |
+| `List<T>`                           | `toList()`                                                                                                                                                                                             |
 
 Some of these signatures, namely the parameters, 
 look pretty cryptic. 
@@ -2800,12 +2800,12 @@ as you consider these.
 Let me show you the same set of operations, 
 without the generics in the signature.
 
-| Return Type                  | Terminal Operations                                                                                                                                             |
-|------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| R<br/>R                      | collect(Collector collector)<br/> collect(Supplier supplier, BiConsumer accumulator, BiConsumer combiner)                                                       |
-| Optional <br/>T<br/> < U > U | reduce(BinaryOperator accumulator)<br/> reduce(T identity, BinaryOperator accumulator)<br/> reduce(U identity, BiFunction accumulator, BinaryOperator combiner) |
-| Object[]<br/> A[]            | toArray()<br/> toArray(IntFunction generator)                                                                                                                   |
-| List                         | toList()                                                                                                                                                        |
+| Return Type                  | Terminal Operations                                                                                                                                                    |
+|------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| R<br/>R                      | `collect(Collector collector)`<br/> `collect(Supplier supplier, BiConsumer accumulator, BiConsumer combiner)`                                                          |
+| Optional <br/>T<br/> `<U> U` | `reduce(BinaryOperator accumulator)`<br/> `reduce(T identity, BinaryOperator accumulator)`<br/> `reduce(U identity, BiFunction accumulator, BinaryOperator combiner)`  |
+| `Object[]`<br/> `A[]`        | `toArray()`<br/> `toArray(IntFunction generator)`                                                                                                                      |
+| List                         | `toList()`                                                                                                                                                             |
 
 Ok, this view of each method is a little easier on the eyes 
 and brain, I think. 
@@ -5047,9 +5047,8 @@ There are several averaging methods, so imagine a map keyed by country,
 and getting the average age of enrollment by each country.
 I showed you counting, and _filtering_.
 This filtering 
-`filtering(Predicate< ? super T> predicate, Collector <? super T, A, R> downstream)` 
-occurs within a grouped segment,
-which is different from _filtering_ on every stream element.
+`filtering(Predicate< ? super T> predicate, Collector <? super T, A, R> downstream)`
+occurs within a grouped segment which is different from _filtering_ on every stream element.
 We've also looked at _groupingBy_, in this section,
 but here's _joining_, much like **String** _joining_, 
 concatenating strings together.
@@ -5071,8 +5070,8 @@ where the context presents an opportunity to do that.
 ## [n. Maps to Streams]()
 <div align="justify">
 
-In the last section, I showed you many different ways to get maps, from a stream.
-There's one more intermediate operation I want to cover,
+In the last section, I showed you many different ways to get maps from a stream.
+There's one more intermediate operation I want to cover
 before I finish this **Streams** section of the course, and that's the **flatMap**.
 
 The **flatMap** intermediate operation performs one-to-many transformations
@@ -5197,8 +5196,8 @@ System.out.println("studentBodyCount = " + studentBodyCount);
 ```
 
 I'll add that just for clarity, and pretend we don't know the size.
-I'll set up a variable that will keep a running count, 
-_studentBodyCount_, and initialize it to zero. 
+I'll set up a variable that will keep a running count,
+_studentBodyCount_, and initialize it to zero.
 I'll loop through the values, and add the size to my _studentBodyCount_.
 And I'll print that out.
 
@@ -5314,7 +5313,7 @@ System.out.println("studentBodyCount = " + studentBodyCount);
 Here, I really want this to be _mapToLong_, 
 since that's what I get back from the _map_ operation.
 Now, I can just return the value on the stream, which is a **long**.
-That compiles, and runs.
+That compiles and runs.
 
 ```html  
 studentBodyCount = 5000
@@ -5340,10 +5339,10 @@ System.out.println("Active Students = " + count);
 ```
 
 First, I'll set up a local variable, a **long**,
-called _count_, and I'll assign that the result of this pipeline process. 
+called _count_, and I'll assign that the result of this pipeline process.
 I'll start the same way, with `experienced.values.stream`.
-Now I'll call _flatmap_, rather than _map_, 
-and get a stream from each of my list values. 
+Now I'll call _flatmap_, rather than _map_,
+and get a stream from each of my list values.
 I'll filter, as part of the main stream's pipeline.
 I'll use the terminal operation count here. 
 And I'll print the value I get back.
@@ -5432,32 +5431,32 @@ So, you should be able to see why you'd want to use this operation
 if you're dealing with structures of nested data.
 </div>
 
-
-
+## [o. Stream Challenge]()
 <div align="justify">
 
-```java  
+In this challenge, you'll again use streams with the Student Engagement Code.
+Before you start, first change the _getRandomStudent_ method on **Student**,
+to select a random number and random selection of courses.
+Every student should be enrolled 
+and have activity in at least one class.
+Set up three or four courses, 
+use the lecture count version of the constructor on several of these, 
+to pass lecture counts greater than 40.
+Generate a list of 10,000 students
+who've enrolled in the past 4 years.
+Pass the supplier code three or four courses.
+Next, answer the following questions.
 
-```
+* How many of the students are enrolled in each class? 
+* How many students are taking 1, 2, or 3 classes?
+* Determine the average percentage complete, for all courses, for this group of students.
+Hint, try `Collectors.averagingDouble` to get this information.
+* For each course, get activity counts by year, using the last activity year field.
 
-
-
-```html  
-
-```
+Think about how you'd go about answering these questions, 
+using some of the stream operations you've learned, 
+especially the collect terminal operation in conjunction
+with the **Collectors** helper class methods.
 </div>
 
 
-
-<div align="justify">
-
-```java  
-
-```
-
-
-
-```html  
-
-```
-</div>
