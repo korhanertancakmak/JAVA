@@ -5431,7 +5431,7 @@ So, you should be able to see why you'd want to use this operation
 if you're dealing with structures of nested data.
 </div>
 
-## [o. Stream Challenge]()
+## [o. Stream Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/Course17_StreamsChallenge/README.md#stream-challenge)
 <div align="justify">
 
 In this challenge, you'll again use streams with the Student Engagement Code.
@@ -5458,5 +5458,4 @@ using some of the stream operations you've learned,
 especially the collect terminal operation in conjunction
 with the **Collectors** helper class methods.
 </div>
-
 
