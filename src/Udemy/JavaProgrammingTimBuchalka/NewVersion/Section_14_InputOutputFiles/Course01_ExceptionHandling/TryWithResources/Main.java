@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_18_InputOutputFiles.Course01_ExceptionHandling.TryWithResources;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_14_InputOutputFiles.Course01_ExceptionHandling.TryWithResources;
 
 import java.io.File;
 import java.io.FileNotFoundException;

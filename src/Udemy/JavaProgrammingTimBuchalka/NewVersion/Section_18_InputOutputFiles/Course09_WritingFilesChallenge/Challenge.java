@@ -1,12 +1,11 @@
-package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_InputOutputFiles.Course09_WritingFilesChallenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_14_InputOutputFiles.Course09_WritingFilesChallenge;
 
-import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_InputOutputFiles.Course09_WritingFilesChallenge.student.Course;
-import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_InputOutputFiles.Course09_WritingFilesChallenge.student.Student;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_14_InputOutputFiles.Course09_WritingFilesChallenge.student.Course;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_14_InputOutputFiles.Course09_WritingFilesChallenge.student.Student;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

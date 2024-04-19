@@ -1,4 +1,4 @@
-package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_InputOutputFiles.Course12_RandomAccessFile;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_14_InputOutputFiles.Course12_RandomAccessFile;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;

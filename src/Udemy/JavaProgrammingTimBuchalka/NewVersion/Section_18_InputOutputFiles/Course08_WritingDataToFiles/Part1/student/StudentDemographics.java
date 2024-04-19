@@ -1,4 +1,4 @@
-package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_InputOutputFiles.Course08_WritingDataToFiles.Part1.student;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_14_InputOutputFiles.Course08_WritingDataToFiles.Part1.student;
 
 public record StudentDemographics(String countryCode, int enrolledMonth,
                                   int enrolledYear, int ageAtEnrollment, String gender,

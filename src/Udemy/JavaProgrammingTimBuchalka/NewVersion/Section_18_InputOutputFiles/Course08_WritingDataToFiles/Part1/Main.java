@@ -1,13 +1,12 @@
-package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_InputOutputFiles.Course08_WritingDataToFiles.Part1;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_14_InputOutputFiles.Course08_WritingDataToFiles.Part1;
 
-import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_InputOutputFiles.Course08_WritingDataToFiles.Part1.student.Course;
-import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_InputOutputFiles.Course08_WritingDataToFiles.Part1.student.Student;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_14_InputOutputFiles.Course08_WritingDataToFiles.Part1.student.Course;
+import Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_14_InputOutputFiles.Course08_WritingDataToFiles.Part1.student.Student;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;

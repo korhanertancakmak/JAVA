@@ -158,44 +158,43 @@ What we will learn from this Path:
 ### [k. Sealed Classes](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#k-sealed-classes)
 ### [l. The Final Section Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_12_Immutable_Unmodifable_Classes/README.md#l-the-final-section-challenge)
 
-## [Section-13. Streams]()
+## [Section-13. Streams](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/README.md#section-13-streams)
 
-### [a. Stream In Action]()
-### [b. Stream Pipeline]()
-### [c. Stream Sources]()
-### [d. Stream Sources Challenge]()
-### [e. Intermediate Operations]()
-### [f. Terminal Operations]()
-### [g. Streaming Student Project]()
-### [h. Terminal Operations Challenge-1]()
-### [i. Collector and Collectors Class]()
-### [j. Terminal Operations Challenge-2]()
-### [k. What's Optional Class?]()
-### [l. Terminal Optional Operations]()
-### [m. Streams to Maps]()
-### [n. Maps to Streams]()
+### [a. Stream In Action](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/README.md#a-stream-in-action)
+### [b. Stream Pipeline](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/README.md#b-stream-pipeline)
+### [c. Stream Sources](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/README.md#c-stream-sources)
+### [d. Stream Sources Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/README.md#d-stream-sources-challenge)
+### [e. Intermediate Operations](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/README.md#e-intermediate-operations)
+### [f. Terminal Operations](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/README.md#f-terminal-operations)
+### [g. Streaming Student Project](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/README.md#g-streaming-student-project)
+### [h. Terminal Operations Challenge-1](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/README.md#h-terminal-operations-challenge-1)
+### [i. Collector and Collectors Class](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/README.md#i-collector-and-collectors-class)
+### [j. Terminal Operations Challenge-2](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/README.md#j-terminal-operations-challenge-2)
+### [k. What's Optional Class?](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/README.md#k-whats-optional-class)
+### [l. Terminal Optional Operations](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/README.md#l-terminal-optional-operations)
+### [m. Streams to Maps](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/README.md#m-streams-to-maps)
+### [n. Maps to Streams](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/README.md#n-maps-to-streams)
+### [o. Stream Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_13_Streams/README.md#o-stream-challenge)
 
-    * Maps to Streams (Using flatMap)
+## [Section-14. Some Useful Classes]()
 
+    a. java.lang.Math Class
+    b. java.util.Random Class
+    c. BigDecimal Class
+    d. java.time.Date Class
+    e. java.time.LocalDate Class
+    f. DateTime and Localization
 
+## [Section-15. Regular Expressions]()
 
+    a. The Parts of a Regular Expression
+    b. Methods that use Regular Expressions
+    c. Pattern and Matcher
 
-## [14. Some Useful Classes]()
+## [Section-16. Input & Output in Java]()
 
-    * java.lang.Math Class
-    * java.util.Random Class
-    * BigDecimal Class
-    * java.time.Date Class
-    * java.time.LocalDate Class
-    * DateTime and Localization
-
-## [15. Regular Expressions]()
-
-    * The Parts of a Regular Expression
-    * Methods that use Regular Expressions
-    * Pattern and Matcher
-
-## [16. Input & Output in Java]()
+### [a. Exception Handling]()
+### [b. Using Files and Paths Classes]()
 
     * Checked vs Unchecked Exceptions
     * Try with Research and finally clause
@@ -208,7 +207,7 @@ What we will learn from this Path:
     * DataOutputStream & DataInputStream
     * Serilization
 
-## [17. Concurrency]()
+## [Section-17. Concurrency]()
 
     * Thread Basics
     * Thread Creating, Execution and 
@@ -228,7 +227,7 @@ What we will learn from this Path:
     * Livelock
     * Starvation & Fair Locks
 
-## [18. Working with Databases]()
+## [Section-18. Working with Databases]()
 
     * MySQL Installation
     * Database Basics
@@ -243,7 +242,7 @@ What we will learn from this Path:
     * JPA and ORM
     * JPA Queries, JPQL
 
-## [19. JavaFX]()
+## [Section-19. JavaFX]()
 
     * JavaFX Overview
     * GridPane, HBox, BorderPane and other Layout
@@ -271,7 +270,7 @@ What we will learn from this Path:
     * SceneBuilder
     * Building a UI with SceneBuilder
 
-## [20. Debugging and Unit Testing]()
+## [Section-20. Debugging and Unit Testing]()
 
     * Debugging
     * Field Watch Points
@@ -279,7 +278,7 @@ What we will learn from this Path:
     * Asserts in JUnit and Exception Handling
     * Parameterized Testing
 
-## [21. Java Networking Programming]()
+## [Section-21. Java Networking Programming]()
 
     * Networking Overview
     * First Client and Server Apps
