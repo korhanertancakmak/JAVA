@@ -9,8 +9,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        useFile("testfile.txt");
-        //usePath("pathfile.txt");
+        //useFile("testfile.txt");
+        usePath("pathfile.txt");
     }
 
     /** Creating and deleting a file by testing its existence with an instance of File. **/
@@ -45,8 +45,7 @@ public class Main {
         Path path = Path.of(fileName);
         boolean fileExists = Files.exists(path);
 
-        System.out.printf("File '%s' %s%n", fileName,
-                fileExists ? "exists." : "does not exist.");
+        System.out.printf("File '%s' %s%n", fileName, fileExists ? "exists." : "does not exist.");
 
         if (fileExists) {
             System.out.println("Deleting File: " + fileName);

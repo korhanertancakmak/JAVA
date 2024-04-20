@@ -1,4 +1,4 @@
-# [16. Input & Output in Java]()
+# [Section-16. Input & Output in Java]()
 <div align="justify">
 
 Up until now, our code has stayed internal to the JVM.
@@ -575,7 +575,6 @@ If my finally block code gets an exception, however,
 then I'm out of luck, and execution will end at that point.
 </div>
 
-
 ### [try-with-resources Statement]()
 <div align="justify">
 
@@ -1134,7 +1133,6 @@ private static void testFile2(String filename) {
 }
 ```
 </div>
-
 
 ## [b. Using Files and Paths Classes]()
 <div align="justify">
@@ -1750,253 +1748,1058 @@ I can see the code created the file, or says it has,
 and that it would write to the file, 
 which means the _canWrite_ method returned true.
 
-
+![image05b](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image05b.png?raw=true)
 
 If I open my project pane, I can see my `testfile.txt` file there, 
 in the project's directory, so it was successfully created.
-If I run the code a second time,
-I can see that my code recognized that the file does now exist.
-This is followed by the statement, deleting file.
-Then my code creates it
-again, and would write to it.
-Ok, just to summarize, in this
-code, I used an instance of File,
-to test some conditions in the file system,
-as well as to create and delete a file.
-Now, I'll do the same thing, but I'll instead of
-using an instance of the older File class, I'm
-going to use an instance of the newer Path type,
-with the help of the methods on the Files class.
-I'll copy this entire method, and
-paste a copy below the useFile method.
-I'll first change the name
-from useFile to usePath.
-I need to replace the statement
-here, where I create a file instance.
-First, I'll create a path
-variable, simply called path.
-In the last video, if you remember, I
-used the get method on the Paths class.
-JDK11 introduced a static factory
-method on the Path interface itself,
-a method called of, so that's what I'll
-use here, passing it my fileName argument.
-Right away, that gives me four
-compiler errors, everywhere where
-I was accessing the file instance.
-I'll need to replace each instance,
-first replacing the file variable with the Files
-class name, and instead of passing no arguments
-to each method, I'll pass my path instance.
-First, I'll do that for the file.exists method,
-changing file to Files,
-and pass path to the exists method.
-Next, I want to do the same
-thing, for file.delete.
-In this case, I've got an error
-after I make those changes.
-I'll come back to that in a minute.
-I'll keep going with the file to
-Files replacement, so next, I
-need to change createNewFile.
-After I make that change, I can
-see I have an error here as well.
-That's because the method doesn't exist on Files.
-Again, I'll come back to this.
-I'll next change file.canWrite
-to Files.canWrite, and pass path.
-There's another error, because as
-before, this method isn't on Files.
-Ok, let's address each of these issues,
-starting with the delete method.
-I can hover over that, and now I see, the
-delete method on Files throws an IOException,
-so I have to either catch or specify.
-I'll pick surround with try catch here.
-Now, I have a different error, and this is
-another difference between the delete methods.
-Because the one on this class throws
-an exception when there's a problem,
-it doesn't return a boolean value, or
-any value for that matter, it's void.
-I have to change my code.
-I'll remove fileExists,
-the assignment, and the not
-before that method call.
-I'll set fileExists to falls, after that delete statement.
-I also don't want to throw a runtime exception,
-so I'll change the generated catch clause.
-I'll remove that throw new
-Runtime Exception statement too,
-because I'm going to put something else there.
-In the try clause, I'll just
-print the exception I got.
-The delete method is all good now, so moving
-down to the create new File method, I'll delete
-that method, since it doesn't exist on Files.
-I'll delete the dot there, and enter it again,
-so IntelliJ will display a list
-of methods available on Files.
-Here you can see createFile
-near the top of the list.
-I'll pick that one.
-This change seems to be fine,
-and I already have it in a try catch block.
-The one difference I do want to point out
-to you is, The Files class's version to
-create a file, doesn't return a boolean,
-as did the file class, which returned
-true for success, and false for failure.
-Similar to the delete method, it will
-throw an exception for a failure.
-This feels like we're moving from a look
-before you leap approach, to an easy to ask
-for forgiveness response, doesn't it?
-Moving on, to the canWrite method,
-let's delete it, retyping the dot, again
-to see the list of possible methods.
-Right away, I'll can see an isWritable
-method, so I'll select that.
-Now, everything compiles,
-and that wasn't too painful.
-I'll add a call to this method, with a
-different filename, in the main method.
-I'll call usePath, and my file
-name will be pathfile.txt.
-I'll run this.
-In the second set of outputs, I can
-see file pathfile.txt does not exist,
-and that the code says it was created,
-and that it can be written to.
-Again, opening the project panel, I
-want to confirm it's been created,
-and sure enough, I can see it's there.
-All I've really demonstrated by this exercise,
-is that you can do the same thing with Files and
-path, as you can, simply using a File instance.
-But now, let's make another
-change to the usePath method.
-Here, after I test if the file is Writable,
-I print this statement to the console.
-This time however, I really
-am going to write to the file.
-I'll call a method named writeString
-on this Files helper class,
-again passing it my path variable,
-and a String as the second argument.
-I'll pass it a text block
-with several lines of text.
-I want this text to be written to my newly created
-file. I should see in my file, after this code
-is run, Here is some data, for my file, just to
-prove, Using the Files class and path are better.
-I'm getting the error, that says
-this throws an unhandled exception.
-Rather than surround this with a
-second try catch, what I'll do is,
-include this code with the code
-above it, in one big try catch.
-I'll cut the catch clause I have above this code.
-I'll paste that, after my nested if statement.
-I can reformat that with the control
-alt L on windows, or for mac.
-I'll delete line 65 because we have now
-implemented code to write to file and
-this comment is redundant.
-Running with that change,
-I can now open that file, pathfile.txt,
-and there is the text from my text block.
-Ok, that was super easy to do.
-I can also read this information
-from the file, just as easily.
-I'll add a couple of statements,
-after that isWritable if clause.
-I'll print that I can read too,
-following that with a separator line.
-And now, in a single line of code, I can call
-the readAllLines method on Files, passing the
-result directly to a forEach method, and I'll pass
-that the method reference for System.out.println.
-Running this,
-I can see in my output the statement,
-And I can read too, followed by dashes.
-After that, here are the lines that the code
-read from my text file, printed to the console.
-I'll be talking more about reading
-and writing to files in future videos,
-but that's just about as easy as it gets.
-Ok, Let's quick look at some of the functionality the I O,
-and N I O 2methods, have in common, on a slide.
-This slide shows you quite a bit
-of the functionality you'd expect
-from a File System, and the methods
-you'd use for each of these classes.
-You can see the methods are often similarly
-named, and methods exist for all the basics.
-I'm not going to go through each of these
-individually, and compare them to each other.
-What I want you to remember is, if
-you need to support legacy code,
-or if you need to be backwards compatible, to
-a version of the JDK that's older than JDK7,
-you can still rely on the File class.
-If you're starting out new,
-I'm recommending you use the Files class
-(Files with an s), and a Path instance,
-otherwise known as the NIO2 way of doing things.
-Let's review why NIO2 is better, under the covers.
-First of all, File operations have been improved,
-The NIO2 types include support for:
-Asynchronous file I/O operations. And File
-locking, including more granular locking.
-This means, instead of locking the entire file,
-a region of it can be locked. There's enhanced
-support for File metadata retrieval. As well
-as new support for Symbolic link manipulation.
-Finally, the NIO2 types have support for
-File system notifications. This means changes
-occurring on a path, can be made watchable
-to registered services.
-I plan to give you an example of this in the concurrency section of the course, where it should make more sense.
-The NIO2 types have been
-designed to be better performing.
-NIO2 types are non-blocking, meaning
-asynchronous access to resources,
-by multiple threads, is supported.
-They manage memory more efficiently, reading
-and writing files directly to and from memory into
-buffers, through something called a FileChannel.
-I'll be covering reading from, and
-writing to files shortly, and I'll
-discuss the FileChannel and it's advantages.
-You can also read from or write to multiple
-buffers in a single operation,
-which I'll be showing you as well.
-At this point, I'll be switching to
-just using the Files and Path code,
-otherwise called the NIO2 types, and focusing
-on the functionality these types offer us.
-In the next video, I'll cover directory
-listings and related topics, so let's move on.
-
-</div>
-
-
-
-<div align="justify">
-
-```java  
-
-```
+If I run the code a second time:
 
 ```html  
-
+File 'testfile.txt' exists.
+Deleting File: testfile.txt
+Created File: testfile.txt
+Would write to file here
 ```
 
+I can see that my code recognized that the file does now exist.
+This is followed by the statement, deleting file.
+Then my code creates it again, and would write to it.
+Ok, just to summarize, in this code, I used an instance of **File**,
+to test some conditions in the file system,
+as well as to create and delete a file.
+Now, I'll do the same thing, but I'll instead of using 
+an instance of the older **File** class, 
+I'm going to use an instance of the newer **Path** type,
+with the help of the methods on the **Files** class.
+
+```java  
+private static void usePath(String fileName) {
+
+    Path path = Path.of(fileName);
+    boolean fileExists = Files.exists(path);
+
+    System.out.printf("File '%s' %s%n", fileName, fileExists ? "exists." : "does not exist.");
+     if (fileExists) {
+         System.out.println("Deleting File: " + fileName);
+         fileExists = !Files.delete(path);                          // Error-1
+     }
+
+     if (!fileExists) {
+         try {
+             Files.createNewFile(path);                             // Error-2
+         } catch (IOException e) {
+             System.out.println("Something went wrong");
+         }
+         System.out.println("Created File: " + fileName);
+         if (Files.canWrite(path)) {                                // Error-3
+             System.out.println("Would write to file here");
+         }
+     }
+}
+```
+
+I'll copy this entire method, and paste a copy below the _useFile_ method.
+I'll first change the name from _useFile_ to _usePath_.
+I need to replace the statement here, where I create a _file_ instance.
+First, I'll create a **path** variable, simply called _path_.
+If you remember, I used the _get_ method on the **Paths** class.
+**JDK11** introduced a static factory method on the **Path** interface itself,
+a method called _of_, so that's what I'll use here, 
+passing it my _fileName_ argument.
+Right away, that gives me four compiler errors, 
+everywhere where I was accessing the _file_ instance.
+I'll need to replace each instance,
+first replacing the _file_ variable with the **Files** class name, 
+and instead of passing no arguments to each method, 
+I'll pass my _path_ instance.
+First, I'll do that for the `file.exists` method,
+changing _file_ to _Files_,
+and pass _path_ to the _exists_ method.
+Next, I want to do the same thing, for `file.delete`.
+In this case, I've got an error after I make those changes.
+I'll come back to that in a minute.
+I'll keep going with the _file_ to _Files_ replacement, 
+so next, I need to change _createNewFile_.
+After I make that change, I can see I have an error here as well.
+That's because the method does not exist on **Files**.
+Again, I'll come back to this.
+I'll next change `file.canWrite` to `Files.canWrite`, and pass _path_.
+There's another error, because as before, this method isn't on **Files**.
+Ok, let's address each of these issues, starting with the _delete_ method.
+
+```java  
+private static void usePath(String fileName) {
+
+    Path path = Path.of(fileName);
+    boolean fileExists = Files.exists(path);
+
+    System.out.printf("File '%s' %s%n", fileName, fileExists ? "exists." : "does not exist.");
+    if (fileExists) {
+        System.out.println("Deleting File: " + fileName);
+        //fileExists = !Files.delete(path);                          // Error-1: throws an IOException
+
+        try {
+            fileExists = !Files.delete(path);                        // Error-1a: Operator ! cannot be applied to 'void'
+        } catch (IOException e) {
+            throw new RuntimeException(e); 
+        }
+    }
+
+    if (!fileExists) {
+        try {
+            Files.createNewFile(path);
+        } catch (IOException e) {
+            System.out.println("Something went wrong");
+        }
+        System.out.println("Created File: " + fileName);
+        if (Files.canWrite(path)) {
+            System.out.println("Would write to file here");
+        }
+    }
+}
+```
+
+I can hover over that, and now I see,
+_the **delete** method on **Files** throws an IOException_,
+so I have to either catch or specify.
+I'll pick surround with _try-catch_ here.
+Now, I have a different error, 
+and this is another difference between the _delete_ methods.
+Because the one on this class throws an exception when there's a problem,
+it doesn't return a **boolean** value, or any value for that matter, it's **void**.
+I have to change my code.
+
+```java  
+private static void usePath(String fileName) {
+
+    Path path = Path.of(fileName);
+    boolean fileExists = Files.exists(path);
+
+    System.out.printf("File '%s' %s%n", fileName, fileExists ? "exists." : "does not exist.");
+    if (fileExists) {
+        System.out.println("Deleting File: " + fileName);
+        //fileExists = !Files.delete(path);                          // Error-1: throws an IOException
+
+        try {
+            //fileExists = !Files.delete(path);                        // Error-1a: Operator ! cannot be applied to 'void'
+
+            Files.delete(path);
+            fileExists = false;
+        } catch (IOException e) {
+            //throw new RuntimeException(e);
+            e.printStackTrace();
+        }
+    }
+
+    if (!fileExists) {
+        try {
+            Files.createNewFile(path);
+        } catch (IOException e) {
+            System.out.println("Something went wrong");
+        }
+        System.out.println("Created File: " + fileName);
+        if (Files.canWrite(path)) {
+            System.out.println("Would write to file here");
+        }
+    }
+}
+```
+
+I'll remove _fileExists_, the assignment, and the not before that method call.
+I'll set _fileExists_ to **false**, after that _delete_ statement.
+I also don't want to throw a runtime exception,
+so I'll change the generated _catch_ clause.
+I'll remove that throw new _RuntimeException_ statement too,
+because I'm going to put something else there.
+In the _try_ clause, I'll just print the exception I got.
+The _delete_ method is all good now, 
+so moving down to the _createNewFile_ method.
+
+```java  
+private static void usePath(String fileName) {
+
+    Path path = Path.of(fileName);
+    boolean fileExists = Files.exists(path);
+
+    System.out.printf("File '%s' %s%n", fileName, fileExists ? "exists." : "does not exist.");
+    if (fileExists) {
+        System.out.println("Deleting File: " + fileName);
+
+        try {
+            Files.delete(path);
+            fileExists = false;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    if (!fileExists) {
+        try {
+            //Files.createNewFile(path);                             // Error-2: 'createNewFile' doesn't exist on Files.
+
+            Files.createFile(path);
+        } catch (IOException e) {
+            System.out.println("Something went wrong");
+        }
+        System.out.println("Created File: " + fileName);
+        if (Files.canWrite(path)) {
+            System.out.println("Would write to file here");
+        }
+    }
+}
+```
+
+I'll delete that method, since it doesn't exist on **Files**.
+I'll delete the dot there, and enter it again,
+so IntelliJ will display a list of methods available on **Files**.
+Here you can see _createFile_ near the top of the list.
+I'll pick that one.
+This change seems fine, and I already have it in a _try-catch_ block.
+The one difference I do want to point out to you is, 
+the **Files** class's version to create a file, doesn't return a boolean,
+as did the **file** class, which returned **true** for success, 
+and **false** for failure.
+Similar to the _delete_ method, it will throw an exception for a failure.
+This feels like we're moving from a look before you leap approach, 
+to an easy to ask for forgiveness response, doesn't it?
+
+```java  
+private static void usePath(String fileName) {
+
+    Path path = Path.of(fileName);
+    boolean fileExists = Files.exists(path);
+
+    System.out.printf("File '%s' %s%n", fileName, fileExists ? "exists." : "does not exist.");
+    if (fileExists) {
+        System.out.println("Deleting File: " + fileName);
+
+        try {
+            Files.delete(path);
+            fileExists = false;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    if (!fileExists) {
+        try {
+            Files.createFile(path);
+        } catch (IOException e) {
+            System.out.println("Something went wrong");
+        }
+        System.out.println("Created File: " + fileName);
+        if (Files.canWrite(path)) {                                // Error-3: 'canWrite' doesn't exist on Files.
+            if (Files.isWritable(path)) {
+                System.out.println("Would write to file here");
+            }
+        }
+    }
+```
+
+Moving on to the _canWrite_ method, let's delete it, retyping the dot, 
+again to see the list of possible methods.
+Right away, I'll see an _isWritable_ method, so I'll select that.
+Now, everything compiles, and that wasn't too painful.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        useFile("testfile.txt");
+        usePath("pathfile.txt");
+    }
+]
+```
+
+I'll add a call to this method, with a different filename, in the _main_ method.
+I'll call _usePath_, and my file name will be `pathfile.txt`.
+I'll run this:
+
+```html  
+File 'pathfile.txt' does not exist.
+Created File: pathfile.txt
+Would write to file here
+```
+
+In the second set of outputs, I can see file `pathfile.txt` does not exist,
+and that the code says _it was created_, and that it can be written to.
+Again, opening the project panel, I want to confirm it's been created,
+and sure enough, I can see it's there.
+All I've really demonstrated by this exercise is 
+that you can do the same thing with **Files** and **path**, 
+as you can, simply using a **File** instance.
+But now, let's make another change to the _usePath_ method.
+Here, after I test if the file is **Writable**,
+I print this statement to the console.
+
+```java  
+private static void usePath(String fileName) {
+
+    Path path = Path.of(fileName);
+    boolean fileExists = Files.exists(path);
+
+    System.out.printf("File '%s' %s%n", fileName, fileExists ? "exists." : "does not exist.");
+
+    if (fileExists) {
+        System.out.println("Deleting File: " + fileName);
+        try {
+            Files.delete(path);
+            fileExists = false;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    if (!fileExists) {
+        try {
+            Files.createFile(path);
+            System.out.println("Created File: " + fileName);
+            if (Files.isWritable(path)) {
+                //System.out.println("Would write to file here");
+                Files.writeString(path, """
+                        Here is some data,
+                        For my file,
+                        just to prove,
+                        Using the Files class and path are better!
+                        """);
+            }
+        } catch (IOException e) {
+            System.out.println("Something went wrong");
+        }
+    }
+}
+```
+
+This time, however, I really am going to write to the file.
+I'll call a method named _writeString_ on this **Files** helper class,
+again passing it my path variable, and a **String** as the second argument.
+I'll pass it a text block with several lines of text.
+I want this text to be written to my newly created file. 
+I should see in my file, after this code is run. 
+_Here is some data, for my file, just to prove, 
+using the **Files** class and **path** are better._
+I'm getting the error, that says _this throws an unhandled exception_.
+Rather than surround this with a second _try-catch_, 
+what I'll do is, include this code with the code above it, 
+in one big _try-catch_.
+I'll cut the _catch_ clause I have above this code.
+I'll paste that, after my nested if statement.
+I can reformat that with the control+alt+L on windows, or for mac.
+I'll comment _println_ because we have now implemented code 
+to write to file and this comment is redundant.
+Running with that change:
+
+```html  
+File 'pathfile.txt' exists.
+Deleting File: pathfile.txt
+Created File: pathfile.txt
+```
+
+I can now open that file, `pathfile.txt`, and there is the text from my text block.
+Ok, that was super easy to do.
+I can also read this information from the file, just as easily.
+
+```java  
+private static void usePath(String fileName) {
+
+    Path path = Path.of(fileName);
+    boolean fileExists = Files.exists(path);
+
+    System.out.printf("File '%s' %s%n", fileName, fileExists ? "exists." : "does not exist.");
+
+    if (fileExists) {
+        System.out.println("Deleting File: " + fileName);
+        try {
+            Files.delete(path);
+            fileExists = false;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    if (!fileExists) {
+        try {
+            Files.createFile(path);
+            System.out.println("Created File: " + fileName);
+            if (Files.isWritable(path)) {
+                Files.writeString(path, """
+                        Here is some data,
+                        For my file,
+                        just to prove,
+                        Using the Files class and path are better!
+                        """);
+            }
+            System.out.println("And I can read too");
+            System.out.println("-------------------------");
+            Files.readAllLines(path).forEach(System.out::println);
+        } catch (IOException e) {
+            System.out.println("Something went wrong");
+        }
+    }
+}
+```
+
+I'll add a couple of statements, after that _isWritable_ if-clause.
+I'll print that _I can read too_, following that with a separator line.
+And now, in a single line of code, 
+I can call the _readAllLines_ method on **Files**, 
+passing the result directly to a _forEach_ method, 
+and I'll pass that the method reference for `System.out.println`.
+Running this:
+
+```html
+And I can read too
+-------------------------
+Here is some data,
+For my file,
+just to prove,
+Using the Files class and path are better!
+```
+
+I can see in my output the statement, and _I can read too_, followed by dashes.
+After that, here are the lines that the code read from my text file, 
+printed to the console.
+I'll be talking more about reading and writing to files in future sections,
+but that's just about as easy as it gets.
+Ok, let's quick look at some of the functionality the **IO**,
+and **NIO2** methods, have in common, on a table.
+
+| Functionality                   | File instance methods          | File static methods, with Path argument                   |
+|---------------------------------|--------------------------------|-----------------------------------------------------------|
+| create file                     | `createNewFile()`              | `createFile(Path p)`                                      |
+| delete directory of file        | `delete()`                     | `delete(Path p)`<br/>`deleteIfExists(Path p)`             |
+| check path type                 | `isDirectory()`<br/>`isFile()` | `isDirectory(Path p)`<br/>`isRegularFile(Path p)`         |
+| get byte size of file           | `length()`                     | `size(Path p)`                                            |
+| List directory contents         | `listFiles`                    | `list(Path p)`                                            |
+| create directory or directories | `mkdir()`<br/>`mkdirs()`       | `createDirectory(Path p)`<br/>`createDirectories(Path p)` |
+| Rename                          | `renameTo(File dest)`          | `move(Path src, Path dest)`                               |
+
+
+This table shows you quite a bit of the functionality 
+you'd expect from a **File System**, 
+and the methods you'd use for each of these classes.
+You can see the methods are often similarly named, 
+and methods exist for all the basics.
+I'm not going to go through each of these individually, 
+and compare them to each other.
+What I want you to remember is, if you need to support legacy code,
+or if you need to be backwards compatible, 
+to a version of the JDK that's older than JDK7,
+you can still rely on the **File** class.
+If you're starting out new, I'm recommending you use the **Files** class
+(**Files with an s**), and a **Path** instance,
+otherwise known as the **NIO2** way of doing things.
+Let's review why **NIO2** is better, under the covers.
+
+First of all, **File** operations have been improved.
+The **NIO2** types include support for:
+
+* Asynchronous file I/O operations. 
+* File locking, including more granular locking.
+This means, instead of locking the entire file, a region of it can be locked. 
+* There's enhanced support for file metadata retrieval. 
+* As well as new support for symbolic link manipulation.
+* Finally, the **NIO2** types have support for file system notifications. 
+This means changes occurring on a path, can be made watchable to registered services.
+
+I plan to give you an example of this in the concurrency section of the course, 
+where it should make more sense.
+The **NIO2** types have been designed to be better performing.
+NIO2 types are non-blocking, meaning asynchronous access to resources,
+by multiple threads, is supported.
+They manage memory more efficiently, reading and writing files 
+directly to and from memory into buffers, through something called a **FileChannel**.
+I'll be covering reading from and writing to files shortly, 
+and I'll discuss the **FileChannel** and its advantages.
+You can also read from or write to multiple buffers in a single operation,
+which I'll be showing you as well.
+At this point, I'll be switching to just using the **Files** and **Path** code,
+otherwise called the **NIO2** types, 
+and focusing on the functionality these types offer us.
 </div>
 
+### [Path Class]()
+<div align="justify">
 
+In this section, I'm going to begin by reviewing some methods 
+on the **Path** interface with you.
 
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("files/testing.txt"); 
+    printPathInfo(path);
+}
+
+private static void printPathInfo(Path path) {
+
+        System.out.println("Path: " + path); 
+        System.out.println("fileName = " + path.getFileName()); 
+        System.out.println("parent = " + path.getParent()); 
+        Path absolutePath = path.toAbsolutePath();
+        System.out.println("Absolute Path: = " + absolutePath);
+        System.out.println("Absolute Path Root: = " + absolutePath.getRoot());  
+        System.out.println("Root = " + path.getRoot()); 
+        System.out.println("isAbsolute = " + path.isAbsolute());
+        System.out.println("-----------------------");
+    }
+```
+
+I'll start, though, with a private static void method, 
+called _printPathInfo_, that takes a **Path** instance, 
+and will use several methods on _path_.
+I'll print the _path_.
+**Path** has a method called _getFileName_, so I'll print that.
+I'll also print the result of another method, `getParent()`.
+I'll get the _toAbsolutePath_, and assign that to a variable. 
+And print that.
+I'll use the _absolutePath_ to get the root and print that.
+I'll also call the _getRoot_ method, on the current path, 
+to compare that to what I get above.
+Next, I'll print the **boolean** value I get back, 
+from the _isAbsolute_ method.
+Lastly, I'll print a separator line.
+In the _main_ method, I'll call this method.
+First, I'll create a _path_ variable 
+and assign that a _path_ instance, 
+using the factory method on **Path**.
+In this case, I'll use a **String** literal 
+which contains a _filename_,
+as well as a reference to its parent folder.
+I'll pass that to my method, _printPathInfo_.
+Now, this folder and this file don't yet exist in my project.
+If I run this:
+
+```html  
+Path: files\testing.txt
+fileName = testing.txt
+parent = files
+Absolute Path: = D:\JAVA_STUDY\Github\JAVA\files\testing.txt
+Absolute Path Root: = D:\
+Root = null
+isAbsolute = false
+-----------------------
+```
+
+There are a couple of things I want to point out.
+In the first case, when you print _path_ 
+you can see it's what you constructed it with,
+so it's giving me back what I passed in the **String** literal.
+The _getFilename_ gave me `testing.txt`,
+and the _getParent_ returned just files.
+Here is the absolute path, using the **Path** instance.
+From that, I can get the absolute path's root directory.
+But notice next, that just calling _getRoot_ on the original _path_,
+returns a **null**.
+This is one indication that this is a relative path.
+To confirm that, I can see that
+the result of calling _isAbsolute_ is **false**.
+Now let's print the hierarchy of this absolute path.
+I'll insert this code before the last separator line there.
+
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("folders/testing.txt"); 
+    printPathInfo(path);
+}
+
+private static void printPathInfo(Path path) {
+
+        System.out.println("Path: " + path); 
+        System.out.println("fileName = " + path.getFileName()); 
+        System.out.println("parent = " + path.getParent()); 
+        Path absolutePath = path.toAbsolutePath();
+        System.out.println("Absolute Path: = " + absolutePath);
+        System.out.println("Absolute Path Root: = " + absolutePath.getRoot());  
+        System.out.println("Root = " + path.getRoot()); 
+        System.out.println("isAbsolute = " + path.isAbsolute());  
+        
+        System.out.println(absolutePath.getRoot());
+        
+        int i = 1;
+        var it = path.toAbsolutePath().iterator();
+        while (it.hasNext()) {
+            System.out.println(".".repeat(i++) + " " + it.next());
+        }
+    
+        int pathParts = absolutePath.getNameCount();
+        for (int i = 0; i < pathParts; i++) {
+            System.out.println(".".repeat(i + 1) + " " + absolutePath.getName(i));
+        }
+        System.out.println("-----------------------");
+    }
+```
+
+I'll print the root again. 
+I'll initialize a counter, which I'll use for indentation.
+I can get an _iterator_ of all the folders 
+that make up the **Path** instance.
+Here, I'll use an absolute path, since I want to start at the root.
+I can loop through this _iterator_, with a while loop, 
+checking the _hasNext_ value on the _iterator_.
+I'll print the current element, so `it.next()`, with indentation.
+I'll re-run this code:
+
+```html  
+Path: files\testing.txt
+fileName = testing.txt
+parent = files
+Absolute Path: = D:\JAVA_STUDY\Github\JAVA\files\testing.txt
+Absolute Path Root: = D:\
+Root = null
+isAbsolute = false
+-----------------------
+D:\
+. JAVA_STUDY
+.. Github
+... JAVA
+.... files
+..... testing.txt
+-----------------------
+```
+
+Ok, so now I hope you can see the full hierarchy of the file path, 
+including where the new file would be placed, in this tree.
+Each iteration represents another subfolder,
+and I've displayed this, in a rudimentary way.
+Instead of using an _iterator_, to loop through the directory tree,
+I can instead use two other methods available to me on _path_, 
+which I'll show you next.
+
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("folders/testing.txt"); 
+    printPathInfo(path);
+    logStatement(path);
+    extraInfo(path);
+}
+
+private static void printPathInfo(Path path) {
+
+    System.out.println("Path: " + path); 
+    System.out.println("fileName = " + path.getFileName()); 
+    System.out.println("parent = " + path.getParent()); 
+    Path absolutePath = path.toAbsolutePath();
+    System.out.println("Absolute Path: = " + absolutePath);
+    System.out.println("Absolute Path Root: = " + absolutePath.getRoot());  
+    System.out.println("Root = " + path.getRoot()); 
+    System.out.println("isAbsolute = " + path.isAbsolute());  
+    
+    System.out.println(absolutePath.getRoot());
+/*    
+    int i = 1;
+    var it = path.toAbsolutePath().iterator();
+    while (it.hasNext()) {
+        System.out.println(".".repeat(i++) + " " + it.next());
+    }
+*/
+
+    int pathParts = absolutePath.getNameCount();
+    for (int i = 0; i < pathParts; i++) {
+        System.out.println(".".repeat(i + 1) + " " + absolutePath.getName(i));
+    }
+    System.out.println("-----------------------");
+}
+```
+
+Getting back to the _printPathInfo_ method, 
+I'll first comment out the iterator code there.
+I can get the depth of the directory tree by using _getNameCount_.
+I'll use the absolutePath here again, because
+I want to start at the root for this exercise.
+I'll loop from zero to the folder depth.
+I'll print the same statement I had before, but in this case,
+I'll get the directory name, at each level, 
+by calling _getName_, on the _absolutePath_,
+passing it the current index value. 
+I need to add 1 to the index I use in the _repeat_ method, 
+because the first folder, or index 0, isn't the root.
+Running this code:
+
+```html  
+Path: files\testing.txt
+fileName = testing.txt
+parent = files
+Absolute Path: = D:\JAVA_STUDY\Github\JAVA\files\testing.txt
+Absolute Path Root: = D:\
+Root = null
+isAbsolute = false
+-----------------------
+D:\
+. JAVA_STUDY
+.. Github
+... JAVA
+.... files
+..... testing.txt
+-----------------------
+```
+
+This gives me the same output as I had when I used the _iterator_.
+Using the _getName_ method though, gives you a lot more flexibility,
+in how you might iterate through the file tree.
+In this hierarchy, I know that the last two paths don't exist yet.
+I'll create some code to fix this, first by creating another private static void method.
+
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("files/testing.txt");
+    printPathInfo(path);
+    logStatement(path);
+}
+
+private static void logStatement(Path path) {
+
+    try {
+        Path parent = path.getParent();
+        if (!Files.exists(parent)) {
+            Files.createDirectory(parent);
+        }
+        Files.writeString(path, Instant.now() + ": hello file world\n", 
+                StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+I'm going to call this _logStatement_.
+This might seem like a strange name for a method that will create my file,
+but you'll see why I'm calling it this, in just a moment.
+This takes a _path_ as an argument.
+I'll start out with a _try_ block, because I know I'm going to need it.
+I want to first get the parent folder, 
+of the last element in the path, which the _getParent_ method does.
+If this folder doesn't exist, in the file system, I want to create it.
+I can do that with the static _createDirectory_ method on **Files**,
+passing it the parent _path_.
+And that method throws an _IOException_, 
+so I'm catching that here. 
+Since my plan is to log statements to a file, 
+I don't want to throw an exception, or quit if I can't.
+This kind of ignores the error unless someone's watching the default output.
+Next, I need to create the file.
+There's a method that lets me both create and write to, 
+a file in a single statement, so let me show you that.
+I'm going to again use `Files.writeString`, which I used in the last section,
+passing it _path_ as the first argument.
+The second argument is the string that will get printed.
+Since this is a log file, I'll include date and time.
+I'll use `Instant.now`, to get a timestamp, 
+and I'll print _hello file world_, with an ending new line character.
+This method takes a third argument, the last,
+and that's a variable list of **Option** types.
+You can find these options, on the **StandardOpenOption** enum,
+in the `java.nio.file` package.
+First, I'll specify the _create_ option, 
+so if this file doesn't exist, it will get created for me.
+Second, I'll say I want the _APPEND_ option, which means each statement,
+will get appended to the end of the file.
+I'll cover these options, and others, in more detail in upcoming sections, 
+that cover reading and writing to files.
+Next, I'll go to the _main_ method, and add a call to this method.
+Running this code:
+
+```html  
+Path: files\testing.txt
+fileName = testing.txt
+parent = files
+Absolute Path: = D:\JAVA_STUDY\Github\JAVA\files\testing.txt
+Absolute Path Root: = D:\
+Root = null
+isAbsolute = false
+-----------------------
+D:\
+. JAVA_STUDY
+.. Github
+... JAVA
+.... files
+..... testing.txt
+-----------------------
+```
+
+I don't get any additional messages, but if I open the project panel, 
+I can see the files folder has been created, 
+and in it, is the `testing.txt` file.
+If I open that file, there I can see my log statement.
+If I run the code again and look at the file, 
+I'll see a second log statement was added.
+Ok, that's great, but what happens 
+if my file path contains several folders that don't yet exist?
+I'll set that up, and change my path to include some more subfolders.
+
+```java  
+public static void main(String[] args) {
+
+    //Path path = Path.of("files/testing.txt");
+    Path path = Path.of("this/is/several/folders/testing.txt");
+    printPathInfo(path);
+    logStatement(path);
+}
+```
+
+Here, this entire path of folders doesn't exist.
+If I run the code with this path:
+
+```html  
+Path: files\testing.txt
+fileName = testing.txt
+parent = files
+Absolute Path: = D:\JAVA_STUDY\Github\JAVA\files\testing.txt
+Absolute Path Root: = D:\
+Root = null
+isAbsolute = false
+-----------------------
+D:\
+. JAVA_STUDY
+.. Github
+... JAVA
+.... files
+..... testing.txt
+-----------------------
+java.nio.file.NoSuchFileException : this\is\several\folders
+    at java.base/sun.nio.fs.WindowsException.translateToIOException()
+    at java.base/sun.nio.fs.WindowsException.rethrowAsIOException()
+    at java.base/sun.nio.fs.WindowsException.rethrowAsIOException()
+    at java.base/sun.nio.fs.WindowsFileSystemProvider.createDirectory()
+    at java.base/sun.nio.file.Files.createDirectory()
+    at Main.logStatement()
+    at Main.main()
+```
+
+I get a _NoSuchFileException_ when I call the _createDirectory_ method.
+Now, I could put this code in a loop, one that iterates through the paths, 
+similar to what I did printing out the paths earlier.
+But the **Files** class gives us a better option, 
+a method appropriately called _createDirectories_.
+
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("files/testing.txt");
+    printPathInfo(path);
+    logStatement(path);
+}
+
+private static void logStatement(Path path) {
+
+    try {
+        Path parent = path.getParent();
+        if (!Files.exists(parent)) {
+            //Files.createDirectory(parent);
+            Files.createDirectories(parent);
+        }
+        Files.writeString(path, Instant.now() + ": hello file world\n", 
+                StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+I'll go to my _logStatement_ method, and simply change the method 
+I'm calling here.
+This _createDirectories_ method will work on one, or many folders, 
+so I could have used it previously, with `files/testing.txt` as well.
+Ok, so if I run this now:
+
+```html  
+Path: files\testing.txt
+fileName = testing.txt
+parent = files
+Absolute Path: = D:\JAVA_STUDY\Github\JAVA\files\testing.txt
+Absolute Path Root: = D:\
+Root = null
+isAbsolute = false
+-----------------------
+D:\
+. JAVA_STUDY
+.. Github
+... JAVA
+.... files
+..... testing.txt
+-----------------------
+```
+
+I don't get any errors.
+From the project panel, I can see the directories were all created,
+and there's my new _testing.txt_ file, so I'll open that, 
+and there again is a log statement.
+I don't want to go too deeply into writing to files in this section, 
+but I did want to give you a real quick sample, 
+of this one-stop shop method, to create and write to a file.
+Now, I want to get back to the **Path**'s methods,
+so let's see what kind of information, we can get about this file.
+
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("this/is/several/folders/testing.txt");
+    //printPathInfo(path);
+    logStatement(path);
+    extraInfo(path);
+}
+
+private static void logStatement(Path path) {
+
+    try {
+        Path parent = path.getParent();
+        if (!Files.exists(parent)) {
+            //Files.createDirectory(parent);
+            Files.createDirectories(parent);
+        }
+        Files.writeString(path, Instant.now() + ": hello file world\n", StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+private static void extraInfo(Path path) {
+
+    try {
+        var atts = Files.readAttributes(path, "*");
+        atts.entrySet().forEach(System.out::println);
+    } catch (IOException e) {
+        System.out.println("Problem getting attributes");
+    }
+}
+```
+
+I'll create another method, called _extraInfo_,
+so private static void, and it also takes a **Path**.
+I'll start out with a _try_ statement, to save time.
+I'll call `Files.readAttributes`, 
+which takes at least two parameters, the **path**, and a **String**.
+The string defines a list of attribute names you want information about. 
+You can pass an asterisk, which is a wildcard to retrieve 
+all the file attributes, which is what I'm doing here.
+This method returns a map, so I'll use the _forEach_ method 
+on the **entrySet**, to quickly print each attribute key value pair. 
+This method throws a **checked IOException**.
+I'll just print a message to the console if there's a problem.
+Getting back to the _main_ method, 
+I'll comment out the call to the _printPathInfo_ method.
+I'll then call _extraInfo_, after the _logStatement_ call.
+Running this code:
+
+```html  
+lastAccessTime=2024-04-20T21:12:37.1007896Z
+lastModifiedTime=2024-04-20T21:12:37.0987898Z
+size=49
+creationTime=2024-04-20T21:12:37.0967879Z
+isSymbolicLink=false
+isRegularFile=true
+fileKey=null
+isOther=false
+isDirectory=false
+```
+
+I'll get OS specific attributes in this file.
+I've got _lastAccessTime_, _lastModifiedTime_, _size_
+which is a few bytes, because of the couple of log statements
+contained in this file.
+There's _creationTime_, and a few others.
+If you're using **linux** or **mac**, 
+you might see a different set of attributes.
+**File** attributes are going to be different, 
+on different operating systems.
+In addition to _getAttributes_, there's also _getAttribute_, 
+singular, so you can get one attribute at a time, 
+by passing a specific string literal.
+
+| String Literal to pass to the<br/> `Files.getAttribute` method | Type:    | Alternate method            |
+|----------------------------------------------------------------|----------|-----------------------------|
+| "lastModifiedTime"                                             | FileTime | `Files.getLastModifiedTime` |
+| "lastAccessTime"                                               | FileTime |                             |
+| "creationTime"                                                 | FileTime |                             |
+| "size"                                                         | Long     | `Files.size`                |
+| "isRegularFile"                                                | Boolean  | `Files.isRegularFile`       |
+| "isDirectory"                                                  | Boolean  | `Files.isDirectory`         |
+| "isSymbolicLink"                                               | Boolean  | `Files.isSymbolicLink`      |
+| "isOther"                                                      | Boolean  |                             |
+
+This table shows you the possible values for the string literal,
+you can pass to the `Files.getAttribute` method.
+The `Files.getAttribute` method returns this data as an **Object**, 
+which means you may have to cast it 
+to the actual type shown in the second column, before processing.
+In addition to the _getAttributes_, and _getAttribute_ method, 
+you can get a couple of these fields,
+by specifically named methods on the **Files** class, 
+as shown in the last column.
+Let me show you one more method that will help you understand 
+the content of the file you might be working with.
+
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("this/is/several/folders/testing.txt");
+    //printPathInfo(path);
+    logStatement(path);
+    extraInfo(path);
+}
+
+private static void logStatement(Path path) {
+
+    try {
+        Path parent = path.getParent();
+        if (!Files.exists(parent)) {
+            //Files.createDirectory(parent);
+            Files.createDirectories(parent);
+        }
+        Files.writeString(path, Instant.now() + ": hello file world\n", StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+private static void extraInfo(Path path) {
+
+    try {
+        var atts = Files.readAttributes(path, "*");
+        atts.entrySet().forEach(System.out::println);
+        System.out.println(Files.probeContentType(path));
+    } catch (IOException e) {
+        System.out.println("Problem getting attributes");
+    }
+}
+```
+
+This method is called _probeContentType_, 
+and I'll just print what that is for this empty file named `myData.txt`.
+Running this:
+
+```html  
+lastAccessTime=2024-04-20T21:12:37.1007896Z
+lastModifiedTime=2024-04-20T21:12:37.0987898Z
+size=49
+creationTime=2024-04-20T21:12:37.0967879Z
+isSymbolicLink=false
+isRegularFile=true
+fileKey=null
+isOther=false
+isDirectory=false
+text/plain
+```
+
+You'll see the last statement, 
+indicating this file has the content type of `text/plain`.
+You may be familiar with content in the context of web development
+because the content type is used 
+to indicate the type of data is being sent or received.
+Ok, so this section has covered most of the methods 
+available on the **Path** class.
+I also demonstrated how to use the _createDirectories_ method,
+and the overloaded version of `writeString` on the **Files** class, 
+which takes multiple _options_.
+In this case, I used _options_ that let me both create a file, 
+and write to it at the same time.
+</div>
+
+### [Files Class]()
 <div align="justify">
 
 ```java  

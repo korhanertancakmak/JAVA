@@ -196,9 +196,6 @@ What we will learn from this Path:
 ### [a. Exception Handling]()
 ### [b. Using Files and Paths Classes]()
 
-    * Checked vs Unchecked Exceptions
-    * Try with Research and finally clause
-    * Files and Paths
     * Reading Input Files
     * Writing Data to a File
     * BufferedWrite, FileWriter, and PrintWriter
