@@ -1511,24 +1511,25 @@ These concepts will become more important, as we continue to examine the enhance
 functionality the **NIO.2** types provide.
 Before we move to those types, I'll put up the API for the **File** class's methods.
 
-
+![image02c](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/images/image02c.png?raw=true)
 
 Right away, you can see that there are methods
 to check permissions of a file or directory,
-such as canExecute, canRead, canWrite.
-You can create a new File.
+such as _canExecute_, _canRead_, _canWrite_.
+You can create a new **File**.
 You can delete the current file.
-If I scroll down, I'll see many more
-methods, like isDirectory and isFile,
+If I scroll down, I'll see many more methods, 
+like _isDirectory_ and _isFile_,
 which will tell me the type of path.
-Here's list files, which will give me a directory listing,
-if my file
-type is a directory, and so on.
-This is pretty familiar functionality,
+Here is _listFiles_, which will give me a directory listing
+if my file type is a directory, and so on.
+This is pretty familiar functionality
 to anyone dealing with a file system.
-Now, let's switch to the documentation
-for the methods on the Files class,
-in the java.n i o.files package.
+Now, let's switch to the documentation for the methods 
+on the **Files** class, in the `java.nio.files` package.
+
+
+
 The first thing you might notice
 is they're all static, so you don't
 create an instance of this Files class.
