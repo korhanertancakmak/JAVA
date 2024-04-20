@@ -299,10 +299,8 @@ public static void main(String[] args) {
 private static void testFile(String filename) {
 
     Path path = Paths.get(filename);
-    FileReader reader = null;
     try {
         List<String> lines = Files.readAllLines(path);
-        reader = new FileReader(filename); 
     } catch (IOException e) {
         throw new RuntimeException(e);
     } 
@@ -375,10 +373,8 @@ public static void main(String[] args) {
 private static void testFile(String filename) {
 
     Path path = Paths.get(filename);
-    FileReader reader = null;
     try {
         List<String> lines = Files.readAllLines(path);
-        reader = new FileReader(filename); 
     } catch (IOException e) {
         throw new RuntimeException(e);
     } finally {
@@ -471,10 +467,8 @@ public static void main(String[] args) throws IOException{
 private static void testFile(String filename) throws IOException {
 
     Path path = Paths.get(filename);
-    FileReader reader = null;
     try {
         List<String> lines = Files.readAllLines(path);
-        reader = new FileReader(filename);
         //} catch (IOException e) {
         //  throw new RuntimeException(e);
     } finally {
@@ -543,10 +537,8 @@ public static void main(String[] args){
 private static void testFile(String filename) {
 
     Path path = Paths.get(filename);
-    FileReader reader = null;
     try {
         List<String> lines = Files.readAllLines(path);
-        reader = new FileReader(filename);
         } catch (IOException e) {
           int i = 1/0;
     } finally {
@@ -584,16 +576,12 @@ then I'm out of luck, and execution will end at that point.
 </div>
 
 
-### [try-catch Clause with Checked and Unchecked Exceptions]()
+### [try-with-resources Statement]()
 <div align="justify">
 
 In the last section, we looked at the _try-catch_ clause, with _checked_ and _unchecked_ exceptions.
 I also talked about using the _finally_ clause, as a way to close resources.
 Since JDK 7, there's been a better alternative to this approach.
-
-```html  
-
-```
 
 ```java  
 public static void main(String[] args) {
@@ -637,170 +625,363 @@ private static void testFile(String filename) {
 Here, I'm using `Files.readAllLines`, 
 which is one way to read data from a text file.
 An alternative is using a class called **FileReader**.
-Later in this section, I'll cover some of the numerous ways you have to open,
+Later in this section, I'll cover some of the numerous ways you have to open
 and communicate with files, but right now,
 I still just want to focus on exceptions.
+
+```java  
+public static void main(String[] args) {
+    String filename = "testing.csv";
+    Path path = Paths.get(filename);
+
+    testFile(filename);
+    
+    File file = new File(filename);
+    if (!file.exists()) {
+        System.out.println("I can't run unless this file exists");
+        System.out.println("Quitting Application, go figure it out");
+        return;
+    }
+    System.out.println("I'm good to go.");
+}
+
+private static void testFile(String filename) {
+
+    Path path = Paths.get(filename);
+    try {
+        //List<String> lines = Files.readAllLines(path);
+        FileReader reader = new FileReader(filename); 
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    } finally {
+        if (reader != null) {
+            try {
+                reader.close(); 
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        System.out.println("Maybe I'd log something either way...");
+    }
+    System.out.println("File exists and able to use as a resource");
+}
+```
+
 I'll first comment out the readAllLines statement.
-Next, I'm going to declare and initialize
-a FileReader class, passing my
-filename string to the constructor.
-This class has methods on it to
-read data in from a character file,
+Next, I'm going to declare and initialize a **FileReader** class, 
+passing my filename string to the constructor.
+This class has methods on it to read data in from a character file,
 but for now, I'll just instantiate it.
-Now, notice that IntelliJ is highlighting
-the FileReader type here.
+Now, notice that IntelliJ is highlighting the **FileReader** type here.
 Let's see why.
-Hovering over that, I can see, that FileReader is
-being used without a try with resources statement.
-Try with resources was introduced in JDK
-7, as I mentioned on an earlier slide.
-If you do use a traditional try catch block with
-classes, like FileReader, that implicitly open
-a resource, it's very important to include
-closing the resource in the finally block.
-Let me show you what this would look
-like, in my private method, testFile.
-First of all, I need to declare my FileReader
-variable, outside of the try catch block,
-so that it will be in scope for the
-finally block, where I need to close it.
+Hovering over that, I can see that
+_FileReader is being used without a **try-with-resources** statement_.
+**Try-with-resources** was introduced in JDK 7, as I mentioned on an earlier.
+If you do use a traditional _try-catch_ block with classes, 
+like **FileReader**, that implicitly open a resource, 
+it's very important to include closing the resource in the _finally_ block.
+Let me show you what this would look like, in my private method, _testFile_.
+
+```java  
+public static void main(String[] args) {
+    String filename = "testing.csv";
+    Path path = Paths.get(filename);
+
+    testFile(filename);
+    
+    File file = new File(filename);
+    if (!file.exists()) {
+        System.out.println("I can't run unless this file exists");
+        System.out.println("Quitting Application, go figure it out");
+        return;
+    }
+    System.out.println("I'm good to go.");
+}
+
+private static void testFile(String filename) {
+
+    Path path = Paths.get(filename);
+    FileReader reader = null;
+    try {
+        //List<String> lines = Files.readAllLines(path);
+        reader = new FileReader(filename); 
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    } finally {
+        if (reader != null) {
+            try {
+                reader.close(); 
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        System.out.println("Maybe I'd log something either way...");
+    }
+    System.out.println("File exists and able to use as a resource");
+}
+```
+
+First of all, I need to declare my **FileReader** variable,
+outside the _try-catch_ block, so that it will be in scope for the _finally_ block,
+where I need to close it.
 I'll copy the declaration part of the statement,
-and paste that on the line above the try clause.
-I'll initialize that to null.
-Next, I'll remove FileReader as the
-type in the try block, because otherwise
-it's a declaration of a new variable.
-Now, I'll close the reader manually
-in my finally clause, before that
-last system.out.println statement.
-I want to check, and make sure the
-reader variable's not null. If it's not
-null, I'll try to close the resource.
-And again, here I get an error, because the
-close method itself throws a checked exception.
+and paste that on the line above the _try_ clause.
+I'll initialize that to **null**.
+Next, I'll remove **FileReader** as the type in the _try_ block,
+because otherwise it's a declaration of a new variable.
+Now, I'll close the reader manually in my _finally_ clause, 
+before that last `system.out.println` statement.
+I want to check and make sure the reader variable's not **null**. 
+If it's not **null**, I'll try to close the resource.
+And again, here I get an error, 
+because the close method itself throws a **checked** exception.
 I have to choose to catch or specify.
-I'll use IntelliJ's help to enclose
-that statement in a try catch block.
-Ok, so this code has gotten
-a bit ugly pretty quickly.
-Before JDK 7, this is how you
-would've closed a file resource.
-I'm going to leave this method as is, and
-now create a second one, called testFile2,
-with the same signature as
-testFile, except the name.
-I'm going to start like I did before, with one
-statement that instantiates a FileReader instance,
-using the filename argument. I'll also
-include that last print statement.
-Not surprisingly, we know this will give us a
-compile error because of the unchecked exception.
-I'll select more actions,
-and now, what I want you to see are the options
+I'll use IntelliJ's help to enclose that statement in a try catch block.
+Ok, so this code has gotten a bit ugly pretty quickly.
+Before JDK 7, this is how you would've closed a file resource.
+I'm going to leave this method as is, 
+and now create a second one, called _testFile2_,
+with the same signature as _testFile_, except the name.
+
+```java  
+private static void testFile2(String filename) {
+    
+    FileReader reader = new FileReader(filename)
+    System.out.println("File exists and able to use as a resource");
+}
+```
+
+I'm going to start like I did before, 
+with one statement that instantiates a **FileReader** instance,
+using the _filename_ argument. 
+I'll also include that last print statement.
+Not surprisingly, we know this will give us a compile error 
+because of the **unchecked** exception.
+
+```java  
+private static void testFile2(String filename) {
+    try (FileReader reader = new FileReader(filename)) {                
+    } 
+    System.out.println("File exists and able to use as a resource");
+}
+```
+
+I'll select more actions, and now, what I want you to see are the options
 below the first two we looked at previously.
-Notice the very last one, Surround with
-try-with-resources block.
+Notice the very last one, _Surround with try-with-resources block_.
 I'll select that one.
-Intelli J has inserted some
-code surrounding our statement.
-This try block is different, because now it's
-got a set of parentheses associated with it.
-In those parentheses, I have my FileReader
-instantiation statement, minus the semi-colon.
+IntelliJ has inserted some code surrounding our statement.
+This _try_ block is different, 
+because now it's got a set of parentheses associated with it.
+In those parentheses, I have my **FileReader** instantiation statement, 
+minus the semicolon.
 These differences are a little easier to see
-if we look at them side by side on a slide.
-The try-with-resources takes a colon
-delimited list of resource variables.
-The resources in this list must implement
-the AutoCloseable or the Closeable interface.
-The Closeable interface extends
-AutoCloseable as of JDK 7.
-The try-with-resources statement can be used
-without a finally block, because all resources
-are automatically closed when this type of try
-block completes, or if it gets an exception.
+if we look at them side by side below.
+
+| try-with-resources examples                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | traditional try clause                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `//First Example: `<br/> `try (FileReader reader = new FileReader(filename)) {`<br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`// do Something`<br/> `}`<br/><br/>  `// Second Example` <br/>`try (FileReader reader = new FileReader(filename); `<br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`FileWriter writer = new FileWriter("New" + filename))`<br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`// do Something`<br/> `}` | `FileReader reader = null`<br/> `try {`<br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`reader = new FileReader(filename);`<br/> `} finally {`<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `if (reader != null) {`<br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`try {`<br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`reader.close();`<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `} catch (IOException e) {`<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `//do Something`<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`}`<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`}`<br/> `}`  |
+
+
+The _try-with-resources_ takes a colon delimited list of resource variables.
+The resources in this list must implement the **AutoCloseable** or the **Closeable** interface.
+The **Closeable** interface extends **AutoCloseable** as of JDK 7.
+The _try-with-resources_ statement can be used without a _finally_ block, 
+because all resources are automatically closed 
+when this type of _try_ block completes, or if it gets an exception.
 Let's continue looking at this in code.
-You can see the try block has no code
-in it, and there's also no catch block.
+
+```java  
+private static void testFile2(String filename) {
+    try (FileReader reader = new FileReader(filename)) {                
+    } 
+    System.out.println("File exists and able to use as a resource");
+}
+```
+
+You can see the _try_ block has no code in it, 
+and there's also no _catch_ block.
 Our code still doesn't compile yet either.
 I'll again choose actions from the first dialog.
-Now, I've got Add catch clauses, and here, on the
-left, Intelli J is showing me two catch clauses.
+Now, I've got Add catch clauses, and here, 
+on the left, IntelliJ is showing me two catch clauses.
 I'll select this option.
+
+```java  
+private static void testFile2(String filename) {
+    try (FileReader reader = new FileReader(filename)) {                
+    } catch (FileNotFoundException e) {   
+        throw new RuntimeException(e);
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    } 
+    System.out.println("File exists and able to use as a resource");
+}
+```
+
 Ok, so what is going on here?
-First of all, multiple catch clauses aren't
-unique to the try with resources clause.
-You can have multiple catch clauses with
-either try statement, though I don't
-think I've yet reviewed this feature with you.
-The reason that there are two, is the first one,
-the FileNotFoundException may
-occur when opening the resource.
-The IOException might occur when
-working or closing the resource.
-Ironically, Intelli J doesn't like
-this code, notice the warning highlight
-on the second catch clause.
+First of all, multiple _catch_ clauses aren't unique 
+to the _try-with-resources_ clause.
+You can have multiple _catch_ clauses with either _try_ statement, 
+though I don't think I've yet reviewed this feature with you.
+The reason that there are two is the first one,
+the _FileNotFoundException_ may occur when opening the resource.
+The _IOException_ might occur when working or closing the resource.
+Ironically, IntelliJ doesn't like this code, 
+notice the warning highlight on the second catch clause.
 If I hover over that, it says,
-catch branch identical to FileNotFoundException,
-and one of the hints is to collapse catch blocks.
-Ok, that's an option, but right now
-I'm going to manually edit this code.
-I'll change the catch block
-for FileNotFoundException,
-and add a system.out.println statement there.
-Now, my catch blocks have different code blocks,
-and Intelli J is no longer giving me
-a warning on that second catch clause.
-This code is a lot easier to read,
-because there's no finally block.
-You don't need the finally block to close this
-resource any more, but you can still include it,
-if you want to do logging or something else.
-I'll add it here, and print the same thing
-I had in the finally block in testFile, so
-that's maybe I'd log something either way.
-I'll go back to my main method, and call
-this method, instead of just testFile.
-Running this code,
-There are some rules around having multiple catch
-blocks, so let's play with these a little bit.
-First, I'll cut the second catch block with
-the IO Exception and it's throw statement.
-I'll paste that above the
-FileNotFoundException catch block.
-Changing the order of these catch clauses has
-introduced a compiler error,
-on the second catch clause.
-If I hover over that, I see, the Exception
-FileNotFoundException has already been caught.
+_**catch** branch identical to **FileNotFoundException**_,
+and one of the hints is to collapse _catch_ blocks.
+
+```java  
+private static void testFile2(String filename) {
+    try (FileReader reader = new FileReader(filename)) {                
+    } catch (FileNotFoundException e) {                                 
+        System.out.println("File '" + filename + "' does not exist");   
+        throw new RuntimeException(e);
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    } 
+    System.out.println("File exists and able to use as a resource");
+}
+```
+
+Ok, that's an option, but right now I'm going to manually edit this code.
+I'll change the _catch_ block for _FileNotFoundException_,
+and add a `system.out.println` statement there.
+Now, my _catch_ blocks have different code blocks,
+and IntelliJ is no longer giving me a warning on that second _catch_ clause.
+This code is a lot easier to read, because there's no _finally_ block.
+You don't need the _finally_ block to close this resource anymore, 
+but you can still include it if you want to do logging or something else.
+
+```java  
+private static void testFile2(String filename) {
+    try (FileReader reader = new FileReader(filename)) {                
+    } catch (FileNotFoundException e) {                                 
+        System.out.println("File '" + filename + "' does not exist");   
+        throw new RuntimeException(e);
+    } catch (IOException e) {                                           
+        throw new RuntimeException(e);
+    } finally {                                                         
+        System.out.println("Maybe I'd log something either way...");    
+    }
+    System.out.println("File exists and able to use as a resource");
+}
+```
+
+I'll add it here, and print the same thing 
+I had in the _finally_ block in _testFile_, 
+so that's _maybe I'd log something either way_.
+
+```java  
+public static void main(String[] args) {
+    String filename = "testing.csv";
+    Path path = Paths.get(filename);
+
+    //testFile(filename);
+    testFile2(filename);
+    
+    File file = new File(filename);
+    if (!file.exists()) {
+        System.out.println("I can't run unless this file exists");
+        System.out.println("Quitting Application, go figure it out");
+        return;
+    }
+    System.out.println("I'm good to go.");
+}
+```
+
+I'll go back to my _main_ method, 
+and call this method, instead of just _testFile_.
+Running this code:
+
+```html  
+File 'testing.csv' does not exist
+Maybe I'd log something either way...
+Exception in thread "main" java.lang.RuntimeException : java.io.FileNotFoundException : testing.csv (The system cannot find the file specified)
+    at Main.testFile2()
+    at Main.main()
+Caused by: java.io.FileNotFoundException : testing.csv (The system cannot find the file specified)
+    at java.base/sun.nio.fs.WindowsException.translateToIOException()
+    at java.base/sun.nio.fs.WindowsException.rethrowAsIOException()
+    at java.base/sun.nio.fs.WindowsException.rethrowAsIOException()
+    at java.base/sun.nio.fs.WindowsFileSystemProvider.newByteChannel()
+    at java.base/sun.nio.file.Files.newByteChannel()
+    at java.base/sun.nio.file.Files.newByteChannel()
+    at java.base/sun.nio.file.spi.FileSystemProvider.newInputStream()
+    at java.base/sun.nio.file.Files.newInputStream()
+    at java.base/sun.nio.file.Files.newBufferedReader()
+    at java.base/sun.nio.file.Files.readAllLines()
+    at java.base/sun.nio.file.Files.readAllLines()
+    at Main.main()
+```
+
+There are some rules around having multiple _catch_ blocks, 
+so let's play with these a little bit.
+
+```java  
+private static void testFile2(String filename) {
+    try (FileReader reader = new FileReader(filename)) {                
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    } catch (FileNotFoundException e) {                                 
+        System.out.println("File '" + filename + "' does not exist");   
+        throw new RuntimeException(e);
+    } finally {                                                         
+        System.out.println("Maybe I'd log something either way...");    
+    }
+    System.out.println("File exists and able to use as a resource");
+}
+```
+
+First, I'll cut the second catch block with the _IOException,_
+and it's _throw_ statement.
+I'll paste that above the **FileNotFoundException** _catch_ block.
+Changing the order of these catch clauses has introduced a compiler error,
+on the second _catch_ clause.
+If I hover over that, I see, 
+_the Exception **FileNotFoundException** has already been caught_.
 How is that possible?
-As it turns out, Java evaluates
-When IOException is declared, it catches all
-instances of that Exception, as well
-as all instances of its subclasses.
-Because FileNotFoundException is a subclass of
-IOException, it gets caught by the first clause,
-as we have it declared in this code.
-This means the FileNotFoundException
-clause is redundant or unreachable,
-when specified after it's super class.
-If you do have code that's different
-for specific exceptions, you need to
-declare your clauses in hierarchical order from
-most specific, downward to the most general.
+As it turns out, Java evaluates when _IOException_ is declared, 
+it catches all instances of that exception, 
+as well as all instances of its subclasses.
+Because **FileNotFoundException** is a subclass of **IOException**, 
+it gets caught by the first clause, as we have it declared in this code.
+This means the **FileNotFoundException** clause is redundant or unreachable,
+when specified after it's **super** class.
+If you do have code that's different for specific exceptions, 
+you need to declare your clauses in hierarchical order 
+from most specific, downward to the most general.
 I'll revert those last two changes.
-Next, I'll add a truly catch all
-clause, catching just Exception,
+
+```java  
+private static void testFile2(String filename) {
+    try (FileReader reader = new FileReader(filename)) {
+    } catch (FileNotFoundException e) {
+        System.out.println("File '" + filename + "' does not exist");
+        throw new RuntimeException(e);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    } catch (Exception e) {
+        System.out.println("Something unrelated and unexpected happened");
+    } finally {
+        System.out.println("Maybe I'd log something either way...");
+    }
+    System.out.println("File exists and able to use as a resource");
+}
+```
+
+Next, I'll add a truly catch all clause, catching just exception,
 and I'll put this as the last clause.
-I'll print that something
-unrelated and unexpected happened.
-The class Exception extends Throwable, so I could
-include Throwable in this hierarchy as well,
-Let's quick look at a hierarchical
-chart of the Throwable class,
-which is the parent class, of all of
-Java's exceptions and error classes..
+I'll print that _something unrelated and unexpected happened_.
+The class **Exception** extends **Throwable**, 
+so I could include **Throwable** in this hierarchy as well,
+Lets quick look at a hierarchical chart of the **Throwable** class,
+which is the parent class, of all of Java's exceptions and error classes.
+
+
+
 This chart shows you which classes are Checked,
 in blue, and Unchecked, in Reddish Brown.
 I had said before that you know a Checked
