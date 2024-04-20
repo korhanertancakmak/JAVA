@@ -1343,109 +1343,176 @@ I'll open the project folder in Explorer.
 I'll drop my pasted directory, on my root drive _D_, at the root, 
 so that I have a files directory directly under the root.
 
+![image02b](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/images/image02b.png?raw=true)
 
-
-If you're trying to do this on a _mac_,
-the root is hidden by default, 
+If you're trying to do this on a _mac_, the root is hidden by default, 
 and may be complicated to do because of user privileges.
 It's not really important that you do this, but that 
 you understand how to access files and folders from the root.
 Getting back to my code, I now want to test if this file exists, 
 and not the one that's under my project directory.
 
+```java  
+public static void main(String[] args) {
 
+    System.out.println("Current Working Directory (cwd) = " + new File("").getAbsolutePath());
 
-/**
-*                                      File Handle vs. File Resource
-*
-*      A file handle is a reference to a file that is used by the operating system to keep track of the file. It is an
-* abstract representation of the file, and it does not contain any of the actual data from the file. A file resource, on
-* the other hand, is the actual data from the file. It is stored on the disk, and it can be accessed by the operating
-* system, and by applications. In the case of the File Class, we're only dealing with a file handle, so we don't open
-* or close this.
-*
-*      Directory(Folder) : is a file system container for other directories or files.
-*      Path              : is either a directory or a filename, and may include information about the parent directories.
-*      Root directory    : is the top-level directory in a file system.
-*      Current working
-*         directory      : is the directory that the current process is working in or running from.
-*      Absolute path     : includes the root (by either starting with / or optionally, C:\ in windows, where c is the
-*                          root identifier.
-*      Relative path     : defines a path relative to the current working directory, and therefore would not start with
-*                          /, but may optionally start with a dot . then a file separator character.
-**/
+    //String filename = "src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/Course02_UsingFilesAndPaths/Part1/files/testing.csv";
+    String filename = "/files/testing.csv";
 
+    File file = new File(filename);
+    System.out.println(file.getAbsolutePath());
+    if (!file.exists()) {
+        System.out.println("I can't run unless this file exists");
+        return;
+    }
+    System.out.println("I'm good to go.");
+}
+```
 
-To do this, I can simply add a
-forward slash as the first character.
+To do this, I can simply add a forward slash as the first character,
+and remove the exact path location of our project.
 This indicates that this is an absolute path.
 To prove this, I'll print out the absolute
 path after I get the file instance.
-If I run this code,
-I can see the file was found,
-but this time, the absolute path is, c
-colon, then files, then the file name.
-There are overloaded constructors
-for File, and the next one I
-want to show you, takes a parent path.
+If I run this code:
+
+```html  
+Current Working Directory (cwd) = D:\JAVA_STUDY\Github\JAVA
+D:\files\testing.csv
+I'm good to go.
+```
+
+I can see the file was found, but this time, 
+the absolute path is, d colon, then files, then the filename.
+There are overloaded constructors for **File**, 
+and the next one I want to show you, takes a parent path.
 I'll change my filename back to a relative path,
 by removing that first forward slash.
-I'll change the next statement,
-and this time pass two arguments, the first one
-is another string, which is the parent path.
-Here, I'll pass just the root, so a
-single forward slash, stands for the root.
-Running this code,
+
+```java  
+public static void main(String[] args) {
+
+    System.out.println("Current Working Directory (cwd) = " + new File("").getAbsolutePath());
+
+    //String filename = "/files/testing.csv";
+    String filename = "files/testing.csv";
+
+    //File file = new File(filename);
+    File file = new File("/", filename);
+    System.out.println(file.getAbsolutePath());
+    if (!file.exists()) {
+        System.out.println("I can't run unless this file exists");
+        return;
+    }
+    System.out.println("I'm good to go.");
+}
+```
+
+I'll change the next statement, and this time pass two arguments;  
+the first one is another string, which is the parent path.
+Here, I'll pass just the root, so a single forward slash stands for the root.
+Running this code:
+
+```html  
+Current Working Directory (cwd) = D:\JAVA_STUDY\Github\JAVA
+D:\files\testing.csv
+I'm good to go.
+```
+
 I get the exact same results as before.
-Now, I'll change that first argument,
-to be the current working directory.
-I can do this by passing in
-a dot, as a string literal.
-This is a common way, in many programming
-languages to reference the current directory.
-Running this,
-you'll now see this code has found
-the file in the projects folder.
-Notice that the dot here, was
-printed in the absolute path.
+Now, I'll change that first argument to be the current working directory.
+
+```java  
+public static void main(String[] args) {
+
+    System.out.println("Current Working Directory (cwd) = " + new File("").getAbsolutePath());
+
+    String filename = "files/testing.csv";
+
+    //File file = new File("/", filename);
+    File file = new File("./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/Course02_UsingFilesAndPaths/Part1", filename);
+    System.out.println(file.getAbsolutePath());
+    if (!file.exists()) {
+        System.out.println("I can't run unless this file exists");
+        return;
+    }
+    System.out.println("I'm good to go.");
+}
+```
+
+I can do this by passing in a dot, and the relative path for the project folder 
+as a string literal.
+This is a common way in many programming languages 
+to reference the current directory.
+Running this:
+
+```html  
+Current Working Directory (cwd) = D:\JAVA_STUDY\Github\JAVA
+D:\JAVA_STUDY\Github\JAVA\.\src\Udemy\JavaProgrammingTimBuchalka\NewVersion\Section_14_InputOutputFiles\Course02_UsingFilesAndPaths\Part1\files\testing.csv
+I'm good to go.
+```
+
+You'll now see this code has found the file in the project folder.
+Notice that the `\.\` here was printed in the absolute path.
 This is called a redundant name element.
-When we get to the n i o 2 types,
+When we get to the **nio.2** types,
 you'll find methods to normalize the path,
-which removes these redundant name elements
+which removes these redundant name elements.
 There's another constructor I'll show you,
-that takes a File instance as the parent,
+that takes a **File** instance as the parent,
 as the first argument.
-Now, I'll pass it the
-current working directory directly as
-the parent, instead of a string literal.
-The getAbsolutePath actually returns
-a file instance, not a string.
-Running this,
-you now see I'm still getting the file in the projects directory, but this time,
-the absolute path doesn't include a dot in the path.
-Let me summarize a few of the concepts
-I've covered, here on a slide.
-A directory (or folder) is a file system
-container for other directories or files.
-A path is either a directory or a filename,
-and may include information about the parent directories or folders.
-A root directory is the top-level directory in a file system
-In windows, this is often the c
-drive, for example.
-The current working directory is the directory that the current process is working in or running from.
-An absolute path Includes the root (by either
-starting with / or optionally, C:\ in windows,
-where c is the root identifier. A relative
-path defines a path relative to the current
-working directory, and therefore would not
-start with /, but may optionally start with a dot.
-Then a file separator character.
-These concepts will become more important,
-08:47.015 --> 08:51.000
-as we continue to examine the enhanced
-functionality the N I O 2 types provide.
-Before we move to those types, I'll put
-up the API for the File class's methods.
+
+```java  
+public static void main(String[] args) {
+
+    System.out.println("Current Working Directory (cwd) = " + new File("").getAbsolutePath());
+
+    String filename = "files/testing.csv";
+
+    //File file = new File("./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/Course02_UsingFilesAndPaths/Part1", filename);
+    File file = new File(new File("src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/Course02_UsingFilesAndPaths/Part1").getAbsolutePath(), filename);
+    System.out.println(file.getAbsolutePath());
+    if (!file.exists()) {
+        System.out.println("I can't run unless this file exists");
+        return;
+    }
+    System.out.println("I'm good to go.");
+}
+```
+
+Now, I'll pass it the current working directory directly as the parent,
+instead of a string literal.
+The _getAbsolutePath_ actually returns a file instance, not a string.
+Running this:
+
+```html  
+Current Working Directory (cwd) = D:\JAVA_STUDY\Github\JAVA
+D:\JAVA_STUDY\Github\JAVA\src\Udemy\JavaProgrammingTimBuchalka\NewVersion\Section_14_InputOutputFiles\Course02_UsingFilesAndPaths\Part1\files\testing.csv
+I'm good to go.
+```
+
+You now see I'm still getting the file in the projects directory, but this time,
+the absolute path doesn't include `\.\` in the path.
+Let me summarize a few of the concepts I've covered here.
+
+* A **directory** (or folder) is a file system container for other directories or files.
+* A **path** is either a directory or a filename, and may include information about the parent directories or folders.
+* A **root directory** is the top-level directory in a file system. 
+In windows, this is often the _c_ drive, for example.
+* The **current working directory** is the directory that the current process is working in or running from.
+* An **absolute path** Includes the root (by either starting with / or optionally, 
+`C:\` in windows, where _c_ is the root identifier. 
+* A **relative path** defines a path relative to the current working directory, 
+and therefore would not start with `/`, but may optionally start with a dot `.`
+then a file separator character.
+
+These concepts will become more important, as we continue to examine the enhanced
+functionality the **NIO.2** types provide.
+Before we move to those types, I'll put up the API for the **File** class's methods.
+
+
+
 Right away, you can see that there are methods
 to check permissions of a file or directory,
 such as canExecute, canRead, canWrite.

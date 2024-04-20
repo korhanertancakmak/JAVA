@@ -42,21 +42,65 @@ public class Main {
         System.out.println("I'm good to go.");
 */
 
+/*
+
         System.out.println("Current Working Directory (cwd) = " + new File("").getAbsolutePath());
 
-        String filename = "src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/Course02_UsingFilesAndPaths/Part1/files/testing.csv";
+        //String filename = "src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/Course02_UsingFilesAndPaths/Part1/files/testing.csv";
+        String filename = "/files/testing.csv";
 
         File file = new File(filename);
+        System.out.println(file.getAbsolutePath());
         if (!file.exists()) {
             System.out.println("I can't run unless this file exists");
             return;
         }
-
         System.out.println("I'm good to go.");
+*/
 
-        for (File f : File.listRoots()) {
-            System.out.println(f);
+/*
+
+        System.out.println("Current Working Directory (cwd) = " + new File("").getAbsolutePath());
+
+        String filename = "files/testing.csv";
+
+        File file = new File("/", filename);
+        System.out.println(file.getAbsolutePath());
+        if (!file.exists()) {
+            System.out.println("I can't run unless this file exists");
+            return;
         }
+        System.out.println("I'm good to go.");
+*/
+
+/*
+
+        System.out.println("Current Working Directory (cwd) = " + new File("").getAbsolutePath());
+
+        String filename = "files/testing.csv";
+
+        //File file = new File("/", filename);
+        File file = new File("./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/Course02_UsingFilesAndPaths/Part1", filename);
+        System.out.println(file.getAbsolutePath());
+        if (!file.exists()) {
+            System.out.println("I can't run unless this file exists");
+            return;
+        }
+        System.out.println("I'm good to go.");
+*/
+
+        System.out.println("Current Working Directory (cwd) = " + new File("").getAbsolutePath());
+
+        String filename = "files/testing.csv";
+
+        //File file = new File("./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/Course02_UsingFilesAndPaths/Part1", filename);
+        File file = new File(new File("src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/Course02_UsingFilesAndPaths/Part1").getAbsolutePath(), filename);
+        System.out.println(file.getAbsolutePath());
+        if (!file.exists()) {
+            System.out.println("I can't run unless this file exists");
+            return;
+        }
+        System.out.println("I'm good to go.");
 
 /*
         System.out.println("Current Working Directory (cwd) = " + new File("").getAbsolutePath());
