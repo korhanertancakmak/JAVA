@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_18_InputOutputFiles.Course02_UsingFilesAndPaths.Part1;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_14_InputOutputFiles.Course02_UsingFilesAndPaths.Part1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,29 +11,57 @@ import java.nio.file.Paths;
 public class Main {
 
     public static void main(String[] args) {
-/**
- *                                      File Handle vs. File Resource
- *
- *      A file handle is a reference to a file that is used by the operating system to keep track of the file. It is an
- * abstract representation of the file, and it does not contain any of the actual data from the file. A file resource, on
- * the other hand, is the actual data from the file. It is stored on the disk, and it can be accessed by the operating
- * system, and by applications. In the case of the File Class, we're only dealing with a file handle, so we don't open
- * or close this.
- *
- *      Directory(Folder) : is a file system container for other directories or files.
- *      Path              : is either a directory or a filename, and may include information about the parent directories.
- *      Root directory    : is the top-level directory in a file system.
- *      Current working
- *         directory      : is the directory that the current process is working in or running from.
- *      Absolute path     : includes the root (by either starting with / or optionally, C:\ in windows, where c is the
- *                          root identifier.
- *      Relative path     : defines a path relative to the current working directory, and therefore would not start with
- *                          /, but may optionally start with a dot . then a file separator character.
- **/
+/*
+
+        //String filename = "testing.csv";
+        String filename = "src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/Course02_UsingFilesAndPaths/Part1/files/testing.csv";
+
+        //testFile(filename);
+        //testFile2(filename);
+        //testFile2(null);
+
+        File file = new File(filename);
+        if (!file.exists()) {
+            System.out.println("I can't run unless this file exists");
+            return;
+        }
+        System.out.println("I'm good to go.");
+*/
+
+/*
 
         System.out.println("Current Working Directory (cwd) = " + new File("").getAbsolutePath());
 
-        String filename = "files/testing.csv";
+        String filename = "src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/Course02_UsingFilesAndPaths/Part1/files/testing.csv";
+
+        File file = new File(filename);
+        if (!file.exists()) {
+            System.out.println("I can't run unless this file exists");
+            return;
+        }
+        System.out.println("I'm good to go.");
+*/
+
+        System.out.println("Current Working Directory (cwd) = " + new File("").getAbsolutePath());
+
+        String filename = "src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/Course02_UsingFilesAndPaths/Part1/files/testing.csv";
+
+        File file = new File(filename);
+        if (!file.exists()) {
+            System.out.println("I can't run unless this file exists");
+            return;
+        }
+
+        System.out.println("I'm good to go.");
+
+        for (File f : File.listRoots()) {
+            System.out.println(f);
+        }
+
+/*
+        System.out.println("Current Working Directory (cwd) = " + new File("").getAbsolutePath());
+
+        String filename = "Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/Course02_UsingFilesAndPaths/Part1/files/testing.csv";
 
         File file = new File(new File("").getAbsolutePath(), filename);
         System.out.println(file.getAbsolutePath());
@@ -54,6 +82,7 @@ public class Main {
             return;
         }
         System.out.println("2. I'm good to go.");
+*/
 
     }
 

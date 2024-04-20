@@ -980,116 +980,582 @@ so I could include **Throwable** in this hierarchy as well,
 Lets quick look at a hierarchical chart of the **Throwable** class,
 which is the parent class, of all of Java's exceptions and error classes.
 
+![image01b](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/images/image01b.png?raw=true)
 
-
-This chart shows you which classes are Checked,
-in blue, and Unchecked, in Reddish Brown.
-I had said before that you know a Checked
-Exception, because it's not a runtime Exception.
-An error is also an unchecked exception, meaning
-you aren't forced to catch or specify its type.
-The Error class indicates serious problems,
-that a reasonable application
-shouldn't try to catch or recover from.
-I've already mentioned there are two
-types of Exceptions, those that subclass
-from RuntimeException, and those that don't.
-There are quite a lot of Exception classes,
-and this diagram represents only a
-couple for demonstration purposes.
-This hierarchy becomes important for
-the second variation of a catch clause.
-Getting back to the code, I want to show
-you another variation to the catch clause,
-which lets you catch multiple targeted
-Exceptions with a single clause.
-Instead of listing one type of Exception and
-a local variable for that exception, you list
-multiple exceptions separated by a pipe character.
+This chart shows you which classes are **Checked**, in blue, 
+and **Unchecked**, in Reddish Brown.
+I had said before that you know a **Checked Exception**, 
+because it's not a **runtimeException**.
+An error is also an **unchecked** exception, 
+meaning you aren't forced to **catch** or specify its type.
+The **Error** class indicates serious problems
+that a reasonable application shouldn't try 
+to catch or recover from.
+I've already mentioned there are two types of **Exceptions**, 
+those that subclass from **RuntimeException**, 
+and those that don't.
+There are quite a lot of **Exception** classes,
+and this diagram represents only a couple for demonstration purposes.
+This hierarchy becomes important for the second variation of a _catch_ clause.
+Getting back to the code, I want to show you another variation 
+to the _catch_ clause, which lets you catch multiple targeted
+**Exceptions** with a single clause.
+Instead of listing one type of **Exception** 
+and a local variable for that exception, 
+you list multiple exceptions separated by a pipe character.
 This kind of looks like an or statement,
-and helps you remember that this catch
-expression means one exception or the other.
-There is still only a single
-variable declared though.
-To demonstrate this, I'll
-use NullPointerException,
-then a pipe, then IllegalArgumentException,
+and helps you remember that this catch expression means
+one exception or the other.
+There is still only a single variable declared though.
+
+```java  
+private static void testFile2(String filename) {
+    try (FileReader reader = new FileReader(filename)) {
+    } catch (FileNotFoundException e) {
+        System.out.println("File '" + filename + "' does not exist");
+        throw new RuntimeException(e);
+    } catch (NullPointerException | IllegalArgumentException badData) {
+        System.out.println("User has added bad data " + badData.getMessage());
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    } catch (Exception e) {
+        System.out.println("Something unrelated and unexpected happened");
+    } finally {
+        System.out.println("Maybe I'd log something either way...");
+    }
+    System.out.println("File exists and able to use as a resource");
+}
+```
+
+To demonstrate this, I'll use **NullPointerException**,
+then a pipe, then **IllegalArgumentException**,
 and call my exception variable, bad data.
 In this case, if either of these exceptions
-is thrown, I'll print user has added bad data,
+is thrown, I'll print user has added _badData_,
 and print the error message.
-I'll now pass null to the call to testFile2 in the main method.
-Running this code now,
+
+```java  
+public static void main(String[] args) {
+    String filename = "testing.csv";
+    Path path = Paths.get(filename);
+
+    //testFile(filename);
+    //testFile2(filename);
+    testFile2(null);
+    
+    File file = new File(filename);
+    if (!file.exists()) {
+        System.out.println("I can't run unless this file exists");
+        System.out.println("Quitting Application, go figure it out");
+        return;
+    }
+    System.out.println("I'm good to go.");
+}
+```
+
+I'll now pass **null** to the call to _testFile2_ in the _main_ method.
+Running this code now:
+
+```html  
+User has added bad data null
+Maybe I'd log something either way...
+File exists and able to use as a resource
+I can't run unless this file exists
+Quitting Application, go figure it out
+```
+
 I don't get an exception thrown or a stack trace.
 I just get a series of confusing messages.
-You can see the code that was in
-our new catch block got executed.
-This code printed out, User
-has added bad data, null.
-Apparently, passing a null to FileReader,
-doesn't throw a FileNotFoundException,
-but a NullPointerException.
-In this case, I'm not
-propagating any errors up the stack.
-The finally clause was executed because
-that gets called either way, so I see
-Maybe I'd log something either way.
-After this, the last statement in the
-testFile2 method was reached and executed.
-This printed File exists and able to use as a
-resource, which actually isn't factually correct.
-When the code goes back to the main method,
-it checks for the existence of the
-previous file, and doesn't find it.
-Finally, it prints Quitting
-Application, go figure it out.
-You can't list exceptions in the multi exception
-clause, that are derivatives of the same class.
-Look what happens if I now add the more
-generic RunTimeException to that clause.
-Hovering over the error in this statement,
-Intelli J is telling me, that types
-in a multi-catch must be disjoint.
-This means these types can't have
-direct relationships with one another.
-In this case both NullPointerException, and
-IllegalArgumentException, are subclasses
-of RuntimeException, which
-means they aren't disjoint.
-I'll revert that last change, so the
-code compiles, and runs as previously.
-Ok, so I'll close this lecture here.
-I know these lectures on exceptionhandling were a bit dry,
-but from now on,
-we'll be dealing with a lot of exceptions,
-as we explore using external resources.
-The key takeaways are, that many of the
-types to read and write to files, are
-instantiated using the new key word.
-Underneath the covers, the constructor opens
-the file resource, and it's important to
-close the resource when you're done with it.
-Using try with resources is the recommendedapproach,
-both to make your code more
-concise, and to avail yourself of
-Java's built-in support for automatically
-closing resources with that try block.
-In the next video, I'll be covering some of the
-most basic classes in the i o, and n i o packages.
+You can see the code in our new _catch_ block got executed.
+This code printed out, _User has added bad data, null_.
+Apparently, passing a null to **FileReader**
+doesn't throw a **FileNotFoundException**,
+but a **NullPointerException**.
+In this case, I'm not propagating any errors up the stack.
+The _finally_ clause was executed 
+because that gets called either way, 
+so I see _Maybe I'd log something either way_.
+After this, the last statement in the _testFile2_ method 
+was reached and executed.
+This printed _File exists and able to use as a resource_, 
+which actually isn't factually correct.
+When the code goes back to the _main_ method,
+it checks for the existence of the previous file, 
+and doesn't find it.
+Finally, it prints _Quitting Application, go figure it out_.
+You can't list exceptions in the multi exception clause,
+that are derivatives of the same class.
+
+```java  
+private static void testFile2(String filename) {
+    try (FileReader reader = new FileReader(filename)) {
+    } catch (FileNotFoundException e) {
+        System.out.println("File '" + filename + "' does not exist");
+        throw new RuntimeException(e);
+    } catch (NullPointerException | IllegalArgumentException | RuntimeException badData) {
+        System.out.println("User has added bad data " + badData.getMessage());
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    } catch (Exception e) {
+        System.out.println("Something unrelated and unexpected happened");
+    } finally {
+        System.out.println("Maybe I'd log something either way...");
+    }
+    System.out.println("File exists and able to use as a resource");
+}
+```
+
+Look what happens if I now add more generic **RunTimeException** to that clause.
+Hovering over the error in this statement, IntelliJ is telling me 
+that _types in a multi-catch must be disjoint_.
+This means these types can't have direct relationships with one another.
+In this case, both **NullPointerException**, and **IllegalArgumentException**, 
+are subclasses of **RuntimeException**, 
+which means they aren't disjoint.
+I'll revert that last change, 
+so the code compiles, and runs as previously.
+
+```java  
+private static void testFile2(String filename) {
+    try (FileReader reader = new FileReader(filename)) {
+    } catch (FileNotFoundException e) {
+        System.out.println("File '" + filename + "' does not exist");
+        throw new RuntimeException(e);
+    } catch (NullPointerException | IllegalArgumentException badData) {
+        System.out.println("User has added bad data " + badData.getMessage());
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    } catch (Exception e) {
+        System.out.println("Something unrelated and unexpected happened");
+    } finally {
+        System.out.println("Maybe I'd log something either way...");
+    }
+    System.out.println("File exists and able to use as a resource");
+}
+```
 </div>
 
 
-
+## [b. Using Files and Paths Classes]()
 <div align="justify">
 
 ```java  
-
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 ```
+
+I'll start this section by looking a little more closely 
+at the types I used in the last section's code.
+Take a look at the import statements in this code.
+You can see a mix of types, some in the `java.io` package,
+and some in the `java.nio.file` package.
+That feels like a confusing mix, I'm sure.
+Let's first look at these types on a couple of diagrams.
+
+![image02](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/images/image02.png?raw=true)
+
+Here are the two in the `java.io` package.
+The **File** class and the **FileReader** class
+have been part of Java, since version 1.
+The **FileReader** class implements the **AutoCloseable** interface, 
+through its parent class, **Reader**.
+This class opens a file resource implicitly.
+I'm going to be covering this type, and others like it, 
+in a later section, on reading data from files.
+In contrast, when you create an instance of a **File**, 
+you aren't opening that file.
+Instead, you're working with something called a _file-handler_
+that lets you perform OS-like operations.
+Let me get back to the code, and
+examine this class just a little bit.
+
+```java  
+public static void main(String[] args) {
+    String filename = "testing.csv";
+    Path path = Paths.get(filename);
+
+    //testFile(filename);
+    //testFile2(filename);
+    //testFile2(null);
+    
+    File file = new File(filename);
+    if (!file.exists()) {
+        System.out.println("I can't run unless this file exists");
+        //System.out.println("Quitting Application, go figure it out");
+        return;
+    }
+    System.out.println("I'm good to go.");
+}
+```
+
+The first thing I want to do is, remove the call to the _testfile2_ method.
+I'm also going to remove that second `System.out.println` statement, 
+in my _if_ statement.
+Now that we've gone through the _try-with-resources_ catch block,
+you might be wondering why I didn't use it here, creating a new **File** instance.
+Not only that, I didn't have to wrap anything in a _try_ catch block 
+for this bit of code.
+Getting an instance of a file handler is different from 
+getting an instance of a file resource.
+That's confusing, especially since the terms might be used interchangeably,
+but in this case, the difference is important, so let me explain it.
+A file handle is a reference to a file 
+that is used by the operating system to keep track of the file.
+It is an abstract representation of the file,
+and it does not contain any of the actual data from the file.
+A file resource, on the other hand, is the actual data from the file.
+It is stored on the disk, and it can be accessed
+by the operating system, and by applications.
+In the case of the **File** class,
+we're only ever dealing with a file handler, 
+so we don't open or close this.
+With that in mind, let's look at this class.
+You can see I was able to create a new instance of it, 
+using **new**, and this constructor takes a **String** literal.
+This string literal represents a path name.
+A _path_ can include a _filename_, as this one does.
+In fact, this path only includes a _filename_.
+I could add a directory or folder here,
+and I'll do that, starting with files then a forward slash.
+
+```java  
+public static void main(String[] args) {
+
+    //String filename = "testing.csv";
+    String filename = "src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/Course02_UsingFilesAndPaths/Part1/files/testing.csv";
+
+    //testFile(filename);
+    //testFile2(filename);
+    //testFile2(null);
+    
+    File file = new File(filename);
+    if (!file.exists()) {
+        System.out.println("I can't run unless this file exists");
+        return;
+    }
+    System.out.println("I'm good to go.");
+}
+```
+
+I'll use IntelliJ to create both this directory and this file, 
+so I'll open the project pane, and select new file, 
+and enter the same thing, `files/testing.csv`, 
+I have in my string literal.
+This will create an empty file, named `testing.csv` in a folder,
+called _files_, in my project directory.
+For now, I'm not going to put anything in that file,
+so I'll just close that tab.
+Back in the **Main** class, I can run this code:
 
 ```html  
-
+I'm good to go.
 ```
 
+Now I get, _I'm good to go_, because the file was found, in the place we specified it would be.
+How did it know to start looking in the project directory of this project?
+Because I used what's called a **relative path**.
+All this means is that my **String** literal here, did not include characters
+that said start at the root.
+I'll explain this in just a minute.
+First, let's get the current working directory,
+which is the directory where the application process is running from.
+Many of you may be familiar with **cwd**, a linux command,
+for displaying the _current working directory_.
+Mac has **pwd**, and for windows, you can type **cd** in a command prompt.
+For windows, the current working directory is usually included in the prompt itself.
+In fact, if you open a terminal session in IntelliJ, you can see this.
+But let's get it programmatically, using the **File** class.
+I'll print out _Current working directory_ or **cwd** in parentheses is equal to.
+
+```java  
+public static void main(String[] args) {
+
+    System.out.println("Current Working Directory (cwd) = " + new File("").getAbsolutePath());
+
+    String filename = "src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/Course02_UsingFilesAndPaths/Part1/files/testing.csv";
+
+    File file = new File(filename);
+    if (!file.exists()) {
+        System.out.println("I can't run unless this file exists");
+        return;
+    }
+    System.out.println("I'm good to go.");
+}
+```
+
+Then I'll instantiate a new file, and pass it an empty string as the path, 
+or string literal, then I'll _getAbsolutePath_ on that instance.
+Running this code:
+
+```html  
+Current Working Directory (cwd) = D:\JAVA_STUDY\Github\JAVA
+I'm good to go.
+```
+
+You'll see the project folder printed there.
+Yours will be different from mine.
+A relative path just means the path is relative to the current working directory.
+An absolute path, on the other hand, means the path is starting at the root directory.
+How do I know what my root directories are?
+
+```java  
+public static void main(String[] args) {
+
+    System.out.println("Current Working Directory (cwd) = " + new File("").getAbsolutePath());
+
+    String filename = "src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_14_InputOutputFiles/Course02_UsingFilesAndPaths/Part1/files/testing.csv";
+
+    File file = new File(filename);
+    if (!file.exists()) {
+        System.out.println("I can't run unless this file exists");
+        return;
+    }
+    System.out.println("I'm good to go.");
+}
+```
+
+There is a static method on **File**, called _getRoots_.
+I'll call this in a for loop, at the end of my main method.
+This method returns an array of **File** instances.
+I'll print each file that's returned.
+Running this code:
+
+```html  
+Current Working Directory (cwd) = D:\JAVA_STUDY\Github\JAVA
+I'm good to go.
+C:\
+D:\
+E:\
+G:\
+```
+
+Again, you may get a different result.
+For me on windows, I see the letter _C_, _D_, _E_ 
+and _G_ colon backslash.
+
+I'm going to open the project panel now, 
+and copy my **files** directory that contains my empty file.
+I'll open the project folder in Explorer.
+I'll drop my pasted directory, on my root drive _D_, at the root, 
+so that I have a files directory directly under the root.
+
+
+
+If you're trying to do this on a _mac_,
+the root is hidden by default, 
+and may be complicated to do because of user privileges.
+It's not really important that you do this, but that 
+you understand how to access files and folders from the root.
+Getting back to my code, I now want to test if this file exists, 
+and not the one that's under my project directory.
+
+
+
+/**
+*                                      File Handle vs. File Resource
+*
+*      A file handle is a reference to a file that is used by the operating system to keep track of the file. It is an
+* abstract representation of the file, and it does not contain any of the actual data from the file. A file resource, on
+* the other hand, is the actual data from the file. It is stored on the disk, and it can be accessed by the operating
+* system, and by applications. In the case of the File Class, we're only dealing with a file handle, so we don't open
+* or close this.
+*
+*      Directory(Folder) : is a file system container for other directories or files.
+*      Path              : is either a directory or a filename, and may include information about the parent directories.
+*      Root directory    : is the top-level directory in a file system.
+*      Current working
+*         directory      : is the directory that the current process is working in or running from.
+*      Absolute path     : includes the root (by either starting with / or optionally, C:\ in windows, where c is the
+*                          root identifier.
+*      Relative path     : defines a path relative to the current working directory, and therefore would not start with
+*                          /, but may optionally start with a dot . then a file separator character.
+**/
+
+
+To do this, I can simply add a
+forward slash as the first character.
+This indicates that this is an absolute path.
+To prove this, I'll print out the absolute
+path after I get the file instance.
+If I run this code,
+I can see the file was found,
+but this time, the absolute path is, c
+colon, then files, then the file name.
+There are overloaded constructors
+for File, and the next one I
+want to show you, takes a parent path.
+I'll change my filename back to a relative path,
+by removing that first forward slash.
+I'll change the next statement,
+and this time pass two arguments, the first one
+is another string, which is the parent path.
+Here, I'll pass just the root, so a
+single forward slash, stands for the root.
+Running this code,
+I get the exact same results as before.
+Now, I'll change that first argument,
+to be the current working directory.
+I can do this by passing in
+a dot, as a string literal.
+This is a common way, in many programming
+languages to reference the current directory.
+Running this,
+you'll now see this code has found
+the file in the projects folder.
+Notice that the dot here, was
+printed in the absolute path.
+This is called a redundant name element.
+When we get to the n i o 2 types,
+you'll find methods to normalize the path,
+which removes these redundant name elements
+There's another constructor I'll show you,
+that takes a File instance as the parent,
+as the first argument.
+Now, I'll pass it the
+current working directory directly as
+the parent, instead of a string literal.
+The getAbsolutePath actually returns
+a file instance, not a string.
+Running this,
+you now see I'm still getting the file in the projects directory, but this time,
+the absolute path doesn't include a dot in the path.
+Let me summarize a few of the concepts
+I've covered, here on a slide.
+A directory (or folder) is a file system
+container for other directories or files.
+A path is either a directory or a filename,
+and may include information about the parent directories or folders.
+A root directory is the top-level directory in a file system
+In windows, this is often the c
+drive, for example.
+The current working directory is the directory that the current process is working in or running from.
+An absolute path Includes the root (by either
+starting with / or optionally, C:\ in windows,
+where c is the root identifier. A relative
+path defines a path relative to the current
+working directory, and therefore would not
+start with /, but may optionally start with a dot.
+Then a file separator character.
+These concepts will become more important,
+08:47.015 --> 08:51.000
+as we continue to examine the enhanced
+functionality the N I O 2 types provide.
+Before we move to those types, I'll put
+up the API for the File class's methods.
+Right away, you can see that there are methods
+to check permissions of a file or directory,
+such as canExecute, canRead, canWrite.
+You can create a new File.
+You can delete the current file.
+If I scroll down, I'll see many more
+methods, like isDirectory and isFile,
+which will tell me the type of path.
+Here's list files, which will give me a directory listing,
+if my file
+type is a directory, and so on.
+This is pretty familiar functionality,
+to anyone dealing with a file system.
+Now, let's switch to the documentation
+for the methods on the Files class,
+in the java.n i o.files package.
+The first thing you might notice
+is they're all static, so you don't
+create an instance of this Files class.
+Instead you call static methods, passing a Path
+instance in most cases, on which it will operate.
+Right away, I can see functionality that's
+similar to the File class, like createFile.
+But here's createSymbolicLink, the File
+class doesn't support symbolic links,
+so this is an additional feature.
+Don't worry if you don't
+know what a symbolic link is.
+The point is, this class contains a lot more
+functionality than the older File class.
+That's true not only for file system operations,
+but it also gives us some additional helper
+methods for reading and writing files.
+I'll scroll down to the read methods
+Here, you see we have many options,
+like readAllBytes, or readAllLines.
+Here's a readString, which will read the entire
+contents of a file, in as a single string.
+This method does have some limitations,
+and I'll get to them later.
+At the end of this list, you'll
+see write methods here as well.
+This is powerful stuff, simplifying many of the
+jobs you'll do, for basic file reads and writes.
+Now, let's try to get a
+birds eye view of the Files type.
+Here are the types I reference in my
+code, from the java.n i o.file package
+You can see that Path is an interface,
+and not a class, like the File class was.
+The Paths class consists exclusively of
+static methods that return a Path instance.
+The Files class, on the other hand,
+has many static methods that perform
+operations on files and directories.
+This class operates on a Path instance,
+which you pass to these methods
+It has a lot of functionality in common with the
+older java.i o.File class, but provides much more,
+as you saw briefly in the API documentation.
+When you use the File class, you get an instance,
+with a File constructor, and then you
+execute a method on that instance.
+Here, behavior is a member of the instance itself.
+This is a pretty familiar pattern.
+Now, if we look at how to use the NIO2
+types, to do something, we first have
+to get an instance of Path.
+We don't do this directly.
+Instead, We use factory methods on
+the Path class, or the Paths class,
+or other types I'll talk about later.
+We then call the static method on the
+Files class, to do something, on the
+path instance passed as an argument.
+I'll just add a bit of code to the main method,
+that does what File.exists does,
+but uses the n i o 2 types.
+First, I need to get an instance of a
+type, that implements the Path interface.
+I don't have to hunt for
+this type, in the API docs.
+I just have to use a factory
+method, to get an instance.
+I'll start with the factory method on the Paths
+class, which I've said is a class strictly in
+existence to provide these factory methods.
+It has overloaded get methods on it.
+I'll pass a String literal, the same as I
+did above. Remember this is a relative path.
+I'm going to copy the if statement in this
+method, and the statement right below it.
+I'll paste that at the end of this method.
+Once I paste that, I'll change File to
+Files in the if expression,
+andpass path to the exists method.
+I'll also just put a 2 dot, at the start of
+each output statement, so I can tell these
+are from this code.
+If I run this code,
+You'll see it found the file, as it
+had when I just used my file instance.
+This doesn't seem that special, I admit.
+The newer code does what the old code does,
+so where's the advantage?
+For the answer to that question,
+you'll have to wait until the next video.
+I'll cover both the common functionality and
+the additional features available in the NIO
+2 types, so I'll see you in that next video
 </div>
 
 
