@@ -1,0 +1,13 @@
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_16_InputOutputFiles.Course08_WritingDataToFiles.Part1.student;
+
+public record Course(String courseCode, String title) {
+
+    public int getLectureCount() {
+        return 15;
+    }
+
+    @Override
+    public String toString() {
+        return "%s %s".formatted(courseCode, title);
+    }
+}
