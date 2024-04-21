@@ -11,21 +11,37 @@ import java.util.stream.Stream;
 public class Main {
 
     public static void main(String[] args) {
-                                                                                /** Some methods on Files Class: list, walk, find **/
-        Path path = Path.of("");                                            /** Path with an empty string means the current working directory **/
+
+        Path path = Path.of("");
+/*
+
         System.out.println("cwd = " + path.toAbsolutePath());
-                                                                                /** list method of Files class **/
-        try (Stream<Path> paths = Files.list(path)) {                           /** this method returns a stream, of path instances **/
-            paths                                                               /** each representing either a file or a sub folder
-                                                                                    in the specified directory path **/
-                    .map(Main::listDir)
+
+        try (Stream<Path> paths = Files.list(path)) {
+            //paths.forEach(System.out::println);
+            paths.map(Main::listDir).forEach(System.out::println);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("---------------------------------------");
+        try (Stream<Path> paths = Files.walk(path, 1)) {
+            paths.map(Main::listDir)
                     .forEach(System.out::println);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        System.out.println("---------------------------------------");          /** walk method of Files class **/
-        try (Stream<Path> paths = Files.walk(path, 2)) {               /** Depth = 1 means only the cwd list, Depth = 2 means all the files in folders of cwd **/
+        System.out.println("---------------------------------------");
+        try (Stream<Path> paths = Files.walk(path, 2)) {
+            paths.map(Main::listDir)
+                    .forEach(System.out::println);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("---------------------------------------");
+        try (Stream<Path> paths = Files.walk(path, 2)) {
             paths.filter(Files::isRegularFile)
                     .map(Main::listDir)
                     .forEach(System.out::println);
@@ -33,9 +49,23 @@ public class Main {
             throw new RuntimeException(e);
         }
 
-        System.out.println("---------------------------------------");          /** find method of Files class **/
+        System.out.println("---------------------------------------");
+        try (Stream<Path> paths = Files.find(path, 2, (p, attr) -> Files.isRegularFile(p))) {
+            paths.map(Main::listDir).forEach(System.out::println);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("---------------------------------------");
+        try (Stream<Path> paths = Files.find(path, 2, (p, attr) -> attr.isRegularFile())) {
+            paths.map(Main::listDir).forEach(System.out::println);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("---------------------------------------");
         try (Stream<Path> paths = Files.find(path, Integer.MAX_VALUE,
-                (p, attr) -> attr.isRegularFile() && attr.size() > 300
+                (p, attr) -> attr.isRegularFile() && attr.size() > 1000000
         )) {
             paths
                     .map(Main::listDir)
@@ -44,6 +74,13 @@ public class Main {
             throw new RuntimeException(e);
         }
 
+        System.out.println("==============Directory Stream==============");
+        try (var dirs = Files.newDirectoryStream(path)) {
+            dirs.forEach(d -> System.out.println(Main.listDir(d)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+*/
         path = path.resolve(".idea");
         System.out.println("==============Directory Stream==============");
         try (var dirs = Files.newDirectoryStream(path, "*.xml")) {
@@ -51,6 +88,15 @@ public class Main {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+
+        System.out.println("==============Directory Stream==============");
+        try (var dirs = Files.newDirectoryStream(path, p -> p.getFileName().toString().endsWith(".xml"))) {
+            dirs.forEach(d -> System.out.println(Main.listDir(d)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
         System.out.println("==============Directory Stream==============");
         try (var dirs = Files.newDirectoryStream(path,
@@ -61,6 +107,7 @@ public class Main {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     private static String listDir(Path path) {
@@ -68,11 +115,10 @@ public class Main {
         try {
             boolean isDir = Files.isDirectory(path);
             FileTime dateField = Files.getLastModifiedTime(path);
-            LocalDateTime modDT = LocalDateTime.ofInstant(
-                    dateField.toInstant(), ZoneId.systemDefault());
-            return "%tD %tT %-5s %12s %s"
-                    .formatted(modDT, modDT, (isDir ? "<DIR>" : ""),
-                            (isDir ? "" : Files.size(path)), path);
+            //return "%s %-15s %s".formatted(dateField, (isDir ? "<DIR>" : ""), path);
+
+            LocalDateTime modDT = LocalDateTime.ofInstant(dateField.toInstant(), ZoneId.systemDefault());
+            return "%tD %tT %-5s %12s %s".formatted(modDT, modDT, (isDir ? "<DIR>" : ""), (isDir ? "" : Files.size(path)), path);
         } catch (IOException e) {
             System.out.println("Whoops! Something went wrong with " + path);
             return path.toString();

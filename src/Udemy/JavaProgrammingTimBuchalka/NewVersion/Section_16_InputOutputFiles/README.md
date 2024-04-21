@@ -550,7 +550,7 @@ private static void testFile(String filename) {
 
 Now, in that _catch_ clause, I'm going to force another error.
 I'll replace the throw new **RuntimeException**,
-and then just purposely code a divide by zero exception there.
+and then just purposely code a divide by zero exceptions there.
 Now here, an exception is definitely
 occurring, but it's going to happen
 in the catch clause itself, while it's
@@ -802,7 +802,7 @@ You can see the _try_ block has no code in it,
 and there's also no _catch_ block.
 Our code still doesn't compile yet either.
 I'll again choose actions from the first dialog.
-Now, I've got Add catch clauses, and here, 
+Now, I've got to add _catch_ clauses, and here, 
 on the left, IntelliJ is showing me two catch clauses.
 I'll select this option.
 
@@ -971,7 +971,7 @@ private static void testFile2(String filename) {
 }
 ```
 
-Next, I'll add a truly catch all clause, catching just exception,
+Next, I'll add a catch-all clause, catching just exception,
 and I'll put this as the last clause.
 I'll print that _something unrelated and unexpected happened_.
 The class **Exception** extends **Throwable**, 
@@ -1696,7 +1696,7 @@ and assign that the result of calling the exists method,
 on my _file_ instance.
 Using a formatted **String**, 
 I'll print the _filename_, and whether it exists or not.
-Here, I'll use the _fileExists_ boolean variable,
+Here, I'll use the _fileExists_ boolean variable
 to adjust my output message accordingly.
 Now, if the file exists, 
 I want to start out by deleting it, 
@@ -2096,7 +2096,8 @@ Deleting File: pathfile.txt
 Created File: pathfile.txt
 ```
 
-I can now open that file, `pathfile.txt`, and there is the text from my text block.
+I can now open that file, `pathfile.txt`, 
+and there is the text from my text block.
 Ok, that was super easy to do.
 I can also read this information from the file, just as easily.
 
@@ -2438,7 +2439,7 @@ D:\
 ```
 
 This gives me the same output as I had when I used the _iterator_.
-Using the _getName_ method though, gives you a lot more flexibility,
+Using the _getName_ method though, gives you a lot more flexibility
 in how you might iterate through the file tree.
 In this hierarchy, I know that the last two paths don't exist yet.
 I'll create some code to fix this, first by creating another private static void method.
@@ -2496,7 +2497,7 @@ You can find these options, on the **StandardOpenOption** enum,
 in the `java.nio.file` package.
 First, I'll specify the _create_ option, 
 so if this file doesn't exist, it will get created for me.
-Second, I'll say I want the _APPEND_ option, which means each statement,
+Second, I'll say I want the _APPEND_ option, which means each statement
 will get appended to the end of the file.
 I'll cover these options, and others, in more detail in upcoming sections, 
 that cover reading and writing to files.
@@ -2802,28 +2803,2525 @@ and write to it at the same time.
 ### [Files Class]()
 <div align="justify">
 
+I'm just going to jump right in, 
+and show you some other beneficial methods 
+on the **Files** class.
+These are _list_, _walk_, and _find_, 
+all which are methods that can be used to get a source, 
+for a stream pipeline of path elements.
+
 ```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("");
+    System.out.println("cwd = " + path.toAbsolutePath());
+         
+    try (Stream<Path> paths = Files.list(path)) {
+        paths.forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
 
 ```
+
+I'll start by creating a path variable, named _path_.
+You'll remember that if I create a _path_ with an empty string,
+this is the current working directory, which is what I'm doing here. 
+I'll print the full path of my current directory, 
+using the _toAbsolutePath_ method, on the **Path** interface.
+A widespread need is to understand what the contents of a directory are.
+Maybe you've used the `dir` command on **windows**,
+or `ls` on **linux**, this is the same concept.
+The **Files** class has a _list_ method, and as usual, 
+it takes a _path_ instance.
+This method returns a stream of path instances,
+each path representing either a file, 
+or a subfolder, in the directory I specified.
+Next, I'll create a local variable, and that's going to be a **Stream**,
+typed with **Path**, and called _paths_.
+I'll assign this the result of calling the static method named list, 
+on the **Files** class, passing it my _path_ instance, 
+and that's going to return a **Stream** of type **Path**.
+Now, here again, you can see I can't use this method,
+without either catching or specifying an _IOException_.
+I'll surround it with a _try-catch_, using IntelliJ's help.
+I still have a warning though, on the _list_ method, 
+which I want to look into further.
+Hovering over that, IntelliJ tells me that 
+_Stream is used without a **try-with-resources** statement_.
+Why is IntelliJ giving us this warning?
+We didn't see it for other methods in this class,
+like _writeString_, or _readAllLines,_ for example.
+What's happening with this method?
+Remember, a stream is lazily executed.
+This means a reference to an open directory is maintained 
+after this call, and remains open 
+until the stream's terminal operation is executed.
+Sometimes it's easy to forget the methods that return streams 
+are opening a resource.
+Other methods, like _readAllLines_, for example, 
+are both opening and closing the resource for you, 
+as a convenience.
+You should always use a _try-with-resources_ statement, 
+for the _list_, _walk_, and _find_ methods, 
+that return these streams of paths.
+Again, I'll use IntelliJ to assist me 
+with making the change to _try-with-resources_.
+First, I'll revert what I did earlier, 
+removing the _try-catch_.
+This time, I'll place my cursor or hover over that method name, 
+_list_, and use the key combination, alt enter for windows, 
+or option return for a mac.
+From this dialog, I'll select, surround with _try-with-resources_ block.
+I can't stop there though, since I still have to catch an _IOException_.
+I need to add _catch_ clauses, and I can preview the generated code in that dialog.
+I'll select that option.
+Ok, now I can start adding code in the _try_ block, 
+to actually do something with this stream of paths.
+In this case, I'll add a single statement, 
+the familiar _forEach_ terminal operation on the stream called _paths_ here.
+I'll call _forEach_, printing each path.
+If I run this:
 
 ```html  
+cwd = D:\JAVA_STUDY\Github\JAVA
+.git
+.gitignore
+.idea
+JAVA.iml
+out
+README.md
+src
+```
+
+I'll see all the folders and files in my current working directory.
+This method isn't recursive, so I won't see the content of any subfolders.
+From this listing, the only way to tell if it's a directory or file is 
+by observing that files usually have file extensions,
+but this isn't a rule you can depend on.
+
+```java
+private static String listDir(Path path) {
+
+    try {
+        boolean isDir = Files.isDirectory(path);
+        FileTime dateField = Files.getLastModifiedTime(path);
+        return "%s %-15s %s".formatted(dateField, (isDir ? "<DIR>" : ""), path);
+    } catch (IOException e) {
+        System.out.println("Whoops! Something went wrong with " + path);
+        return path.toString();
+    }
+}
+```
+
+I'll create a private static method next, 
+that'll use attributes from each _path_ instance,
+to print a friendly directory listing.
+I'll call this method _listDir_, 
+and it'll take a _path_, returning a **string**.
+I'll start with a _try_ block, 
+because some of the methods I want to use throw a _checked IOException_.
+I'll use the `Files.isDirectory` method, 
+assigning that to a **boolean** variable, I'm calling _isDir_.
+If there's an _IOException_ for any statements I call above, 
+I'll print _something went wrong_,
+and I'll simply return the path as a string.
+I'll use my boolean variable to determine what gets printed, 
+outputting different information, for a directory item, versus a file.
+Before I do that, I'll get the _lastModifiedTime_.
+In an earlier section, I mentioned that there are multiple ways 
+to get data about a file, either by calling _getAttributes_ 
+or _getAttribute_ on **File**.
+A simpler way is just to _getLastModifiedTime_.
+I'll use **FileTime** as the type, and _dateField_ as the variable name, 
+and then call `Files.getLastModifiedTime`.
+Now, I'll return a formatted String, 
+my first field will be _lastModifiedTime_.
+Here, I'll just use the `%s` modifier, 
+because I'm just going to pass the _dateField_ as is,
+so the _toString_ method will get called on this field. 
+If the _path_ is a directory, I'll include _DIR_ in angle brackets, 
+and lastly, I'll print the string representation of the path.
+
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("");
+    System.out.println("cwd = " + path.toAbsolutePath());
+         
+    try (Stream<Path> paths = Files.list(path)) {
+        paths.map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
 
 ```
 
+Getting back to the _main_ method, I'll now include a _map_ intermediate operation 
+in my stream pipeline.
+I'll add a new line before the `.forEach`.
+Now, I'll insert the map operation, that will call my _listDir_ method.
+I'll pass this as a method reference to the method
+I just created, so `Main::listDir`.
+This will transform my path to a String.
+Running this code:
+
+```html  
+cwd = D:\JAVA_STUDY\Github\JAVA
+2024-04-20T22:19:19.7669491Z <DIR>           .git 
+2024-03-15T09:31:51.6053631Z                 .gitignore
+2024-04-20T22:46:14.5103977Z <DIR>           .idea
+2024-03-19T00:18:21.6302488Z                 JAVA.iml
+2024-03-18T21:42:22.5590715Z <DIR>           out
+2024-03-23T20:46:28.8488077Z                 README.md
+2024-04-20T21:25:32.490289Z <DIR>            src
+```
+
+My output is looking a little closer to 
+what a windows directory listing might look like.
+I can easily identify a directory now.
+Notice the dates in the output, they end in _Z_.
+Remember, _Z_ is code for UTC date and time.
+For the average user, this would be confusing to see, 
+so it would make more sense to show them their local date time.
+I'll refine my listing method to do this.
+I'll reformat the date and time here,
+and including the size of the file.
+
+```java
+private static String listDir(Path path) {
+
+    try {
+        boolean isDir = Files.isDirectory(path);
+        FileTime dateField = Files.getLastModifiedTime(path);
+        //return "%s %-15s %s".formatted(dateField, (isDir ? "<DIR>" : ""), path);
+
+        LocalDateTime modDT = LocalDateTime.ofInstant(dateField.toInstant(), ZoneId.systemDefault());
+        return "%tD %tT %-5s %12s %s".formatted(modDT, modDT, (isDir ? "<DIR>" : ""), 
+                (isDir ? "" : Files.size(path)), path);
+    } catch (IOException e) {
+        System.out.println("Whoops! Something went wrong with " + path);
+        return path.toString();
+    }
+}
+```
+
+I'll start by setting up a _LocalDateTime_ variable, _modDT_.
+I can create a _LocalDateTime_ out _ofInstant_ 
+and a _ZoneId_, using the of _Instant_ method.
+The **FileTime** type has a _toInstant_ method on it, 
+so I can pass that, as the first argument.
+Next, I can get the local Zone, from `ZoneId.systemDefault`.
+I'll also change the formatted string, for the output.
+First, I'll add two date time specifiers.
+I'll replace the first `%s` with `%tD` for **Date**,
+and add a `%t` capital `T` for time, after that.
+Next, where I have _dateField_, I'll replace that with _modDT_, 
+but I need _modDT_ in there twice.
+I could change my formatted string to include argument indices, 
+but for now, this is just simpler.
+Before I run this, I'll also include `Files.size`, if it's a file.
+First, I'll change the `-15` in my output to `-5`, 
+this is left justifying.
+My date time fields should all be the same width now, 
+so I can adjust for just this field's size.
+I'll add percent `%12s` after that, for the size, 
+this is right justified,
+and allows size a maximum width of 12.
+Next, in the argument list, I need to include the size, 
+for files only, so I'll include a ternary operator, 
+before the last path argument.
+If it's a directory, I'll return an empty string, 
+if it's a file, I'll return the size variable, 
+and I'll get that with a call to `Files.size`, passing it _path_.
+Running this code:
+
+```html  
+cwd = D:\JAVA_STUDY\Github\JAVA
+04/21/24 01:19:19 <DIR>              .git
+03/15/24 12:31:51                344 .gitignore
+04/21/24 01:51:19 <DIR>              .idea
+03/19/24 03:18:21                592 JAVA.iml
+03/19/24 00:42:22 <DIR>              out
+03/23/24 23:46:28                603 README.md
+04/21/24 00:25:32 <DIR>              src
+```
+
+You can see that I have the file size, in bytes, 
+of my three files in this directory.
+This code gives you one example of how to use path data, 
+and the _list_ method, to give your user information 
+about a single path's components.
+There's another method on **Files**, that's similar to list, 
+this one is called _walk_.
+Let me set this up.
+
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("");
+    System.out.println("cwd = " + path.toAbsolutePath());
+         
+    try (Stream<Path> paths = Files.list(path)) {
+        paths.map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("---------------------------------------");
+    try (Stream<Path> paths = Files.walk(path, 1)) {
+        paths.map(Main::listDir).forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+I'll first print a separation line, to split the output, in the _main_ method.
+I'll copy the entire _try-catch_ block that uses `Files.list`,
+and paste a copy, below my separator line.
+I'll change the method from list to walk, and I'll add a second argument, 
+an integer, which I'll just make one, to start.
+I'll explain this in a minute.
+Running this code:
+
+```html  
+cwd = D:\JAVA_STUDY\Github\JAVA
+04/21/24 01:19:19 <DIR>              .git
+03/15/24 12:31:51                344 .gitignore
+04/21/24 01:51:19 <DIR>              .idea
+03/19/24 03:18:21                592 JAVA.iml
+03/19/24 00:42:22 <DIR>              out
+03/23/24 23:46:28                603 README.md
+04/21/24 00:25:32 <DIR>              src
+---------------------------------------
+04/21/24 00:12:43 <DIR>
+04/21/24 01:19:19 <DIR>              .git
+03/15/24 12:31:51                344 .gitignore
+04/21/24 01:51:19 <DIR>              .idea
+03/19/24 03:18:21                592 JAVA.iml
+03/19/24 00:42:22 <DIR>              out
+03/23/24 23:46:28                603 README.md
+04/21/24 00:25:32 <DIR>              src
+```
+
+I get the same output, using either _walk_ or _list_.
+The significant difference between these methods,
+is that _walk_ is recursive if I specify a depth greater than 1.
+
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("");
+    System.out.println("cwd = " + path.toAbsolutePath());
+         
+    try (Stream<Path> paths = Files.list(path)) {
+        paths.map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("---------------------------------------");
+    try (Stream<Path> paths = Files.walk(path, 2)) {
+        paths.filter(Files::isRegularFile)
+                .map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+The second argument in the call to the _walk_ method is the depth, 
+so now I'll change that to two.
+Running this:
+
+```html  
+cwd = D:\JAVA_STUDY\Github\JAVA
+04/21/24 01:19:19 <DIR>              .git
+03/15/24 12:31:51                344 .gitignore
+04/21/24 01:51:19 <DIR>              .idea
+03/19/24 03:18:21                592 JAVA.iml
+03/19/24 00:42:22 <DIR>              out
+03/23/24 23:46:28                603 README.md
+04/21/24 00:25:32 <DIR>              src
+---------------------------------------
+04/21/24 00:12:43 <DIR>
+04/21/24 01:19:19 <DIR>              .git
+04/21/24 00:24:57                  4 .git\COMMIT_EDITMSG
+03/15/24 12:36:53                424 .git\config
+03/15/24 12:34:05                 73 .git\description
+03/15/24 12:34:05                 23 .git\HEAD
+03/15/24 12:34:05 <DIR>              .git\hooks
+04/21/24 01:19:19             371645 .git\index
+03/26/24 12:42:37 <DIR>              .git\info
+03/26/24 12:42:12 <DIR>              .git\logs
+04/21/24 00:24:57 <DIR>              .git\objects
+03/26/24 12:42:12                241 .git\packed-refs
+03/15/24 12:34:15 <DIR>              .git\refs
+03/15/24 12:31:51                344 .gitignore
+04/21/24 01:51:19 <DIR>              .idea
+03/15/24 12:31:56                 50 .idea\.gitignore
+03/24/24 13:59:12 <DIR>              .idea\inspectionProfiles
+03/19/24 03:18:21 <DIR>              .idea\libraries
+03/15/24 13:24:08                190 .idea\markdown.xml
+03/15/24 12:31:52                284 .idea\misc.xml
+03/15/24 12:31:52                255 .idea\modules.xml
+03/15/24 12:40:49               8915 .idea\uiDesigner.xml
+03/15/24 12:34:13                185 .idea\vcs.xml
+04/21/24 01:51:19              28733 .idea\workspace.xml
+03/19/24 03:18:21                592 JAVA.iml
+03/19/24 00:42:22 <DIR>              out
+03/19/24 00:42:22 <DIR>              out\production
+03/23/24 23:46:28                603 README.md
+04/21/24 00:25:32 <DIR>              src
+04/21/24 01:15:31 <DIR>              src\external
+03/19/24 03:03:40 <DIR>              src\GeeksForGeeksChallenges
+02/26/24 04:46:48 <DIR>              src\HackerRankChallenges
+12/13/23 03:08:24            2495536 src\mysql-connector-j-8.3.0.jar
+03/17/24 20:05:56 <DIR>              src\PatikaDev
+03/01/24 19:43:23            7296329 src\sqlite-jdbc-3.34.0.jar
+03/21/24 13:09:40 <DIR>              src\Udemy
+```
+
+The code is now walking through the subfolders of the original path,
+which was the current working directory.
+The output is now showing us the contents of the `.idea` folder,
+the _out_ folder and the _source_ folder, again,
+not going any deeper than that second level.
+I can use my stream pipeline techniques to filter out directories, 
+and just list files.
+I'll add this filter first, before the map operation.
+
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("");
+    System.out.println("cwd = " + path.toAbsolutePath());
+         
+    try (Stream<Path> paths = Files.list(path)) {
+        paths.map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("---------------------------------------");
+    try (Stream<Path> paths = Files.walk(path, 2)) {
+        paths.filter(Files::isRegularFile)
+                .map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+I'll filter with a method reference, Files _isRegularFile_.
+Running this code now:
+
+```html  
+cwd = D:\JAVA_STUDY\Github\JAVA
+04/21/24 01:19:19 <DIR>              .git
+03/15/24 12:31:51                344 .gitignore
+04/21/24 01:51:19 <DIR>              .idea
+03/19/24 03:18:21                592 JAVA.iml
+03/19/24 00:42:22 <DIR>              out
+03/23/24 23:46:28                603 README.md
+04/21/24 00:25:32 <DIR>              src
+---------------------------------------
+04/21/24 00:24:57                  4 .git\COMMIT_EDITMSG
+03/15/24 12:36:53                424 .git\config
+03/15/24 12:34:05                 73 .git\description
+03/15/24 12:34:05                 23 .git\HEAD
+04/21/24 01:19:19             371645 .git\index
+03/26/24 12:42:12                241 .git\packed-refs
+03/15/24 12:31:51                344 .gitignore
+03/15/24 12:31:56                 50 .idea\.gitignore
+03/15/24 13:24:08                190 .idea\markdown.xml
+03/15/24 12:31:52                284 .idea\misc.xml
+03/15/24 12:31:52                255 .idea\modules.xml
+03/15/24 12:40:49               8915 .idea\uiDesigner.xml
+03/15/24 12:34:13                185 .idea\vcs.xml
+04/21/24 02:08:10              28731 .idea\workspace.xml
+03/19/24 03:18:21                592 JAVA.iml
+03/23/24 23:46:28                603 README.md
+12/13/23 03:08:24            2495536 src\mysql-connector-j-8.3.0.jar
+03/01/24 19:43:23            7296329 src\sqlite-jdbc-3.34.0.jar
+```
+
+I only get a list of files, up to two levels deep from the current directory.
+I could continue to filter and alter the depth 
+to find a specific set of files with a single extension, or name, for example.
+But actually, the **Files** class has an even better method 
+for this kind of operation, and that's the _find_ method.
+This is basically like the _walk_ method, but you can specify your condition 
+as an argument, which is more efficient.
+
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("");
+    System.out.println("cwd = " + path.toAbsolutePath());
+         
+    try (Stream<Path> paths = Files.list(path)) {
+        paths.map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("---------------------------------------");
+    try (Stream<Path> paths = Files.walk(path, 2)) {
+        paths.filter(Files::isRegularFile)
+                .map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("---------------------------------------");
+    try (Stream<Path> paths = Files.find(path, 2, (p, attr) -> Files.isRegularFile(p))) {
+        paths.map(Main::listDir).forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+I'll copy all the code, including the separator line, and the code below it.
+I'll paste that copy, at the end of my _main_ method.
+In this last block of code, I'll change _walk_ to _find_,
+and I'll insert a comma and a new line after the number 2 there.
+The third argument is a **BiPredicate** type.
+Hopefully you'll remember what that means,
+**Bi** tells us it takes two arguments, 
+and **Predicate** means it returns a **boolean**.
+The first argument is the **path** itself, 
+and the second is a type, named **BasicFileAttributes**.
+You can think of this second argument as providing you 
+with convenient access to all the attributes in your file or directory.
+Whether I actually make use of both arguments in the expression is 
+up to me, but I do need to include both when I define the lambda arguments.
+Just a reminder, whenever I have two arguments, 
+I need to include parentheses around them. 
+Here, I'm going to call the path variable, _p_, 
+so it won't conflict with the _path_ variable I already have.
+This _p_ variable represents each stream element.
+Next, I have the attribute data for each path, so I'll shorten that to _attr_. 
+I can make the expression anything I want. 
+First, I use the same _filter_ operation as the _walk_ statement, 
+checking if the path on the stream is a regular file,
+by calling _isRegularFile_, on the **Files** class, passing it _p_.
+Finally, I can simply remove the _filter_ operation, from my pipeline.
+If I run this:
+
+```html  
+---------------------------------------
+04/21/24 00:24:57                  4 .git\COMMIT_EDITMSG
+03/15/24 12:36:53                424 .git\config
+03/15/24 12:34:05                 73 .git\description
+03/15/24 12:34:05                 23 .git\HEAD
+04/21/24 01:19:19             371645 .git\index
+03/26/24 12:42:12                241 .git\packed-refs
+03/15/24 12:31:51                344 .gitignore
+03/15/24 12:31:56                 50 .idea\.gitignore
+03/15/24 13:24:08                190 .idea\markdown.xml
+03/15/24 12:31:52                284 .idea\misc.xml
+03/15/24 12:31:52                255 .idea\modules.xml
+03/15/24 12:40:49               8915 .idea\uiDesigner.xml
+03/15/24 12:34:13                185 .idea\vcs.xml
+04/21/24 02:08:10              28731 .idea\workspace.xml
+03/19/24 03:18:21                592 JAVA.iml
+03/23/24 23:46:28                603 README.md
+12/13/23 03:08:24            2495536 src\mysql-connector-j-8.3.0.jar
+03/01/24 19:43:23            7296329 src\sqlite-jdbc-3.34.0.jar
+---------------------------------------
+04/21/24 00:24:57                  4 .git\COMMIT_EDITMSG
+03/15/24 12:36:53                424 .git\config
+03/15/24 12:34:05                 73 .git\description
+03/15/24 12:34:05                 23 .git\HEAD
+04/21/24 01:19:19             371645 .git\index
+03/26/24 12:42:12                241 .git\packed-refs
+03/15/24 12:31:51                344 .gitignore
+03/15/24 12:31:56                 50 .idea\.gitignore
+03/15/24 13:24:08                190 .idea\markdown.xml
+03/15/24 12:31:52                284 .idea\misc.xml
+03/15/24 12:31:52                255 .idea\modules.xml
+03/15/24 12:40:49               8915 .idea\uiDesigner.xml
+03/15/24 12:34:13                185 .idea\vcs.xml
+04/21/24 02:08:10              28731 .idea\workspace.xml
+03/19/24 03:18:21                592 JAVA.iml
+03/23/24 23:46:28                603 README.md
+12/13/23 03:08:24            2495536 src\mysql-connector-j-8.3.0.jar
+03/01/24 19:43:23            7296329 src\sqlite-jdbc-3.34.0.jar
+```
+
+My last block of output will look like the output from the previous _walk_ code.
+That's nice and all, but why not just use _walk_ with _filter_,
+which seems a little easier to understand.
+Let's keep going and change this lambda.
+
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("");
+    System.out.println("cwd = " + path.toAbsolutePath());
+         
+    try (Stream<Path> paths = Files.list(path)) {
+        paths.map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("---------------------------------------");
+    try (Stream<Path> paths = Files.walk(path, 2)) {
+        paths.filter(Files::isRegularFile)
+                .map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("---------------------------------------");
+    try (Stream<Path> paths = Files.find(path, 2, (p, attr) -> attr.isRegularFile())) {
+        paths.map(Main::listDir).forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+First of all, I don't have to use `Files.isRegularFile`, at all.
+I can use the attributes of the path, which are available to me here,
+in an easy-to-use way, to _filter_ instead.
+I'll replace **Files** with my argument name, _attr_.
+Now, I don't have to pass an argument 
+because this attribute is already associated with the current path in the stream.
+Running that:
+
+```html
+---------------------------------------
+04/21/24 00:24:57                  4 .git\COMMIT_EDITMSG
+03/15/24 12:36:53                424 .git\config
+03/15/24 12:34:05                 73 .git\description
+03/15/24 12:34:05                 23 .git\HEAD
+04/21/24 01:19:19             371645 .git\index
+03/26/24 12:42:12                241 .git\packed-refs
+03/15/24 12:31:51                344 .gitignore
+03/15/24 12:31:56                 50 .idea\.gitignore
+03/15/24 13:24:08                190 .idea\markdown.xml
+03/15/24 12:31:52                284 .idea\misc.xml
+03/15/24 12:31:52                255 .idea\modules.xml
+03/15/24 12:40:49               8915 .idea\uiDesigner.xml
+03/15/24 12:34:13                185 .idea\vcs.xml
+04/21/24 02:08:10              28731 .idea\workspace.xml
+03/19/24 03:18:21                592 JAVA.iml
+03/23/24 23:46:28                603 README.md
+12/13/23 03:08:24            2495536 src\mysql-connector-j-8.3.0.jar
+03/01/24 19:43:23            7296329 src\sqlite-jdbc-3.34.0.jar
+```
+
+I get the same output.
+Now, let's have a bit more fun.
+First, I'll look more than just two levels deep.
+
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("");
+    System.out.println("cwd = " + path.toAbsolutePath());
+         
+    try (Stream<Path> paths = Files.list(path)) {
+        paths.map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("---------------------------------------");
+    try (Stream<Path> paths = Files.walk(path, 2)) {
+        paths.filter(Files::isRegularFile)
+                .map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("---------------------------------------");
+    try (Stream<Path> paths = Files.find(path, Integer.MAX_VALUE,
+            (p, attr) -> attr.isRegularFile() && attr.size() > 1000000)) {
+        paths.map(Main::listDir).forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+A common approach, is to put `Integer.MAX_VALUE` as the depth there, 
+so it will search all nested levels.
+Next, Let's find files that are at least one million bytes in size.
+I can do this by checking that variable, attr, for its size greater than 1000000.
+Running this code:
+
+```html
+---------------------------------------
+04/21/24 01:05:57           78737802 .git\objects\pack\pack-db1d196a5481432f3c3583128bb55ad06bf3bf95.pack
+12/13/23 03:08:24            2495536 out\production\JAVA\mysql-connector-j-8.3.0.jar
+03/01/24 19:43:23            7296329 out\production\JAVA\sqlite-jdbc-3.34.0.jar
+03/21/24 15:46:25            1112600 out\production\JAVA\Udemy\JavaProgrammingTimBuchalka\NewVersion\Section_03_OOP1\images\01StaticMethod.png
+03/22/24 09:06:14            1673550 out\production\JAVA\Udemy\JavaProgrammingTimBuchalka\NewVersion\Section_03_OOP1\images\05AnimalFamilyTree.png
+03/22/24 09:48:51            1836911 out\production\JAVA\Udemy\JavaProgrammingTimBuchalka\NewVersion\Section_03_OOP1\images\08WorkerClassTree.png
+06/27/23 22:31:51            1138936 out\production\JAVA\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_02_ProgrammingTools\002_Slides-Programming-Tools-Setup-Confirming-installation-and-ntro-to-JShell.pptx
+06/28/23 00:04:52            4536738 out\production\JAVA\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_03_FirstSteps\003_Slides-First-Steps-Hello-World.pptx
+06/28/23 21:32:00            2272216 out\production\JAVA\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_03_FirstSteps\013_Slides-First-Steps-Primitive-Types-Recap-and-the-String-Data-Type.pptx
+07/03/23 03:01:07            1191893 out\production\JAVA\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_06_ControlFlow\051_Slides-Control-Flow-Local-Variables-and-Scope.pptx
+07/04/23 04:23:12            1107412 out\production\JAVA\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_06_ControlFlow\054_Slides-Control-Flow-Exception-Handling-and-Introduction-to-Scanner.pptx
+07/12/23 06:33:20            1590779 out\production\JAVA\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_07_OOP1\064_Slides-OOP-Part-1-Inheritance-Reference-vs-Object-vs-Instance-vs-Class.pptx
+07/12/23 07:56:07            1158854 out\production\JAVA\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_07_OOP1\065_Slides-OOP-Part-1-Inheritance-Static-vs-Instance-Variables.pptx
+07/12/23 10:57:47            1092383 out\production\JAVA\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_07_OOP1\066_Slides-OOP-Part-1-Inheritance-Static-vs-Instance-Methods.pptx
+07/18/23 07:54:52            1474006 out\production\JAVA\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_07_OOP1\075_Slides-OOP-Part-1-Inheritance-this-vs-super.pptx
+07/27/23 17:26:47            1013564 out\production\JAVA\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_09_Arrays\104_Slides-Arrays-Arrays-Recap.pptx
+07/28/23 13:12:42            1148108 out\production\JAVA\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_10_ArrayList_LinkedList_Iterator_Autoboxing\113_Slides-Arrays-vs-ArrayLists.pptx
+12/13/23 03:08:24            2495536 src\mysql-connector-j-8.3.0.jar
+03/01/24 19:43:23            7296329 src\sqlite-jdbc-3.34.0.jar
+03/21/24 15:46:25            1112600 src\Udemy\JavaProgrammingTimBuchalka\NewVersion\Section_03_OOP1\images\01StaticMethod.png
+03/22/24 09:06:14            1673550 src\Udemy\JavaProgrammingTimBuchalka\NewVersion\Section_03_OOP1\images\05AnimalFamilyTree.png
+03/22/24 09:48:51            1836911 src\Udemy\JavaProgrammingTimBuchalka\NewVersion\Section_03_OOP1\images\08WorkerClassTree.png
+06/27/23 22:31:51            1138936 src\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_02_ProgrammingTools\002_Slides-Programming-Tools-Setup-Confirming-installation-and-ntro-to-JShell.pptx
+06/28/23 00:04:52            4536738 src\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_03_FirstSteps\003_Slides-First-Steps-Hello-World.pptx
+06/28/23 21:32:00            2272216 src\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_03_FirstSteps\013_Slides-First-Steps-Primitive-Types-Recap-and-the-String-Data-Type.pptx
+07/03/23 03:01:07            1191893 src\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_06_ControlFlow\051_Slides-Control-Flow-Local-Variables-and-Scope.pptx
+07/04/23 04:23:12            1107412 src\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_06_ControlFlow\054_Slides-Control-Flow-Exception-Handling-and-Introduction-to-Scanner.pptx
+07/12/23 06:33:20            1590779 src\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_07_OOP1\064_Slides-OOP-Part-1-Inheritance-Reference-vs-Object-vs-Instance-vs-Class.pptx
+07/12/23 07:56:07            1158854 src\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_07_OOP1\065_Slides-OOP-Part-1-Inheritance-Static-vs-Instance-Variables.pptx
+07/12/23 10:57:47            1092383 src\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_07_OOP1\066_Slides-OOP-Part-1-Inheritance-Static-vs-Instance-Methods.pptx
+07/18/23 07:54:52            1474006 src\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_07_OOP1\075_Slides-OOP-Part-1-Inheritance-this-vs-super.pptx
+07/27/23 17:26:47            1013564 src\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_09_Arrays\104_Slides-Arrays-Arrays-Recap.pptx
+07/28/23 13:12:42            1148108 src\Udemy\JavaProgrammingTimBuchalka\SectionSlides\Section_10_ArrayList_LinkedList_Iterator_Autoboxing\113_Slides-Arrays-vs-ArrayLists.pptx
+```
+
+I get both my class and java source **files**, which have met these criteria,
+as well as some of intellij's project jar files.
+You can imagine using this method to search for any files, modified in the past week, 
+or any files that exceed a certain size, and so on.
+There's one more method of **Files**, which I'll show you next, 
+which can be a bit more efficient.
+
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("");
+    System.out.println("cwd = " + path.toAbsolutePath());
+         
+    try (Stream<Path> paths = Files.list(path)) {
+        paths.map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("---------------------------------------");
+    try (Stream<Path> paths = Files.walk(path, 2)) {
+        paths.filter(Files::isRegularFile)
+                .map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("---------------------------------------");
+    try (Stream<Path> paths = Files.find(path, Integer.MAX_VALUE,
+            (p, attr) -> attr.isRegularFile() && attr.size() > 300
+    )) {
+        paths.map(Main::listDir).forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("==============Directory Stream==============");
+    try (var dirs = Files.newDirectoryStream(path)) {
+        dirs.forEach(d -> System.out.println(Main.listDir(d)));
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+First, I'll print out a dividing line with a header that says **DirectoryStream**.
+**DirectoryStream** is another Java **NIO2** class.
+It provides an iterable for directories.
+Like the others, I'll put this in a _try-with-resources_ block, 
+and I'm going to use _var_ here,
+the variable name _dirs_, and set that 
+to the result of another method on **Files**.
+This one is called _newDirectoryStream_, 
+and takes a **path**. 
+Because the result is an iterable type,
+I can use _forEach_ on it, 
+and I'll print each item, using `Main.listDir` to get
+the usual directory listing string.
+I also need to catch an _IOException_.
+If I run this code:
+
+```html
+==============Directory Stream==============
+04/21/24 01:19:19 <DIR>              .git
+03/15/24 12:31:51                344 .gitignore
+04/21/24 02:08:10 <DIR>              .idea
+03/19/24 03:18:21                592 JAVA.iml
+03/19/24 00:42:22 <DIR>              out
+03/23/24 23:46:28                603 README.md
+04/21/24 00:25:32 <DIR>              src
+```
+
+I get a directory listing of my current working directory.
+This method has an overloaded version 
+that lets us _filter_ which paths we want back,
+first with the use of a string, called a **glob**.
+A glob is a limited pattern language that resembles regular expressions
+but with a simpler syntax.
+You can use to match on a file name.
+To show you this call, using a globbing pattern,
+I want to first change the directory I'm starting at.
+I could use one of the **Path** creation factory methods, 
+but there's a method on **path**, 
+that will let me navigate, from the path I'm at to another.
+This is called _resolve_, and I can pass it the name of a subfolder.
+
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("");
+    System.out.println("cwd = " + path.toAbsolutePath());
+         
+    try (Stream<Path> paths = Files.list(path)) {
+        paths.map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("---------------------------------------");
+    try (Stream<Path> paths = Files.walk(path, 2)) {
+        paths.filter(Files::isRegularFile)
+                .map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("---------------------------------------");
+    try (Stream<Path> paths = Files.find(path, Integer.MAX_VALUE,
+            (p, attr) -> attr.isRegularFile() && attr.size() > 300
+    )) {
+        paths.map(Main::listDir).forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    path = path.resolve(".idea");
+    System.out.println("==============Directory Stream==============");
+    try (var dirs = Files.newDirectoryStream(path, "*.xml")) {
+        dirs.forEach(d -> System.out.println(Main.listDir(d)));
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+In this case, I'll pass it `.idea`, so intelliJ's project configuration folder.
+I'll include the glob `*.xml`, as the second argument to the _newDirectoryStream_ method.
+Running this code now:
+
+```html
+==============Directory Stream==============
+03/15/24 13:24:08                190 .idea\markdown.xml
+03/15/24 12:31:52                284 .idea\misc.xml
+03/15/24 12:31:52                255 .idea\modules.xml
+03/15/24 12:40:49               8915 .idea\uiDesigner.xml
+03/15/24 12:34:13                185 .idea\vcs.xml
+04/21/24 02:08:10              28731 .idea\workspace.xml
+```
+
+I'll only get files that end in `.xml`.
+Ok, so that method's pretty easy to use,
+and the glob is probably something you might already be a little familiar with.
+There's another overloaded version of this method, that takes a type,
+that's on the **DirectoryStream** class, and that's a _filter_, a functional interface.
+This means it's a target for a lambda.
+It takes one argument and returns a **boolean**.
+
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("");
+    System.out.println("cwd = " + path.toAbsolutePath());
+         
+    try (Stream<Path> paths = Files.list(path)) {
+        paths.map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("---------------------------------------");
+    try (Stream<Path> paths = Files.walk(path, 2)) {
+        paths.filter(Files::isRegularFile)
+                .map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("---------------------------------------");
+    try (Stream<Path> paths = Files.find(path, Integer.MAX_VALUE,
+            (p, attr) -> attr.isRegularFile() && attr.size() > 300
+    )) {
+        paths.map(Main::listDir).forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    path = path.resolve(".idea");
+    System.out.println("==============Directory Stream==============");
+    try (var dirs = Files.newDirectoryStream(path, "*.xml")) {
+        dirs.forEach(d -> System.out.println(Main.listDir(d)));
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("==============Directory Stream==============");
+    try (var dirs = Files.newDirectoryStream(path, p -> p.getFileName().toString().endsWith(".xml"))) {
+        dirs.forEach(d -> System.out.println(Main.listDir(d)));
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+I'll copy the code, starting with my header there, and paste a copy just below.
+I'll delete the string with `.xml` there, keeping the comma, 
+and inserting a couple of new lines.
+I'm going to include my lambda on that empty line, which will work, like the glob.
+My lambda takes a path, so I'll get the last part of the path, file name,
+with a call to get file name, and I have to make that a string, 
+because it actually returns a **path**.
+Then I'll call _endsWith_ here, passing it `.xml`.
+Running this code:
+
+```html
+==============Directory Stream==============
+03/15/24 13:24:08                190 .idea\markdown.xml
+03/15/24 12:31:52                284 .idea\misc.xml
+03/15/24 12:31:52                255 .idea\modules.xml
+03/15/24 12:40:49               8915 .idea\uiDesigner.xml
+03/15/24 12:34:13                185 .idea\vcs.xml
+04/21/24 02:08:10              28731 .idea\workspace.xml
+==============Directory Stream==============
+03/15/24 13:24:08                190 .idea\markdown.xml
+03/15/24 12:31:52                284 .idea\misc.xml
+03/15/24 12:31:52                255 .idea\modules.xml
+03/15/24 12:40:49               8915 .idea\uiDesigner.xml
+03/15/24 12:34:13                185 .idea\vcs.xml
+04/21/24 02:08:10              28731 .idea\workspace.xml
+```
+
+I get the exact same results as before.
+
+```java  
+public static void main(String[] args) {
+
+    Path path = Path.of("");
+    System.out.println("cwd = " + path.toAbsolutePath());
+         
+    try (Stream<Path> paths = Files.list(path)) {
+        paths.map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("---------------------------------------");
+    try (Stream<Path> paths = Files.walk(path, 2)) {
+        paths.filter(Files::isRegularFile)
+                .map(Main::listDir)
+                .forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("---------------------------------------");
+    try (Stream<Path> paths = Files.find(path, Integer.MAX_VALUE,
+            (p, attr) -> attr.isRegularFile() && attr.size() > 300
+    )) {
+        paths.map(Main::listDir).forEach(System.out::println);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    path = path.resolve(".idea");
+    System.out.println("==============Directory Stream==============");
+    try (var dirs = Files.newDirectoryStream(path, "*.xml")) {
+        dirs.forEach(d -> System.out.println(Main.listDir(d)));
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    System.out.println("==============Directory Stream==============");
+    try (var dirs = Files.newDirectoryStream(path, 
+            p -> p.getFileName().toString().endsWith(".xml") 
+                    && Files.isRegularFile(p) && Files.size(p) > 1000
+    )) {
+        dirs.forEach(d -> System.out.println(Main.listDir(d)));
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+But I can make this lambda be anything I want,
+so here, I'll add that I only want regular files, 
+and let's say I only want ones that are greater than a kilobyte.
+I'll enter 1000 which is actually slightly less than a kilobyte,
+which is 1024 bytes.
+Running this:
+
+```html
+==============Directory Stream==============
+03/15/24 13:24:08                190 .idea\markdown.xml
+03/15/24 12:31:52                284 .idea\misc.xml
+03/15/24 12:31:52                255 .idea\modules.xml
+03/15/24 12:40:49               8915 .idea\uiDesigner.xml
+03/15/24 12:34:13                185 .idea\vcs.xml
+04/21/24 02:08:10              28731 .idea\workspace.xml
+==============Directory Stream==============
+03/15/24 13:24:08                190 .idea\markdown.xml
+03/15/24 12:31:52                284 .idea\misc.xml
+03/15/24 12:31:52                255 .idea\modules.xml
+03/15/24 12:40:49               8915 .idea\uiDesigner.xml
+03/15/24 12:34:13                185 .idea\vcs.xml
+04/21/24 02:08:10              28731 .idea\workspace.xml
+==============Directory Stream==============
+03/15/24 12:40:49               8915 .idea\uiDesigner.xml
+04/21/24 02:08:10              28731 .idea\workspace.xml
+```
+
+I get only two files back now.
+This method probably reminds you of the _filter_ method, 
+except it doesn't include depth.
+Another important thing to note about this method is 
+that the elements returned by the _iterator_ are in no specific order.
+These methods make it pretty easy to walk the file tree 
+or list data in directories.
+Maybe, if you've examined the **Files** class API closely,
+you'll have noticed there's also a _walkFileTree_ method.
+I'm going to give you an example of this method next.
+Because it's not so straight forward, 
+I think it warrants a little extra attention.
+
+![image06](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image06.png?raw=true)
+
+The **Files** class already had a method called _walkFileTree_ 
+that's been around since **jdk.7**.
+This method _walkFileTree_, depth first (as does the _walk_ method).
+**Depth first** means the code will recursively visit 
+all the child elements before visiting any of a folder's siblings.
+The image above tries to graphically show you what this means.
+If our current working directory has two subfolders, 
+out and source, the walk methods won't first examine 
+all the first level paths, then examine the second level.
+Instead, it examines the first path, and if that's a folder,
+than it will walk into that folder, and so on.
+This probably feels rather natural to programmers, 
+and seems a bit like a stack trace.
+The alternative is **breadth first**, 
+which means any dependent nodes are walked
+after the sibling nodes, but remember,
+_walk_ and _walkFileTree_ are depth first.
+Because it is depth first,
+the `Files.walkFileTree` method, provides a mechanism to accumulate information,
+about all the children, up to the parent.
+Java provides entry points in the walk to execute operations, 
+through a **FileVisitor** interface.
+This stubs out methods you can implement, by overriding them, 
+at certain events in your walk.
+These events are:
+
+* Before visiting a directory. 
+* After visiting a directory. 
+* When visiting a file. 
+* And at the point of A failure to visit a file.
+
+![image07](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image07.png?raw=true)
+
+On this image, I've included a simple class diagram for the **FileVisitor** Interface, 
+and its simplest default implementation, **SimpleFileVisitor**.
+Here, you can see the methods that correspond to those critical points in the walk.
+When you override these methods, you'll have the method arguments 
+as data you can work with, at that point in the walk.
+You can see from these method signatures that in most cases, 
+you'll have access to the current path, either a directory or a file. 
+I didn't include the return type, which for all of these methods is the same, 
+an enum value, as shown on the **FileVisitResult** enum.
+In addition, you have access to basic attributes, 
+on both the _visitFile_ and _preVisitDirectory_ methods.
+This is similar to the _find_ method's **predicate**,
+which gave us access, by one of its arguments.
+Ok, so with that high-level view, 
+let's see what we can build with this method.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        Path startingPath = Path.of("./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles");
+        FileVisitor<Path> statsVisitor = new StatsVisitor();
+        try {
+            Files.walkFileTree(startingPath, statsVisitor);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static class StatsVisitor extends SimpleFileVisitor<Path> {
+        
+    }
+}
+```
+
+I've created a new project for this lecture called **FileWalker**.
+Before I do anything in the _main_ method,
+I'm going to add a static class as a member.
+I'll make it private, call it _StatsVisitor_, extending **SimpleFileVisitor**,
+and since it's generic, I need to specify a type, which will be **Path**.
+For now, I'll leave it like that.
+In the _main_ method, I'll set up a path variable, called _startingPath_,
+for my current working directory.
+This time, I'll use the dot notation, 
+`"./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles"`, 
+for the current directory. 
+Now, I'll set up a variable for an instance of my **StatsVisitor** class. 
+I can make the type the interface type, 
+and again, it's generic, so I'll specify its type as **path**.
+I'll just create a new instance of this class.
+Because I extended **SimpleFileVisitor**, 
+I can use its default no args constructor.
+Next, I'll call the _walkFileTree_ method on the **Files** class, 
+passing it my starting path, and my instance of the **StatsVisitor** class.
+As usual, I need to wrap that in a _try-catch_.
+I don't have to wrap this method in a _try-with-resources_, 
+because this method will get executed at this point, 
+and resources will be closed, as part of its execution.
+If I run this now, it's not going to look like it's doing anything,
+and that's because, the **SimpleFileVisitor**'s methods 
+just returns **CONTINUE**, the enum value.
+If I ran this on my root drive, 
+it would take a pretty long time, but I'd still get no output.
+To make it useful, I have to override some methods on this class.
+Let's start simple, and override the _visitFile_ method.
+
+```java  
+private static class StatsVisitor extends SimpleFileVisitor<Path> {
+    
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+            throws IOException {
+
+        return super.visitFile(file, attrs);
+    }
+}
+```
+
+I can do that with control+O, picking _visitFile_ from the dialog there.
+You can see this just returns a call to the **super** class's method.
+I'm going to control click on _visitFile_ there, in that return statement.
+
+```java  
+@Override
+public FileVisitResult visitFile(T file, BasicFileAttributes attrs)
+        throws IOException {
+    
+    Objects.requireNonNull(file);
+    Objects.requireNonNull(attrs);
+    return FileVisitResult.CONTINUE;
+}
+```
+
+I'll copy those three statements, and paste them,
+where I had the return statement in my own method.
+
+```java  
+private static class StatsVisitor extends SimpleFileVisitor<Path> {
+    
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+            throws IOException {
+
+        //return super.visitFile(file, attrs);
+        Objects.requireNonNull(file);
+        Objects.requireNonNull(attrs);
+        System.out.println(file.getFileName());
+        return FileVisitResult.CONTINUE;
+    }
+}
+```
+
+You might remember that `Objects.requireNonNull` simply 
+throws a _NullPointerException_, if the argument is **null**.
+This also returns the enum constant, **CONTINUE**.
+The value that I return from this method will determine 
+how the _walk_, is processed after this method.
+I can continue, or skip all my siblings, skip a subtree, 
+or terminate altogether.
+The first thing I'll do is print the filename.
+If I run this code:
+
+```html  
+Main.java
+Main.java
+testing.csv
+Main.java
+Main.java
+Main.java
+Main.java
+Main.java
+Main.java
+Challenge.java
+ChallengeStreams.java
+Main.java
+file.txt
+Main.java
+numbers.txt
+file.txt
+fixedWidth.txt
+Main.java
+fixedWidth.txt
+Main.java
+article.txt
+bigben.txt
+Main.java
+Main.java
+Course.java
+CourseEngagement.java
+Student.java
+StudentDemographics.java
+students.csv
+take2.csv
+Main.java
+Course.java
+CourseEngagement.java
+Student.java
+StudentDemographics.java
+students.csv
+take2.csv
+take3.csv
+take4.csv
+take4.txt
+Challenge.java
+Main.java
+Course.java
+CourseEngagement.java
+Student.java
+StudentDemographics.java
+students.csv
+students.json
+take2.csv
+take3.csv
+take4.csv
+take4.txt
+student-activity.json
+Main.java
+sloppy.txt
+student-activity.json
+students-backup.json
+Main.java
+sloppy.txt
+student-activity.json
+students-backup.json
+USPopulationByState.csv
+USPopulationByState.txt
+Main.java
+BuildStudentData.java
+Main.java
+MainSeparate.java
+student.dat
+student.idx
+studentData.dat
+students.json
+employees.dat
+Main.java
+data.dat
+Main.java
+tim.dat
+data.dat
+Main.java
+tim.dat
+image01.png
+image01b.png
+image02.png
+image02b.png
+image02c.png
+image02d.png
+image03.png
+image04.png
+image05.png
+image05b.png
+image06.png
+image07.png
+image08.png
+image09.png
+image10.png
+image11.png
+image12.png
+image13.png
+image14.png
+image15.png
+README.md
+```
+
+I'll get all the files, in any of the subfolders or in the current directory listed out.
+And remember, this is depth first, so they're printed in that order.
+Right away, I hope you've noticed that _visitFile_ is really only visiting types 
+that are files, though _codeStyles_ here doesn't have an extension, so it's hard to tell.
+How would I print the directory names?
+I can add code in another spot, either pre-visit or post-visit of the directory.
+I'll do this in the pre-visit, so again, I'll come out to the body of this class,
+meaning below that _fileVisit_ method, and control+o, 
+and pick the option, _preVisitDirectory_.
+
+```java  
+private static class StatsVisitor extends SimpleFileVisitor<Path> {
+    
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+            throws IOException {
+
+        //return super.visitFile(file, attrs);
+        Objects.requireNonNull(file);
+        Objects.requireNonNull(attrs);
+        System.out.println(file.getFileName());
+        return FileVisitResult.CONTINUE;
+    }
+
+    @Override
+    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+            throws IOException {
+
+        return super.preVisitDirectory(dir, attrs);
+    }
+}
+```
+
+I'll do the same thing I did before, going into the method of the **super** class 
+
+```java  
+@Override
+public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+        throws IOException {
+
+    Objects.requireNonNull(dir);
+    Objects.requireNonNull(attrs);
+    return FileVisitResult.CONTINUE;
+}
+```
+
+And copying its code, pasting it in this method.
+
+```java  
+private static class StatsVisitor extends SimpleFileVisitor<Path> {
+    
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+            throws IOException {
+
+        //return super.visitFile(file, attrs);
+        Objects.requireNonNull(file);
+        Objects.requireNonNull(attrs);
+        System.out.println(file.getFileName());
+        return FileVisitResult.CONTINUE;
+    }
+
+    @Override
+    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+            throws IOException {
+
+        //return super.preVisitDirectory(dir, attrs);
+        Objects.requireNonNull(dir);
+        Objects.requireNonNull(attrs);
+        System.out.println("--------------------------------------");
+        System.out.println(dir.getFileName());
+        return FileVisitResult.CONTINUE;
+    }
+}
+```
+
+This code looks almost exactly like _visitFile_.
+I'll add a `System.out.println` there as well, 
+this time getting _filename_ on `dir`.
+Executing that code:
+
+```html  
+--------------------------------------
+Section_16_InputOutputFiles
+--------------------------------------
+Course01_ExceptionHandling
+--------------------------------------
+ChecedUncheckedFinally
+Main.java
+--------------------------------------
+TryWithResources
+Main.java
+--------------------------------------
+Course02_UsingFilesAndPaths
+--------------------------------------
+Part1
+--------------------------------------
+files
+testing.csv
+Main.java
+--------------------------------------
+Part2
+Main.java
+--------------------------------------
+Course03_MethodsOnPath
+Main.java
+--------------------------------------
+Course04_FilesClass
+--------------------------------------
+DirectoryListings
+Main.java
+--------------------------------------
+FileTree
+Main.java
+Main.java
+--------------------------------------
+Course05_FileTreeWalkingChallenge
+Challenge.java
+ChallengeStreams.java
+Main.java
+--------------------------------------
+Course06_ReadingTextFromInputFiles
+--------------------------------------
+Part1_ReadingFiles
+file.txt
+Main.java
+numbers.txt
+--------------------------------------
+Part2_ScannerProject
+file.txt
+fixedWidth.txt
+Main.java
+--------------------------------------
+Part3_ReadingWithNIO2
+fixedWidth.txt
+Main.java
+--------------------------------------
+Course07_ReadingFileChallenge
+article.txt
+bigben.txt
+Main.java
+--------------------------------------
+Course08_WritingDataToFiles
+--------------------------------------
+Part1
+Main.java
+--------------------------------------
+student
+Course.java
+CourseEngagement.java
+Student.java
+StudentDemographics.java
+students.csv
+take2.csv
+--------------------------------------
+Part2
+Main.java
+--------------------------------------
+student
+Course.java
+CourseEngagement.java
+Student.java
+StudentDemographics.java
+students.csv
+take2.csv
+take3.csv
+take4.csv
+take4.txt
+--------------------------------------
+Course09_WritingFilesChallenge
+Challenge.java
+Main.java
+--------------------------------------
+student
+Course.java
+CourseEngagement.java
+Student.java
+StudentDemographics.java
+students.csv
+students.json
+take2.csv
+take3.csv
+take4.csv
+take4.txt
+--------------------------------------
+Course10_ManagingFiles
+--------------------------------------
+Part1
+--------------------------------------
+files
+--------------------------------------
+data
+student-activity.json
+Main.java
+--------------------------------------
+Part2
+--------------------------------------
+files
+--------------------------------------
+data
+--------------------------------------
+newdata
+sloppy.txt
+student-activity.json
+students-backup.json
+Main.java
+--------------------------------------
+resources
+--------------------------------------
+data
+--------------------------------------
+newdata
+sloppy.txt
+student-activity.json
+students-backup.json
+USPopulationByState.csv
+USPopulationByState.txt
+--------------------------------------
+Course11_FileManipulationChallenge
+Main.java
+--------------------------------------
+public
+--------------------------------------
+assets
+--------------------------------------
+icons
+--------------------------------------
+Course12_RandomAccessFile
+BuildStudentData.java
+Main.java
+MainSeparate.java
+student.dat
+student.idx
+studentData.dat
+students.json
+--------------------------------------
+Course13_RandomAccessFileChallenge
+employees.dat
+Main.java
+--------------------------------------
+Course14_DataStreamsAndSerialization
+data.dat
+Main.java
+tim.dat
+--------------------------------------
+Course15_SerializationAndChange
+data.dat
+Main.java
+tim.dat
+--------------------------------------
+images
+image01.png
+image01b.png
+image02.png
+image02b.png
+image02c.png
+image02d.png
+image03.png
+image04.png
+image05.png
+image05b.png
+image06.png
+image07.png
+image08.png
+image09.png
+image10.png
+image11.png
+image12.png
+image13.png
+image14.png
+image15.png
+README.md
+```
+
+It's a little hard to see where everything belongs without indentation.
+One advantage of using a **FileVisitor** implementation, 
+is that you can keep track of some state, during the _walk_.
+Let's do this with tracking the depth level.
+There are other ways to do this, but I'll show you this, 
+just so you can get an idea, how you might work with state, during the walk.
+
+```java  
+private static class StatsVisitor extends SimpleFileVisitor<Path> {
+    
+    private int level;
+    
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+            throws IOException {
+
+        //return super.visitFile(file, attrs);
+        Objects.requireNonNull(file);
+        Objects.requireNonNull(attrs);
+        System.out.println(file.getFileName());
+        return FileVisitResult.CONTINUE;
+    }
+
+    @Override
+    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+            throws IOException {
+
+        //return super.preVisitDirectory(dir, attrs);
+        Objects.requireNonNull(dir);
+        Objects.requireNonNull(attrs);
+        System.out.println("--------------------------------------");
+        level++;
+        System.out.println(dir.getFileName());
+        return FileVisitResult.CONTINUE;
+    }
+}
+```
+
+I'll set up a private variable in my **StatsVisitor** class, 
+an integer, and call that level.
+It's implicitly initialized to zero, because it's a class field.
+I'll increment this every time I visit a directory, 
+and decrement when I leave a directory.
+That means in the _preVisitDirectory_ method, 
+I can simply increment this field.
+
+```java  
+private static class StatsVisitor extends SimpleFileVisitor<Path> {
+    
+    private int level;
+    
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+            throws IOException {
+
+        Objects.requireNonNull(file);
+        Objects.requireNonNull(attrs);
+        //System.out.println(file.getFileName());
+        System.out.println("\t".repeat(level) + file.getFileName());
+        return FileVisitResult.CONTINUE;
+    }
+
+    @Override
+    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+            throws IOException {
+
+        Objects.requireNonNull(dir);
+        Objects.requireNonNull(attrs);
+        level++;
+        //System.out.println(dir.getFileName());
+        System.out.println("\t".repeat(level) + dir.getFileName());
+        return FileVisitResult.CONTINUE;
+    }
+
+    @Override
+    public FileVisitResult postVisitDirectory(Path dir, IOException exc)
+            throws IOException {
+
+        //return super.postVisitDirectory(dir, exc);
+
+        Objects.requireNonNull(dir);
+        //if (exc != null)
+        //throw exc;
+
+        level--;
+        return FileVisitResult.CONTINUE;
+    }
+}
+```
+
+I need to override the _postVisitDirectory_ next, and again, 
+I'm going to use the **super** class's code as my starting template.
+You might be starting to wonder why I am even extending _SimpleFileVisitor_ at all.
+If I decide to implement all four methods, and I never call the parent's methods 
+using **super**, that's a pretty good question.
+_SimpleFileVisitor_ is a kind of short-cut option 
+if you plan only to implement a couple of its methods.
+Otherwise, you could just have your class implement **FileVisitor**, 
+and not extend _SimpleFileVisitor_ at all.
+Ok, so this code is a little different,
+because one of the arguments is an exception.
+And here, the code is throwing it,
+which may be a very valid thing to do.
+In my case, I don't want to stop executing, 
+if for example, I don't have permissions on a folder, 
+or something like that, or whatever the case may be.
+I'm just going to comment that if statement out.
+Before I return from this method,
+I want to decrement level.
+Finally, in both places where I print out the **path**'s filename,
+`"\t".repeat(level)`, I'll include indentation based on this level.
+Running this code:
+
+```html  
+Section_16_InputOutputFiles
+		Course01_ExceptionHandling
+			ChecedUncheckedFinally
+			Main.java
+			TryWithResources
+			Main.java
+		Course02_UsingFilesAndPaths
+			Part1
+				files
+				testing.csv
+			Main.java
+			Part2
+			Main.java
+		Course03_MethodsOnPath
+		Main.java
+		Course04_FilesClass
+			DirectoryListings
+			Main.java
+			FileTree
+			Main.java
+		Main.java
+		Course05_FileTreeWalkingChallenge
+		Challenge.java
+		ChallengeStreams.java
+		Main.java
+		Course06_ReadingTextFromInputFiles
+			Part1_ReadingFiles
+			file.txt
+			Main.java
+			numbers.txt
+			Part2_ScannerProject
+			file.txt
+			fixedWidth.txt
+			Main.java
+			Part3_ReadingWithNIO2
+			fixedWidth.txt
+			Main.java
+		Course07_ReadingFileChallenge
+		article.txt
+		bigben.txt
+		Main.java
+		Course08_WritingDataToFiles
+			Part1
+			Main.java
+				student
+				Course.java
+				CourseEngagement.java
+				Student.java
+				StudentDemographics.java
+			students.csv
+			take2.csv
+			Part2
+			Main.java
+				student
+				Course.java
+				CourseEngagement.java
+				Student.java
+				StudentDemographics.java
+			students.csv
+			take2.csv
+			take3.csv
+			take4.csv
+			take4.txt
+		Course09_WritingFilesChallenge
+		Challenge.java
+		Main.java
+			student
+			Course.java
+			CourseEngagement.java
+			Student.java
+			StudentDemographics.java
+		students.csv
+		students.json
+		take2.csv
+		take3.csv
+		take4.csv
+		take4.txt
+		Course10_ManagingFiles
+			Part1
+				files
+					data
+				student-activity.json
+			Main.java
+			Part2
+				files
+					data
+						newdata
+					sloppy.txt
+				student-activity.json
+				students-backup.json
+			Main.java
+				resources
+					data
+						newdata
+					sloppy.txt
+				student-activity.json
+				students-backup.json
+		USPopulationByState.csv
+		USPopulationByState.txt
+		Course11_FileManipulationChallenge
+		Main.java
+			public
+				assets
+					icons
+		Course12_RandomAccessFile
+		BuildStudentData.java
+		Main.java
+		MainSeparate.java
+		student.dat
+		student.idx
+		studentData.dat
+		students.json
+		Course13_RandomAccessFileChallenge
+		employees.dat
+		Main.java
+		Course14_DataStreamsAndSerialization
+		data.dat
+		Main.java
+		tim.dat
+		Course15_SerializationAndChange
+		data.dat
+		Main.java
+		tim.dat
+		images
+		image01.png
+		image01b.png
+		image02.png
+		image02b.png
+		image02c.png
+		image02d.png
+		image03.png
+		image04.png
+		image05.png
+		image05b.png
+		image06.png
+		image07.png
+		image08.png
+		image09.png
+		image10.png
+		image11.png
+		image12.png
+		image13.png
+		image14.png
+		image15.png
+	README.md
+```
+
+I'll see some indenting, which helps me see the tree structure.
+There are a couple of things I want to point out here.
+First, everything is indented, so this indicates that 
+the pre-visit directory was called on the initial path,
+or the current working directory in this case.
+We can see that path printed with `Section_16_InputOutputFiles` there.
+Second, our files are printed on the same level as their parent folder.
+We're keeping track of the level of the folder, not the files.
+The simple way to fix this is just to add one to _level_ in 
+that _repeat_ method, for our files, which I'll do.
+
+```java  
+@Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+            throws IOException {
+
+        Objects.requireNonNull(file);
+        Objects.requireNonNull(attrs);
+        //System.out.println("\t".repeat(level) + file.getFileName());
+        System.out.println("\t".repeat(level + 1) + file.getFileName());
+        return FileVisitResult.CONTINUE;
+    }
+```
+
+Running this code:
+
+```html  
+Section_16_InputOutputFiles
+		Course01_ExceptionHandling
+			ChecedUncheckedFinally
+				Main.java
+			TryWithResources
+				Main.java
+		Course02_UsingFilesAndPaths
+			Part1
+				files
+					testing.csv
+				Main.java
+			Part2
+				Main.java
+		Course03_MethodsOnPath
+			Main.java
+		Course04_FilesClass
+			DirectoryListings
+				Main.java
+			FileTree
+				Main.java
+			Main.java
+		Course05_FileTreeWalkingChallenge
+			Challenge.java
+			ChallengeStreams.java
+			Main.java
+		Course06_ReadingTextFromInputFiles
+			Part1_ReadingFiles
+				file.txt
+				Main.java
+				numbers.txt
+			Part2_ScannerProject
+				file.txt
+				fixedWidth.txt
+				Main.java
+			Part3_ReadingWithNIO2
+				fixedWidth.txt
+				Main.java
+		Course07_ReadingFileChallenge
+			article.txt
+			bigben.txt
+			Main.java
+		Course08_WritingDataToFiles
+			Part1
+				Main.java
+				student
+					Course.java
+					CourseEngagement.java
+					Student.java
+					StudentDemographics.java
+				students.csv
+				take2.csv
+			Part2
+				Main.java
+				student
+					Course.java
+					CourseEngagement.java
+					Student.java
+					StudentDemographics.java
+				students.csv
+				take2.csv
+				take3.csv
+				take4.csv
+				take4.txt
+		Course09_WritingFilesChallenge
+			Challenge.java
+			Main.java
+			student
+				Course.java
+				CourseEngagement.java
+				Student.java
+				StudentDemographics.java
+			students.csv
+			students.json
+			take2.csv
+			take3.csv
+			take4.csv
+			take4.txt
+		Course10_ManagingFiles
+			Part1
+				files
+					data
+					student-activity.json
+				Main.java
+			Part2
+				files
+					data
+						newdata
+						sloppy.txt
+					student-activity.json
+					students-backup.json
+				Main.java
+				resources
+					data
+						newdata
+						sloppy.txt
+					student-activity.json
+					students-backup.json
+			USPopulationByState.csv
+			USPopulationByState.txt
+		Course11_FileManipulationChallenge
+			Main.java
+			public
+				assets
+					icons
+		Course12_RandomAccessFile
+			BuildStudentData.java
+			Main.java
+			MainSeparate.java
+			student.dat
+			student.idx
+			studentData.dat
+			students.json
+		Course13_RandomAccessFileChallenge
+			employees.dat
+			Main.java
+		Course14_DataStreamsAndSerialization
+			data.dat
+			Main.java
+			tim.dat
+		Course15_SerializationAndChange
+			data.dat
+			Main.java
+			tim.dat
+		images
+			image01.png
+			image01b.png
+			image02.png
+			image02b.png
+			image02c.png
+			image02d.png
+			image03.png
+			image04.png
+			image05.png
+			image05b.png
+			image06.png
+			image07.png
+			image08.png
+			image09.png
+			image10.png
+			image11.png
+			image12.png
+			image13.png
+			image14.png
+			image15.png
+		README.md
+```
+
+It looks a bit better.
+Truthfully, you could have done this with _walk_, 
+in a lot less code, so why would you ever use this method?
+Well, you probably wouldn't for this type of thing, 
+but I wanted to give you a basic example, so you'd understand the mechanism.
+Now, let's actually talk about a better use case for this.
+Let's say you want to get the total number of bytes of a folder, 
+or the sum of its file sizes, and you want each parent's size, 
+to include all of its children's sizes.
+
+```java  
+private static class StatsVisitor extends SimpleFileVisitor<Path> {
+    
+    //private int level;
+    
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+            throws IOException {
+
+        Objects.requireNonNull(file);
+        Objects.requireNonNull(attrs);
+        //System.out.println("\t".repeat(level) + file.getFileName());
+        return FileVisitResult.CONTINUE;
+    }
+
+    @Override
+    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+            throws IOException {
+
+        Objects.requireNonNull(dir);
+        Objects.requireNonNull(attrs);
+        //level++;
+        //System.out.println("\t".repeat(level) + dir.getFileName());
+        return FileVisitResult.CONTINUE;
+    }
+
+    @Override
+    public FileVisitResult postVisitDirectory(Path dir, IOException exc)
+            throws IOException {
+
+
+        Objects.requireNonNull(dir);
+        //level--;
+        return FileVisitResult.CONTINUE;
+    }
+}
+```
+
+First, I'm going to clean up my code, removing the level field.
+I want to remove any `system.out.println` statements as well, 
+so first the one in _visitFile_.
+In _preVisitDirectory_, I'll remove the reference to level, 
+and remove the `system.out.println` statement.
+Finally, in _postVisitDirectory_, I'll remove the statement 
+with level in it.
+
+```java  
+private static class StatsVisitor extends SimpleFileVisitor<Path> {
+
+    private Path initialPath = null;
+    private final Map<Path, Long> folderSizes = new LinkedHashMap<>();
+    private int initialCount;
+    private int printLevel;
+    
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+            throws IOException {
+
+        Objects.requireNonNull(file);
+        Objects.requireNonNull(attrs);
+        
+        folderSizes.merge(file.getParent(), 0L, (o, n) -> o += attrs.size());
+        
+        return FileVisitResult.CONTINUE;
+    }
+
+    @Override
+    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+            throws IOException {
+
+        Objects.requireNonNull(dir);
+        Objects.requireNonNull(attrs);
+
+        if (initialPath == null) {
+            initialPath = dir;
+            initialCount = dir.getNameCount();
+        } else {
+            int relativeLevel = dir.getNameCount() - initialCount;
+            if (relativeLevel == 1) {
+                folderSizes.clear();
+            }
+            folderSizes.put(dir, 0L);
+        }
+        
+        return FileVisitResult.CONTINUE;
+    }
+
+    @Override
+    public FileVisitResult postVisitDirectory(Path dir, IOException exc)
+            throws IOException {
+
+
+        Objects.requireNonNull(dir);
+        return FileVisitResult.CONTINUE;
+    }
+}
+```
+
+Ok, to start with, I'll set up some new fields.
+The first field will just be the _initialPath_,
+and I'll set that to **null** here.
+Next, I'll set up a **Map**, keyed by **Path**,
+with a value of type **Long**, 
+which represents the cumulative size of the folder. 
+Instead of level, I can use the path's name count 
+to figure out the level. 
+This count is for the initial path,
+and all paths will be relative to it.
+The reason I want this to be a **LinkedHashMap**
+because I want to maintain the insertion order,
+so my directories will get printed in order.
+I'll start with the code in _preVisitDirectory_, 
+since this is the entry point, for all accumulations.
+First, I want to set my _initialPath_,
+if its **null**, which it will be on the first visit to this method.
+I'll set _initialPath_ to _dir_ only once here, 
+the very first directory.
+I can figure out what the level is, from the root or relative path this is, 
+by using _getNameCount_.
+I'll add an else statement next.
+I'll calculate the relative indentation level,
+using the _getNameCount_ on the current directory, minus my initial count field.
+If the relativeLevel is 1, I'll clear my map.
+You could maintain a map for the full _walk_,
+but if you're doing a large file tree, 
+it's more efficient to keep track of one folder at a time.
+This also lets me print info to the user,
+after each subfolder is calculated.
+I'll initialize the keyed entry to 0,
+the key being the _path_, or the _dir_ here.
+This ensures data will go in, in insertion order.
+Ok, so this code will only get exercised, 
+meaning a map will get cleared and reinitialized 
+for the first level of subfolders, in my selected path.
+Next, I'll add a file's size to the parent entry, in the _visitFile_ method.
+`folderSizes.merge(file.getParent(), 0L, (o, n) -> o += attrs.size());`
+I'll use _merge_ on my map.
+The key is the parent of this file, because I'm accumulating sizes to the parent.
+This method will put a new entry in the map,
+with the default value specified, zero in this case if the key doesn't exist.
+If the key does exist, then it will execute the function 
+I enter here, adding the size of the current file to the parent's running total.
+The merge method takes a **BiFunction**.
+The first argument is the existing value in the map, so I made that _o_ for old.
+The second argument is the new value (which in this case is zero), 
+so I want to take the old value, and add my file's size to it.
+The truth is I didn't really have to use a _merge_ method here.
+I'll always have an entry for a path, with a value of 0, 
+because of the _put_, in the _preVisitDirectory_ method.
+If you didn't care about the order that your directories were in, 
+then you could remove that, and put it in the _preVisitDirectory_ method, 
+and this code would still work.
+I could have used _computeIfPresent_, for example, 
+but I did sort of want to refresh your memory on this, for a later challenge.
+This code is tallying up file sizes on the parent folder, 
+but these totals aren't propagated up to their parent yet.
+To do this, I'll include some code in the _postVisitDirectory_ method.
+
+```java  
+private static class StatsVisitor extends SimpleFileVisitor<Path> {
+
+    private Path initialPath = null;
+    private final Map<Path, Long> folderSizes = new LinkedHashMap<>();
+    private int initialCount;
+    
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+            throws IOException {
+
+        Objects.requireNonNull(file);
+        Objects.requireNonNull(attrs);
+        folderSizes.merge(file.getParent(), 0L, (o, n) -> o += attrs.size());
+        return FileVisitResult.CONTINUE;
+    }
+
+    @Override
+    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+            throws IOException {
+
+        Objects.requireNonNull(dir);
+        Objects.requireNonNull(attrs);
+
+        if (initialPath == null) {
+            initialPath = dir;
+            initialCount = dir.getNameCount();
+        } else {
+            int relativeLevel = dir.getNameCount() - initialCount;
+            if (relativeLevel == 1) {
+                folderSizes.clear();
+            }
+            folderSizes.put(dir, 0L);
+        }
+        
+        return FileVisitResult.CONTINUE;
+    }
+
+    @Override
+    public FileVisitResult postVisitDirectory(Path dir, IOException exc)
+            throws IOException {
+        
+        Objects.requireNonNull(dir);
+
+        if (dir.equals(initialPath)) {
+            return FileVisitResult.TERMINATE;
+        }
+
+        int relativeLevel = dir.getNameCount() - initialCount;
+        if (relativeLevel == 1) {
+            folderSizes.forEach((key, value) -> {
+                int level = key.getNameCount() - initialCount - 1;
+                System.out.printf("%s[%s] - %,d bytes %n",
+                        "\t".repeat(level), key.getFileName(), value);
+            });
+
+        } else {
+            long folderSize = folderSizes.get(dir);
+            folderSizes.merge(dir.getParent(), 0L, (o, n) -> o += folderSize);
+        }
+        
+        return FileVisitResult.CONTINUE;
+    }
+}
+```
+
+First, I'll check if the current directory is equal to the _initialPath_.
+If that's the case, I'll just send back **terminate**, and be done with the _walk_.
+**Terminate** is another value on that **FileVisitResult** enum. 
+**Continue** would have worked just as well here, honestly, 
+since when this current directory is equal to the _initialPath_, 
+the _walk_ is over, but I wanted to demonstrate another option.
+Next, I'll set up a local variable again 
+for the relative level of the current path or directory, as I did earlier.
+Now, if this relative level is 1, I'm back at level 1 subfolder of my initial path.
+At this point, I'll print the data I've collected,
+so I'll do that with a for each on my map.
+Next, I'll get the level of each subfolder, subtracting 1, 
+so I don't indent the first level.
+I'll print an indent based on the level, then the simple folder name in brackets, 
+and then I'll print the cumulative size of the folder, with commas, so I make that `%,d`.
+For the arguments, I'll repeat a tab using the level. 
+I'll print the file name of the key, the path, 
+and the value is the accumulated size of that folder or directory.
+If it's not the first level, I need to do a little more work, 
+so I need an _else_ statement.
+I'll get the folder size for the current directory.
+Remember this is post-processing, so this should have the correct size of this folder,
+because all the children have been processed.
+I'll do the same thing as I did with each file,
+merging the data for this directory's parent, adding the folder size here.
+Ok, that's it.
+Now the fun part, let's run it.
+
+```html  
+[Course01_ExceptionHandling] - 5,189 bytes 
+	[ChecedUncheckedFinally] - 1,192 bytes 
+	[TryWithResources] - 3,997 bytes 
+[Course02_UsingFilesAndPaths] - 9,381 bytes 
+	[Part1] - 6,381 bytes 
+		[files] - 0 bytes 
+	[Part2] - 3,000 bytes 
+[Course03_MethodsOnPath] - 2,476 bytes 
+[Course04_FilesClass] - 11,425 bytes 
+	[DirectoryListings] - 5,000 bytes 
+	[FileTree] - 3,455 bytes 
+[Course05_FileTreeWalkingChallenge] - 10,031 bytes 
+[Course06_ReadingTextFromInputFiles] - 25,501 bytes 
+	[Part1_ReadingFiles] - 8,896 bytes 
+	[Part2_ScannerProject] - 7,121 bytes 
+	[Part3_ReadingWithNIO2] - 9,484 bytes 
+[Course07_ReadingFileChallenge] - 140,871 bytes 
+[Course08_WritingDataToFiles] - 57,298 bytes 
+	[Part1] - 21,369 bytes 
+		[student] - 9,546 bytes 
+	[Part2] - 31,307 bytes 
+		[student] - 9,546 bytes 
+[Course09_WritingFilesChallenge] - 50,200 bytes 
+	[student] - 18,603 bytes 
+[Course10_ManagingFiles] - 3,178,099 bytes 
+	[Part1] - 640,460 bytes 
+		[files] - 627,118 bytes 
+			[data] - 258 bytes 
+	[Part2] - 2,530,010 bytes 
+		[files] - 1,254,628 bytes 
+			[data] - 947 bytes 
+				[newdata] - 269 bytes 
+		[resources] - 1,254,668 bytes 
+			[data] - 963 bytes 
+				[newdata] - 273 bytes 
+[Course11_FileManipulationChallenge] - 13,617 bytes 
+	[public] - 1,442 bytes 
+		[assets] - 760 bytes 
+			[icons] - 276 bytes 
+[Course12_RandomAccessFile] - 1,944,940 bytes 
+[Course13_RandomAccessFileChallenge] - 11,910 bytes 
+[Course14_DataStreamsAndSerialization] - 16,513 bytes 
+[Course15_SerializationAndChange] - 31,251 bytes 
+[images] - 1,524,935 bytes 
+```
+
+If you're on windows, you can use file explorer to verify these values, 
+opening the properties on each folder, to check the size.
+Let's embellish this just a tiny bit more, because maybe you really only want 
+to look at that first level of summaries.
+I'll add another private field on my **StatsVisitor** class, 
+and call it _printLevel_, an integer.
+
+```java  
+private static class StatsVisitor extends SimpleFileVisitor<Path> {
+
+    private Path initialPath = null;
+    private final Map<Path, Long> folderSizes = new LinkedHashMap<>();
+    private int initialCount;
+    
+    private int printLevel;
+    
+    public StatsVisitor(int printLevel) {
+        this.printLevel = printLevel;
+    }
+    
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+            throws IOException {
+
+        Objects.requireNonNull(file);
+        Objects.requireNonNull(attrs);
+        folderSizes.merge(file.getParent(), 0L, (o, n) -> o += attrs.size());
+        return FileVisitResult.CONTINUE;
+    }
+
+    @Override
+    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+            throws IOException {
+
+        Objects.requireNonNull(dir);
+        Objects.requireNonNull(attrs);
+
+        if (initialPath == null) {
+            initialPath = dir;
+            initialCount = dir.getNameCount();
+        } else {
+            int relativeLevel = dir.getNameCount() - initialCount;
+            if (relativeLevel == 1) {
+                folderSizes.clear();
+            }
+            folderSizes.put(dir, 0L);
+        }
+        
+        return FileVisitResult.CONTINUE;
+    }
+
+    @Override
+    public FileVisitResult postVisitDirectory(Path dir, IOException exc)
+            throws IOException {
+        
+        Objects.requireNonNull(dir);
+
+        if (dir.equals(initialPath)) {
+            return FileVisitResult.TERMINATE;
+        }
+
+        int relativeLevel = dir.getNameCount() - initialCount;
+        if (relativeLevel == 1) {
+            folderSizes.forEach((key, value) -> {
+                int level = key.getNameCount() - initialCount - 1;
+                //System.out.printf("%s[%s] - %,d bytes %n", "\t".repeat(level), key.getFileName(), value);
+                if (level < printLevel) {
+                    System.out.printf("%s[%s] - %,d bytes %n", "\t".repeat(level), key.getFileName(), value);
+                }
+            });
+
+        } else {
+            long folderSize = folderSizes.get(dir);
+            folderSizes.merge(dir.getParent(), 0L, (o, n) -> o += folderSize);
+        }
+        
+        return FileVisitResult.CONTINUE;
+    }
+}
+```
+
+I'll generate a custom constructor,
+so alt+insert if you're on windows, pick constructor, 
+and select _printLevel_ as the field.
+This field will drive the output, 
+and since the output is in the _postVisitDirectory_ method, 
+I'll go to that method.
+I'll wrap my output in an if statement.
+I'll check if the level is less than the _printLevel_, 
+and only print if that's true.
+
+```java  
+public static void main(String[] args) {
+
+    Path startingPath = Path.of("./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles");
+    FileVisitor<Path> statsVisitor = new StatsVisitor(1);
+    try {
+        Files.walkFileTree(startingPath, statsVisitor);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+To test this, I'll go back to the _main_ method,
+and pass 1 to the constructor of my _StatsVisitor_.
+Now, if I run this code:
+
+```html  
+[Course01_ExceptionHandling] - 5,189 bytes 
+[Course02_UsingFilesAndPaths] - 9,381 bytes 
+[Course03_MethodsOnPath] - 2,476 bytes 
+[Course04_FilesClass] - 11,689 bytes 
+[Course05_FileTreeWalkingChallenge] - 10,031 bytes 
+[Course06_ReadingTextFromInputFiles] - 25,501 bytes 
+[Course07_ReadingFileChallenge] - 140,871 bytes 
+[Course08_WritingDataToFiles] - 57,298 bytes 
+[Course09_WritingFilesChallenge] - 50,200 bytes 
+[Course10_ManagingFiles] - 3,178,099 bytes 
+[Course11_FileManipulationChallenge] - 13,617 bytes 
+[Course12_RandomAccessFile] - 1,944,940 bytes 
+[Course13_RandomAccessFileChallenge] - 11,910 bytes 
+[Course14_DataStreamsAndSerialization] - 16,513 bytes 
+[Course15_SerializationAndChange] - 31,251 bytes 
+[images] - 1,524,935 bytes 
+```
+
+I'll get the directory sizes for the first level of subfolders only.
+If I change my path, this time I'm going to use 
+`"./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/"`,
+which means use the parent path of the current directory.
+This will be the folder I have all of my IntelliJ Projects in.
+Running this:
+
+```html  
+[Section_01_ExpressionsStatementsMore] - 2,025,110 bytes
+[Section_02_ControlFlow] - 62,523 bytes
+[Section_03_OOP1] - 8,296,747 bytes
+[Section_04_OOP2] - 1,104,423 bytes
+[Section_05_Arrays] - 69,925 bytes
+[Section_06_ArrayList_LinkedList_Iterators_Autoboxing] - 609,954 bytes
+[Section_07_Abstraction_Interface] - 459,992 bytes
+[Section_08_Generics] - 510,221 bytes
+[Section_09_NestedClassesAndTypes] - 129,617 bytes
+[Section_10_LambdaExpressionsAndFunctionalInterfaces] - 198,795 bytes
+[Section_11_Collections] - 3,165,931 bytes
+[Section_12_Immutable_Unmodifable_Classes] - 2,724,102 bytes
+[Section_13_Streams] - 1,638,738 bytes
+[Section_16_InputOutputFiles] - 7,237,214 bytes
+```
+
+You might get a lot of folders if you've been following along with this course, 
+and creating a project each time I do.
+Ok, so I hope this code took the mystery out of this method.
+I could have passed in an anonymous class to the _walkFileTree_ method, 
+and you'll often see that are done when you see examples of this method.
+If you're only overriding one or two methods of **SimpleFileVisitor**, 
+then that's fine, but I think this way, creating a static class,
+is a little easier for others to read and understand what you're doing.
 </div>
 
-
-
+## [c. File Tree Walking Challenge]()
 <div align="justify">
 
-```java  
+In the last couple of sections, I've shown you a lot of ways
+to navigate the file tree with the many different methods on **Files**.
+These include:
 
-```
+* `Files.list`
+* `Files.walk`
+* `Files.find`
 
-```html  
+These three methods return a **Stream** of **Paths**.
 
-```
+* `Files.newDirectoryStream`
 
+This method returns a **DirectoryStream** instance,
+an iterable class, that's only one level deep,
+but is more efficient than creating a stream.
+
+* Files.walkFileTree
+
+Which you've seen can be more complex to use,
+but provides hooks into the process which can be leveraged.
+In the last section, I used the sum of the file sizes
+to determine the size of a directory,
+and accumulated those sizes up to the parent directories.
+
+In this challenge, I want you to do something very similar.
+In addition to summing up directory sizes,
+I want you to summarize the number of **Files** in a directory.
+For a bonus, include the summary of the number of subfolders.
+These numbers should include nested files or folders.
+If you're on windows, you might be familiar with the _properties_ feature,
+in the **File Explorer**.
+
+![image08](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image08.png?raw=true)
+
+I'm showing a screenshot on this image.
+You can see the **Size**, which is the cumulative size of all the files.
+You also can see that this folder contains 17 _files_ and 9 _folders_ in total.
+This folder count doesn't include the current folder, but does include nested folders.
+
+You're welcome to use the _walkFileTree_ code from the last section,
+as your starting point.
+That will be my own approach.
+Here's a hint, instead of the map value being a **Long**,
+I'll be making that a nested **Map**.
+But if you're feeling more adventurous, and want to see
+if you can figure out a way to use one of the streaming methods, go ahead.
+This would be a great learning exercise for you.
+Or, you may want to try using _newDirectoryStream_ in a recursive way.
+You should test your code first on the current working directory,
+and then on some larger directory, to see how well it performs
+with a much greater set of data.
+That's the challenge, and I want you to try
+to have some fun with this.
 </div>
 
 

@@ -195,6 +195,7 @@ What we will learn from this Path:
 
 ### [a. Exception Handling]()
 ### [b. Using Files and Paths Classes]()
+### [c. File Tree Walking Challenge]()
 
     * Reading Input Files
     * Writing Data to a File

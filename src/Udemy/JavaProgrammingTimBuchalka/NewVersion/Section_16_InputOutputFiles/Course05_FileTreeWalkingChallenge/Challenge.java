@@ -12,7 +12,8 @@ public class Challenge {
 
     public static void main(String[] args) {
 
-        Path startingPath = Path.of(".");
+        //Path startingPath = Path.of(".");
+        Path startingPath = Path.of("./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/");
         FileVisitor<Path> statsVisitor = new StatsVisitor(Integer.MAX_VALUE);
         try {
             Files.walkFileTree(startingPath, statsVisitor);
