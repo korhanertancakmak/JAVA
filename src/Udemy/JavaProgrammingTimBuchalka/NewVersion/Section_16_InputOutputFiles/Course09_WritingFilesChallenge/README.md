@@ -20,11 +20,20 @@ public record StudentDemographics(String countryCode, int enrolledMonth,
 ```
 
 I'll press alt+Insert, or you could select Code from the file menu, then generate.
+
+![image13a](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image13a.png?raw=true)
+
 Either way, select the _toString_ method as the item to generate.
 All the fields in the dialog window, should be selected by default.
 Here, next to the **Template** select list, is a button, **Settings**.
 I'll select that.
-On this window, I want to select the **Templates** tab,
+
+![image13b](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image13b.png?raw=true)
+
+On this window, I want to select the **Templates** tab.
+
+![image13c](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image13c.png?raw=true)
+
 Here, on the left, I can see the list of existing templates, 
 each generates the _toString_ method, in different ways.
 You may have a different list of templates.
@@ -33,17 +42,26 @@ The template code is displayed on the right.
 This code uses a combination of Java, and a scripting language used by the IDE,
 called the _Velocity Template Language_.
 What I'll do next, is make a copy of this coding template.
-I can select the copy icon, at the top of the left pane.
+I can select the **copy** icon, at the top of the left pane.
+
+![image13d](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image13d.png?raw=true)
+
 This prompts for a new template name.
 I'll call it **JsonBuilder**, with **StringJoiner** in parentheses, 
 and I'll click OK.
+
+![image13e](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image13e.png?raw=true)
+
 This code uses **StringJoiner**, so all fields are separated by the delimiter,
 declared as the first argument, a comma.
 The prefix is the second argument to the **StringJoiner** constructor.
 Here you see, the dollar sign class name.
 The two hash signs just mean the statement is continued on the next line.
-Then the dot `class.getSimpleName`, and that's appended to an opening square bracket.
+Then the `.class.getSimpleName`, and that's appended to an opening square bracket.
 All of this code just outputs the simple class name.
+
+![image13f](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image13f.png?raw=true)
+
 I don't really want this in my output, 
 so I'll remove all of this I'll change the square brackets to curly braces.
 Next, this code loops through all the class members, 
@@ -51,20 +69,35 @@ here you can see a foreach statement.
 This is followed by an if statement.
 This statement is saying, if it's not a static member, 
 it will add information about this field, to the **StringJoiner** instance.
+
+![image13g](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image13g.png?raw=true)
+
 First it will add the field name followed by an equals sign.
 In Json, field names are the keys, and the keys should be wrapped in double quotes.
+
+![image13h](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image13h.png?raw=true)
+
 This means I want to add a backslash double quote, after the first double quote there.
 I'll also add a backslash after the dot name there.
 That equals sign needs to be a colon, for Json, so I'll change that.
+
+![image13i](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image13i.png?raw=true)
+
 I'll skip over the if statement for a primitive array or object array,
 and go down to the next else if.
 If this field is a string, the code will wrap the value in single quotes.
+
+![image13j](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image13j.png?raw=true)
+
 Here, I want to change the single quotes, to backslash double quotes, in both cases.
 Finally, for good measure, I'll go up and change the name from _toString_ to _JSON_.
 I'll click OK to save this.
+
+![image13k](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image13k.png?raw=true)
+
 It's now selected in my template drop down.
 In the bottom left corner of this dialog, 
-I want to uncheck Insert ampersand Override, 
+I want to **uncheck** _Insert @Override_, 
 because in this case I'm not overriding any method.
 I can press OK after that.
 
@@ -97,15 +130,60 @@ This inserts the new _toJson_ method in the **StudentDemographics** code.
 The benefit of this exercise isn't totally apparent,
 unless we use this template more than a couple of times.
 I'll go over to my **Student** class next, and find it's _toString_ method.
+
+```java  
+public String toJSON() {
+    return new StringJoiner(", ", "{", "}")
+            .add("\"studentId\":" + studentId)
+            .add("\"demographics\":" + demographics)
+            .add("\"coursesEnrolled\":" + courses)
+            .add("\"engagementMap\":" + engagement)
+            .toString();
+}
+```
+
 Underneath that I'll generate the _toString_ method,
 but select the Json Builder template here.
 I'll make sure to uncheck the insert Override checkbox before I hit OK.
 And that gives me a _toJSON_ method in the **Student** class.
+
+```java  
+public String toJSON() {
+    return new StringJoiner(", ", "{", "}")
+            .add("\"studentId\":" + studentId)
+            .add("\"demographics\":" + demographics.toJSON())
+            //.add("\"coursesEnrolled\":" + courses)
+            //.add("\"engagementMap\":" + engagement)
+            .toString();
+}
+```
+
 I'm going to comment out the two add statements for _coursesEnrolled_ 
 and _EngagementMap_ right now.
 Finally, for the demographics, 
 I really want to pass the result of the _toJSON_ method on that class.
 To see if this works, I'll create a new class called **Challenge**.
+
+```java  
+public class Challenge {
+
+    public static void main(String[] args) {
+        
+        Course jmc = new Course("JMC", "Java Masterclass");
+        Course pymc = new Course("PYC", "Python Masterclass");
+
+        //List<Student> = Stream
+        List<String> students = Stream
+                .generate(() -> Student.getRandomStudent(jmc, pymc))
+                //.limit(25)
+                .limit(2)
+                .map(Student::toJSON)
+                .toList();
+        students.forEach(System.out::println);
+    }
+}
+```
+
 I'll go to the **Main** class, and copy the code that creates my list of students.
 I don't want the header, so starting at the declaration of the _jmc_ course,
 through the _toList_ operation.
@@ -116,41 +194,31 @@ Next, I'm going to change my **List** of **Students** to a **List** of **Strings
 That's because, I'll insert a _map_ operation, that will take a student, 
 mapping it to a string, using the _toJson_ method.
 I can do that with a method reference.
-And I'll run this now:
-
-```html  
-
-```
-
-And whoops, I forgot to add code to print out
-the result, so let me add that now and re-run.
 I'll print each element in this
 list to the console to start.
-Running this,
+Running this:
 
 ```html  
-
+{"studentId":1, "demographics":{"countryCode":"CN", "enrolledMonth":9, "enrolledYear":2019, "ageAtEnrollment":51, "gender":"F", "previousProgrammingExperience":false}}
+{"studentId":2, "demographics":{"countryCode":"GB", "enrolledMonth":2, "enrolledYear":2015, "ageAtEnrollment":22, "gender":"U", "previousProgrammingExperience":false}}
 ```
 
-And maybe that's right, but
-it's kind of hard to tell.
-I'll copy the last student record in my
-console, and I'll pull up a JSON linter.
-A linter is a software development
-tool, that will analyze source code
-for potential errors, and styling issues.
-I'm showing a link of a popular one here.
-These tools enable you to paste text into a text
-area, and both nicely format, as well as validate,
-that the text is well formed.
+And maybe that's right, but it's kind of hard to tell.
+I'll copy the last student record in my console, 
+and I'll pull up a _JSON linter_.
+A **linter** is a software development tool, 
+that will analyze source code for potential errors, and styling issues.
+I'm showing a link of a popular one [here](https://jsoonlint.com).
+These tools enable you to paste text into a text area, 
+and both nicely format, and validate, that the text is well-formed.
 I'll open that link up now.
-I can paste my clipboard text,
-right into this text area.
-I can press the validate button
-which is below this text block.
-This formats the JSON,
-and validates it, the results are
-shown below the validate button.
+I can paste my clipboard text, right into this text area.
+I can press the validate button which is below this text block.
+
+
+
+This formats the JSON, and validates it, 
+the results are shown below the validate button.
 Now I know I've created Valid
 JSON for this one student record.
 OK, so that's all good.

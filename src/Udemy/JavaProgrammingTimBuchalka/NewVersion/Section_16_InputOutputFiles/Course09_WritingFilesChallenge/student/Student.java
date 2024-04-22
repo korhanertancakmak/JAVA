@@ -134,22 +134,6 @@ public class Student {
                 .map(CourseEngagement::toJSON)
                 .collect(Collectors.joining(",", "[", "]"));
 
-//Part-9
-/**
-        And the toJSON method. Because the coursesEnrolled and engagementMap types are part of collections, I need to
- create a json array for each. I'll show you two ways to do this. The first, is just to use the StringJoiner class. I'll
- set up a local variable, a StringJoiner type called courses, and create a new instance with a delimiter of comma. The
- prefix and suffix will be square brackets. I'll loop through coursesEnrolled, and add toJSON of each course to the
- StringJoiner. for the engagement map, I'll use a stream, on its values. I'll map to the CourseEngagement JSON. Like I
- did in the Challenge's main method, I'll collect the strings using Collectors.joining with a comma, and square brackets
- again for the prefix and suffix. Finally I'll add the 2 adds I have for coursesEnrolled and engagementMap below as the
- variable to courses, and engagement. I'll rerun the code. It's hard to see it, in the students.json file. Copy the last
- statement and back over to the JSON lint site. Paste the JSON in there. And hit the validate button. It formats it and
- tells me I have valid JSON. Now, look at this formatted JSON for the 1000th student. You can see now here coursesEnrolled,
- and that's an array of 2 courses. I have engagementMap, and array of two engagement records.
-
- **/
-//End-Part-9
 
         return new StringJoiner(", ", "{", "}")
                 .add("\"studentId\":" + studentId)
@@ -158,17 +142,6 @@ public class Student {
                 .add("\"engagementMap\":" + engagement)
                 .toString();
     }
-
-//Part-3
-/**
-        I'll generate the toString method, but select the JsonBuilder(StringJoiner) template. I'll make sure to uncheck
- the insert Override checkbox before I hit OK. And that gives me a toJSON method in the Student class. I'm going to remove
- 2 statements for coursesEnrolled and EngagementMap now. Finally for the demographics, I really want to pass the result
- of the toJSON on that class. To see this works, I'll create a new class called Challenge.
-**/
-//End-Part-3
-
-
 
     public List<String> getEngagementRecords() {
 
