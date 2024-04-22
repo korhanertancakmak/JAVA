@@ -2,565 +2,723 @@ WEBVTT
 Kind: captions
 Language: en
 
-00:00:06.720 --> 00:00:11.160
-In this challenge, I want you to pick some
-text of your choice, from a document you have,
+00:00:05.160 --> 00:00:06.960
+Welcome to the File Writing Challenge.
 
-00:00:11.160 --> 00:00:16.500
-or an online article, or some wiki page.
-You'll create a program to read the text
+00:00:08.040 --> 00:00:12.780
+In this challenge, you'll be creating your own
+data file, with the Student Engagement records.
 
-00:00:16.500 --> 00:00:20.040
-document, with one of the methods we talked
-about in the last couple of lectures.
+00:00:13.620 --> 00:00:16.860
+In this case, you'll be outputting
+the data in Jayson format.
 
-00:00:21.120 --> 00:00:24.180
-You can pick any method you want
-to use, but whichever you use,
+00:00:17.760 --> 00:00:22.980
+You've seen a little JSON in a previous lecture.
+It stands for JavaScript Object Notation,
 
-00:00:24.180 --> 00:00:28.680
-your program should do the following.
-Tokenize the text into words,
+00:00:22.980 --> 00:00:26.280
+and it's a pretty popular
+lightweight data interchange format.
 
-00:00:28.680 --> 00:00:33.600
-remove any punctuation. Ignore
-words with 5 characters or less.
+00:00:27.180 --> 00:00:31.560
+If you want a quick introduction, a good
+place to start is the w3schools site,
 
-00:00:34.680 --> 00:00:39.660
-Count the occurrences of each word.
-Display the top 10 most used words.
+00:00:31.560 --> 00:00:35.640
+which I'm showing on this slide.
+Don't worry though, because you
 
-00:00:40.680 --> 00:00:44.220
-The point of this exercise is to see if you
-can pick out what the article might be about,
+00:00:35.640 --> 00:00:38.520
+don't really have to know much about
+Jayson, to complete this challenge.
 
-00:00:44.220 --> 00:00:46.533
-by simply getting the most used words.
+00:00:40.620 --> 00:00:45.840
+Start with the Student Engagement code from the
+previous videos, and first generate 1000 students.
 
-00:00:48.232 --> 00:00:50.850
-After you use one method, try a second method.
+00:00:46.800 --> 00:00:51.420
+To output each student as a JSON record:
+You can use the write, or writeString methods
 
-00:00:51.780 --> 00:00:55.320
-If you used a method that used a
-stream, try some code without using
+00:00:51.420 --> 00:00:57.480
+on Files. Or you can try FileWriter, PrintWriter
+or BufferedWriter, or some combination of these.
 
-00:00:55.320 --> 00:01:00.180
-a streaming method, or vice versa.
-Ok, so go away and give that a try.
+00:00:58.380 --> 00:01:02.460
+The text printed should be a list of
+students, a conceptual look is shown here.
 
-00:01:01.260 --> 00:01:05.400
-When you're done, and want to see my solutions,
-come back and we'll walk through this together.
+00:01:03.420 --> 00:01:06.720
+The entire set of student records
+should be contained in square brackets,
 
-00:01:07.920 --> 00:01:11.100
-Welcome back.
-How'd you do on that challenge?
+00:01:06.720 --> 00:01:09.540
+which is Jaysons representation
+for an array of elements.
 
-00:01:12.180 --> 00:01:16.020
-Were you able to figure it out?
-Did you try the bonus part?
+00:01:10.440 --> 00:01:13.320
+Each student record should
+be enclosed in curly braces,
 
-00:01:17.100 --> 00:01:20.820
-Let's get started.
-First, I've created a
+00:01:13.320 --> 00:01:18.720
+containing student data in key value pairs, and
+separated by commas, which I'll show you next.
 
-00:01:20.820 --> 00:01:24.360
-project called ReadingFilesChallenge,
-with the usual main class and method.
+00:01:20.520 --> 00:01:24.600
+At a minimum, print the student
+id, and some demographics data.
 
-00:01:25.260 --> 00:01:31.020
-Before I write any code, I'll create a new file,
-at the root of this project, called article.txt.
+00:01:25.320 --> 00:01:28.920
+The Jayson example on this slide,
+demonstrates a flattened structure.
 
-00:01:32.160 --> 00:01:36.240
-For my article, I've copied the text
-from wikipedia, for the Grand Canyon.
+00:01:29.760 --> 00:01:33.900
+You can see all fields are key value pairs,
+and all are children of the student record.
 
-00:01:37.200 --> 00:01:41.100
-I'll paste it in my file warts and
-all, as the saying goes, meaning I'll
+00:01:34.980 --> 00:01:38.640
+Keys are enclosed in quotes, as
+are values if they're text based,
 
-00:01:41.100 --> 00:01:45.420
-just leave it exactly as I got it.
-Now, I'll use a buffered reader,
+00:01:38.640 --> 00:01:41.100
+and the colon is used to
+separate the key and value.
 
-00:01:45.420 --> 00:01:50.040
-because who knows, maybe I'll use this code
-against really large text files later on.
+00:01:43.020 --> 00:01:47.400
+On this slide, I'm showing a more hierarchical
+Jayson structure, for a single student.
 
-00:01:50.880 --> 00:01:56.580
-In the try with resources, parentheses, I'll
-create a buffered reader variable, just br to
+00:01:48.480 --> 00:01:52.541
+The demographics key, has a value
+that's an object and not a simple string,
 
-00:01:56.580 --> 00:02:02.460
-keep it short, and assign that a new instance of
-this class. I'll pass an instance of FileReader,
+00:01:52.541 --> 00:01:57.840
+and that's enclosed in curly braces.
+The engagement key's values is also an array,
 
-00:02:02.460 --> 00:02:08.520
-using the string literal, article dot text. I'll
-add a catch block, because I know I need it.
+00:01:57.840 --> 00:02:00.314
+containing separate engagement records.
 
-00:02:09.300 --> 00:02:12.180
-If there's an error, I'll just
-print it and ignore it after that.
 
-00:02:13.320 --> 00:02:16.620
-I'll be using the method lines,
-that returns a stream of Strings.
+00:02:02.288 --> 00:02:05.794
+You might want to explore the use ofIntelliJ's template functionality,
 
-00:02:17.640 --> 00:02:21.180
-I'll wrap that in a system dot out print
-f statement, because I first want to
+00:02:05.794 --> 00:02:07.925
+to create your own JSON string template.
 
-00:02:21.180 --> 00:02:25.500
-print just the count of lines in the file.
-My argument will have the call to the lines
+00:02:08.880 --> 00:02:11.640
+You could start with one of the
+toString templates as a basis.
 
-00:02:25.500 --> 00:02:28.288
-method, chained to the terminal operation, count.
+00:02:12.660 --> 00:02:15.300
+I've included IntelliJ's
+help link on that subject.
 
-00:02:29.466 --> 00:02:30.443
-Running that
+00:02:16.380 --> 00:02:20.940
+It's a little off topic, but you might find it
+useful for this and other similar challenges.
 
-00:02:32.520 --> 00:02:37.680
-I'll get that my file has 533 lines in it.
-You'll likely get different numbers for this
+00:02:21.960 --> 00:02:25.680
+If this is something you want to explore,
+go ahead and give that a try on your own,
 
-00:02:37.680 --> 00:02:41.820
-if you are on a Mac or running on Linux.
-One thing I do want to point out to you,
+00:02:25.680 --> 00:02:29.520
+or watch the first few minutes of
+my solution, then pause afterwards.
 
-00:02:41.820 --> 00:02:45.720
-while we're looking at this, is what happens
-if I try to execute this method again.
+00:02:30.360 --> 00:02:32.579
+Don't forget about the StringJoiner class,
 
-00:02:46.680 --> 00:02:49.071
-I'll just copy and paste that line of code here.
+00:02:32.579 --> 00:02:35.940
+that lets you define a delimiter,
+as well as a prefix and suffix.
 
-00:02:50.287 --> 00:02:51.804
-If I run the code like this,
+00:02:37.080 --> 00:02:39.840
+Start out by testing 2 or 3
+students in your data set.
 
-00:02:53.700 --> 00:02:58.800
-I get 0 lines for the second statement.
-After the terminal operation on the first
+00:02:40.800 --> 00:02:44.340
+Ok, so go away and have a go at that,
+and see what you can come up with.
 
-00:02:58.800 --> 00:03:01.440
-pipeline, the file pointer
-is at the end of the file.
+00:02:45.420 --> 00:02:48.780
+When you're ready, come back, and we'll
+walk through my solution together.
 
-00:03:02.340 --> 00:03:05.640
-I'll be talking about ways to maneuver
-this file pointer in a later section,
+00:02:51.840 --> 00:02:56.040
+I'm going to complete this challenge in the same
+project I've been using, the WritingFiles project.
 
-00:03:05.640 --> 00:03:11.040
-through the means of mark and reset methods.
-For now, it's important to understand you can't
+00:02:57.180 --> 00:03:00.960
+The first thing I want to do is, show you
+how to create your own to String template.
 
-00:03:11.040 --> 00:03:15.120
-use back to back calls like this.
-I'll revert that last paste,
+00:03:01.920 --> 00:03:06.540
+I'll start in the StudentDemographics record,
+with my pointer just below the two String method.
 
-00:03:15.120 --> 00:03:17.176
-and I'll comment out that first statement.
+00:03:07.320 --> 00:03:11.640
+I'll press alt Insert, or you could select
+Code from the file menu, then generate.
 
-00:03:17.948 --> 00:03:20.000
-Next, I want to count the number of words.
+00:03:12.960 --> 00:03:15.660
+Either way, select the two String
+method as the item to generate.
 
-00:03:20.940 --> 00:03:25.680
-There's a few ways to do this, but let me show
-you one, that uses this lines method again,
+00:03:16.560 --> 00:03:19.980
+All the fields in the dialog window,
+should be selected by default.
 
-00:03:25.680 --> 00:03:30.480
-with a regular expression pattern.
-First, I'll set up a pattern variable,
+00:03:20.940 --> 00:03:24.840
+Here, next to the Template select
+list, is a button, Settings.
 
-00:03:30.480 --> 00:03:35.220
-and compile a Pattern, with the string I know the
-scanner class uses to split strings into words.
+00:03:26.040 --> 00:03:28.800
+I'll select that.
+On this window,
 
-00:03:36.240 --> 00:03:39.540
-I'll again set up a print f statement,
-this time for the number of words.
+00:03:28.800 --> 00:03:34.020
+I want to select the Templates tab,
+Here, on the left, I can see the
 
-00:03:40.560 --> 00:03:46.860
-I'll start with my source, lines from the buffered
-reader. I'll call flatMap, and use a method on my
+00:03:34.020 --> 00:03:38.280
+list of existing templates, each generates
+the two String method, in different ways.
 
-00:03:46.860 --> 00:03:52.860
-pattern, called splitAsStream. This method will
-split the string, and return a stream of String.
+00:03:39.240 --> 00:03:44.040
+You may have a different list of templates.
+I'll select the StringJoiner template.
 
-00:03:53.820 --> 00:03:59.460
-I need flatMap here, to flatten the hierarchy,
-before I can use the terminal operation, count.
+00:03:45.000 --> 00:03:50.220
+The template code is displayed on the right.
+This code uses a combination of Java,
 
-00:04:00.780 --> 00:04:01.969
-If I run this code,
+00:03:50.220 --> 00:03:54.480
+and a scripting language used by the IDE,
+called the Velocity Template Language.
 
-00:04:04.093 --> 00:04:07.445
-I'll see that I have 13,799 words in this file.
+00:03:55.620 --> 00:03:58.800
+What I'll do next, is make a
+copy of this coding template.
 
-00:04:08.280 --> 00:04:10.920
-Another option, would have
-been to split the string.
+00:03:59.760 --> 00:04:02.940
+I can select the copy icon,
+at the top of the left pane.
 
-00:04:11.760 --> 00:04:14.460
-I'll comment out this flat map,
-and show you another version.
+00:04:03.900 --> 00:04:08.640
+This prompts for a new template name.
+I'll call it JsonBuilder, with String
 
-00:04:15.540 --> 00:04:20.220
-I have to create a stream here because flat map
-only works on a resulting stream, so I'll call
+00:04:08.640 --> 00:04:11.283
+Joiner in parentheses, and I'll click OK.
 
-00:04:20.220 --> 00:04:24.540
-stream on Arrays, passing it the string array
-I get back by using my pattern on each line.
+00:04:12.411 --> 00:04:16.337
+This code uses StringJoiner, so all fields are separated by the delimiter,
 
-00:04:25.800 --> 00:04:26.580
+00:04:16.337 --> 00:04:18.900
+declared as the first argument, a comma.
+
+00:04:19.680 --> 00:04:22.860
+The prefix is the second argument
+to the StringJoiner constructor.
+
+00:04:23.760 --> 00:04:26.280
+Here you see, the dollar sign classname.
+
+00:04:27.000 --> 00:04:30.120
+The two hash signs just mean the
+statement is continued on the next line.
+
+00:04:31.140 --> 00:04:35.340
+Then the dot class dot getSimple Name, and
+that's appended to an opening square bracket.
+
+00:04:36.180 --> 00:04:38.700
+All of this code just outputs
+the simple class name.
+
+00:04:39.660 --> 00:04:42.420
+I don't really want this in my
+output, so I'll remove all of this
+
+00:04:43.380 --> 00:04:45.900
+I'll change the square brackets to curly braces
+
+00:04:48.060 --> 00:04:52.920
+Next, this code loops through all the class
+members, here you can see a foreach statement.
+
+00:04:53.820 --> 00:04:58.620
+This is followed by an if statement.
+This statement is saying, if it's not a
+
+00:04:58.620 --> 00:05:02.820
+static member, it will add information about
+this field, to the String joiner instance.
+
+00:05:03.840 --> 00:05:06.480
+First it will add the field
+name followed by an equals sign.
+
+00:05:07.560 --> 00:05:11.940
+In Jayson, field names are the keys, and
+the keys should be wrapped in double quotes.
+
+00:05:13.260 --> 00:05:15.540
+This means I want to add a backslash double quote,
+
+00:05:15.540 --> 00:05:19.500
+after the first double quote there.
+I'll also add a back slash
+
+00:05:19.500 --> 00:05:23.280
+after the dot name there.
+That equals sign needs to be a colon,
+
+00:05:23.280 --> 00:05:25.505
+for Jayson, so I'll change that.
+
+00:05:26.893 --> 00:05:30.000
+I'll skip over the if statement for
+a primitive array or object array,
+
+00:05:30.000 --> 00:05:31.500
+and go down to the next else if.
+
+00:05:32.520 --> 00:05:35.940
+If this field is a string, the code
+will wrap the value in single quotes.
+
+00:05:37.140 --> 00:05:42.480
+Here, I want to change the single quotes,
+to back slash double quotes, in both cases.
+
+00:05:44.220 --> 00:05:48.540
+Finally, for good measure, I'll go up and
+change the name from two String to JSON.
+
+00:05:49.500 --> 00:05:54.420
+I'll click OK to save this.
+It's now selected in my template drop down.
+
+00:05:55.380 --> 00:06:00.480
+In the bottom left corner of this dialog, I want
+to uncheck Insert ampersand Override, because in
+
+00:06:00.480 --> 00:06:04.620
+this case I'm not overriding any method.
+I can press OK after that.
+
+00:06:07.140 --> 00:06:10.380
+This inserts the new two Jayson method
+in the StudentDemographics code.
+
+00:06:11.340 --> 00:06:14.040
+The benefit of this exercise
+isn't totally apparent,
+
+00:06:14.040 --> 00:06:16.680
+unless we use this template
+more than a couple of times.
+
+00:06:17.820 --> 00:06:21.240
+I'll go over to my Student class
+next, and find it's two string method.
+
+00:06:26.340 --> 00:06:28.560
+Underneath that I'll generate
+the two String method,
+
+00:06:28.560 --> 00:06:30.960
+but select the Jayson Builder template here.
+
+00:06:31.860 --> 00:06:35.160
+I'll make sure to uncheck the insert
+Override checkbox before I hit OK.
+
+00:06:37.080 --> 00:06:39.600
+And that gives me a two JSON
+method in the Student class.
+
+00:06:40.740 --> 00:06:44.820
+I'm going to comment out the two add statements
+for coursesEnrolled and EngagementMap right now.
+
+00:06:45.720 --> 00:06:47.040
+Finally for the demographics,
+
+00:06:47.040 --> 00:06:50.340
+I really want to pass the result of
+the two JSON method on that class.
+
+00:06:51.480 --> 00:06:56.040
+To see if this works, I'll create a new class
+called Challenge in the dev.lpa package.
+
+00:07:05.040 --> 00:07:09.060
+I'll go to the Main class, and copy the
+code that creates my list of students.
+
+00:07:10.080 --> 00:07:13.680
+I don't want the header, so starting
+at the declaration of the jmc course,
+
+00:07:13.680 --> 00:07:15.360
+through the two List operation.
+
+00:07:16.380 --> 00:07:18.900
+I'll paste that in the main
+method of my Challenge class.
+
+00:07:19.980 --> 00:07:24.180
+I'll change 25 to just 2 in the limit operation
+for now, while I'm testing out my code.
+
+00:07:25.260 --> 00:07:28.440
+Next, I'm going to change my List
+of Students to a List of Strings.
+
+00:07:30.960 --> 00:07:33.240
+That's because, I'll insert a map operation,
+
+00:07:33.240 --> 00:07:37.680
+that will take a student, mapping it to
+a string, using the two Jayson method.
+
+00:07:38.580 --> 00:07:40.484
+I can do that with a method reference.
+
+00:07:41.590 --> 00:07:42.701
+And I'll run this now.
+
+00:07:47.400 --> 00:07:51.960
+And whoops, I forgot to add code to print out
+the result, so let me add that now and re-run.
+
+00:07:52.860 --> 00:07:55.440
+I'll print each element in this
+list to the console to start.
+
+00:07:56.580 --> 00:07:57.420
 Running this,
 
-00:04:30.960 --> 00:04:33.540
-Instead of a flat map, I could use map and sum.
+00:07:59.280 --> 00:08:01.920
+And maybe that's right, but
+it's kind of hard to tell.
 
-00:04:34.500 --> 00:04:39.240
-I'll copy this entire System.out.printf
-statement, and paste a copy just below.
+00:08:02.940 --> 00:08:07.080
+I'll copy the last student record in my
+console, and I'll pull up a JSON linter.
 
-00:04:40.500 --> 00:04:45.360
-I'll comment the previous statement out, since I
-can't call br dot lines consecutively like this.
+00:08:08.700 --> 00:08:12.360
+A linter is a software development
+tool, that will analyze source code
 
-00:04:46.320 --> 00:04:49.740
-I think it's a good idea to keep
-exercising some of these stream skills,
+00:08:12.360 --> 00:08:17.640
+for potential errors, and styling issues.
+I'm showing a link of a popular one here.
 
-00:04:49.740 --> 00:04:54.060
-so I'll just show you this next variation,
-in case you find flatMap a little confusing.
+00:08:18.600 --> 00:08:24.720
+These tools enable you to paste text into a text
+area, and both nicely format, as well as validate,
 
-00:04:54.960 --> 00:04:59.040
-I'll remove that commented out flat map
-here, and the two operations below it.
+00:08:24.720 --> 00:08:28.500
+that the text is well formed.
+I'll open that link up now.
 
-00:05:00.060 --> 00:05:03.060
-This time, I'll use mapToLong
-as my intermediate operation.
+00:08:35.100 --> 00:08:38.280
+I can paste my clipboard text,
+right into this text area.
 
-00:05:04.140 --> 00:05:08.040
-My lambda expression will still split the
-string using the pattern, but this time it
+00:08:39.300 --> 00:08:42.180
+I can press the validate button
+which is below this text block.
 
-00:05:08.040 --> 00:05:11.915
-will return the length of that resulting array.
-And instead of count,
+00:08:44.460 --> 00:08:45.840
+This formats the JSON,
 
-00:05:12.012 --> 00:05:14.031
-I want the terminaloperation to be sum.
+00:08:47.460 --> 00:08:50.880
+and validates it, the results are
+shown below the validate button.
 
-00:05:15.691 --> 00:05:16.764
-Running that
+00:08:51.720 --> 00:08:54.420
+Now I know I've created Valid
+JSON for this one student record.
 
-00:05:18.840 --> 00:05:22.380
-I get the same result, proving
-once again, there's no right way.
+00:08:55.560 --> 00:09:00.300
+OK, so that's all good.
+This video is getting long, and I still haven't
 
-00:05:23.280 --> 00:05:26.640
-This way is probably more efficient,
-because there's no overhead with the
+00:09:00.300 --> 00:09:05.520
+written a single character to an output file yet.
+Luckily, this part is pretty easy.
 
-00:05:26.640 --> 00:05:30.900
-streams, and it's processing a smaller
-number of long values, versus strings.
+00:09:06.480 --> 00:09:10.560
+I'll be doing this with Files dot
+writeString, passing it one very large string.
 
-00:05:31.980 --> 00:05:36.720
-Ok, I'm going to comment that out again,
-Let me get back to the task at hand.
+00:09:11.340 --> 00:09:12.480
+How do I do this?
 
-00:05:38.220 --> 00:05:43.020
-I'll set up a local variable for my result,
-and start out with the source, br dot lines.
+00:09:13.440 --> 00:09:17.040
+Getting back to the Challenge code,
+I'll first change my stream pipeline.
 
-00:05:44.100 --> 00:05:47.340
-I do want to do a flat map here,
-because I want to evaluate every word.
+00:09:18.000 --> 00:09:23.820
+I'll make the result a String, and not a list.
+Next, I'll remove both the two List statement,
 
-00:05:48.480 --> 00:05:53.280
-One of the requirements, was to get rid of
-trailing commas and periods, so I'll call map,
+00:09:23.820 --> 00:09:27.060
+and that last statement, that
+prints each student json record.
 
-00:05:53.280 --> 00:05:58.200
-calling replaceAll on the word, using a regular
-expression, that stands for any punctuation.
+00:09:28.140 --> 00:09:31.560
+Instead of two List, I want to use
+the collect terminal operation.
 
-00:05:59.220 --> 00:06:02.760
-After this, I only want to evaluate
-words with more than 4 characters.
+00:09:32.640 --> 00:09:36.540
+I can use Collectors.joining which uses
+a StringJoiner underneath the covers.
 
-00:06:03.840 --> 00:06:08.160
-I'll make all the words lowercase, so I
-don't have duplicates, just based on case.
+00:09:37.440 --> 00:09:44.040
+The first argument is the delimiter. I'll make
+that a comma. The next argument is a prefix which
 
-00:06:09.300 --> 00:06:13.800
-the terminal operation will group by the whole
-word, and count all instances of the same words.
+00:09:44.040 --> 00:09:49.519
+for this array of students, needs to be an opening
+square bracket, and my suffix is a closing square bracket.
 
-00:06:15.480 --> 00:06:17.160
-Now, I need to print out the results,
+00:09:50.408 --> 00:09:55.500
+I'll print this to the console as well.
+There's actually one more change I want to make,
 
-00:06:17.160 --> 00:06:21.120
-and I've said I only want the top 10
-words that have the highest frequency.
+00:09:55.500 --> 00:09:57.900
+to help with the readability
+of the output a little bit.
 
-00:06:22.080 --> 00:06:26.406
-I'll stream again, by getting the entrySet of my
-result, and calling stream on that.
+00:09:58.800 --> 00:10:03.060
+I want to make my delimiter, between
+students, also include a line separator.
 
-00:06:27.410 --> 00:06:33.240
-I'll sort bythe entry value, which is the count of occurrence,
-but I want this to be reversed, so I can pass a
+00:10:04.020 --> 00:10:07.980
+I'll set up a local variable called
+delimiter, and set that to a comma,
 
-00:06:33.240 --> 00:06:38.467
-second comparator, here it's reverseOrder on
-Comparator. I'll limit the results to 10.
+00:10:07.980 --> 00:10:12.720
+plus the System.lineSeparator.
+I'll pass that variable as the
 
-00:06:39.375 --> 00:06:45.000
-And, I'll print this information, first the key
-(the word), and then, the number of occurences.
+00:10:12.720 --> 00:10:17.700
+first argument, instead of just a comma.
+Ok, now it's time to write that out to a file.
 
-00:06:46.860 --> 00:06:52.200
-Ok, I'll run this, and see what might be some of
-the most important words, about the Grand Canyon.
+00:10:18.480 --> 00:10:24.000
+I'll start with a try block. I'll call
+Files.writeString, passing it a new Path,
 
-00:06:53.100 --> 00:06:58.080
-Not surprisingly, canyon and grand are at the
-top, but I've got national and river and colorado.
+00:10:24.000 --> 00:10:28.080
+for a file names students.json,
+and I'll pass my students string.
 
-00:06:59.340 --> 00:07:02.220
-Some of these words look like
-they're more geared to wikipedia,
+00:10:28.980 --> 00:10:34.260
+I'll catch the IOException. And just wrap
+that in a runtime exception and throw it.
 
-00:07:02.220 --> 00:07:08.460
-like retrieved, and original, and service maybe.
-I can create a list of words I want to exclude.
+00:10:35.580 --> 00:10:39.120
+I'll run this, again with
+just 2 records, to test it.
 
-00:07:09.480 --> 00:07:13.740
-I'll do that next.
-I'll just set up a list of excluded words here.
+00:10:39.900 --> 00:10:44.940
+I'll see my students printed in the console.
+Notice that I have an opening square bracket
 
-00:07:14.640 --> 00:07:22.380
-so grand, canyon, retrieved and archived.
-and maybe service and original too.
+00:10:46.140 --> 00:10:49.980
+and ending square bracket, and at the end
+of the first student, there's a comma.
 
-00:07:25.560 --> 00:07:29.940
-I'll need to filter out the excluded words, and
-I can do that by checking if the list contains
+00:10:50.700 --> 00:10:53.065
+This is what the Collectors.joining did.
 
-00:07:29.940 --> 00:07:34.680
-the word, and if it does, I'll return
-false, so the word won't be included.
+00:10:56.102 --> 00:10:59.230
+But I also see students.json listed in my
+project panel,
 
-00:07:35.700 --> 00:07:37.440
-Ok, now if I run this,
+00:10:59.230 --> 00:11:01.320
+ at the project root, and I can open that up.
 
-00:07:39.600 --> 00:07:44.520
-I get some other descriptive words, so national,
-likely because it's a national park in the U.S.
+00:11:03.480 --> 00:11:06.840
+There you can see my students json
+code, as it was in the console.
 
-00:07:45.720 --> 00:07:49.860
-River and Colorado, because the canyon
-was carved out by the Colorado River.
+00:11:07.800 --> 00:11:11.880
+I'll copy the entire contents of that file,
+and again test it in the Jayson linter.
 
-00:07:50.760 --> 00:07:53.280
-Water is a really big deal
-for this canyon and river,
+00:11:13.740 --> 00:11:16.200
+I'll paste the contents of
+my file into the text window.
 
-00:07:53.280 --> 00:07:57.480
-so it's not surprising that's there, and
-arizona is the state it's located in.
+00:11:17.220 --> 00:11:19.740
+I'll scroll down and hit the
+validate JSON button again.
 
-00:07:58.380 --> 00:08:01.200
-So that's a nice snapshot of
-the article in 10 words or less.
+00:11:22.200 --> 00:11:24.110
+I can see my text gets formatted,
 
-00:08:02.340 --> 00:08:05.100
-I'll try another example,
-this time I'll use big ben.
+00:11:25.412 --> 00:11:28.063
+and it's valid JSON for this array of two students.
 
-00:08:06.120 --> 00:08:10.709
-I'll copy this text from the file in the
-resources folder, called big ben dot txt.
+00:11:29.820 --> 00:11:33.904
+Getting back to my code, I can
+change my number of students to 1000.
 
-00:08:11.520 --> 00:08:13.440
-I again want this at the root of the folder.
+00:11:35.314 --> 00:11:37.755
+I'll re-run it, and examine
+that output file again.
 
-00:08:21.480 --> 00:08:25.260
-I'll change my code, so that I'm
-pointing at the bigben.txt file.
+00:11:41.880 --> 00:11:46.020
+You can see this code had no trouble writing
+1000 records to the file, and console.
 
-00:08:26.160 --> 00:08:27.238
-I'll run that.
+00:11:49.260 --> 00:11:52.860
+I'll quick go to the Course record,
+and add the two Jayson method to it.
 
-00:08:29.238 --> 00:08:31.238
-If you didn't know anything about Big Ben,
+00:12:02.640 --> 00:12:04.320
+I'll go to the CourseEngagement class,
 
-00:08:31.238 --> 00:08:35.820
-you might guess that it has something to do with
-a clock tower, in london, and that it has bells.
+00:12:07.740 --> 00:12:12.000
+and do the exact same thing, again right
+under the existing two String method.
 
-00:08:36.660 --> 00:08:40.320
-I don't know what the different months are
-all about, so maybe I could add those to the
+00:12:17.580 --> 00:12:21.300
+Ok, so that was easy.
+I want to get back to
 
-00:08:40.320 --> 00:08:44.580
-excluded words, but anyway you can kind of
-get the gist of this topic, in a few words.
+00:12:21.300 --> 00:12:26.640
+the Student class, and the two JSON method.
+Because the coursesEnrolled and engagementMap
 
-00:08:45.720 --> 00:08:48.780
-Ok, so the bonus part of this
-was to do this with a stream,
+00:12:26.640 --> 00:12:30.180
+types are part of collections, I
+need to create a json array for each.
 
-00:08:48.780 --> 00:08:52.740
-and then without, or vice versa, so
-I'll do this without a stream next.
+00:12:31.080 --> 00:12:36.420
+I'll show you two ways to do this.
+The first, is just to use the StringJoiner class.
 
-00:08:53.820 --> 00:08:58.020
-I'll use readString on Files.
-First I'll add a separator line.
+00:12:37.620 --> 00:12:43.020
+I'll set up a local variable, a String Joiner
+type called courses, and create a new instance,
 
-00:08:59.400 --> 00:09:02.940
-I'll then create a string variable,
-input, assigning it what I get back
+00:12:43.020 --> 00:12:47.820
+with a delimiter of comma. The prefix
+and suffix will be square brackets.
 
-00:09:02.940 --> 00:09:06.780
-from Files dot read string, and I'll
-pass that a Path for the big ben file.
+00:12:48.780 --> 00:12:50.395
+I'll loop through coursesEnrolled.
 
-00:09:07.680 --> 00:09:12.600
-I can replace all punctuation in the entire
-String, with one call, so that's kind of nice.
+00:12:51.914 --> 00:12:54.218
+And add each courses JSON to the StringJoiner.
 
-00:09:13.920 --> 00:09:19.080
-I've got a compiler error on readString, and
-it's the IO Exception, so I'll add a try catch.
+00:12:56.160 --> 00:13:02.280
+for the engagement map, I'll use a stream, on its
+values. I'll map to the CourseEngagement JSON.
 
-00:09:21.540 --> 00:09:24.300
-I'll just move that last input
-statement into the try block.
+00:13:03.600 --> 00:13:08.220
+Like I did in the Challenge's main method, I'll
+collect the strings using Collectors.joining,
 
-00:09:25.680 --> 00:09:27.570
-Next, I'll set up my pattern.
+00:13:08.220 --> 00:13:11.760
+with a comma, and square brackets
+again for the prefix and suffix.
 
-00:09:28.439 --> 00:09:31.818
-This is going to be different,
-because I'm not splitting or tokenizing.
+00:13:13.140 --> 00:13:17.220
+Finally I'll uncomment the two adds
+I have commented out below, changing
 
-00:09:32.640 --> 00:09:35.040
-I'll use Matcher to find all
-the words in this big string.
+00:13:17.220 --> 00:13:21.480
+coursesEnrolled as the variable to courses,
+and I'll change engagementMap to engagement.
 
-00:09:36.000 --> 00:09:38.220
-My pattern will look for
-one or more word characters.
+00:13:22.980 --> 00:13:24.180
+I'll re-run the code.
 
-00:09:39.720 --> 00:09:43.200
-I'll get a Matcher, passing the matcher
-method all the text from my file.
+00:13:29.400 --> 00:13:33.240
+Again, it's rather hard to see
+it, in this students.json file
 
-00:09:44.100 --> 00:09:48.180
-I'll set up a new map manually, keyed
-by string, containing a long value.
+00:13:34.320 --> 00:13:38.820
+I'll copy that last statement.
+I'll pop back over to the JSON Lint site.
 
-00:09:49.256 --> 00:09:53.640
-Next, I'm going to use matcher's find method to
-loop through each match, or each word it found.
+00:13:39.660 --> 00:13:43.620
+I can use the clear button to erase
+that text area, using the clear button.
 
-00:09:54.720 --> 00:09:58.380
-I can use matcher dot group to get the
-next word, and make that lower case.
+00:13:44.580 --> 00:13:48.420
+I'll paste my Jayson in there.
+Since I grabbed the last row,
 
-00:09:59.400 --> 00:10:02.983
-I'll check the length, making sure it's
-greater than 4 characters.
+00:13:48.420 --> 00:13:52.020
+there's an extra ending square bracket at
+the end of this line, so I'll remove it.
 
-00:10:03.852 --> 00:10:09.380
-I'll use merge,putting 1 as the first value, and incrementing
-by that, if it's not a new keyed entry.
+00:13:53.280 --> 00:13:57.660
+I'll hit the validate button.
+It formats it and tells me I have valid JSON.
 
-00:10:10.500 --> 00:10:16.080
-That'll populate my map with distinct values,
-and counts, so next I'll sort this, and print it.
+00:13:59.820 --> 00:14:02.820
+Now, look at this formatted
+JSON for the 1000th student.
 
-00:10:16.860 --> 00:10:19.669
-I'll first create an array list, of the entries.
+00:14:03.720 --> 00:14:07.320
+You can see I now have coursesEnrolled,
+and that's an array of two courses.
 
-00:10:20.634 --> 00:10:24.005
-I'll sort the entries, by the value, in reverse.
+00:14:09.540 --> 00:14:12.780
+I have engagementMap, and array
+of two engagement records.
 
-00:10:25.980 --> 00:10:29.520
-I'll loop from 0 to 9, or less if
-the text doesn't have 10 entries.
+00:14:13.740 --> 00:14:17.580
+Ok, so how'd you do?
+I didn't really expect you to
 
-00:10:31.260 --> 00:10:35.910
-I'll get the entry from the list.
-I'll print it as I did before
+00:14:17.580 --> 00:14:22.500
+play too much with the two string templates.
+I did however, want to let you know that
 
-00:10:38.700 --> 00:10:41.391
-Ok, that's it, and I can now give that a shot.
+00:14:22.500 --> 00:14:25.920
+feature existed, if you ever want to
+customize string functions that way.
 
-00:10:43.391 --> 00:10:46.044
-In this code, I didn't exclude any words,
+00:14:26.880 --> 00:14:32.760
+Without it, editing JSON can be tedious.
+As I said, there are some popular external
 
-00:10:46.044 --> 00:10:50.820
-but you can see the counts for clock and tower are
-the same, and so on, so this code is also working.
+00:14:32.760 --> 00:14:35.280
+libraries, that will also help
+you do this kind of thing.
 
-00:10:52.035 --> 00:10:56.160
-I could also have included that check for
-5 characters, in my regular expression.
+00:14:36.180 --> 00:14:39.759
+This code gave me the opportunity to
+review the StringJoiner class with you,
 
-00:10:57.234 --> 00:11:01.200
-I can do that with curly braces, then
-5 comma, which says I want at least
+00:14:39.759 --> 00:14:41.732
+and how to use it with and without streams.
 
-00:11:01.200 --> 00:11:06.060
-5 word characters, but I'll take more.
-I can comment out that if statement now,
+00:14:42.556 --> 00:14:45.540
+Now you've read data from,
+and written data to, a file.
 
-00:11:06.060 --> 00:11:09.600
-around the merge.
-Running that,
+00:14:46.560 --> 00:14:51.480
+Next, I want to talk to you about transferring
+between files, and cover a few loose ends.
 
-00:11:13.200 --> 00:11:17.280
-I'll get the same results.
-I could have also just used the method
+00:14:52.320 --> 00:14:55.320
+Afterwards, I'll launch into
+slightly more advanced topics,
 
-00:11:17.280 --> 00:11:21.780
-on matcher that returns a stream of matches, but
-the challenge was to use a streamless option.
-
-00:11:22.740 --> 00:11:25.080
-Ok, so I hope you got a lot out of that exercise.
-
-00:11:26.280 --> 00:11:28.620
-Maybe you came up with several
-different ways to do this.
-
-00:11:29.700 --> 00:11:33.720
-Think about posting your solutions in the
-Q&amp;A, it would be kind of fun to see how
-
-00:11:33.720 --> 00:11:37.380
-many different variations you guys all came
-up with, because there's probably a ton.
-
-00:11:38.400 --> 00:11:42.600
-Again, there's not a really wrong solution,
-some might perform better than others,
-
-00:11:42.600 --> 00:11:47.280
-but with small files, you don't have to get
-too concerned about the details of performance.
-
-00:11:48.300 --> 00:11:52.560
-In the next video, I'll start talking about
-writing files, so I'll see you in that video.
+00:14:55.320 --> 00:14:56.880
+so I'll see you in that next video.

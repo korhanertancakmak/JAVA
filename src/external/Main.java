@@ -30,11 +30,12 @@ public class Main {
 
             String line = reader.readLine();
             while (line != null) {
-                if (line.isEmpty() || line.startsWith("00")) {
+                if (line.isEmpty() || line.matches("^\\d+\\s*$")
+                        || line.matches("^\\d{2}:\\d{2}\\.\\d{3}\\s*-->\\s*\\d{2}:\\d{2}\\.\\d{3}.*")
+                        || line.matches("^\\d{2}:\\d{2}:\\d{2}\\.\\d{3}\\s*-->\\s*\\d{2}:\\d{2}:\\d{2}\\.\\d{3}.*")) {
                     line = reader.readLine();
                     continue;
                 }
-
                 writer.write(line);
                 writer.newLine();
 

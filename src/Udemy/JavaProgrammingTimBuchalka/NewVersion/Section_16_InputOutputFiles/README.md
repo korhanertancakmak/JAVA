@@ -7075,7 +7075,7 @@ There are other ways to read data from files,
 and I'll cover those later.
 </div>
 
-## [e. Reading File Challenge]()
+## [e. Reading File Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course07_ReadingFileChallenge/README.md#reading-file-challenge)
 <div align="justify">
 
 In this challenge, I want you to pick some text of your choice, 
@@ -7099,38 +7099,1266 @@ If you used a method that used a stream,
 try some code without using a streaming method, or vice versa.
 </div>
 
-
-
-
-
-
-
+## [f. Writing Data to Files]()
 <div align="justify">
 
-```java  
+It's time to talk about writing data.
+There are a lot of reasons why you might want to write data to a file.
+These include:
 
+* Storing user data. 
+Data can be maintained across different sessions,
+which can be useful for saving game state, 
+or for shopping cart items in an e-commerce application.
+This allows users to resume where they left off. 
+* Logging application events to a log file.
+This helps with troubleshooting problems, as well as monitoring. 
+* Storing configuration data. 
+You can store settings that might change, 
+or be configured for different environments, as well as elements
+shared between different parts of an application.
+* Exporting Data for Exchange of Information.
+Sharing data is very common, and file formats such as CSV, Jayson, 
+or XML have evolved, to support interoperability and communication
+between systems. 
+* Supporting Offline Usage in a File Cache.
+Temporary storage in a file, is one way to improve application performance.
+If the data is needed again, 
+it can be loaded from the file, 
+instead of fetching it from a remote source or re-computing it.
+Likewise, data can be stored in a file, if a user is working remotely.
+When they get reconnected to the server again, 
+this data can be uploaded at that time. 
+* Generating file products.
+These products might include reports, invoices, or documents, 
+as needed by users.
+
+Some of the concepts of writing to a file are naturally similar,
+to those of reading from a file.
+You'll use similar named classes, but instead of **InputStream**, 
+you'll work with an **OutputStream**, for example.
+There's a **FileWriter** class, rather than a **FileReader** class, and so on.
+We still open a resource when we're writing, 
+but understanding buffered data becomes more important, 
+as well as managing multiple writes, to a single file from different threads.
+As with reading, there are different ways to open a file for writing, 
+and I'll cover these shortly.
+
+In this section, I'll focus on writing text to a text file.
+I've included the _StudentEngagement_ code,
+from my streaming sections in this package.
+This code contains 4 types, the **Student** class, 
+the **Course** record, the **StudentDemographics** record,
+and the **CourseEngagement** class.
+
+```java  
+public record StudentDemographics(String countryCode, int enrolledMonth,
+                                  int enrolledYear, int ageAtEnrollment, String gender,
+                                  boolean previousProgrammingExperience ) {
+
+    @Override
+    public String toString() {
+        return "%s,%d,%d,%d,%s,%b".formatted(countryCode,
+                enrolledMonth,enrolledYear, ageAtEnrollment,gender,
+                previousProgrammingExperience);
+    }
+}
 ```
+
+I've modified this code slightly from the code in the Streaming section.
+I changed the _toString_ method on **StudentDemographics**.
+Here, I'm returning a comma delimited list of the **Student**'s data, 
+rather than the default implementation that was there before.
+
+```java  
+public List<String> getEngagementRecords() {
+
+    int i = 0;
+    List<String> engagementData = new ArrayList<>();
+    for (var engagement : engagementMap.values()) {
+        engagementData.add("%s,%s,%s".formatted(
+                studentId,
+                demographics,
+                engagement));
+    }
+    return engagementData;
+}
+```
+
+In the **Student** Class, 
+I've added a method to get a student's engagement records,
+as a list of comma delimited strings, 
+which includes student demographics as well.
+This code will let me quickly get, 
+as many random students as I want using a stream.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String header = """
+                Student Id,Country Code,Enrolled Year,Age,Gender,\
+                Experienced,Course Code,Engagement Month,Engagement Year,\
+                Engagement Type""";
+
+        Course jmc = new Course("JMC", "Java Masterclass");
+        Course pymc = new Course("PYC", "Python Masterclass");
+        
+        List<Student> students = Stream.generate(() -> 
+                        Student.getRandomStudent(jmc, pymc))
+                .limit(5)
+                .toList();
+
+        System.out.println(header);
+        students.forEach(s -> s.getEngagementRecords().forEach(System.out::println));
+    }
+}
+```
+
+I'll set this code up in the _main_ method, just to refresh your memory.
+Before that though, I'll set up a header, that describes, 
+which order each data element is printed out in.
+I'll use a text block for readability.
+Each record will have a student id, a country code, an enrolled year, 
+an age, and a gender.
+I'll add the backslash here, so a newline won't be included.
+Make sure there aren't any spaces after the backslash, otherwise 
+it won't compile.
+A record will also have true or false, 
+if the student has programming experience,
+the course code, the engagement month and year, and engagement type.
+To create a student, I pass in the courses they enrolled in, 
+so I'll first set up two new courses.
+I'll create a _jmc_ course, with a course code of _JMC_ 
+for the Java Masterclass.
+I'll do a similar thing for the python,
+_pymc_ is the variable name, and course code is _PYC_.
+Next, I'll be generating a list of random students.
+I'll set up a local variable for the students.
+I'll call generate, using the _Supplier_ method 
+that's on the **student** class, _getRandomStudent_, 
+which takes a variable argument of courses, 
+so I'll pass both course variables.
+I'll limit the students to 5 for now.
+I'll collect the students into a list.
+At this point, I can loop through the random students, 
+getting their engagement records.
+Each student will have two engagement records, one for each course.
+I'll first print the header out to the console.
+I'll loop through my list of random students,
+and get each students' engagement records.
+The records are returned as a List of string,
+and I'll just print each record.
+Running this code:
+
+```html  
+1,GB,10,2015,60,U,true,JMC,AUGUST,2018,Lecture 1
+1,GB,10,2015,60,U,true,PYC,JANUARY,2022,Lecture 9
+2,AU,7,2015,57,F,true,JMC,MARCH,2024,Lecture 4
+2,AU,7,2015,57,F,true,PYC,JUNE,2022,Lecture 11
+3,IN,2,2023,68,U,true,JMC,FEBRUARY,2023,Lecture 7
+3,IN,2,2023,68,U,true,PYC,DECEMBER,2024,Lecture 14
+4,IN,5,2020,37,M,true,JMC,AUGUST,2022,Lecture 3
+4,IN,5,2020,37,M,true,PYC,APRIL,2020,Lecture 2
+5,US,3,2021,85,F,false,JMC,DECEMBER,2021,Lecture 8
+5,US,3,2021,85,F,false,PYC,MAY,2023,Lecture 14
+```
+
+I'll get 10 records, for the 5 randomly generated students.
+Since this data is random, it will be different every time I run it, 
+and different from your results if you're following along.
+Now, instead of printing this to the console,
+I want to print these records to a file.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String header = """
+                Student Id,Country Code,Enrolled Year,Age,Gender,\
+                Experienced,Course Code,Engagement Month,Engagement Year,\
+                Engagement Type""";
+
+        Course jmc = new Course("JMC", "Java Masterclass");
+        Course pymc = new Course("PYC", "Python Masterclass");
+        
+        List<Student> students = Stream.generate(() -> 
+                        Student.getRandomStudent(jmc, pymc))
+                .limit(5)
+                .toList();
+
+        //System.out.println(header);
+        //students.forEach(s -> s.getEngagementRecords().forEach(System.out::println));
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course08_WritingDataToFiles/Part1/students.csv";
+        Path path = Path.of(pathName);
+
+        try {
+            Files.writeString(path, header);
+            for (Student student : students) {
+                Files.write(path, student.getEngagementRecords());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+First, I'll comment out this code, that writes to the console.
+To write this data to a file,
+I'll start by specifying a path, 
+with a filename, and I'll call it `students.csv`.
+The extension csv, is very commonly used,
+and stands for comma separated values.
+I can make this extension anything I want, 
+but this one is pretty standard,
+and lets others know something about the content in this file, 
+so I'll stick to that.
+I'll set up a try catch block, 
+because I know I need it for an _IOException_.
+Here, I'll call _writeString_, a static method on the **Files** class, 
+passing it path, and header.
+I'll loop through my student list.
+I'll call `Files.write` this time, 
+which lets me pass an iterable collection.
+That's my student engagement records. 
+I'll just print any error I get to the console.
+Ok, this looks reasonable, so I'll run it.
 
 ```html  
 
 ```
 
-</div>
-
-
-
-<div align="justify">
-
-```java  
-
-```
+I won't have any console output,
+but I should see the `student.csv` file now appear in my project panel, 
+at the project root level.
+If I open that, notice what's here:
 
 ```html  
-
+5,CN,3,2023,54,U,false,JMC,OCTOBER,2024,Lecture 13
+5,CN,3,2023,54,U,false,PYC,APRIL,2024,Lecture 8
 ```
 
+Only the last 2 records of the last student, the fifth student.
+Maybe that's not what you expected.
+What's going on here?
+Let's go back to the code, and give it a closer look.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String header = """
+                Student Id,Country Code,Enrolled Year,Age,Gender,\
+                Experienced,Course Code,Engagement Month,Engagement Year,\
+                Engagement Type""";
+
+        Course jmc = new Course("JMC", "Java Masterclass");
+        Course pymc = new Course("PYC", "Python Masterclass");
+        
+        List<Student> students = Stream.generate(() -> 
+                        Student.getRandomStudent(jmc, pymc))
+                .limit(5)
+                .toList();
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course08_WritingDataToFiles/Part1/students.csv";
+        Path path = Path.of(pathName);
+
+        try {
+            Files.writeString(path, header);
+            for (Student student : students) {
+                Files.write(path, student.getEngagementRecords());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+First, notice that I'm not using a _try-with-resources_ block,
+and IntelliJ never prompted me to use it.
+That's because each of these calls, to `Files.write` string 
+or `Files.write`, opens the file, writes to it, then closes the file.
+The file resource doesn't stay open between these calls.
+Each of these `Files.write` statements is 
+both opening and closing the file resource.
+Because we didn't specify to the code what exactly we wanted to happen, 
+Java selected its default options of writing to a file.
+
+All available options are found on an enum in the `java.nio.file` package, 
+called _StandardOpenOption_.
+
+| Option            | Description                                                                                      |
+|-------------------|--------------------------------------------------------------------------------------------------|
+| CREATE            | This creates a new file if it does not exist.                                                    |
+| TRUNCATE_EXISTING | If the file already exists, and it's opened for WRITE access, then its length is truncated to 0. |
+| WRITE             | The file is opened for write access.                                                             |
+
+The default options for `Files.write` methods are shown in this table.
+When you don't specify options, the file will get created, if it doesn't exist.
+The file will get truncated every time you write to it, 
+which is why we only see the last 2 records of student 5, in the content.
+And naturally, it's open for write, but you can open any file resource,
+either for reading, writing or both.
+For my code, I have two options, if I want all my student data to get printed.
+I can pass all the data into a single write method,
+or I can specify a different set of open options.
+More specifically, I probably don't want to truncate existing each time.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String header = """
+                Student Id,Country Code,Enrolled Year,Age,Gender,\
+                Experienced,Course Code,Engagement Month,Engagement Year,\
+                Engagement Type""";
+
+        Course jmc = new Course("JMC", "Java Masterclass");
+        Course pymc = new Course("PYC", "Python Masterclass");
+        
+        List<Student> students = Stream.generate(() -> 
+                        Student.getRandomStudent(jmc, pymc))
+                .limit(5)
+                .toList();
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course08_WritingDataToFiles/Part1/students.csv";
+        Path path = Path.of(pathName);
+
+        try {
+            Files.writeString(path, header);
+            for (Student student : students) {
+                //Files.write(path, student.getEngagementRecords());
+                Files.write(path, student.getEngagementRecords(), StandardOpenOption.APPEND);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+I'll start with the second option.
+I'll change my code, adding a new line, then passing another option,
+from the _StandardOpenOption_ enum.
+Here, I'll specify the _APPEND_ constant, 
+which means any text that's written to the file,
+will get appended to the end of file.
+Running this code:
+
+```html  
+Student Id,Country Code,Enrolled Year,Age,Gender,Experienced,Course Code,Engagement Month,Engagement Year,Engagement Type1,IN,9,2019,80,U,true,JMC,NOVEMBER,2022,Lecture 6
+1,IN,9,2019,80,U,true,PYC,NOVEMBER,2021,Lecture 12
+2,AU,1,2023,40,F,false,JMC,DECEMBER,2023,Lecture 8
+2,AU,1,2023,40,F,false,PYC,JANUARY,2023,Lecture 2
+3,IN,5,2021,86,F,false,JMC,AUGUST,2023,Lecture 3
+3,IN,5,2021,86,F,false,PYC,JANUARY,2022,Lecture 2
+4,US,4,2017,67,U,false,JMC,MAY,2018,Lecture 4
+4,US,4,2017,67,U,false,PYC,NOVEMBER,2021,Lecture 10
+5,AU,6,2019,54,M,false,JMC,FEBRUARY,2022,Lecture 13
+5,AU,6,2019,54,M,false,PYC,NOVEMBER,2019,Lecture 5
+```
+
+Examining the `student.csv` file, I can see 
+that all the data was printed, including the header.
+Still, it would probably be more efficient 
+to create a single iterable object, and pass that.
+This would make one call to the write method, 
+so that we're not opening and closing a file resource, for every student.
+I'll comment this code out, as I have it here, except for the **Path** variable.
+
+```java  
+try {
+    List<String> data = new ArrayList<>();
+    data.add(header);
+    for (Student student : students) {
+        data.addAll(student.getEngagementRecords());
+    }
+    Files.write(path, data);
+} catch (IOException e) {     
+    e.printStackTrace();
+}
+```
+
+I'll redo this code slightly.
+I'll again start with a _try_ block. 
+I'll set up a new array list called data, typed to string.
+I'll add the header string to that list.
+Again I'll loop through my students.
+This time, I'll call add all, 
+so all the engagements records will get added to the list.
+Now, all my data is in one iterable collection.
+I'll pass that to the `Files.write` method, 
+without any open options defined.
+I'll again catch the _IOException_,
+And print data about any error I get.
+Running this code again:
+
+```html  
+Student Id,Country Code,Enrolled Year,Age,Gender,Experienced,Course Code,Engagement Month,Engagement Year,Engagement Type
+1,US,4,2024,80,M,true,JMC,MARCH,2024,Lecture 9
+1,US,4,2024,80,M,true,PYC,JANUARY,2024,Lecture 7
+2,CN,3,2021,68,U,true,JMC,NOVEMBER,2024,Lecture 2
+2,CN,3,2021,68,U,true,PYC,MARCH,2024,Lecture 13
+3,US,8,2020,18,F,false,JMC,FEBRUARY,2021,Lecture 1
+3,US,8,2020,18,F,false,PYC,MAY,2020,Lecture 10
+4,GB,11,2021,84,U,true,JMC,NOVEMBER,2022,Lecture 12
+4,GB,11,2021,84,U,true,PYC,OCTOBER,2022,Lecture 14
+5,US,9,2021,72,M,false,JMC,DECEMBER,2022,Lecture 14
+5,US,9,2021,72,M,false,PYC,NOVEMBER,2023,Lecture 3
+```
+
+I get the same results, and all 5 of my students records, 
+are in the `students.csv` file.
+When using these write methods on **File**,
+it's very important to understand, that doing incremental writes, 
+as I did in the first code, is going to be pretty inefficient.
+There are other options for incremental writes.
+One of these is a method on the **Files** class,
+that returns what's called a **BufferedWriter**.
+
+```java  
+pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course08_WritingDataToFiles/Part1/take2.csv";
+
+try (BufferedWriter writer = Files.newBufferedWriter(Path.of(pathName))) {
+    writer.write(header);
+    for (Student student : students) {
+        for (var record : student.getEngagementRecords()) {
+        writer.write(record);
+        }
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+I'll show you an example of this next, 
+first by setting up a _try-with-resources_ block.
+I'll set up a **BufferedWriter** variable, named _writer_. 
+And I'll get a new **BufferedWriter** instance 
+from the **Files** class method, _newBufferedWriter_. 
+I'll pass that a new path, for a new file, 
+and I'll call this one, `take2.csv`. 
+I'll start by writing my header. 
+I'll loop through my students. 
+Unlike `Files.write`, this class's write method does nOt let us 
+pass an iterable, so I have to loop through the records individually. 
+And write each record.
+Catching the _IOException_, I'll print the exception info here.
+I'll run that:
+
+```html  
+Student Id,Country Code,Enrolled Year,Age,Gender,Experienced,Course Code,Engagement Month,Engagement Year,Engagement Type1,AU,1,2024,62,F,false,JMC,AUGUST,2024,Lecture 61,AU,1,2024,62,F,false,PYC,OCTOBER,2024,Lecture 52,US,8,2016,53,U,true,JMC,FEBRUARY,2021,Lecture 122,US,8,2016,53,U,true,PYC,JULY,2019,Lecture 33,CN,4,2022,40,M,false,JMC,SEPTEMBER,2024,Lecture 123,CN,4,2022,40,M,false,PYC,DECEMBER,2023,Lecture 44,IN,6,2024,73,U,false,JMC,MAY,2024,Lecture 114,IN,6,2024,73,U,false,PYC,DECEMBER,2024,Lecture 145,GB,3,2019,89,F,false,JMC,MAY,2020,Lecture 145,GB,3,2019,89,F,false,PYC,OCTOBER,2024,Lecture 14
+```
+
+Now, I can see I have a new file in projects root, and it's called `take2.csv`.
+Let's look at that.
+This looks like it only wrote the header, but if I scroll to the right,
+I can see that's not really true.
+My data, the student records, are all there, 
+they're just all printed on the same line as the header.
+Getting back to my _main_ method at that last _try_ block.
+
+```java  
+pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course08_WritingDataToFiles/Part1/take2.csv";
+
+try (BufferedWriter writer = Files.newBufferedWriter(Path.of(pathName))) {
+    writer.write(header);
+    writer.newLine();
+    for (Student student : students) {
+        for (var record : student.getEngagementRecords()) {
+        writer.write(record);
+        writer.newLine();
+        }
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+I'll add another _write_ statement, after the statement, 
+that's printing the header.
+I'm going to pause here, after I type the dot, 
+which should display all the method options I have.
+Notice that there really aren't that many.
+There are only a few overloaded methods for write.
+One takes an integer, one a character buffer, and one a **String**.
+Then there are overloaded versions of those, 
+that let you specify a starting offset and length, 
+so part of your record or string, would be output.
+There is however a _newLine_ method here, so I'll select that.
+I'll copy that statement, and paste it under the write statement 
+that prints each record.
+I'll rerun my code.
+
+```html  
+Student Id,Country Code,Enrolled Year,Age,Gender,Experienced,Course Code,Engagement Month,Engagement Year,Engagement Type
+1,AU,4,2024,52,U,false,JMC,MAY,2024,Lecture 8
+1,AU,4,2024,52,U,false,PYC,JANUARY,2024,Lecture 10
+2,US,1,2016,18,U,true,JMC,MAY,2017,Lecture 2
+2,US,1,2016,18,U,true,PYC,FEBRUARY,2017,Lecture 14
+3,GB,1,2024,58,U,false,JMC,FEBRUARY,2024,Lecture 3
+3,GB,1,2024,58,U,false,PYC,DECEMBER,2024,Lecture 3
+4,AU,8,2022,45,M,false,JMC,JULY,2024,Lecture 14
+4,AU,8,2022,45,M,false,PYC,OCTOBER,2024,Lecture 4
+5,US,5,2023,37,U,true,JMC,OCTOBER,2023,Lecture 12
+5,US,5,2023,37,U,true,PYC,MAY,2024,Lecture 7
+```
+
+Now, the `take2.csv` file is a lot easier to read and matches 
+what I had in the `students.csv`.
+Are you wondering how a **BufferedWriter** really works?
+Let's talk a lot more about the **BufferedWriter**.
 </div>
 
+### BufferedWriter, FileWriter, and PrintWriter Classes
+<div align="justify">
+
+In the previous section, I demonstrated how to write to a file, 
+using `Files.write`, and `Files.writeString`.
+Each execution of these methods is an isolated call, 
+which both opens and closes the file resource.
+These methods might be good for writing data to a log file, 
+for instance, but aren't ideal for writing a lot of records 
+to an output file, in an iterable fashion.
+I showed you another method on **Files**, called _newOutputStream_,
+that returns what's called a **BufferedOutputStream**.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String header = """
+                Student Id,Country Code,Enrolled Year,Age,Gender,\
+                Experienced,Course Code,Engagement Month,Engagement Year,\
+                Engagement Type""";
+
+        Course jmc = new Course("JMC", "Java Masterclass");
+        Course pymc = new Course("PYC", "Python Masterclass");
+        List<Student> students = Stream
+                .generate(() -> Student.getRandomStudent(jmc, pymc))
+                .limit(10)
+                .toList();
+
+        String pathName2 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course08_WritingDataToFiles/Part1/take2.csv";
+        Path path = Path.of(pathName2);
+/*
+        try (BufferedWriter writer = Files.newBufferedWriter(Path.of(pathName2))) {
+            writer.write(header);
+            writer.newLine();
+            for (Student student : students) {
+                for (var record : student.getEngagementRecords()) {
+                    writer.write(record);
+                    writer.newLine();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+*/
+
+        String pathName3 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course08_WritingDataToFiles/Part1/take3.csv";
+
+        try (FileWriter writer = new FileWriter(pathName3)) {
+            writer.write(header);
+            for (Student student : students) {
+                for (var record : student.getEngagementRecords()) {
+                    writer.write(record);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String pathName4 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course08_WritingDataToFiles/Part1/take4.csv";
+
+        try (PrintWriter writer = new PrintWriter(pathName4)) {
+            writer.write(header);
+            for (Student student : students) {
+                for (var record : student.getEngagementRecords()) {
+                    writer.println(record);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+I have the code up, where I left off in the last section,
+which also includes a variation of my student engagement types.
+This code lets me generate a bunch of students quickly, 
+populated with random data.
+I want to show you two other **Writer** classes.
+I'll copy this last entire `try-catch` code block, 
+and paste a copy right below it.
+With this pasted section, I'll first change the variable type,
+in the _try_ clause, from a **BufferedWriter** to a **FileWriter**.
+Next I'll remove the right hand side of the equation.
+In place of that code, I'll insert just new **FileWriter**, 
+passing that the literal, `take3.csv`,
+so a different file name for this one.
+Now, this doesn't compile, 
+because the **FileWriter** class doesn't have a _newLine_ method.
+I'll remove those two statements for now.
+Before I run this, I want to set up code, 
+for yet another writer class.
+Again, I'll copy this last try block statement, 
+and paste a copy just below it.
+This time, in this last block, 
+I'm going to change **FileWriter** to **PrintWriter**,
+both in the variable declaration and in the instantiation.
+I also want to change the string literal from _take3_ to `take4.csv`.
+This code compiles, but instead of the _write_ method, 
+that's specific to **Writer** classes,
+I'll use a method on the **PrintWriter**, 
+and that's the familiar _println_ statement.
+I'll change _write_ to _println_.
+Notice that I've kept the first _write_, the header.
+This just demonstrates that you can use either of these, 
+and mix and match methods if you want.
+Ok, so now I'll run this, and see what I get.
+In my project panel, I see that two files are
+there, `take3.csv`, and lastly `take4.csv`.
+I'll open each of these. 
+
+```html  
+take3.scv:
+Student Id,Country Code,Enrolled Year,Age,Gender,Experienced,Course Code,Engagement Month,Engagement Year,Engagement Type1,CN,8,2020,47,U,true,JMC,OCTOBER,2021,Lecture 91,CN,8,2020,47,U,true,PYC,MARCH,2020,Lecture 82,CN,9,2021,84,F,true,JMC,NOVEMBER,2023,Lecture 72,CN,9,2021,84,F,true,PYC,MARCH,2023,Lecture 123,CN,3,2017,74,M,true,JMC,JULY,2018,Lecture 23,CN,3,2017,74,M,true,PYC,SEPTEMBER,2018,Lecture 104,AU,10,2020,18,U,true,JMC,MARCH,2024,Lecture 84,AU,10,2020,18,U,true,PYC,FEBRUARY,2020,Lecture 125,CN,11,2019,30,F,true,JMC,MAY,2022,Lecture 65,CN,11,2019,30,F,true,PYC,NOVEMBER,2021,Lecture 66,US,1,2022,55,M,true,JMC,JUNE,2022,Lecture 136,US,1,2022,55,M,true,PYC,JULY,2024,Lecture 27,CN,2,2018,18,M,false,JMC,DECEMBER,2019,Lecture 117,CN,2,2018,18,M,false,PYC,OCTOBER,2023,Lecture 98,AU,12,2023,71,F,true,JMC,OCTOBER,2024,Lecture 38,AU,12,2023,71,F,true,PYC,NOVEMBER,2024,Lecture 49,IN,1,2021,20,U,false,JMC,DECEMBER,2021,Lecture 119,IN,1,2021,20,U,false,PYC,MARCH,2023,Lecture 310,CN,4,2022,85,F,false,JMC,JANUARY,2023,Lecture 1310,CN,4,2022,85,F,false,PYC,OCTOBER,2024,Lecture 311,CN,5,2024,50,F,false,JMC,AUGUST,2024,Lecture 1011,CN,5,2024,50,F,false,PYC,APRIL,2024,Lecture 812,IN,1,2023,62,M,false,JMC,APRIL,2023,Lecture 612,IN,1,2023,62,M,false,PYC,JUNE,2024,Lecture 413,GB,11,2017,73,F,false,JMC,JUNE,2023,Lecture 713,GB,11,2017,73,F,false,PYC,NOVEMBER,2017,Lecture 1214,GB,6,2017,61,U,true,JMC,DECEMBER,2017,Lecture 114,GB,6,2017,61,U,true,PYC,DECEMBER,2020,Lecture 215,AU,12,2016,55,F,true,JMC,MAY,2023,Lecture 915,AU,12,2016,55,F,true,PYC,JULY,2023,Lecture 616,IN,1,2022,88,M,false,JMC,DECEMBER,2024,Lecture 516,IN,1,2022,88,M,false,PYC,AUGUST,2022,Lecture 717,AU,8,2022,61,M,true,JMC,APRIL,2023,Lecture 1017,AU,8,2022,61,M,true,PYC,OCTOBER,2023,Lecture 618,GB,2,2016,69,M,false,JMC,OCTOBER,2020,Lecture 1418,GB,2,2016,69,M,false,PYC,APRIL,2023,Lecture 919,AU,7,2015,23,F,true,JMC,FEBRUARY,2023,Lecture 1319,AU,7,2015,23,F,true,PYC,MARCH,2024,Lecture 220,GB,12,2021,68,M,false,JMC,JANUARY,2021,Lecture 220,GB,12,2021,68,M,false,PYC,DECEMBER,2022,Lecture 1421,AU,6,2020,75,M,false,JMC,SEPTEMBER,2022,Lecture 1121,AU,6,2020,75,M,false,PYC,MARCH,2020,Lecture 622,CN,11,2017,57,U,false,JMC,AUGUST,2019,Lecture 222,CN,11,2017,57,U,false,PYC,SEPTEMBER,2020,Lecture 1223,US,5,2021,42,M,false,JMC,APRIL,2022,Lecture 823,US,5,2021,42,M,false,PYC,JULY,2023,Lecture 424,AU,8,2022,39,U,false,JMC,SEPTEMBER,2023,Lecture 824,AU,8,2022,39,U,false,PYC,FEBRUARY,2022,Lecture 225,US,3,2019,24,F,false,JMC,APRIL,2019,Lecture 525,US,3,2019,24,F,false,PYC,JANUARY,2024,Lecture 4
+```
+
+Notice **take3**, if I scroll to the right, 
+we don't have any new lines, you'll remember I removed
+that statement because it wasn't supported.
+So how do I add a new line if I'm using **FileWriter**?
+I could just write a `\n`, for example, 
+but actually there's a better way.
+Getting back to that _main_ method,
+and my FileWriter code, I want to insert a new line after the header, 
+and after each record.
+
+```java  
+String pathName3 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course08_WritingDataToFiles/Part1/take3.csv";
+
+try (FileWriter writer = new FileWriter(pathName3)) {
+    writer.write(header);
+    writer.write(System.lineSeparator());
+    for (Student student : students) {
+        for (var record : student.getEngagementRecords()) {
+            writer.write(record);
+            writer.write(System.lineSeparator());
+        }
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+I'll pass a result from a method that's on the **System** class, 
+called _lineSeparator_.
+I'll do the same thing after this write statement.
+This method, S`ystem.lineSeparator`, 
+will take advantage of the operating system's definition of a new line,
+which varies by OS.
+Ok, so I'll re-run my code.
+
+```html  
+----------------------------
+take3.csv:
+----------------------------
+Student Id,Country Code,Enrolled Year,Age,Gender,Experienced,Course Code,Engagement Month,Engagement Year,Engagement Type
+1,US,11,2015,57,M,false,JMC,JANUARY,2018,Lecture 9
+1,US,11,2015,57,M,false,PYC,APRIL,2024,Lecture 4
+2,US,3,2023,27,F,false,JMC,AUGUST,2024,Lecture 13
+2,US,3,2023,27,F,false,PYC,APRIL,2024,Lecture 14
+3,AU,2,2019,39,F,true,JMC,JANUARY,2019,Lecture 2
+3,AU,2,2019,39,F,true,PYC,MAY,2020,Lecture 13
+4,US,12,2016,40,U,false,JMC,NOVEMBER,2024,Lecture 4
+4,US,12,2016,40,U,false,PYC,MARCH,2023,Lecture 7
+5,GB,5,2024,71,U,false,JMC,JUNE,2024,Lecture 12
+5,GB,5,2024,71,U,false,PYC,SEPTEMBER,2024,Lecture 9
+6,US,6,2023,37,M,false,JMC,MARCH,2024,Lecture 14
+6,US,6,2023,37,M,false,PYC,JULY,2024,Lecture 6
+7,AU,9,2020,46,F,true,JMC,AUGUST,2021,Lecture 14
+7,AU,9,2020,46,F,true,PYC,FEBRUARY,2022,Lecture 1
+8,GB,8,2017,73,F,false,JMC,MAY,2023,Lecture 2
+8,GB,8,2017,73,F,false,PYC,NOVEMBER,2019,Lecture 8
+9,GB,6,2020,62,M,true,JMC,SEPTEMBER,2023,Lecture 1
+9,GB,6,2020,62,M,true,PYC,NOVEMBER,2021,Lecture 12
+10,GB,6,2016,49,F,false,JMC,APRIL,2018,Lecture 1
+10,GB,6,2016,49,F,false,PYC,MAY,2019,Lecture 3
+----------------------------
+take4.csv:
+----------------------------
+Student Id,Country Code,Enrolled Year,Age,Gender,Experienced,Course Code,Engagement Month,Engagement Year,Engagement Type1,US,11,2015,57,M,false,JMC,JANUARY,2018,Lecture 9
+1,US,11,2015,57,M,false,PYC,APRIL,2024,Lecture 4
+2,US,3,2023,27,F,false,JMC,AUGUST,2024,Lecture 13
+2,US,3,2023,27,F,false,PYC,APRIL,2024,Lecture 14
+3,AU,2,2019,39,F,true,JMC,JANUARY,2019,Lecture 2
+3,AU,2,2019,39,F,true,PYC,MAY,2020,Lecture 13
+4,US,12,2016,40,U,false,JMC,NOVEMBER,2024,Lecture 4
+4,US,12,2016,40,U,false,PYC,MARCH,2023,Lecture 7
+5,GB,5,2024,71,U,false,JMC,JUNE,2024,Lecture 12
+5,GB,5,2024,71,U,false,PYC,SEPTEMBER,2024,Lecture 9
+6,US,6,2023,37,M,false,JMC,MARCH,2024,Lecture 14
+6,US,6,2023,37,M,false,PYC,JULY,2024,Lecture 6
+7,AU,9,2020,46,F,true,JMC,AUGUST,2021,Lecture 14
+7,AU,9,2020,46,F,true,PYC,FEBRUARY,2022,Lecture 1
+8,GB,8,2017,73,F,false,JMC,MAY,2023,Lecture 2
+8,GB,8,2017,73,F,false,PYC,NOVEMBER,2019,Lecture 8
+9,GB,6,2020,62,M,true,JMC,SEPTEMBER,2023,Lecture 1
+9,GB,6,2020,62,M,true,PYC,NOVEMBER,2021,Lecture 12
+10,GB,6,2016,49,F,false,JMC,APRIL,2018,Lecture 1
+10,GB,6,2016,49,F,false,PYC,MAY,2019,Lecture 3
+```
+
+Now, all my files look the same.
+Well, not quite.
+Did you notice the difference?
+`Take4.csv` doesn't have a line separator after the header, 
+and that's because I'm using _write_, and not _println_.
+That is one advantage to using _println_,
+we don't have to include another statement, or
+include the _newline_ in our string that is output.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String header = """
+                Student Id,Country Code,Enrolled Year,Age,Gender,\
+                Experienced,Course Code,Engagement Month,Engagement Year,\
+                Engagement Type""";
+
+        Course jmc = new Course("JMC", "Java Masterclass");
+        Course pymc = new Course("PYC", "Python Masterclass");
+        List<Student> students = Stream
+                .generate(() -> Student.getRandomStudent(jmc, pymc))
+                .limit(10)
+                .toList();
+
+        String pathName2 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course08_WritingDataToFiles/Part1/take2.csv";
+        Path path = Path.of(pathName2);
+
+        String pathName3 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course08_WritingDataToFiles/Part1/take3.csv";
+
+        try (FileWriter writer = new FileWriter(pathName3)) {
+            writer.write(header);
+            writer.write(System.lineSeparator());
+            for (Student student : students) {
+                for (var record : student.getEngagementRecords()) {
+                    writer.write(record);
+                    writer.write(System.lineSeparator());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String pathName4 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course08_WritingDataToFiles/Part1/take4.csv";
+
+        try (PrintWriter writer = new PrintWriter(pathName4)) {
+            //writer.write(header);
+            writer.println(header);
+            for (Student student : students) {
+                for (var record : student.getEngagementRecords()) {
+                    writer.println(record);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+I'll change _write_ to _println_ in this case.
+Running that:
+
+```html  
+----------------------------
+take3.csv:
+----------------------------
+Student Id,Country Code,Enrolled Year,Age,Gender,Experienced,Course Code,Engagement Month,Engagement Year,Engagement Type
+1,AU,10,2024,76,F,false,JMC,APRIL,2024,Lecture 13
+1,AU,10,2024,76,F,false,PYC,APRIL,2024,Lecture 11
+2,AU,6,2016,23,F,true,JMC,FEBRUARY,2020,Lecture 1
+2,AU,6,2016,23,F,true,PYC,NOVEMBER,2022,Lecture 8
+3,CN,7,2024,88,M,false,JMC,JUNE,2024,Lecture 13
+3,CN,7,2024,88,M,false,PYC,OCTOBER,2024,Lecture 2
+4,IN,12,2020,82,M,true,JMC,MAY,2021,Lecture 13
+4,IN,12,2020,82,M,true,PYC,APRIL,2024,Lecture 12
+5,GB,1,2018,50,F,true,JMC,JUNE,2023,Lecture 4
+5,GB,1,2018,50,F,true,PYC,NOVEMBER,2021,Lecture 1
+6,GB,1,2019,35,F,false,JMC,AUGUST,2024,Lecture 6
+6,GB,1,2019,35,F,false,PYC,AUGUST,2021,Lecture 6
+7,GB,3,2020,43,F,false,JMC,OCTOBER,2024,Lecture 7
+7,GB,3,2020,43,F,false,PYC,FEBRUARY,2020,Lecture 6
+8,GB,2,2022,29,M,true,JMC,NOVEMBER,2022,Lecture 1
+8,GB,2,2022,29,M,true,PYC,AUGUST,2022,Lecture 4
+9,GB,3,2021,66,U,false,JMC,AUGUST,2023,Lecture 10
+9,GB,3,2021,66,U,false,PYC,JANUARY,2022,Lecture 5
+10,AU,8,2022,28,F,false,JMC,NOVEMBER,2023,Lecture 1
+10,AU,8,2022,28,F,false,PYC,SEPTEMBER,2023,Lecture 11
+----------------------------
+take4.csv:
+----------------------------
+Student Id,Country Code,Enrolled Year,Age,Gender,Experienced,Course Code,Engagement Month,Engagement Year,Engagement Type
+1,AU,10,2024,76,F,false,JMC,APRIL,2024,Lecture 13
+1,AU,10,2024,76,F,false,PYC,APRIL,2024,Lecture 11
+2,AU,6,2016,23,F,true,JMC,FEBRUARY,2020,Lecture 1
+2,AU,6,2016,23,F,true,PYC,NOVEMBER,2022,Lecture 8
+3,CN,7,2024,88,M,false,JMC,JUNE,2024,Lecture 13
+3,CN,7,2024,88,M,false,PYC,OCTOBER,2024,Lecture 2
+4,IN,12,2020,82,M,true,JMC,MAY,2021,Lecture 13
+4,IN,12,2020,82,M,true,PYC,APRIL,2024,Lecture 12
+5,GB,1,2018,50,F,true,JMC,JUNE,2023,Lecture 4
+5,GB,1,2018,50,F,true,PYC,NOVEMBER,2021,Lecture 1
+6,GB,1,2019,35,F,false,JMC,AUGUST,2024,Lecture 6
+6,GB,1,2019,35,F,false,PYC,AUGUST,2021,Lecture 6
+7,GB,3,2020,43,F,false,JMC,OCTOBER,2024,Lecture 7
+7,GB,3,2020,43,F,false,PYC,FEBRUARY,2020,Lecture 6
+8,GB,2,2022,29,M,true,JMC,NOVEMBER,2022,Lecture 1
+8,GB,2,2022,29,M,true,PYC,AUGUST,2022,Lecture 4
+9,GB,3,2021,66,U,false,JMC,AUGUST,2023,Lecture 10
+9,GB,3,2021,66,U,false,PYC,JANUARY,2022,Lecture 5
+10,AU,8,2022,28,F,false,JMC,NOVEMBER,2023,Lecture 1
+10,AU,8,2022,28,F,false,PYC,SEPTEMBER,2023,Lecture 11
+```
+
+Now `take4.csv` looks better.
+So what's really the difference 
+between these three **Writer** instances?
+Let me show the differences on a table.
+
+|                | Buffering                                       | Data Format                     | Features                                                              | Use Case                                                          |
+|----------------|-------------------------------------------------|---------------------------------|-----------------------------------------------------------------------|-------------------------------------------------------------------|
+| BufferedWriter | Yes                                             | Characters                      | Supports line breaks with newline method.                             | Writing large amounts of text to a file                           |
+| FileWriter     | Yes but much smaller buffer than BufferedWriter | Characters                      | No separate method for line separators, would need to write manually  | Writing small amounts of text to a file                           |
+| PrintWriter    | No, but often used with a BufferedWriter        | Characters, numbers and objects | Familiar methods, that have some behavior as `System.out` methods     | Writing text to a file, formatting output, and outputting objects |
+
+A **BufferedWriter** is buffered.
+With this class, you can change the buffer size, 
+but the Java docs state that 
+_The default size is large enough for most purposes_.
+You've seen that we can call _newline_ on this **Writer**.
+The **BufferedWriter** is good for writing large amounts of text to a file.
+A **FileWriter** has a buffer, but it's much smaller.
+Java doesn't guarantee it's size.
+It's very common practice to wrap your **FileWriter** in a **BufferedWriter**.
+You've seen that this writer does not have a _newline_ method, 
+and if we want new lines,
+our text we're printing should include it.
+This class could be used for writing small amounts of text to a file.
+The **PrintWriter** isn't buffered, but you can pass a **BufferedWriter** to it.
+In addition, the constructor that takes a string,
+actually constructs a **BufferedWriter** instance.
+You can output to a file with the familiar _println_, _printf_, 
+_format_ methods, and pass objects to these methods.
+If you need more control over what your writing to a file, 
+or want to output objects directly, this is a good option.
+Getting back to the code, I'll use the **PrintWriter**, 
+to write data to a fixed length file.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String header = """
+                Student Id,Country Code,Enrolled Year,Age,Gender,\
+                Experienced,Course Code,Engagement Month,Engagement Year,\
+                Engagement Type""";
+
+        Course jmc = new Course("JMC", "Java Masterclass");
+        Course pymc = new Course("PYC", "Python Masterclass");
+        List<Student> students = Stream
+                .generate(() -> Student.getRandomStudent(jmc, pymc))
+                .limit(10)
+                .toList();
+
+        String pathName2 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course08_WritingDataToFiles/Part1/take2.csv";
+        Path path = Path.of(pathName2);
+
+        String pathName3 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course08_WritingDataToFiles/Part1/take3.csv";
+
+        try (FileWriter writer = new FileWriter(pathName3)) {
+            writer.write(header);
+            writer.write(System.lineSeparator());
+            for (Student student : students) {
+                for (var record : student.getEngagementRecords()) {
+                    writer.write(record);
+                    writer.write(System.lineSeparator());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //String pathName4 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course08_WritingDataToFiles/Part1/take4.csv";
+        String pathName4 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course08_WritingDataToFiles/Part1/take4.txt";
+
+        try (PrintWriter writer = new PrintWriter(pathName4)) {
+            writer.println(header);
+            for (Student student : students) {
+                for (var record : student.getEngagementRecords()) {
+                    //writer.println(record);
+
+                    String[] recordData = record.split(",");
+                    writer.printf("%-12d%-5s%2d%4d%3d%-1s".formatted(
+                            student.getStudentId(),                                     // Student Id
+                            student.getCountry(),                                       // Country Code
+                            student.getEnrollmentYear(),                                // Enrolled Year
+                            student.getEnrollmentMonth(),                               // Enrolled Month
+                            student.getEnrollmentAge(),                                 // Age
+                            student.getGender()));                                      // Gender
+                    writer.printf("%-1s", (student.hasExperience() ? 'Y' : 'N'));       // Experienced?
+                    writer.format("%-3s%10.2f%-10s%-4s%-30s",
+                            recordData[7],                                              // Course Code
+                            student.getPercentComplete(recordData[7]),
+                            recordData[8],                                              // Engagement Month
+                            recordData[9],                                              // Engagement Year
+                            recordData[10]);                                            // Engagement Type
+                    writer.println();
+                    
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+I'll change the name of the file to `take4.txt`,
+because it won't be comma delimited.
+I'm also going to delete that simple _println_ statement, for the record.
+First, I want to split each record I get back by commas, 
+so I'll call split on each record.
+Next, I'll call the `writer.printf` statement, 
+and start with a formatted string, which will specify the different widths, for my first 6 columns.
+I'll start with the _printf_ method, and pass a format string, that specifies the widths of each field. 
+If it's left justified, I include a hyphen before the width. 
+Many fixed width files left justify text, and right justify numbers.
+Instead of using the string tokens, I can use object, by calling get methods on the student,
+so I'll do a series of calls on the student attributes, starting with student id.
+Next, I'll get the country code, the enrollment year and month.
+I'll include age, then Gender.
+I can use one _printf_ statement, or a series of them, so I'll end this statement here.
+I'll start another, just to print an experienced flag.
+I'll again use _printf_, with just one specifier for the experienced flag.
+This will be either by **Y** or **N**.
+Here, I'll use a ternary against the _hasExperience_ method.
+I'll next use `writer.format`, which you'll remember I can use on `System.out`, 
+as an alternative to _printf_.
+This time I'm going to use the delimited data, for the engagement record information.
+I can use _printf_ or _format_ interchangeably, so just to remind you, I'll use _format_.
+I had encapsulated all the _engagement_ data on **student**, 
+so I don't really have a way to get the _engagement_ data, 
+other than from the record tokens here. 
+I can get the percentage of complete, for a specified course 
+by calling the get percent _complete_ method on **student**, so I'll add that here.
+I'll print the rest of the tokens for the engagement month, year, and type.
+Finally, I can just call _println_ without arguments to print a line separator.
+This method makes use of the `System.lineseparator` method.
+Ok, let's run this and see what happens.
+
+```html  
+----------------------------
+take3.csv:
+----------------------------
+Student Id,Country Code,Enrolled Year,Age,Gender,Experienced,Course Code,Engagement Month,Engagement Year,Engagement Type
+1,AU,10,2024,76,F,false,JMC,APRIL,2024,Lecture 13
+1,AU,10,2024,76,F,false,PYC,APRIL,2024,Lecture 11
+2,AU,6,2016,23,F,true,JMC,FEBRUARY,2020,Lecture 1
+2,AU,6,2016,23,F,true,PYC,NOVEMBER,2022,Lecture 8
+3,CN,7,2024,88,M,false,JMC,JUNE,2024,Lecture 13
+3,CN,7,2024,88,M,false,PYC,OCTOBER,2024,Lecture 2
+4,IN,12,2020,82,M,true,JMC,MAY,2021,Lecture 13
+4,IN,12,2020,82,M,true,PYC,APRIL,2024,Lecture 12
+5,GB,1,2018,50,F,true,JMC,JUNE,2023,Lecture 4
+5,GB,1,2018,50,F,true,PYC,NOVEMBER,2021,Lecture 1
+6,GB,1,2019,35,F,false,JMC,AUGUST,2024,Lecture 6
+6,GB,1,2019,35,F,false,PYC,AUGUST,2021,Lecture 6
+7,GB,3,2020,43,F,false,JMC,OCTOBER,2024,Lecture 7
+7,GB,3,2020,43,F,false,PYC,FEBRUARY,2020,Lecture 6
+8,GB,2,2022,29,M,true,JMC,NOVEMBER,2022,Lecture 1
+8,GB,2,2022,29,M,true,PYC,AUGUST,2022,Lecture 4
+9,GB,3,2021,66,U,false,JMC,AUGUST,2023,Lecture 10
+9,GB,3,2021,66,U,false,PYC,JANUARY,2022,Lecture 5
+10,AU,8,2022,28,F,false,JMC,NOVEMBER,2023,Lecture 1
+10,AU,8,2022,28,F,false,PYC,SEPTEMBER,2023,Lecture 11
+----------------------------
+take4.csv:
+----------------------------
+Student Id,Country Code,Enrolled Year,Age,Gender,Experienced,Course Code,Engagement Month,Engagement Year,Engagement Type
+1           GB   2022   2 24MNJMC     46.67APRIL     2022Lecture 7
+1           GB   2022   2 24MNPYC     46.67NOVEMBER  2024Lecture 7
+2           AU   2015   3 30UNJMC     26.67AUGUST    2022Lecture 4
+2           AU   2015   3 30UNPYC     40.00AUGUST    2018Lecture 6
+3           US   2021  10 52MNJMC     26.67MARCH     2024Lecture 4
+3           US   2021  10 52MNPYC     46.67JANUARY   2023Lecture 7
+4           IN   2020   7 75UYJMC     66.67FEBRUARY  2020Lecture 10
+4           IN   2020   7 75UYPYC     20.00SEPTEMBER 2023Lecture 3
+5           AU   2021   7 76UYJMC     86.67FEBRUARY  2021Lecture 13
+5           AU   2021   7 76UYPYC     33.33NOVEMBER  2022Lecture 5
+6           US   2022  11 62FYJMC     80.00APRIL     2022Lecture 12
+6           US   2022  11 62FYPYC     60.00NOVEMBER  2022Lecture 9
+7           AU   2017   3 71UNJMC     53.33JULY      2024Lecture 8
+7           AU   2017   3 71UNPYC     60.00DECEMBER  2023Lecture 9
+8           IN   2023   6 63FYJMC     26.67SEPTEMBER 2023Lecture 4
+8           IN   2023   6 63FYPYC     13.33JULY      2024Lecture 2
+9           CN   2015   2 35MNJMC     80.00MARCH     2015Lecture 12
+9           CN   2015   2 35MNPYC     13.33JANUARY   2015Lecture 2
+10          GB   2016   8 69FNJMC     13.33SEPTEMBER 2022Lecture 2
+10          GB   2016   8 69FNPYC     46.67MAY       2023Lecture 7
+```
+
+If I open `take4.txt`, here you can see that all my data is lined up, in fixed width columns.
+You might have caught that my header's not really in sync,
+because I added the _getPercentComplete_ column, but I'll just leave it as is.
+This exercise was to show you why you might want to use **PrintWriter**, 
+if you need more flexibility as you print, 
+or you don't have access to a pre-processed string for each record.
+Ok, so these are the basic **writer** classes you'll use to write data.
+I'm going to scroll up to the **PrintWriter**'s constructor,
+and control+click on the class name after the **new** keyword.
+
+```java  
+public PrintWriter(String fileName) throws FileNotFoundException {
+    this(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName))), false);
+}
+```
+
+As I mentioned on the table, this constructor creates a **BufferedWriter** wrapper,
+with a series of nested instantiations.
+We've talked about the **FileInputStream**, and the **FileOutputStream** 
+is just an output stream for writing data to a file.
+This is wrapped in an **OutputStreamWriter**, 
+which is a bridge from _character streams_ to _byte streams_.
+The other thing I want you to notice is 
+that there's an overloaded constructor for **PrintWriter**, 
+that's a boolean, and it's called **autoFlush**, and here it's set to **false**.
+For reading files, I've said that a buffer is temporary storage,
+to reduce the number of disk reads. 
+Data is read in larger chunks and stored in the buffer.
+For writing files, something similar occurs, so there's temporary storage, 
+that gets filled up as writes are executed, on a **Writer** class.
+Physical writes to disk happen when the buffer is flushed.
+In other words, not every write or print statement you execute, 
+is going to be physically written, until the buffer is flushed.
+This is the process of taking the text stored in the buffer,
+and writing it to the output file, and clearing the buffer's cache.
+The frequency of flushing can be affected by a number of factors, 
+including the size of the buffer, the speed of the disk, 
+and the amount of data that's being written to the file.
+Different **Writer** classes also will flush at different rates.
+The buffer is always flushed when a file is closed.
+You can manually flush a buffer, by calling the _flush_ method.
+You might want to do this, meaning flush more frequently, 
+when working with time sensitive data.
+Any other thread or process that's reading the file,
+won't be able to see the buffered text, until the flush occurs.
+You might be wondering why 
+this **PrintWriter** constructor has set its **autoFlush** argument to **false**.
+The default mode for a **PrintWriter** is to flush the buffer on every call 
+to a _print_ or _format_ method.
+Doing this would sort of defeat the advantages of using a **BufferedWriter**,
+so this constructor turns auto flush off.
+The **BufferedWriter** in this case will control when the buffer is flushed,
+and it won't be for after every _print_ or _format_ method.
+
+```java  
+String header = """
+        Student Id,Country Code,Enrolled Year,Age,Gender,\
+        Experienced,Course Code,Engagement Month,Engagement Year,\
+        Engagement Type""";
+
+Course jmc = new Course("JMC", "Java Masterclass");
+Course pymc = new Course("PYC", "Python Masterclass");
+List<Student> students = Stream
+        .generate(() -> Student.getRandomStudent(jmc, pymc))
+        //.limit(10)
+        .limit(25)
+        .toList();
+```
+
+I'll scroll up to my code, that generates a student list,
+and change the number of students from 10 to 25.
+I'll go down to my **BufferedWriter** block.
+
+```java  
+String pathName2 = "./src/CourseCodes.NewSections.Section_18_InputOutputFiles.Course08_WritingDataToFiles.Part2/take2.csv";
+
+try (BufferedWriter writer = Files.newBufferedWriter(Path.of(pathName2))) {
+    writer.write(header);
+    writer.newLine();
+    int count = 0;
+    for (Student student : students) {
+        for (var record : student.getEngagementRecords()) {
+            writer.write(record);
+            writer.newLine();
+            count++;
+            if (count % 5 == 0) {
+                Thread.sleep(2000);
+                System.out.print(".");
+            }
+        }
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+} catch (InterruptedException e) {
+    throw new RuntimeException(e);
+}
+```
+
+Here, I'll set up a local variable called _count_, and initialize that to zero.
+I'll increment count in the nested for loop. 
+I'll use the modulus operator, so whenever the count is divisible by 5,
+I'll pause the application for 2 seconds.
+We'll talk about threads in a later section,
+but this is a way to make your application pause for a bit.
+It takes milliseconds, so if I pass 2000, my application will pause for 2 seconds,
+after every 5 records.
+I'll print a dot, so I can watch the status.
+The `Thread.sleep` method throws an _InterruptedException_, a checked exception,
+so I'll use IntelliJ's tools to add a _catch_ clause to my exiting _try_ block.
+I'll save my code.
+Before I run this, I'll open up the existing `take2.csv` file.
+With this file open, I'll execute my code,
+There's a key combination that will reload all files from disk,
+which will help me monitor this file in IntelliJ.
+On windows this is Control+Alt+Y, 
+or option+command+y on a Mac.
+I'm going to press Control+Alt+Y, continuously while this code runs.
+Notice the dots being printed to the console every 2 seconds.
+Watching the file, you'll notice right away that the text was truncated, 
+and the file is empty.
+But while this code is running:
+I'm not seeing any text in this file, 
+as I continue to periodically use the reload key combination.
+After ten dots, the application ends, 
+and now I can see all the records in my file.
+
+```html  
+Student Id,Country Code,Enrolled Year,Age,Gender,Experienced,Course Code,Engagement Month,Engagement Year,Engagement Type
+1,IN,12,2022,77,U,true,JMC,JUNE,2024,Lecture 4
+1,IN,12,2022,77,U,true,PYC,JUNE,2023,Lecture 8
+2,CN,3,2021,26,U,true,JMC,DECEMBER,2023,Lecture 10
+2,CN,3,2021,26,U,true,PYC,APRIL,2024,Lecture 7
+3,CN,4,2021,59,F,true,JMC,JANUARY,2024,Lecture 13
+3,CN,4,2021,59,F,true,PYC,JANUARY,2021,Lecture 2
+4,GB,8,2020,44,M,false,JMC,NOVEMBER,2020,Lecture 11
+4,GB,8,2020,44,M,false,PYC,MAY,2023,Lecture 11
+5,US,2,2022,26,F,true,JMC,JUNE,2022,Lecture 13
+5,US,2,2022,26,F,true,PYC,JULY,2024,Lecture 9
+6,US,11,2024,48,U,false,JMC,SEPTEMBER,2024,Lecture 12
+6,US,11,2024,48,U,false,PYC,FEBRUARY,2024,Lecture 3
+7,CN,10,2023,43,M,true,JMC,APRIL,2023,Lecture 12
+7,CN,10,2023,43,M,true,PYC,AUGUST,2023,Lecture 5
+8,GB,10,2017,26,M,true,JMC,AUGUST,2022,Lecture 4
+8,GB,10,2017,26,M,true,PYC,MARCH,2024,Lecture 2
+9,GB,11,2015,64,F,false,JMC,NOVEMBER,2021,Lecture 6
+9,GB,11,2015,64,F,false,PYC,SEPTEMBER,2024,Lecture 6
+10,AU,5,2024,61,F,true,JMC,NOVEMBER,2024,Lecture 3
+10,AU,5,2024,61,F,true,PYC,APRIL,2024,Lecture 3
+11,GB,1,2017,76,F,true,JMC,JUNE,2020,Lecture 7
+11,GB,1,2017,76,F,true,PYC,FEBRUARY,2024,Lecture 7
+12,IN,2,2019,68,M,true,JMC,MARCH,2022,Lecture 10
+12,IN,2,2019,68,M,true,PYC,OCTOBER,2024,Lecture 5
+13,IN,12,2024,24,M,false,JMC,MAY,2024,Lecture 1
+13,IN,12,2024,24,M,false,PYC,AUGUST,2024,Lecture 13
+14,IN,5,2020,49,M,true,JMC,AUGUST,2022,Lecture 2
+14,IN,5,2020,49,M,true,PYC,AUGUST,2024,Lecture 8
+15,CN,6,2017,64,M,true,JMC,JANUARY,2021,Lecture 7
+15,CN,6,2017,64,M,true,PYC,APRIL,2019,Lecture 13
+16,IN,12,2015,45,M,true,JMC,SEPTEMBER,2022,Lecture 9
+16,IN,12,2015,45,M,true,PYC,JANUARY,2021,Lecture 1
+17,AU,3,2021,22,M,false,JMC,NOVEMBER,2023,Lecture 4
+17,AU,3,2021,22,M,false,PYC,AUGUST,2023,Lecture 9
+18,US,9,2016,47,F,false,JMC,OCTOBER,2018,Lecture 6
+18,US,9,2016,47,F,false,PYC,MARCH,2017,Lecture 8
+19,GB,1,2015,84,M,true,JMC,JANUARY,2015,Lecture 12
+19,GB,1,2015,84,M,true,PYC,FEBRUARY,2022,Lecture 9
+20,IN,6,2022,26,M,true,JMC,MARCH,2022,Lecture 9
+20,IN,6,2022,26,M,true,PYC,DECEMBER,2023,Lecture 13
+21,US,7,2020,70,M,true,JMC,APRIL,2023,Lecture 8
+21,US,7,2020,70,M,true,PYC,JANUARY,2024,Lecture 11
+22,US,5,2023,67,F,false,JMC,OCTOBER,2024,Lecture 7
+22,US,5,2023,67,F,false,PYC,APRIL,2023,Lecture 5
+23,CN,6,2019,68,M,true,JMC,DECEMBER,2019,Lecture 11
+23,CN,6,2019,68,M,true,PYC,AUGUST,2024,Lecture 7
+24,US,7,2023,67,U,true,JMC,NOVEMBER,2023,Lecture 6
+24,US,7,2023,67,U,true,PYC,SEPTEMBER,2024,Lecture 7
+25,CN,5,2015,79,M,false,JMC,DECEMBER,2017,Lecture 9
+25,CN,5,2015,79,M,false,PYC,OCTOBER,2024,Lecture 4
+```
+
+The buffer was big enough to contain the 50 engagement records.
+Now imagine we have another process watching the file, 
+that will do something incrementally with 5 students at a time, using this file.
+In other words, we don't want to wait for the buffer to automatically flush,
+with 1000s of student records at a time.
+Instead, I'll flush the buffer manually.
+
+```java  
+String pathName2 = "./src/CourseCodes.NewSections.Section_18_InputOutputFiles.Course08_WritingDataToFiles.Part2/take2.csv";
+
+try (BufferedWriter writer = Files.newBufferedWriter(Path.of(pathName2))) {
+    writer.write(header);
+    writer.newLine();
+    int count = 0;
+    for (Student student : students) {
+        for (var record : student.getEngagementRecords()) {
+            writer.write(record);
+            writer.newLine();
+            count++;
+            if (count % 5 == 0) {
+                Thread.sleep(2000);
+                System.out.print(".");
+            }
+            if (count % 10 == 0) {
+                writer.flush();
+            }
+        }
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+} catch (InterruptedException e) {
+    throw new RuntimeException(e);
+}
+```
+
+I'll do this, using the modulus operator again,
+flushing the buffer after every 10 records.
+_Flush_ is just a method on any **Writer** class.
+I'll save this code.
+I'll open the `take2.csv` file again.
+I'll start execution on my main method while I have this in view.
+I'll start pressing Control+Alt+Y regularly.
+Like before, I'll first see all the text that was there, get truncated.
+But after 2 dots, I'll see 10 records, for the first 5 students.
+After 4 dots, I'll get 20 records displayed, and so on.
+This demonstrates that the buffer, is flushed after every 10 records, 
+versus just allowing the **BufferedWriter** class to manage it for me.
+Of course, implementing your own manual flushing will affect performance, 
+so you should only use it, in a scenario like this, 
+where you're writing large amounts of data, 
+but you want the data to be written out in a more timely fashion,
+making it available to either another process watching it, 
+or some other similar kind of thing.
+Obviously, this example was manufactured a bit,
+to give you a better demonstration.
+</div>
 
 
 <div align="justify">
