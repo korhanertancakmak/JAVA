@@ -1,6 +1,8 @@
 package external;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main {
 
@@ -28,10 +30,24 @@ public class Main {
 
             String line = reader.readLine();
             while (line != null) {
-                if (!line.isEmpty() && !line.startsWith("00")) {
-                    writer.write(line);
-                    writer.newLine();
+                if (line.isEmpty() || line.startsWith("00")) {
+                    line = reader.readLine();
+                    continue;
                 }
+
+                writer.write(line);
+                writer.newLine();
+
+                String[] lineArr = line.split(" ");
+                var result = Arrays.stream(lineArr).anyMatch(s -> s.toUpperCase().startsWith("RUN")
+                        && !s.toUpperCase().startsWith("RUNTIME"));
+                if (result) {
+                    for(int i = 0; i < 3; i++) {
+                        writer.write("");
+                        writer.newLine();
+                    }
+                }
+
                 line = reader.readLine();
             }
             reader.close();

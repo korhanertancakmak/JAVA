@@ -3870,7 +3870,7 @@ You can see from these method signatures that in most cases,
 you'll have access to the current path, either a directory or a file. 
 I didn't include the return type, which for all of these methods is the same, 
 an enum value, as shown on the **FileVisitResult** enum.
-In addition, you have access to basic attributes, 
+In addition, you have access to basic attributes 
 on both the _visitFile_ and _preVisitDirectory_ methods.
 This is similar to the _find_ method's **predicate**,
 which gave us access, by one of its arguments.
@@ -4932,7 +4932,7 @@ If the relativeLevel is 1, I'll clear my map.
 You could maintain a map for the full _walk_,
 but if you're doing a large file tree, 
 it's more efficient to keep track of one folder at a time.
-This also lets me print info to the user,
+This also lets me print info to the user
 after each subfolder is calculated.
 I'll initialize the keyed entry to 0,
 the key being the _path_, or the _dir_ here.
@@ -5266,7 +5266,7 @@ then that's fine, but I think this way, creating a static class,
 is a little easier for others to read and understand what you're doing.
 </div>
 
-## [c. File Tree Walking Challenge]()
+## [c. File Tree Walking Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course05_FileTreeWalkingChallenge#file-tree-walking-challenge)
 <div align="justify">
 
 In the last couple of sections, I've shown you a lot of ways
@@ -5322,6 +5322,1855 @@ and then on some larger directory, to see how well it performs
 with a much greater set of data.
 That's the challenge, and I want you to try
 to have some fun with this.
+</div>
+
+## [d. Reading Input Files]()
+
+### Reader Class
+<div align="justify">
+
+Now that you've got files and paths under your belt,
+it's time to start looking at reading data from files.
+I'll be jumping right into a bit of code,
+using it to discuss some important concepts about reading data from a file.
+In a previous section, I showed you a basic way to read lines from a file,
+with `Files.readAllLines`.
+I'm definitely going to recommend you go that route, 
+for most of your file reading needs.
+But To understand how that magical little method works, 
+I want to roll back the clock a little bit 
+to the methods offered in Java 1.0.
+These methods mirrored a bit, how data is really read from a file.
+A black box method called _readAllLines_.
+
+Before I start working on the code in the _main_ method,
+I'm going to create a new file in my projects folder, 
+calling that `file.txt`.
+When that opens up in the editor pane, 
+I'm just going to type in some numbers here.
+
+```html  
+12345678910
+```
+
+Now, I'll set this code up, reviewing it afterward, 
+to talk about some concepts and terms.
+This will eventually lend itself to the discussion 
+of why Java has such a wide variety of options 
+for reading and writing data to files.
+I'll start with a _try-with-resources_ statement,
+and in the parentheses,
+I'm declaring a variable of type **FileReader**, called **reader**. 
+
+```java  
+public class Main {
+    public static void main(String[] args) {
+
+        String fileName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part1_ReadingFiles/numbers.txt";
+        try (FileReader reader = new FileReader(fileName)) {
+            int data;
+            while ((data = reader.read()) != -1) {
+                System.out.println(data);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+I'll assign that a new **FileReader**, passing the constructor a string, 
+which should specify the name of the text file, and where it can be found. 
+In this case, the file is in the project package directory.
+The file reader is used to read text files, 
+and it reads data by default, one integer at a time.
+An integer, you'll remember is four bytes in Java.
+To read all the data from the file, 
+I'll set up a while loop, populating the data variable,
+by assigning it the result of `reader.read`.
+This will run as long as data isn't `-1`. 
+`-1` means it's the end of the file. 
+I'll print the data I get for each read. 
+And probably no surprise, I need to do something with the _IOException_, 
+so I'll catch it, and just print the stackTrace.
+Before I even get into how this works, I'll just run it:
+
+```html  
+49
+50
+51
+52
+53
+54
+55
+56
+57
+49
+48
+```
+
+There you can see, I get integers printed out between the values of 48 and 57.
+Maybe that's not what you expected to see.
+Remember that a character is represented in Java, by an unsigned integer.
+
+```java  
+public class Main {
+    public static void main(String[] args) {
+
+        String fileName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part1_ReadingFiles/numbers.txt";
+        try (FileReader reader = new FileReader(fileName)) {
+            int data;
+            while ((data = reader.read()) != -1) {
+                System.out.println((char) data);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+If I want to see the character value, 
+I can use the character wrapper to parse the int, 
+or I can just cast data, to a char, which I'll do here.
+Running that:
+
+```html  
+1
+2
+3
+4
+5
+6
+7
+8
+9
+1
+0
+```
+
+My data is encoded, using a default character set, 
+and I now get each character printed, as I typed it, in the file.
+Not only is this a pretty tedious way to read data from a file, 
+but it could get expensive if each calls this _read_ method were a **disk read**.
+A **disk read** means something is physically or mechanically, 
+occurring on your hard disk to read that character from the file.
+This is **expensive**, and Java provides ways to reduce the number of disk
+reads being done.
+It would be a lot more efficient to read many characters at a time.
+This would reduce the number of disk reads, 
+and make processing the information we get back a lot easier.
+In truth, the **FileReader** actually already does some of this.
+It has a default buffer size, 
+meaning it reads a certain number of characters into a memory space, 
+called a **buffer**.
+A **file buffer** is just computer memory temporarily used to hold data,
+while it's being read from a file.
+Its primary purpose is to improve the efficiency of data transfer and processing.
+It reduces the number of direct interactions, or disk reads, 
+against the actual storage device.
+I can't override this buffer size with the **FileReader** class, 
+but later, I'll be talking about another class 
+that I can set the buffer size to something larger than the default.
+In this case, though we might be executing 11 characters read, 
+only one of them, the first was an actual disk read.
+The later characters were a read from memory, or a buffered read.
+Java's API says the size of the buffer in the case of the **FileReader** 
+is implementation-specific.
+This means it is based on the underlying operating system and other factors.
+You can read more than one character at a time,
+and avoid the cast by passing a character array to the read method.
+
+```java  
+public class Main {
+    public static void main(String[] args) {
+
+        String fileName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part1_ReadingFiles/numbers.txt";
+        try (FileReader reader = new FileReader(fileName)) {
+            char[] block = new char[1000];
+            int data;
+            while ((data = reader.read(block)) != -1) {
+
+                //System.out.println((char) data);
+                String content = new String(block, 0, data);
+                System.out.printf("---> [%d chars] %s%n", data, content);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+}
+```
+
+In this case, I'll create a character array to hold one thousand characters.
+I can pass that variable to the read method.
+I'll create a **String** by passing it the _block_, 
+and the starting character and ending index.
+Remember, even though we specified 2000 characters, 
+less might be read in if we reach the end of the file.
+I'll replace this _println_ statement with a _printf_ statement.
+If I run this code with the current data in `numbers.txt`, 
+I'll get all my numbers printed at once.
+
+```html  
+---> [11 chars] 12345678910
+```
+
+Now, I'll add another txt file which is `file.txt`.
+I'm going to paste some text from the _United States Declaration of Independence_ here.
+
+```java  
+public class Main {
+    public static void main(String[] args) {
+
+        String fileName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part1_ReadingFiles/numbers.txt";
+        fileName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part1_ReadingFiles/file.txt";
+
+        try (FileReader reader = new FileReader(fileName)) {
+            char[] block = new char[1000];
+            int data;
+            while ((data = reader.read(block)) != -1) {
+
+                //System.out.println((char) data);
+                String content = new String(block, 0, data);
+                System.out.printf("---> [%d chars] %s%n", data, content);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+}
+```
+
+You can find this file in the resources' folder.
+Running my code now:
+
+```html  
+---> [1000 chars] We hold these truths to be self-evident, that all men are created equal,
+that they are endowed by their Creator with certain unalienable Rights,
+that among these are Life, Liberty and the pursuit of Happiness.
+–That to secure these rights, Governments are instituted among Men,
+deriving their just powers from the consent of the governed,
+–That whenever any Form of Government becomes destructive of these ends,
+it is the Right of the People to alter or to abolish it, and to institute new Government,
+laying its foundation on such principles and organizing its powers in such form,
+as to them shall seem most likely to effect their Safety and Happiness.
+Prudence, indeed, will dictate that Governments long established should not be changed
+for light and transient causes; and accordingly all experience hath shewn,
+that mankind are more disposed to suffer, while evils are sufferable,
+than to right themselves by abolishing the forms to which they are accustomed.
+But when a long train
+---> [648 chars]  of abuses and usurpations,
+pursuing invariably the same Object evinces a design to reduce them under absolute Despotism,
+it is their right, it is their duty, to throw off such Government,
+and to provide new Guards for their future security.
+–Such has been the patient sufferance of these Colonies;
+and such is now the necessity which constrains them to alter their former Systems of Government.
+The history of the present King of Great Britain is a history of repeated injuries and usurpations,
+all having in direct object the establishment of an absolute Tyranny over these States.
+To prove this, let Facts be submitted to a candid world.
+```
+
+You'll see that this text was retrieved with only two reads,
+the first returned 1000 characters,
+and the second was the remaining 648 characters.
+Let's talk about how a **FileReader** actually works.
+Before I can do that, I have to introduce you to the **InputStream**.
+
+![image09](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image09.png?raw=true)
+
+An **InputStream** is an **abstract** class, representing an input stream of bytes.
+It represents **a source of data**, 
+and a **common interface** for reading that data.
+**InputStreams** can return a byte stream or a character stream.
+One input stream you're already familiar with is `System.in`.
+For files, the implementation we want to focus on is the **FileInputStream**.
+This class is used for files containing binary data,
+so we'll be getting back to it later.
+Using the read method on a **FileInputStream** is very inefficient, 
+because each read is a hard disk read, 
+so if you're going to use a **FileInputStream**,
+you'll want to wrap it in a **BufferedInputStream**.
+Notice that almost all the _read_ methods return byte arrays,
+or accept a byte array as a parameter.
+This is your hint that, 
+if you're reading from a text-based file, there are other options.
+This image shows you the hierarchy of these streams, 
+and the methods they inherit from **InputStream**.
+
+We've talked a lot about streams before this,
+but an input stream is not that kind of stream.
+It's a similar concept, in that we get a stream of data 
+in some kind of sequential way.
+However, an InputStream can't be used in a Stream pipeline 
+without first transforming it.
+
+![image10](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image10.png?raw=true)
+
+Readers read characters, as you can see from the methods 
+on the abstract parent shown on this image.
+An **InputStreamReader** is a bridge from byte streams to character streams.
+If you want to read a character stream, it's recommended 
+you use a **FileReader**, an **InputStreamReader**.
+The **FileReader** will do the work of opening a **FileInputStream** for you.
+As I've mentioned already, a **FileReader** is doing buffered reading, 
+so it's doing a hard disk read, for a certain number of characters,
+and storing those characters in memory.
+A **BufferedReader** will also do buffered reading, 
+using a much larger buffer size than the **FileReader**.
+You can modify the size of the buffer on **BufferedReader** 
+by passing it to the constructor.
+But Java states that the default buffer size of 
+the **BufferedReader** is large enough for most purposes.
+The **BufferedReader** also provides convenience methods for reading lines of text.
+So that's probably pretty confusing if that's the first time 
+you've been exposed to these Java IO classes.
+In truth, Java's NIO2 provides functionality 
+that reduces the need to use these classes, under many circumstances.
+I wanted to show you these classes, however, 
+so that you'd get more familiar with some terms, 
+such as binary data vs. character data, input streams and readers, 
+as well as buffers, and disk reads.
+Getting back to the code, I'll give you an example of the **BufferedReader**,
+and then I want to move on to simpler ways, to read data from a file.
+To use a buffered reader, you usually wrap a **FileReader** with it.
+What I mean by that is, you'll pass a **FileReader**
+to the constructor of the **BufferedReader**.
+Let me set this up.
+
+```java  
+public class Main {
+    public static void main(String[] args) {
+
+        String fileName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part1_ReadingFiles/numbers.txt";
+        try (FileReader reader = new FileReader(fileName)) {
+            int data;
+            char[] block = new char[1000];
+            while ((data = reader.read(block)) != -1) {
+
+                //System.out.println(data);
+                //System.out.println((char) data);
+
+                String content = new String(block, 0, data);
+                System.out.printf("---> [%d chars] %s%n", data, content);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("-----------------------------------");
+        fileName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part1_ReadingFiles/file.txt";
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+}
+```
+
+First I'll print a separator line, and then I'll set up a _try-with-resources_ statement.
+My variable is called _bufferedReader_, 
+and I can pass that a new instance of **FileReader**,
+which I'll create by passing that the literal string, `file.txt`.
+I'll leave a little room for the code.
+I'll add the catch _IOException_ here, 
+and print the _stackTrace_ if I get an error.
+With a file reader, I read the data either by integers, or by character arrays.
+What's nice about the buffered reader, 
+besides it being more efficient, 
+is that it gives us methods to read the data by lines.
+I'll set up a line variable, a string.
+I'll use a while loop like I did before, 
+but this time I'll read the line of data in, 
+and quit the while loop if null comes back from that.
+I'll print the line of data I get. 
+And that's it.
+Other than the somewhat ugly instantiation of a **BufferedReader**, 
+that's pretty easy code.
+If I run it:
+
+```html  
+-----------------------------------
+We hold these truths to be self-evident, that all men are created equal,
+that they are endowed by their Creator with certain unalienable Rights,
+that among these are Life, Liberty and the pursuit of Happiness.
+–That to secure these rights, Governments are instituted among Men,
+deriving their just powers from the consent of the governed,
+–That whenever any Form of Government becomes destructive of these ends,
+it is the Right of the People to alter or to abolish it, and to institute new Government,
+laying its foundation on such principles and organizing its powers in such form,
+as to them shall seem most likely to effect their Safety and Happiness.
+Prudence, indeed, will dictate that Governments long established should not be changed
+for light and transient causes; and accordingly all experience hath shewn,
+that mankind are more disposed to suffer, while evils are sufferable,
+than to right themselves by abolishing the forms to which they are accustomed.
+But when a long train of abuses and usurpations,
+pursuing invariably the same Object evinces a design to reduce them under absolute Despotism,
+it is their right, it is their duty, to throw off such Government,
+and to provide new Guards for their future security.
+–Such has been the patient sufferance of these Colonies;
+and such is now the necessity which constrains them to alter their former Systems of Government.
+The history of the present King of Great Britain is a history of repeated injuries and usurpations,
+all having in direct object the establishment of an absolute Tyranny over these States.
+To prove this, let Facts be submitted to a candid world.
+```
+
+I'll get each line printed.
+It actually gets easier than that because as of JDK 8,
+another method was added, which gives us a source of lines for a stream pipeline.
+
+```java  
+public class Main {
+    public static void main(String[] args) {
+
+        String fileName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part1_ReadingFiles/numbers.txt";
+        try (FileReader reader = new FileReader(fileName)) {
+            int data;
+            char[] block = new char[1000];
+            while ((data = reader.read(block)) != -1) {
+
+                //System.out.println(data);
+                //System.out.println((char) data);
+
+                String content = new String(block, 0, data);
+                System.out.printf("---> [%d chars] %s%n", data, content);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("-----------------------------------");
+        fileName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part1_ReadingFiles/file.txt";
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
+/*
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                System.out.println(line);
+            }
+*/
+
+            bufferedReader.lines().forEach(System.out::println);
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+```
+
+I'll remove that local variable as well as the while loop.
+I can replace that with a single statement.
+I'll call the lines method on the _bufferedReader_ instance, 
+and immediately call the terminal operation, for each, and print each line.
+Running that:
+
+```html  
+-----------------------------------
+We hold these truths to be self-evident, that all men are created equal,
+that they are endowed by their Creator with certain unalienable Rights,
+that among these are Life, Liberty and the pursuit of Happiness.
+–That to secure these rights, Governments are instituted among Men,
+deriving their just powers from the consent of the governed,
+–That whenever any Form of Government becomes destructive of these ends,
+it is the Right of the People to alter or to abolish it, and to institute new Government,
+laying its foundation on such principles and organizing its powers in such form,
+as to them shall seem most likely to effect their Safety and Happiness.
+Prudence, indeed, will dictate that Governments long established should not be changed
+for light and transient causes; and accordingly all experience hath shewn,
+that mankind are more disposed to suffer, while evils are sufferable,
+than to right themselves by abolishing the forms to which they are accustomed.
+But when a long train of abuses and usurpations,
+pursuing invariably the same Object evinces a design to reduce them under absolute Despotism,
+it is their right, it is their duty, to throw off such Government,
+and to provide new Guards for their future security.
+–Such has been the patient sufferance of these Colonies;
+and such is now the necessity which constrains them to alter their former Systems of Government.
+The history of the present King of Great Britain is a history of repeated injuries and usurpations,
+all having in direct object the establishment of an absolute Tyranny over these States.
+To prove this, let Facts be submitted to a candid world.
+```
+
+I get the same results as before.
+What's nice though, is that you now have all the stream operations at your disposal, 
+to _query_, _filter_, _transform_, and _slice_ and _dice_ the file data, line by line.
+I can also use the familiar **Scanner** class to read data from a file, 
+which provides similar options to the **BufferedReader**,
+as well as even more granular operations.
+Though we've used **Scanner** before, 
+there's still more to cover, 
+so I'll devote the next talk to this class, 
+and make sure by the end of it, you'll understand it 
+as another option for reading data from text files, 
+and what it offers, that other methods may not.
+</div>
+
+### Scanner Class
+<div align="justify">
+
+I'll paste the same file from the previous section,
+which had some oft quoted text in it here.
+In the main method, I'll create a new variable, 
+type **Scanner**, named _scanner_, followed by equals **new**.
+Pausing there, what I want you to see is the number of options here 
+for constructing a **Scanner**.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(File source);
+        Scanner scanner = new Scanner(Path source);
+        Scanner scanner = new Scanner(String source);
+        Scanner scanner = new Scanner(Readable source);
+        Scanner scanner = new Scanner(InputStream source);
+        Scanner scanner = new Scanner(ReadableByteChannel source);
+        Scanner scanner = new Scanner(File source, Charset charset);
+        Scanner scanner = new Scanner(Path source, Charset charset);
+        Scanner scanner = new Scanner(File source, String charsetName);
+        Scanner scanner = new Scanner(Path source, String charsetNName);
+    }
+}
+```
+
+You can pass many different types of sources to this constructor.
+There's a **file**, **path**, a **string** which I've covered previously, 
+a **Readable**, an **InputStream**, and something called **ReadableByteChannel**.
+There are overloaded versions that let you pass a character set, 
+or a character set name.
+We haven't really talked about character sets a lot, 
+and I'll cover them a little bit in the next section.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part2_ScannerProject/file.txt";
+        try (Scanner scanner = new Scanner(new File(pathName))) {
+           while (scanner.hasNextLine()) {
+                System.out.println(scanner.nextLine());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+Let me finish setting up this first **Scanner** variable, 
+using a new **File** instance, 
+and passing that the name of my file as a string literal.
+Not unexpectedly, I get a compiler error 
+because of the possibility of a checked exception.
+Before I deal with that, 
+I'll first surround this declaration in a _try-with-resources_ block.
+A scanner isn't automatically closed, 
+so if I didn't put that in a _try-with-resources_ block,
+this code would keep the file open.
+I didn't have to worry about closing a scanner
+when the source was a **String**, 
+because a **String** doesn't open and hold onto an open resource.
+We've also used **Scanner** with `System.in`.
+As it turns out, `System.in` is 
+a special **InputStream** called the standard input stream.
+It's a special case because the JVM opens one instance of it, 
+for console or keyboard input, and you don't really want to close it.
+You've had lots of practice with this type of input stream.
+Working with other kinds of input streams, won't be too different.
+Next, I'll add the catch clause so this code will compile.
+What's nice about using Scanner is 
+that once you get familiar with all its functionality,
+you can process data from different inputs, in a standardized way, 
+which the Scanner lets you do.
+Next, I'll use a while loop, checking the _hasNextLine_ method result,
+to determine if there's more data to process I can use nextLine 
+to get the next line in the file.
+Running this:
+
+```html  
+We hold these truths to be self-evident, that all men are created equal,
+that they are endowed by their Creator with certain unalienable Rights,
+that among these are Life, Liberty and the pursuit of Happiness.
+–That to secure these rights, Governments are instituted among Men,
+deriving their just powers from the consent of the governed,
+–That whenever any Form of Government becomes destructive of these ends,
+it is the Right of the People to alter or to abolish it, and to institute new Government,
+laying its foundation on such principles and organizing its powers in such form,
+as to them shall seem most likely to effect their Safety and Happiness.
+Prudence, indeed, will dictate that Governments long established should not be changed
+for light and transient causes; and accordingly all experience hath shewn,
+that mankind are more disposed to suffer, while evils are sufferable,
+than to right themselves by abolishing the forms to which they are accustomed.
+But when a long train of abuses and usurpations,
+pursuing invariably the same Object evinces a design to reduce them under absolute Despotism,
+it is their right, it is their duty, to throw off such Government,
+and to provide new Guards for their future security.
+–Such has been the patient sufferance of these Colonies;
+and such is now the necessity which constrains them to alter their former Systems of Government.
+The history of the present King of Great Britain is a history of repeated injuries and usurpations,
+all having in direct object the establishment of an absolute Tyranny over these States.
+To prove this, let Facts be submitted to a candid world.
+```
+
+You can see the text file printed out line for line.
+This isn't quite as easy as using `BufferedReaders.lines` method, 
+but it's still not very complicated code.
+You might remember, in a previous section, 
+we used the tokens method to get a stream of **Strings**.
+Let me comment out this while loop.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String fileName = "./src/CourseCodes/NewSections/Section_18_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part2_ScannerProject/fixedWidth.txt";
+
+        try (Scanner scanner = new Scanner(new File(pathName))) {
+            
+/*
+            while (scanner.hasNextLine()) {
+                System.out.println(scanner.nextLine());
+            }
+*/
+            System.out.println(scanner.delimiter());
+            
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll use tokens next to read the file, but first, 
+let's review what delimiter the tokens method will use.
+I can do this by printing out the result of invoking 
+the delimiter method on _scanner_.
+Running this code:
+
+```html  
+\p{javaWhitespace}+
+```
+
+You'll see a regular expression.
+Hopefully you know what this means.
+The text will be split by one or more white space, any white space,
+which includes new line characters.
+What this means is, if I use tokens with the default delimiter, 
+I'll just get a list of words.
+That's not what I want, so I'll set the scanner's delimiter.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String fileName = "./src/CourseCodes/NewSections/Section_18_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part2_ScannerProject/fixedWidth.txt";
+
+        try (Scanner scanner = new Scanner(new File(pathName))) {
+
+            System.out.println(scanner.delimiter());
+            scanner.useDelimiter("$");
+            scanner.tokens().forEach(System.out::println);
+            
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll use a regular expression, and just put a dollar sign there,
+which is a meta character, for end of line.
+Now I'll call tokens, which returns a stream of **String**, 
+and print each string.
+Running this code:
+
+```html  
+\p{javaWhitespace}+
+We hold these truths to be self-evident, that all men are created equal,
+that they are endowed by their Creator with certain unalienable Rights,
+that among these are Life, Liberty and the pursuit of Happiness.
+–That to secure these rights, Governments are instituted among Men,
+deriving their just powers from the consent of the governed,
+–That whenever any Form of Government becomes destructive of these ends,
+it is the Right of the People to alter or to abolish it, and to institute new Government,
+laying its foundation on such principles and organizing its powers in such form,
+as to them shall seem most likely to effect their Safety and Happiness.
+Prudence, indeed, will dictate that Governments long established should not be changed
+for light and transient causes; and accordingly all experience hath shewn,
+that mankind are more disposed to suffer, while evils are sufferable,
+than to right themselves by abolishing the forms to which they are accustomed.
+But when a long train of abuses and usurpations,
+pursuing invariably the same Object evinces a design to reduce them under absolute Despotism,
+it is their right, it is their duty, to throw off such Government,
+and to provide new Guards for their future security.
+–Such has been the patient sufferance of these Colonies;
+and such is now the necessity which constrains them to alter their former Systems of Government.
+The history of the present King of Great Britain is a history of repeated injuries and usurpations,
+all having in direct object the establishment of an absolute Tyranny over these States.
+To prove this, let Facts be submitted to a candid world.
+```
+
+I get the same result as the while loop example.
+Each line of text in the file is returned on the stream, 
+and I can work with lines of text, rather than words.
+Another method that I don't think I covered, in the regular expressions section,
+is the _findAll_ method.
+I'm going to comment on the three statements in this _try_ block.
+Next, I'll call `scanner.findAll`, and I'm going to pass that a string,
+but one that contains a regular expression.
+
+```java  
+import java.util.regex.MatchResult;
+public class Main {
+
+    public static void main(String[] args) {
+
+        String fileName = "./src/CourseCodes/NewSections/Section_18_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part2_ScannerProject/fixedWidth.txt";
+
+        try (Scanner scanner = new Scanner(new File(pathName))) {
+
+/*
+            System.out.println(scanner.delimiter());
+            scanner.useDelimiter("$");
+            scanner.tokens().forEach(System.out::println);
+*/
+
+            scanner.findAll("[A-Za-z]{10,}")                // Stream<MatchResult>
+                    .map(MatchResult::group)                // Stream<Object>
+                    .distinct()
+                    .sorted()
+                    .forEach(System.out::println);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll type this in, and I want you to study it a minute.
+A mini challenge for you is, 
+can you figure out what this regular expression will match on?
+Before I give you the answer, 
+you should know this returns a **Stream** of **Match Result** items.
+This is very similar to the _findLine_ method I reviewed 
+in the regular expressions section.
+Because it returns a **MatchResult**, 
+I'm really interested in what came back as the whole match.
+Maybe you'll recall that the **MatchResult** type has group methods on it, 
+and the group method with no arguments, 
+returns all the characters that matched the regular expression.
+I'll map the **MatchResult** to a **string**, 
+using that group method, here I'll use a method reference,
+so `MatchResult::group`.
+Next I'll include the _distinct_ intermediate operation.
+Followed by the _sorted_ operation.
+And I'll just print out each stream element.
+**MatchResult** has not been imported automatically for some strange reason.
+I'll click it to see if I can get an IntelliJ popup.
+No luck with that, so I'll just enter the import manually.
+This does happen occasionally with IntelliJ, even with auto imports on.
+Ok, so were you able to guess what the result would be?
+I'll run this:
+
+```html  
+Government
+Governments
+abolishing
+accordingly
+accustomed
+constrains
+destructive
+established
+establishment
+experience
+foundation
+instituted
+invariably
+organizing
+principles
+sufferable
+sufferance
+themselves
+unalienable
+usurpations
+```
+
+What I get back is, a list of words that are 10 characters or more,
+so the big words in other words, that are in the full body of the text.
+I don't have any duplicates, and they're ordered naturally, 
+in alphabetical order in other words.
+You can see that this method can help you very quickly scan 
+the entire text in the file for matching elements.
+I'll show you a slightly different take on this.
+In the project folder, you'll find a file called `fixedWidth.txt`.
+
+```html  
+Name           AgeDept        Salary  ST
+John Doe        30HR             50000NY
+Jane Smith      25IT             60000CA
+Michael Brown   40Finance        75000TX
+Alice Johnson   35Marketing      55000IL
+Robert Lee      28IT             58000WA
+Emily Wang      32Marketing      52000NY
+Daniel Kim      29HR             49000CA
+Sarah Davis     31Finance        72000TX
+Jessica Chen    27IT             61000IL
+David Miller    33Marketing      53000WA
+Oliver Scott    26Finance        65000CA
+Sophia Adams    37IT             59000NY
+William Clark   34Marketing      54000TX
+Ava Turner      29HR             51000IL
+Ethan Hall      31Finance        70000WA
+Isabella King   24IT             62000CA
+James Evans     36Marketing      56000NY
+Grace Baker     27HR             48000TX
+Liam Brooks     32Finance        68000IL
+Charlotte Hill  28IT             57000WA
+```
+
+If you open that up, you'll see it has a list of employees, 
+with a name, an age, a department, a salary and the US state they live in.
+This is a fixed width file, which is a file containing data with no delimiters.
+These files are usually accompanied by a specification, 
+telling you the field names and the start and end index of that field in the line of data.
+In this case, the first line of the file is telling me the field names.
+The name is 15 characters, age is 3 characters, the department is 12, salary is 8, 
+and the state is 2 characters.
+Getting back to my code, I'll first change the name of my file to `fixedWidth.txt`.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        //String fileName = "./src/CourseCodes/NewSections/Section_18_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part2_ScannerProject/fixedWidth.txt";
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part2_ScannerProject/fixedWidth.txt";
+
+        try (Scanner scanner = new Scanner(new File(pathName))) {
+/*
+            scanner.findAll("[A-Za-z]{10,}")                // Stream<MatchResult>
+                    .map(MatchResult::group)                // Stream<Object>
+                    .distinct()
+                    .sorted()
+                    .forEach(System.out::println);
+*/
+            
+            var results = scanner.findAll(
+                    "(.{15})(.{3})(.{12})(.{8})(.{2}).*")   // Stream<MatchResult>
+                    .map(m -> m.group(5))                   // Stream<String>
+                    .distinct()
+                    .sorted()
+                    .toArray(String[]::new);                // String[]
+            System.out.println(Arrays.toString(results));
+            
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'm also going to again comment out the statements in this _try_ block, 
+in case you want to revisit this code later.
+I'll create a local variable, named _results_, 
+and assign that the result of using `scanner.findAll`.
+In this case, my regular expression is going to group each column.
+I'll use parentheses to specify each group, and in the parentheses I'll have a dot,
+meaning any character, then specify the exact width in curly braces, 
+so it will match the fixed width length of characters.
+The first will be 15 in curly braces.
+Next I'll make it 3 characters to match, then 12, then 8 for the fourth column, 
+and 2 for the last column, which will be state.
+I'll end with `.*`, so that the line won't fail if there are extra characters.
+I'll use a lambda expression in the map operation, 
+and I'll first get the States from the last column, which is group 5.
+I'll again use _distinct_ and _sorted_. 
+I'll collect these distinct values into a **String** array, 
+with the _toArray_ terminal operation,
+and specifying the kind of array I want. 
+Finally, I'll print the results out in one statement.
+I'll just fix that typo I made and format the code, 
+so it shows better on screen.
+If I run this:
+
+```html  
+[CA, IL, NY, ST, TX, WA]
+```
+
+Notice that **ST** is in my list of distinct states,
+and that's because of the header row.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part2_ScannerProject/fixedWidth.txt";
+
+        try (Scanner scanner = new Scanner(new File(pathName))) {
+            
+            var results = scanner.findAll(
+                    "(.{15})(.{3})(.{12})(.{8})(.{2}).*")   // Stream<MatchResult>
+                    .skip(1)
+                    .map(m -> m.group(5))                   // Stream<String>
+                    .distinct()
+                    .sorted()
+                    .toArray(String[]::new);                // String[]
+            System.out.println(Arrays.toString(results));
+            
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I can use the skip operation in my stream pipeline to skip the header, 
+so just skipping the first stream element.
+Running that again:
+
+```html  
+[CA, IL, NY, TX, WA]
+```
+
+I get the distinct list of states.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part2_ScannerProject/fixedWidth.txt";
+
+        try (Scanner scanner = new Scanner(new File(pathName))) {
+            
+            var results = scanner.findAll(
+                    "(.{15})(.{3})(.{12})(.{8})(.{2}).*")   // Stream<MatchResult>
+                    .skip(1)
+                    .map(m -> m.group(3))                   // Stream<String>
+                    .distinct()
+                    .sorted()
+                    .toArray(String[]::new);                // String[]
+            System.out.println(Arrays.toString(results));
+            
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I can now do this with any field, so let me try it for department, the third column.
+I'll run that again:
+
+```html  
+[Finance     , HR          , IT          , Marketing   ]
+```
+
+Notice this data contains the extra spaces
+because each value is fixed at 12 characters, and this includes any whitespace.
+I can fix that, by tacking on the trim method, in my map operation.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part2_ScannerProject/fixedWidth.txt";
+
+        try (Scanner scanner = new Scanner(new File(pathName))) {
+            
+            var results = scanner.findAll(
+                    "(.{15})(.{3})(.{12})(.{8})(.{2}).*")   // Stream<MatchResult>
+                    .skip(1)
+                    .map(m -> m.group(3).trim())                   // Stream<String>
+                    .distinct()
+                    .sorted()
+                    .toArray(String[]::new);                // String[]
+            System.out.println(Arrays.toString(results));
+            
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+Running it again:
+
+```html  
+[Finance, HR, IT, Marketing]
+```
+
+My department listing is now trimmed of extra white space.
+The combination of regular expressions, and streams,
+has made it straightforward to do analysis on files you receive.
+There are a lot of methods on **Scanner**,
+which let you read different data types from the input,
+but these are more geared to reading object stream data,
+which I'll cover later.
+What I want to focus on right now
+is this overloaded constructor on **Scanner**.
+
+```java  
+public Scanner(File source) throws FileNotFoundException {
+    this((ReadableByteChannel)(new FileInputStream(source).getChannel()));
+}
+```
+
+Going up to the declaration of my **scanner**, 
+I'll control click on **Scanner**.
+This brings up the **Scanner** constructor code 
+that takes a **File** as the source.
+By now, you know the **File** class is **IO** 
+and not **NIO.2**, but let's examine this code a little bit.
+You can see it's calling another overloaded constructor, 
+and passing that what looks like a **ReadableByteChannel**.
+This is definitely using **NIO.2** functionality.
+I haven't covered channels yet. 
+I will in a bit, but it's interesting to know,
+that even though we think we might be using an **IO** class, 
+like **Files** and **Scanner**,
+the underlying functionality is taking advantage of the **NIO.2** enhancements.
+Let's get back to the _main_ method, 
+and instead of a **File**, I'll now construct this scanner with a **Path** variable.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String fileName = "./src/CourseCodes/NewSections/Section_18_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part2_ScannerProject/fixedWidth.txt";
+
+        //try (Scanner scanner = new Scanner(new File(pathName))) {
+        try (Scanner scanner = new Scanner(Path.of(pathName))) {
+
+            var results = scanner.findAll(
+                            "(.{15})(.{3})(.{12})(.{8})(.{2}).*")   // Stream<MatchResult>
+                    .skip(1)
+                    .map(m -> m.group(3).trim())                   // Stream<String>
+                    .distinct()
+                    .sorted()
+                    .toArray(String[]::new);                // String[]
+            System.out.println(Arrays.toString(results));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+Now, instead of a _FileNotFoundException_,
+I'll need a _catch_ clause for _IOException_.
+I'll click on **Scanner**, 
+and that should give me the light bulb gutter icon, 
+and that will show me several options.
+The one I want is, replace _FileNotFoundException_
+with more generic _IOException_.
+If I run this code:
+
+```html  
+[Finance, HR, IT, Marketing]
+```
+
+I get the same results.
+I'll do the same thing I did earlier,
+and control+click on the **Scanner** keyword in the _try_ block, 
+to have a look at the constructor code.
+
+```java  
+public Scanner(Path source) throws IOException {
+    this(Files.newInputStream(source));
+}
+```
+
+Somewhat surprisingly, this is a bit different from what we saw previously.
+Here, our **path** is an argument to a method on the **Files** class;
+I haven't really covered, _newInputStream_.
+Let's follow this trail, and see where it leads.
+I'll control click on that method name, _newInputStream_.
+
+```java  
+public InputStream newInputStream(Path path, OpenOption... options) throws IOException {
+    return provider(path).newInputStream(path, options);
+}
+```
+
+That's delegating to something called a **provider**,
+and its _newInputStream_ method,
+so I'll control click on that.
+
+```java  
+public InputStream newInputStream(Path path, OpenOption... options) throws IOException {
+    for (OpenOption opt : options) {
+        // All OpenOption values except for APPEND and WRITE are allowed
+        if (opt == StandardOpenOption.APPEND ||
+                opt == StandardOpenOption.WRITE)
+            throw new UnsupportedOperationException("'" + opt + "' not allowed");
+    }
+    ReadableByteChannel rbc = Files.newByteChannel(path, options);
+    if (rbc instanceof FileChannelImpl) {
+        ((FileChannelImpl) rbc).setUninterruptible();
+    }
+    return Channels.newInputStream(rbc);
+}
+```
+
+Now if I look past that first if statement, I'll see that here again, 
+is the **ReadableByteChannel**.
+This means that again, this code is taking advantage of 
+the **NIO.2** enhancements to file input.
+Let's try yet another constructor in our _main_ method.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String fileName = "./src/CourseCodes/NewSections/Section_18_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part2_ScannerProject/fixedWidth.txt";
+
+        //try (Scanner scanner = new Scanner(Path.of(pathName))) {
+        try (Scanner scanner = new Scanner(new FileReader(pathName))) {
+
+            var results = scanner.findAll(
+                            "(.{15})(.{3})(.{12})(.{8})(.{2}).*")   // Stream<MatchResult>
+                    .skip(1)
+                    .map(m -> m.group(3).trim())                   // Stream<String>
+                    .distinct()
+                    .sorted()
+                    .toArray(String[]::new);                // String[]
+            System.out.println(Arrays.toString(results));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+This time I'll pass a new **FileReader**.
+This code compiles with that one change.
+I'll confirm it works as before.
+I'll run that:
+
+```html  
+[Finance, HR, IT, Marketing]
+```
+
+And my results are the same.
+Once more, I'll see what the constructor code will reveal.
+
+```java  
+public Scanner(Readable source) {
+    this(Objects.requireNonNull(source, "source"), WHITESPACE_PATTERN);
+}
+```
+
+This is calling an overloaded constructor,
+so I'll control click on **this** keyword.
+
+```java  
+private Scanner(Readable source, Pattern pattern) {
+    assert source != null : "source should not be null";
+    assert pattern != null : "pattern should not be null";
+    this.source = source;
+    delimPattern = pattern;
+    buf = CharBuffer.allocate(BUFFER_SIZE);
+    buf.limit(0);
+    matcher = delimPattern.matcher(buf);
+    matcher.useTransparentBounds(true);
+    matcher.useAnchoringBounds(false);
+    useLocale(Locale.getDefault(Locale.Category.FORMAT));
+}
+```
+
+Here, what's notable is there isn't any transformation of the source 
+to another type of input stream.
+When you construct your scanner with a **FileReader**,
+the **Scanner** will use the _IO_ **FileReader**, 
+meaning it will have minimal buffering, and so on.
+I'll go back to the _main_ method one last time,
+and wrap that **FileReader** in a **BufferedReader** constructor.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String fileName = "./src/CourseCodes/NewSections/Section_18_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part2_ScannerProject/fixedWidth.txt";
+
+        //try (Scanner scanner = new Scanner(new FileReader(pathName))) {
+        try (Scanner scanner = new Scanner(
+                new BufferedReader(new FileReader(pathName)))) {
+
+            var results = scanner.findAll(
+                            "(.{15})(.{3})(.{12})(.{8})(.{2}).*")   // Stream<MatchResult>
+                    .skip(1)
+                    .map(m -> m.group(3).trim())                   // Stream<String>
+                    .distinct()
+                    .sorted()
+                    .toArray(String[]::new);                // String[]
+            System.out.println(Arrays.toString(results));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+This code compiles and runs with the same results.
+
+```html  
+[Finance, HR, IT, Marketing]
+```
+
+Once more, I'll examine the constructor.
+
+```java  
+public Scanner(Readable source) {
+    this(Objects.requireNonNull(source, "source"), WHITESPACE_PATTERN);
+}
+```
+
+You can see this looks like the same constructor the **FileReader** used.
+I'll control click on this and confirm it.
+
+```java  
+private Scanner(Readable source, Pattern pattern) {
+    assert source != null : "source should not be null";
+    assert pattern != null : "pattern should not be null";
+    this.source = source;
+    delimPattern = pattern;
+    buf = CharBuffer.allocate(BUFFER_SIZE);
+    buf.limit(0);
+    matcher = delimPattern.matcher(buf);
+    matcher.useTransparentBounds(true);
+    matcher.useAnchoringBounds(false);
+    useLocale(Locale.getDefault(Locale.Category.FORMAT));
+}
+```
+
+There I can see the same code.
+OK, so what was the point of this exercise?
+I wanted you to see that the **Scanner** will take advantage of **NIO.2** functionality, 
+if you use either **Path** or **File**, to construct the scanner.
+There are times when using that functionality may not be a good fit, 
+and I'll discuss that when I get to **channels** later.
+For those times, you can still use a **FileReader** 
+or preferably the **BufferedFileReader**, and use the underlying legacy IO sources.
+</div>
+
+### Character Set
+<div align="justify">
+
+Before I cover additional options for reading text from a file,
+I'd like to do a brief overview of character sets.
+In truth, you're probably not likely to use anything but the default,
+but it's a good idea to understand what that default is, 
+and why it is the default.
+A character set is a defined collection of symbols, letters, numbers, 
+punctuation marks, and other characters.
+Each character in the set is assigned a unique numerical code, 
+called a code point, which allows computers to store, transmit, 
+and interpret text.
+Two of the most common character sets are **ASCII** and **Unicode**.
+**ASCII** stands for the _American Standard Code for Information Interchange_.
+It's the oldest and most widely used character set.
+**Unicode** is a newer character set, designed to support 
+all the world's writing systems.
+Character encoding is the process of assigning numbers 
+to various characters, called **glyphs**.
+A glyph can be an alphabetical character in any language, 
+punctuation, or emojis — for example.
+There are different ways to represent glyphs with a numeric value.
+
+|            | Size   | Includes Latin Alphabet | Notes                               |
+|------------|--------|-------------------------|-------------------------------------|
+| US-ASCII   | 7 bits | No                      | Smaller range of characters         |
+| ISO-8859-1 | 8 bits | Yes                     | More Widely Supported than US-ASCII |
+
+For the **ASCII** character set, _ISO-8859-1_, 
+and **US-ASCII**, are two encodings.
+**US-ASCII** is a 7-bit character encoding standard.
+**ISO-8859-1** is 8-bit, meaning it can represent 
+a wider range of characters than **US-ASCII**.
+**ISO-8859-1** includes all the characters 
+that are used in the **Latin** alphabet,
+while **US-ASCII** only includes the characters
+that are used in the **English** alphabet.
+This means that **ISO-8859-1** can be used
+to represent text in more languages than **US-ASCII**.
+**ISO-8859** is a more recent standard than **US-ASCII**, 
+and it's been more widely adopted by modern systems than **US-ASCII**.
+
+|        | Size                   | Benefits                                                                                                                              |
+|--------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| UTF-8  | Variable(1 to 4 bytes) | **Most popular encoding on the internet.**<br/> Includes ISO-8859-1, and more.<br/> Can represent characters from all writing systems |
+| UTF-16 | 2 bytes                | Widely Supported                                                                                                                      |
+| UTF-32 | 4 bytes                | More efficient and straightforward to process, but uses more storage space. Rarely used.                                              |
+
+**UTF-8**, **UTF 16**, and **UTF-32**, are all different encodings 
+used to represent **Unicode** characters.
+All of these encodings are backwards compatible,
+meaning they can store **ASCII** characters with the same encoding.
+**UTF-8** is variable length, 
+so each character might use a different number of bytes.
+**UTF-16** and **UTF-32** are fixed width encodings.
+Each character is represented by two bytes for **UTF-16**, 
+and four bytes for **UTF-32**.
+**UTF-8** and **UTF-16** are both very popular encoding systems, 
+but **UTF-32** is rarely used, because it takes up more disk space.
+In general, **UTF-8** is the better choice for most applications.
+It's more efficient, more widely supported,
+and can represent a wider range of characters.
+However, if you're only working with **ASCII** characters,
+**ISO-8859-1** may be a better choice for efficiency reasons.
+Java has the most common encodings specified on an enum, 
+in the `java.nio.char` set package, called **StandardCharsets**, 
+and I've included that URL 
+[here](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/charset/StandardCharsets.html), 
+for your convenience.
+</div>
+
+### Reading With NIO2 Functionality
+<div align="justify">
+
+Before I look at reading data from a file,
+I'll first check what the default character encoding is.
+There are a couple of ways to determine the default.
+The first is by getting a system property, called `file.encoding`.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        System.out.println(System.getProperty("file.encoding"));
+        System.out.println(Charset.defaultCharset());
+    }
+}
+```
+
+The second way is to call the static method,
+_defaultCharset_ on the **Charset** class.
+Running this code:
+
+```html  
+UTF-8
+UTF-8
+```
+
+Both methods give me the same result, 
+and I can see my system's default encoding is _UTF-8_.
+Yours may be different, however.
+I'm going to use the default in all of my examples, 
+but you should know you can override this, 
+by passing in the character set you'd rather use, 
+in most class constructors that read text files.
+I've included the _fixedWidth_ file from the last section, in the package.
+In the _main_ method, similar to how I started with the _IO_ classes,
+I'm going to start out by reading the smallest unit, in this case bytes.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        System.out.println(System.getProperty("file.encoding"));
+        System.out.println(Charset.defaultCharset());
+
+        String fileName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part3_ReadingWithNIO2/fixedWidth.txt";
+        Path path = Path.of(fileName);
+        try {
+            System.out.println(new String(Files.readAllBytes(path)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+Ultimately, all data is really in bytes, 
+and it gets encoded to characters 
+if it contains text if we use a text-based reader.
+I'll first start with creating a path variable to my file, 
+which is in the current package directory.
+I know I need a _try-catch_ block, 
+so I'll include it now. 
+I'll write this code out in a single statement. 
+I'll use _readAllBytes_ on the **Files** class, 
+passing it my _path_.
+I'll pass that result, 
+a byte array to a new **String** instance, 
+and I'll print it.
+I'll catch the _IOException_.
+And throw a runtime exception instead.
+Running this code:
+
+```html  
+UTF-8
+UTF-8
+Name           AgeDept        Salary  ST
+John Doe        30HR             50000NY
+Jane Smith      25IT             60000CA
+Michael Brown   40Finance        75000TX
+Alice Johnson   35Marketing      55000IL
+Robert Lee      28IT             58000WA
+Emily Wang      32Marketing      52000NY
+Daniel Kim      29HR             49000CA
+Sarah Davis     31Finance        72000TX
+Jessica Chen    27IT             61000IL
+David Miller    33Marketing      53000WA
+Oliver Scott    26Finance        65000CA
+Sophia Adams    37IT             59000NY
+William Clark   34Marketing      54000TX
+Ava Turner      29HR             51000IL
+Ethan Hall      31Finance        70000WA
+Isabella King   24IT             62000CA
+James Evans     36Marketing      56000NY
+Grace Baker     27HR             48000TX
+Liam Brooks     32Finance        68000IL
+Charlotte Hill  28IT             57000WA
+```
+
+You can see, I've read my entire file in one fell swoop, 
+into a single **String**, so that's kind of painless.
+I can do the same thing, 
+but this time with the method _readString_ on **Files**.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        System.out.println(System.getProperty("file.encoding"));
+        System.out.println(Charset.defaultCharset());
+
+        String fileName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part3_ReadingWithNIO2/fixedWidth.txt";
+        Path path = Path.of(fileName);
+        try {
+            System.out.println(new String(Files.readAllBytes(path)));
+            System.out.println("----------------");
+            System.out.println(Files.readString(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll include a separator line. 
+I'll call `Files.readString`, 
+passing it path, and print that out.
+If I run that:
+
+```html  
+UTF-8
+UTF-8
+Name           AgeDept        Salary  ST
+John Doe        30HR             50000NY
+Jane Smith      25IT             60000CA
+Michael Brown   40Finance        75000TX
+Alice Johnson   35Marketing      55000IL
+Robert Lee      28IT             58000WA
+Emily Wang      32Marketing      52000NY
+Daniel Kim      29HR             49000CA
+Sarah Davis     31Finance        72000TX
+Jessica Chen    27IT             61000IL
+David Miller    33Marketing      53000WA
+Oliver Scott    26Finance        65000CA
+Sophia Adams    37IT             59000NY
+William Clark   34Marketing      54000TX
+Ava Turner      29HR             51000IL
+Ethan Hall      31Finance        70000WA
+Isabella King   24IT             62000CA
+James Evans     36Marketing      56000NY
+Grace Baker     27HR             48000TX
+Liam Brooks     32Finance        68000IL
+Charlotte Hill  28IT             57000WA
+----------------
+Name           AgeDept        Salary  ST
+John Doe        30HR             50000NY
+Jane Smith      25IT             60000CA
+Michael Brown   40Finance        75000TX
+Alice Johnson   35Marketing      55000IL
+Robert Lee      28IT             58000WA
+Emily Wang      32Marketing      52000NY
+Daniel Kim      29HR             49000CA
+Sarah Davis     31Finance        72000TX
+Jessica Chen    27IT             61000IL
+David Miller    33Marketing      53000WA
+Oliver Scott    26Finance        65000CA
+Sophia Adams    37IT             59000NY
+William Clark   34Marketing      54000TX
+Ava Turner      29HR             51000IL
+Ethan Hall      31Finance        70000WA
+Isabella King   24IT             62000CA
+James Evans     36Marketing      56000NY
+Grace Baker     27HR             48000TX
+Liam Brooks     32Finance        68000IL
+Charlotte Hill  28IT             57000WA
+```
+
+I should see the same output above and below the separator line.
+If I control+click on readString:
+
+```java  
+public static String readString(Path path) throws IOException {
+    return readString(path, UTF_8.INSTANCE);
+}
+```
+
+It's delegating to an overloaded _readString_, 
+so I'll control+click on that.
+
+```java  
+public static String readString(Path path, Charset cs) throws IOException {
+    Objects.requireNonNull(path);
+    Objects.requireNonNull(cs);
+
+    byte[] ba = readAllBytes(path);
+    if (path.getClass().getModule() != Object.class.getModule())
+        ba = ba.clone();
+    return JLA.newStringNoRepl(ba, cs);
+}
+```
+
+There's more code here, 
+but ultimately you can see its just calling _readAllBytes_,
+similar to what we did earlier.
+This method, the _readString_ method, should be used
+if you know you're reading a text file, 
+because it handles some security checks and access issues,
+which is this additional code you see here.
+Ok, so let's get back to the _main_ method.
+You've already seen _readAllLines_ previously,
+but now let's see if we can use it to do something similar 
+to what we did with **Scanner** previously.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        System.out.println(System.getProperty("file.encoding"));
+        System.out.println(Charset.defaultCharset());
+
+        String fileName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part3_ReadingWithNIO2/fixedWidth.txt";
+        Path path = Path.of(fileName);
+        try {
+            String regexPattern = "(.{15})(.{3})(.{12})(.{8})(.{2}).*";
+            Pattern p = Pattern.compile(regexPattern);
+            Set<String> values = new TreeSet<>();
+            Files.readAllLines(path).forEach(s -> {
+                if (!s.startsWith("Name")) {
+                    Matcher m = p.matcher(s);
+                    if (m.matches()) {
+                        values.add(m.group(3).trim());
+                    }
+                }
+            });
+            System.out.println(values);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll parse the _fixedWidth_ file to get distinct values out of certain columns,
+using the _readAllLines_ method.
+This method returns an array of **String** though, 
+so I'll show you a solution here, without a stream pipeline.
+First, I'll create a compiled pattern, using the same pattern 
+I used in the previous section.
+If you skipped over that section, 
+this pattern simply groups a specified number of characters,
+representing a column of data, in _fixedWidth_ file.
+I'll create a tree set to store the values. 
+I'm using a set because it does not allow duplicates, 
+and a tree set because I want it sorted.
+I'll execute `files.readAllLines`, passing it _path_, 
+chaining the _forEach_ method to that.
+I'll set up a multi-line lambda. 
+I want to ignore the first row, which is a header row, 
+and that will start with _Name_. 
+I don't recommend this in real life. 
+You'd never want to depend on a header name being the same, for example,
+each time you got a new file in, but for now it's a quick work-around.
+I'll get a matcher, using my compiled pattern,
+passing each string read, from the file.
+If there's a match, I'll again, using the group method on the matcher result,
+passing it 3 for the third group, and trim it.
+I'll add that to my set. 
+I'll print my set.
+Running this code:
+
+```html  
+[Finance, HR, IT, Marketing]
+```
+
+I'll get the distinct values in the third column of my fixed width file,
+which is the department of the employee.
+This is a reminder that there are many ways to write code, 
+to perform the same functionality.
+**Files** has its own method that returns a stream of **Strings**, 
+one string for each line.
+When using the stream methods on **Files**,
+you need to wrap the assignment and call, 
+in a _try-with-resources_ block.
+This is very similar to the issue when getting a stream of paths.
+I want to again remind you that streams are lazily executed,
+so resources are opened and never closed 
+until the terminal operation is applied to the stream.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        System.out.println(System.getProperty("file.encoding"));
+        System.out.println(Charset.defaultCharset());
+
+        String fileName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part3_ReadingWithNIO2/fixedWidth.txt";
+        Path path = Path.of(fileName);
+        try (var stringStream = Files.lines(path)) {                        //Stream<String>
+            String regexPattern = "(.{15})(.{3})(.{12})(.{8})(.{2}).*";
+            Pattern p = Pattern.compile(regexPattern);                      
+            Set<String> values = new TreeSet<>();                           
+
+            var results = stringStream                                      
+                    .skip(1)                                                //Stream<String>
+                    .map(p::matcher)                                        //Stream<Matcher>
+                    .filter(Matcher::matches)
+                    .map(m -> m.group(3).trim())                            //Stream<String>
+                    .distinct()
+                    .sorted()
+                    .toArray(String[]::new);                                //String[]
+            System.out.println(Arrays.toString(results));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+Inside the parentheses, I'll have a local variable called _stringStream_, 
+and assign that the result of `Files.lines`.
+I'm going to have this stream return an array,
+to a variable called _results_.
+I'll skip the header row. 
+My pattern is in the _p_ variable, so I'll use that to get a matcher.
+This becomes a stream of **matcher** instances at this point.
+I want to filter by actual _matches_ because they may not all match.
+Some of your data might not be properly formatted, 
+but I want to keep processing.
+I'll map again, this time to a string, 
+using the matcher's group 3, and trimming it. 
+I want the values to be distinct and sorted, 
+and returned in a string array. 
+I'll print the results.
+Running this code:
+
+```html  
+[Finance, HR, IT, Marketing]
+```
+
+I'll again get my list of departments printed.
+Let's up the game a little bit, and get counts of employees in each department.
+Do you remember how to do this?
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        System.out.println(System.getProperty("file.encoding"));
+        System.out.println(Charset.defaultCharset());
+
+        String fileName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course06_ReadingTextFromInputFiles/Part3_ReadingWithNIO2/fixedWidth.txt";
+        Path path = Path.of(fileName);
+        try (var stringStream = Files.lines(path)) {                        //Stream<String>
+            String regexPattern = "(.{15})(.{3})(.{12})(.{8})(.{2}).*";
+            Pattern p = Pattern.compile(regexPattern);
+            Set<String> values = new TreeSet<>();
+
+            var results = stringStream
+                    .skip(1)                                                //Stream<String>
+                    .map(p::matcher)                                        //Stream<Matcher>
+                    .filter(Matcher::matches)
+                    .collect(Collectors.groupingBy(m -> m.group(3).trim(), Collectors.counting()));
+
+            results.entrySet().forEach(System.out::println);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll remove everything after the _filter_ operation,
+including my `System.out.println` statement.
+Now, I'll use the _collect_ terminal operation,
+first passing it a `Collectors.groupingBy`.
+I'll group by the column I'm interested in, column 3 or the department,
+which I can get from the matcher's group 3, 
+and I'll trim that here as well.
+I'll follow that up with the `Collectors.counting` methods.
+This counts all records within the group.
+The result of this is I get back a map, keyed by a string, the department name, 
+and the value is the number of records in the department.
+I'll print that data out, using the **entrySet**.
+Running this code:
+
+```html  
+Finance=5
+HR=4
+IT=6
+Marketing=5
+```
+
+I see that I have5 employees each in Finance and Marketing,
+four in HR or human resources, and six in IT.
+Ok, so that's using the various methods on the **Files** class, 
+to read data from a text file.
+I hope you're starting to get a feel how powerful
+these methods can be to diagnose text files.
+I'll summarize these methods on a quick table.
+
+| Method Signature                                          | Description                                                   | Closes file?          |
+|-----------------------------------------------------------|---------------------------------------------------------------|-----------------------|
+| `byte[] readAllBytes(Path path) throws IOException`       | Reads entire contents of **any** file into a byte array.      | Yes                   |
+| `String readString(Path path) throws IOException`         | Reads entire contents of a **text** file into a string.       | Yes                   |
+| `List<String> readAllLines(Path path) throws IOException` | Reads entire contents of a text file, into a list of string.  | Yes                   |
+| `Stream<String> lines(Path path) throws IOException`      | Reads entire contents of a text file                          | On Terminal Operation |
+
+All of these methods read the entire contents of a file into memory.
+These methods support files up to about 2 gigabytes.
+After that, you're in danger of an out-of-memory error.
+For large files, you'll want to use a **BufferedReader**,
+or a **Channel** which I'll talk about shortly.
+_readAllBytes_ reads the entire contents of any file into a byte array, 
+and it will close the resource for you, 
+meaning it doesn't need to be included in a _try-with-resources_ block.
+_readString_ is similar, but can only be used with text files, 
+and is preferred over _readAllBytes_ for text files.
+_readAllLines_ also reads the entire contents of a text file, 
+but it returns a list of **String**, 
+each element representing a line of text from the file.
+The lines method is like the _readAllLines_ method,
+but the result is a stream source of **String**, 
+each element a line of text.
+This method should be included in a _try-with-resources_ block.
+There are other ways to read data from files, 
+and I'll cover those later.
+</div>
+
+## [e. Reading File Challenge]()
+<div align="justify">
+
+In this challenge, I want you to pick some text of your choice, 
+from a document you have, or an online article, or some wiki page.
+You'll create a program to read the text document, 
+with one of the methods we talked about in the last couple of sections.
+You can pick any method you want to use, but whichever you use,
+your program should do the following.
+
+* Tokenize the text into words, remove any punctuation.
+* Ignore words with five characters or less.
+* Count the occurrences of each word.
+* Display the top 10 most used words.
+
+The point of this exercise is to see
+if you can pick out what the article might be about,
+by simply getting the most used words.
+
+After you use one method, try a second method.
+If you used a method that used a stream, 
+try some code without using a streaming method, or vice versa.
+</div>
+
+
+
+
+
+
+
+<div align="justify">
+
+```java  
+
+```
+
+```html  
+
+```
+
+</div>
+
+
+
+<div align="justify">
+
+```java  
+
+```
+
+```html  
+
+```
+
+</div>
+
+
+
+<div align="justify">
+
+```java  
+
+```
+
+```html  
+
+```
+
+</div>
+
+
+
+<div align="justify">
+
+```java  
+
+```
+
+```html  
+
+```
+
+</div>
+
+
+
+<div align="justify">
+
+```java  
+
+```
+
+```html  
+
+```
+
 </div>
 
 
