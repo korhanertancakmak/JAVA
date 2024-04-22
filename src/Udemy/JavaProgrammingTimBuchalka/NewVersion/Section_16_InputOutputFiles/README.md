@@ -8360,31 +8360,65 @@ Obviously, this example was manufactured a bit,
 to give you a better demonstration.
 </div>
 
-
+## [g. File Writing Challenge]()
 <div align="justify">
 
-```java  
+In this challenge, you'll be creating your own data file,
+with the **StudentEngagement** records.
+In this case, you'll be outputting the data in **Json** format.
+You've seen a little **JSON** in a previous section.
+It stands for _JavaScript Object Notation_,
+and it's a pretty popular lightweight data interchange format.
+If you want a quick introduction,
+a good place to start is the **w3schools** site,
+[here](https://www.w3schools.com/js/js_json_intro.asp).
 
-```
+Don't worry though, because you don't really have to know much about _Json_,
+to complete this challenge.
+Start with the **StudentEngagement** code from the previous sections,
+and first generate 1000 students.
+To output each student as a JSON record:
 
-```html  
+* You can use the _write_, or _writeString_ methods on **Files**.
+* Or you can try **FileWriter**, **PrintWriter** or **BufferedWriter**,
+  or some combination of these.
 
-```
+The text printed should be a list of students,
+a conceptual look is shown here.
 
-</div>
+![image11](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image11.png?raw=true)
 
+The entire set of student records should be contained in square brackets,
+which is _Json_ representation for an array of elements.
+Each student record should be enclosed in curly braces,
+containing student data in key value pairs,
+and separated by commas, which I'll show you next.
 
+![image12](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image12.png?raw=true)
 
-<div align="justify">
+At a minimum, print the student id, and some _demographics_ data.
+The Json example on this image, demonstrates a flattened structure.
+You can see all fields are key value pairs,
+and all are children of the student record.
+Keys are enclosed in quotes, as are values if they're text based,
+and the colon is used to separate the key and value.
 
-```java  
+![image13](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image13.png?raw=true)
 
-```
+On this image, I'm showing a more hierarchical Json structure, for a single student.
+The demographics key, has a value that's an object and not a simple string,
+and that's enclosed in curly braces.
+The engagement key's values is also an array, containing separate engagement records.
+You might want to explore the use of IntelliJ's **template** functionality,
+to create your own _JSON_ string template.
+You can look at
+[here](https://www.jetbrains.com/help/idea/2022.3/generating-code.html#customize-templates)
+for customizing templates.
+You could start with one of the _toString_ templates as a basis.
 
-```html  
-
-```
-
+Don't forget about the **StringJoiner** class,
+that lets you define a delimiter, as well as a prefix and suffix.
+Start out by testing 2 or 3 students in your data set.
 </div>
 
 

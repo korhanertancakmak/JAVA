@@ -197,11 +197,10 @@ What we will learn from this Path:
 ### [b. Using Files and Paths Classes]()
 ### [c. File Tree Walking Challenge]()
 ### [d. Reading Input Files]()
+### [e. Reading File Challenge]()
+### [f. Writing Data to Files]()
+### [g. File Writing Challenge]()
 
-    * Reading Input Files
-    * Writing Data to a File
-    * BufferedWrite, FileWriter, and PrintWriter
-    * Reader & InputStream
     * RandomAccessFile
     * DataOutputStream & DataInputStream
     * Serilization
