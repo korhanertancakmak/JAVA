@@ -19,10 +19,4 @@ public record Course(String courseCode, String title) {
                 .add("\"title\":\"" + title + "\"")
                 .toString();
     }
-
-//Part-7
-/**
-        And add the toJSON method to it. I'll go to the CourseEngagement class,
-**/
-//End-Part-7
 }

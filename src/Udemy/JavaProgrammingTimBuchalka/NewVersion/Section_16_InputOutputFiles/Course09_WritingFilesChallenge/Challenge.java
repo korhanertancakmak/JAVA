@@ -16,33 +16,32 @@ public class Challenge {
 
         Course jmc = new Course("JMC", "Java Masterclass");
         Course pymc = new Course("PYC", "Python Masterclass");
-
+/*
         List<String> students = Stream
                 .generate(() -> Student.getRandomStudent(jmc, pymc))
                 .limit(2)
                 .map(Student::toJSON)
                 .toList();
         students.forEach(System.out::println);
+*/
 
 
-
-/*
         String delimiter = "," + System.lineSeparator();
         String students = Stream
                 .generate(() -> Student.getRandomStudent(jmc, pymc))
-                .limit(2)
+                .limit(1000)
                 .map(Student::toJSON)
                 .collect(Collectors.joining(delimiter, "[", "]"));
         System.out.println(students);
 
-        String pathName = "./src/CourseCodes/NewSections/Section_18_InputOutputFiles/Course09_WritingFilesChallenge/students.json";
+/*
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course09_WritingFilesChallenge/students.json";
         try {
             Files.writeString(Path.of(pathName), students);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 */
-
 
     }
 }

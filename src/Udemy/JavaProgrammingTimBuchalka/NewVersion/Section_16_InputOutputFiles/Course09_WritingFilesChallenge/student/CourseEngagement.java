@@ -86,12 +86,6 @@ public class CourseEngagement {
                 .toString();
     }
 
-//Part-8
-/**
-        And do the exact same thing, again right under the existing toString method. Ok, so that was easy. I want to get
- back to the Student class,
-**/
-//End-Part-8
 
     void recordLastActivity(int lectureNumber, int month, int year) {
 
