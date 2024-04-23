@@ -9392,7 +9392,7 @@ Next, I want to talk about more advanced file topics.
 These include random access files, and serialization.
 </div>
 
-## [i. Directory and File Manipulation Challenge]()
+## [i. Directory and File Manipulation Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course11_FileManipulationChallenge/README.md#directory-and-file-manipulation-challenge)
 <div align="justify">
 
 In this challenge, I want you to
@@ -9428,27 +9428,812 @@ For now, assume this will be manually run.
 ## [j. RandomAccessFile Class]()
 <div align="justify">
 
-```java  
+So far, in all of our discussions up until now, 
+I've been working with text or character based files. 
+In all cases, we started reading from the files at the start, 
+and have read the data sequentially until the end of the file.
+We've written to a file, either at the start of the file, 
+or appended to the end of it. 
+We controlled this behavior,
+using values on the _StandardOpenOptions_ enum. 
+There's another way to access data from a file, 
+and this is with a **RandomAccessFile**. 
+This class provides the ability to directly access and modify data 
+at any specific location within the file. 
+A random access file behaves like a large array of bytes, 
+stored in the file system. 
+There's a kind of cursor, or index into the implied array, 
+called the **file pointer**. 
+A **RandomAccessFile** both reads and writes binary data, 
+using special methods, which keep track of how many bytes 
+will be read or written. 
+This class can be used for both read and write operations. 
+When you open a **RandomAccessFile**, 
+its **file pointer** is at 0, or the start of the file.
+To move the **file pointer**, you execute a method on the file, 
+called _seek_, passing it a **long** value, 
+the position in the file, you wish to go to. 
+To get the **file pointer**, you execute _getFilePointer_. 
+Depending on the type of _read_ or _write_ method you're using,
+the **file pointer** will move a certain number of bytes 
+when these operations complete. 
+There are a lot of these methods,
+and I'll show them to you by pulling up 
+the Java API documentation for this class's methods, 
+[here](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/RandomAccessFile.html#method-summary).
 
+Notice how many _read_ methods you see there. 
+There's one for every primitive, 
+so _readByte_, _readChar_, _readInt_, _readLong_, and so on. 
+There's _readLine_, letting you read a single line at a time, 
+but there are some others that may look unfamiliar.
+The most important of these is probably _readUTF_, 
+which reads in a string from this file. 
+I'll be using this method and talking about it more in a little bit. 
+If I scroll down, I see the _write_ methods 
+that line up with all the _read_ methods.
+Each of these methods, when executed, 
+moves the _file pointer_ a certain number of bytes, 
+so the _readInt_ method, would move the _file pointer_ 4 bytes, and so on. 
+Are you still confused about why you'd use this?
+
+Let's say you have a file with many millions of records, 
+and at any one time, you really need to access about 50 of those. 
+Instead of loading a million records into memory, 
+you can load a simple array or small map, 
+which will tell you how to locate records of interest in the big file. 
+You wouldn't want to start reading from the beginning of the file,
+and read 10 million records, checking each one to see if it's a match. 
+The RandomAccessFile lets you fast-forward or backward, 
+to a position in the file, using the _seek_ method. 
+From this position, you can read in only the data that matters for your application. 
+To do this though, you need to understand how many records are in your file, 
+what its record length is, and how you want to identify each record, to retrieve it.
+
+A _RandomAccessFile_ needs an index, 
+which houses a _file pointer_ position, to each record of interest. 
+This index could be implied for a file with fixed width records, 
+if you only need to get data by a row number, for example. 
+This means it's straightforward to do a little math 
+to get the 10 thousandth record, 
+when all the records are 250 characters in length. 
+10,000 * 250 will point you to the 10,000th record in your file. 
+It's much more common though, 
+to retrieve records by a non-sequential id, than a row id. 
+For this, you'll need an index, that will contain this id, 
+and the position in the file of the record associated with that id. 
+For fixed width records, your index wouldn't need the _file pointer_ position,
+just an association between the row id and the record id. 
+This index might be an array of record IDs, for example, in row id sequence.
+
+| Row Index | Record Id | Position in File | Fixed Size Record(250 chars) |
+|-----------|-----------|------------------|------------------------------|
+| 0         | 100000    | 0                | First Record                 |
+| 1         | 1         | 250              | Second Record                |
+| 2         | 543210    | 500              | Third Record                 |
+| 3         | 777       | 750              | Fourth Record                |
+
+On this table, you can see that record id 100000 
+is the first record in the file, so it's at index 0. 
+The Row Index and Record ID columns on this table represent 
+the indexed data you'd need to locate your records by record id. 
+For variable length records, the row id alone isn't enough information 
+to calculate the _file pointer_. 
+You could store the length of each record, 
+or you could store the starting _file pointer_ position. 
+It's more common to do the second. 
+Again, the indexed information is represented by the **RecordId** 
+and **Position in File** data, shown in the table below.
+
+| Index | Record Id  | File Pointer | Variable Size      |
+|-------|------------|--------------|--------------------|
+| 0     | 100000     | 0            | First Record(50)   |
+| 1     | 1          | 50           | Second Record(250) |
+| 2     | 543210     | 300          | Third Record(150)  |
+| 3     | 777        | 450          | Fourth Record(500) |
+
+Your index should store the record id, 
+and its associated _file pointer_. 
+Where is this index data stored, and how do you access it? 
+In the case of a fixed width file, it may not exist. 
+If it does, then it will be in the same place 
+as an index for a variable width file. 
+This may be at the beginning of the data file, before the record data. 
+It may be at the end of the data file, so after all, 
+the record data or the indexed data may be in a separate file altogether.
+Ok, let's see what this class looks like in code.
+
+```java  
+public class Main {
+
+    private static final Map<Long, Long> indexedIds = new LinkedHashMap<>();    // key = record id, value = file pointer position
+    private static int recordsInFile = 0;                                       // # of records in the file
+
+    public static void main(String[] args) {
+
+    }
+}
 ```
+
+I've created the usual **Main** class and _main_ method. 
+I've also included the `students.json` file, 
+which I've used in several other sections. 
+This file is going to be the source of the data file I create, 
+using a _RandomAccessFile_. 
+The first thing I want to start with, in the **Main** class, 
+is a couple of private static variables. 
+I'll create a map, which will be keyed by a **long**, 
+representing the id of my record, and that will map to a **long** value, 
+the starting file pointer position of the stored record in the file. 
+I'll also keep track of how many records are in the file. 
+I'll next create a separate class to build the data file and index, 
+so I'll create a new class named **BuildStudentData**, in the same folder.
+
+```java  
+public class BuildStudentData {
+
+    public static void build(String datFileName, boolean separateIndex) {
+
+        String pathStudentJson = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course12_RandomAccessFile/";
+        Path studentJson = Path.of(pathStudentJson + "students.json");
+        String dataFile = pathStudentJson + "/" + datFileName + ".dat";
+        Map<Long, Long> indexedIds = new LinkedHashMap<>();
+
+        try {
+            Files.deleteIfExists(Path.of(dataFile));
+            String data = Files.readString(studentJson);
+            data = data.replaceFirst("^(\\[)", "")
+                    .replaceFirst("(\\])$", "");
+            var records = data.split(System.lineSeparator());
+            System.out.println("# of records = " + records.length);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+}
+```
+
+This class will have a public static void method, 
+called _build_ that takes one argument, the data file name, 
+which will really just be the prefix of the file name. 
+I'll create a path to my `students.json` file. 
+I'll create a filename from the argument passed, 
+and concatenate `.dat` extension. 
+I'll create a map, same as I did in the **main** class, 
+mapped by an id, and the mapped value will be the position in the file. 
+I'll add a _try_ block because I know I'm going to need it to catch _IOExceptions_. 
+If the _dataFile_ already exists, I'll delete it. 
+I'll read the entire contents of my json file in as a string. 
+My json student records are wrapped in an opening square bracket 
+and a closing square bracket, which I want to remove. 
+I'll use _replaceFirst_, with a little regular expression magic 
+to remove these enclosing brackets. 
+The first expression removes the first opening bracket at the start of the entire string, 
+and the next expression removes the first closing square bracket, 
+it finds at the end of the entire string. 
+I'll split the records by the line separator.
+I'll print the number of records to the console. 
+And finally, I add the _catch_ block. 
+Before I go any further, I think it will help you, 
+if I show you what this file is going to look like, on a image.
+
+![image14](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image14.png?raw=true)
+
+This diagram represents what the file will look like 
+once it's been completely generated. 
+I won't be creating this file in top-down order, however. 
+In fact, Step-1 will consist of writing the records to the output file, 
+at the file pointer position shown by the arrow. 
+I'll be keeping track of the file position of each record with my map, 
+as I write out each of the records. 
+Once I have all the records inserted, and the index map complete,  
+I'll write the total number of records at position 0. 
+Then I'll start outputting each index key-value pair. 
+This is Step 2. 
+I'm able to start writing my records in step 1, 
+before I insert the index, because I'm using a random access file, 
+and I can move to the position I want to write to. 
+I can derive the position to start, by calculating that 
+I'll use 4 bytes to store the record count, which I'll output as an integer.
+Then I'll have 16 bytes for each indexed entry, because each long takes up 8 bytes. 
+I can multiply that by the number of records, so 1000 * 16, 
+then plus 4 will be my file pointer position, to start writing the records.
+
+```java  
+public class BuildStudentData {
+
+    public static void build(String datFileName, boolean separateIndex) {
+
+        String pathStudentJson = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course12_RandomAccessFile/";
+        Path studentJson = Path.of(pathStudentJson + "students.json");
+        String dataFile = pathStudentJson + "/" + datFileName + ".dat";
+        Map<Long, Long> indexedIds = new LinkedHashMap<>();
+
+        try {
+            Files.deleteIfExists(Path.of(dataFile));
+            String data = Files.readString(studentJson);
+            data = data.replaceFirst("^(\\[)", "")
+                    .replaceFirst("(\\])$", "");
+            var records = data.split(System.lineSeparator());
+            System.out.println("# of records = " + records.length);
+
+            long startingPos = 4 + (16L * records.length);
+
+            Pattern idPattern = Pattern.compile("studentId\":([0-9]+)");
+
+            try (RandomAccessFile ra = new RandomAccessFile(dataFile, "rw")) {
+                ra.seek(startingPos);
+                for (String record : records) {
+                    Matcher m = idPattern.matcher(record);
+                    if (m.find()) {
+                        long id = Long.parseLong(m.group(1));
+                        indexedIds.put(id, ra.getFilePointer());
+                        ra.writeUTF(record);
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+}
+```
+
+I'll write the code to derive the starting position. 
+This is the position where I'll start outputting the data records. 
+I've said this starting position is going to be 16 times the record count, 
+plus the 4 bytes I need to print the record count, at the start of the file.
+To create my index, I need to extract the student id from each record. 
+I'll do this with a regular expression pattern and the **matcher** class. 
+I know the Json format, has the studentId text in quotes, 
+followed by a colon, then the actual student id. 
+My expression represents that, with the variable number in parentheses, 
+representing group 1.
+This number is the student id.
+I'll use a _try-with-resources_ block, 
+and create a new instance of a **RandomAccessFile**.
+This constructor takes two string arguments, the first is the file name, 
+and the second is a string representing what mode I want to open this file in. 
+In this case, I want to both read and write to it, so I pass `rw`. 
+I'll call _seek_ on the random access file, 
+leaving enough space to print my indexed data later. 
+I'll loop through the records, which I got from the json file. 
+I'll match each record to my pattern. 
+I'll look for the first match. 
+If I find a match, I can get the student id from group 1. 
+I can add this id as the key to the index map, 
+and the current file pointer as the position of the record in the data file.
+I'll use _writeUTF_ to print the record to the file.
+Finally, I'll include the usual _catch_ block. 
+I'm not done yet though. 
+This code represents only step 1 from the diagram. 
+Step 2 is printing the record count, and the index data.
+To do this, I'll create a private static method on this class.
+
+```java  
+private static void writeIndex(RandomAccessFile ra, Map<Long, Long> indexMap) {
+    try {
+        ra.seek(0);
+        ra.writeInt(indexMap.size());
+        for (var studentIdx : indexMap.entrySet()) {
+            ra.writeLong(studentIdx.getKey());
+            ra.writeLong(studentIdx.getValue());
+        }
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+It returns void, and I'll call it _writeIndex_. 
+It'll take the **RandomAccessFile** to be written to, 
+and the index map, as arguments. 
+I'll need a _try-catch_. 
+My index is always going to be at the start of the file. 
+I'll write the size of the map, which should be equal to the number of records. 
+Looping through the map entries, I'll write the key, 
+and the value as longs, each write taking up 8 bytes. 
+The usual _catch_ block goes here. 
+One thing I didn't really mention earlier, but it's important, 
+is that you want to use a **LinkedHashMap** for the index map, 
+so that your indexed data is in insertion order, 
+matching the order the records were printed in.
+
+```java  
+public class BuildStudentData {
+
+    public static void build(String datFileName, boolean separateIndex) {
+
+        String pathStudentJson = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course12_RandomAccessFile/";
+        Path studentJson = Path.of(pathStudentJson + "students.json");
+        String dataFile = pathStudentJson + "/" + datFileName + ".dat";
+        Map<Long, Long> indexedIds = new LinkedHashMap<>();
+
+        try {
+            Files.deleteIfExists(Path.of(dataFile));
+            String data = Files.readString(studentJson);
+            data = data.replaceFirst("^(\\[)", "")
+                    .replaceFirst("(\\])$", "");
+            var records = data.split(System.lineSeparator());
+            System.out.println("# of records = " + records.length);
+
+            long startingPos = 4 + (16L * records.length);
+
+            Pattern idPattern = Pattern.compile("studentId\":([0-9]+)");
+
+            try (RandomAccessFile ra = new RandomAccessFile(dataFile, "rw")) {
+                ra.seek(startingPos);
+                for (String record : records) {
+                    Matcher m = idPattern.matcher(record);
+                    if (m.find()) {
+                        long id = Long.parseLong(m.group(1));
+                        indexedIds.put(id, ra.getFilePointer());
+                        ra.writeUTF(record);
+                    }
+                }
+
+                writeIndex(ra, indexedIds);
+                
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+}
+```
+
+The last thing I need to do for this class is 
+to call the _writeIndex_ method. 
+This call needs to go after the for loop in the _build_ method. 
+To test this, I need to build out the code 
+that's going to read the file with its index. 
+That's going to be my **Main** class.
+
+```java  
+public class Main {
+
+    private static final Map<Long, Long> indexedIds = new LinkedHashMap<>();    // key = record id, value = file pointer position
+    private static int recordsInFile = 0;                                       // # of records in the file
+
+    public static void main(String[] args) {
+
+        BuildStudentData.build("studentData", false);
+    }
+}
+```
+
+I can add a call to the `BuildStudentData.build` method, 
+and I want my file name to be prefixed with _studentData_.
+I can run this as it is:
+
 
 ```html  
-
+# of records = 1000
 ```
 
+And I'll see that the `studentData.dat` file 
+was created in my project folder. 
+I can click on that to open it. 
+I'll get all kinds of warnings from IntelliJ 
+because it's a binary file, 
+and you can see it's hard to read. 
+The indexing part of this file is at the start. 
+How do we know if this is a good file then? 
+Well, we have to test it. 
+The indexed data file exists,
+I don't want to call the build method again, 
+so the first thing I'll do here is comment out the statement
+that calls `BuildStudentData.build`, in my _main_ method. 
+I only need to build this file once, 
+and now I'll write the client code that will make use of it. 
+I'll start by writing code to load the indexed data first. 
+For this, I'll set up a private static void method, called _loadIndex_.
+
+```java  
+private static void loadIndex(RandomAccessFile ra, int indexPosition) {
+    try {
+        ra.seek(indexPosition);
+        recordsInFile = ra.readInt();
+        System.out.println(recordsInFile);
+        for (int i = 0; i < recordsInFile; i++) {
+            indexedIds.put(ra.readLong(), ra.readLong());
+        }
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+This will take a **RandomAccessFile** instance, 
+and an _indexPosition_ to start reading the data. 
+I'll need a _try_ block.
+I'll _seek_ to the starting position, 
+which in my case is really going to be zero. 
+I'll call _readInt_, to get the first data element, 
+the count of records in the file. 
+I'll print that to the console. 
+I'll use that variable, in a for loop, 
+to determine how many times I should read the id, 
+and the file position. 
+I'll populate my map, using _readLong_ to get the key, 
+and a second _readLong_ to get the stored file position. 
+And I'll add the _catch_ clause here. 
+Now that I have that method, I'll get back to the _main_ method, 
+and set this up.
+
+```java  
+public class Main {
+
+    private static final Map<Long, Long> indexedIds = new LinkedHashMap<>();    // key = record id, value = file pointer position
+    private static int recordsInFile = 0;                                       // # of records in the file
+
+    public static void main(String[] args) {
+
+        //BuildStudentData.build("studentData", false);
+
+        String cwdPath = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course12_RandomAccessFile/";
+        try (RandomAccessFile ra = new RandomAccessFile(cwdPath + "studentData.dat", "r")) {
+            loadIndex(ra, 0);
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter a Student Id or 0 to quit");
+            while (scanner.hasNext()) {
+                long studentId = Long.parseLong(scanner.nextLine());
+                if (studentId < 1) {
+                    break;
+                }
+                ra.seek(indexedIds.get(studentId));
+                String targetedRecord = ra.readUTF();
+                System.out.println(targetedRecord);
+                System.out.println("Enter another Student Id or 0 to quit");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll open a **RandomAccessFile**, 
+passing it the name, and this time, 
+the access mode just needs to be _r_, for read.
+In this case, I'll only be reading the data. 
+I'll call _loadIndex_, passing it _ra_ and 0, 
+as the starting file position, to read that data.
+And I'll _catch_ and handle the _IOException_. 
+To make this more interesting, I'll set up a scanner, 
+so that the user can request a record, by inputting a student id. 
+I'll set the scanner up, 
+and prompt the user to _enter a student id or 0 to quit_. 
+I'll start a while loop using the `scanner.hasNext` method, 
+that returns a boolean. 
+I'll keep getting input from the user until they enter 0. 
+I'll use _nextLine_, and pass that to `Long.parseLong` 
+to get the student id they entered. 
+If the id is less than 1, then I'll quit out of the loop. 
+I'll get the file position of this student, from the map, 
+and use the _seek_ method to go directly to that point in the file. 
+I can use _readUTF_ to get the record.
+I'll print the record to the console, and prompt for the next id. 
+Before I run this, let me talk to you about this _readUTF_ method, 
+and the corresponding _writeUTF_ method, 
+which I used to write this data in the last section. 
+Part of the functionality of the _writeUTF_ method is 
+to include the length of the data that was written. 
+This means the _readUTF_ method can first get that length, 
+and then read only that specified block of data into a string. 
+Ok, so there's the code to prompt a user for a student id, 
+and to retrieve that data. 
+This code could be a lot more robust. 
+It's possible the user could enter an invalid id,
+and this would throw an exception. 
+I could use max and min functions on the key set list, 
+to get a valid range for example.
+For now, I just want to keep this short and simple, 
+to see if this actually works. 
+I'll run it:
+
+```html  
+1000
+Enter a Student Id or 0 to quit
+```
+
+I can see 1000 printed to the console. 
+That's the number of records it found in the index, 
+so the code was able to read that accurately, from the `.dat` file. 
+I'm being prompted for an id, so I'll enter `777`, and press enter.
+
+```html  
+{"studentId":777, "demographics":{"countryCode":"IN", "enrolledMonth":7, "enrolledYear":2017, "ageAtEnrollment":60, "gender":"F", "previousProgrammingExperience":false}, "coursesEnrolled":[{"courseCode":"JMC", "title":"Java Masterclass"},{"courseCode":"PYC", "title":"Python Masterclass"}], "engagementMap":[{"courseCode":"JMC", "engagementType":"Lecture 8", "enrollmentMonth":7, "enrollmentYear":2017, "lastLecture":8, "lastActiveMonth":4, "lastActiveYear":2023},{"courseCode":"PYC", "engagementType":"Lecture 12", "enrollmentMonth":7, "enrollmentYear":2017, "lastLecture":12, "lastActiveMonth":8, "lastActiveYear":2022}]},
+Enter another Student Id or 0 to quit
+```
+
+The code then prints the student data it found, 
+and you can see, this is right on the money,
+and it's printed the json data record, for student `777`.
+I'll try a second student, so maybe `555`.
+
+```html  
+{"studentId":555, "demographics":{"countryCode":"CN", "enrolledMonth":1, "enrolledYear":2022, "ageAtEnrollment":61, "gender":"U", "previousProgrammingExperience":false}, "coursesEnrolled":[{"courseCode":"JMC", "title":"Java Masterclass"},{"courseCode":"PYC", "title":"Python Masterclass"}], "engagementMap":[{"courseCode":"JMC", "engagementType":"Lecture 6", "enrollmentMonth":1, "enrollmentYear":2022, "lastLecture":6, "lastActiveMonth":10, "lastActiveYear":2023},{"courseCode":"PYC", "engagementType":"Lecture 7", "enrollmentMonth":1, "enrollmentYear":2022, "lastLecture":7, "lastActiveMonth":8, "lastActiveYear":2023}]},
+Enter another Student Id or 0 to quit
+```
+
+Now, I get student id `555`, and all of that student's data. 
+This means I've been able to successfully load the index data,
+caching only that index in memory I can retrieve records from the file, 
+on an as needed basis, and using a targeted file pointer to quickly do it. 
+I'll press `0` to quit out of my application. 
+Storing the index as the first part of a data file is one way 
+to provide this information to your users. 
+A second way is to store the index as a separate file altogether.
+I'll tweak the code a little bit, and show you an example of this. 
+Getting back to the **BuildStudentData** class:
+
+```java  
+public class BuildStudentData {
+
+    public static void build(String datFileName, boolean separateIndex) {
+
+        String pathStudentJson = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course12_RandomAccessFile/";
+        Path studentJson = Path.of(pathStudentJson + "students.json");
+        String dataFile = pathStudentJson + "/" + datFileName + ".dat";
+        Map<Long, Long> indexedIds = new LinkedHashMap<>();
+
+        try {
+            Files.deleteIfExists(Path.of(dataFile));
+            String data = Files.readString(studentJson);
+            data = data.replaceFirst("^(\\[)", "")
+                    .replaceFirst("(\\])$", "");
+            var records = data.split(System.lineSeparator());
+            System.out.println("# of records = " + records.length);
+
+            //long startingPos = 4 + (16L * records.length);
+            long startingPos = separateIndex ? 0 : 4 + (16L * records.length);
+
+            Pattern idPattern = Pattern.compile("studentId\":([0-9]+)");
+
+            try (RandomAccessFile ra = new RandomAccessFile(dataFile, "rw")) {
+                ra.seek(startingPos);
+                for (String record : records) {
+                    Matcher m = idPattern.matcher(record);
+                    if (m.find()) {
+                        long id = Long.parseLong(m.group(1));
+                        indexedIds.put(id, ra.getFilePointer());
+                        ra.writeUTF(record);
+                    }
+                }
+
+                //writeIndex(ra, indexedIds);
+                writeIndex((separateIndex) ? new RandomAccessFile(pathStudentJson + "/" + datFileName + ".idx", "rw") : ra, indexedIds);
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+}
+```
+
+I'll add an argument to the build method, a boolean, called _separateIndex_. 
+After this, I need to change the starting file position, based on this flag. 
+I'll use a ternary operator, so that if this flag is **true**, 
+my starting position to write the records will be _0_, 
+otherwise it'll be the calculated file pointer. 
+Remember that if the index is in a separate file, 
+the records will be written at position _0_, of the data file. 
+The last thing I need to change is the call to the _writeIndex_ method. 
+I'll first add a new line after the opening parentheses. 
+I'm going to insert a ternary here too, again
+checking if separate index is true. 
+If it is, I want to create another **randomAccessFile**, 
+with a suffix of idx and I need to pass _rw_ here, 
+because I need to be able to both read and write to the index file, 
+from this code that generates it. 
+I'll get back to the **Main** class.
+
+```java  
+public class Main {
+
+    private static final Map<Long, Long> indexedIds = new LinkedHashMap<>();    // key = record id, value = file pointer position
+    private static int recordsInFile = 0;                                       // # of records in the file
+
+    public static void main(String[] args) {
+
+        BuildStudentData.build("studentData", true);
+
+        String cwdPath = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course12_RandomAccessFile/";
+        try (RandomAccessFile ra = new RandomAccessFile(cwdPath + "studentData.dat", "r")) {
+            loadIndex(ra, 0);
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter a Student Id or 0 to quit");
+            while (scanner.hasNext()) {
+                long studentId = Long.parseLong(scanner.nextLine());
+                if (studentId < 1) {
+                    break;
+                }
+                ra.seek(indexedIds.get(studentId));
+                String targetedRecord = ra.readUTF();
+                System.out.println(targetedRecord);
+                System.out.println("Enter another Student Id or 0 to quit");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll uncomment that line that will build the file. 
+I'll change the first argument to just a student 
+so that my file names will be `student.dat`, and `student.idx`. 
+I also don't want to override `studentData.dat` either. 
+I'll pass **true** to that method now. 
+I'll run this as is:
+
+```html  
+# of records = 1000
+1000
+Enter a Student Id or 0 to quit
+```
+
+So that this code will create separate data and index files. 
+I'll also just quit out of the program right away, 
+by entering 0 at the prompt. 
+My code will still be using the old data file to search for records. 
+To see the new files in your project panel, 
+you may need to reload from disk. 
+But you should now see a `student.dat` and `student.idx` file, 
+in your project folder.
+I'm going to again comment out the line to build this data. 
+I have to change my code next, to use this new data file, 
+with its separate index. 
+For this, I'll change the way I load the index data. 
+I'll create a static initializer to load the index.
+
+```java  
+public class Main {
+
+    private static final Map<Long, Long> indexedIds = new LinkedHashMap<>();    // key = record id, value = file pointer position
+    private static int recordsInFile = 0;                                       // # of records in the file
+
+    static {
+        try (RandomAccessFile rb = new RandomAccessFile(
+                "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course12_RandomAccessFile/student.idx",
+                "r");) {
+            loadIndex(rb, 0);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    public static void main(String[] args) {
+
+        BuildStudentData.build("studentData", true);
+
+        String cwdPath = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course12_RandomAccessFile/";
+        //try (RandomAccessFile ra = new RandomAccessFile(cwdPath + "studentData.dat", "r")) {
+        try (RandomAccessFile ra = new RandomAccessFile(cwdPath + "student.dat", "r")) {
+            //loadIndex(ra, 0);
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter a Student Id or 0 to quit");
+            while (scanner.hasNext()) {
+                long studentId = Long.parseLong(scanner.nextLine());
+                if (studentId < 1) {
+                    break;
+                }
+                ra.seek(indexedIds.get(studentId));
+                String targetedRecord = ra.readUTF();
+                System.out.println(targetedRecord);
+                System.out.println("Enter another Student Id or 0 to quit");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+You'll remember this is just a block of code at the class level, 
+that starts with the keyword **static**. 
+I'll create a new **RandomAccessFile** instance, which will read `student.idx`. 
+And my mode can just be read here. 
+I'll call the _loadIndex_ method, passing it this random access file variable, 
+and 0 as the starting position. 
+And of course, I have to deal with an _IOException_. 
+Now, I just need to go down to my _main_ method.
+I'll change the name of the file from `studentData.dat`, to just `student.dat`. 
+I'll remove the _loadIndex_ method here.
+It's much better to load the indices once, in a static initializer, 
+rather than any time this method is executed.
+Ok, so let's see if this works. 
+I'll run it:
+
+```html  
+1000
+# of records = 1000
+Enter a Student Id or 0 to quit
+```
+
+I can see again that the _loadIndex_ method found 1000 records, 
+and that's a good sign. 
+I'll again enter `777`.
+
+```html  
+{"studentId":777, "demographics":{"countryCode":"IN", "enrolledMonth":7, "enrolledYear":2017, "ageAtEnrollment":60, "gender":"F", "previousProgrammingExperience":false}, "coursesEnrolled":[{"courseCode":"JMC", "title":"Java Masterclass"},{"courseCode":"PYC", "title":"Python Masterclass"}], "engagementMap":[{"courseCode":"JMC", "engagementType":"Lecture 8", "enrollmentMonth":7, "enrollmentYear":2017, "lastLecture":8, "lastActiveMonth":4, "lastActiveYear":2023},{"courseCode":"PYC", "engagementType":"Lecture 12", "enrollmentMonth":7, "enrollmentYear":2017, "lastLecture":12, "lastActiveMonth":8, "lastActiveYear":2022}]},
+Enter another Student Id or 0 to quit
+```
+
+The application found the record in the new data file. 
+This time, the index was built in its own file, 
+and the record data is in a second file. 
+This is a mini database now. 
+I'll enter a second record, let's say `999`.
+
+```html  
+{"studentId":999, "demographics":{"countryCode":"CN", "enrolledMonth":2, "enrolledYear":2016, "ageAtEnrollment":38, "gender":"U", "previousProgrammingExperience":false}, "coursesEnrolled":[{"courseCode":"JMC", "title":"Java Masterclass"},{"courseCode":"PYC", "title":"Python Masterclass"}], "engagementMap":[{"courseCode":"JMC", "engagementType":"Lecture 13", "enrollmentMonth":2, "enrollmentYear":2016, "lastLecture":13, "lastActiveMonth":12, "lastActiveYear":2020},{"courseCode":"PYC", "engagementType":"Lecture 2", "enrollmentMonth":2, "enrollmentYear":2016, "lastLecture":2, "lastActiveMonth":11, "lastActiveYear":2020}]},
+Enter another Student Id or 0 to quit
+```
+
+And there I get `999`'s record data. 
+I'll press `0`, to quit out of this application. 
+Whether you include the index at the start, 
+or the end of the record data file, 
+or you maintain it as a separate file is really up to you.
+
+In this example, I've used the **RandomAccessFile** 
+to create a binary data file that contains an indexed mechanism 
+to locate data records. 
+I've also used the **RandomAccessFile** 
+to use this indexed binary data file to read data.
+These are only a couple of use cases for this type of class. 
+You've seen that I did not have to cache all the records, just the index. 
+Another reason to use a random access file, 
+would be for targeted data modifications, of a large file. 
+For example, I could have found the record for student `777` 
+and modified that record, for example.
+Random access files are also commonly used 
+for binary data storage as you've seen.
 </div>
 
 ## [k. RandomAccessFile Class Challenge]()
 <div align="justify">
 
-```java  
+In this challenge, you'll be using an indexed file, 
+that contains a series of employee records.
+This indexed file must be in the same directory of your `Main.java`. 
+This file starts with a total count of employee records 
+that are in the file, an integer value. 
+This is followed by a series of key-value pairs. 
+The key is an integer value, representing the employee id. 
+The value is a long value, 
+that's the file position of the employee record in the file.
 
-```
+For this challenge, open a **RandomAccessFile** class 
+with appropriate permissions. 
+Load the employee index into memory.
+List your employee IDs in order. 
+Retrieve an Employee Record from the file, using an employee id, 
+to locate the position of that record in the file. 
+Print the employee record information to the console.
 
-```html  
+Next, update the selected Employee's salary in the file. 
+And Finally, retrieve the record from the file again,
+and print the information to the console, 
+confirming that the salary was persisted. 
+Each employee record in the file consists of the following information, 
+and in this order:
 
-```
+* Employee ID, an int.
+* Salary, a double.
+* Name a string with a variable width.
+* LastName also with a variable width string.
 
+The difference is that now, you'll be updating a field in the record 
+that's in the file. 
+This is just a matter of finding where the salary is, in that file, 
+seeking it in other words, 
+and then writing the value of a new salary, as a double.
 </div>
 
 ## [l. DataOutputStream and DataInputStream classes]()
