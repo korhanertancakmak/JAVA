@@ -2,723 +2,647 @@ WEBVTT
 Kind: captions
 Language: en
 
-00:00:05.160 --> 00:00:06.960
-Welcome to the File Writing Challenge.
+00:00:05.220 --> 00:00:08.880
+In the last video, I paused at the
+point where I had copied a directory,
 
-00:00:08.040 --> 00:00:12.780
-In this challenge, you'll be creating your own
-data file, with the Student Engagement records.
+00:00:08.880 --> 00:00:13.560
+but learned that this is a shallow copy, meaning
+none of the directory's contents were copied.
 
-00:00:13.620 --> 00:00:16.860
-In this case, you'll be outputting
-the data in Jayson format.
+00:00:14.460 --> 00:00:16.560
+In this video, I want to show you a way to
 
-00:00:17.760 --> 00:00:22.980
-You've seen a little JSON in a previous lecture.
-It stands for JavaScript Object Notation,
+00:00:16.560 --> 00:00:19.740
+copy the entire contents of
+a directory, or a deep copy.
 
-00:00:22.980 --> 00:00:26.280
-and it's a pretty popular
-lightweight data interchange format.
+00:00:20.640 --> 00:00:25.020
+I've got my project open from the last video,
+ManagingFiles, and I'm in the main class.
 
-00:00:27.180 --> 00:00:31.560
-If you want a quick introduction, a good
-place to start is the w3schools site,
+00:00:30.180 --> 00:00:33.960
+I'll create a private static void
+method, and call it recurse Copy.
 
-00:00:31.560 --> 00:00:35.640
-which I'm showing on this slide.
-Don't worry though, because you
+00:00:34.860 --> 00:00:39.720
+This will take two arguments, a path,
+the source, and the target path which
 
-00:00:35.640 --> 00:00:38.520
-don't really have to know much about
-Jayson, to complete this challenge.
+00:00:39.720 --> 00:00:43.860
+is the directory it will get copied to.
+This time I'll have this method declare
 
-00:00:40.620 --> 00:00:45.840
-Start with the Student Engagement code from the
-previous videos, and first generate 1000 students.
+00:00:43.860 --> 00:00:49.140
+a throws clause, throwing any IOException, since
+this code could fail in multiple different ways.
 
-00:00:46.800 --> 00:00:51.420
-To output each student as a JSON record:
-You can use the write, or writeString methods
+00:00:50.160 --> 00:00:53.176
+I'll start by making a shallow
+copy of the source path.
 
-00:00:51.420 --> 00:00:57.480
-on Files. Or you can try FileWriter, PrintWriter
-or BufferedWriter, or some combination of these.
+00:00:54.097 --> 00:01:00.840
+Next,I'll check if the source path is a directory. If
+it is, I'll get the contents by using Files.list.
 
-00:00:58.380 --> 00:01:02.460
-The text printed should be a list of
-students, a conceptual look is shown here.
+00:01:01.860 --> 00:01:04.320
+That returns a stream, which I'll call children.
 
-00:01:03.420 --> 00:01:06.720
-The entire set of student records
-should be contained in square brackets,
+00:01:05.460 --> 00:01:11.400
+Don't forget, for any method on Files, that
+returns a stream, it's super important, to wrap it
 
-00:01:06.720 --> 00:01:09.540
-which is Jaysons representation
-for an array of elements.
+00:01:11.400 --> 00:01:16.500
+in a try with resources block, so you don't create
+a resource leak, if it's not properly closed.
 
-00:01:10.440 --> 00:01:13.320
-Each student record should
-be enclosed in curly braces,
+00:01:17.460 --> 00:01:23.100
+I'll use the stream's to list operation,
+to create a list of Path. I can chain a for
 
-00:01:13.320 --> 00:01:18.720
-containing student data in key value pairs, and
-separated by commas, which I'll show you next.
+00:01:23.100 --> 00:01:29.700
+each to that. And pass a lambda expression.
+For each path, I want to call this method,
 
-00:01:20.520 --> 00:01:24.600
-At a minimum, print the student
-id, and some demographics data.
+00:01:29.700 --> 00:01:36.360
+Main.recurse copy recursively, meaning I'm calling
+it from inside itself. I'll pass the current path
 
-00:01:25.320 --> 00:01:28.920
-The Jayson example on this slide,
-demonstrates a flattened structure.
+00:01:36.360 --> 00:01:41.520
+to this method. For the target though, I need
+to adjust the name of the targeted child path.
 
-00:01:29.760 --> 00:01:33.900
-You can see all fields are key value pairs,
-and all are children of the student record.
+00:01:42.660 --> 00:01:47.100
+I can do this with the resolve method.
+This code won't compile as is.
 
-00:01:34.980 --> 00:01:38.640
-Keys are enclosed in quotes, as
-are values if they're text based,
+00:01:48.060 --> 00:01:52.740
+I'm getting an error on Main.recurseCopy, and
+that's because this method throws an IO Exception.
 
-00:01:38.640 --> 00:01:41.100
-and the colon is used to
-separate the key and value.
+00:01:53.640 --> 00:01:57.240
+I have to surround it with a try catch
+block, which makes the code a bit uglier.
 
-00:01:43.020 --> 00:01:47.400
-On this slide, I'm showing a more hierarchical
-Jayson structure, for a single student.
+00:01:58.140 --> 00:02:02.160
+Before I invoke this, I want to just explain
+what the resolve method is doing here.
 
-00:01:48.480 --> 00:01:52.541
-The demographics key, has a value
-that's an object and not a simple string,
+00:02:03.240 --> 00:02:06.180
+For relative paths, the source and target paths
 
-00:01:52.541 --> 00:01:57.840
-and that's enclosed in curly braces.
-The engagement key's values is also an array,
+00:02:06.180 --> 00:02:08.760
+are joined or concatenated,
+when you use this method.
 
-00:01:57.840 --> 00:02:00.314
-containing separate engagement records.
+00:02:09.840 --> 00:02:13.980
+As I iterate through my nested folders, I need
+to create a mirrored structure below the parent
 
+00:02:13.980 --> 00:02:18.780
+folder, which is the target, so I join the
+target, with the last part of the path name.
 
-00:02:02.288 --> 00:02:05.794
-You might want to explore the use ofIntelliJ's template functionality,
+00:02:19.860 --> 00:02:24.720
+For children that are subfolders, the last
+part is the unqualified or simple path name,
 
-00:02:05.794 --> 00:02:07.925
-to create your own JSON string template.
+00:02:24.720 --> 00:02:30.360
+in our case here, it will be data.
+Ok, that's my recurse copy method.
 
-00:02:08.880 --> 00:02:11.640
-You could start with one of the
-toString templates as a basis.
+00:02:31.140 --> 00:02:35.040
+Getting back to the main method, I'll
+replace the call to Files.copy with this one.
 
-00:02:12.660 --> 00:02:15.300
-I've included IntelliJ's
-help link on that subject.
+00:02:37.500 --> 00:02:38.520
+I'll run this code.
 
-00:02:16.380 --> 00:02:20.940
-It's a little off topic, but you might find it
-useful for this and other similar challenges.
+00:02:40.560 --> 00:02:45.300
+It runs without errors and gives me the message
+as it did before, Directory copied to resources.
 
-00:02:21.960 --> 00:02:25.680
-If this is something you want to explore,
-go ahead and give that a try on your own,
+00:02:46.380 --> 00:02:48.840
+Let's see what that folder
+looks like in the project panel.
 
-00:02:25.680 --> 00:02:29.520
-or watch the first few minutes of
-my solution, then pause afterwards.
+00:02:49.740 --> 00:02:54.180
+I can see the resources folder there, that
+it was created again, and I'll open that up.
 
-00:02:30.360 --> 00:02:32.579
-Don't forget about the StringJoiner class,
+00:02:55.080 --> 00:02:57.300
+You can see that everything
+that was in the files folder,
 
-00:02:32.579 --> 00:02:35.940
-that lets you define a delimiter,
-as well as a prefix and suffix.
+00:02:57.300 --> 00:03:02.520
+including the jayson file and the sub folder,
+data, is now in the resources directory.
 
-00:02:37.080 --> 00:02:39.840
-Start out by testing 2 or 3
-students in your data set.
+00:03:03.540 --> 00:03:06.780
+That's good.
+That means this code is working.
 
-00:02:40.800 --> 00:02:44.340
-Ok, so go away and have a go at that,
-and see what you can come up with.
+00:03:07.800 --> 00:03:11.580
+What happens if I re-run this though,
+when the resources folder now exists.
 
-00:02:45.420 --> 00:02:48.780
-When you're ready, come back, and we'll
-walk through my solution together.
+00:03:12.540 --> 00:03:13.507
+Let me do that.
 
-00:02:51.840 --> 00:02:56.040
-I'm going to complete this challenge in the same
-project I've been using, the WritingFiles project.
+00:03:15.371 --> 00:03:19.581
+You can see Iget a FileAlreadyExistsException,
+thrown by the recurseCopy method.
 
-00:02:57.180 --> 00:03:00.960
-The first thing I want to do is, show you
-how to create your own to String template.
+00:03:20.520 --> 00:03:24.300
+The copy method includes an overloaded
+version, which let's you specify an
 
-00:03:01.920 --> 00:03:06.540
-I'll start in the StudentDemographics record,
-with my pointer just below the two String method.
+00:03:24.300 --> 00:03:30.420
+option to copy a path, even if it already exists.
+I'll change my recurse method, to show you that.
 
-00:03:07.320 --> 00:03:11.640
-I'll press alt Insert, or you could select
-Code from the file menu, then generate.
+00:03:31.440 --> 00:03:35.760
+I'll add another argument to the Files.copy
+method, and this time I'll pass it an enum
 
-00:03:12.960 --> 00:03:15.660
-Either way, select the two String
-method as the item to generate.
+00:03:35.760 --> 00:03:39.763
+value from the StandardCopyOption enum,
+and this is called REPLACE_EXISTING.
 
-00:03:16.560 --> 00:03:19.980
-All the fields in the dialog window,
-should be selected by default.
+00:03:40.680 --> 00:03:44.400
+This means a copy will be done,
+even if the targeted path exists.
 
-00:03:20.940 --> 00:03:24.840
-Here, next to the Template select
-list, is a button, Settings.
+00:03:45.300 --> 00:03:47.012
+Now, I'll run this again.
 
-00:03:26.040 --> 00:03:28.800
-I'll select that.
-On this window,
+00:03:48.687 --> 00:03:49.871
+I still get an error,
 
-00:03:28.800 --> 00:03:34.020
-I want to select the Templates tab,
-Here, on the left, I can see the
+00:03:49.871 --> 00:03:53.580
+but this time it's a different exception,
+it's a DirectoryNotEmptyException.
 
-00:03:34.020 --> 00:03:38.280
-list of existing templates, each generates
-the two String method, in different ways.
+00:03:54.540 --> 00:03:58.380
+Similarly to the issue of being unable
+to do a deep copy, I can't replace an
 
-00:03:39.240 --> 00:03:44.040
-You may have a different list of templates.
-I'll select the StringJoiner template.
+00:03:58.380 --> 00:04:03.000
+existing directory that already has content.
+One solution would be to delete the target
 
-00:03:45.000 --> 00:03:50.220
-The template code is displayed on the right.
-This code uses a combination of Java,
+00:04:03.000 --> 00:04:07.200
+directory if it exists, so I'll go back to
+my main method, and I'll try to do that.
 
-00:03:50.220 --> 00:03:54.480
-and a scripting language used by the IDE,
-called the Velocity Template Language.
+00:04:08.160 --> 00:04:13.800
+I'll first check to see if the directory
+exists. If it does, I'll try to delete it.
 
-00:03:55.620 --> 00:03:58.800
-What I'll do next, is make a
-copy of this coding template.
+00:04:15.540 --> 00:04:17.160
+Ok, now I'll run this.
 
-00:03:59.760 --> 00:04:02.940
-I can select the copy icon,
-at the top of the left pane.
+00:04:19.080 --> 00:04:22.440
+Still, I get the exception,
+DirectoryNotEmptyException.
 
-00:04:03.900 --> 00:04:08.640
-This prompts for a new template name.
-I'll call it JsonBuilder, with String
+00:04:23.460 --> 00:04:26.951
+As it turns out, I can't delete a
+directory if it has contents either.
 
-00:04:08.640 --> 00:04:11.283
-Joiner in parentheses, and I'll click OK.
+00:04:27.720 --> 00:04:31.260
+If I want to delete a directory, I'd
+have to recursively delete all the
 
-00:04:12.411 --> 00:04:16.337
-This code uses StringJoiner, so all fields are separated by the delimiter,
+00:04:31.260 --> 00:04:35.160
+contents of its sub folders, similar to
+what I did with the recurseCopy method.
 
-00:04:16.337 --> 00:04:18.900
-declared as the first argument, a comma.
+00:04:36.060 --> 00:04:39.240
+There's another delete
+method, called deleteIfExists,
 
-00:04:19.680 --> 00:04:22.860
-The prefix is the second argument
-to the StringJoiner constructor.
+00:04:39.240 --> 00:04:44.700
+which replaces this whole if statement.
+That looks cleaner, but if I run it,
 
-00:04:23.760 --> 00:04:26.280
-Here you see, the dollar sign classname.
+00:04:46.680 --> 00:04:48.060
+I've still got the same problem.
 
-00:04:27.000 --> 00:04:30.120
-The two hash signs just mean the
-statement is continued on the next line.
+00:04:51.300 --> 00:04:55.500
+I'll copy my recurseCopy method, and
+paste that right below recurseCopy.
 
-00:04:31.140 --> 00:04:35.340
-Then the dot class dot getSimple Name, and
-that's appended to an opening square bracket.
+00:04:56.280 --> 00:05:01.020
+I'll rename it to recurseDelete.
+For deleting, I just need one path
 
-00:04:36.180 --> 00:04:38.700
-All of this code just outputs
-the simple class name.
+00:05:01.020 --> 00:05:04.020
+for the method argument, and that
+would be the targeted deletion path.
 
-00:04:39.660 --> 00:04:42.420
-I don't really want this in my
-output, so I'll remove all of this
+00:05:06.180 --> 00:05:10.500
+I'll remove that Files.copy statement.
+I'll change source to target,
 
-00:04:43.380 --> 00:04:45.900
-I'll change the square brackets to curly braces
+00:05:10.500 --> 00:05:15.780
+in the two statements that use source.
+I'll change the call to Main.recurseCopy
 
-00:04:48.060 --> 00:04:52.920
-Next, this code loops through all the class
-members, here you can see a foreach statement.
+00:05:15.780 --> 00:05:21.300
+to Main.recurseDelete, and remove the second
+argument, so just passing the streamed path, p.
 
-00:04:53.820 --> 00:04:58.620
-This is followed by an if statement.
-This statement is saying, if it's not a
+00:05:22.980 --> 00:05:27.780
+Ok, so I'm not actually deleting anything yet.
+The right place for the delete,
 
-00:04:58.620 --> 00:05:02.820
-static member, it will add information about
-this field, to the String joiner instance.
+00:05:27.780 --> 00:05:31.920
+is after this if statement, this is when
+the recursive operations have completed.
 
-00:05:03.840 --> 00:05:06.480
-First it will add the field
-name followed by an equals sign.
+00:05:32.940 --> 00:05:37.920
+If I placed it before the if statement, I'd simply
+get exceptions, saying the directory's not empty.
 
-00:05:07.560 --> 00:05:11.940
-In Jayson, field names are the keys, and
-the keys should be wrapped in double quotes.
+00:05:39.060 --> 00:05:43.680
+I'll go back to my main method, and remove
+the delete if exists, and call this instead.
 
-00:05:13.260 --> 00:05:15.540
-This means I want to add a backslash double quote,
+00:05:46.440 --> 00:05:47.160
+I'll run that.
 
-00:05:15.540 --> 00:05:19.500
-after the first double quote there.
-I'll also add a back slash
+00:05:49.260 --> 00:05:52.920
+My console output simply says,
+directory copied to resources.
 
-00:05:19.500 --> 00:05:23.280
-after the dot name there.
-That equals sign needs to be a colon,
+00:05:56.820 --> 00:06:00.240
+I can see resources, and again
+it matches files directory.
 
-00:05:23.280 --> 00:05:25.505
-for Jayson, so I'll change that.
+00:06:01.200 --> 00:06:06.000
+For good measure, I'll add another sub
+folder, under data, and call it newdata.
 
-00:05:26.893 --> 00:05:30.000
-I'll skip over the if statement for
-a primitive array or object array,
+00:06:08.220 --> 00:06:09.540
+And I'll run my code again.
 
-00:05:30.000 --> 00:05:31.500
-and go down to the next else if.
+00:06:12.480 --> 00:06:17.700
+I'll examine the resources folder.
+You can see newdata, the folder I added,
 
-00:05:32.520 --> 00:05:35.940
-If this field is a string, the code
-will wrap the value in single quotes.
+00:06:17.700 --> 00:06:22.800
+is now in the resources folder, confirming
+that the resources folder, matches files.
 
-00:05:37.140 --> 00:05:42.480
-Here, I want to change the single quotes,
-to back slash double quotes, in both cases.
+00:06:23.760 --> 00:06:29.280
+In the past couple of examples, I've shown you
+how to copy, rename and delete files, as well as
 
-00:05:44.220 --> 00:05:48.540
-Finally, for good measure, I'll go up and
-change the name from two String to JSON.
+00:06:29.280 --> 00:06:34.560
+recursively copy and delete directories.
+Next, I want to explore a method on both
 
-00:05:49.500 --> 00:05:54.420
-I'll click OK to save this.
-It's now selected in my template drop down.
+00:06:34.560 --> 00:06:37.980
+the Reader and the InputStream
+interfaces, called transfer To.
 
-00:05:55.380 --> 00:06:00.480
-In the bottom left corner of this dialog, I want
-to uncheck Insert ampersand Override, because in
+00:06:38.700 --> 00:06:43.980
+This method was added to InputStream in JDK
+9, and to the Reader interface in JDK 10.
 
-00:06:00.480 --> 00:06:04.620
-this case I'm not overriding any method.
-I can press OK after that.
+00:06:44.940 --> 00:06:47.880
+Let me set up an example of
+using this, in the main method.
 
-00:06:07.140 --> 00:06:10.380
-This inserts the new two Jayson method
-in the StudentDemographics code.
+00:06:48.720 --> 00:06:53.400
+I'll set up a Buffered Reader, to my student
+activity json that's now in the files sub folder.
 
-00:06:11.340 --> 00:06:14.040
-The benefit of this exercise
-isn't totally apparent,
+00:06:54.324 --> 00:06:56.679
+I'll pass a new File Reader to the buffered
+reader.
 
-00:06:14.040 --> 00:06:16.680
-unless we use this template
-more than a couple of times.
+00:06:58.291 --> 00:07:01.736
+I'll also create a new writer,
+a PrintWriter, which I've said,
 
-00:06:17.820 --> 00:06:21.240
-I'll go over to my Student class
-next, and find it's two string method.
+00:07:01.736 --> 00:07:05.536
+if I pass a string to it, will create a Buffered Writer for me underneath.
 
-00:06:26.340 --> 00:06:28.560
-Underneath that I'll generate
-the two String method,
+00:07:06.478 --> 00:07:09.803
+I want my output file to be
+called students dash backup dot json.
 
-00:06:28.560 --> 00:06:30.960
-but select the Jayson Builder template here.
+00:07:10.703 --> 00:07:14.514
+Here, I'll call reader.transfer To, and pass it my writer.
 
-00:06:31.860 --> 00:06:35.160
-I'll make sure to uncheck the insert
-Override checkbox before I hit OK.
+00:07:15.435 --> 00:07:17.812
+I'll need the IO Exception catch clause as usual.
 
-00:06:37.080 --> 00:06:39.600
-And that gives me a two JSON
-method in the Student class.
+00:07:20.340 --> 00:07:21.600
+If I run this code,
 
-00:06:40.740 --> 00:06:44.820
-I'm going to comment out the two add statements
-for coursesEnrolled and EngagementMap right now.
+00:07:23.340 --> 00:07:28.020
+and I examine my project pane, I'll see
+my new file, students dash backup.json.
 
-00:06:45.720 --> 00:06:47.040
-Finally for the demographics,
+00:07:28.920 --> 00:07:33.240
+If I open that file, I can see, I've
+simply made a copy of the jayson file here.
 
-00:06:47.040 --> 00:06:50.340
-I really want to pass the result of
-the two JSON method on that class.
+00:07:34.140 --> 00:07:39.180
+In essence, I've used reader.transfer
+To, to do what the Files.copy method did.
 
-00:06:51.480 --> 00:06:56.040
-To see if this works, I'll create a new class
-called Challenge in the dev.lpa package.
+00:07:40.140 --> 00:07:42.900
+That probably leads you to
+the question, Which is better?
 
-00:07:05.040 --> 00:07:09.060
-I'll go to the Main class, and copy the
-code that creates my list of students.
+00:07:44.040 --> 00:07:48.300
+Well, when you're working with files,
+you'll probably want to stick to Files.copy.
 
-00:07:10.080 --> 00:07:13.680
-I don't want the header, so starting
-at the declaration of the jmc course,
+00:07:49.140 --> 00:07:52.380
+Files.copy takes advantage
+of the File System provider,
 
-00:07:13.680 --> 00:07:15.360
-through the two List operation.
+00:07:52.380 --> 00:07:57.660
+to do the work as efficiently as possible.
+The reader dot transfer method might be
 
-00:07:16.380 --> 00:07:18.900
-I'll paste that in the main
-method of my Challenge class.
+00:07:57.660 --> 00:08:00.720
+more efficient for very large
+files, especially if a file is
 
-00:07:19.980 --> 00:07:24.180
-I'll change 25 to just 2 in the limit operation
-for now, while I'm testing out my code.
+00:08:00.720 --> 00:08:06.060
+being copied across different network drives.
+Where the transfer to method really shines though,
 
-00:07:25.260 --> 00:07:28.440
-Next, I'm going to change my List
-of Students to a List of Strings.
+00:08:06.060 --> 00:08:09.660
+is when one of your input streams,
+differs from the output stream type.
 
-00:07:30.960 --> 00:07:33.240
-That's because, I'll insert a map operation,
+00:08:10.740 --> 00:08:15.180
+Let me give you a couple of examples.
+I'm going to use functionality in the
 
-00:07:33.240 --> 00:07:37.680
-that will take a student, mapping it to
-a string, using the two Jayson method.
+00:08:15.180 --> 00:08:19.860
+java.net package, to make a request
+to a web site, to get a json response.
 
-00:07:38.580 --> 00:07:40.484
-I can do that with a method reference.
+00:08:20.820 --> 00:08:23.760
+I want to first comment out that
+last code before I start this.
 
-00:07:41.590 --> 00:07:42.701
-And I'll run this now.
+00:08:25.260 --> 00:08:29.160
+I'll create a local variable,
+that has the url to request data,
 
-00:07:47.400 --> 00:07:51.960
-And whoops, I forgot to add code to print out
-the result, so let me add that now and re-run.
+00:08:29.160 --> 00:08:33.360
+from the United States Census Bureau, which
+will return the population for each state.
 
-00:07:52.860 --> 00:07:55.440
-I'll print each element in this
-list to the console to start.
+00:08:34.380 --> 00:08:39.900
+I'll create a Uniform Resource Identifier or
+U R I, which is a class in java.net, and I'll
 
-00:07:56.580 --> 00:07:57.420
-Running this,
+00:08:39.900 --> 00:08:43.860
+create an instance, passing the
+factory create method, the urlString.
 
-00:07:59.280 --> 00:08:01.920
-And maybe that's right, but
-it's kind of hard to tell.
+00:08:44.700 --> 00:08:48.840
+Now, a URL, which I'm sure you're
+familiar with, is always a U R I.
 
-00:08:02.940 --> 00:08:07.080
-I'll copy the last student record in my
-console, and I'll pull up a JSON linter.
+00:08:49.860 --> 00:08:53.880
+But there's another sub category of U R
+I, which includes uniform resource names.
 
-00:08:08.700 --> 00:08:12.360
-A linter is a software development
-tool, that will analyze source code
+00:08:55.020 --> 00:08:58.200
+I'll be getting into all of this
+later, in the networking section.
 
-00:08:12.360 --> 00:08:17.640
-for potential errors, and styling issues.
-I'm showing a link of a popular one here.
+00:08:59.220 --> 00:09:03.360
+For now, I want to use U R I, because
+it provides me with handy methods,
 
-00:08:18.600 --> 00:08:24.720
-These tools enable you to paste text into a text
-area, and both nicely format, as well as validate,
+00:09:03.360 --> 00:09:09.060
+to get an input stream based on the U R I.
+In a try with resources block, I'll set up
 
-00:08:24.720 --> 00:08:28.500
-that the text is well formed.
-I'll open that link up now.
+00:09:09.060 --> 00:09:15.720
+a variable, url input stream. I'll set that to
+my u r i dot to URL method, chaining openStream.
 
-00:08:35.100 --> 00:08:38.280
-I can paste my clipboard text,
-right into this text area.
+00:09:16.620 --> 00:09:21.540
+This opens a stream to the url, making
+the request, and retrieving the response,
 
-00:08:39.300 --> 00:08:42.180
-I can press the validate button
-which is below this text block.
+00:09:21.540 --> 00:09:28.620
+which in this case is JSON. I can call transfer
+To, on that U R L input stream, and pass
 
-00:08:44.460 --> 00:08:45.840
-This formats the JSON,
+00:09:28.620 --> 00:09:34.380
+System.out to that, which is just a specialized
+output stream. And I'll add the IOException.
 
-00:08:47.460 --> 00:08:50.880
-and validates it, the results are
-shown below the validate button.
+00:09:38.940 --> 00:09:40.080
+If I run this code,
 
-00:08:51.720 --> 00:08:54.420
-Now I know I've created Valid
-JSON for this one student record.
+00:09:42.180 --> 00:09:46.020
+I should see the json response,
+being printed directly to my console.
 
-00:08:55.560 --> 00:09:00.300
-OK, so that's all good.
-This video is getting long, and I still haven't
+00:09:48.480 --> 00:09:53.940
+Here, I have the state name, the population
+from 2019, and a state numeric id.
 
-00:09:00.300 --> 00:09:05.520
-written a single character to an output file yet.
-Luckily, this part is pretty easy.
+00:09:54.960 --> 00:09:59.100
+Now, I'll do something similar, but
+this time, I'll request this data,
 
-00:09:06.480 --> 00:09:10.560
-I'll be doing this with Files dot
-writeString, passing it one very large string.
+00:09:59.100 --> 00:10:02.640
+but then dump it into a file.
+I'll set up a variable,
 
-00:09:11.340 --> 00:09:12.480
-How do I do this?
+00:10:02.640 --> 00:10:08.460
+called jayson path, and this will be a
+file, named US Population by State.t x t.
 
-00:09:13.440 --> 00:09:17.040
-Getting back to the Challenge code,
-I'll first change my stream pipeline.
+00:10:09.660 --> 00:10:15.000
+In this case, I'm going to create a reader to
+writer scenario, so my reader will be a newInputStreamReader.
 
-00:09:18.000 --> 00:09:23.820
-I'll make the result a String, and not a list.
-Next, I'll remove both the two List statement,
+00:10:15.940 --> 00:10:20.640
+ I'll pass the code I used
+previously, u r i dot to U R L dot openStream.
 
-00:09:23.820 --> 00:09:27.060
-and that last statement, that
-prints each student json record.
+00:10:21.480 --> 00:10:24.660
+I'll get my writer, by using
+Files dot new buffered writer,
 
-00:09:28.140 --> 00:09:31.560
-Instead of two List, I want to use
-the collect terminal operation.
+00:10:24.660 --> 00:10:31.080
+and pass that my jayson path variable. I'll call
+reader dot transfer to and pass it my writer.
 
-00:09:32.640 --> 00:09:36.540
-I can use Collectors.joining which uses
-a StringJoiner underneath the covers.
+00:10:33.960 --> 00:10:34.920
+Running this code,
 
-00:09:37.440 --> 00:09:44.040
-The first argument is the delimiter. I'll make
-that a comma. The next argument is a prefix which
+00:10:39.660 --> 00:10:43.860
+I can see a new file in my project
+pane, US Population by State dot txt.
 
-00:09:44.040 --> 00:09:49.519
-for this array of students, needs to be an opening
-square bracket, and my suffix is a closing square bracket.
+00:10:44.940 --> 00:10:48.420
+If I open that, I see the same data
+that was printed to my console.
 
-00:09:50.408 --> 00:09:55.500
-I'll print this to the console as well.
-There's actually one more change I want to make,
+00:10:49.440 --> 00:10:53.880
+This is pretty handy stuff, if you need to
+query resource data from external sites,
 
-00:09:55.500 --> 00:09:57.900
-to help with the readability
-of the output a little bit.
+00:10:53.880 --> 00:10:56.760
+because it allows you to quickly
+stream it to a local file.
 
-00:09:58.800 --> 00:10:03.060
-I want to make my delimiter, between
-students, also include a line separator.
+00:10:57.660 --> 00:11:02.100
+Now, let's say, I really want this
+data to be a csv file, and not jayson.
 
-00:10:04.020 --> 00:10:07.980
-I'll set up a local variable called
-delimiter, and set that to a comma,
+00:11:03.000 --> 00:11:08.160
+I can use the transferTo method, with a customized
+writer, that will do a transformation first.
 
-00:10:07.980 --> 00:10:12.720
-plus the System.lineSeparator.
-I'll pass that variable as the
+00:11:09.360 --> 00:11:13.740
+This is a little more complex, but it's pretty
+interesting code, and I want you to see it.
 
-00:10:12.720 --> 00:10:17.700
-first argument, instead of just a comma.
-Ok, now it's time to write that out to a file.
+00:11:14.640 --> 00:11:18.840
+I'll start by copying that last code
+block, and pasting a copy just below it.
 
-00:10:18.480 --> 00:10:24.000
-I'll start with a try block. I'll call
-Files.writeString, passing it a new Path,
+00:11:20.880 --> 00:11:25.440
+I'll first remove the writer statement.
+I'll replace that with the declaration
 
-00:10:24.000 --> 00:10:28.080
-for a file names students.json,
-and I'll pass my students string.
+00:11:25.440 --> 00:11:30.600
+of a PrintWriter instance, passing that a
+file name, US Population by State dot csv.
 
-00:10:28.980 --> 00:10:34.260
-I'll catch the IOException. And just wrap
-that in a runtime exception and throw it.
+00:11:32.100 --> 00:11:35.880
+Now, on the next line, where I have
+writer, I want to replace that.
 
-00:10:35.580 --> 00:10:39.120
-I'll run this, again with
-just 2 records, to test it.
+00:11:36.780 --> 00:11:41.280
+I'll create an anonymous class, which will
+have the type of Writer, so new Writer empty
 
-00:10:39.900 --> 00:10:44.940
-I'll see my students printed in the console.
-Notice that I have an opening square bracket
+00:11:41.280 --> 00:11:46.440
+parens, then opening and closing brackets.
+I've got an error, and if I hover over that,
 
-00:10:46.140 --> 00:10:49.980
-and ending square bracket, and at the end
-of the first student, there's a comma.
+00:11:47.400 --> 00:11:51.180
+I see that Writer is abstract, and that
+I need to implement its abstract methods.
 
-00:10:50.700 --> 00:10:53.065
-This is what the Collectors.joining did.
+00:11:52.020 --> 00:11:55.500
+I'll select implement methods.
+It will have all the abstract
 
-00:10:56.102 --> 00:10:59.230
-But I also see students.json listed in my
-project panel,
+00:11:55.500 --> 00:11:58.320
+methods selected, which is
+what I want, so I'll press OK.
 
-00:10:59.230 --> 00:11:01.320
- at the project root, and I can open that up.
+00:12:00.540 --> 00:12:03.240
+Now, I have the method
+signatures for three methods.
 
-00:11:03.480 --> 00:11:06.840
-There you can see my students json
-code, as it was in the console.
+00:12:04.080 --> 00:12:08.640
+For the flush and close methods, I'll just
+delegate to my local variable writer's methods.
 
-00:11:07.800 --> 00:11:11.880
-I'll copy the entire contents of that file,
-and again test it in the Jayson linter.
+00:12:13.800 --> 00:12:16.200
+But for the first method, the write method,
 
-00:11:13.740 --> 00:11:16.200
-I'll paste the contents of
-my file into the text window.
+00:12:16.200 --> 00:12:20.220
+I want to do some transformation here,
+before I pass off to the writer variable.
 
-00:11:17.220 --> 00:11:19.740
-I'll scroll down and hit the
-validate JSON button again.
+00:12:21.240 --> 00:12:26.340
+First, I'll create a local string variable,
+called jayson string, and I can create that
 
-00:11:22.200 --> 00:11:24.110
-I can see my text gets formatted,
+00:12:26.340 --> 00:12:30.900
+from the arguments passed to this method, the
+character buffer, the offset, and the length.
 
-00:11:25.412 --> 00:11:28.063
-and it's valid JSON for this array of two students.
+00:12:31.860 --> 00:12:36.660
+I can replace the left square bracket character,
+with a space character, and I'll trim this at the
 
-00:11:29.820 --> 00:11:33.904
-Getting back to my code, I can
-change my number of students to 1000.
+00:12:36.660 --> 00:12:43.560
+end. My other option is to use replaceAll. The
+first argument is a regular expression, and since
 
-00:11:35.314 --> 00:11:37.755
-I'll re-run it, and examine
-that output file again.
+00:12:43.560 --> 00:12:48.000
+the closing square bracket is a meta character,
+I'll need to escape it with a pair of backslashes.
 
-00:11:41.880 --> 00:11:46.020
-You can see this code had no trouble writing
-1000 records to the file, and console.
+00:12:48.960 --> 00:12:52.822
+This statement and the one above remove all the
+square brackets in the jayson response.
 
-00:11:49.260 --> 00:11:52.860
-I'll quick go to the Course record,
-and add the two Jayson method to it.
+00:12:53.680 --> 00:12:59.312
+Finally,I'll delegate to my local variable's write method.
+I'll run my code.
 
-00:12:02.640 --> 00:12:04.320
-I'll go to the CourseEngagement class,
+00:13:01.440 --> 00:13:04.020
+After I see the state
+population data in the console,
 
-00:12:07.740 --> 00:12:12.000
-and do the exact same thing, again right
-under the existing two String method.
+00:13:05.700 --> 00:13:08.820
+I'll see that the csv file was
+created in my project pane.
 
-00:12:17.580 --> 00:12:21.300
-Ok, so that was easy.
-I want to get back to
+00:13:09.720 --> 00:13:12.900
+I'll open that.
+You can see I was able,
 
-00:12:21.300 --> 00:12:26.640
-the Student class, and the two JSON method.
-Because the coursesEnrolled and engagementMap
+00:13:12.900 --> 00:13:16.980
+in a few short lines of code, to
+grab information from a web url,
 
-00:12:26.640 --> 00:12:30.180
-types are part of collections, I
-need to create a json array for each.
+00:13:16.980 --> 00:13:20.880
+transform it, and write it to an
+output file, in a different format.
 
-00:12:31.080 --> 00:12:36.420
-I'll show you two ways to do this.
-The first, is just to use the StringJoiner class.
+00:13:21.720 --> 00:13:26.820
+Later, when I cover threads, I'll show you another
+example using this method, that will transfer
 
-00:12:37.620 --> 00:12:43.020
-I'll set up a local variable, a String Joiner
-type called courses, and create a new instance,
+00:13:26.820 --> 00:13:32.040
+input from the console, to a log file.
+You can see that this method, let's you
 
-00:12:43.020 --> 00:12:47.820
-with a delimiter of comma. The prefix
-and suffix will be square brackets.
+00:13:32.040 --> 00:13:36.300
+transfer data from one type of source,
+to another, making the task very easy.
 
-00:12:48.780 --> 00:12:50.395
-I'll loop through coursesEnrolled.
+00:13:37.320 --> 00:13:42.120
+I'm going to bring this video to a close.
+I've covered most of the basic functionality
 
-00:12:51.914 --> 00:12:54.218
-And add each courses JSON to the StringJoiner.
+00:13:42.120 --> 00:13:44.460
+you'll use when dealing
+with files and file systems.
 
-00:12:56.160 --> 00:13:02.280
-for the engagement map, I'll use a stream, on its
-values. I'll map to the CourseEngagement JSON.
+00:13:45.420 --> 00:13:49.320
+In the next couple of videos, I want to
+talk about more advanced file topics.
 
-00:13:03.600 --> 00:13:08.220
-Like I did in the Challenge's main method, I'll
-collect the strings using Collectors.joining,
+00:13:50.400 --> 00:13:53.520
+These include random access
+files, and serialization.
 
-00:13:08.220 --> 00:13:11.760
-with a comma, and square brackets
-again for the prefix and suffix.
-
-00:13:13.140 --> 00:13:17.220
-Finally I'll uncomment the two adds
-I have commented out below, changing
-
-00:13:17.220 --> 00:13:21.480
-coursesEnrolled as the variable to courses,
-and I'll change engagementMap to engagement.
-
-00:13:22.980 --> 00:13:24.180
-I'll re-run the code.
-
-00:13:29.400 --> 00:13:33.240
-Again, it's rather hard to see
-it, in this students.json file
-
-00:13:34.320 --> 00:13:38.820
-I'll copy that last statement.
-I'll pop back over to the JSON Lint site.
-
-00:13:39.660 --> 00:13:43.620
-I can use the clear button to erase
-that text area, using the clear button.
-
-00:13:44.580 --> 00:13:48.420
-I'll paste my Jayson in there.
-Since I grabbed the last row,
-
-00:13:48.420 --> 00:13:52.020
-there's an extra ending square bracket at
-the end of this line, so I'll remove it.
-
-00:13:53.280 --> 00:13:57.660
-I'll hit the validate button.
-It formats it and tells me I have valid JSON.
-
-00:13:59.820 --> 00:14:02.820
-Now, look at this formatted
-JSON for the 1000th student.
-
-00:14:03.720 --> 00:14:07.320
-You can see I now have coursesEnrolled,
-and that's an array of two courses.
-
-00:14:09.540 --> 00:14:12.780
-I have engagementMap, and array
-of two engagement records.
-
-00:14:13.740 --> 00:14:17.580
-Ok, so how'd you do?
-I didn't really expect you to
-
-00:14:17.580 --> 00:14:22.500
-play too much with the two string templates.
-I did however, want to let you know that
-
-00:14:22.500 --> 00:14:25.920
-feature existed, if you ever want to
-customize string functions that way.
-
-00:14:26.880 --> 00:14:32.760
-Without it, editing JSON can be tedious.
-As I said, there are some popular external
-
-00:14:32.760 --> 00:14:35.280
-libraries, that will also help
-you do this kind of thing.
-
-00:14:36.180 --> 00:14:39.759
-This code gave me the opportunity to
-review the StringJoiner class with you,
-
-00:14:39.759 --> 00:14:41.732
-and how to use it with and without streams.
-
-00:14:42.556 --> 00:14:45.540
-Now you've read data from,
-and written data to, a file.
-
-00:14:46.560 --> 00:14:51.480
-Next, I want to talk to you about transferring
-between files, and cover a few loose ends.
-
-00:14:52.320 --> 00:14:55.320
-Afterwards, I'll launch into
-slightly more advanced topics,
-
-00:14:55.320 --> 00:14:56.880
-so I'll see you in that next video.
+00:13:54.540 --> 00:13:56.460
+First though, I've got a challenge for you.

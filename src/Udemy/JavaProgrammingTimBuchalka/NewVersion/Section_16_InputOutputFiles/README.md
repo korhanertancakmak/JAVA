@@ -88,7 +88,7 @@ Let's get started.
 
 ## [a. Exception Handling]()
 
-### [try-catch Clause with Checked and Unchecked Exceptions]()
+### try-catch Clause with Checked and Unchecked Exceptions
 <div align="justify">
 
 As I said in the introduction, I'll be starting out by talking about Exception Handling.
@@ -575,7 +575,7 @@ If my finally block code gets an exception, however,
 then I'm out of luck, and execution will end at that point.
 </div>
 
-### [try-with-resources Statement]()
+### try-with-resources Statement
 <div align="justify">
 
 In the last section, we looked at the _try-catch_ clause, with _checked_ and _unchecked_ exceptions.
@@ -2220,7 +2220,7 @@ otherwise called the **NIO2** types,
 and focusing on the functionality these types offer us.
 </div>
 
-### [Path Class]()
+### Path Class
 <div align="justify">
 
 In this section, I'm going to begin by reviewing some methods 
@@ -2800,7 +2800,7 @@ In this case, I used _options_ that let me both create a file,
 and write to it at the same time.
 </div>
 
-### [Files Class]()
+### Files Class
 <div align="justify">
 
 I'm just going to jump right in, 
@@ -8360,7 +8360,7 @@ Obviously, this example was manufactured a bit,
 to give you a better demonstration.
 </div>
 
-## [g. File Writing Challenge]()
+## [g. File Writing Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course09_WritingFilesChallenge/README.md#file-writing-challenge)
 <div align="justify">
 
 In this challenge, you'll be creating your own data file,
@@ -8421,8 +8421,1011 @@ that lets you define a delimiter, as well as a prefix and suffix.
 Start out by testing 2 or 3 students in your data set.
 </div>
 
+## [h. Directory and File Manipulations]()
 
+### Renaming, Copying, Deleting Files and Directories
+<div align="justify">
 
+So much of what we might want to do with files and directories is renaming,
+copying, moving and deleting them.
+Occasionally, we might also want to make a global search and replacement,
+on the contents of an existing file.
+I'll devote the next couple of sections to these kinds of tasks,
+and how to use Java's support for this kind of work.
+I've created the **Main** class's _main_ method ready to go.
+I've also copied over my `students.json` file,
+from the previous challenge section,
+and I've put that in this project's package folder.
+It contains information about 1000 students,
+and their course engagement records, mocked up with random data,
+and formatted using json.
+The **Files** class has a wealth of helpful methods.
+I haven't yet covered, and I'll be using this file,
+to demonstrate some of these methods.
+I'll _rename_, _move_, **copy** and _delete_ files,
+using methods on this class.
+Under the covers, these methods delegate
+to the OS **FileSystem** provider, for increased efficiency.
+I'll start by showing you how to rename a file using the IO way,
+with _toFile_ instances.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/students.json";
+        String pathName2 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/student-activity.json";
+
+        File oldFile = new File(pathName);
+        File newFile = new File(pathName2);
+
+        if (oldFile.exists()) {
+            oldFile.renameTo(newFile);
+            System.out.println("File renamed successfully!");
+        } else {
+            System.out.println("File does not exist!");
+        }
+    }
+}
+```
+
+I'll create a File instance to the existing `students.json` file.
+Next, I'll create a _File_ instance using the new name of the file,
+in this case `student-activity.json`.
+Notice, that this is perfectly valid to do, 
+you can create a _File_ instance, using a file name, 
+even though this file doesn't exist.
+I'll confirm that the old file, the file I plan to rename, actually exists.
+I can execute a _renameTo_ method, on the old file, 
+passing it the new file instances.
+If this is successful, I'll print that out.
+If the file doesn't exist, I'll print that out too.
+If I run this code:
+
+```html  
+File renamed successfully!
+```
+
+It runs without any issues, and my `students.json` file 
+is successfully renamed, to `students-activity.json`.
+There's a couple of problems with this code though.
+IntelliJ is showing me one issue, by highlighting a warning, 
+that I'm not using the output from the _renameTo_ method.
+There are a lot of things that could go wrong,
+while trying to perform the rename operation.
+Ignoring the result, is a bad idea, 
+because it's possible the rename operation actually failed.
+This could be due to user permissions,
+or a variety of other reasons like network connectivity, and so on.
+Remember, one of the problems with the `java.io` classes, 
+is they don't throw an _IOException_.
+Instead, they simply return a boolean, 
+and you don't have a good window into what went wrong,
+if you do get a false back from this method.
+I'm going to leave this code as it is though,
+because instead I want to use **Path**, and the **Files** class.
+First, I'll execute the _toPath_ method on **File**,
+that lets me take an existing **File** instance,
+and turn it into an NIO2 **Path** instance.
+The **Path** interface has a similar method, called _toFile_, 
+so you can work with both **IO** and **NIO2** classes, 
+by converting between them this way.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/students.json";
+        String pathName2 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/student-activity.json";
+
+        File oldFile = new File(pathName);
+        File newFile = new File(pathName2);
+
+        if (oldFile.exists()) {
+            oldFile.renameTo(newFile);
+            System.out.println("File renamed successfully!");
+        } else {
+            System.out.println("File does not exist!");
+        }
+        
+        Path oldPath = oldFile.toPath();
+        Path newPath = newFile.toPath();
+
+        try {
+            Files.move(newPath, oldPath);
+            System.out.println("Path renamed successfully!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+I'll create a new variable, _oldPath_, setting it to `oldFile.toPath`.
+And I'll do the same with new **Path**, from the _newFile_.
+I'll start with a _try_ block, 
+because by now, you'll know most methods on **Files**, 
+throw an _IOException_.
+This is considered an improvement, 
+because it results in targeted and informative exceptions,
+about any problems that occur during the operation.
+I'll start out typing `Files.r`, 
+and wait for IntelliJ to list the method names.
+What I want you to see here is, 
+that there isn't a _rename_ method on **Files**.
+Instead, I need to use the _move_ method, 
+so I'll back out that _r_, and finish with a _move_ method call,
+passing it first _newPath_ in this case.
+Our file was renamed in the last bit of code, 
+so I want to now rename `students-activity.json` back 
+to `students.json`, so I pass the new path first, 
+and the old path next.
+After this statement, If I get to this point,
+I can print that the _rename was successful_.
+I'll again catch the _IOException_ that's thrown.
+And print out any stack trace, from the error.
+Running this code:
+
+```html  
+File does not exist!
+Path renamed successfully!
+```
+
+I get the console output for the first rename, that the file doesn't exist.
+That's because I already renamed it, in the previous run.
+In the case of the Path move operation, I get the **Path** renamed successfully.
+I can see that if I examine the project pane,
+that the `students.json` file is listed there,
+so it was renamed back to the original name.
+Let's explore this a bit further, 
+and change the path we're moving to,
+adding a subfolder as part of that path.
+I'm going to first comment out the **Files** code,
+because I think it'll make the following code less confusing.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/students.json";
+        String pathName2 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/files/student-activity.json";
+
+        Path oldPath = Path.of(pathName);
+        Path newPath = Path.of(pathName2);
+
+        try {
+            Files.move(oldPath, newPath);
+            System.out.println(oldPath + " moved (renamed to) --> " + newPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+Now, my code doesn't compile, 
+since my **Paths** are derived from the _file_ instances, but that's ok.
+I'll remove those two local variable statements, and start over.
+I'll make _oldPath_ the `students.json` file this time.
+For the new path, I want to include a subfolder, so files, 
+then a slash or file separator, 
+and that goes before the new file name, `student-activity.json`.
+I also want to reverse the arguments in the `Files.move` method,
+since now oldPath is `students.json`.
+If I run this code:
+
+```html  
+java.nio.file.NoSuchFileException : students.json -> files\student-activity.json
+    at java.base/sun.nio.fs.WindowsException.translateToIOException()
+    at java.base/sun.nio.fs.WindowsException.rethrowAsIOException()
+    at java.base/sun.nio.fs.WindowsFileCopy.move()
+    at java.base/sun.nio.fs.WindowsFileSystemProvider.move()
+    at java.base/sun.nio.file.Files.move()
+    at Main.main()
+```
+
+I get a NoSuchFileException, and the message shows the form file, 
+then an arrow token, and the to file name.
+It's important to understand that this _move_ method 
+isn't going to create subdirectories.
+Since the _files_ directory doesn't yet exist, I'll get this error.
+I can fix this by first using _createDirectories_,
+before I call the move method:
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/students.json";
+        String pathName2 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/files/student-activity.json";
+
+        Path oldPath = Path.of(pathName);
+        Path newPath = Path.of(pathName2);
+
+        try {
+            Files.createDirectories(newPath.subpath(0, newPath.getNameCount() - 1));
+            Files.move(oldPath, newPath);
+            System.out.println(oldPath + " moved (renamed to) --> " + newPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+I don't want to call this method with the entire path name though.
+I need to strip off the last part of the path, or the file name here.
+To do this, I can use the _subpath_ method to just get the directories' path.
+I'll start at index 0, and include everything except the last part of the name, 
+so name count - 1.
+I'll change the message I output to the console, to be more informative,
+so _oldPath_ moved and renamed to new path.
+I'll re-run this again.
+
+```html  
+....\students.json moved (renamed to) --> ....\student-activity.json
+```
+
+My console output tells me that `students.json` was moved and renamed to,
+the _files_ subfolder, and the file name `student-activity.json`.
+I should see the files subfolder in my project panel.
+If you don't see it, just reload from disk and it should show up.
+Opening that folder, I can see the `student-activity.json` file there.
+In this example, I was able to use this one method, to both rename a file,
+and move it to another directory.
+I can also use the _move_ method, to rename directories, which I'll do next.
+I'll comment this last bit of code out.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/files";
+        String pathName2 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/resources";
+
+        Path fileDir = Path.of(pathName);
+        Path resourceDir = Path.of(pathName2);
+
+        try {
+            Files.move(fileDir, resourceDir);
+            System.out.println("Directory renamed");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+I'll create a path to my _files_ folder, 
+and I can do that using a relative path, so just files.
+I don't want to include a preceding file separator symbol in other words,
+this is what makes it relative.
+I'll do the same for the folder I want it to be renamed to, so resources here.
+I'll start with a _try_ block. I'll call `files.move`, 
+with the existing directory, so _fileDir_, and then the directory 
+I want it to be called, so I'll pass it the _resourceDir_ path.
+If no exception is thrown, then I know this was successful, 
+so I'll print _Directory_ renamed.
+Otherwise, I'll print information about the exception.
+Running this code:
+
+```html  
+Directory renamed
+```
+
+I get the message that directory was renamed.
+Looking at my project panel, I see that I no longer have a _files_ folder,
+but I do have a _resources_ folder, and that contains my json file.
+I'll manually refactor, then rename the _resources_ folder
+in IntelliJ back to _files_, so my code will run as before.
+While I'm in here, I'll also add a nested folder in the _files_ folder,
+and I'll call that the _data_ folder.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/files";
+        String pathName2 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/resources";
+
+        Path fileDir = Path.of(pathName);
+        Path resourceDir = Path.of(pathName2);
+        try {
+            Files.copy(fileDir, resourceDir);
+            System.out.println("Directory copied to " + resourceDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+Getting back to my code, instead of the _move_ method, 
+I want to now use the _copy_ method.
+I'll also change my message from directory renamed, to directory copied to, 
+and I'll print the path that I copied it to.
+I'll run this real quick:
+
+```html  
+Directory copied to .....\resources
+```
+
+I get the message that the directory was copied to resources, 
+so I'll explore the results in the project panel.
+I can see the resources folder, but there's nothing in it.
+The _copy_ method performs a shallow copy of your folder, and in this case, 
+that shallow copy didn't even include my student file.
+I'll delete the resources folder manually, using IntelliJ's delete menu option.
+If you want to do a deep copy, 
+you'd have to write a little bit of recursive code to handle it.
+You'll see a lot of examples online using the _walkFileTree_ method,
+but let's see if we can do something similar, with less code, and using streams.
+I'll demonstrate a way to recursively copy your directory's content, 
+in the next section.
+</div>
+
+### InputStream & Reader's _transferTo_ method
+<div align="justify">
+
+In the last section, I paused at the point where I had copied a directory,
+but learned that this is a shallow copy, 
+meaning none of the directory's contents were copied.
+In this section, I want to show you a way 
+to copy the entire contents of a directory, or a deep copy.
+I've got my package open from the last section, _ManagingFiles_, 
+and I'm in the _main_ class.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/files";
+        String pathName2 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/resources";
+
+        Path fileDir = Path.of(pathName);
+        Path resourceDir = Path.of(pathName2);
+        try {
+            recurseCopy(fileDir, resourceDir);
+            System.out.println("Directory copied to " + resourceDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void recurseCopy(Path source, Path target) throws IOException {
+
+        Files.copy(source, target);
+        if (Files.isDirectory(source)) {
+            try (var children = Files.list(source)) {                               //Stream<Path>
+                children.toList().forEach(                                      
+                        p -> {
+                            try {
+                                Main.recurseCopy(p, target.resolve(p.getFileName()));
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                        });
+            }
+        }
+    }
+}
+```
+
+I'll create a private static void method, and call it _recurseCopy_.
+This will take two arguments, a path, the source, and the target path
+which is the directory it will get copied to.
+This time I'll have this method declare a _throws_ clause, 
+throwing any _IOException_, since this code could fail in multiple different ways.
+I'll start by making a shallow copy of the source path.
+Next, I'll check if the source path is a directory. 
+If it is, I'll get the contents by using `Files.list`.
+That returns a stream, which I'll call children.
+Remember, for any method on **Files**, 
+that returns a stream, it's crucial to wrap it in a _try-with-resources_ block, 
+so you don't create a resource leak, if it's not properly closed.
+I'll use the stream's to list operation, to create a list of **Path**. 
+I can chain a _forEach_ to that. 
+And pass a lambda expression.
+For each path, I want to call this method, `Main.recurseCopy` recursively, 
+meaning I'm calling it from inside itself. 
+I'll pass the current path to this method. 
+For the target though, I need to adjust the name of the targeted child path.
+I can do this with the _resolve_ method.
+This code won't compile as it is.
+I'm getting an error on `Main.recurseCopy`, 
+and that's because this method throws an _IOException_.
+I have to surround it with a _try_ catch block, 
+which makes the code a bit uglier. 
+Before I invoke this, I want to just explain 
+what the _resolve_ method is doing here.
+For relative paths, the source and target paths are joined or concatenated
+when you use this method.
+As I iterate through my nested folders, 
+I need to create a mirrored structure below the parent folder, 
+which is the target, so I join the target, 
+with the last part of the path name.
+For children that are subfolders, 
+the last part is the unqualified or simple path name, 
+in our case here, it will be data.
+Ok, that's my recurse _copy_ method.
+Getting back to the _main_ method, 
+I'll replace the call to `Files.copy` with this one.
+I'll run this code:
+
+```html  
+Directory copied to resources
+```
+
+It runs without errors and gives me the message as it did before, 
+_Directory copied to resources_.
+Let's see what that folder looks like in the project panel.
+I can see the resources folder there
+that it was created again, and I'll open that up.
+You can see that everything in the _files_ folder,
+including the json file and the subfolder, data, 
+is now in the resources' directory.
+That's good.
+That means this code is working.
+What happens if I re-run this though,
+when the resources folder now exists.
+Let me do that.
+
+```html  
+java.nio.file.FileAlreadyExistsException : resources
+    at java.base/sun.nio.fs.WindowsFileCopy.copy()
+    at java.base/sun.nio.fs.WindowsFilwSystemProvider.copy()
+    at java.base/java.nio.file.Files.copy()
+    at Main.recurseCopy()
+    at Main.main()
+```
+
+You can see I get a _FileAlreadyExistsException_,
+thrown by the _recurseCopy_ method.
+The _copy_ method includes an overloaded version, 
+which lets you specify an option to copy a path, 
+even if it already exists.
+
+```java  
+public static void recurseCopy(Path source, Path target) throws IOException {
+
+    Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+    if (Files.isDirectory(source)) {
+        try (var children = Files.list(source)) {                               //Stream<Path>
+            children.toList().forEach(
+                    p -> {
+                        try {
+                            Main.recurseCopy(p, target.resolve(p.getFileName()));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    });
+        }
+    }
+}
+```
+
+I'll change my recurse method, to show you that.
+I'll add another argument to the `Files.copy` method, 
+and this time I'll pass it an enum value from the **StandardCopyOption** enum,
+and this is called _REPLACE_EXISTING_.
+This means a copy will be done, even if the targeted path exists.
+Now, I'll run this again:
+
+```html  
+java.nio.file.DirectoryNotEmptyException : resources
+    at java.base/sun.nio.fs.WindowsFileCopy.copy()
+    at java.base/sun.nio.fs.WindowsFilwSystemProvider.copy()
+    at java.base/java.nio.file.Files.copy()
+    at Main.recurseCopy()
+    at Main.main()
+```
+
+I still get an error, but this time it's a different exception,
+it's a _DirectoryNotEmptyException_.
+Similarly to the issue of being unable to do a deep copy, 
+I can't replace an existing directory that already has content.
+One solution would be to delete the target directory if it exists, 
+so I'll go back to my _main_ method, and I'll try to do that.
+
+```java  
+public static void main(String[] args) {
+
+    String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/files";
+    String pathName2 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/resources";
+
+    Path fileDir = Path.of(pathName);
+    Path resourceDir = Path.of(pathName2);
+    try {
+        if (Files.exists(resourceDir)) {
+            Files.delete(resourceDir);
+        }
+        recurseCopy(fileDir, resourceDir);
+        System.out.println("Directory copied to " + resourceDir);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+I'll first check to see if the directory exists. 
+If it does, I'll try to delete it.
+Ok, now I'll run this.
+
+```html  
+java.nio.file.DirectoryNotEmptyException : resources
+    at java.base/sun.nio.fs.WindowsFilwSystemProvider.implDelete()
+    at java.base/sun.nio.fs.AbstractFileSystemProvider.delete()
+    at java.base/java.nio.file.Files.delete()
+    at Main.main()
+```
+
+Still, I get the exception, _DirectoryNotEmptyException_.
+As it turns out, I can't delete a directory if it has contents too.
+If I want to delete a directory, I'd have to recursively delete all 
+the contents of its subfolders, 
+similar to what I did with the _recurseCopy_ method.
+
+```java  
+public static void main(String[] args) {
+
+    String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/files";
+    String pathName2 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/resources";
+
+    Path fileDir = Path.of(pathName);
+    Path resourceDir = Path.of(pathName2);
+    try {
+/*
+        if (Files.exists(resourceDir)) {
+            Files.delete(resourceDir);
+        }
+*/
+
+        Files.deleteIfExists(resourceDir)
+                
+        recurseCopy(fileDir, resourceDir);
+        System.out.println("Directory copied to " + resourceDir);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+There's another _delete_ method, called _deleteIfExists_,
+which replaces this whole if statement.
+That looks cleaner, but if I run it:
+
+```html  
+java.nio.file.DirectoryNotEmptyException : resources
+    at java.base/sun.nio.fs.WindowsFilwSystemProvider.implDelete()
+    at java.base/sun.nio.fs.AbstractFileSystemProvider.deleteIfExists()
+    at java.base/java.nio.file.Files.deleteIfExists()
+    at Main.main()
+```
+
+I've still got the same problem.
+
+```java  
+public static void recurseDelete(Path target) throws IOException {
+
+    if (Files.isDirectory(target)) {
+        try (var children = Files.list(target)) {
+            children.toList().forEach(
+                    p -> {
+                        try {
+                            Main.recurseDelete(p);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    });
+        }
+    }
+    Files.delete(target);
+}
+```
+
+I'll copy my _recurseCopy_ method, 
+and paste that a right below _recurseCopy_.
+I'll rename it to _recurseDelete_.
+For deleting, I just need one path for the method argument, 
+and that would be the targeted deletion path.
+I'll remove that `Files.copy` statement.
+I'll change the source to target, in the two statements that use source.
+I'll change the call to `Main.recurseCopy` to `Main.recurseDelete`, 
+and remove the second argument, so just passing the streamed path, _p_.
+Ok, so I'm not deleting anything yet.
+The right place for the _delete_, is after this _if_ statement, 
+this is when the recursive operations have completed.
+If I placed it before the if statement, 
+I'd simply get exceptions, saying the directory's not empty.
+
+```java  
+public static void main(String[] args) {
+
+    String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/files";
+    String pathName2 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/resources";
+
+    Path fileDir = Path.of(pathName);
+    Path resourceDir = Path.of(pathName2);
+    try {
+        //Files.deleteIfExists(resourceDir)
+        recurseDelete(resourceDir);
+        recurseCopy(fileDir, resourceDir);
+        System.out.println("Directory copied to " + resourceDir);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+I'll go back to my _main_ method, 
+and remove the _deleteIfExists_, and call this instead.
+I'll run that:
+
+```html  
+Directory copied to resources
+```
+
+My console output simply says, directory copied to resources.
+I can see resources, and again it matches files directory.
+For good measure, I'll add another subfolder, 
+under data, and call it _newdata_.
+And I'll run my code again:
+
+```html  
+Directory copied to resources
+```
+
+I'll examine the resources' folder.
+You can see _newdata_, the folder I added,
+is now in the _resources_ folder, 
+confirming that the resources folder matches files.
+In the past couple of examples, 
+I've shown you how to _copy_, _rename_ and _delete_ files, 
+as well as **recursively** _copy_ and _delete_ directories.
+Next, I want to explore a method on both the **Reader** 
+and the **InputStream** interfaces, called _transferTo_.
+This method was added to **InputStream** in _JDK.9_, 
+and to the **Reader** interface in _JDK.10_.
+Let me set up an example of using this in the _main_ method.
+
+```java  
+public static void main(String[] args) {
+
+    String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/files";
+    String pathName2 = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part1/resources";
+
+    Path fileDir = Path.of(pathName);
+    Path resourceDir = Path.of(pathName2);
+    try (BufferedReader reader = new BufferedReader(new FileReader(pathName + "/student-activity.json"));
+         PrintWriter writer = new PrintWriter(pathName2 + "/students-backup.json")) {
+        reader.transferTo(writer);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+I'll set up a **BufferedReader** to my `student-activity.json` 
+that's now in the _files_ subfolder.
+I'll pass a new **FileReader** to the **BufferedReader**.
+I'll also create a new writer, a **PrintWriter**, which I've said,
+if I pass a string to it, will create a **BufferedWriter** for me underneath.
+I want my output file to be called `students-backup.json`.
+Here, I'll call `reader.transferTo`, and pass it my writer.
+I'll need the _IOException_ catch clause as usual.
+If I run this code:
+
+```html  
+
+```
+
+And I examine my project pane, I'll see my new file, `students-backup.json`.
+If I open that file, I can see, I've simply made a copy of the json file here.
+In essence, I've used `reader.transferTo`, to do what the `Files.copy` method did.
+That probably leads you to the question, which is better?
+Well, when you're working with files, you'll probably want to stick to `Files.copy`.
+`Files.copy` takes advantage of the **FileSystem** provider,
+to do the work as efficiently as possible.
+The `reader.transfer` method might be more efficient for huge files, 
+especially if a file is being copied across different network drives.
+Where the _transferTo_ method really shines though, 
+is when one of your _inputStreams_, differs from the **outputStream** type.
+Let me give you a couple of examples.
+I'm going to use functionality in the `java.net` package, 
+to make a request to a website, to get a _json_ response.
+I want to first comment out that last code before I start this.
+
+```java  
+public static void main(String[] args) {
+
+    String urlString = "https://api.census.gov/data/2019/pep/charagegroups?get=NAME,POP&for=state:*";
+    URI uri = URI.create(urlString);
+    try (var urlInputStream = uri.toURL().openStream();
+    ) {
+        urlInputStream.transferTo(System.out);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+I'll create a local variable that has the url to request data
+from the _United States Census Bureau_, 
+which will return the population for each state.
+I'll create a _Uniform Resource Identifier_ or _URI_, 
+which is a class in `java.net`, 
+and I'll create an instance, passing the factory create method, 
+the _urlString_.
+Now, a _URL_, which I'm sure you're familiar with, is always a _URI_.
+But there's another subcategory of _URI_, 
+which includes uniform resource names.
+I'll be getting into all of this later, in the networking section.
+For now, I want to use _URI_, because it provides me with handy methods,
+to get an input stream based on the _URI_.
+In a _try-with-resources_ block, I'll set up a variable, _urlInputStream_. 
+I'll set that to my `uri.URL` method, chaining _openStream_.
+This opens a stream to the url, making the request, and retrieving the response,
+which in this case is JSON. 
+I can call _transferTo_, on that _urlInputStream_, 
+and pass `System.out` to that, which is just a specialized output stream. 
+And I'll add the _IOException_.
+If I run this code:
+
+```html  
+[["NAME","POP","state"],
+["Mississippi","2976149","28"],
+["Missouri","6137428","29"],
+["Montana","1068778","30"],
+["Massachusetts","6892503","25"],
+["Michigan","9986857","26"],
+["Minnesota","5639632","27"],
+["Nebraska","1934408","31"],
+["Nevada","3080156","32"],
+["New Hampshire","1359711","33"],
+["New Jersey","8882190","34"],
+["New Mexico","2096829","35"],
+["New York","19453561","36"],
+["North Carolina","10488084","37"],
+["North Dakota","762062","38"],
+["Ohio","11689100","39"],
+["Oklahoma","3956971","40"],
+["Oregon","4217737","41"],
+["Pennsylvania","12801989","42"],
+["Rhode Island","1059361","44"],
+["South Carolina","5148714","45"],
+["South Dakota","884659","46"],
+["Tennessee","6829174","47"],
+["Texas","28995881","48"],
+["Vermont","623989","50"],
+["Utah","3205958","49"],
+["Virginia","8535519","51"],
+["Washington","7614893","53"],
+["West Virginia","1792147","54"],
+["Wisconsin","5822434","55"],
+["Wyoming","578759","56"],
+["Puerto Rico","3193694","72"],
+["Alabama","4903185","01"],
+["Alaska","731545","02"],
+["Arizona","7278717","04"],
+["Arkansas","3017804","05"],
+["California","39512223","06"],
+["Colorado","5758736","08"],
+["Delaware","973764","10"],
+["District of Columbia","705749","11"],
+["Florida","21477737","12"],
+["Connecticut","3565287","09"],
+["Georgia","10617423","13"],
+["Idaho","1787065","16"],
+["Hawaii","1415872","15"],
+["Illinois","12671821","17"],
+["Indiana","6732219","18"],
+["Iowa","3155070","19"],
+["Kansas","2913314","20"],
+["Kentucky","4467673","21"],
+["Louisiana","4648794","22"],
+["Maine","1344212","23"],
+["Maryland","6045680","24"]]
+```
+
+I should see the json response being printed directly to my console.
+Here, I have the state name, the population from 2019, and a state numeric id.
+Now, I'll do something similar, but this time, I'll request this data,
+but then dump it into a file.
+
+```java  
+public static void main(String[] args) {
+
+    String urlString = "https://api.census.gov/data/2019/pep/charagegroups?get=NAME,POP&for=state:*";
+    URI uri = URI.create(urlString);
+    try (var urlInputStream = uri.toURL().openStream();
+    ) {
+        urlInputStream.transferTo(System.out);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    String JsonPath = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part2/USPopulationByState.txt";
+    Path jsonPath = Path.of(JsonPath);
+    try (var reader = new InputStreamReader(uri.toURL().openStream());
+         var writer = Files.newBufferedWriter(jsonPath)) {
+        reader.transferTo(writer);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+I'll set up a variable, called _JsonPath_, 
+and this will be a file, named `USPopulationByState.txt`.
+In this case, I'm going to create a reader to writer scenario, 
+so my reader will be a _newInputStreamReader_.
+I'll pass the code I used previously, `uri.toURL.openStream`.
+I'll get my writer by using `Files.newBufferedWriter`,
+and pass that my json path variable. 
+I'll call `reader.transferTo` and pass it my writer.
+Running this code.
+
+I can see a new file in my project pane, `USPopulationByState.txt`.
+If I open that, I see the same data that was printed on my console.
+This is pretty handy stuff, 
+if you need to query resource data from external sites,
+because it allows you to quickly stream it to a local file.
+Now, let's say, I really want this data to be a csv file, and not json.
+I can use the _transferTo_ method, with a customized writer, 
+that will do a transformation first.
+This is a little more complex, but it's pretty interesting code,
+and I want you to see it.
+
+```java  
+public static void main(String[] args) {
+
+    String urlString = "https://api.census.gov/data/2019/pep/charagegroups?get=NAME,POP&for=state:*";
+    URI uri = URI.create(urlString);
+    try (var urlInputStream = uri.toURL().openStream();
+    ) {
+        urlInputStream.transferTo(System.out);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    String JsonPath = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part2/USPopulationByState.txt";
+    Path jsonPath = Path.of(JsonPath);
+    try (var reader = new InputStreamReader(uri.toURL().openStream());
+         var writer = Files.newBufferedWriter(jsonPath)) {
+        reader.transferTo(writer);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
+    String csvPath = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course10_ManagingFiles/Part2/USPopulationByState.csv";
+    Path jsonPath = Path.of(csvPath);
+    try (var reader = new InputStreamReader(uri.toURL().openStream());
+         //var writer = Files.newBufferedWriter(jsonPath)) {
+         PrintWriter writer = new PrintWriter(newJsonPath2)) {
+        
+        //reader.transferTo(writer);
+        reader.transferTo(new Writer() {
+            @Override
+            public void write(char[] cbuf, int off, int len) throws IOException {
+
+                String jsonString = new String(cbuf, off, len).trim();
+                jsonString = jsonString.replace('[', ' ').trim();
+                jsonString = jsonString.replaceAll("\\]", "");
+                writer.write(jsonString);
+            }
+
+            @Override
+            public void flush() throws IOException {
+                writer.flush();
+            }
+
+            @Override
+            public void close() throws IOException {
+                writer.close();
+            }
+        });
+        
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+    
+    
+}
+```
+
+I'll start by copying that last code block, 
+and pasting a copy just below it.
+I'll first remove the _writer_ statement.
+I'll replace that with the declaration of a **PrintWriter** instance, 
+passing that a file name, `USPopulationByState.csv`.
+Now, on the next line, where I have _writer_, I want to replace that.
+I'll create an anonymous class, which will have the type of **Writer**, 
+so `new Writer() {}`.
+I've got an error, and if I hover over that,
+I see that _Writer is abstract_, 
+and that I need to implement its abstract methods.
+I'll select implement methods.
+It will have all the abstract methods selected, 
+which is what I want, so I'll press OK.
+Now, I have the method signatures for three methods.
+For the _flush_ and _close_ methods, 
+I'll just delegate to my local variable writer's methods.
+But for the first method, the _write_ method,
+I want to do some transformation here, 
+before I pass off to the _writer_ variable.
+First, I'll create a local string variable, called _jsonString_, 
+and I can create that from the arguments passed to this method, 
+the _character buffer_, the _offset_, and the _length_.
+I can replace the left square bracket character,
+with a space character, and I'll _trim_ this at the end.
+My other option is to use _replaceAll_.
+The first argument is a regular expression, 
+and since the closing square bracket is a meta character,
+I'll need to escape it with a pair of backslashes.
+This statement and the one above remove all the square brackets in the json response.
+Finally, I'll delegate to my local variable's _write_ method.
+I'll run my code:
+
+After I see the state population data in the console,
+I'll see that the _csv_ file was created in my project pane.
+You can see I was able in a few short lines of code, 
+to grab information from a web url, transform it, 
+and write it to an output file, in a different format.
+Later, when I cover threads, 
+I'll show you another example using this method, 
+that will transfer input from the console to a log file.
+You can see that this method lets you transfer data 
+from one type of source to another, making the task straightforward.
+I've covered most of the basic functionality you'll use 
+when dealing with files and file systems.
+Next, I want to talk about more advanced file topics.
+These include random access files, and serialization.
+</div>
+
+## [i. Directory and File Manipulation Challenge]()
+<div align="justify">
+
+In this challenge, I want you to
+
+* Create a directory at the root of your IntelliJ Project 
+named **public** in the current working directory.
+* Inside **public**, create a subdirectory named **assets**.
+* Inside **assets**, create another subdirectory named **icons**.
+* Create a process that will generate an `index.txt` file 
+for each directory and subdirectory.
+* In each of the directories (**public**, **assets**, and **icons**), 
+create an `index.txt` file.
+* In each `index.txt` file, list all the contents in the current directory, 
+with full paths and the date each item was created. 
+This should be recursive. 
+`The index.txt` file of the parent should contain all items 
+that are listed in the `index.txt` of the child.
+
+* Next, make a copy of the `index.txt` in each subfolder.
+* After you've created these copies, 
+run your code to re-generate each `index.txt` file, 
+and verify your backup copies are listed there.
+
+Remember, the **Files** class offers you many different ways 
+to create directories, files, and for iterating through a file tree. 
+Stick to using **Paths** and **NIO2** functionality. 
+Later on, I'll be covering how you can execute the method 
+you create here, to create the `index.txt` files, 
+from an asynchronous thread, using a special mechanism, called a file watcher.
+For now, assume this will be manually run.
+</div>
+
+## [j. RandomAccessFile Class]()
 <div align="justify">
 
 ```java  
@@ -8435,8 +9438,7 @@ Start out by testing 2 or 3 students in your data set.
 
 </div>
 
-
-
+## [k. RandomAccessFile Class Challenge]()
 <div align="justify">
 
 ```java  
@@ -8449,8 +9451,7 @@ Start out by testing 2 or 3 students in your data set.
 
 </div>
 
-
-
+## [l. DataOutputStream and DataInputStream classes]()
 <div align="justify">
 
 ```java  
@@ -8463,8 +9464,7 @@ Start out by testing 2 or 3 students in your data set.
 
 </div>
 
-
-
+## [m. Serialization & Change]()
 <div align="justify">
 
 ```java  
@@ -8477,16 +9477,3 @@ Start out by testing 2 or 3 students in your data set.
 
 </div>
 
-
-
-<div align="justify">
-
-```java  
-
-```
-
-```html  
-
-```
-
-</div>

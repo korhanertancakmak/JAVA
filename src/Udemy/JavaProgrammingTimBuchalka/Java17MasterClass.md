@@ -200,10 +200,12 @@ What we will learn from this Path:
 ### [e. Reading File Challenge]()
 ### [f. Writing Data to Files]()
 ### [g. File Writing Challenge]()
-
-    * RandomAccessFile
-    * DataOutputStream & DataInputStream
-    * Serilization
+### [h. Directory and File Manipulations]()
+### [i. Directory and File Manipulation Challenge]()
+### [j. RandomAccessFile Class]()
+### [k. RandomAccessFile Class Challenge]()
+### [l. DataOutputStream and DataInputStream classes]()
+### [m. Serialization & Change]()
 
 ## [Section-17. Concurrency]()
 
