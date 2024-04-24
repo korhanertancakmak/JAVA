@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course08_ProducerConsumerApp;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Concurrency.Course08_ProducerConsumerApp;
 
 import java.util.Random;
 

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course03_InteractingRunningThread;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Concurrency.Course03_InteractingRunningThread;
 
 //Part-1
 /**

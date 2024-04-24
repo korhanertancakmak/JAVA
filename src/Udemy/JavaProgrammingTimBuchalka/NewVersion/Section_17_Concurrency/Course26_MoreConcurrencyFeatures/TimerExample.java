@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course26_MoreConcurrencyFeatures;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Concurrency.Course26_MoreConcurrencyFeatures;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

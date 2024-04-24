@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course11_ConcurrentLocksClass;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Concurrency.Course11_ConcurrentLocksClass;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;

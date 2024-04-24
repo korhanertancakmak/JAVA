@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course01_BasicsOfJavaThreads;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Concurrency.Course01_BasicsOfJavaThreads;
 
 //Part-7
 /**

@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course18_ParallelStreams;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Concurrency.Course18_ParallelStreams;
 
 import java.util.Arrays;
 import java.util.Random;

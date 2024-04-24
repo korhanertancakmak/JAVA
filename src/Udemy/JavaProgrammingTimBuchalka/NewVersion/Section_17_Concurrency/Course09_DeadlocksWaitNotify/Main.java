@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course09_DeadlocksWaitNotify;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Concurrency.Course09_DeadlocksWaitNotify;
 
 import java.util.Random;
 

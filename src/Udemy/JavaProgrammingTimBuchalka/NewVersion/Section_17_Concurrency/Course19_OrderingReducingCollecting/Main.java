@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course19_OrderingReducingCollecting;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Concurrency.Course19_OrderingReducingCollecting;
 
 import java.util.*;
 import java.util.stream.Collectors;

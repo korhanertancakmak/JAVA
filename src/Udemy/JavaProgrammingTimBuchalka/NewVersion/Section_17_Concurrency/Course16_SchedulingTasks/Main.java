@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course16_SchedulingTasks;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Concurrency.Course16_SchedulingTasks;
 
 import java.sql.Time;
 import java.time.ZonedDateTime;

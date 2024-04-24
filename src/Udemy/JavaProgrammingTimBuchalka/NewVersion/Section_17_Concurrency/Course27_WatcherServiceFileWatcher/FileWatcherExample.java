@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course27_WatcherServiceFileWatcher;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Concurrency.Course27_WatcherServiceFileWatcher;
 
 import java.io.IOException;
 import java.nio.file.*;

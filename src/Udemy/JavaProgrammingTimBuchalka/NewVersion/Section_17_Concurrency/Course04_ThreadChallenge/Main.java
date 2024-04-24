@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course04_ThreadChallenge;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Concurrency.Course04_ThreadChallenge;
 
 //Part-1
 /**

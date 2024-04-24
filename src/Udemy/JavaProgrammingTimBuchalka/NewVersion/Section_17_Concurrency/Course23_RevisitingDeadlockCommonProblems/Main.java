@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course23_RevisitingDeadlockCommonProblems;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Concurrency.Course23_RevisitingDeadlockCommonProblems;
 
 import java.io.File;
 

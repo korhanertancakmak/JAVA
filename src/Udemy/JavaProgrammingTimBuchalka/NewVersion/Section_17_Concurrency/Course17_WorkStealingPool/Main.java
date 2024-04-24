@@ -1,4 +1,4 @@
-package CourseCodes.NewSections.Section_19_Concurrency.Course17_WorkStealingPool;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_17_Concurrency.Course17_WorkStealingPool;
 
 import java.util.ArrayList;
 import java.util.Arrays;
