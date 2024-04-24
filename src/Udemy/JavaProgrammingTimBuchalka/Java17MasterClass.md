@@ -229,7 +229,8 @@ What we will learn from this Path:
 
 ## [Section-18. Working with Databases]()
 
-    * MySQL Installation
+### [a. Database Basics]()
+
     * Database Basics
     * Connecting to a database with JDBC
     * Querying Data

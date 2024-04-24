@@ -2,647 +2,235 @@ WEBVTT
 Kind: captions
 Language: en
 
-00:00:05.220 --> 00:00:08.880
-In the last video, I paused at the
-point where I had copied a directory,
+00:00:05.400 --> 00:00:08.240
+In this section of the course,&nbsp;
+I'll be covering how to interact&nbsp;&nbsp;
 
-00:00:08.880 --> 00:00:13.560
-but learned that this is a shallow copy, meaning
-none of the directory's contents were copied.
+00:00:08.240 --> 00:00:10.518
+with databases from a Java application.
 
-00:00:14.460 --> 00:00:16.560
-In this video, I want to show you a way to
+00:00:11.554 --> 00:00:13.937
+I'll be primarily focusing on connecting to,
 
-00:00:16.560 --> 00:00:19.740
-copy the entire contents of
-a directory, or a deep copy.
+00:00:13.937 --> 00:00:16.272
+and communicating with a relational database.
 
-00:00:20.640 --> 00:00:25.020
-I've got my project open from the last video,
-ManagingFiles, and I'm in the main class.
+00:00:17.232 --> 00:00:19.105
+I'll show you how to connect to a database,
 
-00:00:30.180 --> 00:00:33.960
-I'll create a private static void
-method, and call it recurse Copy.
+00:00:19.105 --> 00:00:24.680
+using a connection string, and a special&nbsp;
+object, called a Java Database Driver.&nbsp;
 
-00:00:34.860 --> 00:00:39.720
-This will take two arguments, a path,
-the source, and the target path which
+00:00:24.680 --> 00:00:27.760
+We'll get information from the&nbsp;
+database, through a database&nbsp;&nbsp;
 
-00:00:39.720 --> 00:00:43.860
-is the directory it will get copied to.
-This time I'll have this method declare
+00:00:27.760 --> 00:00:33.960
+language called Structured Query Language or SQL.
+I'll demonstrate how to execute SQL statements as&nbsp;&nbsp;
 
-00:00:43.860 --> 00:00:49.140
-a throws clause, throwing any IOException, since
-this code could fail in multiple different ways.
+00:00:33.960 --> 00:00:39.000
+strings against tables in the database, using&nbsp;
+Java's support, and how to process the results&nbsp;&nbsp;
 
-00:00:50.160 --> 00:00:53.176
-I'll start by making a shallow
-copy of the source path.
+00:00:39.000 --> 00:00:43.960
+we get back from these types of queries.
+I'll also cover executing parameterized&nbsp;&nbsp;
 
-00:00:54.097 --> 00:01:00.840
-Next,I'll check if the source path is a directory. If
-it is, I'll get the contents by using Files.list.
+00:00:43.960 --> 00:00:49.040
+statements, using Java's PreparedStatement,&nbsp;
+which allow SQL statements to be reusable,&nbsp;&nbsp;
 
-00:01:01.860 --> 00:01:04.320
-That returns a stream, which I'll call children.
+00:00:49.040 --> 00:00:54.440
+more flexible, and less prone to&nbsp;
+some well known security issues.&nbsp;
 
-00:01:05.460 --> 00:01:11.400
-Don't forget, for any method on Files, that
-returns a stream, it's super important, to wrap it
+00:00:54.440 --> 00:00:59.400
+Many Database Management Systems support&nbsp;
+a built-in procedural language as well.&nbsp;
 
-00:01:11.400 --> 00:01:16.500
-in a try with resources block, so you don't create
-a resource leak, if it's not properly closed.
+00:00:59.400 --> 00:01:03.640
+This means there may be functions stored with&nbsp;
+the database, that you can use to get data,&nbsp;&nbsp;
 
-00:01:17.460 --> 00:01:23.100
-I'll use the stream's to list operation,
-to create a list of Path. I can chain a for
+00:01:03.640 --> 00:01:08.600
+or perform some action, rather than&nbsp;
+actually writing SQL code to do it.&nbsp;
 
-00:01:23.100 --> 00:01:29.700
-each to that. And pass a lambda expression.
-For each path, I want to call this method,
+00:01:08.600 --> 00:01:12.080
+I'll be showing you how to make calls&nbsp;
+to these database stored procedures,&nbsp;&nbsp;
 
-00:01:29.700 --> 00:01:36.360
-Main.recurse copy recursively, meaning I'm calling
-it from inside itself. I'll pass the current path
+00:01:12.080 --> 00:01:14.680
+with Java's CallableStatement.&nbsp;
 
-00:01:36.360 --> 00:01:41.520
-to this method. For the target though, I need
-to adjust the name of the targeted child path.
+00:01:14.680 --> 00:01:19.440
+Finally, we'll examine different object&nbsp;
+relational mapping or ORM technologies,&nbsp;&nbsp;
 
-00:01:42.660 --> 00:01:47.100
-I can do this with the resolve method.
-This code won't compile as is.
+00:01:19.440 --> 00:01:25.880
+used by popular Java frameworks, to handle&nbsp;
+basic boiler plate interactions with databases.&nbsp;
 
-00:01:48.060 --> 00:01:52.740
-I'm getting an error on Main.recurseCopy, and
-that's because this method throws an IO Exception.
+00:01:25.880 --> 00:01:29.840
+To do all of this, we'll need&nbsp;
+a database to test against.&nbsp;
 
-00:01:53.640 --> 00:01:57.240
-I have to surround it with a try catch
-block, which makes the code a bit uglier.
+00:01:31.000 --> 00:01:35.280
+I originally was using SQLite for this section&nbsp;
+of the course, but have decided to switch to&nbsp;&nbsp;
 
-00:01:58.140 --> 00:02:02.160
-Before I invoke this, I want to just explain
-what the resolve method is doing here.
+00:01:35.280 --> 00:01:39.200
+MySQL for several reasons.
+There were other options,&nbsp;&nbsp;
 
-00:02:03.240 --> 00:02:06.180
-For relative paths, the source and target paths
+00:01:39.200 --> 00:01:44.720
+like selecting an in memory database like H2.
+Or I could have chosen alternative relational&nbsp;&nbsp;
 
-00:02:06.180 --> 00:02:08.760
-are joined or concatenated,
-when you use this method.
+00:01:44.720 --> 00:01:49.200
+databases like PostGreSQL which is&nbsp;
+free and open source, or Microsoft's&nbsp;&nbsp;
 
-00:02:09.840 --> 00:02:13.980
-As I iterate through my nested folders, I need
-to create a mirrored structure below the parent
+00:01:49.200 --> 00:01:51.440
+SQL Server which has a free version.
 
-00:02:13.980 --> 00:02:18.780
-folder, which is the target, so I join the
-target, with the last part of the path name.
+00:01:52.433 --> 00:01:54.844
+I decided on MySQL for several reasons.
 
-00:02:19.860 --> 00:02:24.720
-For children that are subfolders, the last
-part is the unqualified or simple path name,
+00:01:55.880 --> 00:02:01.960
+First, It's free, and downloaded from Oracle,&nbsp;
+and the installation isn't too difficult.&nbsp;
 
-00:02:24.720 --> 00:02:30.360
-in our case here, it will be data.
-Ok, that's my recurse copy method.
+00:02:01.960 --> 00:02:06.640
+Second, I think it's important to learn about&nbsp;
+CallableStatements, and for that, we needed a&nbsp;&nbsp;
 
-00:02:31.140 --> 00:02:35.040
-Getting back to the main method, I'll
-replace the call to Files.copy with this one.
+00:02:06.640 --> 00:02:11.680
+database that support stored procedures.
+There are work arounds for H2 and SQLite,&nbsp;&nbsp;
 
-00:02:37.500 --> 00:02:38.520
-I'll run this code.
+00:02:12.200 --> 00:02:16.440
+but I felt the work arounds might&nbsp;
+have been more confusing to students.&nbsp;
 
-00:02:40.560 --> 00:02:45.300
-It runs without errors and gives me the message
-as it did before, Directory copied to resources.
+00:02:16.440 --> 00:02:20.520
+Third, I offer a beginner's course&nbsp;
+in SQL which also uses MySQL,&nbsp;&nbsp;
 
-00:02:46.380 --> 00:02:48.840
-Let's see what that folder
-looks like in the project panel.
+00:02:20.520 --> 00:02:25.320
+so if you want to learn more, you'll be&nbsp;
+in a perfect position to take that course.&nbsp;
 
-00:02:49.740 --> 00:02:54.180
-I can see the resources folder there, that
-it was created again, and I'll open that up.
+00:02:25.320 --> 00:02:28.453
+Finally, MySQL is a popular industry standard.
 
-00:02:55.080 --> 00:02:57.300
-You can see that everything
-that was in the files folder,
+00:02:30.600 --> 00:02:32.674
+On this slide, I'm showing you several surveys
 
-00:02:57.300 --> 00:03:02.520
-including the jayson file and the sub folder,
-data, is now in the resources directory.
+00:02:32.674 --> 00:02:38.680
+of the popularity of market place databases.
+The first is stackoverflow's annual survey which&nbsp;&nbsp;
 
-00:03:03.540 --> 00:03:06.780
-That's good.
-That means this code is working.
+00:02:38.680 --> 00:02:43.080
+solicits feedback from developers,&nbsp;
+on what they use professionally.&nbsp;
 
-00:03:07.800 --> 00:03:11.580
-What happens if I re-run this though,
-when the resources folder now exists.
+00:02:43.080 --> 00:02:47.440
+This survey is limited to respondents, so it could&nbsp;
+be argued it's skewed towards professionals who&nbsp;&nbsp;
 
-00:03:12.540 --> 00:03:13.507
-Let me do that.
+00:02:47.440 --> 00:02:52.440
+are just more likely to take such a survey.
+The second is from Statista,&nbsp;&nbsp;
 
-00:03:15.371 --> 00:03:19.581
-You can see Iget a FileAlreadyExistsException,
-thrown by the recurseCopy method.
+00:02:52.440 --> 00:02:57.320
+and the third from DB-Engines, which&nbsp;
+are similar and have similar results.&nbsp;
 
-00:03:20.520 --> 00:03:24.300
-The copy method includes an overloaded
-version, which let's you specify an
+00:02:57.320 --> 00:03:01.000
+The last survey polls the internet for&nbsp;
+monthly statistics, using the number of&nbsp;&nbsp;
 
-00:03:24.300 --> 00:03:30.420
-option to copy a path, even if it already exists.
-I'll change my recurse method, to show you that.
+00:03:01.000 --> 00:03:06.000
+mentions of the system on websites, the frequency&nbsp;
+of technical discussions, and the number of job&nbsp;&nbsp;
 
-00:03:31.440 --> 00:03:35.760
-I'll add another argument to the Files.copy
-method, and this time I'll pass it an enum
+00:03:06.000 --> 00:03:10.680
+offers as part of their scoring system.
+Make sure to check out these surveys,&nbsp;&nbsp;
 
-00:03:35.760 --> 00:03:39.763
-value from the StandardCopyOption enum,
-and this is called REPLACE_EXISTING.
+00:03:10.680 --> 00:03:15.600
+and others if you're interested, or if you're&nbsp;
+trying to make this decision for yourself.&nbsp;
 
-00:03:40.680 --> 00:03:44.400
-This means a copy will be done,
-even if the targeted path exists.
+00:03:15.600 --> 00:03:19.160
+However you look at this feedback,&nbsp;
+MySQL is squarely near the top,&nbsp;&nbsp;
 
-00:03:45.300 --> 00:03:47.012
-Now, I'll run this again.
+00:03:19.160 --> 00:03:20.929
+so that's another reason I chose it.
 
-00:03:48.687 --> 00:03:49.871
-I still get an error,
+00:03:21.911 --> 00:03:23.454
+Finally, just because the course will
 
-00:03:49.871 --> 00:03:53.580
-but this time it's a different exception,
-it's a DirectoryNotEmptyException.
+00:03:23.454 --> 00:03:27.600
+be taught using MySQL, this doesn't&nbsp;
+mean that you have to use it.&nbsp;
 
-00:03:54.540 --> 00:03:58.380
-Similarly to the issue of being unable
-to do a deep copy, I can't replace an
+00:03:27.600 --> 00:03:31.280
+You're welcome to use whichever database you&nbsp;
+want, especially if you have another already&nbsp;&nbsp;
 
-00:03:58.380 --> 00:04:03.000
-existing directory that already has content.
-One solution would be to delete the target
+00:03:31.280 --> 00:03:35.640
+installed, and have experience there.
+I'll be providing scripts to create&nbsp;&nbsp;
 
-00:04:03.000 --> 00:04:07.200
-directory if it exists, so I'll go back to
-my main method, and I'll try to do that.
+00:03:35.640 --> 00:03:41.520
+a specific database schema, for MySQL,&nbsp;
+which could be tweaked for your database.&nbsp;
 
-00:04:08.160 --> 00:04:13.800
-I'll first check to see if the directory
-exists. If it does, I'll try to delete it.
+00:03:41.520 --> 00:03:44.520
+In addition, I'll show you several&nbsp;
+different connection strings,&nbsp;&nbsp;
 
-00:04:15.540 --> 00:04:17.160
-Ok, now I'll run this.
+00:03:44.520 --> 00:03:49.840
+to connect to different databases.
+I'll be making an effort to use ANSI SQL,&nbsp;&nbsp;
 
-00:04:19.080 --> 00:04:22.440
-Still, I get the exception,
-DirectoryNotEmptyException.
+00:03:49.840 --> 00:03:54.240
+a standard set of commands, which&nbsp;
+most databases should support.&nbsp;
 
-00:04:23.460 --> 00:04:26.951
-As it turns out, I can't delete a
-directory if it has contents either.
+00:03:54.240 --> 00:03:59.280
+I'll try to avoid vendor specific SQL&nbsp;
+statements, or point them out when I can.&nbsp;
 
-00:04:27.720 --> 00:04:31.260
-If I want to delete a directory, I'd
-have to recursively delete all the
+00:03:59.280 --> 00:04:03.200
+There are good reasons to use&nbsp;
+ANSI SQL in your java code.&nbsp;
 
-00:04:31.260 --> 00:04:35.160
-contents of its sub folders, similar to
-what I did with the recurseCopy method.
+00:04:03.200 --> 00:04:08.920
+Doing so, lets you swap the database engine,&nbsp;
+by simply changing your connection string.&nbsp;
 
-00:04:36.060 --> 00:04:39.240
-There's another delete
-method, called deleteIfExists,
+00:04:08.920 --> 00:04:13.440
+This does sometimes happen, as corporations&nbsp;
+decide the best way to house their data,&nbsp;&nbsp;
 
-00:04:39.240 --> 00:04:44.700
-which replaces this whole if statement.
-That looks cleaner, but if I run it,
+00:04:13.440 --> 00:04:19.040
+based on their own unique situation, and as&nbsp;
+technologies change and compete with one another.&nbsp;
 
-00:04:46.680 --> 00:04:48.060
-I've still got the same problem.
+00:04:19.040 --> 00:04:22.880
+I'll explain all of this in&nbsp;
+more detail as we proceed.&nbsp;
 
-00:04:51.300 --> 00:04:55.500
-I'll copy my recurseCopy method, and
-paste that right below recurseCopy.
+00:04:22.880 --> 00:04:26.400
+Ok, so let's move forward.
+The next three videos will be&nbsp;&nbsp;
 
-00:04:56.280 --> 00:05:01.020
-I'll rename it to recurseDelete.
-For deleting, I just need one path
-
-00:05:01.020 --> 00:05:04.020
-for the method argument, and that
-would be the targeted deletion path.
-
-00:05:06.180 --> 00:05:10.500
-I'll remove that Files.copy statement.
-I'll change source to target,
-
-00:05:10.500 --> 00:05:15.780
-in the two statements that use source.
-I'll change the call to Main.recurseCopy
-
-00:05:15.780 --> 00:05:21.300
-to Main.recurseDelete, and remove the second
-argument, so just passing the streamed path, p.
-
-00:05:22.980 --> 00:05:27.780
-Ok, so I'm not actually deleting anything yet.
-The right place for the delete,
-
-00:05:27.780 --> 00:05:31.920
-is after this if statement, this is when
-the recursive operations have completed.
-
-00:05:32.940 --> 00:05:37.920
-If I placed it before the if statement, I'd simply
-get exceptions, saying the directory's not empty.
-
-00:05:39.060 --> 00:05:43.680
-I'll go back to my main method, and remove
-the delete if exists, and call this instead.
-
-00:05:46.440 --> 00:05:47.160
-I'll run that.
-
-00:05:49.260 --> 00:05:52.920
-My console output simply says,
-directory copied to resources.
-
-00:05:56.820 --> 00:06:00.240
-I can see resources, and again
-it matches files directory.
-
-00:06:01.200 --> 00:06:06.000
-For good measure, I'll add another sub
-folder, under data, and call it newdata.
-
-00:06:08.220 --> 00:06:09.540
-And I'll run my code again.
-
-00:06:12.480 --> 00:06:17.700
-I'll examine the resources folder.
-You can see newdata, the folder I added,
-
-00:06:17.700 --> 00:06:22.800
-is now in the resources folder, confirming
-that the resources folder, matches files.
-
-00:06:23.760 --> 00:06:29.280
-In the past couple of examples, I've shown you
-how to copy, rename and delete files, as well as
-
-00:06:29.280 --> 00:06:34.560
-recursively copy and delete directories.
-Next, I want to explore a method on both
-
-00:06:34.560 --> 00:06:37.980
-the Reader and the InputStream
-interfaces, called transfer To.
-
-00:06:38.700 --> 00:06:43.980
-This method was added to InputStream in JDK
-9, and to the Reader interface in JDK 10.
-
-00:06:44.940 --> 00:06:47.880
-Let me set up an example of
-using this, in the main method.
-
-00:06:48.720 --> 00:06:53.400
-I'll set up a Buffered Reader, to my student
-activity json that's now in the files sub folder.
-
-00:06:54.324 --> 00:06:56.679
-I'll pass a new File Reader to the buffered
-reader.
-
-00:06:58.291 --> 00:07:01.736
-I'll also create a new writer,
-a PrintWriter, which I've said,
-
-00:07:01.736 --> 00:07:05.536
-if I pass a string to it, will create a Buffered Writer for me underneath.
-
-00:07:06.478 --> 00:07:09.803
-I want my output file to be
-called students dash backup dot json.
-
-00:07:10.703 --> 00:07:14.514
-Here, I'll call reader.transfer To, and pass it my writer.
-
-00:07:15.435 --> 00:07:17.812
-I'll need the IO Exception catch clause as usual.
-
-00:07:20.340 --> 00:07:21.600
-If I run this code,
-
-00:07:23.340 --> 00:07:28.020
-and I examine my project pane, I'll see
-my new file, students dash backup.json.
-
-00:07:28.920 --> 00:07:33.240
-If I open that file, I can see, I've
-simply made a copy of the jayson file here.
-
-00:07:34.140 --> 00:07:39.180
-In essence, I've used reader.transfer
-To, to do what the Files.copy method did.
-
-00:07:40.140 --> 00:07:42.900
-That probably leads you to
-the question, Which is better?
-
-00:07:44.040 --> 00:07:48.300
-Well, when you're working with files,
-you'll probably want to stick to Files.copy.
-
-00:07:49.140 --> 00:07:52.380
-Files.copy takes advantage
-of the File System provider,
-
-00:07:52.380 --> 00:07:57.660
-to do the work as efficiently as possible.
-The reader dot transfer method might be
-
-00:07:57.660 --> 00:08:00.720
-more efficient for very large
-files, especially if a file is
-
-00:08:00.720 --> 00:08:06.060
-being copied across different network drives.
-Where the transfer to method really shines though,
-
-00:08:06.060 --> 00:08:09.660
-is when one of your input streams,
-differs from the output stream type.
-
-00:08:10.740 --> 00:08:15.180
-Let me give you a couple of examples.
-I'm going to use functionality in the
-
-00:08:15.180 --> 00:08:19.860
-java.net package, to make a request
-to a web site, to get a json response.
-
-00:08:20.820 --> 00:08:23.760
-I want to first comment out that
-last code before I start this.
-
-00:08:25.260 --> 00:08:29.160
-I'll create a local variable,
-that has the url to request data,
-
-00:08:29.160 --> 00:08:33.360
-from the United States Census Bureau, which
-will return the population for each state.
-
-00:08:34.380 --> 00:08:39.900
-I'll create a Uniform Resource Identifier or
-U R I, which is a class in java.net, and I'll
-
-00:08:39.900 --> 00:08:43.860
-create an instance, passing the
-factory create method, the urlString.
-
-00:08:44.700 --> 00:08:48.840
-Now, a URL, which I'm sure you're
-familiar with, is always a U R I.
-
-00:08:49.860 --> 00:08:53.880
-But there's another sub category of U R
-I, which includes uniform resource names.
-
-00:08:55.020 --> 00:08:58.200
-I'll be getting into all of this
-later, in the networking section.
-
-00:08:59.220 --> 00:09:03.360
-For now, I want to use U R I, because
-it provides me with handy methods,
-
-00:09:03.360 --> 00:09:09.060
-to get an input stream based on the U R I.
-In a try with resources block, I'll set up
-
-00:09:09.060 --> 00:09:15.720
-a variable, url input stream. I'll set that to
-my u r i dot to URL method, chaining openStream.
-
-00:09:16.620 --> 00:09:21.540
-This opens a stream to the url, making
-the request, and retrieving the response,
-
-00:09:21.540 --> 00:09:28.620
-which in this case is JSON. I can call transfer
-To, on that U R L input stream, and pass
-
-00:09:28.620 --> 00:09:34.380
-System.out to that, which is just a specialized
-output stream. And I'll add the IOException.
-
-00:09:38.940 --> 00:09:40.080
-If I run this code,
-
-00:09:42.180 --> 00:09:46.020
-I should see the json response,
-being printed directly to my console.
-
-00:09:48.480 --> 00:09:53.940
-Here, I have the state name, the population
-from 2019, and a state numeric id.
-
-00:09:54.960 --> 00:09:59.100
-Now, I'll do something similar, but
-this time, I'll request this data,
-
-00:09:59.100 --> 00:10:02.640
-but then dump it into a file.
-I'll set up a variable,
-
-00:10:02.640 --> 00:10:08.460
-called jayson path, and this will be a
-file, named US Population by State.t x t.
-
-00:10:09.660 --> 00:10:15.000
-In this case, I'm going to create a reader to
-writer scenario, so my reader will be a newInputStreamReader.
-
-00:10:15.940 --> 00:10:20.640
- I'll pass the code I used
-previously, u r i dot to U R L dot openStream.
-
-00:10:21.480 --> 00:10:24.660
-I'll get my writer, by using
-Files dot new buffered writer,
-
-00:10:24.660 --> 00:10:31.080
-and pass that my jayson path variable. I'll call
-reader dot transfer to and pass it my writer.
-
-00:10:33.960 --> 00:10:34.920
-Running this code,
-
-00:10:39.660 --> 00:10:43.860
-I can see a new file in my project
-pane, US Population by State dot txt.
-
-00:10:44.940 --> 00:10:48.420
-If I open that, I see the same data
-that was printed to my console.
-
-00:10:49.440 --> 00:10:53.880
-This is pretty handy stuff, if you need to
-query resource data from external sites,
-
-00:10:53.880 --> 00:10:56.760
-because it allows you to quickly
-stream it to a local file.
-
-00:10:57.660 --> 00:11:02.100
-Now, let's say, I really want this
-data to be a csv file, and not jayson.
-
-00:11:03.000 --> 00:11:08.160
-I can use the transferTo method, with a customized
-writer, that will do a transformation first.
-
-00:11:09.360 --> 00:11:13.740
-This is a little more complex, but it's pretty
-interesting code, and I want you to see it.
-
-00:11:14.640 --> 00:11:18.840
-I'll start by copying that last code
-block, and pasting a copy just below it.
-
-00:11:20.880 --> 00:11:25.440
-I'll first remove the writer statement.
-I'll replace that with the declaration
-
-00:11:25.440 --> 00:11:30.600
-of a PrintWriter instance, passing that a
-file name, US Population by State dot csv.
-
-00:11:32.100 --> 00:11:35.880
-Now, on the next line, where I have
-writer, I want to replace that.
-
-00:11:36.780 --> 00:11:41.280
-I'll create an anonymous class, which will
-have the type of Writer, so new Writer empty
-
-00:11:41.280 --> 00:11:46.440
-parens, then opening and closing brackets.
-I've got an error, and if I hover over that,
-
-00:11:47.400 --> 00:11:51.180
-I see that Writer is abstract, and that
-I need to implement its abstract methods.
-
-00:11:52.020 --> 00:11:55.500
-I'll select implement methods.
-It will have all the abstract
-
-00:11:55.500 --> 00:11:58.320
-methods selected, which is
-what I want, so I'll press OK.
-
-00:12:00.540 --> 00:12:03.240
-Now, I have the method
-signatures for three methods.
-
-00:12:04.080 --> 00:12:08.640
-For the flush and close methods, I'll just
-delegate to my local variable writer's methods.
-
-00:12:13.800 --> 00:12:16.200
-But for the first method, the write method,
-
-00:12:16.200 --> 00:12:20.220
-I want to do some transformation here,
-before I pass off to the writer variable.
-
-00:12:21.240 --> 00:12:26.340
-First, I'll create a local string variable,
-called jayson string, and I can create that
-
-00:12:26.340 --> 00:12:30.900
-from the arguments passed to this method, the
-character buffer, the offset, and the length.
-
-00:12:31.860 --> 00:12:36.660
-I can replace the left square bracket character,
-with a space character, and I'll trim this at the
-
-00:12:36.660 --> 00:12:43.560
-end. My other option is to use replaceAll. The
-first argument is a regular expression, and since
-
-00:12:43.560 --> 00:12:48.000
-the closing square bracket is a meta character,
-I'll need to escape it with a pair of backslashes.
-
-00:12:48.960 --> 00:12:52.822
-This statement and the one above remove all the
-square brackets in the jayson response.
-
-00:12:53.680 --> 00:12:59.312
-Finally,I'll delegate to my local variable's write method.
-I'll run my code.
-
-00:13:01.440 --> 00:13:04.020
-After I see the state
-population data in the console,
-
-00:13:05.700 --> 00:13:08.820
-I'll see that the csv file was
-created in my project pane.
-
-00:13:09.720 --> 00:13:12.900
-I'll open that.
-You can see I was able,
-
-00:13:12.900 --> 00:13:16.980
-in a few short lines of code, to
-grab information from a web url,
-
-00:13:16.980 --> 00:13:20.880
-transform it, and write it to an
-output file, in a different format.
-
-00:13:21.720 --> 00:13:26.820
-Later, when I cover threads, I'll show you another
-example using this method, that will transfer
-
-00:13:26.820 --> 00:13:32.040
-input from the console, to a log file.
-You can see that this method, let's you
-
-00:13:32.040 --> 00:13:36.300
-transfer data from one type of source,
-to another, making the task very easy.
-
-00:13:37.320 --> 00:13:42.120
-I'm going to bring this video to a close.
-I've covered most of the basic functionality
-
-00:13:42.120 --> 00:13:44.460
-you'll use when dealing
-with files and file systems.
-
-00:13:45.420 --> 00:13:49.320
-In the next couple of videos, I want to
-talk about more advanced file topics.
-
-00:13:50.400 --> 00:13:53.520
-These include random access
-files, and serialization.
-
-00:13:54.540 --> 00:13:56.460
-First though, I've got a challenge for you.
+00:04:26.400 --> 00:04:31.920
+the MySQL installation videos, so pick the&nbsp;
+one appropriate for your operating system.
