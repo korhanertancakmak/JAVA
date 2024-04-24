@@ -802,67 +802,50 @@ You'll want to use the development connection, so pick that.
 When you log in with this connection, 
 your left pane will most likely be displaying Schemas.
 
+![image40](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image40.png?raw=true)
 
-
-Notice the tabs at the bottom, or the top of
-the left pane, which toggle between the
-administration pane, and the schemas.
-In the install video, I already showed you how
-to use a couple of the Administration Tasks.
-We looked at the server status, and
-made changes to the dev user account,
+Notice the tabs at the bottom, or the top of the left pane, 
+which toggle between the **administration** pane, and the **schemas**.
+In the installation section, I already showed you 
+how to use a couple of the _Administration Tasks_.
+We looked at the server status 
+and made changes to the dev user account,
 assigning the DBA role to this user.
-For most of your work though,
-you'll be working with schemas.
-You'll remember a schema, in MySQL,
-is another name for a database.
-You may see some system databases,
-sys, for example, because dev user has
-the DBA role, and therefore has access
-to elevated privileges, and critical schemas.
-You'll want to ignore these, they're for use by
-the system, and you can cause serious
-problems if you mess about with them,
+For most of your work though, you'll be working with schemas.
+You'll remember a schema, in MySQL, is another name for a database.
+You may see some system databases, _sys_, for example, 
+because dev user has the DBA role, 
+and therefore has access to elevated privileges, and critical schemas.
+You'll want to ignore these, 
+they're for use by the system, 
+and you can cause serious problems if you mess about with them,
 without first understanding them.
-My installation of MySQL, is showing these extra databases,
-because this is the same machine that I've previously recorded,
-MySQL for Beginner's course.
-A machine won't show these extra databases.
-In a minute, we'll be creating our own schema, or database,
-by importing a file that will build one for us.
-First, let's step back, and
-see what this IDE provides.
-As you can see, there are a lot
-of features in MySQL Workbench.
-In the main window, a tab
-is open that says Query 1.
-This is where you'd type SQL commands,
-and it works like a text editor.
-This pane has its own ribbon of buttons, along
-the top here, with some functions we'll be using.
-We'll have a look at a couple
-of these, in a moment.
-What I want you to do next, is select the
-Administration tab, of the left panel.
-Before we continue, go to resources folder of
-this video, and download the music_database.sql.
-This file was exported, using MySQL, and continues
-all the SQL code needed to create a music schema,
+
+First, let's step back, and see what this IDE provides.
+As you can see, there are a lot of features in _MySQL Workbench_.
+In the main window, a tab is open that says Query 1.
+This is where you'd type SQL commands, and it works like a text editor.
+This pane has its own ribbon of buttons, along the top here, 
+with some functions we'll be using.
+We'll have a look at a couple of these, in a moment.
+What I want you to do next is select the _Administration_ tab of the left panel.
+Before we continue, go to the resources folder of this package _music_database.sql_.
+This file was exported, using MySQL, 
+and continues all the SQL code needed to create a music schema,
 and several tables, as well as a view.
-If you want to examine some Data
-Definition Language or DDL, this script
-contains a series of it, that will get
-executed as part of the import process.
+If you want to examine some _Data Definition Language or DDL_, 
+this script contains a series of it, 
+that will get executed as part of the import process.
 In other words, the file will get loaded,
-and these SQL queries executed, in the
-order they're defined in this file.
+and these SQL queries executed, in the order they're defined in this file.
 Let's import this.
-Under the Administration
-tab, you'll see three categories,
-Management, Instance, and Performance.
-Under Management, the last
-option is Data Import Restore.
+Under the Administration tab, you'll see three categories,
+_Management_, _Instance_, and _Performance_.
+Under Management, the last option is Data Import Restore.
 Select that.
+
+
+
 If you have the bottom
 panel or right panel open, you'll want to close
 these, so you can see the form in its entirety.
