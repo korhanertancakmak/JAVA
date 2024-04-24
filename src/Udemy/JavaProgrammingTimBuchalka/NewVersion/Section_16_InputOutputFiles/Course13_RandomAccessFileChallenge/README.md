@@ -3,7 +3,7 @@
 
 For this challenge, I've created a **Main** class. 
 The first thing I want to do is create a record in this java file, for an employee. 
-The fields will be employeeId, firstName, lastName, and salary. 
+The fields will be _employeeId_, _firstName_, _lastName_, and _salary_. 
 
 ```java  
 record Employee(int employeeId, String firstName, String lastName, double salary) {
@@ -13,6 +13,12 @@ record Employee(int employeeId, String firstName, String lastName, double salary
 The types match the types I specified on the challenge info, 
 so _employeeId_ is an int, _firstName_ and _lastName_ is strings, 
 and _salary_ is a double.
+I'll create a private static variable for my map index.
+I know I want my key to be an Integer, for the _EmployeeId_,
+and I want the value to be the long, the file position.
+I'll just use a hashmap.
+I'll again use a static initializer on my main class,
+to initially load up the index, when my class is first loaded.
 
 ```java  
 public class Main {
@@ -37,12 +43,6 @@ public class Main {
 }
 ```
 
-I'll create a private static variable for my map index. 
-I know I want my key to be an Integer, for the _EmployeeId_,
-and I want the value to be the long, the file position. 
-I'll just use a hashmap. 
-I'll again use a static initializer on my main class, 
-to initially load up the index, when my class is first loaded. 
 I'll Initialize a variable, _recordsInFile_, 
 to store the number of records. 
 I'll start with a _try-with-resources_ block. 
@@ -50,7 +50,7 @@ I'll open a **RandomAccessFile** for reading,
 using the `employees.dat` file as the first argument. 
 The second argument is the mode. 
 Here I just want to read data, so I'll pass the literal _r_ to that. 
-I'll catch any _IOException_, that might occur, during file operations. 
+I'll catch any _IOException_, that might occur during file operations. 
 I'll print the stack trace if an exception occurs. 
 Inside the _try_ block, I'll start by reading the first 4 bytes, 
 which is the integer that has the record count in it. 
@@ -70,6 +70,11 @@ and I should see my record count.
 The output says there are 25 records in this file, 
 which is true, so this part looks good.
 I'll next set up a private static method, named _readRecord_.
+It returns an **Employee** and has a **RandomAccessFile** instance
+as the first parameter, and an _employeeId_ as the second.
+I'll use this method to get a record in the file,
+instantiating an **Employee** record,
+using the appropriate read methods to populate the fields.
 
 ```java  
 private static Employee readRecord(RandomAccessFile ra, int employeeId) throws IOException {
@@ -85,11 +90,6 @@ private static Employee readRecord(RandomAccessFile ra, int employeeId) throws I
 }
 ```
 
-It returns an **Employee** and has a **RandomAccessFile** instance 
-as the first parameter, and an _employeeId_ as the second. 
-I'll use this method to get a record in the file, 
-instantiating an **Employee** record, 
-using the appropriate read methods to populate the fields. 
 This time, I'm going to declare a _throws_ clause, 
 and let the calling code deal with this exception. 
 I'll use my _employeeId_ map index 
@@ -181,7 +181,7 @@ For good measure, I'll make sure the id the user enters,
 is really in the file, by seeing if my sorted list contains it.
 If it's not, I'll continue going back to the start of the while loop. 
 Now that I have an employee id from the user, 
-I'll read and display the Employee record, 
+I'll read and display the _Employee_ record, 
 using my private method I created earlier. 
 I'll prompt the user for a salary. 
 I'm going to put this code in a _try-catch_, 
@@ -194,7 +194,7 @@ which you'll remember is after the id.
 I need to add 4 to the position that 
 I got from the employee ID map. 
 I'll write the new salary to the file. 
-I'll read and display the updated Employee record. 
+I'll read and display the updated _Employee_ record. 
 I'll catch and ignore any number format exception. 
 Ok, we've got the code to interact with a user, so let's run this.
 

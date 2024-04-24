@@ -6194,7 +6194,7 @@ and I'll first get the States from the last column, which is group 5.
 I'll again use _distinct_ and _sorted_. 
 I'll collect these distinct values into a **String** array, 
 with the _toArray_ terminal operation,
-and specifying the kind of array I want. 
+and be specifying the kind of array I want. 
 Finally, I'll print the results out in one statement.
 I'll just fix that typo I made and format the code, 
 so it shows better on screen.
@@ -6966,7 +6966,7 @@ public class Main {
 
 Inside the parentheses, I'll have a local variable called _stringStream_, 
 and assign that the result of `Files.lines`.
-I'm going to have this stream return an array,
+I'm going to have this stream return an array
 to a variable called _results_.
 I'll skip the header row. 
 My pattern is in the _p_ variable, so I'll use that to get a matcher.
@@ -7114,26 +7114,26 @@ This allows users to resume where they left off.
 * Logging application events to a log file.
 This helps with troubleshooting problems, as well as monitoring. 
 * Storing configuration data. 
-You can store settings that might change, 
+You can store settings that might change 
 or be configured for different environments, as well as elements
 shared between different parts of an application.
 * Exporting Data for Exchange of Information.
-Sharing data is very common, and file formats such as CSV, Jayson, 
-or XML have evolved, to support interoperability and communication
+Sharing data is widespread, and file formats such as CSV, Jayson, 
+or XML have evolved to support interoperability and communication
 between systems. 
 * Supporting Offline Usage in a File Cache.
-Temporary storage in a file, is one way to improve application performance.
+Temporary storage in a file is one way to improve application performance.
 If the data is needed again, 
 it can be loaded from the file, 
 instead of fetching it from a remote source or re-computing it.
-Likewise, data can be stored in a file, if a user is working remotely.
+Likewise, data can be stored in a file if a user is working remotely.
 When they get reconnected to the server again, 
 this data can be uploaded at that time. 
 * Generating file products.
 These products might include reports, invoices, or documents, 
 as needed by users.
 
-Some of the concepts of writing to a file are naturally similar,
+Some concepts of writing to a file are naturally similar
 to those of reading from a file.
 You'll use similar named classes, but instead of **InputStream**, 
 you'll work with an **OutputStream**, for example.
@@ -7147,7 +7147,7 @@ and I'll cover these shortly.
 In this section, I'll focus on writing text to a text file.
 I've included the _StudentEngagement_ code,
 from my streaming sections in this package.
-This code contains 4 types, the **Student** class, 
+This code contains four types, the **Student** class, 
 the **Course** record, the **StudentDemographics** record,
 and the **CourseEngagement** class.
 
@@ -7167,7 +7167,7 @@ public record StudentDemographics(String countryCode, int enrolledMonth,
 
 I've modified this code slightly from the code in the Streaming section.
 I changed the _toString_ method on **StudentDemographics**.
-Here, I'm returning a comma delimited list of the **Student**'s data, 
+Here, I'm returning a comma-delimited list of the **Student**'s data, 
 rather than the default implementation that was there before.
 
 ```java  
@@ -7190,7 +7190,7 @@ I've added a method to get a student's engagement records,
 as a list of comma delimited strings, 
 which includes student demographics as well.
 This code will let me quickly get, 
-as many random students as I want using a stream.
+as many random students as I want to use a stream.
 
 ```java  
 public class Main {
@@ -7233,7 +7233,7 @@ so I'll first set up two new courses.
 I'll create a _jmc_ course, with a course code of _JMC_ 
 for the Java Masterclass.
 I'll do a similar thing for the python,
-_pymc_ is the variable name, and course code is _PYC_.
+_pymc_ is the variable name, and code is _PYC_.
 Next, I'll be generating a list of random students.
 I'll set up a local variable for the students.
 I'll call generate, using the _Supplier_ method 
@@ -7247,7 +7247,7 @@ getting their engagement records.
 Each student will have two engagement records, one for each course.
 I'll first print the header out to the console.
 I'll loop through my list of random students,
-and get each students' engagement records.
+and get each student engagement record.
 The records are returned as a List of string,
 and I'll just print each record.
 Running this code:
@@ -7265,7 +7265,7 @@ Running this code:
 5,US,3,2021,85,F,false,PYC,MAY,2023,Lecture 14
 ```
 
-I'll get 10 records, for the 5 randomly generated students.
+I'll get 10 records for the 5 randomly generated students.
 Since this data is random, it will be different every time I run it, 
 and different from your results if you're following along.
 Now, instead of printing this to the console,
@@ -7311,7 +7311,7 @@ First, I'll comment out this code, that writes to the console.
 To write this data to a file,
 I'll start by specifying a path, 
 with a filename, and I'll call it `students.csv`.
-The extension csv, is very commonly used,
+The extension csv is very commonly used,
 and stands for comma separated values.
 I can make this extension anything I want, 
 but this one is pretty standard,
@@ -7342,7 +7342,7 @@ If I open that, notice what's here:
 5,CN,3,2023,54,U,false,PYC,APRIL,2024,Lecture 8
 ```
 
-Only the last 2 records of the last student, the fifth student.
+Only the last two records of the last student, the fifth student.
 Maybe that's not what you expected.
 What's going on here?
 Let's go back to the code, and give it a closer look.
@@ -7400,12 +7400,12 @@ called _StandardOpenOption_.
 | WRITE             | The file is opened for write access.                                                             |
 
 The default options for `Files.write` methods are shown in this table.
-When you don't specify options, the file will get created, if it doesn't exist.
+When you don't specify options, the file will get created if it doesn't exist.
 The file will get truncated every time you write to it, 
-which is why we only see the last 2 records of student 5, in the content.
-And naturally, it's open for write, but you can open any file resource,
+which is why we only see the last two records of student 5 in the content.
+And naturally, it's open for writing, but you can open any file resource,
 either for reading, writing or both.
-For my code, I have two options, if I want all my student data to get printed.
+For my code, I have two options if I want all my student data to get printed.
 I can pass all the data into a single write method,
 or I can specify a different set of open options.
 More specifically, I probably don't want to truncate existing each time.
@@ -7445,7 +7445,7 @@ public class Main {
 ```
 
 I'll start with the second option.
-I'll change my code, adding a new line, then passing another option,
+I'll change my code, add a new line, then pass another option,
 from the _StandardOpenOption_ enum.
 Here, I'll specify the _APPEND_ constant, 
 which means any text that's written to the file,
@@ -7468,9 +7468,9 @@ Student Id,Country Code,Enrolled Year,Age,Gender,Experienced,Course Code,Engagem
 Examining the `student.csv` file, I can see 
 that all the data was printed, including the header.
 Still, it would probably be more efficient 
-to create a single iterable object, and pass that.
+to create a single iterable object and pass that.
 This would make one call to the write method, 
-so that we're not opening and closing a file resource, for every student.
+so that we're not opening and closing a file resource for every student.
 I'll comment this code out, as I have it here, except for the **Path** variable.
 
 ```java  
@@ -7492,7 +7492,7 @@ I'll set up a new array list called data, typed to string.
 I'll add the header string to that list.
 Again I'll loop through my students.
 This time, I'll call add all, 
-so all the engagements records will get added to the list.
+so all the engagement records will get added to the list.
 Now, all my data is in one iterable collection.
 I'll pass that to the `Files.write` method, 
 without any open options defined.
@@ -7517,7 +7517,7 @@ Student Id,Country Code,Enrolled Year,Age,Gender,Experienced,Course Code,Engagem
 I get the same results, and all 5 of my students records, 
 are in the `students.csv` file.
 When using these write methods on **File**,
-it's very important to understand, that doing incremental writes, 
+it's crucial to understand, that doing incremental writes, 
 as I did in the first code, is going to be pretty inefficient.
 There are other options for incremental writes.
 One of these is a method on the **Files** class,
@@ -7561,7 +7561,7 @@ Now, I can see I have a new file in projects root, and it's called `take2.csv`.
 Let's look at that.
 This looks like it only wrote the header, but if I scroll to the right,
 I can see that's not really true.
-My data, the student records, are all there, 
+My data, the student records, are all there; 
 they're just all printed on the same line as the header.
 Getting back to my _main_ method at that last _try_ block.
 
@@ -7587,12 +7587,12 @@ that's printing the header.
 I'm going to pause here, after I type the dot, 
 which should display all the method options I have.
 Notice that there really aren't that many.
-There are only a few overloaded methods for write.
+There are only a few overloaded methods for writing.
 One takes an integer, one a character buffer, and one a **String**.
 Then there are overloaded versions of those, 
 that let you specify a starting offset and length, 
-so part of your record or string, would be output.
-There is however a _newLine_ method here, so I'll select that.
+so part of your record or string would be output.
+There is, however, a _newLine_ method here, so I'll select that.
 I'll copy that statement, and paste it under the write statement 
 that prints each record.
 I'll rerun my code.
@@ -7627,7 +7627,7 @@ which both opens and closes the file resource.
 These methods might be good for writing data to a log file, 
 for instance, but aren't ideal for writing a lot of records 
 to an output file, in an iterable fashion.
-I showed you another method on **Files**, called _newOutputStream_,
+I showed you another method on **Files**, called _newOutputStream;_
 that returns what's called a **BufferedOutputStream**.
 
 ```java  
@@ -7702,14 +7702,14 @@ I'll copy this last entire `try-catch` code block,
 and paste a copy right below it.
 With this pasted section, I'll first change the variable type,
 in the _try_ clause, from a **BufferedWriter** to a **FileWriter**.
-Next I'll remove the right hand side of the equation.
+Next, I'll remove the right-hand side of the equation.
 In place of that code, I'll insert just new **FileWriter**, 
 passing that the literal, `take3.csv`,
 so a different file name for this one.
-Now, this doesn't compile, 
+Now, this doesn't compile 
 because the **FileWriter** class doesn't have a _newLine_ method.
 I'll remove those two statements for now.
-Before I run this, I want to set up code, 
+Before I run this, I want to set up code 
 for yet another writer class.
 Again, I'll copy this last try block statement, 
 and paste a copy just below it.
@@ -7723,7 +7723,7 @@ I'll use a method on the **PrintWriter**,
 and that's the familiar _println_ statement.
 I'll change _write_ to _println_.
 Notice that I've kept the first _write_, the header.
-This just demonstrates that you can use either of these, 
+This just demonstrates that you can use either of these 
 and mix and match methods if you want.
 Ok, so now I'll run this, and see what I get.
 In my project panel, I see that two files are
@@ -7764,7 +7764,7 @@ try (FileWriter writer = new FileWriter(pathName3)) {
 
 I'll pass a result from a method that's on the **System** class, 
 called _lineSeparator_.
-I'll do the same thing after this write statement.
+I'll do the same thing after this _write_ statement.
 This method, S`ystem.lineSeparator`, 
 will take advantage of the operating system's definition of a new line,
 which varies by OS.
@@ -7954,13 +7954,13 @@ You've seen that we can call _newline_ on this **Writer**.
 The **BufferedWriter** is good for writing large amounts of text to a file.
 A **FileWriter** has a buffer, but it's much smaller.
 Java doesn't guarantee it's size.
-It's very common practice to wrap your **FileWriter** in a **BufferedWriter**.
+It's widespread practice to wrap your **FileWriter** in a **BufferedWriter**.
 You've seen that this writer does not have a _newline_ method, 
 and if we want new lines,
 our text we're printing should include it.
 This class could be used for writing small amounts of text to a file.
 The **PrintWriter** isn't buffered, but you can pass a **BufferedWriter** to it.
-In addition, the constructor that takes a string,
+In addition, the constructor that takes a string
 actually constructs a **BufferedWriter** instance.
 You can output to a file with the familiar _println_, _printf_, 
 _format_ methods, and pass objects to these methods.
@@ -8045,11 +8045,11 @@ I'm also going to delete that simple _println_ statement, for the record.
 First, I want to split each record I get back by commas, 
 so I'll call split on each record.
 Next, I'll call the `writer.printf` statement, 
-and start with a formatted string, which will specify the different widths, for my first 6 columns.
+and start with a formatted string, which will specify the different widths, for my first six columns.
 I'll start with the _printf_ method, and pass a format string, that specifies the widths of each field. 
 If it's left justified, I include a hyphen before the width. 
 Many fixed width files left justify text, and right justify numbers.
-Instead of using the string tokens, I can use object, by calling get methods on the student,
+Instead of using the string tokens, I can use an object by calling get methods on the student,
 so I'll do a series of calls on the student attributes, starting with student id.
 Next, I'll get the country code, the enrollment year and month.
 I'll include age, then Gender.
@@ -8060,12 +8060,12 @@ This will be either by **Y** or **N**.
 Here, I'll use a ternary against the _hasExperience_ method.
 I'll next use `writer.format`, which you'll remember I can use on `System.out`, 
 as an alternative to _printf_.
-This time I'm going to use the delimited data, for the engagement record information.
+This time I'm going to use the delimited data for the engagement record information.
 I can use _printf_ or _format_ interchangeably, so just to remind you, I'll use _format_.
 I had encapsulated all the _engagement_ data on **student**, 
 so I don't really have a way to get the _engagement_ data, 
 other than from the record tokens here. 
-I can get the percentage of complete, for a specified course 
+I can get the percentage of complete for a specified course 
 by calling the get percent _complete_ method on **student**, so I'll add that here.
 I'll print the rest of the tokens for the engagement month, year, and type.
 Finally, I can just call _println_ without arguments to print a line separator.
@@ -8154,7 +8154,7 @@ Data is read in larger chunks and stored in the buffer.
 For writing files, something similar occurs, so there's temporary storage, 
 that gets filled up as writes are executed, on a **Writer** class.
 Physical writes to disk happen when the buffer is flushed.
-In other words, not every write or print statement you execute, 
+In other words, not every write or print statement you execute 
 is going to be physically written, until the buffer is flushed.
 This is the process of taking the text stored in the buffer,
 and writing it to the output file, and clearing the buffer's cache.
@@ -8163,10 +8163,10 @@ including the size of the buffer, the speed of the disk,
 and the amount of data that's being written to the file.
 Different **Writer** classes also will flush at different rates.
 The buffer is always flushed when a file is closed.
-You can manually flush a buffer, by calling the _flush_ method.
+You can manually flush a buffer by calling the _flush_ method.
 You might want to do this, meaning flush more frequently, 
-when working with time sensitive data.
-Any other thread or process that's reading the file,
+when working with time-sensitive data.
+Any other thread or process reading the file
 won't be able to see the buffered text, until the flush occurs.
 You might be wondering why 
 this **PrintWriter** constructor has set its **autoFlush** argument to **false**.
@@ -8228,22 +8228,22 @@ I'll pause the application for 2 seconds.
 We'll talk about threads in a later section,
 but this is a way to make your application pause for a bit.
 It takes milliseconds, so if I pass 2000, my application will pause for 2 seconds,
-after every 5 records.
+after every five records.
 I'll print a dot, so I can watch the status.
 The `Thread.sleep` method throws an _InterruptedException_, a checked exception,
 so I'll use IntelliJ's tools to add a _catch_ clause to my exiting _try_ block.
 I'll save my code.
 Before I run this, I'll open up the existing `take2.csv` file.
-With this file open, I'll execute my code,
+With this file open, I'll execute my code;
 There's a key combination that will reload all files from disk,
 which will help me monitor this file in IntelliJ.
 On windows this is Control+Alt+Y, 
 or option+command+y on a Mac.
-I'm going to press Control+Alt+Y, continuously while this code runs.
-Notice the dots being printed to the console every 2 seconds.
+I'm going to press Control+Alt+Y continuously while this code runs.
+Notice the dots being printed on the console every 2 seconds.
 Watching the file, you'll notice right away that the text was truncated, 
 and the file is empty.
-But while this code is running:
+But while this code is running.
 I'm not seeing any text in this file, 
 as I continue to periodically use the reload key combination.
 After ten dots, the application ends, 
@@ -8305,8 +8305,8 @@ Student Id,Country Code,Enrolled Year,Age,Gender,Experienced,Course Code,Engagem
 
 The buffer was big enough to contain the 50 engagement records.
 Now imagine we have another process watching the file, 
-that will do something incrementally with 5 students at a time, using this file.
-In other words, we don't want to wait for the buffer to automatically flush,
+that will do something incrementally with five students at a time, using this file.
+In other words, we don't want to wait for the buffer to automatically flush
 with 1000s of student records at a time.
 Instead, I'll flush the buffer manually.
 
@@ -8346,9 +8346,9 @@ I'll open the `take2.csv` file again.
 I'll start execution on my main method while I have this in view.
 I'll start pressing Control+Alt+Y regularly.
 Like before, I'll first see all the text that was there, get truncated.
-But after 2 dots, I'll see 10 records, for the first 5 students.
-After 4 dots, I'll get 20 records displayed, and so on.
-This demonstrates that the buffer, is flushed after every 10 records, 
+But after two dots, I'll see 10 records for the first 5 students.
+After four dots, I'll get 20 records displayed, and so on.
+This demonstrates that the buffer is flushed after every 10 records, 
 versus just allowing the **BufferedWriter** class to manage it for me.
 Of course, implementing your own manual flushing will affect performance, 
 so you should only use it, in a scenario like this, 
@@ -8356,14 +8356,14 @@ where you're writing large amounts of data,
 but you want the data to be written out in a more timely fashion,
 making it available to either another process watching it, 
 or some other similar kind of thing.
-Obviously, this example was manufactured a bit,
+This example was manufactured a bit,
 to give you a better demonstration.
 </div>
 
 ## [g. File Writing Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course09_WritingFilesChallenge/README.md#file-writing-challenge)
 <div align="justify">
 
-In this challenge, you'll be creating your own data file,
+In this challenge, you'll be creating your own data file
 with the **StudentEngagement** records.
 In this case, you'll be outputting the data in **Json** format.
 You've seen a little **JSON** in a previous section.
@@ -8400,13 +8400,13 @@ At a minimum, print the student id, and some _demographics_ data.
 The Json example on this image, demonstrates a flattened structure.
 You can see all fields are key value pairs,
 and all are children of the student record.
-Keys are enclosed in quotes, as are values if they're text based,
+Keys are enclosed in quotes, as are values if they're text-based,
 and the colon is used to separate the key and value.
 
 ![image13](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image13.png?raw=true)
 
-On this image, I'm showing a more hierarchical Json structure, for a single student.
-The demographics key, has a value that's an object and not a simple string,
+On this image, I'm showing a more hierarchical Json structure for a single student.
+The demographic key has a value that's an object and not a simple string,
 and that's enclosed in curly braces.
 The engagement key's values is also an array, containing separate engagement records.
 You might want to explore the use of IntelliJ's **template** functionality,
@@ -8416,9 +8416,9 @@ You can look at
 for customizing templates.
 You could start with one of the _toString_ templates as a basis.
 
-Don't forget about the **StringJoiner** class,
+Remember about the **StringJoiner** class,
 that lets you define a delimiter, as well as a prefix and suffix.
-Start out by testing 2 or 3 students in your data set.
+Start out by testing two or three students in your data set.
 </div>
 
 ## [h. Directory and File Manipulations]()
@@ -8428,7 +8428,7 @@ Start out by testing 2 or 3 students in your data set.
 
 So much of what we might want to do with files and directories is renaming,
 copying, moving and deleting them.
-Occasionally, we might also want to make a global search and replacement,
+Occasionally, we might also want to make a global search and replacement
 on the contents of an existing file.
 I'll devote the next couple of sections to these kinds of tasks,
 and how to use Java's support for this kind of work.
@@ -8436,11 +8436,11 @@ I've created the **Main** class's _main_ method ready to go.
 I've also copied over my `students.json` file,
 from the previous challenge section,
 and I've put that in this project's package folder.
-It contains information about 1000 students,
+It contains information about 1000 students
 and their course engagement records, mocked up with random data,
 and formatted using json.
 The **Files** class has a wealth of helpful methods.
-I haven't yet covered, and I'll be using this file,
+I haven't yet covered, and I'll be using this file
 to demonstrate some of these methods.
 I'll _rename_, _move_, **copy** and _delete_ files,
 using methods on this class.
@@ -8473,7 +8473,7 @@ public class Main {
 I'll create a File instance to the existing `students.json` file.
 Next, I'll create a _File_ instance using the new name of the file,
 in this case `student-activity.json`.
-Notice, that this is perfectly valid to do, 
+Notice that this is perfectly valid to do, 
 you can create a _File_ instance, using a file name, 
 even though this file doesn't exist.
 I'll confirm that the old file, the file I plan to rename, actually exists.
@@ -8490,18 +8490,18 @@ File renamed successfully!
 It runs without any issues, and my `students.json` file 
 is successfully renamed, to `students-activity.json`.
 There's a couple of problems with this code though.
-IntelliJ is showing me one issue, by highlighting a warning, 
+IntelliJ is showing me one issue, by highlighting a warning 
 that I'm not using the output from the _renameTo_ method.
-There are a lot of things that could go wrong,
+There are a lot of things that could go wrong
 while trying to perform the rename operation.
-Ignoring the result, is a bad idea, 
+Ignoring the result is a bad idea, 
 because it's possible the rename operation actually failed.
 This could be due to user permissions,
 or a variety of other reasons like network connectivity, and so on.
 Remember, one of the problems with the `java.io` classes, 
 is they don't throw an _IOException_.
 Instead, they simply return a boolean, 
-and you don't have a good window into what went wrong,
+and you don't have a good window into what went wrong
 if you do get a false back from this method.
 I'm going to leave this code as it is though,
 because instead I want to use **Path**, and the **Files** class.
@@ -8553,7 +8553,7 @@ because it results in targeted and informative exceptions,
 about any problems that occur during the operation.
 I'll start out typing `Files.r`, 
 and wait for IntelliJ to list the method names.
-What I want you to see here is, 
+What I want you to see here is 
 that there isn't a _rename_ method on **Files**.
 Instead, I need to use the _move_ method, 
 so I'll back out that _r_, and finish with a _move_ method call,
@@ -8574,7 +8574,7 @@ Path renamed successfully!
 ```
 
 I get the console output for the first rename, that the file doesn't exist.
-That's because I already renamed it, in the previous run.
+That's because I already renamed it in the previous run.
 In the case of the Path move operation, I get the **Path** renamed successfully.
 I can see that if I examine the project pane,
 that the `students.json` file is listed there,
@@ -8614,7 +8614,7 @@ For the new path, I want to include a subfolder, so files,
 then a slash or file separator, 
 and that goes before the new file name, `student-activity.json`.
 I also want to reverse the arguments in the `Files.move` method,
-since now oldPath is `students.json`.
+now oldPath is `students.json`.
 If I run this code:
 
 ```html  
@@ -8661,9 +8661,9 @@ I don't want to call this method with the entire path name though.
 I need to strip off the last part of the path, or the file name here.
 To do this, I can use the _subpath_ method to just get the directories' path.
 I'll start at index 0, and include everything except the last part of the name, 
-so name count - 1.
+so name `count - 1`.
 I'll change the message I output to the console, to be more informative,
-so _oldPath_ moved and renamed to new path.
+so _oldPath_ moved and renamed to a new path.
 I'll re-run this again.
 
 ```html  
@@ -8703,7 +8703,7 @@ public class Main {
 
 I'll create a path to my _files_ folder, 
 and I can do that using a relative path, so just files.
-I don't want to include a preceding file separator symbol in other words,
+I don't want to include a preceding file separator symbol in other words;
 this is what makes it relative.
 I'll do the same for the folder I want it to be renamed to, so resources here.
 I'll start with a _try_ block. I'll call `files.move`, 
@@ -8766,7 +8766,7 @@ If you want to do a deep copy,
 you'd have to write a little bit of recursive code to handle it.
 You'll see a lot of examples online using the _walkFileTree_ method,
 but let's see if we can do something similar, with less code, and using streams.
-I'll demonstrate a way to recursively copy your directory's content, 
+I'll demonstrate a way to recursively copy your directory's content 
 in the next section.
 </div>
 
@@ -8913,7 +8913,7 @@ public static void recurseCopy(Path source, Path target) throws IOException {
 }
 ```
 
-I'll change my recurse method, to show you that.
+I'll change my recurse method to show you that.
 I'll add another argument to the `Files.copy` method, 
 and this time I'll pass it an enum value from the **StandardCopyOption** enum,
 and this is called _REPLACE_EXISTING_.
@@ -9170,7 +9170,7 @@ Now, a _URL_, which I'm sure you're familiar with, is always a _URI_.
 But there's another subcategory of _URI_, 
 which includes uniform resource names.
 I'll be getting into all of this later, in the networking section.
-For now, I want to use _URI_, because it provides me with handy methods,
+For now, I want to use _URI_ because it provides me with handy methods
 to get an input stream based on the _URI_.
 In a _try-with-resources_ block, I'll set up a variable, _urlInputStream_. 
 I'll set that to my `uri.URL` method, chaining _openStream_.
@@ -9484,7 +9484,7 @@ you can load a simple array or small map,
 which will tell you how to locate records of interest in the big file. 
 You wouldn't want to start reading from the beginning of the file,
 and read 10 million records, checking each one to see if it's a match. 
-The RandomAccessFile lets you fast-forward or backward, 
+The **RandomAccessFile** lets you fast-forward or backward, 
 to a position in the file, using the _seek_ method. 
 From this position, you can read in only the data that matters for your application. 
 To do this though, you need to understand how many records are in your file, 
@@ -9614,7 +9614,7 @@ I'll split the records by the line separator.
 I'll print the number of records to the console. 
 And finally, I add the _catch_ block. 
 Before I go any further, I think it will help you, 
-if I show you what this file is going to look like, on a image.
+if I show you what this file is going to look like, on an image.
 
 ![image14](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image14.png?raw=true)
 
@@ -9706,7 +9706,7 @@ and the current file pointer as the position of the record in the data file.
 I'll use _writeUTF_ to print the record to the file.
 Finally, I'll include the usual _catch_ block. 
 I'm not done yet though. 
-This code represents only step 1 from the diagram. 
+This code represents only step 1 from the image. 
 Step 2 is printing the record count, and the index data.
 To do this, I'll create a private static method on this class.
 
@@ -9732,9 +9732,10 @@ I'll need a _try-catch_.
 My index is always going to be at the start of the file. 
 I'll write the size of the map, which should be equal to the number of records. 
 Looping through the map entries, I'll write the key, 
-and the value as longs, each write taking up 8 bytes. 
+and the value as longs, each write taking up eight bytes. 
 The usual _catch_ block goes here. 
-One thing I didn't really mention earlier, but it's important, 
+
+One thing I didn't really mention earlier, but it's important 
 is that you want to use a **LinkedHashMap** for the index map, 
 so that your indexed data is in insertion order, 
 matching the order the records were printed in.
@@ -9807,7 +9808,6 @@ I can add a call to the `BuildStudentData.build` method,
 and I want my file name to be prefixed with _studentData_.
 I can run this as it is:
 
-
 ```html  
 # of records = 1000
 ```
@@ -9831,16 +9831,27 @@ I'll start by writing code to load the indexed data first.
 For this, I'll set up a private static void method, called _loadIndex_.
 
 ```java  
-private static void loadIndex(RandomAccessFile ra, int indexPosition) {
-    try {
-        ra.seek(indexPosition);
-        recordsInFile = ra.readInt();
-        System.out.println(recordsInFile);
-        for (int i = 0; i < recordsInFile; i++) {
-            indexedIds.put(ra.readLong(), ra.readLong());
+public class Main {
+
+    private static final Map<Long, Long> indexedIds = new LinkedHashMap<>();    // key = record id, value = file pointer position
+    private static int recordsInFile = 0;                                       // # of records in the file
+
+    public static void main(String[] args) {
+
+        //BuildStudentData.build("studentData", false);
+    }
+
+    private static void loadIndex(RandomAccessFile ra, int indexPosition) {
+        try {
+            ra.seek(indexPosition);
+            recordsInFile = ra.readInt();
+            System.out.println(recordsInFile);
+            for (int i = 0; i < recordsInFile; i++) {
+                indexedIds.put(ra.readLong(), ra.readLong());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-    } catch (IOException e) {
-        throw new RuntimeException(e);
     }
 }
 ```
@@ -9891,6 +9902,19 @@ public class Main {
             throw new RuntimeException(e);
         }
     }
+
+    private static void loadIndex(RandomAccessFile ra, int indexPosition) {
+        try {
+            ra.seek(indexPosition);
+            recordsInFile = ra.readInt();
+            System.out.println(recordsInFile);
+            for (int i = 0; i < recordsInFile; i++) {
+                indexedIds.put(ra.readLong(), ra.readLong());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 ```
 
@@ -9921,14 +9945,14 @@ which I used to write this data in the last section.
 Part of the functionality of the _writeUTF_ method is 
 to include the length of the data that was written. 
 This means the _readUTF_ method can first get that length, 
-and then read only that specified block of data into a string. 
+and then read-only that specified block of data into a string. 
 Ok, so there's the code to prompt a user for a student id, 
 and to retrieve that data. 
 This code could be a lot more robust. 
 It's possible the user could enter an invalid id,
 and this would throw an exception. 
 I could use max and min functions on the key set list, 
-to get a valid range for example.
+to get a valid range, for example.
 For now, I just want to keep this short and simple, 
 to see if this actually works. 
 I'll run it:
@@ -9938,7 +9962,7 @@ I'll run it:
 Enter a Student Id or 0 to quit
 ```
 
-I can see 1000 printed to the console. 
+I can see 1000 printed on the console. 
 That's the number of records it found in the index, 
 so the code was able to read that accurately, from the `.dat` file. 
 I'm being prompted for an id, so I'll enter `777`, and press enter.
@@ -10040,7 +10064,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        BuildStudentData.build("studentData", true);
+        //BuildStudentData.build("studentData", true);
+        BuildStudentData.build("student", true);
 
         String cwdPath = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course12_RandomAccessFile/";
         try (RandomAccessFile ra = new RandomAccessFile(cwdPath + "studentData.dat", "r")) {
@@ -10090,6 +10115,8 @@ I have to change my code next, to use this new data file,
 with its separate index. 
 For this, I'll change the way I load the index data. 
 I'll create a static initializer to load the index.
+You'll remember this is just a block of code at the class level,
+that starts with the keyword **static**.
 
 ```java  
 public class Main {
@@ -10109,7 +10136,7 @@ public class Main {
     
     public static void main(String[] args) {
 
-        BuildStudentData.build("studentData", true);
+        BuildStudentData.build("student", true);
 
         String cwdPath = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course12_RandomAccessFile/";
         //try (RandomAccessFile ra = new RandomAccessFile(cwdPath + "studentData.dat", "r")) {
@@ -10134,8 +10161,6 @@ public class Main {
 }
 ```
 
-You'll remember this is just a block of code at the class level, 
-that starts with the keyword **static**. 
 I'll create a new **RandomAccessFile** instance, which will read `student.idx`. 
 And my mode can just be read here. 
 I'll call the _loadIndex_ method, passing it this random access file variable, 
@@ -10196,10 +10221,10 @@ Random access files are also commonly used
 for binary data storage as you've seen.
 </div>
 
-## [k. RandomAccessFile Class Challenge]()
+## [k. RandomAccessFile Class Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course13_RandomAccessFileChallenge/README.md#randomaccessfile-class-challenge)
 <div align="justify">
 
-In this challenge, you'll be using an indexed file, 
+In this challenge, you'll be using an indexed file 
 that contains a series of employee records.
 This indexed file must be in the same directory of your `Main.java`. 
 This file starts with a total count of employee records 
@@ -10209,18 +10234,18 @@ The key is an integer value, representing the employee id.
 The value is a long value, 
 that's the file position of the employee record in the file.
 
-For this challenge, open a **RandomAccessFile** class 
-with appropriate permissions. 
-Load the employee index into memory.
-List your employee IDs in order. 
-Retrieve an Employee Record from the file, using an employee id, 
+For this challenge, 
+* open a **RandomAccessFile** class with appropriate permissions. 
+* Load the employee index into memory.
+* List your employee IDs in order. 
+* Retrieve an Employee Record from the file, using an employee id, 
 to locate the position of that record in the file. 
-Print the employee record information to the console.
-
-Next, update the selected Employee's salary in the file. 
-And Finally, retrieve the record from the file again,
+* Print the employee record information to the console.
+* Next, update the selected Employee's salary in the file. 
+* And Finally, retrieve the record from the file again,
 and print the information to the console, 
 confirming that the salary was persisted. 
+
 Each employee record in the file consists of the following information, 
 and in this order:
 
@@ -10239,26 +10264,1707 @@ and then writing the value of a new salary, as a double.
 ## [l. DataOutputStream and DataInputStream classes]()
 <div align="justify">
 
-```java  
+In the last section, I reviewed the **RandomAccessFile**, 
+to write some information to a binary data file. 
+I used _writeInt_, _writeLong_, and _writeUTF_ 
+to write integers, longs, and Strings respectively. 
+This is one way to write binary data to an output file. 
 
+In this section, I'll be exploring another way. 
+I'll first create a private static void method,
+called _writeData_.
+This method will take a **Path** as an argument.
+I'll next create an instance of another IO class,
+and this one's called **DataOutputStream**.
+A **DataOutputStream** lets an application write primitive
+Java data types to an output stream, in a portable way.
+An application can then use a **DataInputStream**
+to read the data back in.
+I'll instantiate this new **DataOutputStream**,
+inside a _try-with-resources_ block.
+My local variable name will be _dataStream_.
+I'll instantiate a new **DataOutputStream**.
+That will wrap a **BufferedOutputStream**
+which in turn will wrap a **FileOutputStream**,
+because I'll be writing to a file.
+I really didn't need to wrap this in a **BufferedOutputStream**,
+because my data will be just a few bytes,
+but I wanted to show you the standard way of doing this.
+Most files will benefit from being wrapped in a **BufferedOutputStream**.
+I can use a helper method on the **Path** interface, named _toFile_,
+to get a file instance from my path,
+which I can pass to this **IO** class.
+Before I do anything else,
+there's a problem with that new **FileOutputStream** call.
+Hovering over that, I see that
+I need to add a _FileNotFoundException_ clause, so I'll add that.
+Actually, I don't need both, so I can remove the _FileNotFoundException_,
+since it's a child of _IOException_.
+
+```java  
+private static void writeData(Path dataFile) {
+
+    try (DataOutputStream dataStream = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(dataFile.toFile())))) {
+        int myInt = 17;
+        long myLong = 100_000_000_000_000L;
+        boolean myBoolean = true;
+        char myChar = 'Z';
+        float myFloat = 77.7f;
+        double myDouble = 98.6;
+        String myString = "Hello World";
+
+        long position = 0;
+        dataStream.writeInt(myInt);
+        System.out.println("writeInt writes " + (dataStream.size() - position));
+        position = dataStream.size();
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
 ```
+
+I'll create a series of local variables, 
+one for each primitive data type, as well as a **String**. 
+I'll create _myInt_, and set that to 17. 
+Next, a **long**, _myLong_ with a value of 100 billion. 
+I'll set up a **boolean** equal to **true**, 
+a **char** set to the letter _z_, 
+a **float** with the value _77.7_, 
+and a **double**, with _98.6_ there. 
+Finally, I'll have a **string** set to _Hello World_. 
+Next, I'll create a **long** variable, _position_, 
+which will help track how many bytes each operation is writing. 
+I'll call `dataStream.writeInt`, passing my first local variable, _myInt_. 
+I'll print out that the method _writeInt_ writes, 
+and then I'll calculate how many bytes get written. 
+I can do this by taking the current size of the data stream, 
+and subtracting the value in _position_. 
+I'll then update the _position_ to the stream's current size. 
+Jumping back up to the _main_ method,
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String dataPath = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course14_DataStreamsAndSerialization/";
+        Path dataFile = Path.of(dataPath + "data.dat");
+        writeData(dataFile);
+    }
+}
+```
+
+I'll execute this method, but first I'll create a **Path** variable. 
+I'll create a file called `data.dat`. 
+I'll pass this to my _writeData_ method. 
+I'll run this code:
 
 ```html  
-
+writeInt writes 4
 ```
 
+And I'll see, _writeInt writes 4_, 
+which means this method, wrote 4 bytes out to the file. 
+Getting back to my _writeData_ method:
+
+```java  
+private static void writeData(Path dataFile) {
+
+    try (DataOutputStream dataStream = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(dataFile.toFile())))) {
+        int myInt = 17;
+        long myLong = 100_000_000_000_000L;
+        boolean myBoolean = true;
+        char myChar = 'Z';
+        float myFloat = 77.7f;
+        double myDouble = 98.6;
+        String myString = "Hello World";
+
+        long position = 0;
+        dataStream.writeInt(myInt);
+        System.out.println("writeInt writes " + (dataStream.size() - position));
+        position = dataStream.size();
+
+        dataStream.writeLong(myLong);
+        System.out.println("writeLong writes " + (dataStream.size() - position));
+        position = dataStream.size();
+
+        dataStream.writeBoolean(myBoolean);
+        System.out.println("writeBoolean writes " + (dataStream.size() - position));
+        position = dataStream.size();
+
+        dataStream.writeChar(myChar);
+        System.out.println("writeChar writes " + (dataStream.size() - position));
+        position = dataStream.size();
+
+        dataStream.writeFloat(myFloat);
+        System.out.println("writeFloat writes " + (dataStream.size() - position));
+        position = dataStream.size();
+
+        dataStream.writeDouble(myDouble);
+        System.out.println("writeDouble writes " + (dataStream.size() - position));
+        position = dataStream.size();
+
+        dataStream.writeUTF(myString);
+        System.out.println("writeUTF writes " + (dataStream.size() - position));
+        position = dataStream.size();
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+I'll copy those last three statements. 
+I'll be pasting this multiple times and 
+changing the statements slightly,
+to print each of my local variables out. 
+This will be a little tedious to set up, 
+but bear with me for a few minutes.
+For this copied set's first statement, 
+I'll change writeInt to _WriteLong_, 
+and pass it the _myLong_ variable.
+In the _println_ statement, 
+I'll change _writeInt_ to _writeLong_. 
+I'll paste another copy.
+This time, I'll change _writeInt_ to _writeBoolean_, 
+and _myInt_ to _myBoolean_, on the first line. 
+On the next line, I'll change _writeInt_ to _writeBoolean_ in the output. 
+I'll repeat these steps for the next four statements, 
+so that I'm printing each local variable, 
+using the appropriate _write_ method for its type.
+Ok, let's run this again now:
+
+```html  
+writeInt writes 4
+writeLong writes 8
+writeBoolean writes 1
+writeChar writes 2
+writeFloat writes 4
+writeDouble writes 8
+writeUTF writes 13
+```
+
+Here, you can see that _writeLong_ wrote eight bytes, 
+the _boolean_ method wrote 1, 
+_char_ writes 2, 
+_writeFloat_ writes 4, 
+and _writeDouble_ outputs eight bytes of data. 
+The _writeUTF_ wrote 13. 
+Now, if you do the math, 
+you'll realize that _Hello World_ has only 11 characters. 
+You'll remember that I said in the last section, 
+the _writeUTF_ uses the first two bytes 
+to record the number of characters written, 
+so that's how we get 13 here. 
+Now that I've got data in a binary file, 
+I can read it, by using a **DataInputStream**. 
+I'll again create a method for this, private static void, named _readData_,
+
+```java  
+private static void readData(Path dataFile) {
+
+    try (DataInputStream dataStream = new DataInputStream(Files.newInputStream(dataFile))) {
+        System.out.println("myInt = " + dataStream.readInt());
+        System.out.println("myLong = " + dataStream.readLong());
+        System.out.println("myBoolean = " + dataStream.readBoolean());
+        System.out.println("myChar = " + dataStream.readChar());
+        System.out.println("myFloat = " + dataStream.readFloat());
+        System.out.println("myDouble = " + dataStream.readDouble());
+        System.out.println("myString = " + dataStream.readUTF());
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+And that too will take a path for the _dataFile_. 
+I'll start setting this up in a _try-with-resources_ block. 
+I'll declare a **DataInputStream**, called _dataStream_, 
+and assign that to a new **DataInputStream**. 
+In this case, instead of passing in a new instance of a **BufferedOutputStream**, 
+I'll pass what I get back from the method, `Files.newInputStream`. 
+This is a special **NIO2** input stream. 
+I'll include the _catch_ block. 
+Now, in the _try_ block, I'll be reading the data in from my file. 
+For a **DataInputStream**, this means I have to know the data types 
+I'll be reading in, and the same order the types were output in the file.
+I'll print out each data type, and the local variable name 
+I used when I output it, so I'll output _myInt_ equals, plus what I get, 
+from calling _readInt_ on the **dataStream**. 
+Next, `myLong = dataStream.readLong`. 
+_myBoolean_, gets its value from _readBoolean_. 
+My _char_ and read char are next, then my float, and read Float. 
+My double will get its value from the _readDouble_ method, 
+and finally, I'll call _readUTF_, which should be _hello world_,
+if this is all set up right. 
+I'll call this method, from the _main_ method.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String dataPath = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course14_DataStreamsAndSerialization/";
+        Path dataFile = Path.of(dataPath + "data.dat");
+        writeData(dataFile);
+
+        readData(dataFile);
+    }
+}
+```
+
+I'll pass _dataFile_ to my _readData_ method. 
+If I run this:
+
+```html  
+myInt = 17
+myLong = 100000000000000
+myBoolean = true
+myChar = Z
+myFloat = 77.7
+myDouble = 98.6
+myString = Hello World
+```
+
+I see that all the data was read in accurately, 
+and the values all match the values I output to this data file. 
+Now, I could use this kind of stream to write an object to a file. 
+An object, after all, eventually comes down to primitive types or strings, 
+so I could write methods like these, to write out my fields. 
+You can imagine that wouldn't be very pretty, especially if you had 20 fields 
+and complex types or collections. 
+Fortunately, we don't have to do that. 
+Java provides us with another pair of classes to make this a bit easier. 
+There's an **ObjectOutputStream** to write **Objects** out, 
+and an **ObjectInputStream**, to read that data directly back into an object. 
+
+The process of translating a data structure or object 
+into a format that can be stored on a file, is called **serialization**. 
+Only instances of **Serializable** classes can be serialized, 
+meaning the class must implement the **Serializable** interface. 
+This interface doesn't have any methods, 
+it's just used to mark the class as serializable. 
+All subtypes of a serializable class are themselves also serializable.
+The default serialization mechanism, writes the class of the object, 
+the class signature, and the values of non-static fields. 
+These elements are used to restore the object, and its state, 
+during the read operation. 
+This process is called reconstituting the data, or deserialization. 
+
+To demonstrate a simple example, 
+I'll create a second class in my **Main** class's java file. 
+I'll call this class **Player**:
+
+```java  
+class Player implements Serializable {
+    private String name;
+    private int topScore;
+    private List<String> collectedWeapons = new ArrayList<>();
+
+    public Player(String name, int topScore, List<String> collectedWeapons) {
+        this.name = name;
+        this.topScore = topScore;
+        this.collectedWeapons = collectedWeapons;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", topScore=" + topScore +
+                ", collectedWeapons=" + collectedWeapons +
+                '}';
+        //return STR."Player{name='\{name}\{'\''}, topScore=\{topScore}, collectedWeapons=\{collectedWeapons}\{'}'}";  // This is same with the code above
+    }
+}
+```
+
+And it'll have three fields, name, a _topScore_, 
+and a list of weapons, which this user found while playing. 
+I'll generate the constructor for this, 
+so alt+insert, and select constructor, 
+and I'll pick all the fields. 
+I'll also generate a _toString_ method, using the same mechanism. 
+Here, I just want to make sure I use the **String concat** template, 
+and have all three fields selected. 
+In the _main_ method:
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String dataPath = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course14_DataStreamsAndSerialization/";
+        Path dataFile = Path.of(dataPath + "data.dat");
+        writeData(dataFile);
+
+        readData(dataFile);
+
+        Player tim = new Player("Tim", 100_000_010, List.of("knife", "machete", "pistol"));
+        System.out.println(tim);
+    }
+}
+```
+
+I'll create a new **Player**, and I'll call this player _Tim_. 
+So new **Player**, name is _Tim_, 
+the top score will be 100 thousand and 10. 
+My weapons list will have a _knife_, a _machete_, and _pistol_. 
+I'll print the _tim_ instance out here. 
+Next, I need to write the code, 
+that'll write this object, to an output stream. 
+I'll call the first method _writeObject_:
+
+```java  
+private static void writeObject(Path dataFile, Player player) {
+    try (ObjectOutputStream objStream = new ObjectOutputStream(Files.newOutputStream(dataFile))) {
+        objStream.writeObject(player);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+It's a private static void, and takes both a _path_ argument, 
+and a _player_. 
+I'll set up a _try-with-resources_ block,
+and create an **ObjectOutputStream** variable. 
+I can set that to a new **ObjectOutputStream**, 
+and pass that what I get from calling `Files.newOutputStream`, 
+with my _dataFile_ path. 
+Writing an object is straightforward, 
+I just call _writeObject_ on the stream,
+and pass it the object. 
+And of course, I have to deal with the _IOException_. 
+And that's it, that's all I have to do, for the _write_. 
+That's a lot easier than calling a bunch of different write methods, 
+by each type. 
+Now, I'll write the _readObject_ method:
+
+```java  
+private static Player readObject(Path dataFile) {
+    try (ObjectInputStream objStream = new ObjectInputStream(Files.newInputStream(dataFile))) {
+        return (Player) objStream.readObject();
+    } catch (IOException | ClassNotFoundException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+So again, private static. 
+This time I want to return a **Player**, 
+and for this one, I just need to pass the _path_.
+This setup is very similar to the **ObjectOutputStream**, 
+except its **ObjectInputStream**. 
+And I can get the player stored in the data file by calling _readObject_, 
+but I have to cast that to a **Player**. 
+I'll return this from the method.
+This code won't compile without a _catch_ block, 
+so I'll add that, for the first error, that I have on **newInputStream**.
+I still have an error on the _readObject_ method, so again, 
+I'll add the clause. 
+This time I'm prompted to add _ClassNotFoundException_ 
+to catch with _IOException_, so I'll pick that. 
+Hopefully you'll remember this syntax, 
+which lets me catch either of these exceptions, 
+using a single _catch_ clause, and exception variable. 
+Next, I need to call these methods in my _main_ method:
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String dataPath = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course14_DataStreamsAndSerialization/";
+        Path dataFile = Path.of(dataPath + "data.dat");
+        writeData(dataFile);
+
+        readData(dataFile);
+
+        Player tim = new Player("Tim", 100_000_010, List.of("knife", "machete", "pistol"));
+        System.out.println(tim);
+
+        Path timFile = Path.of(dataPath + "tim.dat");
+        writeObject(timFile, tim);
+        Player reconstitutedTim = readObject(timFile);
+        System.out.println(reconstitutedTim);
+    }
+}
+```
+
+I'll set up a **path** instance, 
+my file will be `tim.dat`. 
+I'll write my player, _Tim_ here. 
+I'll read the player out of the generated file, with _readObject_, 
+and pass that back to a variable I'm calling, reconstituted Tim. 
+I'll print this deserialized object out. 
+Running this code:
+
+```html  
+Player{name='Tim', topScore=100000010, collectedWeapons=[knife, machete, pistol]}
+Player{name='Tim', topScore=100000010, collectedWeapons=[knife, machete, pistol]}
+```
+
+I can see the two lines of output are exactly the same. 
+The first was from the tim player I initially created, 
+with the constructor code. 
+The second statement comes from the reconstituted _Tim_, 
+and the output is identical. 
+This means I was able to read a serialized player object back into memory, 
+from a flat file, with a single _readObject_ method call, 
+so that's seems like a pretty neat feature. 
+There's a lot more complexity to this serialization process 
+than this code suggests. 
+That's what I want to review with you, in the next section.
 </div>
 
 ## [m. Serialization & Change]()
 <div align="justify">
 
-```java  
+In the last section, I started with a pretty simple example, 
+using a **Player** class, and an instance of that player,
+to first write the player object to a data file, 
+and then to read that object back in to memory.
+How that object is structured in the output data is part of Java's internals, 
+so I don't have to worry about implementing a specific format, for writing or reading. 
 
+I can have my class implement the **Serializable** interface, 
+and then use _readObject_ and _writeObject_ with **Object** streams, 
+and it all works. 
+Well, that's only part of the truth. 
+There are some things that are important to understand, 
+and consider if you're going to use Java's serialization. 
+
+```java  
+class Player implements Serializable {
+
+    private String name;
+    //private int topScore;
+    private long topScore;
+    private List<String> collectedWeapons = new ArrayList<>();
+
+    //public Player(String name, int topScore, List<String> collectedWeapons) {
+    public Player(String name, long topScore, List<String> collectedWeapons) {
+        this.name = name;
+        this.topScore = topScore;
+        this.collectedWeapons = collectedWeapons;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", topScore=" + topScore +
+                ", collectedWeapons=" + collectedWeapons +
+                '}';
+    }
+}
 ```
+
+I want to look again at the **Player** class. 
+It has three fields, a _name_, a _topScore_, and a _collectedWeapons_. 
+When we serialized an instance of this class, 
+all three fields were serialized, including the **ArrayList** of weapons. 
+That's because the **ArrayList** class itself implements serializable.
+Now let's say, I'm a developer, making improvements to the game, 
+and I've provided a lot more ways for my player to score points. 
+This means I need to change my top score to be a long 
+to accommodate much higher scores, so I'll make that change. 
+I'll change the field's type to long from int.
+I'll also change my constructor's second parameter
+to be a long, instead of an int.
+Now, imagine that tim's data was stored on file previously, 
+which we actually did do, in the last section.
+Now this player's coming back to play again, 
+but we've since updated our application in the interim. 
+I'll set this scenario up in my _main_ method.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+/*
+        String dataPath = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course14_DataStreamsAndSerialization/";
+        Path dataFile = Path.of(dataPath + "data.dat");
+        writeData(dataFile);
+        readData(dataFile);
+*/
+        
+        Player tim = new Player("Tim", 100_000_010, List.of("knife", "machete", "pistol"));
+        System.out.println(tim);
+
+        String dataPath = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course15_SerializationAndChange/";
+        Path timFile = Path.of(dataPath + "tim.dat");
+        //writeObject(timFile, tim);
+        Player reconstitutedTim = readObject(timFile);
+        System.out.println(reconstitutedTim);
+    }
+}
+```
+
+This code would most likely be called when tim exits the game session, 
+or at intervals during the play. 
+It wouldn't be back to back with a _readObject_ call, 
+like I had it here. 
+If I run this code at this point:
 
 ```html  
-
+Exception in thread "main" java.lang.RuntimeException : java.io.InvalidClassException: Player; local class incompatible: stream classdesc serialVersionUID = -2830624977577268456, local class serialVersionUID = 1682383392944485646
+    at Main.readObject()
+    at Main.main()
+Caused by: java.io.InvalidClassException : Player; local class incompatible: stream classdesc serialVersionUID = -2830624977577268456, local class serialVersionUID = 1682383392944485646
+    at java.base/java.io.ObjectStreamClass.initNonProxy()
+    at java.base/java.io.ObjectInputStream.readNonProxyDesc()
+    at java.base/java.io.ObjectInputStream.readClassDesc()
+    at java.base/java.io.ObjectInputStream.readOrdinaryObject()
+    at java.base/java.io.ObjectInputStream.readObject0()
+    at java.base/java.io.ObjectInputStream.readObject()
+    at java.base/java.io.ObjectInputStream.readObject()
+    at Main.readObject()
+    at Main.main()
 ```
 
+I get a runtime exception, _InvalidClassException_,
+local class incompatible. 
+Notice here that the message is saying it found a _serialVersionUID_,
+and it printed a great long number there, 
+but the local class has a different value. 
+What's a _serialVersionUID_, and why are they so totally different here?
+
+The _serialVersionUID_ field is a runtime field 
+that the compiler will implicitly create, 
+if it's not explicitly declared, for classes that are serializable. 
+It's based on class details such as the number of fields, 
+their types, and declarations. 
+Changing a field, like we did in this example, 
+will generate a different id, which is what happened. 
+When we read an object from a stream, 
+the runtime checks the stored _serialVersionUID_. 
+This is stored with the object written to our dat file in this example, 
+and compared to the one contained within the compiled class file. 
+If they don't match, then there's a compatibility problem 
+and the runtime will throw this _InvalidClassException_. 
+
+In addition, it's possible that different compilers will generate 
+this implied field differently. 
+If you got a new version of Java, for example,
+between writing the file and reading it, 
+it's possible you might not be able to deserialize your data
+because of a mismatch in this implicitly generated id. 
+To ensure this doesn't happen, 
+it is **strongly recommended** that you include 
+this as a private static field, as shown below.
+
+![image15](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/images/image15.png?raw=true)
+
+I'll add this field to my **Player** class, 
+and see if it fixes my problem. 
+
+```java  
+class Player implements Serializable {
+
+    private final static long serialVersionUID = 1L;
+    
+    private String name;
+    private long topScore;
+    private List<String> collectedWeapons = new ArrayList<>();
+
+    public Player(String name, long topScore, List<String> collectedWeapons) {
+        this.name = name;
+        this.topScore = topScore;
+        this.collectedWeapons = collectedWeapons;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", topScore=" + topScore +
+                ", collectedWeapons=" + collectedWeapons +
+                '}';
+    }
+}
+```
+
+I'll make the value `1L`, 
+because it needs to be a **long**. 
+You can think of it 
+as a sort of version number for the class. 
+If I run my code:
+
+```html  
+Exception in thread "main" java.lang.RuntimeException : java.io.InvalidClassException: Player; local class incompatible: stream classdesc serialVersionUID = -2830624977577268456, local class serialVersionUID = 1
+    at Main.readObject()
+    at Main.main()
+Caused by: java.io.InvalidClassException : Player; local class incompatible: stream classdesc serialVersionUID = -2830624977577268456, local class serialVersionUID = 1
+    at java.base/java.io.ObjectStreamClass.initNonProxy()
+    at java.base/java.io.ObjectInputStream.readNonProxyDesc()
+    at java.base/java.io.ObjectInputStream.readClassDesc()
+    at java.base/java.io.ObjectInputStream.readOrdinaryObject()
+    at java.base/java.io.ObjectInputStream.readObject0()
+    at java.base/java.io.ObjectInputStream.readObject()
+    at java.base/java.io.ObjectInputStream.readObject()
+    at Main.readObject()
+    at Main.main()
+```
+
+I get the same error, 
+only this time my local class has a _serialVersionUID_ of 1. 
+The IDs are still different though, 
+so I can't deserialize this data. 
+
+```java  
+class Player implements Serializable {
+
+    private final static long serialVersionUID = 1L;
+    
+    private String name;
+    //private long topScore;
+    private int topScore;
+    private List<String> collectedWeapons = new ArrayList<>();
+
+    //public Player(String name, long topScore, List<String> collectedWeapons) {
+    public Player(String name, int topScore, List<String> collectedWeapons) {
+        this.name = name;
+        this.topScore = topScore;
+        this.collectedWeapons = collectedWeapons;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", topScore=" + topScore +
+                ", collectedWeapons=" + collectedWeapons +
+                '}';
+    }
+}
+```
+
+Let's revert the top score to an **int**. 
+I'll change my field back to an **int**, 
+and then my constructor parameter type. 
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        Player tim = new Player("Tim", 100_000_010, List.of("knife", "machete", "pistol"));
+        System.out.println(tim);
+
+        String dataPath = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course15_SerializationAndChange/";
+        Path timFile = Path.of(dataPath + "tim.dat");
+        writeObject(timFile, tim);
+        Player reconstitutedTim = readObject(timFile);
+        System.out.println(reconstitutedTim);
+    }
+}
+```
+
+I'm going to also uncomment the line that writes my object, 
+and start this process over. 
+I'll re-run that:
+
+```html  
+Player{name='Tim', topScore=100000010, collectedWeapons=[knife, machete, pistol]}
+Player{name='Tim', topScore=100000010, collectedWeapons=[knife, machete, pistol]}
+```
+
+And everything looks good. 
+Both the _writeObject_ and _readObject_ methods worked. 
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        Player tim = new Player("Tim", 100_000_010, List.of("knife", "machete", "pistol"));
+        System.out.println(tim);
+
+        String dataPath = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_16_InputOutputFiles/Course15_SerializationAndChange/";
+        Path timFile = Path.of(dataPath + "tim.dat");
+        //writeObject(timFile, tim);
+        Player reconstitutedTim = readObject(timFile);
+        System.out.println(reconstitutedTim);
+    }
+}
+```
+
+I'll again comment out the _writeObject_ call in my _main_ method.
+
+```java  
+class Player implements Serializable {
+
+    private final static long serialVersionUID = 1L;
+    
+    private String name;
+    private long topScore;
+    //private int topScore;
+    private List<String> collectedWeapons = new ArrayList<>();
+
+    public Player(String name, long topScore, List<String> collectedWeapons) {
+    //public Player(String name, int topScore, List<String> collectedWeapons) {
+        this.name = name;
+        this.topScore = topScore;
+        this.collectedWeapons = collectedWeapons;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", topScore=" + topScore +
+                ", collectedWeapons=" + collectedWeapons +
+                '}';
+    }
+}
+```
+
+I'll again, change _topScore_ to a **long**, in the field type, 
+and the parameter type of the constructor.
+I'll re-run my code:
+
+```html  
+Exception in thread "main" java.lang.RuntimeException : java.io.InvalidClassException: Player; incompatible types for field topScore
+    at Main.readObject()
+    at Main.main()
+Caused by: java.io.InvalidClassException : Player; incompatible types for field topScore
+    at java.base/java.io.ObjectStreamClass.matchFields()
+    at java.base/java.io.ObjectStreamClass.getReflector()
+    at java.base/java.io.ObjectStreamClass.initNonProxy()
+    at java.base/java.io.ObjectInputStream.readNonProxyDesc()
+    at java.base/java.io.ObjectInputStream.readClassDesc()
+    at java.base/java.io.ObjectInputStream.readOrdinaryObject()
+    at java.base/java.io.ObjectInputStream.readObject0()
+    at java.base/java.io.ObjectInputStream.readObject()
+    at java.base/java.io.ObjectInputStream.readObject()
+    at Main.readObject()
+    at Main.main()
+```
+
+Unfortunately, this doesn't work either. 
+I do get a different exception message though, 
+which tells me more specifically, 
+what the problem really is. 
+I've got incompatible types for the field, _topScore_. 
+The object I serialized, with an int for the _topScore_, 
+can't be reconstructed, using a long instead. 
+Now, maybe you thought this change was harmless. 
+After all, an int value should fit into a long value, 
+and your players' scores are all ints. 
+But actually, you've broken each user's ability 
+to restore their session data from a serialized file. 
+This is a minor change in code, with some ugly repercussions. 
+It's crucial to understand the rules you need to play by 
+if you're going to rely on Java's serialization of objects.
+
+First, it's important to understand what constitutes an Incompatible Change? 
+Some of the following items shown below will invalidate your class 
+and prevent you from deserializing.
+
+* Changing the declared type of primitive field is an incompatible change. 
+You've just seen an example of this.
+When I changed my top score, from an int to a long. 
+This is one change flagged as an incompatible change.
+This is because of the way primitives are written, 
+specifically taking up a certain width, and if that changes, 
+reading the data in will either read too many or too few bytes.
+* Deleting fields is another incompatible change.
+* Changing a non-static field to static, 
+or a non-transient field to transient are also incompatible changes.
+
+When relying on default serialization, 
+these changes are equivalent to deleting a field from the class. 
+I'll be explaining what transient means shortly. 
+There are other more complicated changes, 
+such as moving a class within its hierarchy,
+changing the _writeObject_ and _readObject_ methods 
+after you've used them to serialize previously, and a few others.
+
+The good news is that not all changes you make 
+to your class are going to invalidate the serialization process. 
+Some changes are compatible changes and 
+won't cause an _InvalidClassException_ on deserialization, 
+of an earlier version of the class. 
+These include
+
+* Adding fields. 
+When the class being reconstituted has a field not on the stream, 
+that field in the object gets initialized to the default value for its type.
+* Adding _writeObject_ and _readObject_ methods is another compatible change. 
+I'll be showing you an example of these two methods coming up.
+* Changing the access to a field. 
+The access modifiers public, package, protected, 
+and private have no effect on the ability of serialization 
+to assign values to the fields.
+* Changing a field from static to non-static, 
+or transient to non-transient are also considered compatible changes.
+These changes are somewhat equivalent to adding a field to the class. 
+Earlier serialized classes, when deserialized, can simply ignore the new field.
+
+```java  
+class Player implements Serializable {
+
+    private final static long serialVersionUID = 1L;
+    
+    private String name;
+    private int topScore;
+    private int bigScore;
+    private List<String> collectedWeapons = new ArrayList<>();
+
+    public Player(String name, long topScore, List<String> collectedWeapons) {
+        this.name = name;
+        this.bigScore = topScore;
+        this.collectedWeapons = collectedWeapons;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", bigScore=" + bigScore +
+                ", collectedWeapons=" + collectedWeapons +
+                '}';
+    }
+}
+```
+
+Once again, I'll revert my topScore field from a long to an int. 
+I'll leave the parameter in my constructor the way it is.
+This time I'll add a field called _bigScore_, a long. 
+I'll change my constructor to set _bigScore_, to the _topScore_ argument.
+I'll run this:
+
+```html  
+Player{name='Tim', bigScore=100000010, collectedWeapons=[knife, machete, pistol]}
+Player{name='Tim', bigScore=0, collectedWeapons=[knife, machete, pistol]}
+```
+
+The good news is that this code ran without any exceptions, 
+but look at the output. 
+The reconstituted _Tim_ has a _bigScore_ of zero. 
+There's a lot going on here truthfully, so let's unpack this. 
+First, adding a field `private long bigScore;` 
+doesn't break the deserialization code. 
+That's a bit of good news. 
+Maybe you thought, because you had a constructor 
+that fits the bill for either a **long** or an **int**, 
+such that the deserialization code would call this constructor.
+Actually, the deserialization code doesn't call the constructor at all, 
+any constructor, on the class that's been serialized.
+
+```java  
+public Player(String name, long topScore, List<String> collectedWeapons) {
+    this.name = name;
+    this.bigScore = topScore;
+    this.collectedWeapons = collectedWeapons;
+}
+```
+
+This means, if you've got code in the constructor 
+to pass your _topScore_ to the new field, _bigScore_, 
+this isn't going to happen when the object is reconstituted. 
+Your new field won't break the deserialization process, 
+but it won't get populated by anything but the default value, which, in this case, is 0.
+Next, let's make another change. 
+This time, I'm going to change my list from an **ArrayList** to a **LinkedList**.
+
+```java  
+class Player implements Serializable {
+
+    private final static long serialVersionUID = 1L;
+
+    private String name;
+    private int topScore;
+    private int bigScore;
+    //private List<String> collectedWeapons = new ArrayList<>();
+    private List<String> collectedWeapons = new LinkedList<>();
+
+    public Player(String name, long topScore, List<String> collectedWeapons) {
+        this.name = name;
+        this.bigScore = topScore;
+        this.collectedWeapons = collectedWeapons;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", bigScore=" + bigScore +
+                ", collectedWeapons=" + collectedWeapons +
+                '}';
+    }
+}
+```
+
+I'll run this code again.
+
+```html  
+Player{name='Tim', bigScore=100000010, collectedWeapons=[knife, machete, pistol]}
+Player{name='Tim', bigScore=0, collectedWeapons=[knife, machete, pistol]}
+```
+
+This code runs without any exceptions. 
+I can also see from the second statement 
+that my **collectedWeapons** list has all the values 
+that were originally written out. 
+Does this result kind of surprise you? 
+I serialized a field, an object using an ArrayList, 
+but successfully reconstituted that same object, 
+into a linked list collection instead. 
+The reconstructed object seemed to take that change totally in stride. 
+Even though I changed my List type, 
+it was able to load up my _collectedWeapons_ from the file, just the same. 
+If I show you that incompatible changes chart again:
+
+* Changing the declared type of **primitive** field
+* Deleting fields
+* Changing a non-static field to static or a non-transient field to transient
+
+Notice that the first bullet point says the incompatible change 
+is when you change the declared type of primitive field.
+What happens when it's not a primitive type is sort of complicated, 
+and I won't get into it too deeply here. 
+The serialization process, for an object field, 
+includes information about the object's type, 
+and object's **super** type. 
+For the ArrayList and LinkedList, t
+hey share a **super** type, so the deserialization went smoothly here.
+Let me caution you against leaning on it too heavily, 
+without a thorough understanding of what constitutes a problem. 
+The default out-of-the-box serialization 
+takes control of the process out of your hands. 
+This can lead to problems if your class structure is going to be changing. 
+
+Up to now, we explored compatible
+and incompatible changes to a serializable class.
+Incompatible changes to a class means you're going
+to break the reconstitution process for previously serialized data.
+There are use cases where this is the desired behavior,
+but there are other circumstances,
+like the game player's session data I've set up.
+Next, I'll talk about how to implement certain customizations,
+which are hooks into the serialization process, 
+that can let you control some, or all, 
+of the process to manage some of these problems we've seen.
+
+There are two methods, called _readObject_ and _writeObject;_ 
+that are hooks into customizations. 
+These aren't methods we override though. 
+If we implement them on our serializable class, 
+much like the serializableUID, 
+the serialization process will use our explicit versions. 
+We have to stick to the signatures of these methods, 
+as they're identified, in the serialization documentation. 
+I'll start by demonstrating the read Object method, 
+creating this on my serializable **Player** class.
+
+```java  
+class Player implements Serializable {
+
+    private final static long serialVersionUID = 1L;
+
+    private String name;
+    private int topScore;
+    private int bigScore;
+    private List<String> collectedWeapons = new LinkedList<>();
+
+    public Player(String name, long topScore, List<String> collectedWeapons) {
+        this.name = name;
+        this.bigScore = topScore;
+        this.collectedWeapons = collectedWeapons;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", bigScore=" + bigScore +
+                ", collectedWeapons=" + collectedWeapons +
+                '}';
+    }
+
+    @Serial
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+
+        stream.defaultReadObject();
+        bigScore = (bigScore == 0) ? 1_000_000_000L : bigScore;
+    }
+}
+```
+
+This is a special method, whose signature doesn't change. 
+At the time of this section, 
+I'm not aware of any generation tools in IntelliJ 
+to help us with these methods, so I'll just type this out. 
+When you do create this method, you'll often want to call 
+the default serialization process first. 
+That's done by invoking the default _ReadObject_ method, 
+on the stream argument. 
+One thing we can do is make changes to the object that got deserialized, 
+so here, I'm going to make some compensation for losing the players _topScore_, 
+by defaulting all players caught in this situation, 
+to a default score of one billion. 
+Before I run this code, 
+let's see what IntelliJ's warning is for this method. 
+I'll hover over that, and I can see IntelliJ is suggesting 
+_annotate this method_, so I'll select that. 
+This annotation `@Serial` informs all interested parties 
+that this method will be used by the serialization process. 
+Ok, I'll run this now:
+
+```html  
+Player{name='Tim', topScore=100000010, collectedWeapons=[knife, machete, pistol]}
+Player{name='Tim', topScore=1000000000, collectedWeapons=[knife, machete, pistol]}
+```
+
+You can see the reconstituted player has a score of a billion. 
+This might be one way of dealing with any players, 
+caught in this upgrade problem. 
+Before I talk about more options, 
+I next want to talk to you about the transient modifier. 
+I mentioned it before compatible and incompatible changes, 
+but I haven't really said what this modifier is. 
+
+The **transient modifier** is used to indicate 
+that a field should not be serialized. 
+This can be useful for variables that contain sensitive information, 
+or just variables that don't need to be persisted, for other reasons.
+
+```java  
+class Player implements Serializable {
+
+    private final static long serialVersionUID = 1L;
+
+    private String name;
+    private int topScore;
+    private int bigScore;
+    
+    private final transient long accountId;
+    
+    private List<String> collectedWeapons = new LinkedList<>();
+
+    //public Player(String name, long topScore, List<String> collectedWeapons) {
+    public Player(long accountId, String name, long topScore, List<String> collectedWeapons) {
+        this.accountId = accountId;
+        this.name = name;
+        this.bigScore = topScore;
+        this.collectedWeapons = collectedWeapons;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "id='" + accountId + '\'' +
+                "name='" + name + '\'' +
+                ", bigScore=" + bigScore +
+                ", collectedWeapons=" + collectedWeapons +
+                '}';
+    }
+
+    @Serial
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+
+        stream.defaultReadObject();
+        bigScore = (bigScore == 0) ? 1_000_000_000L : bigScore;
+    }
+}
+```
+
+Let's say I've got an _accountId_ for my player's, 
+to manage billing and so on. 
+I'll include this as a private final field on my Player, 
+and I'll add the transient modifier here as well. 
+I'll include this field, in my constructor, as the first parameter. 
+I'll also assign the field to that method argument. 
+Next, I'll add it to my _toString_ method. 
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        //Player tim = new Player("Tim", 100_000_010, List.of("knife", "machete", "pistol"));
+        Player tim = new Player(555, "Tim", 100_000_010, List.of("knife", "machete", "pistol"));
+        System.out.println(tim);
+
+        String dataPath = "./src/CourseCodes/NewSections/Section_18_InputOutputFiles/Course15_SerializationAndChange/";
+        Path timFile = Path.of(dataPath + "tim.dat");
+        //writeObject(timFile, tim);
+        Player reconstitutedTim = readObject(timFile);
+        System.out.println(reconstitutedTim);
+    }
+}
+```
+
+I've got an error in my main method, 
+where I'm constructing the first player instance. 
+I need to include an account id in this constructor, 
+so I'll pass _555_, as the _accountId_, in the first argument. 
+I'll run this code:
+
+```html  
+Player{id=555, name='Tim', topScore=100000010, collectedWeapons=[knife, machete, pistol]}
+Player{id=0, name='Tim', topScore=1000000000, collectedWeapons=[knife, machete, pistol]}
+```
+
+Notice that I didn't get any errors, 
+so adding a transient field doesn't cause any incompatibility between versions.
+This wasn't a great test, though, of the transient modifier, 
+because my `tim.dat` file never had the account id in it at all. 
+I'll serialize a second player with this new class structure, 
+and then immediately deserialize that player.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        Player tim = new Player(555, "Tim", 100_000_010, List.of("knife", "machete", "pistol"));
+        System.out.println(tim);
+
+        String dataPath = "./src/CourseCodes/NewSections/Section_18_InputOutputFiles/Course15_SerializationAndChange/";
+        Path timFile = Path.of(dataPath + "tim.dat");
+        //writeObject(timFile, tim);
+        Player reconstitutedTim = readObject(timFile);
+        System.out.println(reconstitutedTim);
+
+
+        Player joe = new Player(556, "Joe", 75, List.of("crossbow", "rifle", "pistol"));
+        Path joeFile = Path.of(dataPath + "joe.dat");
+        writeObject(joeFile, joe);
+        Player reconstitutedJoe = readObject(joeFile);
+        System.out.println(joe);
+        System.out.println(reconstitutedJoe);
+    }
+}
+```
+
+I'll call this player _Joe_, account id _556_, name _Joe_, 
+top score is _75_ because he's only played once.
+His weapons can be a crossbow, a rifle and a pistol.
+I'll serialize his data to a `joe.dat` file. 
+I'll write the _joe_ object to that file. 
+I'll immediately deserialize the _joe_ instance, 
+assigning that to the reconstituted _Joe_ variable.
+I'll print the original object. 
+Finally, I'll print the deserialized object. 
+Running this code:
+
+```html  
+Player{id=555, name='Tim', bigScore=100000010, collectedWeapons=[knife, machete, pistol]}
+Player{id=0, name='Tim', bigScore=1000000000, collectedWeapons=[knife, machete, pistol]}
+Player{id=556, name='Joe', bigScore=75, collectedWeapons=[crossbow, rifle, pistol]}
+Player{id=0, name='Joe', bigScore=75, collectedWeapons=[crossbow, rifle, pistol]}
+```
+
+You can still see the id is zero for _Joe_,
+because the _accountId_ wasn't written out for this player, 
+and that's because I declared it _transient_. 
+Now, let's see if we can leverage Java's serialization, 
+but wrap some of our version control around parts of it.
+First, I'm going to create a new private static field on this class
+and call it _version_.
+Like the _readObject_ method, I can get a hook into how Java writes data
+with the _writeObject_ method.
+After the _readObject_ method, I'll add the code for this next method.
+This method is private void, named _writeObject_,
+and has one parameter, an **ObjectOutputStream**.
+And it throws an _IOException_.
+I'll print something to the console,
+so that I know when this code is executed.
+I'm going to write out my static version number.
+Normally a static field wouldn't get serialized,
+but since I'm customizing this code, I can do whatever I want.
+I am going to store my own _version_ number here.
+
+```java  
+class Player implements Serializable {
+
+    private final static long serialVersionUID = 1L;
+
+    private final static int version = 1;
+
+    private String name;
+    private int topScore;
+    private int bigScore;
+    private final transient long accountId;
+    private List<String> collectedWeapons = new LinkedList<>();
+
+    //public Player(long accountId, String name, long topScore, List<String> collectedWeapons) {
+    public Player(long accountId, String name, int topScore, List<String> collectedWeapons) {
+        this.accountId = accountId;
+        this.name = name;
+        //this.bigScore = topScore;
+        this.topScore = topScore;
+        this.collectedWeapons = collectedWeapons;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "id='" + accountId + '\'' +
+                "name='" + name + '\'' +
+                //", bigScore=" + bigScore +
+                ", topScore=" + topScore +
+                ", collectedWeapons=" + collectedWeapons +
+                '}';
+    }
+
+    @Serial
+    @SuppressWarnings("unchecked")
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+/*
+        stream.defaultReadObject();
+        bigScore = (bigScore == 0) ? 1_000_000_000L : bigScore;
+*/
+
+        var serializedVer = stream.readInt();
+        collectedWeapons = (List<String>) stream.readObject();
+        name = stream.readUTF();
+        topScore = stream.readInt();
+    }
+
+    @Serial
+    private void writeObject(ObjectOutputStream stream) throws IOException {
+        System.out.println("--> Customized Writing");
+        stream.writeInt(version);
+        stream.writeObject(collectedWeapons);
+        stream.writeUTF(name);
+        stream.writeInt(topScore);
+    }
+}
+```
+
+I can write the fields in any order I want, 
+so I'll write the _collectedWeapons_ first, then the _name_. 
+Lastly, I'll write out the _topScore_, as an **Int**. 
+Again, IntelliJ gives me a warning on this method, 
+so I'll select to annotate `@Serial` that. 
+Now, I need to redo the _readObject_ method. 
+When you write a customized _writeObject_ method, as I just did, 
+you can't simply delegate to the _defaultReadObject_ method, 
+which is what I'm doing right now in this method. 
+If I don't change this method, 
+my _write_ will be out of sync with my reads, 
+and the code will fail.
+I'll comment out the two statements that are there. 
+I want to read everything in, mirroring the way I wrote it out. 
+I'll use _readInt_ to get the _version_.
+I'll set this to a local variable.
+I'll do the other reads, so the object first to get the list of weapons, 
+and I need to cast that to a **List** of **String**. 
+I'll get the player name with _readUTF_. 
+And I'll get the top score, using _readInt_. 
+IntelliJ is broadcasting a warning about this cast, 
+but since I know _this really is a list of strings_, 
+and this is what I want, I can add another annotation, 
+to suppress this warning. 
+The annotation I can pass is `@SuppressWarnings("unchecked")`.
+I'll cover annotations a bit later, 
+but this will get rid of that warning. 
+I'll change my constructor, 
+so that _topScore_ is once again, an **int**. 
+I'll set _topScore_ inside the constructor, 
+changing `this.bigScore` to `this.topScore`. 
+I want to print top score out in my _toString_ method, 
+so again I'll change _bigScore_ to _topScore_ here. 
+Next, getting back to my _main_ method, 
+I'll uncomment the line that writes out the first _tim_ object. 
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        Player tim = new Player(555, "Tim", 100_000_010, List.of("knife", "machete", "pistol"));
+        System.out.println(tim);
+
+        String dataPath = "./src/CourseCodes/NewSections/Section_18_InputOutputFiles/Course15_SerializationAndChange/";
+        Path timFile = Path.of(dataPath + "tim.dat");
+        writeObject(timFile, tim);
+        Player reconstitutedTim = readObject(timFile);
+        System.out.println(reconstitutedTim);
+
+
+        Player joe = new Player(556, "Joe", 75, List.of("crossbow", "rifle", "pistol"));
+        Path joeFile = Path.of(dataPath + "joe.dat");
+        writeObject(joeFile, joe);
+        Player reconstitutedJoe = readObject(joeFile);
+        System.out.println(joe);
+        System.out.println(reconstitutedJoe);
+    }
+}
+```
+
+I'll run this.
+
+```html  
+Player{id=555, name='Tim', topScore=100000010, collectedWeapons=[knife, machete, pistol]}
+--> Customized Writing
+Player{id=0, name='Tim', topScore=100000010, collectedWeapons=[knife, machete, pistol]}
+--> Customized Writing
+Player{id=556, name='Joe', topScore=75, collectedWeapons=[crossbow, rifle, pistol]}
+Player{id=0, name='Joe', topScore=75, collectedWeapons=[crossbow, rifle, pistol]}
+```
+
+I can see my _CustomizedWriting_ method was called 
+during the two deserialization processes. 
+I can also see, they both have their _topScores_ reconstituted correctly. 
+Now notice what happens, if I make _topScore_ transient. 
+
+```java  
+class Player implements Serializable {
+
+    private final static long serialVersionUID = 1L;
+
+    private final static int version = 1;
+
+    private String name;
+    //private int topScore;
+    private transient int topScore;
+    private int bigScore;
+    private final transient long accountId;
+    private List<String> collectedWeapons = new LinkedList<>();
+
+    public Player(long accountId, String name, int topScore, List<String> collectedWeapons) {
+        this.accountId = accountId;
+        this.name = name;
+        this.topScore = topScore;
+        this.collectedWeapons = collectedWeapons;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "id='" + accountId + '\'' +
+                "name='" + name + '\'' +
+                ", topScore=" + topScore +
+                ", collectedWeapons=" + collectedWeapons +
+                '}';
+    }
+
+    @Serial
+    @SuppressWarnings("unchecked")
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+
+        var serializedVer = stream.readInt();
+        collectedWeapons = (List<String>) stream.readObject();
+        name = stream.readUTF();
+        topScore = stream.readInt();
+    }
+
+    @Serial
+    private void writeObject(ObjectOutputStream stream) throws IOException {
+        System.out.println("--> Customized Writing");
+        stream.writeInt(version);
+        stream.writeObject(collectedWeapons);
+        stream.writeUTF(name);
+        stream.writeInt(topScore);
+    }
+}
+```
+
+I'll scroll up to the **Player** class, 
+and add the **transient** keyword, after the private access modifier,
+before the int type. 
+I'll run my code again:
+
+```html  
+Player{id=555, name='Tim', topScore=100000010, collectedWeapons=[knife, machete, pistol]}
+--> Customized Writing
+Player{id=0, name='Tim', topScore=100000010, collectedWeapons=[knife, machete, pistol]}
+--> Customized Writing
+Player{id=556, name='Joe', topScore=75, collectedWeapons=[crossbow, rifle, pistol]}
+Player{id=0, name='Joe', topScore=75, collectedWeapons=[crossbow, rifle, pistol]}
+```
+
+Even though _topScore_ is _transient_, it didn't matter 
+because my methods and my rules now override Java's rules. 
+
+```java  
+class Player implements Serializable {
+
+    private final static long serialVersionUID = 1L;
+
+    //private final static int version = 1;
+    private final static int version = 2;
+
+    private String name;
+    //private long topScore;
+    private int bigScore;
+    private final transient long accountId;
+    private List<String> collectedWeapons = new LinkedList<>();
+
+    public Player(long accountId, String name, int topScore, List<String> collectedWeapons) {
+        this.accountId = accountId;
+        this.name = name;
+        this.topScore = topScore;
+        this.collectedWeapons = collectedWeapons;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "id='" + accountId + '\'' +
+                "name='" + name + '\'' +
+                ", topScore=" + topScore +
+                ", collectedWeapons=" + collectedWeapons +
+                '}';
+    }
+
+    @Serial
+    @SuppressWarnings("unchecked")
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+
+        var serializedVer = stream.readInt();
+        collectedWeapons = (List<String>) stream.readObject();
+        name = stream.readUTF();
+        topScore = stream.readInt();
+    }
+
+    @Serial
+    private void writeObject(ObjectOutputStream stream) throws IOException {
+        System.out.println("--> Customized Writing");
+        stream.writeInt(version);
+        stream.writeObject(collectedWeapons);
+        stream.writeUTF(name);
+        //stream.writeInt(topScore);
+        stream.writeLong(topScore);
+    }
+}
+```
+
+I'll remove the _transient_ modifier, and now, 
+I'm going to make this a **long**. 
+I'll also update my static __version__ number for this change to _2_. 
+Next, I'll change my _writeObject_ code to write a **long**, not an **int**, 
+when it's writing out the _topScore_.
+Before I re-run the code: 
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        Player tim = new Player(555, "Tim", 100_000_010, List.of("knife", "machete", "pistol"));
+        System.out.println(tim);
+
+        String dataPath = "./src/CourseCodes/NewSections/Section_18_InputOutputFiles/Course15_SerializationAndChange/";
+        Path timFile = Path.of(dataPath + "tim.dat");
+        //writeObject(timFile, tim);
+        Player reconstitutedTim = readObject(timFile);
+        System.out.println(reconstitutedTim);
+
+
+        Player joe = new Player(556, "Joe", 75, List.of("crossbow", "rifle", "pistol"));
+        Path joeFile = Path.of(dataPath + "joe.dat");
+        writeObject(joeFile, joe);
+        Player reconstitutedJoe = readObject(joeFile);
+        System.out.println(joe);
+        System.out.println(reconstitutedJoe);
+    }
+}
+```
+
+I'll make sure to comment out the first _writeObject_ method call again, 
+in my _main_ method, the one that writes out _tim_. 
+I want to keep the version that was written 
+when my _topScore_ was declared an **int**. 
+And again I'll run this:
+
+```html  
+Player{id=555, name='Tim', topScore=100000010, collectedWeapons=[knife, machete, pistol]}
+Player{id=0, name='Tim', topScore=100000010, collectedWeapons=[knife, machete, pistol]}
+--> Customized Writing
+Player{id=556, name='Joe', topScore=75, collectedWeapons=[crossbow, rifle, pistol]}
+Player{id=0, name='Joe', topScore=0, collectedWeapons=[crossbow, rifle, pistol]}
+```
+
+It runs successfully, even though I changed my field 
+from an **int** to a **long**. 
+My serialUID didn't change, it's always been 1L. 
+Because I'm reading and writing using my custom code, 
+I didn't get an exception reading the data in. 
+But there's a problem. 
+Joe's score is 0. 
+The reason it's 0 is that we're reading his score in as an **int**, 
+which worked fine for _Tim_, whose code was _version_ 1. 
+But it's not so great for _version_ 2, 
+because the score's data is stored in 8 bytes.
+When I read the first four, using _readInt_, 
+I just get zeros. 
+I'll need to change my _read_ method, 
+but I don't want to change it for _version_ 1. 
+This is where my _version_ number comes in handy. 
+I can change my _readObject_ code to do something different,
+based on the version I read in, from the serialized object. 
+
+```java  
+class Player implements Serializable {
+
+    private final static long serialVersionUID = 1L;
+
+    private final static int version = 2;
+
+    private String name;
+    private int bigScore;
+    private final transient long accountId;
+    private List<String> collectedWeapons = new LinkedList<>();
+
+    public Player(long accountId, String name, int topScore, List<String> collectedWeapons) {
+        this.accountId = accountId;
+        this.name = name;
+        this.topScore = topScore;
+        this.collectedWeapons = collectedWeapons;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "id='" + accountId + '\'' +
+                "name='" + name + '\'' +
+                ", topScore=" + topScore +
+                ", collectedWeapons=" + collectedWeapons +
+                '}';
+    }
+
+    @Serial
+    @SuppressWarnings("unchecked")
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+
+        var serializedVer = stream.readInt();
+        collectedWeapons = (List<String>) stream.readObject();
+        name = stream.readUTF();
+        //topScore = stream.readInt();
+        topScore = (serializedVer == 1) ? stream.readInt() : stream.readLong();
+    }
+
+    @Serial
+    private void writeObject(ObjectOutputStream stream) throws IOException {
+        System.out.println("--> Customized Writing");
+        stream.writeInt(version);
+        stream.writeObject(collectedWeapons);
+        stream.writeUTF(name);
+        stream.writeLong(topScore);
+    }
+}
+```
+
+I can fix this problem with a ternary operator,
+testing the value of the local variable, _serializedVer_. 
+If it's 1, I'll read an **Int**, if it's 2, I'll read a **long**. 
+I'll run this again:
+
+```html  
+Player{id=555, name='Tim', topScore=100000010, collectedWeapons=[knife, machete, pistol]}
+Player{id=0, name='Tim', topScore=100000010, collectedWeapons=[knife, machete, pistol]}
+--> Customized Writing
+Player{id=556, name='Joe', topScore=75, collectedWeapons=[crossbow, rifle, pistol]}
+Player{id=0, name='Joe', topScore=75, collectedWeapons=[crossbow, rifle, pistol]}
+```
+
+Happily, at last, my code works for both versions of the serialized data. 
+This was a lot more work, certainly, and required me 
+to implement tracking my own _version_ number.
+Why didn't I just change the _serialVersionUID_? 
+Let's do that. 
+
+```java  
+class Player implements Serializable {
+
+    //private final static long serialVersionUID = 1L;
+    private final static long serialVersionUID = 2L;
+
+    private final static int version = 2;
+
+    private String name;
+    private int bigScore;
+    private final transient long accountId;
+    private List<String> collectedWeapons = new LinkedList<>();
+
+    public Player(long accountId, String name, int topScore, List<String> collectedWeapons) {
+        this.accountId = accountId;
+        this.name = name;
+        this.topScore = topScore;
+        this.collectedWeapons = collectedWeapons;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "id='" + accountId + '\'' +
+                "name='" + name + '\'' +
+                ", topScore=" + topScore +
+                ", collectedWeapons=" + collectedWeapons +
+                '}';
+    }
+
+    @Serial
+    @SuppressWarnings("unchecked")
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+
+        var serializedVer = stream.readInt();
+        collectedWeapons = (List<String>) stream.readObject();
+        name = stream.readUTF();
+        topScore = (serializedVer == 1) ? stream.readInt() : stream.readLong();
+    }
+
+    @Serial
+    private void writeObject(ObjectOutputStream stream) throws IOException {
+        System.out.println("--> Customized Writing");
+        stream.writeInt(version);
+        stream.writeObject(collectedWeapons);
+        stream.writeUTF(name);
+        stream.writeLong(topScore);
+    }
+}
+```
+
+I'll change it to 2L. 
+Running my code:
+
+```html  
+Exception in thread "main" java.lang.RuntimeException: java.io.InvalidClassException: Player; local class incompatible: stream classdesc serialVersionUID = 1, local class serialVersionUID = 2
+    at .Main.readObject()
+    at .Main.main()
+Caused by: java.io.InvalidClassException : .Player; local class incompatible: stream classdesc serialVersionUID = 1, local class serialVersionUID = 2
+    at java.base/java.io.ObjectStreamClass.initNonProxy()
+    at java.base/java.io.ObjectInputStream.readNonProxyDesc()
+    at java.base/java.io.ObjectInputStream.readClassDesc()
+    at java.base/java.io.ObjectInputStream.readOrdinaryObject()
+    at java.base/java.io.ObjectInputStream.readObject0()
+    at java.base/java.io.ObjectInputStream.readObject()
+    at java.base/java.io.ObjectInputStream.readObject()
+    at Main.readObject()
+    at Main.main()
+```
+
+I get the exception, with the message, local class incompatible, 
+because the _serialVersionUID_'s are out of sync. 
+I'll revert that last change. 
+Now, there are use cases where you might want 
+to invalidate all stored session data like this.
+But if you hope to recover the data, in the event of changes, 
+writing your own _readObject_ and _writeObject_ methods 
+is one option, although it doesn't prevent all _InvalidClassExceptions_.
+In fact, the only reason this example worked was
+because on the _version_ 1 class of Player 
+the _topScore_ field was originally _transient_. 
+If I had not serialized the _tim_ instance, 
+with the _topScore_ field _transient_, 
+this code would have failed. 
+Even though I'm manually writing this field out, 
+Java's serialization checks still get exercised 
+before the process runs, and this change, 
+without the _transient_ modifier, 
+would still be an incompatible change. 
+The serialization would have failed. 
+Serialization, out of the box, is a powerful tool, 
+but I hope this exercise showed you some of its complexity, 
+and how important it is to use it, in a planned 
+and well-thought-out fashion. 
+We've covered a lot of ground in the section, 
+and this lecture ends this section on Java's **IO**. 
 </div>
 
