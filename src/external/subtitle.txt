@@ -2,1019 +2,714 @@ WEBVTT
 Kind: captions
 Language: en
 
-00:00:05.298 --> 00:00:07.240
-In this video, we're going to go ahead and install&nbsp;&nbsp;
-
-00:00:07.240 --> 00:00:13.280
-the MySQL database server on a Windows machine.
-If you're not running Windows, move on to&nbsp;&nbsp;
-
-00:00:13.280 --> 00:00:17.280
-the next video – or the one after that –&nbsp;
-where I show you how to do the same thing,&nbsp;&nbsp;
-
-00:00:17.280 --> 00:00:21.360
-but on a Mac or a Linux computer.
-But if you're using Windows,&nbsp;&nbsp;
-
-00:00:21.360 --> 00:00:26.800
-you're in the right place, so let's continue.
-The first thing we want to do, is go to the&nbsp;&nbsp;
-
-00:00:26.800 --> 00:00:33.360
-website dev.MySQL.com. You may get a pop-up about&nbsp;
-accepting cookies, so do whatever you normally&nbsp;&nbsp;
-
-00:00:33.360 --> 00:00:39.920
-do when you get that pop-up. The download will&nbsp;
-work fine if you decide to decline all cookies.&nbsp;
-
-00:00:39.920 --> 00:00:43.920
-Ok, once we get here, I'm going&nbsp;
-to click the downloads link.&nbsp;
-
-00:00:43.920 --> 00:00:51.840
-I'll scroll down to towards the bottom and click&nbsp;
-MySQL Community GPL Downlaods and click that.&nbsp;
-
-00:00:51.840 --> 00:00:57.360
-We want the MySQL Installer for&nbsp;
-Windows link, so click that.&nbsp;
-
-00:00:57.360 --> 00:01:01.840
-On the next screen, Microsoft&nbsp;
-Windows should already be selected.&nbsp;
-
-00:01:01.840 --> 00:01:07.120
-Below that, we have two choices. Both&nbsp;
-choices will install the same version,&nbsp;&nbsp;
-
-00:01:07.120 --> 00:01:12.280
-and if you have a connection to the internet, then&nbsp;
-it's not really important which one you choose.&nbsp;
-
-00:01:12.280 --> 00:01:17.440
-The first one, the mysql-installer-web-community&nbsp;
-one, will start the installation and then download&nbsp;&nbsp;
-
-00:01:17.440 --> 00:01:22.800
-most of the files it needs, while it's installing.
-You'd use that if you want to install MySQL on&nbsp;&nbsp;
-
-00:01:22.800 --> 00:01:27.160
-the computer that you're using to download&nbsp;
-– which is what we're doing at the moment.&nbsp;
-
-00:01:27.160 --> 00:01:30.720
-But you might want to install the program&nbsp;
-on several computers, or on a computer that&nbsp;&nbsp;
-
-00:01:30.720 --> 00:01:35.760
-doesn't have internet access. In that&nbsp;
-case, you can choose the second option,&nbsp;&nbsp;
-
-00:01:35.760 --> 00:01:42.400
-and download the entire installer. As you&nbsp;
-can see, that's a larger initial download.&nbsp;
-
-00:01:42.400 --> 00:01:46.280
-Before we decide which one to use, notice&nbsp;
-that there's an Information tab on that&nbsp;&nbsp;
-
-00:01:46.280 --> 00:01:51.800
-screen – the blue "Information" icon.&nbsp;
-Click that, to get a bit more information&nbsp;&nbsp;
-
-00:01:51.800 --> 00:01:56.000
-about the installer choices we have.
-There's a brief description of what the&nbsp;&nbsp;
-
-00:01:56.000 --> 00:02:02.040
-installer includes: the latest version of the&nbsp;
-MySQL Server itself, MySQL Workbench – which&nbsp;&nbsp;
-
-00:02:02.040 --> 00:02:07.600
-we'll use to interact with the Server – and&nbsp;
-some sample databases and documentation.&nbsp;
-
-00:02:07.600 --> 00:02:12.360
-Below that, there's a note about Choosing&nbsp;
-the right file. That pretty much echoes&nbsp;&nbsp;
-
-00:02:12.360 --> 00:02:17.720
-what I've just said about the two options.
-The note is interesting: "MySQL Installer is&nbsp;&nbsp;
-
-00:02:17.720 --> 00:02:22.680
-32 bit, but will install both&nbsp;
-32 bit and 64 bit binaries".&nbsp;
-
-00:02:22.680 --> 00:02:28.080
-In a minute, I'm going to show you how to select&nbsp;
-that, when we go through the installation process.&nbsp;
-
-00:02:28.080 --> 00:02:30.080
-So you'll need to know whether&nbsp;
-your Windows computer is&nbsp;&nbsp;
-
-00:02:30.080 --> 00:02:35.520
-running a 32 or 64-bit version of Windows.
-And you can generally find that in "About",&nbsp;&nbsp;
-
-00:02:35.520 --> 00:02:40.440
-in the control panel for Windows&nbsp;
-10 or earlier. If on Windows 11,&nbsp;&nbsp;
-
-00:02:40.440 --> 00:02:47.480
-which I am go into Settings. Type "about" in&nbsp;
-the search box, then click "About your PC".&nbsp;
-
-00:02:47.480 --> 00:02:53.400
-And depending on your version of Windows, it'll&nbsp;
-tell you System type 64-bit operating system.&nbsp;
-
-00:02:53.400 --> 00:02:56.760
-We're not so much concerned about the&nbsp;
-processor, because it is possible to have&nbsp;&nbsp;
-
-00:02:56.760 --> 00:03:02.760
-a 32-bit version of windows running on a 64-bit&nbsp;
-processor. We're interested in this bit here,&nbsp;&nbsp;
-
-00:03:02.760 --> 00:03:06.400
-the 64-bit operating system.
-You'll need to know whether you're&nbsp;&nbsp;
-
-00:03:06.400 --> 00:03:10.760
-running the 32 or 64-bit version.
-We've just seen how to check that&nbsp;&nbsp;
-
-00:03:10.760 --> 00:03:14.760
-information on Windows 10 and 11.
-If you're running an older version&nbsp;&nbsp;
-
-00:03:14.760 --> 00:03:19.440
-of windows, you can generally find that&nbsp;
-in the system part of control panel.&nbsp;
-
-00:03:19.440 --> 00:03:23.000
-There'll be a screen similar to this, where you&nbsp;
-can find out which version of Windows you're&nbsp;&nbsp;
-
-00:03:23.000 --> 00:03:28.960
-running, and whether it's a 32 or 64-bit edition.
-And again, we'll need that when we get to the&nbsp;&nbsp;
-
-00:03:28.960 --> 00:03:33.720
-stage of installing MySQL.
-Ok, back in my browser,&nbsp;&nbsp;
-
-00:03:33.720 --> 00:03:40.560
-click the General Availability (GA) Releases&nbsp;
-tab, to get back to the choice of installers.&nbsp;
-
-00:03:40.560 --> 00:03:45.120
-I suggest you just grab the full product – the&nbsp;
-second option – because you can re-install it,&nbsp;&nbsp;
-
-00:03:45.120 --> 00:03:50.080
-if you need to, without having to download again.
-I'm going to choose the second one,&nbsp;&nbsp;
-
-00:03:50.080 --> 00:03:53.720
-so click its Download link.
-Now it's asking whether we want to set up&nbsp;&nbsp;
-
-00:03:53.720 --> 00:04:00.080
-an Oracle Web Account, because Oracle now own the&nbsp;
-MySQL product. If you already have an account, you&nbsp;&nbsp;
-
-00:04:00.080 --> 00:04:06.000
-can log in. We're going to click on "No thanks,&nbsp;
-just start my download", then click Save file if&nbsp;&nbsp;
-
-00:04:06.000 --> 00:04:10.400
-it doesn't start downloading automatically.
-Now we need to open the file that we've&nbsp;&nbsp;
-
-00:04:10.400 --> 00:04:14.400
-downloaded, so I'm just going&nbsp;
-to select "Open file" here.&nbsp;
-
-00:04:14.400 --> 00:04:17.680
-If you're using a different browser,&nbsp;
-do whatever you'd normally do,&nbsp;&nbsp;
-
-00:04:17.680 --> 00:04:23.960
-to open a file that you've downloaded.
-The installer starts, and I'll give that a moment.&nbsp;
-
-00:04:23.960 --> 00:04:28.920
-Click on "Yes", If it pops up, to allow&nbsp;
-this app to make changes to your device,&nbsp;&nbsp;
-
-00:04:28.920 --> 00:04:33.200
-and the installation should proceed.
-It may pop up again and ask you to allow&nbsp;&nbsp;
-
-00:04:33.200 --> 00:04:35.680
-this app to make changes again. In my case, it&nbsp;
-did pop up that twice, so click "Yes" again.&nbsp;
-
-00:04:35.680 --> 00:04:41.080
-If you get an option to apply an upgrade, click&nbsp;
-"Yes" to allow the upgrade to be applied as well.&nbsp;
-
-00:04:41.080 --> 00:04:45.080
-And now we get this screen, where&nbsp;
-we can choose the setup type.&nbsp;
-
-00:04:45.080 --> 00:04:49.280
-There are various radio buttons here to the left,&nbsp;
-and to the right, it gives you a description&nbsp;&nbsp;
-
-00:04:49.280 --> 00:04:54.640
-of what it's actually going to install.
-So you can see we have a number of options.&nbsp;
-
-00:04:54.640 --> 00:05:00.200
-You've got a Server only. This installs only the&nbsp;
-MySQL server, which would be useful if you want&nbsp;&nbsp;
-
-00:05:00.200 --> 00:05:05.080
-to run the server on a different computer,&nbsp;
-rather than on your development machine.&nbsp;
-
-00:05:05.080 --> 00:05:10.560
-We've got a Client only option – which is a sort&nbsp;
-of compliment to the Server only option. This is&nbsp;&nbsp;
-
-00:05:10.560 --> 00:05:14.080
-the one we'd install on our development&nbsp;
-and user computers, if the server was&nbsp;&nbsp;
-
-00:05:14.080 --> 00:05:17.760
-running on another computer.
-We've got a Full option,&nbsp;&nbsp;
-
-00:05:17.760 --> 00:05:21.120
-which installs everything.
-But the option we're going to select&nbsp;&nbsp;
-
-00:05:21.120 --> 00:05:26.080
-is the Custom option, so that we're installing&nbsp;
-only the things that we need for this course.&nbsp;
-
-00:05:26.080 --> 00:05:29.880
-I'm going to click on Custom,&nbsp;
-and I'm going to click on Next.&nbsp;
-
-00:05:29.880 --> 00:05:35.520
-Once we've done that, we get this screen here. On&nbsp;
-the left-hand side, there's a list of available&nbsp;&nbsp;
-
-00:05:35.520 --> 00:05:40.640
-products, and the right-hand side shows a&nbsp;
-list of the products that are to be installed.&nbsp;
-
-00:05:40.640 --> 00:05:44.920
-Currently, that's empty, because&nbsp;
-we haven't selected anything yet.&nbsp;
-
-00:05:44.920 --> 00:05:50.920
-So I'm going to come over here first, and expand&nbsp;
-MySQL Servers by clicking on the plus. Do the&nbsp;&nbsp;
-
-00:05:50.920 --> 00:05:57.840
-same to expand MySQL Server, then again to expand&nbsp;
-the latest version – which for me is version 8.0.&nbsp;
-
-00:05:57.840 --> 00:06:02.960
-You may have a later version there, and that's&nbsp;
-fine. Install whatever is the latest version&nbsp;&nbsp;
-
-00:06:02.960 --> 00:06:09.840
-available. For me, at the time I'm recording&nbsp;
-this video, that's version 8.0. You can see&nbsp;&nbsp;
-
-00:06:09.840 --> 00:06:16.080
-there are older versions I can choose, but&nbsp;
-don't do that. Go with the latest version.&nbsp;
-
-00:06:16.080 --> 00:06:21.960
-In fact, after expanding that, we can see version&nbsp;
-8.0.34. You can see a lot of other versions like&nbsp;&nbsp;
-
-00:06:21.960 --> 00:06:30.080
-8.0.33. Just choose the latest version you see.
-The X64, at the end, indicates that this is a&nbsp;&nbsp;
-
-00:06:30.080 --> 00:06:37.520
-64-bit version. If you see X86 there, then you'll&nbsp;
-be installing the 32-bit version. You've already&nbsp;&nbsp;
-
-00:06:37.520 --> 00:06:42.040
-checked whether your operating system is 32-bit&nbsp;
-or 64-bit, so make sure that you choose the&nbsp;&nbsp;
+00:00:05.417 --> 00:00:08.720
+Okay, welcome back.
+Now that you've had a quick
 
-00:06:42.040 --> 00:06:46.680
-appropriate version for your operating system.
-I mention that because earlier versions of&nbsp;&nbsp;
+00:00:08.720 --> 00:00:14.080
+overview of some database basics, we'll take a
+closer look atMySQL Workbench, which you should
 
-00:06:46.680 --> 00:06:51.440
-the installer used to show both the&nbsp;
-32-bit and the 64-bit versions here.&nbsp;
+00:00:14.080 --> 00:00:19.600
+have successfully installed along with MySQL.
+If for some reason, you don't have this tool
 
-00:06:51.440 --> 00:06:55.160
-The installer changes whenever there's a&nbsp;
-new version, and Oracle might decide to&nbsp;&nbsp;
+00:00:19.600 --> 00:00:23.800
+installed, and don't have access to
+a similar tool, then please go back,
 
-00:06:55.160 --> 00:07:01.000
-show both versions again, in the future.
-So if they do, choose the X64 version on&nbsp;&nbsp;
+00:00:23.800 --> 00:00:28.025
+and find the right installation video for your
+operating system, and get that installed.
 
-00:07:01.000 --> 00:07:07.040
-a 64-bit version of Windows, and the X86&nbsp;
-version on a 32-bit version of Windows.&nbsp;
 
-00:07:07.040 --> 00:07:12.040
-I'm running a 64-bit version of Windows, so&nbsp;
-I'll select the X64 version – the only one&nbsp;&nbsp;
+00:00:28.920 --> 00:00:33.027
+There are multiple ways to communicate with
+a database, and you don't need this tool.
 
-00:07:12.040 --> 00:07:17.160
-that's showing here – then click on the arrow,&nbsp;
-to move it across to the right-hand side.&nbsp;
 
-00:07:17.160 --> 00:07:21.200
-So that's now going to be installed.
-The next thing we want to do is come over&nbsp;&nbsp;
+00:00:33.840 --> 00:00:38.646
+You can use the command line, usually through a
+special shell provided by the database vendor.
 
-00:07:21.200 --> 00:07:27.840
-here, to applications, and click on the plus&nbsp;
-again to expand it. Expand MySQL Workbench,&nbsp;&nbsp;
 
-00:07:27.840 --> 00:07:35.160
-by clicking on the plus, then again to&nbsp;
-expand MySQL Workbench 8.0.34 – X64.&nbsp;
+00:00:39.480 --> 00:00:44.240
+You can use software applications, and that's
+our objective, to build a Java application
 
-00:07:35.160 --> 00:07:41.520
-Once again, you may have to choose X64&nbsp;
-or X86, if those options appear for you.&nbsp;
+00:00:44.240 --> 00:00:48.960
+that will interact with our database.
+But using a special integrated development
 
-00:07:41.520 --> 00:07:46.800
-So I'm going to select the MySQL Workbench&nbsp;
-8.0.34 – X64, and click the arrow to move&nbsp;&nbsp;
+00:00:48.960 --> 00:00:54.666
+environment built for databases, does make life
+easier, especially when trying to debug issues.
 
-00:07:46.800 --> 00:07:51.840
-that over to the right-hand side.&nbsp;
-I'll ignore all the older versions.&nbsp;
 
-00:07:51.840 --> 00:07:56.480
-Once again, the version numbers&nbsp;
-may change in the future. In fact,&nbsp;&nbsp;
+00:00:55.520 --> 00:00:59.286
+MySQL Workbench is designed
+for the MySQL database system.
 
-00:07:56.480 --> 00:08:01.480
-the MySQL Server and Workbench programs&nbsp;
-might even have different version numbers.&nbsp;&nbsp;
 
-00:08:01.480 --> 00:08:07.280
-That's fine – they are often the same, but one&nbsp;
-program might be updated separately to the other.&nbsp;
+00:01:00.160 --> 00:01:05.204
+This means that it's a visual tool for database
+design and administration, and SQL development.
 
-00:08:07.280 --> 00:08:10.760
-Depending on when you're watching this&nbsp;
-video, they might be a later version,&nbsp;&nbsp;
 
-00:08:10.760 --> 00:08:16.480
-but the principle is still the same. Just select&nbsp;
-the relevant version, and select the 64-bit or&nbsp;&nbsp;
+00:01:06.160 --> 00:01:09.640
+Let's take a quick tour.
+If you haven't already,
 
-00:08:16.480 --> 00:08:21.640
-32-bit version if that option's available.
-At this point, we've selected the only two&nbsp;&nbsp;
+00:01:09.640 --> 00:01:14.286
+the first thing I want you to do is open MySQL
+workbench, so you can see this Welcome page.
 
-00:08:21.640 --> 00:08:25.080
-products we need, so I'm going to click&nbsp;
-on Next, and then I'm going to click on&nbsp;&nbsp;
 
-00:08:25.080 --> 00:08:30.720
-Execute. This is going to start out&nbsp;
-downloading the MySQL software first.&nbsp;
+00:01:15.120 --> 00:01:18.699
+Remember to start the service, if you
+didn't set it to start automatically.
 
-00:08:30.720 --> 00:08:34.960
-And after that we will start the installation&nbsp;
-of both those products, onto this computer.&nbsp;
 
-00:08:34.960 --> 00:08:39.000
-And once that's finished, we need&nbsp;
-to go through a configuration step,&nbsp;&nbsp;
+00:01:19.960 --> 00:01:23.960
+You should have two connections on this
+screen, if you followed the steps I showed,
 
-00:08:39.000 --> 00:08:46.560
-to set up user names and so on and so forth.
-Okay. So it's now finished downloading. I'm going&nbsp;&nbsp;
+00:01:23.960 --> 00:01:26.880
+in the install videos.
+You'll want to use the
 
-00:08:46.560 --> 00:08:49.039
-to click on Next and Execute to install.
+00:01:26.880 --> 00:01:29.012
+development connection, so pick that.
 
-00:08:56.454 --> 00:08:57.920
-Now the install is complete its time to
 
-00:08:57.920 --> 00:09:04.560
-configure. I'll click Next again. That&nbsp;
-will bring up the configuration options.&nbsp;
+00:01:33.587 --> 00:01:36.319
+When you log in with this connection, your left pane,
 
-00:09:04.560 --> 00:09:09.920
-And we've got a Config Type dropdown here,&nbsp;
-where we can select various different options.&nbsp;&nbsp;
+00:01:36.319 --> 00:01:41.600
+will most likely be displaying Schemas.
+Notice the tabs at the bottom, or the top of
 
-00:09:09.920 --> 00:09:13.840
-We're going to leave the default of Development&nbsp;
-Computer, since that's exactly what we're doing&nbsp;&nbsp;
+00:01:41.600 --> 00:01:46.087
+the left pane, which toggle between the
+administration pane, and the schemas.
 
-00:09:13.840 --> 00:09:18.760
-here – we're using MySQL as developers.
-It shouldn't normally be necessary to&nbsp;&nbsp;
 
-00:09:18.760 --> 00:09:23.400
-change any other options here – the&nbsp;
-defaults will work for most computers.&nbsp;
+00:01:46.880 --> 00:01:51.347
+In the install video, I already showed you how
+to use a couple of the Administration Tasks.
 
-00:09:23.400 --> 00:09:28.040
-Now in terms of the port, it needs to be a unique&nbsp;
-port number that's not used anywhere else, or it's&nbsp;&nbsp;
 
-00:09:28.040 --> 00:09:34.880
-not used for another application on this computer.
-So 3306 will be fine for my computer.&nbsp;
+00:01:52.160 --> 00:01:56.200
+We looked at the server status, and
+made changes to the dev user account,
 
-00:09:34.880 --> 00:09:38.320
-Normally, that will work&nbsp;
-for your computer as well.&nbsp;
+00:01:56.200 --> 00:02:00.560
+assigning the DBA role to this user.
+For most of your work though,
 
-00:09:38.320 --> 00:09:45.520
-The rest of the defaults are okay. You don't need&nbsp;
-to change anything else there, click on Next.&nbsp;
+00:02:00.560 --> 00:02:05.520
+you'll be working with schemas.
+You'll remember a schema, in MySQL,
 
-00:09:45.520 --> 00:09:50.480
-Now we get to specify the Authentication Method.
-You shouldn't normally change this,&nbsp;&nbsp;
+00:02:05.520 --> 00:02:10.360
+is another name for a database.
+You may see some system databases,
 
-00:09:50.480 --> 00:09:55.120
-we want strong password encryption –&nbsp;
-that keeps our installation secure.&nbsp;
+00:02:10.360 --> 00:02:15.240
+sys, for example, because dev user has
+the DBA role, and therefore has access
 
-00:09:55.120 --> 00:09:59.560
-If you've already written MySQL applications,&nbsp;
-and they can't be updated, then you can&nbsp;&nbsp;
+00:02:15.240 --> 00:02:21.200
+to elevated privileges, and critical schemas.
+You'll want to ignore these, they're for use by
 
-00:09:59.560 --> 00:10:04.560
-specify the old-style authentication here.
-But we're starting from scratch, and don't&nbsp;&nbsp;
+00:02:21.200 --> 00:02:24.800
+the system, and you can cause serious
+problems if you mess about with them,
 
-00:10:04.560 --> 00:10:12.120
-have any existing applications to support. So&nbsp;
-we won't change anything here, just click Next.&nbsp;
+00:02:24.800 --> 00:02:26.396
+without first understanding them.
 
-00:10:12.120 --> 00:10:17.320
-Now it's asking for what the root password is.
-Now the root account is created automatically&nbsp;&nbsp;
 
-00:10:17.320 --> 00:10:22.480
-by MySQL, and is a logon that is the&nbsp;
-most powerful user in the system.&nbsp;
+00:02:27.311 --> 00:02:30.495
+My installation of MySQL, is showing these extra databases,
 
-00:10:22.480 --> 00:10:25.640
-And generally speaking, it's good&nbsp;
-to use that username and password&nbsp;&nbsp;
+00:02:30.495 --> 00:02:33.471
+because this is the same machine that I've previously recorded,
 
-00:10:25.640 --> 00:10:31.280
-very sparingly – only when you really need to&nbsp;
-do some sort of super administrative tasks.&nbsp;
+00:02:33.471 --> 00:02:35.358
+MySQL for Beginner's course.
 
-00:10:31.280 --> 00:10:35.080
-So what we're going to do is assign a password&nbsp;
-for it, which we need to do, but then we're&nbsp;&nbsp;
+00:02:36.354 --> 00:02:38.618
+A machine won't show these extra databases.
 
-00:10:35.080 --> 00:10:39.960
-going to create a new user that we're going&nbsp;
-to be using for our day-to-day use of MySQL.&nbsp;
+00:02:39.715 --> 00:02:43.242
+In a minute, we'll be creating our own schema, or database,
 
-00:10:39.960 --> 00:10:44.520
-So you want to enter a password that's&nbsp;
-hard to guess, and is quite secure.&nbsp;
 
-00:10:44.520 --> 00:10:51.720
-So I'm going to type in a password, then confirm&nbsp;
-it by typing it in again. The password strength&nbsp;&nbsp;
+00:02:43.384 --> 00:02:45.689
+by importing a file that will build one for us.
 
-00:10:51.720 --> 00:10:58.360
-is showing as Strong, so that's good.
-Ok, That's the root user. As I said,&nbsp;&nbsp;
+00:02:46.760 --> 00:02:50.364
+First, let's step back, and
+see what this IDE provides.
 
-00:10:58.360 --> 00:11:03.880
-you'd only log in as this user when you need to do&nbsp;
-administrative tasks. It's not a good idea to use&nbsp;&nbsp;
 
-00:11:03.880 --> 00:11:08.480
-such a powerful login for normal use.
-So the next thing we need to do,&nbsp;&nbsp;
+00:02:51.320 --> 00:02:54.846
+As you can see, there are a lot
+of features in MySQL Workbench.
 
-00:11:08.480 --> 00:11:13.040
-is click on Add User.
-We're going to create another user,&nbsp;&nbsp;
 
-00:11:13.040 --> 00:11:16.640
-that we're going to be using for&nbsp;
-the normal tasks in this course.&nbsp;
+00:02:55.720 --> 00:02:58.865
+In the main window, a tab
+is open that says Query 1.
 
-00:11:16.640 --> 00:11:22.520
-Type in the name of the user. I'm going to call&nbsp;
-this one devuser – all one word – but you can&nbsp;&nbsp;
 
-00:11:22.520 --> 00:11:26.960
-call it literally whatever you like.
-This is the user that we'll log in as,&nbsp;&nbsp;
+00:02:59.800 --> 00:03:03.566
+This is where you'd type SQL commands,
+and it works like a text editor.
 
-00:11:26.960 --> 00:11:31.680
-when we're working with our databases.
-For the host, I'm going to change that to&nbsp;&nbsp;
 
-00:11:31.680 --> 00:11:36.440
-localhost, using the dropdown arrow.
-localhost means this computer,&nbsp;&nbsp;
+00:03:04.440 --> 00:03:09.306
+This pane has its own ribbon of buttons, along
+the top here, with some functions we'll be using.
 
-00:11:36.440 --> 00:11:41.200
-so that ensures that it can only be used&nbsp;
-locally. That's more secure, because we&nbsp;&nbsp;
 
-00:11:41.200 --> 00:11:47.360
-only want to be using this username locally.&nbsp;
-We don't want access from any external source.&nbsp;
+00:03:10.160 --> 00:03:12.787
+We'll have a look at a couple
+of these, in a moment.
 
-00:11:47.360 --> 00:11:51.400
-Some students have reported that they don't&nbsp;
-get localhost here – instead they see the IP&nbsp;&nbsp;
 
-00:11:51.400 --> 00:11:58.760
-address 127.0.0.1. That's fine, that's the IP&nbsp;
-address that localhost resolves to, so choose&nbsp;&nbsp;
+00:03:13.560 --> 00:03:18.036
+What I want you to do next, is select the
+Administration tab, of the left panel.
 
-00:11:58.760 --> 00:12:03.440
-that address if that's what you see here.
-We're going to leave the Role set to DB&nbsp;&nbsp;
 
-00:12:03.440 --> 00:12:08.400
-admin. There's other options you can choose&nbsp;
-here, but I'm not going to change any of&nbsp;&nbsp;
+00:03:19.480 --> 00:03:25.487
+Before we continue, go to resources folder of
+this video, and download the music_database.sql.
 
-00:12:08.400 --> 00:12:13.640
-that – I'm going to leave it on admin for now.
-A database administrator can do things like&nbsp;&nbsp;
 
-00:12:13.640 --> 00:12:18.280
-creating databases and tables, which is&nbsp;
-what we'll want to do in this course.&nbsp;
+00:03:26.565 --> 00:03:33.280
+This file was exported, using MySQL, and continues
+all the SQL code needed to create a music schema,
 
-00:12:18.280 --> 00:12:22.760
-And we also need to enter a password for this.
-I suggest you make this password&nbsp;&nbsp;
+00:03:33.280 --> 00:03:37.840
+and several tables, as well as a view.
+If you want to examine some Data
 
-00:12:22.760 --> 00:12:27.920
-different to the root user.
-And make sure you remember both passwords.&nbsp;
+00:03:37.840 --> 00:03:41.960
+Definition Language or DDL, this script
+contains a series of it, that will get
 
-00:12:27.920 --> 00:12:33.200
-I'm going to enter my devuser&nbsp;
-password, then confirm it.&nbsp;
+00:03:41.960 --> 00:03:47.560
+executed as part of the import process.
+In other words, the file will get loaded,
 
-00:12:33.200 --> 00:12:37.440
-In this case, you can see again,&nbsp;
-I've got a strong password.&nbsp;
+00:03:47.560 --> 00:03:51.564
+and these SQL queries executed, in the
+order they're defined in this file.
 
-00:12:37.440 --> 00:12:46.320
-So now we're done with that, click OK, then Next.
-The next step is to configure the Windows service.&nbsp;
 
-00:12:46.320 --> 00:12:49.680
-I'm not going to go into a lot of detail&nbsp;
-about this, you can generally accept the&nbsp;&nbsp;
+00:03:52.520 --> 00:03:55.600
+Let's import this.
+Under the Administration
 
-00:12:49.680 --> 00:12:52.960
-defaults on this screen.
-I will mention that Start&nbsp;&nbsp;
+00:03:55.600 --> 00:04:00.566
+tab, you'll see three categories,
+Management, Instance, and Performance.
 
-00:12:52.960 --> 00:12:59.160
-the MySQL Server at System Startup checkbox.
-If you'll be doing a lot of work with MySQL,&nbsp;&nbsp;
 
-00:12:59.160 --> 00:13:04.360
-then you'll probably want to leave that ticked.
-But if your computer is low on memory, or is quite&nbsp;&nbsp;
+00:04:01.440 --> 00:04:04.905
+Under Management, the last
+option is Data Import Restore.
 
-00:13:04.360 --> 00:13:10.440
-old and slow, then you should untick that box. In&nbsp;
-a moment, I'll show you what it does, and how you&nbsp;&nbsp;
 
-00:13:10.440 --> 00:13:14.240
-can start and stop the service manually.
-So we're going to accept all&nbsp;&nbsp;
+00:04:05.840 --> 00:04:08.560
+Select that.
+If you have the bottom
 
-00:13:14.240 --> 00:13:18.920
-the defaults, and click on Next.
-Leave everything unchanged on the Server&nbsp;&nbsp;
+00:04:08.560 --> 00:04:13.387
+panel or right panel open, you'll want to close
+these, so you can see the form in its entirety.
 
-00:13:18.920 --> 00:13:25.680
-File Permissions dialogue, and click Next again.
-We've now configured everything, and this screen&nbsp;&nbsp;
 
-00:13:25.680 --> 00:13:28.760
-just gives us a chance to go back if&nbsp;
-we decide we want to change something.&nbsp;
+00:04:14.200 --> 00:04:17.313
+You do this by toggling the buttons in the right corner of this IDE.
 
-00:13:30.000 --> 00:13:34.120
-We don't, so click Execute.
-The installer runs through the process&nbsp;&nbsp;
+00:04:18.248 --> 00:04:20.924
+Optionally, you could turn off the left pane as well.
 
-00:13:34.120 --> 00:13:42.840
-of configuring MySQL on this computer.
-When it's finished, click on Finish.&nbsp;
+00:04:21.859 --> 00:04:24.224
+I'll do this, so I have more screen space.
 
-00:13:42.840 --> 00:13:49.200
-Click on Next, and you can see we're now done –&nbsp;
-the installation procedure has been completed.&nbsp;
 
-00:13:49.200 --> 00:13:54.520
-Leave the checkbox to Start MySQL workbench&nbsp;
-after setup ticked. And that's because we want&nbsp;&nbsp;
+00:04:25.200 --> 00:04:28.717
+By default, the Import from Dump
+Project Folder is selected,
 
-00:13:54.520 --> 00:14:01.280
-to run the Workbench, just to confirm the&nbsp;
-installation is okay. So click on Finish.&nbsp;
+00:04:28.818 --> 00:04:33.247
+but we want to select Import from Self contained file, the next radio button shown there.
 
-00:14:01.280 --> 00:14:05.920
-Before we move on, I'm going&nbsp;
-to close the browser down.&nbsp;
 
-00:14:05.920 --> 00:14:10.400
-Ok, what I'd like to do next, is show you&nbsp;
-what that "Start the MySQL Server at System&nbsp;&nbsp;
+00:04:34.040 --> 00:04:39.640
+And you'll want to use the ellipse button to
+find, and select, the music_database.sql file,
 
-00:14:10.400 --> 00:14:16.720
-Startup" checkbox does – what effect it has, and&nbsp;
-what you can do if you decided not to tick it.&nbsp;
+00:04:39.640 --> 00:04:44.480
+you downloaded from the resources folder.
+You have to know what's in your file, and this
 
-00:14:16.720 --> 00:14:20.240
-We want to go into the Services on&nbsp;
-our computer, and Microsoft move that&nbsp;&nbsp;
+00:04:44.480 --> 00:04:49.444
+file includes the creation of the schema, so we
+don't have to specify a default target schema.
 
-00:14:20.240 --> 00:14:25.440
-option around on different versions of Windows.
-The way that will work on all current versions,&nbsp;&nbsp;
 
-00:14:25.440 --> 00:14:31.960
-is to use the Windows key and R, then&nbsp;
-type services.msc into the Run box.&nbsp;
+00:04:50.359 --> 00:04:54.720
+In fact, we don't have to do anything else
+on this screen, except click the Start Import
 
-00:14:31.960 --> 00:14:36.200
-Press Enter, and the services&nbsp;
-management console starts up.&nbsp;
+00:04:54.720 --> 00:04:59.960
+button in the lower right hand corner.,
+Next, you'll see the output of the log
 
-00:14:36.200 --> 00:14:42.120
-And once you've done that, you want to scroll on&nbsp;
-down here, until we get to MySQL. The services&nbsp;&nbsp;
+00:04:59.960 --> 00:05:03.720
+shown, in a second tab.
+The final line should say
 
-00:14:42.120 --> 00:14:45.440
-usually appear in alphabetical order,&nbsp;
-and the name we're looking for is the&nbsp;&nbsp;
+00:05:03.720 --> 00:05:09.240
+music_database.sql has finished.
+Close this tab, and if you did
 
-00:14:45.440 --> 00:14:50.960
-one we used when configuring the service.
-We didn't change the default, so for me,&nbsp;&nbsp;
+00:05:09.240 --> 00:05:14.627
+close the left pane, reopen it now.
+Select the schemas tab in the left pane.
 
-00:14:50.960 --> 00:14:56.920
-it's called MySQL80 – because I installed&nbsp;
-version 8.0. Your name might be slightly&nbsp;&nbsp;
 
-00:14:56.920 --> 00:15:01.560
-different, but you should be able to&nbsp;
-find your MySQL service in the list.&nbsp;
+00:05:15.440 --> 00:05:19.427
+It doesn't look like anything was added, and
+that's because we need to refresh the u i.
 
-00:15:01.560 --> 00:15:06.240
-And there's MySQL80. And you can see&nbsp;
-in this case, it's actually Running&nbsp;&nbsp;
 
-00:15:06.240 --> 00:15:12.120
-and the Startup Type is set to Automatic.
-That's a good sign. The fact that it's&nbsp;&nbsp;
+00:05:20.240 --> 00:05:23.205
+That's the little icon to the
+right of the text, schemas.
 
-00:15:12.120 --> 00:15:18.160
-running tells us that the MySQL service has been&nbsp;
-successfully installed, and is actually running.&nbsp;
 
-00:15:18.160 --> 00:15:22.800
-That checkbox that we ticked, causes&nbsp;
-the Startup Type to be Automatic.&nbsp;
+00:05:24.120 --> 00:05:27.265
+Clicking that, should now display
+music as one of the schemas.
 
-00:15:22.800 --> 00:15:26.880
-You can override this, if your computer&nbsp;
-is low on resources – if you haven't got&nbsp;&nbsp;
 
-00:15:26.880 --> 00:15:31.560
-a lot of memory, you can change this.
-So instead of it starting automatically&nbsp;&nbsp;
+00:05:28.160 --> 00:05:32.326
+Open the music folder.
+Here you can see Data Objects Shown.
 
-00:15:31.560 --> 00:15:38.320
-every time your computer starts, you can&nbsp;
-right-click that and go into properties,&nbsp;&nbsp;
 
-00:15:38.320 --> 00:15:45.080
-and you could make that Manual, and click on OK.
-And what that would mean is, it won't start&nbsp;&nbsp;
+00:05:33.160 --> 00:05:38.267
+These folders are shown, whether these objects
+exist or not, allowing you to create new ones.
 
-00:15:45.080 --> 00:15:50.440
-automatically each time you turn the computer on.
-So you could start the computer, and if you decide&nbsp;&nbsp;
 
-00:15:50.440 --> 00:15:54.520
-you're doing some development in this course,&nbsp;
-you could just come over to here, right-click,&nbsp;&nbsp;
+00:05:39.080 --> 00:05:43.240
+Open the Tables Node next.
+Now you can see this database has
 
-00:15:54.520 --> 00:16:00.040
-and click on start. And that would start&nbsp;
-the service for that particular session.&nbsp;
+00:05:43.240 --> 00:05:48.600
+three tables, albums, artists and songs.
+Let me show you what's called an Entity
 
-00:16:00.040 --> 00:16:03.840
-In my case, I'm happy to&nbsp;
-have this run automatically.&nbsp;
+00:05:48.600 --> 00:05:54.160
+Relationship Diagram on a Slide.
+An Entity Relationship Diagram
 
-00:16:03.840 --> 00:16:06.840
-I've got enough resources, so&nbsp;
-I'm going to right-click again,&nbsp;&nbsp;
+00:05:54.160 --> 00:05:59.000
+is similar to a Class Diagram.
+An Entity is a table in this case,
 
-00:16:06.840 --> 00:16:12.600
-go into Properties, and choose Automatic.
-So that every time I reboot the computer,&nbsp;&nbsp;
+00:05:59.000 --> 00:06:03.680
+so all three tables are shown here.
+The column marked as a primary key is
 
-00:16:12.600 --> 00:16:17.200
-MySQL is available for me.
-We've confirmed that's running okay,&nbsp;&nbsp;
+00:06:03.680 --> 00:06:09.680
+identified by the key icon, and P K letters.
+The primary key is separated from the
 
-00:16:17.200 --> 00:16:25.640
-so close the services down. All right. Getting&nbsp;
-back now to the MySQL workbench, that started&nbsp;&nbsp;
+00:06:09.680 --> 00:06:13.945
+other columns as you can see.
+The additional columns are listed.
 
-00:16:25.640 --> 00:16:30.640
-automatically once MySQL was installed.
-I want to start by clicking on this local&nbsp;&nbsp;
 
-00:16:30.640 --> 00:16:36.640
-instance, so click on that, and it&nbsp;
-brings up this little screen. It's&nbsp;&nbsp;
+00:06:14.880 --> 00:06:18.760
+Relationships are shown with connector
+lines, which describe how two tables,
 
-00:16:36.640 --> 00:16:40.600
-asking for the root user password.
-So I'm going to type in that root&nbsp;&nbsp;
+00:06:18.760 --> 00:06:23.240
+or entities relate, to one another.
+Both of the relationships shown on
 
-00:16:40.600 --> 00:16:46.080
-password that I set, earlier in the video.
-And I'm going to choose not to save it. You&nbsp;&nbsp;
+00:06:23.240 --> 00:06:27.425
+this diagram are one to many, or many to
+one, depending on how you look at it.
 
-00:16:46.080 --> 00:16:51.720
-could choose to save the password if you like,&nbsp;
-but for security reasons I prefer not to do that.&nbsp;
 
-00:16:51.720 --> 00:16:58.040
-Click on OK.
-And this has opened up, which is&nbsp;&nbsp;
+00:06:28.320 --> 00:06:32.680
+If I read this document, I have songs,
+and many songs may be on a single album,
 
-00:16:58.040 --> 00:17:03.400
-a good sign that we got the password correct.
-If we come over here, on the left,&nbsp;&nbsp;
+00:06:32.680 --> 00:06:37.240
+a record in the albums table.
+The album id is included in the songs
 
-00:17:03.400 --> 00:17:11.240
-and click on Server Status, that gives us&nbsp;
-a bit of an overview of our MySQL service.&nbsp;
+00:06:37.240 --> 00:06:43.560
+table, as what's called a foreign key column.
+This column's purpose, in the songs table,
 
-00:17:11.240 --> 00:17:13.880
-A lot of the information is&nbsp;
-hidden by that right-hand pane,&nbsp;&nbsp;
+00:06:43.560 --> 00:06:48.046
+is to specify the related record, which
+makes joining the tables much easier.
 
-00:17:13.880 --> 00:17:19.120
-so click the rightmost button, above it.
-You can see we've got 3 panes here,&nbsp;&nbsp;
 
-00:17:19.120 --> 00:17:24.000
-and each of those buttons corresponds to one&nbsp;
-of the panes. The rightmost one has a blue&nbsp;&nbsp;
+00:06:48.920 --> 00:06:54.280
+Albums may have many songs, but in this model,
+an album has only one artist, so the artist id
 
-00:17:24.000 --> 00:17:29.240
-bar on its right-hand side. That shows that it&nbsp;
-represents the right-hand pane, and clicking&nbsp;&nbsp;
+00:06:54.280 --> 00:06:59.800
+is a foreign key column on the albums table.
+An artist however might be on many albums,
 
-00:17:29.240 --> 00:17:34.640
-it will toggle that right-hand pane on and off.
-When we remove that pane, we can see the graphical&nbsp;&nbsp;
+00:06:59.800 --> 00:07:02.295
+so it has a one to many relationship with albums.
 
-00:17:34.640 --> 00:17:38.000
-stats about our server.
-It's Running, as you can&nbsp;&nbsp;
 
-00:17:38.000 --> 00:17:41.680
-see here – so that's good.
-We can also see the number&nbsp;&nbsp;
+00:07:05.081 --> 00:07:07.901
+Let's now see what this looks like in the MySQL WorkBench.
 
-00:17:41.680 --> 00:17:46.600
-of connections, and other statistics.
-But obviously, there won't be a lot&nbsp;&nbsp;
+00:07:08.836 --> 00:07:11.777
+We're going to use this database for many of the upcoming lectures,
 
-00:17:46.600 --> 00:17:50.920
-happening at the moment, and that's because&nbsp;
-we haven't really started using it yet.&nbsp;
+00:07:11.777 --> 00:07:13.966
+so it's kind of important that you understand it.
 
-00:17:50.920 --> 00:17:54.000
-But bear in mind that we have actually&nbsp;
-connected to the server, because we've&nbsp;&nbsp;
 
-00:17:54.000 --> 00:17:58.400
-used MySQL Workbench to do that – in case you're&nbsp;
-wondering where the connections are coming from.&nbsp;
+00:07:14.800 --> 00:07:18.766
+The easiest way to do this is, click
+on the music schema in the left pane.
 
-00:18:00.040 --> 00:18:05.000
-Ok, come over here, on the left,&nbsp;
-and click on Users and Privileges.&nbsp;
 
-00:18:05.000 --> 00:18:08.600
-We can see the list of users – so you can&nbsp;
-see there that we had the root account,&nbsp;&nbsp;
+00:07:19.600 --> 00:07:23.067
+We'll use the schema inspector to
+learn more about the music database.
 
-00:18:08.600 --> 00:18:14.200
-which was automatically created for us, and&nbsp;
-also the devuser account that we created.&nbsp;
 
-00:18:14.200 --> 00:18:20.320
-You might see a few other users, which are used&nbsp;
-internally by MySQL. If you don't see them,&nbsp;&nbsp;
+00:07:23.840 --> 00:07:27.446
+You can right click on the music
+schema, and select schema inspector.
 
-00:18:20.320 --> 00:18:24.520
-don't worry – sometimes the default settings&nbsp;
-are changed, and these accounts don't show&nbsp;&nbsp;
 
-00:18:24.520 --> 00:18:29.440
-up. That's fine, they're not accounts that we&nbsp;
-need to do anything with, and it's best that&nbsp;&nbsp;
+00:07:28.320 --> 00:07:31.840
+Alternately, you can select the
+third icon on the tool bar menu,
 
-00:18:29.440 --> 00:18:33.960
-we don't make any changes to them.
-The account that we'll be using,&nbsp;&nbsp;
+00:07:31.840 --> 00:07:37.760
+third from the left, that has an i on it.
+This opens a new tab, with a tabbed panel,
 
-00:18:33.960 --> 00:18:39.880
-most of the time, is this devuser account.&nbsp;
-We want to be able to create new databases,&nbsp;&nbsp;
+00:07:37.760 --> 00:07:43.665
+and shows a few details about this schema, such
+as table count, and an estimated database size.
 
-00:18:39.880 --> 00:18:44.240
-and perform all the other database-related&nbsp;
-tasks that we're going to learn about.&nbsp;
 
-00:18:44.240 --> 00:18:47.880
-That means we have to give this&nbsp;
-account the necessary access.&nbsp;
+00:07:44.560 --> 00:07:48.926
+You might wonder why this has a table count
+of 4, and we've only seen three tables.
 
-00:18:47.880 --> 00:18:52.400
-Select devuser on the left, then&nbsp;
-click the Administrative Roles tab.&nbsp;
 
-00:18:52.400 --> 00:18:56.400
-You have full control over the level of access&nbsp;
-that you can grant to users, but it's often easier&nbsp;&nbsp;
+00:07:49.760 --> 00:07:53.165
+This count includes views, and I'll
+talk more about the view in a minute.
 
-00:18:56.400 --> 00:19:02.120
-to use these roles that have already been created.
-For example, there's a UserAdmin role that can&nbsp;&nbsp;
 
-00:19:02.120 --> 00:19:06.640
-create users, but can't alter databases,&nbsp;
-and there's a DBManager role that can&nbsp;&nbsp;
+00:07:54.080 --> 00:08:01.000
+The tabs are labeled, tables, columns,
+indexes, triggers, views, stored procedures,
 
-00:19:06.640 --> 00:19:12.200
-manage databases, but doesn't have the&nbsp;
-access needed to create or modify users.&nbsp;
+00:08:01.000 --> 00:08:05.686
+functions, grants and events.
+Let's click on tables first.
 
-00:19:12.200 --> 00:19:17.880
-We will want to perform all tasks, so click the&nbsp;
-top option – DBA – to make devuser a Database&nbsp;&nbsp;
 
-00:19:17.880 --> 00:19:23.800
-Administrator. We'll be able to perform&nbsp;
-all tasks, when we log in as devuser.&nbsp;
+00:08:06.560 --> 00:08:11.680
+The main thing of interest here, is the column
+labeled rows, which tells us how many records,
 
-00:19:23.800 --> 00:19:28.440
-If you make any changes here, make sure you&nbsp;
-click Apply to apply the change, otherwise&nbsp;&nbsp;
+00:08:11.680 --> 00:08:15.165
+are in each table.
+Now let's click columns.
 
-00:19:28.440 --> 00:19:34.880
-the access rights won't be granted.
-All right. So click on View now,&nbsp;&nbsp;
 
-00:19:34.880 --> 00:19:40.800
-and from the View menu select Home.
-We go back to where we were. Now we're&nbsp;&nbsp;
+00:08:16.080 --> 00:08:20.726
+This shows the columns for all the tables, as
+well as the view, which is named album view.
 
-00:19:40.800 --> 00:19:44.640
-going to come over here, and click on this&nbsp;
-little wrench – to the right of the plus&nbsp;&nbsp;
 
-00:19:44.640 --> 00:19:49.920
-sign – which is for managing connections.
-That should open up this Manage Server&nbsp;&nbsp;
+00:08:21.600 --> 00:08:26.425
+You can see the column name, and types, and
+whether nulls are supported in each for example.
 
-00:19:49.920 --> 00:19:55.280
-Connections screen here, as you can see.
-So I'm going to click on this Local Instance&nbsp;&nbsp;
 
-00:19:55.280 --> 00:20:00.560
-MySQL80, and we're going to click the Test&nbsp;
-Connection button, at the bottom right.&nbsp;
+00:08:27.360 --> 00:08:31.960
+In all cases, except the id fields,
+the values can be null, meaning not
 
-00:20:00.560 --> 00:20:07.720
-If it wants a password, that root&nbsp;
-password, again, then type it in.&nbsp;
+00:08:31.960 --> 00:08:36.886
+every column is required to have data.
+Let's look at the indexes tab next.
 
-00:20:07.720 --> 00:20:11.800
-And you can see that we've&nbsp;
-Successfully made the MySQL connection.&nbsp;
 
-00:20:11.800 --> 00:20:17.640
-So that tells us that MySQL is working correctly,&nbsp;
-and we're able to connect to the database.&nbsp;
+00:08:37.760 --> 00:08:42.120
+In this case, we can see each table
+has a primary index, which is unique,
 
-00:20:17.640 --> 00:20:24.880
-So that's okay. I'm going to click on OK.
-All right. Now let's click on the New&nbsp;&nbsp;
+00:08:42.120 --> 00:08:46.520
+and the column used is shown here.
+In addition, there's an index for each
 
-00:20:24.880 --> 00:20:29.960
-button – over on the left. This time&nbsp;
-we're going to add a new connection.&nbsp;
+00:08:46.520 --> 00:08:51.847
+foreign key, and this index isn't unique.
+Let's now take a look at some of the data.
 
-00:20:29.960 --> 00:20:34.360
-We're going to add a new connection, for&nbsp;
-what we're going to be using in this course.&nbsp;
 
-00:20:34.360 --> 00:20:37.080
-For the Connection Name, I'm just&nbsp;
-going to call it development,&nbsp;&nbsp;
+00:08:52.762 --> 00:08:58.440
+I'll open the tables node, and click on albums.
+Notice the three icons that appear when this
 
-00:20:37.080 --> 00:20:42.400
-but you can call it whatever you like.
-And we're going to change the Username.&nbsp;
+00:08:58.440 --> 00:09:01.400
+table is selected.
+The icon we want is the last,
 
-00:20:42.400 --> 00:20:47.760
-Instead of root, we're going to change that&nbsp;
-to the username we created, which was devuser.&nbsp;
+00:09:01.400 --> 00:09:06.320
+the spreadsheet like one.
+Clicking on that opens another tab,
 
-00:20:47.760 --> 00:20:53.080
-Then I'm going to click on test connection, to&nbsp;
-make sure we can connect as our development user.&nbsp;
+00:09:06.320 --> 00:09:09.040
+with two panels.
+The top bottom
 
-00:20:53.080 --> 00:20:58.080
-We'll be asked for the password, so&nbsp;
-enter your devuser password this time.&nbsp;
+00:09:09.040 --> 00:09:14.806
+shows the SQL statement that was executed.
+The bottom panel lists the data in the table.
 
-00:20:58.080 --> 00:21:01.600
-Remembering that this isn't the&nbsp;
-root user this is the other user.&nbsp;
 
-00:21:01.600 --> 00:21:07.040
-Click on OK, and you can see we made a&nbsp;
-successful connection. So that tells us&nbsp;&nbsp;
+00:09:15.640 --> 00:09:19.706
+If this is your first look at an SQL
+statement, this is a very common statement.
 
-00:21:07.040 --> 00:21:13.440
-that the username and password are valid,&nbsp;
-and we're good to go. So click on OK.&nbsp;
 
-00:21:13.440 --> 00:21:19.560
-Close this screen, and we've now got this second&nbsp;
-connection configured under the MySQL Connections.&nbsp;
+00:09:20.560 --> 00:09:25.520
+The SELECT command will get the data.
+A list of columns would follow this command,
 
-00:21:19.560 --> 00:21:23.680
-We're going to be able to use that in the course.
-I'm going to finish the video&nbsp;&nbsp;
+00:09:25.520 --> 00:09:29.902
+but if you enter an asterisk or star, you're
+specifying you want the data in every column.
 
-00:21:23.680 --> 00:21:28.640
-here. Now we're actually done.
-In the next video, as I mentioned&nbsp;&nbsp;
 
-00:21:28.640 --> 00:21:34.280
-at the start, it's a video for Mac users.
-So if you've just installed this on Windows,&nbsp;&nbsp;
+00:09:31.000 --> 00:09:34.560
+The FROM clause will specify what table
+or view the data should come from,
 
-00:21:34.280 --> 00:21:38.800
-and you haven't got a Mac and/or a Linux&nbsp;
-machine, you can skip the next one or two videos,&nbsp;&nbsp;
+00:09:34.560 --> 00:09:39.400
+so here it's coming from the albums table.
+Notice though that the albums table includes
 
-00:21:38.800 --> 00:21:43.000
-and move on to the video after that – where&nbsp;
-we start working with this MySQL instance that&nbsp;&nbsp;
+00:09:39.400 --> 00:09:44.960
+the schema or database name.
+Ok, so that's a super quick look
 
-00:21:43.000 --> 00:21:47.600
-we've just installed and configured.
-I'll see you, in that next video.
+00:09:44.960 --> 00:09:50.640
+at this work bench, and the music database.
+I want to encourage you to use this database,
+
+00:09:50.640 --> 00:09:54.720
+to get familiar with work bench.
+You can always delete the music
+
+00:09:54.720 --> 00:09:58.624
+database and re import it, so try to
+spend some time here, if you have it.
+
+
+00:09:59.600 --> 00:10:02.026
+Before I end this video, I
+want to look at the view.
+
+
+00:10:02.880 --> 00:10:09.760
+A view is sort of a virtual table.
+Let's open the Views node, and select
+
+00:10:09.760 --> 00:10:16.680
+album view, and again select that last icon.
+This will do the same thing as we saw with albums,
+
+00:10:16.680 --> 00:10:20.000
+so the query will be on top, and
+the data on the bottom panel.
+
+
+00:10:21.000 --> 00:10:25.286
+Here, the data doesn't have any IDs,
+and has data from all three tables.
+
+
+00:10:26.120 --> 00:10:29.406
+This is a full look or view of all
+the pertinent data in all the tables.
+
+
+00:10:30.320 --> 00:10:35.040
+Let's look at data for just a single album.
+To do this, I need to add a where
+
+00:10:35.040 --> 00:10:39.480
+clause to my select statement.
+A where clause takes a column name,
+
+00:10:39.480 --> 00:10:43.982
+so in this case I want to search by an album name,
+and I want that album name to be equal to Argus.
+
+
+00:10:45.000 --> 00:10:50.280
+Strings are always enclosed in single quotes.
+To execute this query, I can choose the
+
+00:10:50.280 --> 00:10:53.240
+lightning bolt icon.
+There's two lightning
+
+00:10:53.240 --> 00:10:58.560
+bolts and either would execute this statement.
+The first is a bit more flexible, because it let's
+
+00:10:58.560 --> 00:11:02.986
+you select a portion of a complex statement,
+and execute only that selected portion.
+
+
+00:11:03.840 --> 00:11:06.307
+If you have no selection, you can execute either.
+
+00:11:08.869 --> 00:11:10.747
+Now, the data in the bottom panel,
+
+00:11:10.760 --> 00:11:14.160
+the result grid, is showing the
+songs for only the Argus album,
+
+00:11:14.160 --> 00:11:20.400
+which is an album by the artist, Wishbone Ash.
+Remember, album name is stored in the album table,
+
+00:11:20.400 --> 00:11:24.786
+artist name is stored in the artists table,
+and song title is in the songs table.
+
+
+00:11:25.640 --> 00:11:29.886
+A view is a SQL SELECT statement,
+that's saved, and given a name.
+
+
+00:11:30.720 --> 00:11:35.907
+The data's not saved in the view, only the SQL
+statement is saved, that will return that data.
+
+
+00:11:36.720 --> 00:11:41.280
+We can use this view's name to easily query data.
+You can think of the view as a
+
+00:11:41.280 --> 00:11:44.800
+type of encapsulation.
+It's hiding information about the
+
+00:11:44.800 --> 00:11:50.840
+table structures and relationships, and displaying
+only the columns deemed necessary for the client.
+
+
+00:11:50.840 --> 00:11:55.000
+In fact, the client might never have to know
+that this data is stored in three tables.
+
+
+00:11:55.920 --> 00:12:00.680
+When a table's structure changes, the view may
+not have to change, so any software reliant
+
+00:12:00.680 --> 00:12:06.360
+on these structures, can remain unaffected.
+I'll click on album view again in the left pane,
+
+00:12:06.360 --> 00:12:09.371
+but this time I'll select the
+second icon, the tool icon.
+
+
+00:12:11.262 --> 00:12:15.920
+This will display the stored query, in a tab.
+This statement consists of
+
+00:12:15.920 --> 00:12:20.440
+DDL and DML statements.
+It's creating a database object,
+
+00:12:20.440 --> 00:12:25.126
+a view, named album view with Database
+Definition language, the command Create.
+
+
+00:12:26.041 --> 00:12:30.960
+And it's storing a DML SELECT statement.
+This select statement is executed,
+
+00:12:30.960 --> 00:12:35.160
+when we select data from the view.
+Notice that the FROM clause,
+
+00:12:35.160 --> 00:12:39.347
+is selecting data from all three of
+our tables, using a series of JOINS.
+
+
+00:12:40.160 --> 00:12:42.647
+I'm not going to get into the
+details of this statement.
+
+
+00:12:43.440 --> 00:12:47.600
+The main thing is, that this view has all the
+information we'd want to query about the albums,
+
+00:12:47.600 --> 00:12:51.000
+artists and songs, and our java
+code doesn't have to understand
+
+00:12:51.000 --> 00:12:55.600
+too many details of the schema itself.
+We'll be using this view in a lot of our
+
+00:12:55.600 --> 00:13:00.442
+java code, which means we don't have to write
+code, with these joins in our java code.
+
+
+00:13:01.397 --> 00:13:05.520
+Ok, so I'll end this video here.
+In the next video, I'll show you how
+
+00:13:05.520 --> 00:13:09.600
+to connect to this database, from
+a Java application, so lets' go.
