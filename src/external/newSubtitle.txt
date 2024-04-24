@@ -1,111 +1,561 @@
-In this section of the course,;
-I'll be covering how to interact;;
-with databases from a Java application.
-I'll be primarily focusing on connecting to,
-and communicating with a relational database.
-I'll show you how to connect to a database,
-using a connection string, and a special;
-object, called a Java Database Driver.;
-We'll get information from the;
-database, through a database;;
-language called Structured Query Language or SQL.
-I'll demonstrate how to execute SQL statements as;;
-strings against tables in the database, using;
-Java's support, and how to process the results;;
-we get back from these types of queries.
-I'll also cover executing parameterized;;
-statements, using Java's PreparedStatement,;
-which allow SQL statements to be reusable,;;
-more flexible, and less prone to;
-some well known security issues.;
-Many Database Management Systems support;
-a built-in procedural language as well.;
-This means there may be functions stored with;
-the database, that you can use to get data,;;
-or perform some action, rather than;
-actually writing SQL code to do it.;
-I'll be showing you how to make calls;
-to these database stored procedures,;;
-with Java's CallableStatement.;
-Finally, we'll examine different object;
-relational mapping or ORM technologies,;;
-used by popular Java frameworks, to handle;
-basic boiler plate interactions with databases.;
-To do all of this, we'll need;
-a database to test against.;
-I originally was using SQLite for this section;
-of the course, but have decided to switch to;;
-MySQL for several reasons.
-There were other options,;;
-like selecting an in memory database like H2.
-Or I could have chosen alternative relational;;
-databases like PostGreSQL which is;
-free and open source, or Microsoft's;;
-SQL Server which has a free version.
-I decided on MySQL for several reasons.
-First, It's free, and downloaded from Oracle,;
-and the installation isn't too difficult.;
-Second, I think it's important to learn about;
-CallableStatements, and for that, we needed a;;
-database that support stored procedures.
-There are work arounds for H2 and SQLite,;;
-but I felt the work arounds might;
-have been more confusing to students.;
-Third, I offer a beginner's course;
-in SQL which also uses MySQL,;;
-so if you want to learn more, you'll be;
-in a perfect position to take that course.;
-Finally, MySQL is a popular industry standard.
-On this slide, I'm showing you several surveys
-of the popularity of market place databases.
-The first is stackoverflow's annual survey which;;
-solicits feedback from developers,;
-on what they use professionally.;
-This survey is limited to respondents, so it could;
-be argued it's skewed towards professionals who;;
-are just more likely to take such a survey.
-The second is from Statista,;;
-and the third from DB-Engines, which;
-are similar and have similar results.;
-The last survey polls the internet for;
-monthly statistics, using the number of;;
-mentions of the system on websites, the frequency;
-of technical discussions, and the number of job;;
-offers as part of their scoring system.
-Make sure to check out these surveys,;;
-and others if you're interested, or if you're;
-trying to make this decision for yourself.;
-However you look at this feedback,;
-MySQL is squarely near the top,;;
-so that's another reason I chose it.
-Finally, just because the course will
-be taught using MySQL, this doesn't;
-mean that you have to use it.;
-You're welcome to use whichever database you;
-want, especially if you have another already;;
-installed, and have experience there.
-I'll be providing scripts to create;;
-a specific database schema, for MySQL,;
-which could be tweaked for your database.;
-In addition, I'll show you several;
-different connection strings,;;
-to connect to different databases.
-I'll be making an effort to use ANSI SQL,;;
-a standard set of commands, which;
-most databases should support.;
-I'll try to avoid vendor specific SQL;
-statements, or point them out when I can.;
-There are good reasons to use;
-ANSI SQL in your java code.;
-Doing so, lets you swap the database engine,;
-by simply changing your connection string.;
-This does sometimes happen, as corporations;
-decide the best way to house their data,;;
-based on their own unique situation, and as;
-technologies change and compete with one another.;
-I'll explain all of this in;
-more detail as we proceed.;
-Ok, so let's move forward.
-The next three videos will be;;
-the MySQL installation videos, so pick the;
-one appropriate for your operating system.
+In this video, we're going to go ahead and install&nbsp;&nbsp;
+the MySQL database server on a Windows machine.
+If you're not running Windows, move on to&nbsp;&nbsp;
+
+
+
+the next video – or the one after that –&nbsp;
+where I show you how to do the same thing,&nbsp;&nbsp;
+but on a Mac or a Linux computer.
+But if you're using Windows,&nbsp;&nbsp;
+you're in the right place, so let's continue.
+The first thing we want to do, is go to the&nbsp;&nbsp;
+website dev.MySQL.com. You may get a pop-up about&nbsp;
+accepting cookies, so do whatever you normally&nbsp;&nbsp;
+do when you get that pop-up. The download will&nbsp;
+work fine if you decide to decline all cookies.&nbsp;
+Ok, once we get here, I'm going&nbsp;
+to click the downloads link.&nbsp;
+I'll scroll down to towards the bottom and click&nbsp;
+MySQL Community GPL Downlaods and click that.&nbsp;
+We want the MySQL Installer for&nbsp;
+Windows link, so click that.&nbsp;
+On the next screen, Microsoft&nbsp;
+Windows should already be selected.&nbsp;
+Below that, we have two choices. Both&nbsp;
+choices will install the same version,&nbsp;&nbsp;
+and if you have a connection to the internet, then&nbsp;
+it's not really important which one you choose.&nbsp;
+The first one, the mysql-installer-web-community&nbsp;
+one, will start the installation and then download&nbsp;&nbsp;
+most of the files it needs, while it's installing.
+You'd use that if you want to install MySQL on&nbsp;&nbsp;
+the computer that you're using to download&nbsp;
+– which is what we're doing at the moment.&nbsp;
+But you might want to install the program&nbsp;
+on several computers, or on a computer that&nbsp;&nbsp;
+doesn't have internet access. In that&nbsp;
+case, you can choose the second option,&nbsp;&nbsp;
+and download the entire installer. As you&nbsp;
+can see, that's a larger initial download.&nbsp;
+Before we decide which one to use, notice&nbsp;
+that there's an Information tab on that&nbsp;&nbsp;
+screen – the blue "Information" icon.&nbsp;
+Click that, to get a bit more information&nbsp;&nbsp;
+about the installer choices we have.
+There's a brief description of what the&nbsp;&nbsp;
+installer includes: the latest version of the&nbsp;
+MySQL Server itself, MySQL Workbench – which&nbsp;&nbsp;
+we'll use to interact with the Server – and&nbsp;
+some sample databases and documentation.&nbsp;
+Below that, there's a note about Choosing&nbsp;
+the right file. That pretty much echoes&nbsp;&nbsp;
+what I've just said about the two options.
+The note is interesting: "MySQL Installer is&nbsp;&nbsp;
+32 bit, but will install both&nbsp;
+32 bit and 64 bit binaries".&nbsp;
+In a minute, I'm going to show you how to select&nbsp;
+that, when we go through the installation process.&nbsp;
+So you'll need to know whether&nbsp;
+your Windows computer is&nbsp;&nbsp;
+running a 32 or 64-bit version of Windows.
+
+
+
+And you can generally find that in "About",&nbsp;&nbsp;
+in the control panel for Windows&nbsp;
+10 or earlier. If on Windows 11,&nbsp;&nbsp;
+which I am go into Settings. Type "about" in&nbsp;
+the search box, then click "About your PC".&nbsp;
+And depending on your version of Windows, it'll&nbsp;
+tell you System type 64-bit operating system.&nbsp;
+We're not so much concerned about the&nbsp;
+processor, because it is possible to have&nbsp;&nbsp;
+a 32-bit version of windows running on a 64-bit&nbsp;
+
+
+
+processor. We're interested in this bit here,&nbsp;&nbsp;
+the 64-bit operating system.
+You'll need to know whether you're&nbsp;&nbsp;
+running the 32 or 64-bit version.
+
+
+
+We've just seen how to check that&nbsp;&nbsp;
+information on Windows 10 and 11.
+If you're running an older version&nbsp;&nbsp;
+
+
+
+of windows, you can generally find that&nbsp;
+in the system part of control panel.&nbsp;
+There'll be a screen similar to this, where you&nbsp;
+can find out which version of Windows you're&nbsp;&nbsp;
+running, and whether it's a 32 or 64-bit edition.
+
+
+
+And again, we'll need that when we get to the&nbsp;&nbsp;
+stage of installing MySQL.
+Ok, back in my browser,&nbsp;&nbsp;
+click the General Availability (GA) Releases&nbsp;
+tab, to get back to the choice of installers.&nbsp;
+I suggest you just grab the full product – the&nbsp;
+second option – because you can re-install it,&nbsp;&nbsp;
+if you need to, without having to download again.
+I'm going to choose the second one,&nbsp;&nbsp;
+so click its Download link.
+Now it's asking whether we want to set up&nbsp;&nbsp;
+an Oracle Web Account, because Oracle now own the&nbsp;
+MySQL product. If you already have an account, you&nbsp;&nbsp;
+can log in. We're going to click on "No thanks,&nbsp;
+just start my download", then click Save file if&nbsp;&nbsp;
+it doesn't start downloading automatically.
+Now we need to open the file that we've&nbsp;&nbsp;
+downloaded, so I'm just going&nbsp;
+to select "Open file" here.&nbsp;
+If you're using a different browser,&nbsp;
+do whatever you'd normally do,&nbsp;&nbsp;
+to open a file that you've downloaded.
+The installer starts, and I'll give that a moment.&nbsp;
+Click on "Yes", If it pops up, to allow&nbsp;
+this app to make changes to your device,&nbsp;&nbsp;
+and the installation should proceed.
+It may pop up again and ask you to allow&nbsp;&nbsp;
+this app to make changes again. In my case, it&nbsp;
+did pop up that twice, so click "Yes" again.&nbsp;
+If you get an option to apply an upgrade, click&nbsp;
+"Yes" to allow the upgrade to be applied as well.&nbsp;
+And now we get this screen, where&nbsp;
+we can choose the setup type.&nbsp;
+There are various radio buttons here to the left,&nbsp;
+and to the right, it gives you a description&nbsp;&nbsp;
+of what it's actually going to install.
+So you can see we have a number of options.&nbsp;
+You've got a Server only. This installs only the&nbsp;
+MySQL server, which would be useful if you want&nbsp;&nbsp;
+to run the server on a different computer,&nbsp;
+
+
+
+rather than on your development machine.&nbsp;
+We've got a Client only option – which is a sort&nbsp;
+of compliment to the Server only option. This is&nbsp;&nbsp;
+the one we'd install on our development&nbsp;
+and user computers, if the server was&nbsp;&nbsp;
+running on another computer.
+
+
+
+We've got a Full option,&nbsp;&nbsp;
+which installs everything.
+But the option we're going to select&nbsp;&nbsp;
+is the Custom option, so that we're installing&nbsp;
+only the things that we need for this course.&nbsp;
+I'm going to click on Custom,&nbsp;
+and I'm going to click on Next.&nbsp;
+Once we've done that, we get this screen here. On&nbsp;
+the left-hand side, there's a list of available&nbsp;&nbsp;
+products, and the right-hand side shows a&nbsp;
+list of the products that are to be installed.&nbsp;
+Currently, that's empty, because&nbsp;
+we haven't selected anything yet.&nbsp;
+So I'm going to come over here first, and expand&nbsp;
+MySQL Servers by clicking on the plus. Do the&nbsp;&nbsp;
+same to expand MySQL Server, then again to expand&nbsp;
+the latest version – which for me is version 8.0.&nbsp;
+You may have a later version there, and that's&nbsp;
+fine. Install whatever is the latest version&nbsp;&nbsp;
+available. For me, at the time I'm recording&nbsp;
+this video, that's version 8.0. You can see&nbsp;&nbsp;
+there are older versions I can choose, but&nbsp;
+don't do that. Go with the latest version.&nbsp;
+In fact, after expanding that, we can see version&nbsp;
+8.0.34. You can see a lot of other versions like&nbsp;&nbsp;
+8.0.33. Just choose the latest version you see.
+The X64, at the end, indicates that this is a&nbsp;&nbsp;
+64-bit version. If you see X86 there, then you'll&nbsp;
+be installing the 32-bit version. You've already&nbsp;&nbsp;
+checked whether your operating system is 32-bit&nbsp;
+or 64-bit, so make sure that you choose the&nbsp;&nbsp;
+appropriate version for your operating system.
+I mention that because earlier versions of&nbsp;&nbsp;
+the installer used to show both the&nbsp;
+32-bit and the 64-bit versions here.&nbsp;
+The installer changes whenever there's a&nbsp;
+new version, and Oracle might decide to&nbsp;&nbsp;
+show both versions again, in the future.
+So if they do, choose the X64 version on&nbsp;&nbsp;
+a 64-bit version of Windows, and the X86&nbsp;
+version on a 32-bit version of Windows.&nbsp;
+I'm running a 64-bit version of Windows, so&nbsp;
+
+
+
+I'll select the X64 version – the only one&nbsp;&nbsp;
+that's showing here – then click on the arrow,&nbsp;
+to move it across to the right-hand side.&nbsp;
+So that's now going to be installed.
+The next thing we want to do is come over&nbsp;&nbsp;
+here, to applications, and click on the plus&nbsp;
+again to expand it. Expand MySQL Workbench,&nbsp;&nbsp;
+by clicking on the plus, then again to&nbsp;
+expand MySQL Workbench 8.0.34 – X64.&nbsp;
+Once again, you may have to choose X64&nbsp;
+or X86, if those options appear for you.&nbsp;
+So I'm going to select the MySQL Workbench&nbsp;
+8.0.34 – X64, and click the arrow to move&nbsp;&nbsp;
+that over to the right-hand side.&nbsp;
+I'll ignore all the older versions.&nbsp;
+Once again, the version numbers&nbsp;
+may change in the future. In fact,&nbsp;&nbsp;
+the MySQL Server and Workbench programs&nbsp;
+might even have different version numbers.&nbsp;&nbsp;
+That's fine – they are often the same, but one&nbsp;
+program might be updated separately to the other.&nbsp;
+Depending on when you're watching this&nbsp;
+video, they might be a later version,&nbsp;&nbsp;
+but the principle is still the same. Just select&nbsp;
+the relevant version, and select the 64-bit or&nbsp;&nbsp;
+32-bit version if that option's available.
+At this point, we've selected the only two&nbsp;&nbsp;
+products we need, so I'm going to click&nbsp;
+on Next, and then I'm going to click on&nbsp;&nbsp;
+Execute. This is going to start out&nbsp;
+downloading the MySQL software first.&nbsp;
+And after that we will start the installation&nbsp;
+of both those products, onto this computer.&nbsp;
+And once that's finished, we need&nbsp;
+to go through a configuration step,&nbsp;&nbsp;
+to set up user names and so on and so forth.
+Okay. So it's now finished downloading. I'm going&nbsp;&nbsp;
+to click on Next and Execute to install.
+Now the install is complete its time to
+configure. I'll click Next again. That&nbsp;
+will bring up the configuration options.&nbsp;
+And we've got a Config Type dropdown here,&nbsp;
+where we can select various different options.&nbsp;&nbsp;
+We're going to leave the default of Development&nbsp;
+Computer, since that's exactly what we're doing&nbsp;&nbsp;
+here – we're using MySQL as developers.
+It shouldn't normally be necessary to&nbsp;&nbsp;
+change any other options here – the&nbsp;
+defaults will work for most computers.&nbsp;
+Now in terms of the port, it needs to be a unique&nbsp;
+port number that's not used anywhere else, or it's&nbsp;&nbsp;
+not used for another application on this computer.
+So 3306 will be fine for my computer.&nbsp;
+Normally, that will work&nbsp;
+for your computer as well.&nbsp;
+The rest of the defaults are okay. You don't need&nbsp;
+to change anything else there, click on Next.&nbsp;
+Now we get to specify the Authentication Method.
+You shouldn't normally change this,&nbsp;&nbsp;
+we want strong password encryption –&nbsp;
+that keeps our installation secure.&nbsp;
+If you've already written MySQL applications,&nbsp;
+and they can't be updated, then you can&nbsp;&nbsp;
+specify the old-style authentication here.
+But we're starting from scratch, and don't&nbsp;&nbsp;
+have any existing applications to support. So&nbsp;
+we won't change anything here, just click Next.&nbsp;
+Now it's asking for what the root password is.
+Now the root account is created automatically&nbsp;&nbsp;
+by MySQL, and is a logon that is the&nbsp;
+most powerful user in the system.&nbsp;
+And generally speaking, it's good&nbsp;
+to use that username and password&nbsp;&nbsp;
+very sparingly – only when you really need to&nbsp;
+do some sort of super administrative tasks.&nbsp;
+So what we're going to do is assign a password&nbsp;
+for it, which we need to do, but then we're&nbsp;&nbsp;
+going to create a new user that we're going&nbsp;
+to be using for our day-to-day use of MySQL.&nbsp;
+So you want to enter a password that's&nbsp;
+hard to guess, and is quite secure.&nbsp;
+So I'm going to type in a password, then confirm&nbsp;
+it by typing it in again. The password strength&nbsp;&nbsp;
+is showing as Strong, so that's good.
+Ok, That's the root user. As I said,&nbsp;&nbsp;
+you'd only log in as this user when you need to do&nbsp;
+administrative tasks. It's not a good idea to use&nbsp;&nbsp;
+such a powerful login for normal use.
+So the next thing we need to do,&nbsp;&nbsp;
+is click on Add User.
+We're going to create another user,&nbsp;&nbsp;
+that we're going to be using for&nbsp;
+the normal tasks in this course.&nbsp;
+Type in the name of the user. I'm going to call&nbsp;
+this one devuser – all one word – but you can&nbsp;&nbsp;
+call it literally whatever you like.
+This is the user that we'll log in as,&nbsp;&nbsp;
+when we're working with our databases.
+For the host, I'm going to change that to&nbsp;&nbsp;
+localhost, using the dropdown arrow.
+localhost means this computer,&nbsp;&nbsp;
+so that ensures that it can only be used&nbsp;
+locally. That's more secure, because we&nbsp;&nbsp;
+only want to be using this username locally.&nbsp;
+We don't want access from any external source.&nbsp;
+Some students have reported that they don't&nbsp;
+get localhost here – instead they see the IP&nbsp;&nbsp;
+address 127.0.0.1. That's fine, that's the IP&nbsp;
+address that localhost resolves to, so choose&nbsp;&nbsp;
+that address if that's what you see here.
+We're going to leave the Role set to DB&nbsp;&nbsp;
+admin. There's other options you can choose&nbsp;
+here, but I'm not going to change any of&nbsp;&nbsp;
+that – I'm going to leave it on admin for now.
+A database administrator can do things like&nbsp;&nbsp;
+creating databases and tables, which is&nbsp;
+what we'll want to do in this course.&nbsp;
+And we also need to enter a password for this.
+I suggest you make this password&nbsp;&nbsp;
+different to the root user.
+And make sure you remember both passwords.&nbsp;
+I'm going to enter my devuser&nbsp;
+password, then confirm it.&nbsp;
+In this case, you can see again,&nbsp;
+I've got a strong password.&nbsp;
+So now we're done with that, click OK, then Next.
+The next step is to configure the Windows service.&nbsp;
+I'm not going to go into a lot of detail&nbsp;
+about this, you can generally accept the&nbsp;&nbsp;
+defaults on this screen.
+I will mention that Start&nbsp;&nbsp;
+the MySQL Server at System Startup checkbox.
+If you'll be doing a lot of work with MySQL,&nbsp;&nbsp;
+then you'll probably want to leave that ticked.
+But if your computer is low on memory, or is quite&nbsp;&nbsp;
+old and slow, then you should untick that box. In&nbsp;
+a moment, I'll show you what it does, and how you&nbsp;&nbsp;
+can start and stop the service manually.
+So we're going to accept all&nbsp;&nbsp;
+the defaults, and click on Next.
+Leave everything unchanged on the Server&nbsp;&nbsp;
+File Permissions dialogue, and click Next again.
+We've now configured everything, and this screen&nbsp;&nbsp;
+just gives us a chance to go back if&nbsp;
+we decide we want to change something.&nbsp;
+We don't, so click Execute.
+The installer runs through the process&nbsp;&nbsp;
+
+
+
+of configuring MySQL on this computer.
+When it's finished, click on Finish.&nbsp;
+Click on Next, and you can see we're now done –&nbsp;
+the installation procedure has been completed.&nbsp;
+Leave the checkbox to Start MySQL workbench&nbsp;
+after setup ticked. And that's because we want&nbsp;&nbsp;
+to run the Workbench, just to confirm the&nbsp;
+
+
+
+installation is okay. So click on Finish.&nbsp;
+Before we move on, I'm going&nbsp;
+to close the browser down.&nbsp;
+Ok, what I'd like to do next, is show you&nbsp;
+what that "Start the MySQL Server at System&nbsp;&nbsp;
+Startup" checkbox does – what effect it has, and&nbsp;
+what you can do if you decided not to tick it.&nbsp;
+We want to go into the Services on&nbsp;
+our computer, and Microsoft move that&nbsp;&nbsp;
+option around on different versions of Windows.
+The way that will work on all current versions,&nbsp;&nbsp;
+is to use the Windows key and R, then&nbsp;
+type services.msc into the Run box.&nbsp;
+
+
+
+Press Enter, and the services&nbsp;
+management console starts up.&nbsp;
+And once you've done that, you want to scroll on&nbsp;
+down here, until we get to MySQL. The services&nbsp;&nbsp;
+usually appear in alphabetical order,&nbsp;
+and the name we're looking for is the&nbsp;&nbsp;
+one we used when configuring the service.
+We didn't change the default, so for me,&nbsp;&nbsp;
+it's called MySQL80 – because I installed&nbsp;
+version 8.0. Your name might be slightly&nbsp;&nbsp;
+different, but you should be able to&nbsp;
+find your MySQL service in the list.&nbsp;
+And there's MySQL80. And you can see&nbsp;
+in this case, it's actually Running&nbsp;&nbsp;
+
+
+
+and the Startup Type is set to Automatic.
+That's a good sign. The fact that it's&nbsp;&nbsp;
+running tells us that the MySQL service has been&nbsp;
+
+
+
+successfully installed, and is actually running.&nbsp;
+
+
+
+That checkbox that we ticked, causes&nbsp;
+the Startup Type to be Automatic.&nbsp;
+You can override this, if your computer&nbsp;
+is low on resources – if you haven't got&nbsp;&nbsp;
+a lot of memory, you can change this.
+So instead of it starting automatically&nbsp;&nbsp;
+every time your computer starts, you can&nbsp;
+right-click that and go into properties,&nbsp;&nbsp;
+and you could make that Manual, and click on OK.
+And what that would mean is, it won't start&nbsp;&nbsp;
+automatically each time you turn the computer on.
+So you could start the computer, and if you decide&nbsp;&nbsp;
+you're doing some development in this course,&nbsp;
+you could just come over to here, right-click,&nbsp;&nbsp;
+and click on start. And that would start&nbsp;
+the service for that particular session.&nbsp;
+In my case, I'm happy to&nbsp;
+have this run automatically.&nbsp;
+
+
+
+I've got enough resources, so&nbsp;
+I'm going to right-click again,&nbsp;&nbsp;
+go into Properties, and choose Automatic.
+So that every time I reboot the computer,&nbsp;&nbsp;
+MySQL is available for me.
+We've confirmed that's running okay,&nbsp;&nbsp;
+
+
+
+so close the services down. All right. Getting&nbsp;
+back now to the MySQL workbench, that started&nbsp;&nbsp;
+automatically once MySQL was installed.
+I want to start by clicking on this local&nbsp;&nbsp;
+instance, so click on that, and it&nbsp;
+brings up this little screen. It's&nbsp;&nbsp;
+asking for the root user password.
+So I'm going to type in that root&nbsp;&nbsp;
+password that I set, earlier in the video.
+And I'm going to choose not to save it. You&nbsp;&nbsp;
+could choose to save the password if you like,&nbsp;
+but for security reasons I prefer not to do that.&nbsp;
+Click on OK.
+And this has opened up, which is&nbsp;&nbsp;
+a good sign that we got the password correct.
+If we come over here, on the left,&nbsp;&nbsp;
+and click on Server Status, that gives us&nbsp;
+a bit of an overview of our MySQL service.&nbsp;
+A lot of the information is&nbsp;
+hidden by that right-hand pane,&nbsp;&nbsp;
+so click the rightmost button, above it.
+You can see we've got 3 panes here,&nbsp;&nbsp;
+and each of those buttons corresponds to one&nbsp;
+of the panes. The rightmost one has a blue&nbsp;&nbsp;
+bar on its right-hand side. That shows that it&nbsp;
+represents the right-hand pane, and clicking&nbsp;&nbsp;
+it will toggle that right-hand pane on and off.
+When we remove that pane, we can see the graphical&nbsp;&nbsp;
+stats about our server.
+It's Running, as you can&nbsp;&nbsp;
+
+
+
+see here – so that's good.
+We can also see the number&nbsp;&nbsp;
+of connections, and other statistics.
+But obviously, there won't be a lot&nbsp;&nbsp;
+happening at the moment, and that's because&nbsp;
+we haven't really started using it yet.&nbsp;
+But bear in mind that we have actually&nbsp;
+connected to the server, because we've&nbsp;&nbsp;
+used MySQL Workbench to do that – in case you're&nbsp;
+wondering where the connections are coming from.&nbsp;
+Ok, come over here, on the left,&nbsp;
+and click on Users and Privileges.&nbsp;
+We can see the list of users – so you can&nbsp;
+see there that we had the root account,&nbsp;&nbsp;
+which was automatically created for us, and&nbsp;
+also the devuser account that we created.&nbsp;
+You might see a few other users, which are used&nbsp;
+internally by MySQL. If you don't see them,&nbsp;&nbsp;
+don't worry – sometimes the default settings&nbsp;
+are changed, and these accounts don't show&nbsp;&nbsp;
+up. That's fine, they're not accounts that we&nbsp;
+need to do anything with, and it's best that&nbsp;&nbsp;
+we don't make any changes to them.
+The account that we'll be using,&nbsp;&nbsp;
+most of the time, is this devuser account.&nbsp;
+We want to be able to create new databases,&nbsp;&nbsp;
+and perform all the other database-related&nbsp;
+tasks that we're going to learn about.&nbsp;
+That means we have to give this&nbsp;
+account the necessary access.&nbsp;
+Select devuser on the left, then&nbsp;
+click the Administrative Roles tab.&nbsp;
+You have full control over the level of access&nbsp;
+that you can grant to users, but it's often easier&nbsp;&nbsp;
+to use these roles that have already been created.
+For example, there's a UserAdmin role that can&nbsp;&nbsp;
+create users, but can't alter databases,&nbsp;
+and there's a DBManager role that can&nbsp;&nbsp;
+manage databases, but doesn't have the&nbsp;
+access needed to create or modify users.&nbsp;
+We will want to perform all tasks, so click the&nbsp;
+top option – DBA – to make devuser a Database&nbsp;&nbsp;
+Administrator. We'll be able to perform&nbsp;
+all tasks, when we log in as devuser.&nbsp;
+If you make any changes here, make sure you&nbsp;
+click Apply to apply the change, otherwise&nbsp;&nbsp;
+the access rights won't be granted.
+All right. So click on View now,&nbsp;&nbsp;
+and from the View menu select Home.
+We go back to where we were. Now we're&nbsp;&nbsp;
+going to come over here, and click on this&nbsp;
+little wrench – to the right of the plus&nbsp;&nbsp;
+sign – which is for managing connections.
+That should open up this Manage Server&nbsp;&nbsp;
+Connections screen here, as you can see.
+So I'm going to click on this Local Instance&nbsp;&nbsp;
+MySQL80, and we're going to click the Test&nbsp;
+Connection button, at the bottom right.&nbsp;
+If it wants a password, that root&nbsp;
+password, again, then type it in.&nbsp;
+And you can see that we've&nbsp;
+Successfully made the MySQL connection.&nbsp;
+So that tells us that MySQL is working correctly,&nbsp;
+and we're able to connect to the database.&nbsp;
+So that's okay. I'm going to click on OK.
+All right. Now let's click on the New&nbsp;&nbsp;
+button – over on the left. This time&nbsp;
+we're going to add a new connection.&nbsp;
+We're going to add a new connection, for&nbsp;
+what we're going to be using in this course.&nbsp;
+For the Connection Name, I'm just&nbsp;
+going to call it development,&nbsp;&nbsp;
+but you can call it whatever you like.
+And we're going to change the Username.&nbsp;
+Instead of root, we're going to change that&nbsp;
+to the username we created, which was devuser.&nbsp;
+Then I'm going to click on test connection, to&nbsp;
+make sure we can connect as our development user.&nbsp;
+We'll be asked for the password, so&nbsp;
+enter your devuser password this time.&nbsp;
+Remembering that this isn't the&nbsp;
+root user this is the other user.&nbsp;
+Click on OK, and you can see we made a&nbsp;
+successful connection. So that tells us&nbsp;&nbsp;
+that the username and password are valid,&nbsp;
+and we're good to go. So click on OK.&nbsp;
+Close this screen, and we've now got this second&nbsp;
+connection configured under the MySQL Connections.&nbsp;
+We're going to be able to use that in the course.
+I'm going to finish the video&nbsp;&nbsp;
+here. Now we're actually done.
+In the next video, as I mentioned&nbsp;&nbsp;
+at the start, it's a video for Mac users.
+So if you've just installed this on Windows,&nbsp;&nbsp;
+and you haven't got a Mac and/or a Linux&nbsp;
+machine, you can skip the next one or two videos,&nbsp;&nbsp;
+and move on to the video after that – where&nbsp;
+we start working with this MySQL instance that&nbsp;&nbsp;
+we've just installed and configured.
+I'll see you, in that next video.
