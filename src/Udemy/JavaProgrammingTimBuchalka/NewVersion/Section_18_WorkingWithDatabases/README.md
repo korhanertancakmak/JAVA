@@ -779,7 +779,7 @@ This returns all possible combinations of rows from both tables,
 which can blow up very quickly, to be a huge number of records.
 </div>
 
-
+## [c. Using MySQL WorkBench for a Sample Data]()
 <div align="justify">
 
 You can use the command line, 
@@ -872,214 +872,587 @@ Select the _schema_ tab in the left pane.
 It doesn't look like anything was added, 
 and that's because we need to refresh the UI.
 
-
+![image43](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image43.png?raw=true)
 
 That's the little icon to the right of the text, schemas.
-Clicking that, should now display
-music as one of the schemas.
+Clicking that should now display music as one of the schemas.
 Open the music folder.
-Here you can see Data Objects Shown.
-These folders are shown, whether these objects
-exist or not, allowing you to create new ones.
-Open the Tables Node next.
-Now you can see this database has
-three tables, albums, artists and songs.
-Let me show you what's called an Entity
-Relationship Diagram on a Slide.
-An Entity Relationship Diagram
-is similar to a Class Diagram.
-An Entity is a table in this case,
-so all three tables are shown here.
-The column marked as a primary key is
-identified by the key icon, and P K letters.
-The primary key is separated from the
-other columns as you can see.
-The additional columns are listed.
-Relationships are shown with connector
-lines, which describe how two tables,
+Here you can see _Data Objects_ shown.
+
+![image44](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image44.png?raw=true)
+
+These folders are shown whether these objects exist or not, 
+allowing you to create new ones.
+Open the _Tables_ node next.
+Now you can see this database has three tables,
+_albums_, _artists_ and _songs_.
+Let me show you what's called an _Entity Relationship Diagram_ on below.
+
+![image45](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image45.png?raw=true)
+
+An _Entity Relationship Diagram_ is similar to a _Class_ diagram.
+An _Entity_ is a table in this case, so all three tables are shown here.
+The column marked as a primary key is identified by the key icon, and _PK_ letters.
+The primary key is separated from the other columns as you can see.
+The additional columns are listed. 
+Relationships are shown with connector lines, which describe how two tables,
 or entities relate, to one another.
-Both of the relationships shown on
-this diagram are one to many, or many to
-one, depending on how you look at it.
-If I read this document, I have songs,
-and many songs may be on a single album,
-a record in the albums table.
-The album id is included in the songs
-table, as what's called a foreign key column.
-This column's purpose, in the songs table,
-is to specify the related record, which
-makes joining the tables much easier.
-Albums may have many songs, but in this model,
-an album has only one artist, so the artist id
-is a foreign key column on the albums table.
-An artist however might be on many albums,
-so it has a one to many relationship with albums.
-Let's now see what this looks like in the MySQL WorkBench.
-We're going to use this database for many of the upcoming lectures,
+Both of the relationships shown on this diagram are one to many, 
+or many to one, depending on how you look at it.
+If I read this document, I have **songs**,
+and many songs may be on a single **album**,
+a record in the **albums** table.
+The _album_id_ is included in the **songs** table, 
+as what's called a **foreign key** column.
+This column's purpose, in the **songs** table is 
+to specify the related record, 
+which makes joining the tables much easier.
+**Albums** may have many **songs**, 
+but in this model, an **album** has only one **artist**, 
+so the _artist_id_ is a _foreign key_ column on the **albums** table.
+An **artist** however might be on many **albums**,
+so it has a _one-to-many_ relationship with **albums**.
+Let's now see what this looks like in the _MySQL WorkBench_.
+
+We're going to use this database for many of the upcoming sections,
 so it's kind of important that you understand it.
-The easiest way to do this is, click
-on the music schema in the left pane.
-We'll use the schema inspector to
-learn more about the music database.
-You can right click on the music
-schema, and select schema inspector.
-Alternately, you can select the
-third icon on the tool bar menu,
-third from the left, that has an i on it.
-This opens a new tab, with a tabbed panel,
-and shows a few details about this schema, such
-as table count, and an estimated database size.
-You might wonder why this has a table count
-of 4, and we've only seen three tables.
-This count includes views, and I'll
-talk more about the view in a minute.
-The tabs are labeled, tables, columns,
+The easiest way to do this is, 
+click on the **music** schema in the left pane.
+We'll use the schema inspector 
+to learn more about the **music** database.
+You can right-click on the **music** schema, 
+and select schema inspector.
+Alternately, you can select the third icon on the toolbar menu,
+third from the left, that has an _i_ on it.
+This opens a new tab, with a tabbed panel, 
+and shows a few details about this schema,
+such as _table count_, and an estimated _database size_.
+You might wonder why this has a table count of 4, 
+and we've only seen three tables.
+This count includes views, 
+and I'll talk more about the view in a minute.
+The tabs are labeled, tables, columns, 
 indexes, triggers, views, stored procedures,
 functions, grants and events.
 Let's click on tables first.
-The main thing of interest here, is the column
-labeled rows, which tells us how many records,
-are in each table.
+The main thing of interest here is the column labeled rows, 
+which tells us how many records are in each table.
 Now let's click columns.
-This shows the columns for all the tables, as
-well as the view, which is named album view.
-You can see the column name, and types, and
-whether nulls are supported in each for example.
-In all cases, except the id fields,
-the values can be null, meaning not
-every column is required to have data.
-Let's look at the indexes tab next.
-In this case, we can see each table
-has a primary index, which is unique,
-and the column used is shown here.
-In addition, there's an index for each
-foreign key, and this index isn't unique.
-Let's now take a look at some of the data.
-I'll open the tables node, and click on albums.
-Notice the three icons that appear when this
-table is selected.
-The icon we want is the last,
-the spreadsheet like one.
-Clicking on that opens another tab,
-with two panels.
-The top bottom
-shows the SQL statement that was executed.
+This shows the columns for all the tables, 
+as well as the view, which is named album view.
+You can see the column name, and types, 
+and whether nulls are supported in each, for example.
+In all cases, except the id fields, the values can be null, 
+meaning not every column is required to have data.
+Let's look at the _indexes_ tab next.
+In this case, we can see each table has a primary index, 
+which is unique, and the column used is shown here.
+In addition, there's an index for each foreign key, 
+and this index isn't unique.
+Let's now take a look at some data.
+I'll open the _tables_ node, and click on **albums**.
+Notice the three icons that appear when this table is selected.
+The icon we want is the last, the spreadsheet like one.
+Clicking on that opens another tab, with two panels.
+
+![image46](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image46.png?raw=true)
+
+The top bottom shows the SQL statement that was executed.
 The bottom panel lists the data in the table.
-If this is your first look at an SQL
-statement, this is a very common statement.
-The SELECT command will get the data.
+If this is your first look at an SQL statement, 
+this is a widespread statement.
+The `SELECT` command will get the data.
 A list of columns would follow this command,
-but if you enter an asterisk or star, you're
-specifying you want the data in every column.
-The FROM clause will specify what table
+but if you enter an **asterisk or star**, 
+you're specifying you want the data in every column.
+The `FROM` clause will specify what table 
 or view the data should come from,
-so here it's coming from the albums table.
-Notice though that the albums table includes
-the schema or database name.
-Ok, so that's a super quick look
-at this work bench, and the music database.
+so here it's coming from the **albums** table.
+Notice though that the **albums** table includes the schema 
+or database name.
+Ok, so that's a super quick look at this work bench, 
+and the music database.
 I want to encourage you to use this database,
-to get familiar with work bench.
-You can always delete the music
-database and re import it, so try to
-spend some time here, if you have it.
-Before I end this video, I
-want to look at the view.
-A view is sort of a virtual table.
-Let's open the Views node, and select
-album view, and again select that last icon.
+to get familiar with workbench.
+You can always delete the music database and reimport it, 
+so try to spend some time here, if you have it.
+Before I end this section, I want to look at the **view**.
+A **view** is sort of a _virtual table_.
+Let's open the _Views_ node, and select album view, 
+and again select that last icon.
+
+![image47](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image47.png?raw=true)
+
 This will do the same thing as we saw with albums,
-so the query will be on top, and
-the data on the bottom panel.
+so the query will be on top, and the data on the bottom panel.
 Here, the data doesn't have any IDs,
 and has data from all three tables.
-This is a full look or view of all
-the pertinent data in all the tables.
+This is a full look or view of all the pertinent data in all the tables.
 Let's look at data for just a single album.
-To do this, I need to add a where
-clause to my select statement.
-A where clause takes a column name,
-so in this case I want to search by an album name,
-and I want that album name to be equal to Argus.
-Strings are always enclosed in single quotes.
-To execute this query, I can choose the
-lightning bolt icon.
-There's two lightning
-bolts and either would execute this statement.
-The first is a bit more flexible, because it let's
-you select a portion of a complex statement,
-and execute only that selected portion.
-If you have no selection, you can execute either.
-Now, the data in the bottom panel,
-the result grid, is showing the
-songs for only the Argus album,
-which is an album by the artist, Wishbone Ash.
-Remember, album name is stored in the album table,
-artist name is stored in the artists table,
-and song title is in the songs table.
-A view is a SQL SELECT statement,
-that's saved, and given a name.
-The data's not saved in the view, only the SQL
-statement is saved, that will return that data.
-We can use this view's name to easily query data.
-You can think of the view as a
-type of encapsulation.
-It's hiding information about the
-table structures and relationships, and displaying
-only the columns deemed necessary for the client.
-In fact, the client might never have to know
-that this data is stored in three tables.
-When a table's structure changes, the view may
-not have to change, so any software reliant
-on these structures, can remain unaffected.
-I'll click on album view again in the left pane,
-but this time I'll select the
-second icon, the tool icon.
-This will display the stored query, in a tab.
-This statement consists of
-DDL and DML statements.
-It's creating a database object,
-a view, named album view with Database
-Definition language, the command Create.
-And it's storing a DML SELECT statement.
-This select statement is executed,
-when we select data from the view.
-Notice that the FROM clause,
-is selecting data from all three of
-our tables, using a series of JOINS.
-I'm not going to get into the
-details of this statement.
-The main thing is, that this view has all the
-information we'd want to query about the albums,
-artists and songs, and our java
-code doesn't have to understand
-too many details of the schema itself.
-We'll be using this view in a lot of our
-java code, which means we don't have to write
-code, with these joins in our java code.
-Ok, so I'll end this video here.
-In the next video, I'll show you how
-to connect to this database, from
-a Java application, so lets' go.
+To do this, I need to add a `where` clause to my `select` statement.
 
-
-```html  
-
+```MySQL  
+SELECT * FROM music.albumview where album_name = 'Argus';
 ```
 
+A `where` clause takes a column name,
+so in this case I want to search by an _album_name_,
+and I want that album name to be equal to _Argus_.
+Strings are always enclosed in single quotes.
+To execute this query, I can choose the lightning bolt icon.
+
+![image48](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image48.png?raw=true)
+
+There are two lightning bolts and either would execute this statement.
+The first is a bit more flexible 
+because it lets you select a portion of a complex statement,
+and execute only that selected portion.
+If you have no selection, you can execute too.
+Now, the data in the bottom panel, the result grid, 
+is showing the _songs_ for only the _Argus_ album,
+which is an album by the artist, _Wishbone Ash_.
+Remember, _album_name_ is stored on the **album** table,
+_artist_name_ is stored in the **artists** table,
+and _song_title_ is in the **songs** table.
+A _view_ is a SQL `SELECT` statement,
+that's saved, and given a name.
+The data's not saved in the view, 
+only the SQL statement is saved that will return that data.
+We can use this view's name to easily query data.
+You can think of the view as a type of encapsulation.
+It's hiding information about the table structures and relationships, 
+and displaying only the columns deemed necessary for the client.
+In fact, the client might never have to know 
+that this data is stored in three tables.
+When a table's structure changes, 
+the view may not have to change, 
+so any software reliant on these structures can remain unaffected.
+I'll click on album view again in the left pane,
+but this time I'll select the second icon, the tool icon.
+
+![image49](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image49.png?raw=true)
+
+This will display the stored query in a tab.
+This statement consists of _DDL_ and _DML_ statements.
+It's creating a database object, a view, 
+named album view with _Database Definition language_, the command `Create`.
+And it's storing a _DML_ `SELECT` statement.
+This select statement is executed when we select data from the view.
+Notice that the `FROM` clause is selecting data from all three of our _tables_, 
+using a series of `JOIN`s.
+I'm not going to get into the details of this statement.
+The main thing is that this view has all the information 
+we'd want to query about the _albums_, _artists_ and _songs_, 
+and our java code doesn't have to understand too many details of the schema itself.
+We'll be using this view in a lot of our java code, 
+which means we don't have to write code, 
+with these `join`s in our java code.
 </div>
 
-
-
+## [d. JDBC]()
 <div align="justify">
 
-```java  
+In the last section, we connected to the MySQL database server, 
+using _MySQL WorkBench_.
+We already had a connection set up with the username root, 
+but we also created a second connection for the dev user.
+We used this connection to import the music database import file.
 
-```
+In Java, you connect and communicate with the database 
+through something called _JDBC_.
+_JDBC_ stands for Java database connectivity.
+It's Java's way of providing a consistent way 
+to connect to a wide variety of databases, 
+including _relational_, _NoSQL_, and _object-oriented_ databases.
+It abstracts the complexities of connecting to different databases 
+through a common interface.
+This means we can use the same code to interact with different databases,
+without needing to rewrite, 
+or have a separate version of the application logic for each one.
+You can think of _JDBC_ as a middleman, 
+that sits between a Java application and a data source.
+You can also use _JDBC_ with spreadsheets
+and flat files, meaning you can use structured query language 
+to interact with these files.
+To use a particular data source from an application, 
+you'll need a JDBC driver for that data source.
+A driver is simply a Java library, 
+containing classes that implement the JDBC API.
+Drivers are usually provided by the database vendor, 
+either as a library jar, or a java module, 
+which we can import into our application.
+The current version of the JDBC API, 
+at the time of shooting this section, is JDBC 4.3.
+For backwards compatibility, 
+it contains all the methods in previous JDBC versions.
+You can find this information in the `java.sql` package 
+API documentation, which I'll pull up next.
 
-```html  
+![image50](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image50.png?raw=true)
 
-```
+First, notice, the description that this package provides tools 
+for accessing and processing data, usually a relational database,
+but can also be used for any data source with a tabular format, 
+which includes a spreadsheet or flat file, for example.
+Moving down a bit, you'll see all the versions listed.
+Below that, you can see the JDBC version and its relationship 
+to the JDK version, which is based on the since tag in the documentation.
+So for example, if you're using a JDBC 4.2 driver,
+you can't expect to have access to features introduced since version 9.
+The first note that comes after this list is important.
+Many of the new features are optional.
+This means there's some variation in drivers and supported features.
+It's important to check the driver's documentation
+to review what's actually supported.
+So why do we need a JDBC Driver?
+At the most basic level, these drivers allow us to:
+
+* **Connect** to the database. 
+Each database may have a different mechanism to establish a connection
+to it.
+* The driver lets us **Execute** SQL statements.
+These statements can be _DML_ statements, any of the _CRUD_ statements, 
+for example, or they can be _DDL_ statements, where you create tables, 
+or data artifacts from the application.
+* The driver also gives us a way to **Execute Stored** procedures.
+This sends a request to the database to execute a procedure 
+or function stored in the database.
+* We can **Retrieve** and process results.
+This could be a set of data from a select statement, 
+or a count of rows updated or inserted.
+* Finally, the driver provides a uniform method of **Handling Database Exceptions**.
+Since there have been changes to the way that JDBC works over time,
+you want to be sure you're working with a driver that supports at least JDBC 4.0.
+Some Features in JDBC 4.0 and later include:
+
+* Auto-loading of JDBC drivers.
+This was a significant improvement, but you might see legacy code 
+that uses explicit _Driver Registration_, which I'll demonstrate in a future section.
+* Other features are Built-in Connection Pooling.
+* Distributed Transactions.
+* Row streaming.
+* _SQLXML_ support.
+* And support for _Try-With-Resources_.
+
+I'll talk about most of these features in the sections ahead.
+JDBC consists of two packages, `java.sql` which is core JDBC,
+and `javax.sql`, which provides the API for server side data source access.
+The `java.sql` package contains most of the types you'll need 
+to communicate with your data source.
+But `javax.sql` provides two alternative types, for several of the most significant types.
+
+| Purpose            | `java.sql`     | `javax.sql` |
+|--------------------|----------------|-------------|
+| Makes a connection | DriverManager  | DataSource  |
+| Query Results      | ResultSet      | RowSet      |
+
+To make a connection with a driver, you can use either **Driver Manager** or **DataSource**.
+**DriverManager** should be replaced with **DataSource** in most cases, 
+because it's newer and supports a lot more functionality.
+For querying results, there's the standard **ResultSet** type, 
+but the **RowSet** interface provides many advantages.
+I'll review both of these in the next couple of sections.
+Before we move onto those sections,
+and get back into Java, 
+I'll first walk you through downloading a jdbc driver, for the _MySQL_ database.
+I'll google _MySQL connectors_. 
+You should see the MySQL connectors, hosted by `MySQL.com` 
+displayed as the first option. 
+I'll click that.
+On this page, you can see a list of drivers for different programming languages.
+We want the JDBC Driver, which is `Connector/J`,
+so I'll select the download link there.
+On this page, you'll need to select your operating system.
+And actually, regardless of your operating system,
+you can download the **platform independent version**.
+I'll select the zip archive, and download that.
+There's also a tar archive for non-Windows environments, 
+or if you've got a zip utility that supports tar files.
+I'll then extract that, after it's downloaded,
+to a directory I'll be using in the next section.
+Opening that extracted folder, 
+the important thing we're after, is the jar file, 
+which contains the classes and types needed for this driver.
+Make sure you remember where you've extracted this.
+
+
+
+
+
+
+In the last video, we talked about what
+JDBC is, and downloaded the My SQL's
+driver for Java, called Connector slash J.
+This is a jar file, which contains all the
+packaged classes needed to connect and
+execute queries, on a MySQL database.
+I've created a new project, calling it
+MySQLMusic, with the usual main class
+and method, in the dev lpa package.
+Before I do anything else, I need to
+include the code in that jar file in my project.
+So with the project panel open, I can select my
+project root, and from the menu,
+I'll select Open Module Settings, or F 4 if you're on windows.
+On the left pane of this dialog,I'll select Libraries.
+I'll click the + sign at the top of the panel,
+that says Nothing to show.
+Here, you have two choices.
+You can get a Java library by selecting
+a jar file from an accessible drive,
+or if you've got Maven installed, you can
+download this from the Maven Repository.
+I'll show you this first, then we'll
+remove it, and add the jar we downloaded.
+To find this driver, I can type in com.mysql
+in the dialog there,
+and pick the search icon to the right of that.
+This displays the different versions of the drivers available on Maven.
+You can just pick the latest version there.
+Here you can see it's giving me the information
+that the mysql connector.j, will be added to
+the MySQLMusic module.
+So I'll hit Ok there.
+And you can see that a couple of jars
+are now in the Classes folder here.
+If you're already comfortable using maven,
+and modules, feel free to go with this.
+I'll be talking about Maven
+in an upcoming section.
+Now I'll remove this, and simply add the jar.
+So I'll click on that module in the second pane.
+And I'll click the minus sign.
+And select OK to the prompt that asks
+if I want to remove that library.
+I'll pick the plus sign again,
+and this time I'll choose Java.
+This brings up the file dialog,
+so I'll go to the jar, where I extracted
+it in the last video, and select it.
+And now I've got my jar as a library.
+Selecting Ok, I can close this window, and
+we're now ready to connect to our music database.
+But even before we do that, I think I should talk
+a little about usernames and passwords.
+One thing you really never want to do,
+is put this information in your source code.
+This leaves you with a few other options,
+such as putting it in a properties
+file, or a configuration file,
+or soliciting the data from the user.
+In a server environment, the connection
+and connection details, would be configured
+as part of the Datasource, but we won't
+be testing in that kind of environment.
+So rather than encourage bad habits, for now,
+I think we'll prompt a user for the data.
+If we use a Scanner with System.in,
+to get the information from the console,
+we don't have a way to mask the password.
+That leaves us with Console, which
+we learned early on in the course, doesn't work from the IDE.
+Since we haven't covered a lot ofUser Interface options yet,
+except for a Swing dialog, I'll just go with two swing prompts.
+I'll set these up in the main method.
+I'll create a local variable that'll
+get populated by calling showInputDialog on a
+JOptionPane. This takes a parent component which
+would normally be the parent page for example.
+Here, I'll just pass null, since we're using this
+outside of a true user interface application.
+And the prompt will say Enter DB Username.
+I'll use a different method on
+the JOptionPane for the password.
+In this case, I'll first create
+a special type of variable.
+This is a swing class, JPasswordField, that will
+mask the input. Instead of showInputDialog,
+I'll call showConfirmDialog, which is similar, but in
+this case, I can pass my password field instance,
+as the second argument. The prompt will be Enter
+DB Password, and the user can choose OK or the
+cancel option in this case. I want my password to
+be an array of characters, which I'll explain in
+a minute, and I'll make that final. If the user
+entered OK, then I'll get the password, from the
+pf variable, otherwise I'll set it to null;
+The getPassword method,
+returns a character array, and not a string.
+This is because a string might get interned,
+and this password, if it were a string, could
+inadvertently be stored on the String pool.
+A memory dump in any case, could
+reveal the user's password.
+It's best practice to encrypt or hash the
+password, but I won't include that code here.
+In most cases, as I've said, this information
+will hopefully be securely stored on a server.
+I just wanted you to be aware
+of a few of these issues.
+Ok, so now it's time to
+actually make a connection.
+First, I'll set up a static string
+for what's called the connection url.
+This is a string which uniquely describes
+how, and what you're connecting to,
+and it's determined by the database vendor.
+I'll make this private final static, a string
+called CONN_String, short for connection string.
+For my sql, this will always start with jdbc
+colon, my sql colon, then it will be followed
+by colon, two slashes, and hostname,
+where we can reach the database.
+Next, we have another
+slash and then the database name. So music.
+Depending on what database vendor you're using,
+your connection string may be a little different.
+On this slide, I'm showing you a
+few of the more common databases,
+and what a basic connection string might
+look like if the database was named music.
+You can see that some of the details,
+after the jdbc: vendor part, may vary.
+Postgres and MySQL are similar, but Oracle,
+in this example, includes anat sign,
+before the host, and Microsoft SqlServer,
+has a semi colon after it's port, so be
+sure you understand the right connection
+string you need to use for your vendor.
+So we use the connection string
+as input, to get a connection.
+As I mentioned in the previous video,
+there's two methods to do this.
+The first is with the DriverManager class.
+Like opening a file, you'll want to open a
+connection in a try with resources block.
+Inside the try parentheses, I'll set up a
+Connection variable, calling it simply connection,
+and calling a static method on the DriverManager
+class, named getConnection.
+This method takes the connection string,
+and optionally the username and password.
+Here, I'll turn my character array into
+a string, within the call to the method.
+If we get here, then we've successfully connected to the
+database, and I'll print that message.
+Another best practice, once you've used the password for
+whatever you need it for, you should reset the
+characters, so the password is only in memory
+for the shortest time possible.
+Here, I'll set the password to all spaces. I'll catch any
+SQLException that's thrown. If there's a problem,
+I'll re-throw a runtime exception.
+I don't have to close the connection,
+because I've created it (and implicitly
+opened it) in this try with resources code.
+The connection will get automatically
+closed when this code completes.
+Ok, so let's run this.
+
+
+
+I'll enter dev user in the first prompt,
+as you'll want to do, if you followed
+along with the MySQL WorkBench video.
+Next, I'll get prompted for the password.
+You'll want to enter your own password,
+that you set up for this user, in this field.
+Notice that I can't see the password, because
+I used the swing JPasswordField.
+My application will print Success,
+Connection made to the music database.
+So now, we're successfully connecting to
+the MySQL database from a Java application,
+using the DriverManager class to do it.
+Before we do anything else, I'll show
+you how to connect using a Datasource.
+Before the try with resources statement,
+I'll add a couple of lines of code.
+The first statement will create a variable,
+using type inference, called dataSource,
+and I'll set that to a new mySQLDataSource,
+which is My SQL's implementation of this type.
+This constructor doesn't have any arguments.
+SoI set the connection string by called setURL on that object.
+In this case,I've created a basic DataSourceimplementation.
+This will produce a standard connection object,
+much like I'd get with the Driver
+Manager, so it won't be pooled,
+or used in a distributed transaction.
+If you're working in a multi-tiered
+production environment, your client would
+get a datasource instance a different way.
+You'd use something called a JNDI naming service.
+I'll be talking about this service, when I cover
+client server applications
+a bit later in the course.
+When you get a datasource through
+JNDI, you wouldn't need to specify
+the URL or the username and password.
+Let's now get a connection using this datasource.
+First I'll comment out the first part of the
+try with resources, so the first two lines.
+After this I'll add a try with resources,
+but get the connection with the data source.
+This starts out the same as
+before, but this time I'll call
+getConnection on the datasource variable.
+This code compiles, but if we run it,
+
+
+
+I get an error, because I didn't pass the
+username or password that was supplied by
+the user, to the datasource's get
+connection method, so this fails.
+Again, if I had gotten the datasource instance
+from the naming context or JNDI, I could use this
+getConnection method with no arguments.
+But since I'm using a basic datasource,
+I do have to pass the user name and password I
+get, from the swing inputs, so I'll do that now.
+I'll pass the username, and
+the password as a string.
+And rerunning this code,
+I've now got my success message.
+I could also have used the setUser and
+setPassword methods, as I did with setURL.
+In fact, I can use datasource without a
+connection string at all, by using the set
+methods on this class.
+Let's do this.
+I'll comment out the setURL method.
+Now, I'll start typing dataSource.set
+Take a minute to scroll through the
+set methods available on this class.
+It wouldn't be an understatement to
+say, there's a lot of options here.
+We'll just focus on the basics.
+I'll pick setServerName from
+the list, and pass that localhost.
+I'll next setPort, to 3 3 0 6.
+And I'll set the database name to music.
+I'll run this code, and enter the user and password,
+
+
+
+and I get the same result.
+I'm not going to get into all the
+complexities of the datasource type,
+in this introduction to the subject.
+In this case, there's not much difference
+between these two methods, since both
+connection types are basic connections.
+But Datasource is newer, and generally
+preferred over DriverManager.
+Datasource should definitely be used in
+a multi tiered environment, that requires
+connection pooling or distributed transactions.
+Ok, so now that we can connect, it's time to do
+some of the fun work, which is getting data from
+the database, so let's move on to the next video.
+
+
 
 </div>
 
