@@ -844,28 +844,25 @@ _Management_, _Instance_, and _Performance_.
 Under Management, the last option is Data Import Restore.
 Select that.
 
+![image41](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image41.png?raw=true)
 
-
-If you have the bottom
-panel or right panel open, you'll want to close
-these, so you can see the form in its entirety.
+If you have the bottom panel or right panel open, 
+you'll want to close these, so you can see the form in its entirety.
 You do this by toggling the buttons in the right corner of this IDE.
 Optionally, you could turn off the left pane as well.
 I'll do this, so I have more screen space.
-By default, the Import from Dump
-Project Folder is selected,
-but we want to select Import from Self contained file, the next radio button shown there.
-And you'll want to use the ellipse button to
-find, and select, the music_database.sql file,
-you downloaded from the resources folder.
-You have to know what's in your file, and this
-file includes the creation of the schema, so we
-don't have to specify a default target schema.
-In fact, we don't have to do anything else
-on this screen, except click the Start Import
-button in the lower right hand corner.,
-Next, you'll see the output of the log
-shown, in a second tab.
+By default, the _Import from Dump Project Folder_ is selected,
+but we want to select Import from self-contained file 
+the next radio button has shown there.
+And you'll want to use the ellipse button to find, 
+and select, the _music_database.sql_ file,
+you downloaded from the resources' folder.
+You have to know what's in your file, 
+and this file includes the creation of the schema, 
+so we don't have to specify a default target schema.
+In fact, we don't have to do anything else on this screen, 
+except click the _Start Import_ button in the lower right-hand corner.
+Next, you'll see the output of the log shown in a second tab.
 The final line should say
 music_database.sql has finished.
 Close this tab, and if you did
