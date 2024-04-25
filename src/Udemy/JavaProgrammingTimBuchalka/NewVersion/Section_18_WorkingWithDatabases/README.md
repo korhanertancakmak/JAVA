@@ -862,16 +862,19 @@ and this file includes the creation of the schema,
 so we don't have to specify a default target schema.
 In fact, we don't have to do anything else on this screen, 
 except click the _Start Import_ button in the lower right-hand corner.
+
+![image42](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image42.png?raw=true)
+
 Next, you'll see the output of the log shown in a second tab.
-The final line should say
-music_database.sql has finished.
-Close this tab, and if you did
-close the left pane, reopen it now.
-Select the schemas tab in the left pane.
-It doesn't look like anything was added, and
-that's because we need to refresh the u i.
-That's the little icon to the
-right of the text, schemas.
+The final line should say _music_database.sql_ has finished.
+Close this tab, and if you did close the left pane, reopen it now.
+Select the _schema_ tab in the left pane.
+It doesn't look like anything was added, 
+and that's because we need to refresh the UI.
+
+
+
+That's the little icon to the right of the text, schemas.
 Clicking that, should now display
 music as one of the schemas.
 Open the music folder.
