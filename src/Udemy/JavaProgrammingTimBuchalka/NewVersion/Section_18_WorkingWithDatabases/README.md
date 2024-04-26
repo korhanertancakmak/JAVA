@@ -821,7 +821,7 @@ they're for use by the system,
 and you can cause serious problems if you mess about with them,
 without first understanding them.
 
-First, let's step back, and see what this IDE provides.
+First, let's step back and see what this IDE provides.
 As you can see, there are a lot of features in _MySQL Workbench_.
 In the main window, a tab is open that says Query 1.
 This is where you'd type SQL commands, and it works like a text editor.
@@ -1049,7 +1049,7 @@ which means we don't have to write code,
 with these `join`s in our java code.
 </div>
 
-## [d. JDBC]()
+## [d. Connecting to a database with JDBC]()
 <div align="justify">
 
 In the last section, we connected to the MySQL database server, 
@@ -1169,305 +1169,1088 @@ I'll select the zip archive, and download that.
 There's also a tar archive for non-Windows environments, 
 or if you've got a zip utility that supports tar files.
 I'll then extract that, after it's downloaded,
-to a directory I'll be using in the next section.
-Opening that extracted folder, 
-the important thing we're after, is the jar file, 
-which contains the classes and types needed for this driver.
-Make sure you remember where you've extracted this.
+This is a jar file, which contains all the packaged classes 
+needed to connect and execute queries, on a _MySQL_ database.
 
+```java  
+public class Main {
+    
+    public static void main(String[] args) {
 
+    }
+}
+```
 
-
-
-
-In the last video, we talked about what
-JDBC is, and downloaded the My SQL's
-driver for Java, called Connector slash J.
-This is a jar file, which contains all the
-packaged classes needed to connect and
-execute queries, on a MySQL database.
-I've created a new project, calling it
-MySQLMusic, with the usual main class
-and method, in the dev lpa package.
-Before I do anything else, I need to
-include the code in that jar file in my project.
-So with the project panel open, I can select my
-project root, and from the menu,
-I'll select Open Module Settings, or F 4 if you're on windows.
-On the left pane of this dialog,I'll select Libraries.
-I'll click the + sign at the top of the panel,
-that says Nothing to show.
+I've created the usual main class and method.
+Before I do anything else, 
+I need to include the code in that jar file in my project.
+So with the project panel open, 
+I can select my project root, and from the menu,
+I'll select _Open Module Settings_, or _F4_ if you're on windows.
+On the left pane of this dialog, I'll select _Libraries_.
+I'll click the _+_ sign at the top of the panel, that says _Nothing to show_.
 Here, you have two choices.
-You can get a Java library by selecting
-a jar file from an accessible drive,
-or if you've got Maven installed, you can
-download this from the Maven Repository.
-I'll show you this first, then we'll
-remove it, and add the jar we downloaded.
-To find this driver, I can type in com.mysql
-in the dialog there,
+You can get a _Java_ library by selecting a jar file 
+from an accessible drive, or if you've got _Maven_ installed, 
+you can download this from the _Maven Repository_.
+I'll show you this first, then we'll remove it, 
+and add the jar we downloaded.
+To find this driver, I can type in _com.mysql_ in the dialog there,
 and pick the search icon to the right of that.
-This displays the different versions of the drivers available on Maven.
-You can just pick the latest version there.
-Here you can see it's giving me the information
-that the mysql connector.j, will be added to
-the MySQLMusic module.
-So I'll hit Ok there.
-And you can see that a couple of jars
-are now in the Classes folder here.
-If you're already comfortable using maven,
-and modules, feel free to go with this.
-I'll be talking about Maven
-in an upcoming section.
+This displays the different versions of the drivers available on _Maven_.
+You can pick the latest version there.
+Here you can see it's giving me the information that the mysql `connector.j` 
+will be added to my module.
+So I'll hit _Ok_ there.
+And you can see that a couple of jars are now in the _Classes_ folder here.
+If you're already comfortable using maven and modules, 
+feel free to go with this.
+I'll be talking about _Maven_ in an upcoming section.
 Now I'll remove this, and simply add the jar.
 So I'll click on that module in the second pane.
 And I'll click the minus sign.
-And select OK to the prompt that asks
-if I want to remove that library.
-I'll pick the plus sign again,
-and this time I'll choose Java.
-This brings up the file dialog,
-so I'll go to the jar, where I extracted
-it in the last video, and select it.
+And select _OK_ to the prompt that asks if I want to remove that library.
+I'll pick the plus sign again, and this time I'll choose _Java_.
+This brings up the file dialog, so I'll go to the jar, 
+where I extracted it in the last section, and select it.
 And now I've got my jar as a library.
-Selecting Ok, I can close this window, and
-we're now ready to connect to our music database.
-But even before we do that, I think I should talk
-a little about usernames and passwords.
-One thing you really never want to do,
-is put this information in your source code.
+Selecting _Ok_, I can close this window, 
+and we're now ready to connect to our music database.
+But even before we do that, 
+I think I should talk a little about usernames and passwords.
+One thing you really never want to do is put this information in your source code.
 This leaves you with a few other options,
-such as putting it in a properties
-file, or a configuration file,
+such as putting it in a properties file, or a configuration file,
 or soliciting the data from the user.
-In a server environment, the connection
-and connection details, would be configured
-as part of the Datasource, but we won't
-be testing in that kind of environment.
+In a server environment, the connection and connection details would be 
+configured as part of the _Datasource_, 
+but we won't be testing in that kind of environment.
 So rather than encourage bad habits, for now,
 I think we'll prompt a user for the data.
-If we use a Scanner with System.in,
+If we use a **Scanner** with `System.in`,
 to get the information from the console,
 we don't have a way to mask the password.
-That leaves us with Console, which
-we learned early on in the course, doesn't work from the IDE.
-Since we haven't covered a lot ofUser Interface options yet,
-except for a Swing dialog, I'll just go with two swing prompts.
-I'll set these up in the main method.
-I'll create a local variable that'll
-get populated by calling showInputDialog on a
-JOptionPane. This takes a parent component which
-would normally be the parent page for example.
-Here, I'll just pass null, since we're using this
-outside of a true user interface application.
-And the prompt will say Enter DB Username.
-I'll use a different method on
-the JOptionPane for the password.
-In this case, I'll first create
-a special type of variable.
-This is a swing class, JPasswordField, that will
-mask the input. Instead of showInputDialog,
-I'll call showConfirmDialog, which is similar, but in
-this case, I can pass my password field instance,
-as the second argument. The prompt will be Enter
-DB Password, and the user can choose OK or the
-cancel option in this case. I want my password to
-be an array of characters, which I'll explain in
-a minute, and I'll make that final. If the user
-entered OK, then I'll get the password, from the
-pf variable, otherwise I'll set it to null;
-The getPassword method,
-returns a character array, and not a string.
-This is because a string might get interned,
-and this password, if it were a string, could
-inadvertently be stored on the String pool.
-A memory dump in any case, could
-reveal the user's password.
-It's best practice to encrypt or hash the
-password, but I won't include that code here.
-In most cases, as I've said, this information
-will hopefully be securely stored on a server.
-I just wanted you to be aware
-of a few of these issues.
-Ok, so now it's time to
-actually make a connection.
-First, I'll set up a static string
-for what's called the connection url.
-This is a string which uniquely describes
-how, and what you're connecting to,
-and it's determined by the database vendor.
-I'll make this private final static, a string
-called CONN_String, short for connection string.
-For my sql, this will always start with jdbc
-colon, my sql colon, then it will be followed
-by colon, two slashes, and hostname,
-where we can reach the database.
-Next, we have another
-slash and then the database name. So music.
-Depending on what database vendor you're using,
-your connection string may be a little different.
-On this slide, I'm showing you a
-few of the more common databases,
-and what a basic connection string might
-look like if the database was named music.
-You can see that some of the details,
-after the jdbc: vendor part, may vary.
-Postgres and MySQL are similar, but Oracle,
-in this example, includes anat sign,
-before the host, and Microsoft SqlServer,
-has a semi colon after it's port, so be
-sure you understand the right connection
-string you need to use for your vendor.
-So we use the connection string
-as input, to get a connection.
-As I mentioned in the previous video,
-there's two methods to do this.
-The first is with the DriverManager class.
-Like opening a file, you'll want to open a
-connection in a try with resources block.
-Inside the try parentheses, I'll set up a
-Connection variable, calling it simply connection,
-and calling a static method on the DriverManager
-class, named getConnection.
-This method takes the connection string,
-and optionally the username and password.
-Here, I'll turn my character array into
-a string, within the call to the method.
-If we get here, then we've successfully connected to the
-database, and I'll print that message.
-Another best practice, once you've used the password for
-whatever you need it for, you should reset the
-characters, so the password is only in memory
-for the shortest time possible.
-Here, I'll set the password to all spaces. I'll catch any
-SQLException that's thrown. If there's a problem,
-I'll re-throw a runtime exception.
-I don't have to close the connection,
-because I've created it (and implicitly
-opened it) in this try with resources code.
-The connection will get automatically
-closed when this code completes.
-Ok, so let's run this.
-
-
-
-I'll enter dev user in the first prompt,
-as you'll want to do, if you followed
-along with the MySQL WorkBench video.
-Next, I'll get prompted for the password.
-You'll want to enter your own password,
-that you set up for this user, in this field.
-Notice that I can't see the password, because
-I used the swing JPasswordField.
-My application will print Success,
-Connection made to the music database.
-So now, we're successfully connecting to
-the MySQL database from a Java application,
-using the DriverManager class to do it.
-Before we do anything else, I'll show
-you how to connect using a Datasource.
-Before the try with resources statement,
-I'll add a couple of lines of code.
-The first statement will create a variable,
-using type inference, called dataSource,
-and I'll set that to a new mySQLDataSource,
-which is My SQL's implementation of this type.
-This constructor doesn't have any arguments.
-SoI set the connection string by called setURL on that object.
-In this case,I've created a basic DataSourceimplementation.
-This will produce a standard connection object,
-much like I'd get with the Driver
-Manager, so it won't be pooled,
-or used in a distributed transaction.
-If you're working in a multi-tiered
-production environment, your client would
-get a datasource instance a different way.
-You'd use something called a JNDI naming service.
-I'll be talking about this service, when I cover
-client server applications
-a bit later in the course.
-When you get a datasource through
-JNDI, you wouldn't need to specify
-the URL or the username and password.
-Let's now get a connection using this datasource.
-First I'll comment out the first part of the
-try with resources, so the first two lines.
-After this I'll add a try with resources,
-but get the connection with the data source.
-This starts out the same as
-before, but this time I'll call
-getConnection on the datasource variable.
-This code compiles, but if we run it,
-
-
-
-I get an error, because I didn't pass the
-username or password that was supplied by
-the user, to the datasource's get
-connection method, so this fails.
-Again, if I had gotten the datasource instance
-from the naming context or JNDI, I could use this
-getConnection method with no arguments.
-But since I'm using a basic datasource,
-I do have to pass the user name and password I
-get, from the swing inputs, so I'll do that now.
-I'll pass the username, and
-the password as a string.
-And rerunning this code,
-I've now got my success message.
-I could also have used the setUser and
-setPassword methods, as I did with setURL.
-In fact, I can use datasource without a
-connection string at all, by using the set
-methods on this class.
-Let's do this.
-I'll comment out the setURL method.
-Now, I'll start typing dataSource.set
-Take a minute to scroll through the
-set methods available on this class.
-It wouldn't be an understatement to
-say, there's a lot of options here.
-We'll just focus on the basics.
-I'll pick setServerName from
-the list, and pass that localhost.
-I'll next setPort, to 3 3 0 6.
-And I'll set the database name to music.
-I'll run this code, and enter the user and password,
-
-
-
-and I get the same result.
-I'm not going to get into all the
-complexities of the datasource type,
-in this introduction to the subject.
-In this case, there's not much difference
-between these two methods, since both
-connection types are basic connections.
-But Datasource is newer, and generally
-preferred over DriverManager.
-Datasource should definitely be used in
-a multi tiered environment, that requires
-connection pooling or distributed transactions.
-Ok, so now that we can connect, it's time to do
-some of the fun work, which is getting data from
-the database, so let's move on to the next video.
-
-
-
-</div>
-
-
-
-<div align="justify">
+That leaves us with **Console**, 
+which we learned early on in the course, doesn't work from the IDE.
+Since we haven't covered a lot of User Interface options yet,
+except for a **Swing** dialog, 
+I'll just go with two **swing** prompts.
+I'll set these up in the _main_ method.
 
 ```java  
+public class Main {
+    
+    public static void main(String[] args) {
 
+      String username = JOptionPane.showInputDialog(null, "Enter DB Username");
+
+      JPasswordField pf = new JPasswordField();
+      int okCxl = JOptionPane.showConfirmDialog(null, pf, "Enter DB Password", JOptionPane.OK_CANCEL_OPTION);
+      final char[] password = (okCxl == JOptionPane.OK_OPTION) ? pf.getPassword() : null;
+    }
+}
 ```
+
+I'll create a local variable that'll get populated by calling _showInputDialog_ 
+on a **JOptionPane**. 
+This takes a parent component which would normally be the parent page, for example.
+Here, I'll just pass **null**, 
+since we're using this outside a true user interface application.
+And the prompt will say _Enter DB Username_.
+I'll use a different method on the **JOptionPane** for the password.
+In this case, I'll first create a special type of variable.
+This is a **swing** class, **JPasswordField**, 
+that will mask the input. 
+Instead of _showInputDialog_, I'll call _showConfirmDialog_, 
+which is similar, but in this case, 
+I can pass my password field instance,
+as the second argument. 
+The prompt will be _Enter DB Password_, 
+and the user can choose _OK_ or the_cancel_ option in this case. 
+I want my password to be an array of characters, 
+which I'll explain in a minute, 
+and I'll make that final.
+If the user entered _OK_, then I'll get the _password_, 
+from the _pf_ variable, otherwise I'll set it to **null**;
+The _getPassword_ method, returns a character array, and not a string.
+
+This is because a string might get interned,
+and this password, if it were a string, 
+could inadvertently be stored on the **String** pool.
+A memory dump, in any case, could reveal the user's password.
+It's best practice to encrypt or hash the password, 
+but I won't include that code here.
+In most cases, as I've said, 
+this information will hopefully be securely stored on a server.
+I just wanted you to be aware of a few of these issues.
+
+```java  
+public class Main {
+
+    private final static String CONN_STRING = "jdbc:mysql://localhost:3335/music";
+
+    public static void main(String[] args) {
+
+      String username = JOptionPane.showInputDialog(null, "Enter DB Username");
+
+      JPasswordField pf = new JPasswordField();
+      int okCxl = JOptionPane.showConfirmDialog(null, pf, "Enter DB Password", JOptionPane.OK_CANCEL_OPTION);
+      final char[] password = (okCxl == JOptionPane.OK_OPTION) ? pf.getPassword() : null;
+    }
+}
+```
+
+Ok, so now it's time to actually make a connection.
+First, I'll set up a static string for what's called the connection url.
+This is a string that uniquely describes how, 
+and what you're connecting to,
+and it's determined by the database vendor.
+I'll make this private final static, 
+a string called _CONN_String_, short for connection string.
+For _mysql_, this will always start with jdbc colon, mysql colon, 
+then it will be followed by colon, two slashes, and hostname,
+where we can reach the database.
+Next, we have another slash and then the database name. 
+So music.
+Depending on what database vendor you're using,
+your connection string may be a little different.
+
+| Vendor               | JDBC Connection URL                                                                                                               |
+|----------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| MySQL                | `jdbc:mysql://[hostname]:[port]/[database]`<br/> example: "`jdbc:mysql://localhost:3335/music`"                                   |
+| PostgreSQL           | `jdbc:postgresql://[hostname]:[port]/[database]`<br/> example: "`jdbc:postgresql://localhost:5432/music`"                         |
+| Oracle               | `jdbc:oracle:thin:[@[hostname]:[port]/[database]]`<br/> example: "`jdbc:oracle:thin:@localhost:1521/music`"                       |
+| Microsoft SQL Server | `jdbc:sqlserver://[hostname]:[port];databaseName=[database]`<br/> example: "`jdbc:sqlserver://localhost:1433;databaseName=music`" |
+| SQLite               | `jdbc:sqlite:database.db`<br/> example: "`jdbc:sqlite:music.db`"                                                                  |
+
+On this table, I'm showing you a few of the more common databases,
+and what a basic connection string might look like 
+if the database was named _music_.
+You can see that some details, after the jdbc **vendor** part may vary.
+_Postgres_ and _MySQL_ are similar. 
+However, _Oracle_, in this example, includes an `@` sign,
+before the host, and _Microsoft Sql Server_,
+has a semicolon after it's port.
+So be sure you understand the right connection string
+you need to use for your **vendor**.
+
+```java  
+public class Main {
+    
+    private final static String CONN_STRING = "jdbc:mysql://localhost:3335/music";
+    
+    public static void main(String[] args) {
+        
+        String username = JOptionPane.showInputDialog(null, "Enter DB Username");
+
+        JPasswordField pf = new JPasswordField();
+        int okCxl = JOptionPane.showConfirmDialog(null, pf, "Enter DB Password", JOptionPane.OK_CANCEL_OPTION);
+        final char[] password = (okCxl == JOptionPane.OK_OPTION) ? pf.getPassword() : null;
+      
+        try (Connection connection = DriverManager.getConnection(CONN_STRING, username, String.valueOf(password))) {
+            System.out.println("Success!! Connection made to the music database");
+            Arrays.fill(password, ' ');
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+So we use the connection string as input, to get a connection.
+As I mentioned before, there are two methods to do this.
+The first is with the **DriverManager** class.
+Like opening a file, you'll want to open a connection 
+in a _try-with-resources_ block.
+Inside the _try_ parentheses, 
+I'll set up a _Connection_ variable, calling it simply _connection_, 
+and calling a static method on the **DriverManager** class, 
+named _getConnection_.
+This method takes the _connection_ string,
+and optionally the _username_ and _password_.
+Here, I'll turn my character array into a string, 
+within the call to the method.
+If we get here, then we've successfully connected to the database, 
+and I'll print that message.
+Another best practice, once you've used the password for whatever you need it for, 
+you should reset the characters, 
+so the password is only in memory for the shortest time possible.
+Here, I'll set the password to all spaces. 
+I'll catch any _SQLException_ that's thrown. 
+If there's a problem, I'll re-throw a _RuntimeException_.
+I don't have to close the connection
+because I've created it (and implicitly opened it) in this _try-with-resources_ code.
+The connection will get automatically closed when this code completes.
+Ok, so let's run this.
 
 ```html  
-
+Success!! Connection made to the music database
 ```
 
+I'll enter _devUser_ in the first prompt,
+as you'll want to do, if you follow along with the _MySQL WorkBench_ section.
+Next, I'll get prompted for the password.
+You'll want to enter your own password, that you set up for this user, in this field.
+Notice that I can't see the password because I used the **swing** _JPasswordField_.
+My application will print _Success, Connection made to the music database_.
+So now, we're successfully connecting to the _MySQL_ database 
+from a Java application, using the **DriverManager** class to do it.
+Before we do anything else, I'll show you how to connect using a _Datasource_.
+Before the _try-with-resources_ statement, I'll add a couple of lines of code.
+
+```java  
+public class Main {
+
+    private final static String CONN_STRING = "jdbc:mysql://localhost:3335/music";
+
+    public static void main(String[] args) {
+        
+        String username = JOptionPane.showInputDialog(null, "Enter DB Username");
+        JPasswordField pf = new JPasswordField();
+        int okCxl = JOptionPane.showConfirmDialog(null, pf, "Enter DB Password", JOptionPane.OK_CANCEL_OPTION);
+        final char[] password = (okCxl == JOptionPane.OK_OPTION) ? pf.getPassword() : null;
+
+        var dataSource = new MysqlDataSource();
+        dataSource.setURL(CONN_STRING);
+        try (Connection connection = DriverManager.getConnection(CONN_STRING, username, String.valueOf(password))) {
+            System.out.println("Success!! Connection made to the music database");
+            Arrays.fill(password, ' ');
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+The first statement will create a variable using type inference, 
+called _dataSource_, and I'll set that to a new **mySQLDataSource**,
+which is _MySQL_'s implementation of this type.
+This constructor doesn't have any arguments.
+I set the connection string by called _setURL_ on that object.
+In this case, I've created a basic **DataSource** implementation.
+This will produce a standard connection object 
+much like I'd get with the **DriverManager**, 
+so it won't be pooled or used in a distributed transaction.
+If you're working in a multi-tiered production environment, 
+your client would get a **datasource** instance a different way.
+You'd use something called a _JNDI_ (Java Naming and Directory Interface) naming service.
+I'll be talking about this service when I cover client server applications
+a bit later in the course.
+When you get a _datasource_ through _JNDI_, 
+you wouldn't need to specify the _URL_ 
+or the _username_ and _password_.
+Let's now get a connection using this _datasource_.
+
+```java  
+public class Main {
+    
+    private final static String CONN_STRING = "jdbc:mysql://localhost:3335/music";
+
+    public static void main(String[] args) {
+        
+        String username = JOptionPane.showInputDialog(null, "Enter DB Username");
+        JPasswordField pf = new JPasswordField();
+        int okCxl = JOptionPane.showConfirmDialog(null, pf, "Enter DB Password", JOptionPane.OK_CANCEL_OPTION);
+        final char[] password = (okCxl == JOptionPane.OK_OPTION) ? pf.getPassword() : null;
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setURL(CONN_STRING);
+
+        //try (Connection connection = DriverManager.getConnection(CONN_STRING, username, String.valueOf(password))) {
+        try (Connection connection = dataSource.getConnection() {
+            System.out.println("Success!! Connection made to the music database");
+            Arrays.fill(password, ' ');
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+First, I'll comment out the first part of the _try-with-resources_.
+After this, I'll add a try with resources,
+but get the connection with the data source.
+This starts out the same as before, but this time 
+I'll call _getConnection_ on the _datasource_ variable.
+This code compiles, but if we run it:
+
+```html  
+Exception in thread "main" java.lang.RuntimeException : java.sql.SQLException: Access denied for user 'korha'@'localhost' (using password: NO)
+    at .Main.main()
+Caused by: java.sql.SQLException : Access denied for user 'korha '@'localhost' (using password: NO)
+    at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException()
+    at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException()
+    at com.mysql.cj.jdbc.ConnectionImpl.createNewIO()
+    at com.mysql.cj.jdbc.ConnectionImpl.<init>()
+    at com.mysql.cj.jdbc.ConnectionImpl.getInstance()
+    at com.mysql.cj.jdbc.NonRegisteringDriver.connect()
+    at com.mysql.cj.jdbc.MysqlDataSource.getConnection()
+    at com.mysql.cj.jdbc.MysqlDataSource.getConnection()
+    at com.mysql.cj.jdbc.MysqlDataSource.getConnection()
+    at .Main.main()
+```
+
+I get an error because I didn't pass the _username_ 
+or _password_ that was supplied by the user, 
+to the _datasource_'s _getConnection_ method, so this fails.
+Again, if I had gotten the _datasource_ instance from the naming context or JNDI, 
+I could use this _getConnection_ method with no arguments.
+But since I'm using a basic datasource,
+I do have to pass the _username_ and _password_ 
+I get from the **swing** inputs, so I'll do that now.
+
+```java  
+public class Main {
+    
+    private final static String CONN_STRING = "jdbc:mysql://localhost:3335/music";
+
+    public static void main(String[] args) {
+        
+        String username = JOptionPane.showInputDialog(null, "Enter DB Username");
+        JPasswordField pf = new JPasswordField();
+        int okCxl = JOptionPane.showConfirmDialog(null, pf, "Enter DB Password", JOptionPane.OK_CANCEL_OPTION);
+        final char[] password = (okCxl == JOptionPane.OK_OPTION) ? pf.getPassword() : null;
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setURL(CONN_STRING);
+
+        //try (Connection connection = dataSource.getConnection() {
+        try (Connection connection = dataSource.getConnection(username, String.valueOf(password))) {
+            System.out.println("Success!! Connection made to the music database");
+            Arrays.fill(password, ' ');
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll pass the _username_, and the _password_ as a string.
+And rerunning this code:
+
+```html  
+Success!! Connection made to the music database
+```
+
+I've now got my success message.
+I could also have used the _setUser_ and _setPassword_ methods, 
+as I did with _setURL_.
+In fact, I can completely use _datasource_ 
+without a connection string, by using the _set_ methods on this class.
+Let's do this.
+
+```java  
+public class Main {
+    
+    private final static String CONN_STRING = "jdbc:mysql://localhost:3335/music";
+
+    public static void main(String[] args) {
+        
+        String username = JOptionPane.showInputDialog(null, "Enter DB Username");
+        JPasswordField pf = new JPasswordField();
+        int okCxl = JOptionPane.showConfirmDialog(null, pf, "Enter DB Password", JOptionPane.OK_CANCEL_OPTION);
+        final char[] password = (okCxl == JOptionPane.OK_OPTION) ? pf.getPassword() : null;
+        
+        var dataSource = new MysqlDataSource();
+        
+        //dataSource.setURL(CONN_STRING);
+        dataSource.setServerName("localhost");
+        dataSource.setPort(3335);
+        dataSource.setDatabaseName("music");
+        
+        try (Connection connection = dataSource.getConnection(username, String.valueOf(password))) {
+            System.out.println("Success!! Connection made to the music database");
+            Arrays.fill(password, ' ');
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll comment out the _setURL_ method.
+Now, I'll start typing `dataSource.set`. 
+Take a minute to scroll through the _set_ methods available in this class.
+It wouldn't be an understatement to say 
+there are a lot of options here.
+We'll just focus on the basics.
+I'll pick _setServerName_ from the list, and pass that _localhost_.
+I'll next _setPort_ to `3335`.
+And I'll set the database name to _music_.
+I'll run this code, and enter the user and password:
+
+```html  
+Success!! Connection made to the music database
+```
+
+And I get the same result.
+I'm not going to get into all the complexities of the _datasource_ type,
+in this introduction to the subject.
+In this case, there's not much difference between these two methods, 
+since both connection types are basic connections.
+But **Datasource** is newer, and generally preferred over **DriverManager**.
+**Datasource** should definitely be used in a multi tiered environment, 
+that requires connection pooling or distributed transactions.
+Ok, so now that we can connect, 
+it's time to do some of the fun work, 
+which is getting data from the database.
+</div>
+
+## [e. Querying Data]()
+<div align="justify">
+
+In the last section, we connected to the _music_ database, 
+first using a **DriverManager**, then using a **DataSource**.
+In this section, I'll start with a new **Main** class.
+Rather than getting username and password,
+with swing UI components, which gets old fast,
+this time, I'll use a combination of a properties file, 
+and an environment variable.
+Again, it's important to research best practices 
+for your own environment, and I'm not recommending
+this approach, for a production application.
+To start, I'll open the project panel,
+and create a new file, at the package folder, 
+called _music.properties_.
+This file will just contain plain text key value pairs.
+In the editor window, I'll enter the data 
+I need to connect to a _datasource_,
+without using a _connection_ string.
+
+```html  
+serverName=localhost
+port=3335
+databaseName=music
+user=devUser
+password=*******
+```
+
+This includes the server name or host,
+and I'll make that _localhost_, 
+the port, the database name, so _music_ there.
+I'll enter _devUser_ as the _username_.
+For now, I'm just going to put asterisks here 
+in the password value.
+You're welcome to enter your password there for your own testing, 
+but I'll instead use an environment variable,
+to add another level of security.
+I could set this up on my operating system, 
+but I can also just make it part of my build configuration.
+So I'll go to the _Run_ menu Item,
+then select _Edit Configurations_.
+As you can see, the configurations pane is empty. 
+
+```java  
+public class Main { 
+    public static void main(String[] args) {
+    
+    }
+}
+```
+
+So, I'll exit this and run the program,
+which creates a configuration, 
+and then come back to this screen again.
+You can see there's a text field 
+where you can enter a list of additional _environment variables_,
+so I'll enter `MYSQL_PASS=` there, and set that to my password.
+Getting back to the code, in the _main_ method, 
+I'll set up a _properties_ variable.
+I'll do this at the start of this main method.
+
+```java  
+public class Main { 
+    public static void main(String[] args) {
+        
+        Properties props = new Properties();
+        try {
+            props.load(Files.newInputStream(Path.of("music.properties"), StandardOpenOption.READ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+Because I'm reading data from a file, I need a _try-catch_. 
+The _properties_ object has a _load_ method, that takes an input stream, 
+so I'll set that up to use the _music.properties_ file at the package. 
+This file will be set to _READ_ only. 
+I'll catch the _IOException_. 
+And throw an unchecked exception if I do get an error.
+I won't retrieve the password until I need it, at the time I connect.
+This eliminates any concerns about it being part of any memory dump, 
+or string pool.
+Where I had values hard-coded in the _set_ methods 
+on data source in the previous section, 
+I'll use the values in the _props_ variable.
+
+```java  
+public class Main { 
+    public static void main(String[] args) {
+        
+        Properties props = new Properties();
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course03_QueryingData/music.properties";
+        try {
+            props.load(Files.newInputStream(Path.of(pathName), StandardOpenOption.READ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName(props.getProperty("serverName"));
+        dataSource.setPort(Integer.parseInt(props.getProperty("port")));
+        dataSource.setDatabaseName(props.getProperty("databaseName"));
+
+        try (var connection = dataSource.getConnection(props.getProperty("user"), System.getenv("MYSQL_PASS"))) {
+            
+            System.out.println("Success!");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll create a variable for the _datasource_.
+This is of type _MySQL Datasource_. 
+Instead of passing hard-coded values, 
+I'll pass the values that are in the _properties_ object. 
+I can get these, using the _getProperty_ method, 
+with the key name, so here I'll get server name. 
+For the _port_, I'll parse the value to an **Integer**. 
+And I'll pass the _databaseName_ in. 
+This is actually optional, and I'll show you that in a bit.
+Ok, I've got the _datasource_ initially set up, 
+now I want to establish a connection with my user and password.
+I'll use a try-with-resources block because it's important 
+to close database resources, just like file resources.
+In the parentheses, I'll use type inference,
+and call _getConnection_ on my _datasource_.
+I'll pass it the user property.
+And I'll pass it the password.
+This I'll get from the environment variable directly here,
+by calling `system.getENV`, 
+and pass the name I used, so _mySQL_PASS_. 
+If you want to use the password from the properties file, use _getProperty_. 
+I'll end the _try_ clause on its own line, 
+because I'll be adding to the _try_ clause statements shortly. 
+I'll print _Success_ if this all works.
+Otherwise, I'll catch the checked **SQLException**, 
+re-throwing it as a _RuntimeException_.
+I'll run this:
+
+```html  
+Success!
+```
+
+And success.
+I'm connecting to the music database,
+without having to enter the username and password,
+which was getting tedious quickly.
+This was a quick review of connecting again,
+but I did want to show you this alternative.
+It's time to actually get some data now.
+To do this, I can use a statement,
+which is an interface type in Java.
+It's implemented by the database vendor in the JDBC driver, 
+and represents an SQL statement.
+This can be either DML or DDL.
+A statement, once its executed, 
+will return the results of the query in a **ResultSet** object.
+I'll start with a basic select statement, to get all the artists.
+
+```java  
+public class Main { 
+    public static void main(String[] args) {
+        
+        Properties props = new Properties();
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course03_QueryingData/music.properties";
+        try {
+            props.load(Files.newInputStream(Path.of(pathName), StandardOpenOption.READ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        String query = "SELECT * FROM music.artists;
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName(props.getProperty("serverName"));
+        dataSource.setPort(Integer.parseInt(props.getProperty("port")));
+        dataSource.setDatabaseName(props.getProperty("databaseName"));
+
+        try (var connection = dataSource.getConnection(props.getProperty("user"), System.getenv("MYSQL_PASS"))) {
+            
+            System.out.println("Success!");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll set this up as a variable before the _try-with-resources_ statement.
+I'll make this a **String**, named _query_, and type in the SQL statement 
+I want executed, as a **String** literal.
+Here, I'll do `SELECT * FROM music.artists`.
+This statement will select all columns and all rows or records 
+from the artist's table in the music database or schema.
+Now, there are a couple of things here I just want to point out.
+
+First, the SQL commands and clauses in this statement are 
+all specified in uppercase, which is common practice.
+In contrast, the schema and table name are in lowercase.
+Although MySQL is a case-insensitive language,
+some databases are case-sensitive, 
+so again it's best practice to use lowercase for data objects,
+both in naming them and querying them.
+Specifying the music schema here isn't necessary either, 
+because we've specified it in the data resource.
+Even so, you should still make a habit of including it 
+in your SQL statement like this.
+It helps with clarity, and may actually be better performant in some databases.
+To actually run this, I first have to create a statement object.
+I'll include this in my _try-with-resources_ clause.
+
+```java  
+public class Main { 
+    public static void main(String[] args) {
+        
+        Properties props = new Properties();
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course03_QueryingData/music.properties";
+        try {
+            props.load(Files.newInputStream(Path.of(pathName), StandardOpenOption.READ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        
+        String query = "SELECT * FROM music.artists";
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName(props.getProperty("serverName"));
+        dataSource.setPort(Integer.parseInt(props.getProperty("port")));
+        dataSource.setDatabaseName(props.getProperty("databaseName"));
+
+        try (var connection = dataSource.getConnection(props.getProperty("user"), 
+                System.getenv("MYSQL_PASS"));
+             Statement statement = connection.createStatement();
+        ) {
+            //System.out.println("Success!");
+          
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                System.out.printf("%d %s %n", 
+                        resultSet.getInt(1),
+                        resultSet.getString("artist_name")
+                );
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+Hopefully you'll remember that this clause 
+can have multiple declarations, separated by a semicolon.
+So I'll start by adding that semicolon to the end of the _connection_ statement.
+Then I'll add the next declaration, after that.
+I can get a statement instance 
+by calling _createStatement_ on the _connection_ instance.
+For a select SQL statement,
+you'll use the _executeQuery_ method,
+to actually execute this query against your database, 
+which in turn returns a _ResultSet_.
+First, I'll remove the success statement I had there.
+Instead of that, I'll set up a _resultSet_ variable, 
+then assign it `statement.executeQuery`, 
+passing it my _query_ string.
+All three objects, the connection, the statement, 
+and the result set are all resources that need to be closed.
+I could've included the _ResultSet_ in the _try_ clause, 
+along with the _connection_ and _statement_, 
+but it's actually not necessary here.
+A **ResultSet** object is automatically closed, 
+when the **Statement** object that generated it is closed.
+It's also closed if the statement is re-executed,
+or used to retrieve the next result,
+from a sequence of multiple results.
+The **ResultSet** in this case will contain
+all the records in the **artists** table.
+To use it, I loop through its contents, with a _while_ loop.
+Like an iterator, I can check if there's a next value in the **ResultSet**.
+I'll print each record, first the artist id, then the artist name.
+There are different ways to retrieve the column or field data. 
+I can do it by index, as I'm doing for the artist id,
+so I'll call `resultSet.getInt`, and pass it 1. 
+Unlike most software languages, SQL starts with 1, as the first index, 
+and not 0, so 1 will get the first column's data,
+which is an integer value, the artist id here.
+Alternately, I can use the field name, so here,
+I'll call _getString_, and pass _artist_name_ here.
+I'll put the closing parentheses on its own line to support changes later on.
+Ok, that's it.
+Let's give this a try.
+I'll run this now:
+
+```html  
+1 Mahogany Rush
+2 Elf
+3 Mehitabel
+4 Big Brother & The Holding Company
+5 Roy Harper
+6 Pat Benatar
+7 Rory Gallagher
+8 Iron Maiden
+9 Blaster Bates
+10 Procol Harum
+.
+.
+.
+.
+190 Patti Smith
+191 Black Crowes
+192 Metallica
+193 U2
+194 Garbage
+195 Pink Fairies
+196 Deep Purple
+197 T.Rex
+198 Tom Petty & The Heartbreakers
+199 Thomas Tallis
+200 Stevie Ray Vaughan
+201 Chemical Brothers 
+```
+
+This will list all the artists in the table,
+in the order of the artist id, as you can see.
+Now this is a real success!
+I don't know about you, 
+but I always feel a sense of accomplishment, 
+getting that first query to work, 
+in a new database connection.
+I'm communicating with my database, via java code, 
+and that's pretty empowering really.
+In fact, there are very popular database management tools, 
+such as _Toad_, _DBeaver_, and _Oracle's SQL Developer_,
+that have been written in Java.
+These are similar to the _MySQL Workbench_,
+which is actually written in _C++_.
+You can use any of these tools to connect to a variety of databases.
+Ok, now let's change this SQL statement 
+to get a few records from the view, 
+which was named _albumview_, in the **music** database.
+This time I'll limit the data coming back
+to just a single album _namedTapestry_,
+which I can do with a _where_ clause.
+You can think of a _where_ clause as a filter,
+to get a subset of data, based on a particular condition, 
+as defined in the clause.
+Before the statement that sets the query variable,
+I'll add another variable for the album name.
+
+```java  
+public class Main { 
+    public static void main(String[] args) {
+        
+        Properties props = new Properties();
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course03_QueryingData/music.properties";
+        try {
+            props.load(Files.newInputStream(Path.of(pathName), StandardOpenOption.READ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        
+        String albumName = "Tapestry";
+        String query = "SELECT * FROM music.albumview WHERE album_name='%s'".formatted(albumName);
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName(props.getProperty("serverName"));
+        dataSource.setPort(Integer.parseInt(props.getProperty("port")));
+        dataSource.setDatabaseName(props.getProperty("databaseName"));
+
+        try (var connection = dataSource.getConnection(props.getProperty("user"), 
+                System.getenv("MYSQL_PASS"));
+             Statement statement = connection.createStatement();
+        ) {
+            
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                ///System.out.printf("%d %s %n", 
+                System.out.printf("%d %s %s %n", 
+                        resultSet.getInt("track_number"),
+                        resultSet.getString("artist_name"),
+                        resultSet.getString("song_title")
+                );
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+The album name will be _Tapestry_, as I said.
+I'll change the query below that,
+and use a formatted string to include album name in the query.
+So first, I'll change the table from _artists_ to _albumview_.
+You can query a view just like you would a table.
+I'll add a where clause, so _where album_name_ equals.
+I'll set that to a `'%s'`.
+In _ANSI SQL_, string literals should be enclosed in single quotes 
+when they're used in _where_ clauses like this.
+I'll be talking about using _ANSI SQL_ in a little more detail in a bit.
+Double quotes are used to delimit identifiers,
+such as _table_ and _column names_, which means these could contain spaces, 
+or other characters that aren't allowed in text literals.
+Some SQL implementations, including MySQL,
+allow you to use double quotes around text literals,
+but I'm going to stick with single quotes.
+I'll use the _formatted_ method on the string 
+to pass on the _album_name_ variable.
+Because the data coming back will be different for this view 
+from the **artists** table,
+I need to change my code in the _while_ loop, 
+where I'm printing data out.
+I'll add an extra `%s`, as a third element in the string being printed.
+I'll change the code, the _getInt_ argument from `1`, 
+or the first column, and use the column name,
+which is _track_number_ in this case.
+After the _artist_name_ get string,
+I'll add a comma, and a new line.
+Finally, I'll include the _song_title_ as well.
+If I run this:
+
+```html  
+1 Carole King I Feel The Earth Move 
+2 Carole King Carole King - So Far Away 
+3 Carole King It's Too Late 
+4 Carole King Home Again 
+5 Carole King Beautiful 
+6 Carole King Way Over Yonder 
+7 Carole King You've Got A Friend 
+8 Carole King Where You Lead 
+9 Carole King Will You Love Me Tomorrow 
+10 Carole King Smackwater Jack 
+11 Carole King Tapestry 
+12 Carole King (You Make Me Feel Like) A Natural Woman 
+13 Carole King Out In The Cold (Previously unreleased) 
+14 Carole King Smackwater Jack (Live) 
+```
+
+I'll see that _Carole King_ was the artist for the entire album, 
+and each of the songs is listed by the _track_number_ order.
+The view itself is ordered by _track_number_,
+which is why I didn't need an order by clause in my SQL statement.
+If you don't know what the data might be, 
+that's returned from your query,
+you can use the **ResultSetMetaData** object,
+to get information about the **ResultSet**.
+Let me show you how to do this.
+
+```java  
+public class Main { 
+    public static void main(String[] args) {
+        
+        Properties props = new Properties();
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course03_QueryingData/music.properties";
+        try {
+            props.load(Files.newInputStream(Path.of(pathName), StandardOpenOption.READ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        
+        String albumName = "Tapestry";
+        String query = "SELECT * FROM music.albumview WHERE album_name='%s'".formatted(albumName);
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName(props.getProperty("serverName"));
+        dataSource.setPort(Integer.parseInt(props.getProperty("port")));
+        dataSource.setDatabaseName(props.getProperty("databaseName"));
+
+        try (var connection = dataSource.getConnection(props.getProperty("user"), 
+                System.getenv("MYSQL_PASS"));
+             Statement statement = connection.createStatement();
+        ) {
+            
+            ResultSet resultSet = statement.executeQuery(query);
+
+            var meta = resultSet.getMetaData();
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
+                System.out.printf("%d %s %s%n", 
+                        i, 
+                        meta.getColumnName(i),
+                        meta.getColumnTypeName(i)
+                );
+            }
+            System.out.println("===================");
+            
+            while (resultSet.next()) {
+                System.out.printf("%d %s %s %n", 
+                        resultSet.getInt("track_number"),
+                        resultSet.getString("artist_name"),
+                        resultSet.getString("song_title")
+                );
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll add this code before I execute the _resultSet_.
+There's a method on the _resultSet_, called _getMetaData_. 
+On that object, I can get the number of columns that were returned,
+so I'll loop from 1 to this count. 
+For each column, I'll print the column index, remember this starts at 1. 
+I'll print the column name and its type. 
+I'll pass the appropriate data to that _printf_ statement. 
+There are multiple methods on the _resultSet_ metadata, 
+and two of these are _getColumnName_, and _getColumnTypeName_, 
+each which takes a column index.
+I'll include a separator line after this code runs.
+Running this:
+
+```html  
+1 album_name TEXT
+2 artist_name TEXT
+3 track_number INT
+4 song_title TEXT
+===================
+1 Carole King I Feel The Earth Move
+2 Carole King Carole King - So Far Away
+3 Carole King It's Too Late
+4 Carole King Home Again
+5 Carole King Beautiful
+6 Carole King Way Over Yonder
+7 Carole King You've Got A Friend
+8 Carole King Where You Lead
+9 Carole King Will You Love Me Tomorrow
+10 Carole King Smackwater Jack
+11 Carole King Tapestry
+12 Carole King (You Make Me Feel Like) A Natural Woman
+13 Carole King Out In The Cold (Previously unreleased)
+14 Carole King Smackwater Jack (Live) 
+```
+
+You can see information about the columns, printed out first.
+I can use this information to help facilitate handling data in a generic fashion.
+I'll show you an example of this next.
+
+```java  
+public class Main { 
+    public static void main(String[] args) {
+        
+        Properties props = new Properties();
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course03_QueryingData/music.properties";
+        try {
+            props.load(Files.newInputStream(Path.of(pathName), StandardOpenOption.READ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        
+        String albumName = "Tapestry";
+        String query = "SELECT * FROM music.albumview WHERE album_name='%s'".formatted(albumName);
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName(props.getProperty("serverName"));
+        dataSource.setPort(Integer.parseInt(props.getProperty("port")));
+        dataSource.setDatabaseName(props.getProperty("databaseName"));
+
+        try (var connection = dataSource.getConnection(props.getProperty("user"), 
+                System.getenv("MYSQL_PASS"));
+             Statement statement = connection.createStatement();
+        ) {
+            
+            ResultSet resultSet = statement.executeQuery(query);
+
+            var meta = resultSet.getMetaData();
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
+                System.out.printf("%d %s %s%n", 
+                        i, 
+                        meta.getColumnName(i),
+                        meta.getColumnTypeName(i)
+                );
+            }
+            System.out.println("===================");
+
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
+                System.out.printf("%-15s", meta.getColumnName(i).toUpperCase());
+            }
+            System.out.println();
+            
+            while (resultSet.next()) {
+                /*System.out.printf("%d %s %s %n", 
+                        resultSet.getInt("track_number"),
+                        resultSet.getString("artist_name"),
+                        resultSet.getString("song_title")
+                );*/
+                for (int i = 1; i <= meta.getColumnCount(); i++) {
+                    System.out.printf("%-15s", resultSet.getString(i));
+                }
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll remove the code I have in the while loop.
+Before this loop, I'll add a column of headers, 
+using the _resultSet_ metadata.
+Again, I'll loop from 1 to the column count, incrementing by one.
+This time, I'll print each column name, 
+making it left justified, and allowing for 15 characters.
+I'll also make the column names upper case.
+After the column headers are printed, I'll print a new line here.
+Now, in the while loop, I'll do something similar.
+Again, I'll loop through the metadata index.
+Here, I'll print the _resultSet_'s value,
+using _getString_, with the metadata index.
+After each record, I want a new line.
+Running this:
+
+```html  
+1 album_name TEXT
+2 artist_name TEXT
+3 track_number INT
+4 song_title TEXT
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Tapestry       Carole King    1              I Feel The Earth Move
+Tapestry       Carole King    2              Carole King - So Far Away
+Tapestry       Carole King    3              It's Too Late  
+Tapestry       Carole King    4              Home Again     
+Tapestry       Carole King    5              Beautiful      
+Tapestry       Carole King    6              Way Over Yonder
+Tapestry       Carole King    7              You've Got A Friend
+Tapestry       Carole King    8              Where You Lead 
+Tapestry       Carole King    9              Will You Love Me Tomorrow
+Tapestry       Carole King    10             Smackwater Jack
+Tapestry       Carole King    11             Tapestry       
+Tapestry       Carole King    12             (You Make Me Feel Like) A Natural Woman
+Tapestry       Carole King    13             Out In The Cold (Previously unreleased)
+Tapestry       Carole King    14             Smackwater Jack (Live)
+```
+
+I get all the data in a grid, 
+much like I'd see if I ran that query in the _MySQL WorkBench_.
+I can use this method for any type of select query, from any table or view.
+Fifteen characters might not be enough
+or the right way to format in every case,
+but you get the idea here.
+The result set metadata object, has other methods, 
+such as column type and width,
+which you can use to make this more flexible.
+Ok, so that's a quick introduction to the
+**Statement** type, using the _executeQuery_ method.
+This method returns the results of the query in a **ResultSet** object.
+And you can use the _ResultSet_ metadata object,
+to query information about the _ResultSet_.
 </div>
 
 

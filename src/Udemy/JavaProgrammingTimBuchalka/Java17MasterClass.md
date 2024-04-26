@@ -229,11 +229,12 @@ What we will learn from this Path:
 
 ## [Section-18. Working with Databases]()
 
-### [a. Database Basics]()
+### [a. Installation For Windows]()
+### [b. Database Basics]()
+### [c. Using MySQL WorkBench for a Sample Data]()
+### [d. Connecting to a database with JDBC]()
+### [e. Querying Data]()
 
-    * Database Basics
-    * Connecting to a database with JDBC
-    * Querying Data
     * SQL Injection and ANSI SQL
     * Update, Delete, Insert Statements
     * Transactions, Commits, Rollback, Batch Execution
