@@ -5706,28 +5706,25 @@ each time it is executed.
 A parameter in an SQL string passed to a _PreparedStatement_ 
 is defined with a question mark as a placeholder, shown in this example.
 
+![image54](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image54.png?raw=true)
 
-
-Notice here, that I'm not including single
-quotes around the question mark.
-This is because, when you use a prepared
-statement, the work of enclosing literals,
-is determined by the type and done for us.
-When you use the prepared statement,
-you'll pass the values at that time,
+Notice here that I'm not including single quotes around the question mark.
+This is because when you use a prepared statement, 
+the work of enclosing literals is determined by the type and done for us.
+When you use the prepared statement, you'll pass the values at that time,
 specifying their data types as well.
-This means the values passed as data,
-will never be interpreted as S Q L code.
-Because of this, and very Importantly,
-PreparedStatements help
-prevent SQL injection attacks.
-You can have multiple parameters in the SQL
-string, and they can be different types.
-For example, album id in the
-songs table is a number.
-Specifying placeholders is the same,
-regardless of the type of parameter,
+This means the values passed as data will never be interpreted as SQL code.
+Because of this, and very importantly, 
+PreparedStatements help prevent SQL injection attacks.
+
+You can have multiple parameters in the SQL string, 
+and they can be different types.
+For example, album id in the **songs** table is a number.
+Specifying placeholders is the same, regardless of the type of parameter,
 as I show here, in this example.
+
+
+
 Let's get back to some code,
 and set up a couple of prepared statements.
 To demonstrate the prepared statement, I've created a new Project called PreparedStatement.
