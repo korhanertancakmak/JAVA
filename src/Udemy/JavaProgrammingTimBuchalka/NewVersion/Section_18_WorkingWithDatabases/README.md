@@ -5616,7 +5616,7 @@ and select drop schema, then try your java code again,
 to recreate the schema from scratch again.
 </div>
 
-## [h. JDBC Challenge]()
+## [h. JDBC Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course05_JDBCChallenge/README.md#jdbc-challenge)
 <div align="justify">
 
 In this challenge, you'll be using MySQL Workbench, 
@@ -5661,8 +5661,301 @@ Hint: The MySQL Date Time Format is: yyyy-MM-dd HH:mm:ss
 ```
 </div>
 
+## [i. PreparedStatement]()
+<div align="justify">
+
+So far, up until now, to run SQL on the server,
+I've first constructed a static string.
+This was done by either hard coding all values
+to be used in the query, by string concatenation,
+or using _formatted_ strings.
+I've then called any one of several _execute_ methods, 
+which in general follow the same process.
+When the request is received by the _Database Server_:
+
+* the **Query is Parsed** into operable code,
+which means the SQL syntax is checked,
+and tables and column names are verified. 
+* **An Execution Plan is Created**, 
+which means the database server analyzes the query, 
+and works out an optimal way to execute the statement.
+
+The result is a compiled statement.
+Once the statement is compiled,
+it's stored in a cache on the database server.
+This means it can be reused without having 
+to be recompiled each time it is executed.
+Importantly, this compiled statement can also be stored 
+as a special kind of JDBC statement.
+A _PreparedStatement_ in JDBC is a precompiled SQL statement.
+You might remember, when we were reviewing regular expressions, 
+we could get a compiled regular expression by using the `Pattern.compile`.
+In some ways, this is similar to pre-compiling an SQL statement.
+In both cases, a **String** is passed, 
+which needs to get interpreted, as some operation that will occur.
+The string first needs to get parsed,
+its syntax tested, and some optimizations may optionally be applied.
+There is some overhead with this process,
+so if you're using the statement multiple times,
+it makes sense to precompile it.
+A _PreparedStatement_ is used to execute the same statement multiple times,
+with parameter value placeholders.
+This can improve performance, as I just stated, 
+since the database server doesn't need to parse and compile the statement 
+each time it is executed.
+A parameter in an SQL string passed to a _PreparedStatement_ 
+is defined with a question mark as a placeholder, shown in this example.
 
 
+
+Notice here, that I'm not including single
+quotes around the question mark.
+This is because, when you use a prepared
+statement, the work of enclosing literals,
+is determined by the type and done for us.
+When you use the prepared statement,
+you'll pass the values at that time,
+specifying their data types as well.
+This means the values passed as data,
+will never be interpreted as S Q L code.
+Because of this, and very Importantly,
+PreparedStatements help
+prevent SQL injection attacks.
+You can have multiple parameters in the SQL
+string, and they can be different types.
+For example, album id in the
+songs table is a number.
+Specifying placeholders is the same,
+regardless of the type of parameter,
+as I show here, in this example.
+Let's get back to some code,
+and set up a couple of prepared statements.
+To demonstrate the prepared statement, I've created a new Project called PreparedStatement.
+I've added the MySQL JDBC driver jar file
+as a library jar, which you
+should know how to do by now.
+I've got the usual Main class in
+this project in the dev lpa package.
+In this code, I'll again use a datasource.
+In a server environment, you wouldn't
+be instantiating a new instance of a
+known driver class like we'll do here,
+but all other operations would be the same.
+I'll create a new source, with my specific
+driver here, which gives me a basic data source.
+You may or may not have to manually include an
+import statement for this, since IntelliJ may
+not. You should be able to hover over that class,
+and select import class in most cases, if the
+auto import doesn't work. I'll use the set methods
+on the data source, to set the server name, so
+localhost, the port, 3306, and the database name,
+so I'll be using music again for this video.
+In a previous video I added a property on the
+connection string, called set continue
+batch on error, which I set to false.
+Without setting this to false, my
+batched statements will all get executed,
+instead of stopping at the first error.
+I can use one of the set methods, on my datasource
+to do this, so I'll call setContinueBatchOnError.
+I need to wrap that with a try catch,
+so I'll use IntelliJ's help to do that.
+I'll set up my username and password as
+environment variables,
+whichI've done multiple times.
+So I'll select Run from the
+
+```html  
+
+```
+
+menu, then edit configurations.
+In the dialog, I'll set up the two
+variables as I did previously.
+Ok, once we've done that, I'll
+get a connection next in my code.
+I'll do this in a try with resources, and call
+get Connection on data source.
+I'll pass the environment variables, for the username, and
+password.
+I'll add the usual catch clause.
+Next I'll set up a simple select
+statement, as a string, which will
+get data from the music.albumview.
+You've seen this before, but now,
+instead of using a formatted static string, or a
+concatenated string, for the artist name value,
+I'll insert a question mark there. This
+is how you parameterize an SQL statement,
+when you plan to use it in a prepared statement.
+I'll set up my prepared statement, which I'll call ps.
+I'll call connection.prepareStatement,
+passing this method the SQL string variable.
+Next,I can set the value of that parameter, by
+calling setString on the prepared statement.
+This method takes an index, and again, S Q L
+starts at index 1. I'll pass Elf as the value,
+the artist, to this statement. I can invoke
+executeQuery on a prepared statement as well,
+which will return a result set.
+So note, I'm not calling
+the enquote literal method.
+When replacing a placeholder in a prepared
+statement, you specify the type, by calling the
+relevant set method, set string in this case.
+The server will appropriately enquote
+literals as needed, based on that type.
+Before I run this, I'll
+
+```html  
+
+```
+
+add a printRecords method.
+I had this method, in the QueryMusic
+project's MusicDML class.
+I'll just paste this into my class, and since I've
+discussed it previously, I won't re hash it here.
+Getting back to the main method,
+I'll add a call to the printRecords,
+after I execute the query.
+Ok, as you can see,
+it's not too different from a Statement,
+except when you get a preparedStatement,
+you have to pass a sql statement to that method.
+In most cases, this SQL statement is sent to the
+DBMS, when you call prepareStatement,
+and it gets compiled at that point.
+This means the prepared statement object
+contains a precompiled statement instance.
+That then gets passed to the server,
+when statements are executed.
+The string that gets passed to
+the prepareStatement method,
+can optionally contain parameters.
+Parameters are specified using question
+marks in the query statement, as I showed you on
+the slides, so these are placeholders for data.
+I can set the parameter values
+by calling a set method.
+These placeholders are another important
+feature of the prepared statement.
+They ensure that user input is always treated as
+data values, and never as executable SQL code.
+This makes it difficult for attackers
+to inject malicious SQL statements.
+In this case, I use set
+String, to set the data value.
+If the data type is something else, there's
+a whole series of set methods to choose from,
+like setArray, setBlob, and the usual
+ones, setLong, setDouble and so forth.
+I'll run this code.
+
+```html  
+
+```
+
+And here I get the data for the artist Elf's two albums.
+Another important aspect of the prepared
+statement
+is it's ability to be reused.
+I'll next use preparedStatements,
+to again insert data into the music database.
+This time I'll insert the data from a csv file.
+You can find this file, named NewAlbums.csv,
+in the resources section of this video.
+I've included the file at the
+root of my project folder.
+I'll open this, so you can see what it contains.
+In this case, I've got two of Bob Dylan's
+albums set up as a series of records.
+This looks a lot like the album view.
+Each record has the artist name, the album
+name, the track number, and the song title.
+I'll start with the parameterized
+strings, as static strings.
+The first will be the Artist insert statement.
+This is a simple insert statement, that inserts
+one parameterized value, the artist name. Next
+is the Album insert statement. the album insert
+statement has two columns which need to be
+added, the artist id and the album name,
+so I'll set up two placeholders. Lastly,
+there's the song insert statement. Here,
+we've got 3 columns, and 3 placeholders,
+for album id, track number, and song title.
+Next, I'll create a method called addArtist.
+This will take a prepared statement,
+a connection, and an artist name.
+It throws an S Q L exception.
+I'll initialize the artist id to minus one. I'll
+set the first parameter, to the artist name.
+I'll then call executeUpdate, to get the insert count.
+If the count is greater than zero, I'll get the
+generated key, which is the artist id. I get
+any generated keys by calling getGeneratedKeys
+on the prepared statement. That returns a result
+set containing the keys. I'll get the first key,
+since I'll only have one record. And I'll set
+id to the first field in the result set.
+I'll print that out.
+And I'll return the artist id
+from this method, because I'll need it when I insert the other records.
+I'll copy that code, and make a copy directly below.
+I'll change the name to addAlbum,
+and insert an artist id as the third argument.
+I need to change artist name to album name,
+for the fourth argument.
+In the ps.setString statement,
+I have to both change the parameter index, from
+1 to 2, and change artistName to albumName
+Next, I'll change album Id to
+artistId, in four instances.
+So first, when I'm declaring the first variable.
+Then in the if generatedKeys.next block,
+where I assign the generated key.
+And I want to print album id
+in the statement after that.
+Lastly, I'll return album id,
+not artist id from this method.
+Finally, I need to include the artist
+id as the first parameter that gets set,
+on the prepared statement.
+The first parameter in the s q l,
+is for artist id. This time, I'll use set
+int to do this, passing it artist id.
+For the next method, addSong,
+I'll just type this one in.
+This method starts the same way,
+so private, static and int.
+I'll call it add song, and the parameters
+are PreparedStatement, connection,
+album id, track number, and song title.
+This also throws an S Q L Exception.
+I'll set the initial value of the song Id to
+minus one. The first parameter is the album id,
+an int. The second parameter is another
+int, the track number. And then song title,
+a string, as the third one. I'll call
+executeUpdate on the prepared statement,
+and that returns the number of rows inserted.
+if something was inserted, then, I'll retrieve
+the generated key, the song id. First I'll call
+next on that result set. Then, the first column
+will contain the song id. I'll print that out.
+Now I've got add methods for all three tables,
+related to an artist.
+I need to create a method that
+loops through the records in the csv file, and
+then calls each of these methods appropriately.
+Because this video is getting a bit long, I'll
+end this video here, and finish coding this last
+method and running the code, in the next video.
+</div>
+
+## [j. PreparedStatement Challenge]()
 <div align="justify">
 
 ```java  
@@ -5675,8 +5968,7 @@ Hint: The MySQL Date Time Format is: yyyy-MM-dd HH:mm:ss
 
 </div>
 
-
-
+## [k. CallableStatement]()
 <div align="justify">
 
 ```java  
@@ -5689,8 +5981,7 @@ Hint: The MySQL Date Time Format is: yyyy-MM-dd HH:mm:ss
 
 </div>
 
-
-
+## [l. CallableStatement Challenge]()
 <div align="justify">
 
 ```java  
@@ -5703,8 +5994,7 @@ Hint: The MySQL Date Time Format is: yyyy-MM-dd HH:mm:ss
 
 </div>
 
-
-
+## [m. Introduction to JPA and ORM]()
 <div align="justify">
 
 ```java  
@@ -5717,8 +6007,7 @@ Hint: The MySQL Date Time Format is: yyyy-MM-dd HH:mm:ss
 
 </div>
 
-
-
+## [n. JPA in Action]()
 <div align="justify">
 
 ```java  
@@ -5731,8 +6020,7 @@ Hint: The MySQL Date Time Format is: yyyy-MM-dd HH:mm:ss
 
 </div>
 
-
-
+## [o. JPA with Related Tables]()
 <div align="justify">
 
 ```java  
@@ -5745,8 +6033,33 @@ Hint: The MySQL Date Time Format is: yyyy-MM-dd HH:mm:ss
 
 </div>
 
+## [p. JPA Queries]()
+<div align="justify">
 
+```java  
 
+```
+
+```html  
+
+```
+
+</div>
+
+## [q. JPA Challenge]()
+<div align="justify">
+
+```java  
+
+```
+
+```html  
+
+```
+
+</div>
+
+## [r. JPA Bonus Challenge]()
 <div align="justify">
 
 ```java  

@@ -237,11 +237,16 @@ What we will learn from this Path:
 ### [f. Manipulating Data by DriverManager Class]()
 ### [g. Creating a Database with SQL Exceptions]()
 ### [h. JDBC Challenge]()
-
-    * PreparedStatement
-    * CallableStatement
-    * JPA and ORM
-    * JPA Queries, JPQL
+### [i. PreparedStatement]()
+### [j. PreparedStatement Challenge]()
+### [k. CallableStatement]()
+### [l. CallableStatement Challenge]()
+### [m. Introduction to JPA and ORM]()
+### [n. JPA in Action]()
+### [o. JPA with Related Tables]()
+### [p. JPA Queries]()
+### [q. JPA Challenge]()
+### [r. JPA Bonus Challenge]()
 
 ## [Section-19. JavaFX]()
 

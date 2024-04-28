@@ -2,777 +2,635 @@ WEBVTT
 Kind: captions
 Language: en
 
-00:00:05.360 --> 00:00:09.800
-In this challenge, you'll be using My SQL
-Workbench, to verify that the changes you
+00:00:05.680 --> 00:00:10.964
+So far, up until now, to run SQL on the server,
+I've first constructed a static string.
 
-00:00:09.800 --> 00:00:14.760
-make in Java, get persisted correctly.
-There is one change you'll probably need
 
-00:00:14.760 --> 00:00:18.433
-to make though, to the settings
-in My SQL Workbench to do this.
+00:00:11.880 --> 00:00:16.960
+This was done by either hard coding all values
+to be used in the query, by string concatenation,
 
+00:00:16.960 --> 00:00:20.480
+or using formatted strings.
+I've then called any one of
 
-00:00:19.280 --> 00:00:23.160
-My SQL Workbench has something
-called connection caching,
+00:00:20.480 --> 00:00:24.044
+several execute methods, which in
+general follow the same process.
 
 
-00:00:23.160 --> 00:00:26.960
-This means data is cached and not
-refreshed immediately from persisted data.
+00:00:24.960 --> 00:00:28.560
+When the request is received
+by the Database Server
 
 
-00:00:27.760 --> 00:00:31.534
-I'll show you how to configure it, to
-make the refresh interval much shorter.
+00:00:28.560 --> 00:00:33.440
+the Query is Parsed into operable code,
+which means The S Q L syntax is checked,
 
+00:00:33.440 --> 00:00:39.000
+and Tables and column names are verified. An
+Execution Plan is Created, which means the
 
-00:00:32.240 --> 00:00:37.233
-This'll let you see the changes made in your
-app, reflected immediately in MySQL Workbench.
+00:00:39.000 --> 00:00:43.723
+database server analyzes the query, and works
+out an optimal way to execute the statement.
 
 
-00:00:38.080 --> 00:00:41.247
-Open MySQL Workbench, to
-your development session.
+00:00:44.680 --> 00:00:49.000
+The result is a compiled statement.
+Once the statement is compiled,
 
+00:00:49.000 --> 00:00:54.240
+it's stored in a cache on the database server.
+This means it can be reused, without having
 
-00:00:42.000 --> 00:00:47.016
-Click on Edit, then Preferences.
-This will bring up a dialog.
+00:00:54.240 --> 00:01:00.280
+to be recompiled each time it is executed.
+Importantly, this compiled statement, can also be
 
+00:01:00.280 --> 00:01:07.160
+stored as a special kind of JDBC statement.
+A PreparedStatement in JDBC,
 
-00:00:47.840 --> 00:00:52.760
-Select SQL Editor on the left pane.
-In the right panel, there's a section
+00:01:07.160 --> 00:01:12.080
+is a precompiled SQL statement.
+You might remember, when we were reviewing
 
-00:00:52.760 --> 00:00:59.280
-called MySQL session, with three entries.
-The second one, is the read time out interval,
+00:01:12.080 --> 00:01:17.323
+regular expressions, we could get a compiled
+regular expression, by using the Pattern.compile.
 
-00:00:59.280 --> 00:01:03.059
-and the one you want to change.
-Set this to 1 second.
 
+00:01:18.280 --> 00:01:22.023
+In some ways, this is similar to
+precompiling an S Q L statement.
 
-00:01:04.000 --> 00:01:08.520
-Click ok, and now, as you're working on
-this challenge, you can jump over to SQL
 
-00:01:08.520 --> 00:01:14.903
-Workbench, to test your results.
-For your first JDBC Challenge,
+00:01:22.960 --> 00:01:27.120
+In both cases, a String is passed,
+which needs to get interpreted,
 
+00:01:27.120 --> 00:01:31.840
+as some operation that will occur.
+The string first needs to get parsed,
 
-00:01:15.680 --> 00:01:19.600
-I want you to Write the Java code that
-inserts an Order, and at least two Order
+00:01:31.840 --> 00:01:35.924
+its syntax tested, and some
+optimizations may optionally be applied.
 
-00:01:19.600 --> 00:01:26.240
-details into your database. This should be
-done in a transaction. Use MySQL Workbench
 
-00:01:26.240 --> 00:01:31.830
-to confirm your inserts worked. Write Code that
-deletes an Order and its order details.
+00:01:36.840 --> 00:01:41.080
+There is some overhead with this process, so
+if you're using the statement multiple times,
 
-00:01:32.630 --> 00:01:36.080
-Again, use MySQL Workbench to confirm your order and it's
+00:01:41.080 --> 00:01:46.480
+it makes sense to precompile it.
+A PreparedStatement is used to execute
 
-00:01:36.080 --> 00:01:40.960
-line items, were actually deleted.
-I've included the date time format,
+00:01:46.480 --> 00:01:50.428
+the same statement multiple times,
+with parameter value placeholders.
 
-00:01:40.960 --> 00:01:43.274
-that MySQL expects this field to be in.
 
+00:01:51.240 --> 00:01:55.040
+This can improve performance, as
+I just stated, since the database
 
-00:01:44.027 --> 00:01:46.040
-Ok, so go give that a try.
+00:01:55.040 --> 00:01:58.881
+server doesn't need to parse and compile
+the statement, each time it is executed.
 
 
-00:01:46.840 --> 00:01:51.129
-Pause the video here, and go away and work
-on that challenge, and see how you do.
+00:01:59.880 --> 00:02:04.160
+A parameter in an SQL string passed to a
+PreparedStatement, is defined with a question
 
+00:02:04.160 --> 00:02:09.680
+mark as a placeholder, shown in this example.
+Notice here, that I'm not including single
 
-00:01:52.000 --> 00:01:56.795
-When you're done, or you get stuck, come back,
-and we'll walk through my solution together.
+00:02:09.680 --> 00:02:14.440
+quotes around the question mark.
+This is because, when you use a prepared
 
+00:02:14.440 --> 00:02:19.343
+statement, the work of enclosing literals,
+is determined by the type and done for us.
 
-00:02:00.160 --> 00:02:03.216
-Welcome Back.
-So how did you do?
 
+00:02:20.280 --> 00:02:23.960
+When you use the prepared statement,
+you'll pass the values at that time,
 
-00:02:04.040 --> 00:02:09.626
-Were you able to change the code, to insert the
-order and order details, in a single transaction?
+00:02:23.960 --> 00:02:28.920
+specifying their data types as well.
+This means the values passed as data,
 
+00:02:28.920 --> 00:02:34.760
+will never be interpreted as S Q L code.
+Because of this, and very Importantly,
 
-00:02:10.520 --> 00:02:14.127
-Did you add some data in both
-tables, and then delete that data?
+00:02:34.760 --> 00:02:38.020
+PreparedStatements help
+prevent SQL injection attacks.
 
 
-00:02:15.000 --> 00:02:20.289
-Ok, so let's get started.
-Here I am back in My SQL Workbench.
+00:02:40.080 --> 00:02:44.100
+You can have multiple parameters in the SQL
+string, and they can be different types.
 
 
-00:02:21.160 --> 00:02:26.480
-Here I can see the storefront schema.
-I'll leave the work bench open, coming back to it,
+00:02:45.120 --> 00:02:48.399
+For example, album id in the
+songs table is a number.
 
-00:02:26.480 --> 00:02:31.743
-to verify the data as I run my code in Java.
-I'll get back to IntelliJ.
 
+00:02:49.398 --> 00:02:53.520
+Specifying placeholders is the same,
+regardless of the type of parameter,
 
-00:02:32.520 --> 00:02:37.009
-I've got the JDBC Challenges project open,
-where we left off in the last video.
+00:02:53.520 --> 00:02:58.320
+as I show here, in this example.
+Let's get back to some code,
 
+00:02:58.320 --> 00:03:00.588
+and set up a couple of prepared statements.
 
-00:02:37.880 --> 00:02:43.280
-I'll create a new method, called add Order.
-I'll make this private, static, and it
 
-00:02:43.280 --> 00:02:47.332
-returns an int, which will be the auto
-incremented id I get back from MySQL.
+00:03:02.940 --> 00:03:07.250
+To demonstrate the prepared statement, I've created a new Project called PreparedStatement.
 
+00:03:08.226 --> 00:03:10.960
+I've added the MySQL JDBC driver jar file
 
-00:02:48.320 --> 00:02:51.600
-This method will take a connection,
-and a String array, which will be
+00:03:10.960 --> 00:03:13.928
+as a library jar, which you
+should know how to do by now.
 
-00:02:51.600 --> 00:02:58.200
-the item descriptions, of the order details.
-I'll start by declaring an order id variable,
 
-00:02:58.200 --> 00:03:03.960
-and initialize that to minus 1. I'll set up
-my insert SQL statement, which is INSERT INTO
+00:03:14.760 --> 00:03:18.204
+I've got the usual Main class in
+this project in the dev lpa package.
 
-00:03:03.960 --> 00:03:10.511
-storefront.order, followed by a list of column
-names in parens. In this case I only need order date.
 
-00:03:11.381 --> 00:03:17.640
-After that, we specify VALUES, and another
-set of parentheses. I'll surround my format string
+00:03:19.120 --> 00:03:24.200
+In this code, I'll again use a datasource.
+In a server environment, you wouldn't
 
-00:03:17.640 --> 00:03:24.520
-specifier with single quotes. The insert for the
-storefront.order_details starts out similarly,
+00:03:24.200 --> 00:03:27.840
+be instantiating a new instance of a
+known driver class like we'll do here,
 
-00:03:24.520 --> 00:03:31.440
-so insert into storefront.order details in
-this case. I'll define two columns, order_id,
+00:03:27.840 --> 00:03:33.000
+but all other operations would be the same.
+I'll create a new source, with my specific
 
-00:03:31.440 --> 00:03:36.124
-and item description, and two specifiers in this
-string, an integer and a string.
+00:03:33.000 --> 00:03:38.560
+driver here, which gives me a basic data source.
+You may or may not have to manually include an
 
-00:03:37.089 --> 00:03:41.976
-For the string,I'll use enquoteLiteral in my code that formats
-it, so I'll leave out the single quotes here.
+00:03:38.560 --> 00:03:44.640
+import statement for this, since IntelliJ may
+not. You should be able to hover over that class,
 
-00:03:42.800 --> 00:03:49.280
-I'll be returning order id from this method.
-Next, I want to get the order date. I'll start
+00:03:44.640 --> 00:03:50.720
+and select import class in most cases, if the
+auto import doesn't work. I'll use the set methods
 
-00:03:49.280 --> 00:03:54.520
-with a DateTimeFormatter object. I can create
-a Pattern, and I'll use the one I showed you on
+00:03:50.720 --> 00:03:59.680
+on the data source, to set the server name, so
+localhost, the port, 3306, and the database name,
 
-00:03:54.520 --> 00:04:00.520
-the challenge slide. I'll get the current
-date and time, using local date time.now,
+00:03:59.680 --> 00:04:05.160
+so I'll be using music again for this video.
+In a previous video I added a property on the
 
-00:04:00.520 --> 00:04:06.800
-and I'll chain the format method to that, passing
-it my date time formatter variable. I'll print that out.
+00:04:05.160 --> 00:04:09.243
+connection string, called set continue
+batch on error, which I set to false.
 
-00:04:09.059 --> 00:04:14.614
-I'll use this string, to populate the
-insert order statement. I'll print that out too.
 
+00:04:10.200 --> 00:04:14.080
+Without setting this to false, my
+batched statements will all get executed,
 
-00:04:17.155 --> 00:04:21.800
-Now, I could have used date time specifiers
-in my formatted string, as an alternative to
+00:04:14.080 --> 00:04:19.240
+instead of stopping at the first error.
+I can use one of the set methods, on my datasource
 
-00:04:21.800 --> 00:04:25.640
-using the DateTimeFormatter.
-In fact, let me just review
+00:04:19.240 --> 00:04:25.040
+to do this, so I'll call setContinueBatchOnError.
+I need to wrap that with a try catch,
 
-00:04:25.640 --> 00:04:29.480
-what that would look like.
-The insert starts out the same way,
+00:04:25.040 --> 00:04:27.279
+so I'll use IntelliJ's help to do that.
 
-00:04:29.480 --> 00:04:31.837
-But the specifiers are a lot more cryptic.
 
-00:04:34.214 --> 00:04:39.344
-The 1 dollar sign in both cases means I can just pass a single date time variable for both of these values.
+00:04:29.631 --> 00:04:32.607
+I'll set up my username and password as
+environment variables,
 
-00:04:40.309 --> 00:04:46.361
-The tF will print the date in the format y y y y, dash, m m, dash, d d.
+00:04:32.607 --> 00:04:34.225
+whichI've done multiple times.
 
-00:04:47.279 --> 00:04:51.320
-In the second specifier lowercase t, uppercase T,
 
-00:04:51.320 --> 00:04:54.595
-is the key to the time, being printed in the
-format we want.
+00:04:35.120 --> 00:04:38.319
+So I'll select Run from the
+menu, then edit configurations.
 
-00:04:55.513 --> 00:04:58.074
-I'll print this out usingLocalDateTime now as the argument.
 
+00:04:39.880 --> 00:04:43.577
+In the dialog, I'll set up the two
+variables as I did previously.
 
 
-00:05:02.287 --> 00:05:03.746
-So this is an alternative.
+00:04:53.640 --> 00:04:56.865
+Ok, once we've done that, I'll
+get a connection next in my code.
 
-00:05:04.640 --> 00:05:08.280
-I'll run this code, since nothing will
-get inserted yet, so you can see what
 
-00:05:08.280 --> 00:05:12.520
-this output looks like right now.
-I'll jump back up to the main method,
+00:04:58.800 --> 00:05:02.879
+I'll do this in a try with resources, and call
+get Connection on data source.
 
-00:05:12.520 --> 00:05:18.600
-and make a call to my new add Order method.
-I'll pass that the connection, and an array of
+00:05:03.795 --> 00:05:07.692
+I'll pass the environment variables, for the username, and
+password.
 
-00:05:18.600 --> 00:05:23.520
-strings, and I'll just use clothing in my
-store front order, so my items are shoes,
 
-00:05:23.520 --> 00:05:31.965
-shirt, and socks. I'll assign the id I get back,
-to the newOrder variable. and I'll print the new order id out.
+00:05:10.855 --> 00:05:12.584
+I'll add the usual catch clause.
 
-00:05:34.342 --> 00:05:35.381
-I'll run this.
+00:05:15.080 --> 00:05:18.360
+Next I'll set up a simple select
+statement, as a string, which will
 
+00:05:18.360 --> 00:05:23.360
+get data from the music.albumview.
+You've seen this before, but now,
 
-00:05:37.240 --> 00:05:41.546
-You can see the formatted date, using date
-time formatter, which gave us a string.
+00:05:23.360 --> 00:05:28.920
+instead of using a formatted static string, or a
+concatenated string, for the artist name value,
 
+00:05:28.920 --> 00:05:33.920
+I'll insert a question mark there. This
+is how you parameterize an SQL statement,
 
-00:05:42.440 --> 00:05:47.162
-I used that string as an argument to the percent
-s specifier, in my first insert order string.
+00:05:33.920 --> 00:05:39.796
+when you plan to use it in a prepared statement.
+I'll set up my prepared statement, which I'll call ps.
 
+00:05:40.795 --> 00:05:45.259
+ I'll call connection.prepareStatement,
+passing this method the SQL string variable.
 
-00:05:48.080 --> 00:05:52.360
-In the second example, I used date
-time specifiers instead or percent t,
+00:05:46.216 --> 00:05:50.881
+Next,I can set the value of that parameter, by
+calling setString on the prepared statement.
 
-00:05:52.360 --> 00:05:57.456
-and you can see both give me the same result.
-Now let's actually use this insert method.
+00:05:51.880 --> 00:05:59.000
+This method takes an index, and again, S Q L
+starts at index 1. I'll pass Elf as the value,
 
+00:05:59.000 --> 00:06:04.680
+the artist, to this statement. I can invoke
+executeQuery on a prepared statement as well,
 
-00:05:58.280 --> 00:06:02.369
-I'll get back to the add Order method,
-and set up my try with resources block.
+00:06:04.680 --> 00:06:09.000
+which will return a result set.
+So note, I'm not calling
 
+00:06:09.000 --> 00:06:13.160
+the enquote literal method.
+When replacing a placeholder in a prepared
 
-00:06:05.640 --> 00:06:11.680
-I'll wrap a new statement in this
-try. Since we need a transaction,
+00:06:13.160 --> 00:06:18.678
+statement, you specify the type, by calling the
+relevant set method, set string in this case.
 
-00:06:11.680 --> 00:06:18.200
-I'll set autocommit to false. I'll set up a
-variable, inserts, then call executeUpdate,
 
-00:06:18.200 --> 00:06:22.760
-passing that my formatted string, and since
-I want the generated key back, I can pass
+00:06:19.760 --> 00:06:23.763
+The server will appropriately enquote
+literals as needed, based on that type.
 
-00:06:22.760 --> 00:06:30.080
-Statement dot return GENERATED KEYS as the second
-argument. I'll call commit after this. And then
 
-00:06:30.080 --> 00:06:37.278
-set autocommit to true. In the catch clause, If I
-get an exception, I want to roll the transaction back.
+00:06:24.637 --> 00:06:27.361
+Before I run this, I'll
+add a printRecords method.
 
-00:06:38.196 --> 00:06:43.480
-Then I'll throw a runtime exception.
-Notice that I've got an error on rollback,
 
-00:06:43.480 --> 00:06:47.400
-and that's because that throws an SQL
-Exception too, and I need to handle it.
+00:06:28.360 --> 00:06:32.366
+I had this method, in the QueryMusic
+project's MusicDML class.
 
 
-00:06:48.200 --> 00:06:51.525
-I'll hover over that and select,
-add exception to method signature.
+00:06:33.240 --> 00:06:38.385
+I'll just paste this into my class, and since I've
+discussed it previously, I won't re hash it here.
 
 
-00:06:59.786 --> 00:07:03.720
-I'm not done yet, because I still have
-to insert the order detail records.
+00:06:39.280 --> 00:06:44.080
+Getting back to the main method,
+I'll add a call to the printRecords,
 
+00:06:44.080 --> 00:06:48.640
+after I execute the query.
+Ok, as you can see,
 
-00:07:05.320 --> 00:07:09.880
-If I get a one back from inserting the order,
-I know my order was added successfully,
+00:06:48.640 --> 00:06:52.280
+it's not too different from a Statement,
+except when you get a preparedStatement,
 
-00:07:09.880 --> 00:07:15.840
-and only in this case, do I want to proceed. So
-next, I need to get the generated key back from
+00:06:52.280 --> 00:06:58.560
+you have to pass a sql statement to that method.
+In most cases, this SQL statement is sent to the
 
-00:07:15.840 --> 00:07:19.480
-the insert order statement, and don't
-forget that's retrieved by calling get
+00:06:58.560 --> 00:07:02.641
+DBMS, when you call prepareStatement,
+and it gets compiled at that point.
 
-00:07:19.480 --> 00:07:26.240
-Generated Keys. That returns a result set.
-The first record in that result set, should
 
-00:07:26.240 --> 00:07:34.480
-have the key I want. The key will be at index
-1. I'll set up another local variable, count,
+00:07:03.640 --> 00:07:07.707
+This means the prepared statement object
+contains a precompiled statement instance.
 
-00:07:34.480 --> 00:07:39.640
-which I'll use to test how many detail items get
-inserted. I'll loop through the items passed to
 
-00:07:39.640 --> 00:07:45.000
-this method. I'll format my string, using the
-order id as the first argument.
+00:07:08.560 --> 00:07:11.884
+That then gets passed to the server,
+when statements are executed.
 
-00:07:46.028 --> 00:07:49.800
-Here, I'll enquote the item string, using statement.enquote
-literal.
 
-00:07:50.788 --> 00:07:54.271
-I'll call statement.executeUpdate,with this formatted string,
+00:07:12.800 --> 00:07:15.440
+The string that gets passed to
+the prepareStatement method,
 
-00:07:54.271 --> 00:07:58.080
-returning the result back to my inserts variable. I'll add
+00:07:15.440 --> 00:07:19.960
+can optionally contain parameters.
+Parameters are specified using question
 
-00:07:58.080 --> 00:08:04.160
-the value in inserts to my count variable.
-If we get an exception saving the records,
+00:07:19.960 --> 00:07:25.000
+marks in the query statement, as I showed you on
+the slides, so these are placeholders for data.
 
-00:08:04.160 --> 00:08:07.666
-the data will be rolled back,
-and a runtime exception thrown.
 
+00:07:25.840 --> 00:07:28.500
+I can set the parameter values
+by calling a set method.
 
-00:08:08.560 --> 00:08:12.680
-But some database problems are silent,
-meaning we may not get an exception,
 
-00:08:12.680 --> 00:08:17.287
-but something may not go as we expected, because
-of problems with the logic in our queries.
+00:07:29.416 --> 00:07:32.662
+These placeholders are another important
+feature of the prepared statement.
 
 
-00:08:18.040 --> 00:08:23.160
-I'll add an additional test, in this code, to make
-sure the results are what I expected them to be.
+00:07:33.640 --> 00:07:39.078
+They ensure that user input is always treated as
+data values, and never as executable SQL code.
 
 
-00:08:23.960 --> 00:08:27.800
-I'll check if the value in count, or
-the records inserted, is the same as
+00:07:40.160 --> 00:07:43.943
+This makes it difficult for attackers
+to inject malicious SQL statements.
 
-00:08:27.800 --> 00:08:33.654
-the number of items passed to this method.
-If it's not, I'll set order Id back to -1.
 
-00:08:34.360 --> 00:08:35.825
-And I'll print out the issue.
+00:07:44.880 --> 00:07:48.423
+In this case, I use set
+String, to set the data value.
 
-00:08:38.578 --> 00:08:40.578
-I'll roll back the transaction if this happens.
 
-00:08:41.661 --> 00:08:43.911
-I'll wrap an else statement around the commit statement
+00:07:49.360 --> 00:07:53.960
+If the data type is something else, there's
+a whole series of set methods to choose from,
 
+00:07:53.960 --> 00:07:59.320
+like setArray, setBlob, and the usual
+ones, setLong, setDouble and so forth.
 
 
-00:08:48.100 --> 00:08:51.159
-Ok, time to test this out, so I'll run this code.
-
-00:08:53.160 --> 00:08:57.343
-I see the two insert strings again,
-but now I see new order equals 1.
-
-
-00:08:58.120 --> 00:09:02.277
-That's a good sign.
-I'll open up MySQL Workbench.
-
-
-00:09:04.960 --> 00:09:08.757
-I'll click on the order table, and select
-the grid or spreadsheet like icon.
-
-
-00:09:10.240 --> 00:09:13.840
-This will open an SQL editor pane
-showing an executed select statement,
-
-00:09:13.840 --> 00:09:18.710
-with a result grid below, so you should see
-order 1, with the order date listed there.
-
-
-00:09:19.440 --> 00:09:23.209
-I'll do the same for order details,
-clicking the table like icon there.
-
-
-00:09:24.080 --> 00:09:29.120
-Here I can see all three of the order details
-listed, associated with order 1, so that's it.
-
-
-00:09:30.040 --> 00:09:34.489
-Hopefully, you were able to do that, and you
-figured out how to persist some data of your own.
-
-
-00:09:35.360 --> 00:09:39.656
-The second part of the challenge was to delete
-an order, which includes it's line items.
-
-
-00:09:40.480 --> 00:09:44.480
-Getting back to IntelliJ, and
-the JDBC Challenges project,
-
-00:09:44.480 --> 00:09:48.586
-I'll add a new method to do this, and I'll
-insert this method after the addOrder method.
-
-
-00:09:49.480 --> 00:09:53.470
-This will be private, static,
-void, and called delete Order.
-
-
-00:09:54.200 --> 00:09:58.353
-It'll take a connection, and the
-order id, of the order to be deleted.
-
-
-00:09:59.200 --> 00:10:04.640
-I'll start with a formatted string, so Delete
-from storefront.order, where order id equals,
-
-00:10:04.640 --> 00:10:08.774
-percent d. I'll format that, using the
-orderId.
-
-00:10:10.916 --> 00:10:13.457
-I'll get a new statement in a try with resources block.
-
-00:10:14.906 --> 00:10:19.490
-I'll set up a variable called deleteRecords, and assign that the value of executeUpdate.
-
-00:10:20.431 --> 00:10:25.840
-I'll pass that, my deleteQuery
-string. I'll print how many records got deleted.
-
-00:10:26.640 --> 00:10:32.526
-That should be one in every case. If I get an
-exception, I'll throw a runtime exception.
-
-
-00:10:36.080 --> 00:10:40.720
-Getting back to the main method, I'll comment out
-the add order code, and the println below that.
-
-
-00:10:43.120 --> 00:10:49.303
-I'll make a call to the delete method before that
-code. I want to delete order id 1, in this case.
-
-
-00:10:50.880 --> 00:10:56.666
+00:08:00.360 --> 00:08:01.459
 I'll run this code.
-The output says one record was deleted.
 
 
-00:10:57.560 --> 00:11:02.339
-I'll verify the results in MySQL WorkBench,
-by re-executing the select statements.
+00:08:04.373 --> 00:08:06.935
+And here I get the data for the artist Elf's two albums.
 
+00:08:07.931 --> 00:08:10.506
+Another important aspect of the prepared
+statement
 
-00:11:03.280 --> 00:11:11.830
-First on Order, and the result grid has no data.
-I'll do the same on Order details.
+00:08:10.506 --> 00:08:14.800
+ is it's ability to be reused.
+I'll next use preparedStatements,
 
+00:08:14.800 --> 00:08:21.084
+to again insert data into the music database.
+This time I'll insert the data from a csv file.
 
-00:11:14.654 --> 00:11:17.746
-You can see I no longer have either
-the order or the order detail records.
 
+00:08:22.000 --> 00:08:27.585
+You can find this file, named NewAlbums.csv,
+in the resources section of this video.
 
-00:11:18.640 --> 00:11:23.360
-Because of the cascade delete, defined in the
-order detail table, I didn't actually have to
 
-00:11:23.360 --> 00:11:28.960
-include the delete order details code in Java.
-This was optional for this scenario.
+00:08:28.480 --> 00:08:30.907
+I've included the file at the
+root of my project folder.
 
 
-00:11:29.640 --> 00:11:32.875
-Maybe you did code this, and
-included it in a transaction.
+00:08:31.760 --> 00:08:38.760
+I'll open this, so you can see what it contains.
+In this case, I've got two of Bob Dylan's
 
+00:08:38.760 --> 00:08:43.590
+albums set up as a series of records.
+This looks a lot like the album view.
 
-00:11:33.840 --> 00:11:39.125
-This is a valid solution as well.
-I'll change my code a little, to do it that way.
 
+00:08:44.360 --> 00:08:49.368
+Each record has the artist name, the album
+name, the track number, and the song title.
 
-00:11:40.160 --> 00:11:42.936
-First, I'll uncomment the code
-that creates a new order,
 
+00:08:50.200 --> 00:08:53.645
+I'll start with the parameterized
+strings, as static strings.
 
-00:11:43.760 --> 00:11:50.731
-and re run my code, so I have an order to delete.
-This will set up order number 2, as you can see.
 
+00:08:57.120 --> 00:09:02.920
+The first will be the Artist insert statement.
+This is a simple insert statement, that inserts
 
-00:11:54.520 --> 00:11:57.402
-I'll change the number from
-1 to 2 in the deleteOrder.
+00:09:02.920 --> 00:09:10.400
+one parameterized value, the artist name. Next
+is the Album insert statement. the album insert
 
+00:09:10.400 --> 00:09:14.640
+statement has two columns which need to be
+added, the artist id and the album name,
 
-00:11:58.320 --> 00:12:01.689
-Next, I'll start by adding the
-transaction code to my delete method.
+00:09:14.640 --> 00:09:21.480
+so I'll set up two placeholders. Lastly,
+there's the song insert statement. Here,
 
+00:09:21.480 --> 00:09:29.120
+we've got 3 columns, and 3 placeholders,
+for album id, track number, and song title.
 
-00:12:04.560 --> 00:12:07.002
-So first, I'll set auto commit to false.
 
+00:09:34.096 --> 00:09:38.760
+Next, I'll create a method called addArtist.
+This will take a prepared statement,
 
-00:12:09.520 --> 00:12:12.282
-I'll call commit as the last
-statement in the try block.
+00:09:38.760 --> 00:09:43.508
+a connection, and an artist name.
+It throws an S Q L exception.
 
 
-00:12:14.800 --> 00:12:21.120
-I'll execute a roll back if I get an exception.
-I'll again over hover the error I get on rollback,
+00:09:44.840 --> 00:09:50.780
+I'll initialize the artist id to minus one. I'll
+set the first parameter, to the artist name.
 
-00:12:21.120 --> 00:12:24.557
-and select to have the SQL exception
-added to the methods' throw clause.
+00:09:51.696 --> 00:09:57.480
+I'll then call executeUpdate, to get the insert count.
+If the count is greater than zero, I'll get the
 
+00:09:57.480 --> 00:10:03.640
+generated key, which is the artist id. I get
+any generated keys by calling getGeneratedKeys
 
-00:12:28.040 --> 00:12:32.449
-I'll add a finally clause in this case, because
-I am throwing an exception in the catch clause.
+00:10:03.640 --> 00:10:10.680
+on the prepared statement. That returns a result
+set containing the keys. I'll get the first key,
 
+00:10:10.680 --> 00:10:15.542
+since I'll only have one record. And I'll set
+id to the first field in the result set.
 
-00:12:33.438 --> 00:12:35.986
-In either case I want to set
-auto commit back to true.
+00:10:16.874 --> 00:10:17.894
+I'll print that out.
 
+00:10:21.161 --> 00:10:25.471
+And I'll return the artist id
+from this method, because I'll need it when I insert the other records.
 
-00:12:36.880 --> 00:12:39.814
-Putting that in a finally clause
-ensures it always happens.
+00:10:27.218 --> 00:10:30.268
+I'll copy that code, and make a copy directly below.
 
+00:10:32.141 --> 00:10:33.561
+I'll change the name to addAlbum,
 
-00:12:41.320 --> 00:12:44.240
-Now, I'm going to make the delete
-Order string more generic, and put
+00:10:35.163 --> 00:10:40.920
+and insert an artist id as the third argument.
+I need to change artist name to album name,
 
-00:12:44.240 --> 00:12:48.400
-a place holder in for the table name.
-I'll change the name of the variable
+00:10:40.920 --> 00:10:45.120
+for the fourth argument.
+In the ps.setString statement,
 
-00:12:48.400 --> 00:12:52.880
-deleteQuery to parentQuery.
-Then, I'll pass the table name,
+00:10:45.120 --> 00:10:50.518
+I have to both change the parameter index, from
+1 to 2, and change artistName to albumName
 
-00:12:52.880 --> 00:12:55.846
-storefront.order, as the first argument here.
 
+00:10:51.454 --> 00:10:55.585
+Next, I'll change album Id to
+artistId, in four instances.
 
-00:12:57.682 --> 00:13:01.683
-Next, I'll create a childQuery, using the
-same formattable string,
 
-00:13:01.683 --> 00:13:04.160
-this time passing the order details table,
+00:10:56.480 --> 00:10:59.040
+So first, when I'm declaring the first variable.
 
-00:13:04.160 --> 00:13:10.776
-and I'll still delete by order id, Remember, the
-child table has this id in it as a foreign key.
 
+00:11:01.560 --> 00:11:05.787
+Then in the if generatedKeys.next block,
+where I assign the generated key.
 
-00:13:11.600 --> 00:13:15.000
-I'll change the name of the query in
-the execute update to be child query.
 
+00:11:06.640 --> 00:11:09.055
+And I want to print album id
+in the statement after that.
 
-00:13:16.840 --> 00:13:20.289
-I'll change my print statement to say
-how many child records were printed.
 
+00:11:10.000 --> 00:11:13.863
+Lastly, I'll return album id,
+not artist id from this method.
 
-00:13:21.560 --> 00:13:25.110
-Now, I just need to add the code,
-to delete the parent record.
 
+00:11:15.416 --> 00:11:19.496
+Finally, I need to include the artist
+id as the first parameter that gets set,
 
-00:13:25.840 --> 00:13:31.228
-I'll executeUpdate on the parentQuery and return
-results to the same variable, deleteRecords.
+00:11:19.600 --> 00:11:23.880
+on the prepared statement.
+The first parameter in the s q l,
 
-00:13:32.146 --> 00:13:37.200
-Again, it's possible something could go amiss,
-and not throw an exception, so I want to confirm
+00:11:23.880 --> 00:11:29.872
+is for artist id. This time, I'll use set
+int to do this, passing it artist id.
 
-00:13:37.200 --> 00:13:43.910
-one and only one order is deleted in this case.
-I'll print that my order was successfully deleted.
 
-00:13:45.440 --> 00:13:50.600
-I'll include an else statement, and rollback if
-my result wasn't one. I probably should have a
+00:11:30.600 --> 00:11:33.791
+For the next method, addSong,
+I'll just type this one in.
 
-00:13:50.600 --> 00:13:56.600
-statement printed here too, but you get the gist.
-Before I run this, I'll comment out the code that
 
-00:13:56.600 --> 00:13:58.147
-adds a new order.
+00:11:35.560 --> 00:11:38.982
+This method starts the same way,
+so private, static and int.
 
 
+00:11:39.960 --> 00:11:44.120
+I'll call it add song, and the parameters
+are PreparedStatement, connection,
 
-00:14:02.571 --> 00:14:04.147
-Ok, I'll run this.
+00:11:44.120 --> 00:11:50.398
+album id, track number, and song title.
+This also throws an S Q L Exception.
 
-00:14:06.360 --> 00:14:11.418
-I'll see that three child records were deleted,
-and then order 2 was successfully deleted.
 
+00:11:51.480 --> 00:11:57.200
+I'll set the initial value of the song Id to
+minus one. The first parameter is the album id,
 
-00:14:13.960 --> 00:14:19.160
-I'll pop back over to MySQL Workbench, and
-re-execute the queries, that were generated,
+00:11:57.200 --> 00:12:03.920
+an int. The second parameter is another
+int, the track number. And then song title,
 
-00:14:19.160 --> 00:14:24.527
-when I displayed the table results. These
-are currently showing as no data from last time.
+00:12:03.920 --> 00:12:09.200
+a string, as the third one. I'll call
+executeUpdate on the prepared statement,
 
-00:14:25.539 --> 00:14:29.736
-Remember we have created records again
-and deleted them, before coming back here.
+00:12:09.200 --> 00:12:14.720
+and that returns the number of rows inserted.
+if something was inserted, then, I'll retrieve
 
+00:12:14.720 --> 00:12:22.720
+the generated key, the song id. First I'll call
+next on that result set. Then, the first column
 
-00:14:30.560 --> 00:14:37.320
-I'll start with Order, and running that select
-again, In the result grid below, I should have
+00:12:22.720 --> 00:12:26.158
+will contain the song id. I'll print that out.
 
-00:14:37.320 --> 00:14:43.480
-no data again, so I know this code worked.
-I'll do the same for order_details, opening that
 
-00:14:43.480 --> 00:14:50.000
-tab, and executing that select query again.
-And I get no data, so that's good.
+00:12:30.133 --> 00:12:32.360
+Now I've got add methods for all three tables,
 
+00:12:32.360 --> 00:12:35.760
+related to an artist.
+I need to create a method that
 
-00:14:50.840 --> 00:14:55.979
-So Should you manually delete child records in
-your Java code, or depend on cascade deletion?
+00:12:35.760 --> 00:12:40.361
+loops through the records in the csv file, and
+then calls each of these methods appropriately.
 
 
-00:14:56.920 --> 00:15:00.449
-The answer to that question,
-is as usual, it depends.
+00:12:41.360 --> 00:12:46.040
+Because this video is getting a bit long, I'll
+end this video here, and finish coding this last
 
-
-00:15:01.320 --> 00:15:03.320
-If you're trying to be database agnostic,
-
-00:15:03.320 --> 00:15:07.602
-meaning your application is going to be deployed
-in many environments with different databases.
-
-
-00:15:08.520 --> 00:15:12.880
-In this scenario, You'll probably be working
-with varying degrees of database support,
-
-00:15:12.880 --> 00:15:17.080
-so then maybe you'd manually code the delete
-child records, and you'd have confidence your
-
-00:15:17.080 --> 00:15:22.120
-code is always cleaning up the child records,
-regardless of how the database is configured.
-
-
-00:15:22.920 --> 00:15:27.680
-Doing this might be simpler, than having to
-publish requirements, on how the database needs
-
-00:15:27.680 --> 00:15:33.840
-to be set up, with cascade deletes implemented.
-If you're deleting a large amount of data,
-
-00:15:33.840 --> 00:15:38.000
-it's probably more efficient to take
-advantage of the table's cascade deletes,
-
-00:15:38.000 --> 00:15:43.800
-done on the database server's implementation.
-All the major RDBMS vendors support cascade
-
-00:15:43.800 --> 00:15:49.157
-deletes, so that's a positive, but there may be
-some vendors or lightweight RDBMS's that don't.
-
-
-00:15:50.099 --> 00:15:56.120
-Also, don't forget your JDBC backend could
-even be files, like csv or jayson files,
-
-00:15:56.120 --> 00:16:01.259
-so in that case, you'd want to implement the
-delete order_detail functionality yourself.
-
-
-00:16:02.600 --> 00:16:08.000
-In the delete order detail code, you can
-see I parameterized the SQL statement,
-
-00:16:08.000 --> 00:16:11.840
-with the item description.
-Ultimately though, I passed
-
-00:16:11.840 --> 00:16:17.040
-a static string to the executeUpdate method.
-In the next video, I'll show you an alternative
-
-00:16:17.040 --> 00:16:20.776
-for parameterized SQL, in the
-form of a Prepared Statement.
+00:12:46.040 --> 00:12:51.080
+method and running the code, in the next video.
+So I'll see you in that next video.
