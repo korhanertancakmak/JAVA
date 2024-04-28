@@ -233,7 +233,8 @@ What we will learn from this Path:
 ### [b. Database Basics]()
 ### [c. Using MySQL WorkBench for a Sample Data]()
 ### [d. Connecting to a database with JDBC]()
-### [e. Querying Data]()
+### [e. Querying Data by MySQLDataSource Class]()
+### [f. Manipulating Data by DriverManager Class]()
 
     * SQL Injection and ANSI SQL
     * Update, Delete, Insert Statements

@@ -1,739 +1,348 @@
-WEBVTT
-Kind: captions
-Language: en
-
-00:00:05.360 --> 00:00:10.920
 In the last several videos, I've been focusing
 on DML, or Data Manipulation Language, because in
-
-00:00:10.920 --> 00:00:16.000
 many ways it's easier to learn and understand.
 In this video, I'll use the methods I've been
-
-00:00:16.000 --> 00:00:19.850
 covering, but apply them to Data
 Definition Language, or D D L.
-
-
-00:00:20.800 --> 00:00:26.137
 I've created a new project, which I've called
 JDBCChallenges, with the usual Main class.
-
-
-00:00:27.040 --> 00:00:31.280
 I need to include the JDBC driver again
 in this project, so I'll Right Click,
-
-00:00:31.280 --> 00:00:35.705
 and select Module Settings, or in
 windows, that's F4 for the shortcut key.
-
-
-00:00:37.720 --> 00:00:43.400
 Select Libraries on the dialog that appears.
 Select The Plus Sign icon, and Select
-
-00:00:43.400 --> 00:00:47.680
 Java as the option.
 You'll get a file dialog,
-
-00:00:47.680 --> 00:00:51.728
 and hopefully you'll remember where you
 downloaded the my SQL connecter J jar file.
-
-
-00:00:55.480 --> 00:00:59.920
 I'll select mine, and I'll press
 OK, to any dialog that follows.
-
-
-00:01:04.360 --> 00:01:08.405
 And that's it.
 Now, I'll go to my Main class.
-
-
-00:01:09.160 --> 00:01:12.720
 I'll set up a static query
 string, so private, static,
-
-00:01:12.720 --> 00:01:18.410
 final, String, USE underscore SCHEMA, and I'll
 set that to the literal text, USE Store front.
-
-
-00:01:19.360 --> 00:01:24.528
 This statement is a DDL statement. It sets
 the default database for the session.
-
-
-00:01:25.640 --> 00:01:29.840
 I'll use this statement, to test if I
 need to create the storefront database.
-
-
-00:01:30.440 --> 00:01:34.343
 To do this, in the main method,
 I'll set up a basic datasource.
-
-
-00:01:35.200 --> 00:01:38.680
 Since I'm running in a standalone
-environment, I'll create a new instance,
 
-00:01:38.680 --> 00:01:43.920
+
+
+environment, I'll create a new instance,
 using the class name of the my SQL
 data source. I'll set the server name,
-
-00:01:43.920 --> 00:01:51.960
 localhost, and the port, 3 3 0 6. I'll set
 the user, to be an environment variable,
-
-00:01:51.960 --> 00:01:55.810
 which I've done before. I'll do
 the same thing for the password.
-
-
-00:01:58.520 --> 00:02:02.400
 Notice that here, I'm not specifying
 any schema or database name,
-
-00:02:02.400 --> 00:02:06.781
 when I'm setting up the data source.
 That's because I plan to create it.
-
-
-00:02:07.800 --> 00:02:12.577
 First though, I'll set up a method, to test
 if the database exists, so I'll create that.
-
-
-00:02:13.480 --> 00:02:16.373
 I'll make this private and
 static, and return a boolean.
-
-
-00:02:17.160 --> 00:02:20.457
 I'll call it checkSchema, and
 pass it an existing connection.
-
-
-00:02:20.920 --> 00:02:26.000
 It's complaining about the import, I'll fix that
 in a bit. I'll create a new statement object,
-
-00:02:26.000 --> 00:02:34.640
 in a try with resources. I'll execute the USE
 SCHEMA statement. If this throws an exception,
-
-00:02:34.640 --> 00:02:42.465
 I'll print the stack trace. And return false, if I
 do get an exception. Otherwise, I'll return true.
-
-
-00:02:44.040 --> 00:02:46.560
 If you get into a situation
 where IntelliJ doesn't show
-
-00:02:46.560 --> 00:02:49.296
 the import popup, do this to force the popup.
-
-00:02:53.928 --> 00:02:56.530
 We want to choose java.sql Connection here.
-
-00:02:58.120 --> 00:03:02.789
 This should fix the import for Statement as well.
 Scrolling up you can see it has.
-
-
-00:03:04.480 --> 00:03:06.785
 Next, I'll call this method from the main method.
-
-
-00:03:09.842 --> 00:03:14.034
 I'll use a try with resources, to first get the
 connection from the data source,
-
-00:03:14.034 --> 00:03:18.160
 with the getConnection method. I'll execute checkSchema,
-
-00:03:18.160 --> 00:03:22.400
 as part of an if condition. So if
 it returns false, I'll print that
-
-00:03:22.400 --> 00:03:24.423
 the storefront schema doesn't exist.
-
-00:03:26.716 --> 00:03:28.924
 AndI'll set up the usual catch clause here.
-
-
-00:03:31.520 --> 00:03:35.206
 I'll set up my environment variables,
 as part of the run configuration.
 
 
-00:03:36.040 --> 00:03:39.480
+
 You've seen me do this several times
 by now, so I'll just do it real quick.
-
-
-00:03:40.360 --> 00:03:42.543
 So Run, Edit Configurations.
 
 
-00:03:52.177 --> 00:03:54.177
-In the environment variables input field,
 
-00:03:54.177 --> 00:04:00.417
+In the environment variables input field,
 I'll set up My SQL User, equal to dev user, then I need
 to follow that with a semi colon, not a comma.
-
-
-00:04:01.320 --> 00:04:05.000
 Then I'll type My SQL, P A S S
 and set that to my password.
-
-
-00:04:05.840 --> 00:04:11.480
 You'd put your own password there.
 Now I can run this code.
 
 
-00:04:13.564 --> 00:04:17.063
+
 And sure enough, I get unknown
 database, store front.
-
-
-00:04:18.800 --> 00:04:23.840
 Now in truth, the code in the checkSchema method
 is flawed, since it just assumes any exception
-
-00:04:23.840 --> 00:04:29.640
 thrown, means that the database doesn't exist.
 A lot of problems could happen here,
-
-00:04:29.640 --> 00:04:32.600
 that have nothing to do with whether
 this database exists or not.
-
-
-00:04:33.480 --> 00:04:36.747
 The SQL Exception comes with
 additional information we can examine.
-
-
-00:04:37.720 --> 00:04:42.280
 This includes an SQL state String, derived
 from a list of codes, from one of two
-
-00:04:42.280 --> 00:04:48.120
 possible conventions used to standardize codes.
 To figure out which convention the driver uses,
-
-00:04:48.120 --> 00:04:52.394
 we can query a class called DatabaseMetaData,
 which we can get from the connection.
-
-
-00:04:53.320 --> 00:04:57.370
 Next, there's an integer error code,
 that's specific to each vendor.
-
-
-00:04:58.320 --> 00:05:03.164
 These codes can often help determine, with
 more accuracy, the exact error that occurred.
-
-
-00:05:04.160 --> 00:05:08.987
 Before I add any more code, I'll show you how to
 get information from the database metadata class.
-
-
-00:05:09.960 --> 00:05:13.973
 This can be retrieved from the connection
 object, with a method called getMetaData.
-
-
-00:05:14.760 --> 00:05:17.680
 I'll add this code as the first
 statement inside the try block
-
-
-00:05:18.560 --> 00:05:23.074
 I'll create a variable called metaData, assign
 it the value I get from the getMetaData method.
-
-00:05:24.000 --> 00:05:28.640
 I'll pause after I type metadata dot.
 I want you to see the many things you can
-
-00:05:28.640 --> 00:05:35.080
 learn about your database, from this instance.
 If you're writing JDBC code, you really should try
-
-00:05:35.080 --> 00:05:40.040
 to be familiar with your driver's features, and
 this class and its methods, will help you explore
-
-00:05:40.040 --> 00:05:46.920
 the driver configuration, and database specifics.
 In this case I want to execute getSQLStateType,
-
-00:05:46.920 --> 00:05:48.736
 so I'll scroll down and select that.
-
-
-
-00:05:53.993 --> 00:05:55.298
 I'll run the code again.
 
-00:05:57.560 --> 00:06:01.050
+
+
 Notice, that a 2 is printed
 out, before the exception.
-
-
-00:06:02.000 --> 00:06:06.680
 That's not immediately useful information.
 I'll control click, on the class
-
-00:06:06.680 --> 00:06:08.023
 DatabaseMetaData,
-
-00:06:10.223 --> 00:06:11.976
 and search for SQLState.
-
-00:06:16.979 --> 00:06:19.301
 Here you can see there's a couple of constant values,
-
-00:06:19.301 --> 00:06:26.550
 and the s q l state S Q L is set to 2.
 This indicates this driver is using the latest SQL conventions,
-
-00:06:26.550 --> 00:06:31.240
 and not the X OPEN conventions.
 I'll show you how to look codes up, using one of
-
-00:06:31.240 --> 00:06:35.680
 these conventions, in a minute.
 First, I'll write some code,
-
-00:06:35.680 --> 00:06:40.600
 to explore the error I got back.
 I'll add this code after the printStackTrace,
-
-00:06:40.600 --> 00:06:44.701
 in the checkSchema method.
 I'll print the SQL State first.
-
-00:06:47.040 --> 00:06:48.193
 Then the error code,
-
-00:06:51.273 --> 00:06:52.648
 and finally the message.
-
-
-00:06:56.006 --> 00:06:59.859
 Notice here, I'm using System.err, and not System.out,
-
-00:06:59.859 --> 00:07:04.796
 which I don't think I've used before.
 System.err is standard output for errors.
-
-
-00:07:05.560 --> 00:07:08.970
 In our case System.err and System.out
 both output to the console.
-
-
-00:07:09.920 --> 00:07:13.520
 If you're working in a production client
 server environment, it's good practice to
-
-00:07:13.520 --> 00:07:17.680
 output errors to System.err.
 These messages get displayed,
-
-00:07:17.680 --> 00:07:22.177
 even if System.out messages get redirected
 to a file, or some other output stream.
-
-
-00:07:23.080 --> 00:07:27.080
 Configuring standard streams, to
 different output sources is more common,
-
-00:07:27.080 --> 00:07:31.069
 in a client server environment.
 I'll run this code again.
 
 
-00:07:33.200 --> 00:07:38.994
+
 Now I've got S Q L state = 42 thousand.
 And Error Code = 10 49.
-
-
-00:07:39.920 --> 00:07:46.838
 And the message is, unknown database storefront.
 I'll go to a browser and type 'wiki SQL STATE'.
-
-
-00:07:52.720 --> 00:07:56.581
 This brings up the wikipedia
 page, for SQL State values.
-
-
-00:07:57.600 --> 00:08:02.440
 Here, I'll search for 42000.
 The message for this code is,
-
-00:08:02.440 --> 00:08:07.600
 syntax error or access rule violation.
 Since these are standard codes,
-
-00:08:07.600 --> 00:08:12.000
 it's a good idea to try to use these if
 you can, versus the database vendor code.
-
-
-00:08:13.320 --> 00:08:16.141
 For this scenario though, that
 code is not super useful.
-
-
-00:08:17.160 --> 00:08:20.520
 We don't really know if we have a
 syntax error, it's an access issue,
-
-00:08:20.520 --> 00:08:25.497
 or the schema just doesn't exist.
 Now let's look up the MySQL Error code.
-
-
-00:08:26.400 --> 00:08:30.154
 I'll pull up the server error reference
 page on My SQL's documentation.
-
-
-00:08:31.960 --> 00:08:38.880
 I'll search for 10 49.
 And here, you see the MySQL string code, and
-
-00:08:38.880 --> 00:08:44.720
 that's followed by the SQL State, 42 thousand.
 This is followed by a specific message,
-
-00:08:44.720 --> 00:08:47.977
 unknown database, which was
 printed in the exception we got.
-
-
-00:08:48.880 --> 00:08:53.800
 Let's search for 42 000 on this page.
 You can see, there are many errors that
-
-00:08:53.800 --> 00:08:58.560
 fall into that state.
 I'll change the code,
-
-00:08:58.560 --> 00:09:04.766
 to test the more specific MySQL error code.
 First, I'll set up a constant on my class.
-
-
-00:09:05.600 --> 00:09:10.000
 I'll call this My SQL DB NOT
 FOUND, and assign that, 1 0 4 9.
-
-
-00:09:11.480 --> 00:09:16.937
 Next, in my exception clause, I'll test both
 the database product name, and the error code.
-
-
-00:09:17.840 --> 00:09:23.480
 If my database product is my SQL, and the error
 code is 10 49, then I know for sure the schema
-
-00:09:23.480 --> 00:09:28.640
 doesn't exist, in the MySQL server.
 I'll remove the return false statement,
-
-00:09:28.640 --> 00:09:33.280
 and replace it with the following code.
 I'll use getMetaData, and chain the
-
-00:09:33.280 --> 00:09:37.480
 getDatabaseProductName to that, and compare
 that value to the literal string value,
-
-00:09:37.480 --> 00:09:43.659
 MySQL. Additionally, I'll check if the
 error code equals my SQL DB NOT FOUND's value.
-
-00:09:44.539 --> 00:09:48.120
  If both these conditions are
 true, then I'll return false, meaning
-
-00:09:48.120 --> 00:09:54.250
 the storefront database doesn't exist. Otherwise,
 I'll propagate the error out to the main method.
-
-
-00:09:55.200 --> 00:09:59.920
 This code doesn't compile though, because I need
 to catch or specify, so I'll include the throws
-
-00:09:59.920 --> 00:10:05.000
 SQL exception, in the method declaration.
 I'll just add that manually.
-
-
-00:10:07.800 --> 00:10:13.400
 Let's run this again.
-I get the same result, but now I have confidence
 
-00:10:13.400 --> 00:10:17.600
+
+
+I get the same result, but now I have confidence
 that I know exactly what the problem is.
 I wanted to spend a little extra time
-
-00:10:17.600 --> 00:10:22.640
 with SQL exceptions, because it's important to
 understand as much about the error as possible,
-
-00:10:22.640 --> 00:10:27.836
 that's returned from the database server.
 Ok, so let's create the storefront now.
-
-
-00:10:29.960 --> 00:10:34.200
 I'll create a new method, that'll
 be private and static, returns void,
-
-00:10:34.200 --> 00:10:37.840
 and I'll call it setUpSchema.
 It'll take a connection,
-
-00:10:37.840 --> 00:10:43.440
 throwing an SQL Exception.
 Remember that for My SQL, the terms database
-
-00:10:43.440 --> 00:10:49.160
 and schema are used interchangeably, so the first
 statement I need is, CREATE SCHEMA storefront,
-
-00:10:49.160 --> 00:10:55.720
 which will create the storefront database when
 executed. My first table, is the order table,
-
-00:10:55.720 --> 00:11:02.720
 so I'll have a createOrder string using a textblock,
 The DDL I need is, CREATE table, storefront.order,
-
-00:11:02.720 --> 00:11:08.520
 followed by an opening parentheses. That's
 followed by a list of columns, and types.
-
-00:11:09.400 --> 00:11:17.000
 My first column is order id, an int, it can't be null, and
 it's going to auto increment. Next, order date,
-
-00:11:17.000 --> 00:11:23.080
 a datetime field, and again that should never be
 null. I need to specify the primary key, which
-
-00:11:23.080 --> 00:11:29.423
 is order id. A closing parentheses ends the column
 list, and that's all I need to create this table.
-
-
-00:11:35.920 --> 00:11:40.714
 I'll add a second table, that has a
 relationship to the first, named order details.
-
-
-00:11:41.640 --> 00:11:49.168
 This will be similar to the code for order.
 So create table, storefront.order_details, left parenthesis.
-
-00:11:50.211 --> 00:11:56.880
 The order detail id, an int, can't be
 null, and gets auto incremented. Item description,
-
-00:11:56.880 --> 00:12:04.450
 is a text field. The third column is order_id.
 This is the column that connects the two tables.
-
-00:12:05.400 --> 00:12:13.400
 My primary key is order detail id. But there's
 another key, a foreign key. It's pretty common,
-
-00:12:13.400 --> 00:12:20.880
 to prefix a foreign key with FK, so I'll call it
 FK_ORDER ID. This foreign key is on the column,
-
-00:12:20.880 --> 00:12:27.280
 order id. Next, I have to describe what's
 called a constraint. This describes both
-
-00:12:27.280 --> 00:12:32.640
 the relationship to the other table, as well as
 limitations or constraints on table processing.
-
-00:12:33.520 --> 00:12:38.796
 So order id in this table, references order id
 in the parent table, storefront.order.
-
-00:12:39.745 --> 00:12:43.092
 This time,I want a delete to cascade to its child records.
-
-00:12:47.909 --> 00:12:51.692
 This code will set up a parent child relationship between these two tables.
-
-00:12:52.657 --> 00:12:56.310
 And importantly, they are treated like a
 single unit when I delete the parent.
-
-00:12:57.329 --> 00:12:59.560
 This means, if I delete an order,
-
-00:12:59.560 --> 00:13:03.640
 the details will also get deleted.
 Don't worry if you don't understand
-
-00:13:03.640 --> 00:13:07.360
 all of this SQL code.
 My goal here is first,
-
-00:13:07.360 --> 00:13:12.943
 to show you that whether you execute DML, or
 DDL, the process to do it in Java, is the same.
-
-
-00:13:13.800 --> 00:13:16.663
 There is one significant difference
 I want to note, however.
-
-
-00:13:17.520 --> 00:13:22.960
 You can't roll back many of the DDL statements, so
 it's less common to execute DDL in a transaction.
-
-
-00:13:23.840 --> 00:13:27.198
 Whether or not you can execute DDL
 statements in a transaction, is
-
-00:13:27.198 --> 00:13:33.080
 something that's specific to the database vendor.
 The second objective of this exercise, was to give
-
-00:13:33.080 --> 00:13:37.760
 you a schema, for upcoming challenges.
 Now, I have to add the code
-
-00:13:37.760 --> 00:13:42.200
 to execute these statements.
 I'll use a try with resources again,
-
-
-00:13:43.080 --> 00:13:48.608
 Creating a statement within that. I'll print
 that this is creating a storefront database.
-
-00:13:49.280 --> 00:13:54.760
 I'll call execute on my createSchema first.
 I'll double check that it really got created,
-
-00:13:54.760 --> 00:14:02.112
 by calling checkSchema. If that's true, I'll
 create the order table. I'll print that it was. created.
-
-00:14:04.219 --> 00:14:09.160
 I'll execute the creation of the order
 details table next. And I'll again print that
-
-00:14:09.160 --> 00:14:15.644
 it was successfully created. Otherwise,
 I'll catch the exception and print it.
-
-
-00:14:20.600 --> 00:14:22.701
 I'll add the call to this
 method in the main method.
-
-
-00:14:23.720 --> 00:14:27.234
 I'll put it in the if statement, after
 the system.out.println statement.
-
-
-00:14:28.160 --> 00:14:34.520
 I need to pass that the connection instance.
 Before I run this, I'm going to first open a
 
-00:14:34.520 --> 00:14:38.040
-session, in My SQL WorkBench, for my dev user.
 
-00:14:43.575 --> 00:14:47.636
+
+session, in My SQL WorkBench, for my dev user.
 I'll use the workbench, to independently
 confirm the schema and tables got added.
-
-00:14:48.577 --> 00:14:51.379
 Getting back to IntelliJ, I'll run my code.
 
 
-00:14:53.440 --> 00:14:57.760
+
 Everything seems to have worked fine.
 I get that the application successfully
-
-00:14:57.760 --> 00:15:02.398
 created order, and order details, and
 that the storefront schema was created.
-
-
-00:15:05.200 --> 00:15:08.857
 Jumping back to My SQL Workbench,
 I'll refresh the schema panel.
-
-
-00:15:09.760 --> 00:15:12.410
 The refresh icon is on the
 right of the SCHEMAS label.
-
-
-00:15:13.360 --> 00:15:17.594
 When I click on that,
 I should now see the storefront schema listed.
-
-
-00:15:18.520 --> 00:15:23.200
 I'll expand that, and I'll expand Tables, and
 there I can see my two tables that were created
-
-00:15:23.200 --> 00:15:28.400
 by the Java code, Order and Order Details.
 If you have any problems at all with your own
-
-00:15:28.400 --> 00:15:31.703
 code, you can right click on the
 storefront schema in this tool,
-
-
-00:15:32.560 --> 00:15:38.065
 and select drop schema, then try your java code
 again, to recreate the schema from scratch again.
-
-
-00:15:39.015 --> 00:15:43.840
 Ok, so I'm going to bring this video to a close.
 Hopefully you were able to follow along and
-
-00:15:43.840 --> 00:15:47.059
 you've got a storefront schema
 set up, and ready to be used.
-
-
-00:15:47.800 --> 00:15:52.480
 In the next video, I'll have a challenge,
 using this schema, so keep this project open.

@@ -1596,7 +1596,7 @@ it's time to do some of the fun work,
 which is getting data from the database.
 </div>
 
-## [e. Querying Data]()
+## [e. Querying Data by MySQLDataSource Class]()
 <div align="justify">
 
 In the last section, we connected to the _music_ database, 
@@ -2251,34 +2251,2705 @@ Ok, so that's a quick introduction to the
 This method returns the results of the query in a **ResultSet** object.
 And you can use the _ResultSet_ metadata object,
 to query information about the _ResultSet_.
-</div>
 
-
-
-<div align="justify">
-
-```java  
-
-```
-
-```html  
-
-```
-
-</div>
-
-
-
-<div align="justify">
+Before I do anything more with this _query_, 
+I'll first remove the code that prints out the column names
+and column types from the **ResultSet MetaData**.
 
 ```java  
+public class Main { 
+    public static void main(String[] args) {
+        
+        Properties props = new Properties();
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course03_QueryingData/music.properties";
+        try {
+            props.load(Files.newInputStream(Path.of(pathName), StandardOpenOption.READ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName(props.getProperty("serverName"));
+        dataSource.setPort(Integer.parseInt(props.getProperty("port")));
+        dataSource.setDatabaseName(props.getProperty("databaseName"));
 
+        String albumName = "Tapestry";
+        String query = "SELECT * FROM music.albumview WHERE album_name='%s'".formatted(albumName);
+        
+        try (var connection = dataSource.getConnection(props.getProperty("user"), 
+                System.getenv("MYSQL_PASS"));
+             Statement statement = connection.createStatement();
+        ) {
+            
+            ResultSet resultSet = statement.executeQuery(query);
+
+            var meta = resultSet.getMetaData();
+/*            
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
+                System.out.printf("%d %s %s%n", 
+                        i, 
+                        meta.getColumnName(i),
+                        meta.getColumnTypeName(i)
+                );
+            }
+*/
+            System.out.println("===================");
+
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
+                System.out.printf("%-15s", meta.getColumnName(i).toUpperCase());
+            }
+            System.out.println();
+            
+            while (resultSet.next()) {
+                for (int i = 1; i <= meta.getColumnCount(); i++) {
+                    System.out.printf("%-15s", resultSet.getString(i));
+                }
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
 ```
+
+This will make the output easier to look at, moving forward.
+I'll run this code:
 
 ```html  
-
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Tapestry       Carole King    1              I Feel The Earth Move
+Tapestry       Carole King    2              Carole King - So Far Away
+Tapestry       Carole King    3              It's Too Late  
+Tapestry       Carole King    4              Home Again     
+Tapestry       Carole King    5              Beautiful      
+Tapestry       Carole King    6              Way Over Yonder
+Tapestry       Carole King    7              You've Got A Friend
+Tapestry       Carole King    8              Where You Lead 
+Tapestry       Carole King    9              Will You Love Me Tomorrow
+Tapestry       Carole King    10             Smackwater Jack
+Tapestry       Carole King    11             Tapestry       
+Tapestry       Carole King    12             (You Make Me Feel Like) A Natural Woman
+Tapestry       Carole King    13             Out In The Cold (Previously unreleased)
+Tapestry       Carole King    14             Smackwater Jack (Live)
 ```
 
+And again you'll see I get album name, 
+the artist name, the track number and the song title, 
+for the _Tapestry_ album, provided by the album view.
+Instead of hardcoding the album name,
+I'll prompt the user to enter the album name, 
+using the console this time, to get data from the user.
+
+```java  
+public class Main { 
+    public static void main(String[] args) {
+        
+        Properties props = new Properties();
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course03_QueryingData/music.properties";
+        try {
+            props.load(Files.newInputStream(Path.of(pathName), StandardOpenOption.READ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName(props.getProperty("serverName"));
+        dataSource.setPort(Integer.parseInt(props.getProperty("port")));
+        dataSource.setDatabaseName(props.getProperty("databaseName"));
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter an Album Name: ");
+        //String albumName = "Tapestry";
+        String albumName = scanner.nextLine();
+        String query = "SELECT * FROM music.albumview WHERE album_name='%s'".formatted(albumName);
+        
+        try (var connection = dataSource.getConnection(props.getProperty("user"), 
+                System.getenv("MYSQL_PASS"));
+             Statement statement = connection.createStatement();
+        ) {
+            
+            ResultSet resultSet = statement.executeQuery(query);
+
+            var meta = resultSet.getMetaData();
+            System.out.println("===================");
+
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
+                System.out.printf("%-15s", meta.getColumnName(i).toUpperCase());
+            }
+            System.out.println();
+            
+            while (resultSet.next()) {
+                for (int i = 1; i <= meta.getColumnCount(); i++) {
+                    System.out.printf("%-15s", resultSet.getString(i));
+                }
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll set up a **scanner** instance, using `System.in`.
+I'll prompt the user, to enter an album name.
+Next, I'll get the information from the scanner,
+with the next line statement,
+and assign that to the albumName variable.
+I'll run this:
+
+```html  
+Enter an Album Name:
+```
+
+and I'll enter _Tapestry_ at the prompt.
+
+```html  
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Tapestry       Carole King    1              I Feel The Earth Move
+Tapestry       Carole King    2              Carole King - So Far Away
+Tapestry       Carole King    3              It's Too Late  
+Tapestry       Carole King    4              Home Again     
+Tapestry       Carole King    5              Beautiful      
+Tapestry       Carole King    6              Way Over Yonder
+Tapestry       Carole King    7              You've Got A Friend
+Tapestry       Carole King    8              Where You Lead 
+Tapestry       Carole King    9              Will You Love Me Tomorrow
+Tapestry       Carole King    10             Smackwater Jack
+Tapestry       Carole King    11             Tapestry       
+Tapestry       Carole King    12             (You Make Me Feel Like) A Natural Woman
+Tapestry       Carole King    13             Out In The Cold (Previously unreleased)
+Tapestry       Carole King    14             Smackwater Jack (Live)
+```
+
+I get the same data I got when I had _Tapestry_ hard-coded there, 
+so that's good.
+I'll run this again, but now I'll enter a different album name.
+This time I entered _Bad Company_.
+
+```html  
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE
+Bad Company    Bad Company    1              Can't Get Enough
+Bad Company    Bad Company    2              Rock Steady
+Bad Company    Bad Company    3              Ready For Love
+Bad Company    Bad Company    4              Don't Let Me Down
+Bad Company    Bad Company    5              Bad Company
+Bad Company    Bad Company    6              The Way I Choose
+Bad Company    Bad Company    7              Movin' On
+Bad Company    Bad Company    8              Seagull    
+```
+
+And I get the songs on that album printed out there.
+With this code, I'm now providing a user with a way 
+to directly interact with the database.
+Now, this code isn't very error proof or user-friendly.
+The album name entered by the user has to match the case exactly, 
+for example, and there's no validation on the user input.
+Next, I'll change my select statement to get data from the artist table 
+by the artist id, in a similar way.
+
+```java  
+public class Main { 
+    public static void main(String[] args) {
+        
+        Properties props = new Properties();
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course03_QueryingData/music.properties";
+        try {
+            props.load(Files.newInputStream(Path.of(pathName), StandardOpenOption.READ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName(props.getProperty("serverName"));
+        dataSource.setPort(Integer.parseInt(props.getProperty("port")));
+        dataSource.setDatabaseName(props.getProperty("databaseName"));
+
+        Scanner scanner = new Scanner(System.in);
+        /*System.out.println("Enter an Album Name: ");
+        String albumName = scanner.nextLine();
+        String query = "SELECT * FROM music.albumview WHERE album_name='%s'".formatted(albumName);*/
+        
+        System.out.println("Enter an Artist Id: ");
+        String artistId = scanner.nextLine();
+        String query = "SELECT * FROM music.artists WHERE artist_id=%s".formatted(artistId);
+        
+        try (var connection = dataSource.getConnection(props.getProperty("user"), 
+                System.getenv("MYSQL_PASS"));
+             Statement statement = connection.createStatement();
+        ) {
+            
+            ResultSet resultSet = statement.executeQuery(query);
+
+            var meta = resultSet.getMetaData();
+            System.out.println("===================");
+
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
+                System.out.printf("%-15s", meta.getColumnName(i).toUpperCase());
+            }
+            System.out.println();
+            
+            while (resultSet.next()) {
+                for (int i = 1; i <= meta.getColumnCount(); i++) {
+                    System.out.printf("%-15s", resultSet.getString(i));
+                }
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+So First, I'll change the prompt to enter an artist id.
+I'll change the variable name from _albumName_, to _artistId_.
+On the next line, I'll change the select statement, 
+first to get data from the **artists** table, instead of **albumview**.
+And I'll change the _where_ clause to `artist_id=%s`.
+Notice here that I'm not enclosing this in quotes.
+Finally, I'll pass _artistId_ to the formatted method.
+I'll run this:
+
+```html  
+Enter an Artist Id: 
+```
+
+I'll enter 7:
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    
+7              Rory Gallagher 
+```
+
+And I get one artist back, Rory Gallagher.
+So that works, which seems good.
+I'll run this again.
+This time I'll enter an id, as expected, so 7 again, 
+but here, I'm going to include some additional input, 
+the text, `or artist id=8`.
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME
+7              Rory Gallagher
+8              Iron Maiden
+```
+
+If I press enter on that, this actually works,
+and I get the data for artist id 7 and 8.
+Imagine if this had been code, 
+getting personally identifiable information, based on some id.
+This would mean a user could now get back,
+not only the information for its known specific id, 
+but a second one as well.
+This is a somewhat staged and 
+imperfect example of something called **SQL injection**,
+but hopefully gives you and idea of how this problem could occur.
+_SQL Injection_ is when a user maliciously alters the input, 
+attempting to change the intent of the _SQL statement_.
+This is a means to get more information back
+or perform unintended operations.
+
+**SQL injection** is a serious security vulnerability.
+It occurs when an attacker attempts to manipulate the input data,
+sent to an application's database query.
+When you patch together an _SQL statement_, 
+using user input as we just did, 
+and you use Java's statement to execute it, 
+you could be putting your application at risk, to this type of problem.
+_SQL injection vulnerabilities_ usually exist at points 
+where user input is used to construct _SQL queries_.
+Common injection points include:
+
+* User login forms, where input is checked against stored credentials. 
+* Search forms, where user input is used to filter database records.
+* URL parameters, used in dynamic SQL queries. 
+* Any input field in a web application that interacts with a database.
+
+There are methods to minimize and prevent this type of attack.
+You'll want to: 
+
+* Validate and sanitize user input before using it. 
+We could have parsed our input to an integer, for example. 
+* Practice the _Least Privilege Principle_ on the database side.
+This means ensuring user accounts have the least privilege necessary 
+to perform their tasks.
+In this case, our dev user has very broad privileges, 
+and the opportunity to do more damage because of it. 
+* Implement proper error handling and logging to avoid exposing any database 
+or table name specifics in messages the user will see. 
+* Use prepared statements or parameterized queries, whenever possible.
+
+I'll be covering prepared statements in a later section in this course.
+Getting back to my code, I'll implement some simple validation here,
+by parsing the data I get from the user.
+
+```java  
+public class Main { 
+    public static void main(String[] args) {
+        
+        Properties props = new Properties();
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course03_QueryingData/music.properties";
+        try {
+            props.load(Files.newInputStream(Path.of(pathName), StandardOpenOption.READ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName(props.getProperty("serverName"));
+        dataSource.setPort(Integer.parseInt(props.getProperty("port")));
+        dataSource.setDatabaseName(props.getProperty("databaseName"));
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter an Artist Id: ");
+        String artistId = scanner.nextLine();
+        
+        int artistid = Integer.parseInt(artistId);
+        //String query = "SELECT * FROM music.artists WHERE artist_id=%s".formatted(artistId);
+        String query = "SELECT * FROM music.artists WHERE artist_id=%d".formatted(artistid);
+        
+        try (var connection = dataSource.getConnection(props.getProperty("user"), 
+                System.getenv("MYSQL_PASS"));
+             Statement statement = connection.createStatement();
+        ) {
+            
+            ResultSet resultSet = statement.executeQuery(query);
+
+            var meta = resultSet.getMetaData();
+            System.out.println("===================");
+
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
+                System.out.printf("%-15s", meta.getColumnName(i).toUpperCase());
+            }
+            System.out.println();
+            
+            while (resultSet.next()) {
+                for (int i = 1; i <= meta.getColumnCount(); i++) {
+                    System.out.printf("%-15s", resultSet.getString(i));
+                }
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll set up an integer variable, artist ID, with id in lower case.
+I'll pass the input to `Integer.parseInt`.
+I'll change my format string, to only accept a number there, 
+so `%d` instead of `%s`.
+And I'll pass my integer variable to the _formatted_ method.
+I'll run this.
+Again I'll enter `7 or artist_id=8`.
+
+```html  
+Exception in thread "main" java.lang.NumberFormatException: For input string: "7 or artist_id=8"
+	at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:67)
+	at java.base/java.lang.Integer.parseInt(Integer.java:662)
+	at java.base/java.lang.Integer.parseInt(Integer.java:778)
+	at .Main.main()
+```
+
+
+Now, this input gives me a number format exception, so that's an improvement.
+I'll run it again, and make sure I can enter a valid number.
+So I'll enter `77` there:
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    
+77             Jefferson Starship
+```
+
+And now I can see that that gives me _Jefferson Starship_ as the artist.
+Ok, so that was a brief introduction to a problem 
+you're sure to hear about, because it's crucial to avoid it.
+Now, I want to move on, so I'll remove the scanner code.
+
+```java  
+public class Main { 
+    public static void main(String[] args) {
+        
+        Properties props = new Properties();
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course03_QueryingData/music.properties";
+        try {
+            props.load(Files.newInputStream(Path.of(pathName), StandardOpenOption.READ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName(props.getProperty("serverName"));
+        dataSource.setPort(Integer.parseInt(props.getProperty("port")));
+        dataSource.setDatabaseName(props.getProperty("databaseName"));
+
+        //Scanner scanner = new Scanner(System.in);
+        //System.out.println("Enter an Artist Id: ");
+        //String artistId = scanner.nextLine();
+        //int artistid = Integer.parseInt(artistId);
+        
+        //String query = "SELECT * FROM music.artists WHERE artist_id=%d".formatted(artistid);
+        String query = "SELECT * FROM music.artists limit 10";
+        
+        try (var connection = dataSource.getConnection(props.getProperty("user"), 
+                System.getenv("MYSQL_PASS"));
+             Statement statement = connection.createStatement();
+        ) {
+            
+            ResultSet resultSet = statement.executeQuery(query);
+
+            var meta = resultSet.getMetaData();
+            System.out.println("===================");
+
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
+                System.out.printf("%-15s", meta.getColumnName(i).toUpperCase());
+            }
+            System.out.println();
+            
+            while (resultSet.next()) {
+                for (int i = 1; i <= meta.getColumnCount(); i++) {
+                    System.out.printf("%-15s", resultSet.getString(i));
+                }
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll change this query to just return a subset
+of the artists, the first `10` for example.
+In My SQL, I can do this with
+the limit clause, passing it 10.
+I'll run this.
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    
+1              Mahogany Rush  
+2              Elf            
+3              Mehitabel      
+4              Big Brother & The Holding Company
+5              Roy Harper     
+6              Pat Benatar    
+7              Rory Gallagher 
+8              Iron Maiden    
+9              Blaster Bates  
+10             Procol Harum   
+```
+
+Now you can see the results only have the first 10 records.
+That's what the _limit_ clause does.
+Unfortunately, using the _limit_ clause in this statement, 
+now means this jdbc code isn't portable to other databases.
+This is a clause that only a couple of vendors support, 
+and it's not _ANSI SQL_.
+
+_ANSI SQL_ stands for 
+the **American National Standards Institute Structured Query Language**.
+Each database vendor provides documentation
+that covers its own SQL language statements.
+This documentation often includes information 
+about their compliance with the _ANSI SQL_ standards.
+_ISO SQL_ is the **International Organization for Standardization**'s version.
+Both are based on the same core _SQL_ syntax and semantics, 
+and both are maintained by the same technical committee.
+For simplicity, I'll continue to call it just _ANSI SQL_.
+
+There are some good reasons to strive 
+to use _ANSI SQL_ with your JDBC code:
+
+* **Portability and Database Independence**. 
+Because _ANSI SQL_ is supported by all major database vendors to some degree, 
+you can write JDBC statements using it.
+This should give you confidence that the code will work
+on many databases. 
+* Using ANSI SQL helps with **Readability and Collaboration**. 
+It's well-defined and easy-to-read. 
+This makes it easier to write uniform code, as well as understand JDBC statements. 
+This is especially true if you're working with a team of developers.
+* **Maintainability and Future-Proofing** of your code. 
+_ANSI SQL_ is a stable language, which means it's unlikely 
+to change in the future.
+This makes it easier to maintain your code over time.
+* Finally, it helps with **Compliance Requirements**. 
+In some industries, compliance with standards and regulations is mandatory.
+Using _ANSI SQL_ will help address these requirements.
+
+While using _ANSI SQL_ is a good practice,
+different databases implement _ANSI SQL_ standards to varying degrees.
+Some advanced features and optimizations will remain vendor-specific, 
+and some vendors may only implement the standards minimally.
+I recommend trying to start with _ANSI SQL_,
+which can help you maintain flexibility,
+and minimize what's called vendor lock-in.
+Vendor lock-in occurs when you develop code,
+that relies heavily on vendor-specific features, syntax, or functionalities.
+This makes it challenging to migrate to a different DBMS vendor.
+This is good for the vendor, but may limit options for your organization.
+
+| Database Vendor      | TOP | LIMIT | FETCH FIRST |
+|----------------------|-----|-------|-------------|
+| Microsoft SQL Server | Yes | No    | No          |
+| MySQL                | No  | Yes   | No          |
+| PostgreSQL           | No  | Yes   | Yes         |
+| Oracle               | No  | No    | Yes         |
+| IBM Db2              | No  | No    | Yes         |
+| Apache Derby         | No  | No    | Yes         |
+| H2 Database          | No  | No    | Yes         |
+
+The **limit** clause is a good example of 
+how each database might implement this functionality.
+The _ANSI SQL_ standard specifies a **FETCH FIRST** clause.
+But _MySQL_ doesn't support that, and instead has the **LIMIT** clause.
+The table demonstrates which vendors support **FETCH FIRST**, and which don't.
+Notice that _SQL Server_ uses a **TOP** clause, instead of **LIMIT**, 
+and that _PostgreSQL_ supports both **FETCH FIRST** as well as **LIMIT**.
+So if MySQL doesn't support **FETCH FIRST**, 
+what options do we have to write database agnostic code in this example?
+Well, let me show you some code that should work in any database.
+I'll comment out the query statement there.
+
+```java  
+public class Main { 
+    public static void main(String[] args) {
+        
+        Properties props = new Properties();
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course03_QueryingData/music.properties";
+        try {
+            props.load(Files.newInputStream(Path.of(pathName), StandardOpenOption.READ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName(props.getProperty("serverName"));
+        dataSource.setPort(Integer.parseInt(props.getProperty("port")));
+        dataSource.setDatabaseName(props.getProperty("databaseName"));
+
+        //String query = "SELECT * FROM music.artists limit 10";
+        String query = """
+              WITH RankedRows AS (
+                                  SELECT *,
+                                  ROW_NUMBER() OVER (ORDER BY artist_id) AS row_num
+                                  FROM music.artists
+                              )
+                              SELECT *
+                                  FROM RankedRows
+                              WHERE row_num <= 10""";
+        
+        try (var connection = dataSource.getConnection(props.getProperty("user"), 
+                System.getenv("MYSQL_PASS"));
+             Statement statement = connection.createStatement();
+        ) {
+            
+            ResultSet resultSet = statement.executeQuery(query);
+
+            var meta = resultSet.getMetaData();
+            System.out.println("===================");
+
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
+                System.out.printf("%-15s", meta.getColumnName(i).toUpperCase());
+            }
+            System.out.println();
+            
+            while (resultSet.next()) {
+                for (int i = 1; i <= meta.getColumnCount(); i++) {
+                    System.out.printf("%-15s", resultSet.getString(i));
+                }
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+And I'll start a new one, with a text block.
+I'm going to paste this SQL statement in here rather than type it out.
+Ok, this is SQL, that may not make sense to you, 
+if you're pretty new to the subject.
+I'm not here to teach you SQL, but I will say this code is _ANSI SQL_,
+and does the same thing as **limit**.
+It's just a lot uglier and harder to understand.
+The **with** clause specifies a subquery or **Common Table Expression**, 
+called a **CTE**.
+Inside there, a sequential number called _row_num_ gets assigned 
+to every record in the **artists** table, 
+which is first sorted by _artist_id_.
+Using this subquery or CTE, the code then gets 
+the records assigned a _row_num_, less than or equal to 10.
+I'll run this:
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    ROW_NUM        
+1              Mahogany Rush  1              
+2              Elf            2              
+3              Mehitabel      3              
+4              Big Brother & The Holding Company4              
+5              Roy Harper     5              
+6              Pat Benatar    6              
+7              Rory Gallagher 7              
+8              Iron Maiden    8              
+9              Blaster Bates  9              
+10             Procol Harum   10
+```
+
+I get the same results as before.
+It has the benefit of being database agnostic.
+But it has the cost of a complex statement,
+which may not be as efficient as using the **Limit** clause.
+This code is probably going to be challenging for some team members 
+to understand and maintain.
+So another option for this specific problem is 
+to use a feature on the datasource,
+which limits the records returned.
+I'll comment out this text block,
+and uncomment the original SQL statement.
+
+```java  
+public class Main { 
+    public static void main(String[] args) {
+        
+        Properties props = new Properties();
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course03_QueryingData/music.properties";
+        try {
+            props.load(Files.newInputStream(Path.of(pathName), StandardOpenOption.READ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName(props.getProperty("serverName"));
+        dataSource.setPort(Integer.parseInt(props.getProperty("port")));
+        dataSource.setDatabaseName(props.getProperty("databaseName"));
+
+        try {
+            dataSource.setMaxRows(10);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        String query = "SELECT * FROM music.artists limit 10";
+/*       
+        String query = """
+              WITH RankedRows AS (
+                                  SELECT *,
+                                  ROW_NUMBER() OVER (ORDER BY artist_id) AS row_num
+                                  FROM music.artists
+                              )
+                              SELECT *
+                                  FROM RankedRows
+                              WHERE row_num <= 10""";
+*/        
+        
+        try (var connection = dataSource.getConnection(props.getProperty("user"), 
+                System.getenv("MYSQL_PASS"));
+             Statement statement = connection.createStatement();
+        ) {
+            
+            ResultSet resultSet = statement.executeQuery(query);
+
+            var meta = resultSet.getMetaData();
+            System.out.println("===================");
+
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
+                System.out.printf("%-15s", meta.getColumnName(i).toUpperCase());
+            }
+            System.out.println();
+            
+            while (resultSet.next()) {
+                for (int i = 1; i <= meta.getColumnCount(); i++) {
+                    System.out.printf("%-15s", resultSet.getString(i));
+                }
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+Above that query declaration, I'll call setMaxRows on the datasource, 
+passing it 10, meaning I only ever want 10 records back.
+This statement needs to be wrapped in a _try-catch_,
+so I'll have IntelliJ generate that for me.
+I'll run this:
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    
+1              Mahogany Rush  
+2              Elf            
+3              Mehitabel      
+4              Big Brother & The Holding Company
+5              Roy Harper     
+6              Pat Benatar    
+7              Rory Gallagher 
+8              Iron Maiden    
+9              Blaster Bates  
+10             Procol Harum  
+```
+
+This gives me the same result as the **limit** command.
+In MySQL, the server's execution plan is equivalent to using **LIMIT**, 
+meaning the server is optimized similarly as if it were using **limit**.
+This example is just one small demonstration of the complexity of trying 
+to write database agnostic code.
+Fortunately, the database vendors continue to improve and standardize.
+So it's possible that MySQL will eventually include the standard
+**FETCH FIRST** clause at some point.
+
+Trying to learn what the standards are,
+and how well each vendor supports each standard is a challenging exercise.
+Oracle provides a good guide, not for the MySQL database, 
+but for their Oracle database 
+that at least lists quite a few of the standards in one document.
+It then describes how well that database conforms to the standards.
+</div>
+
+## [f. Querying Data by DriverManager Class]()
+<div align="justify">
+
+In all the examples so far, I've used the _executeQuery_ method,
+which returns a **ResultSet** instance.
+In this section, I'll switch to using the _execute_ method, 
+first to execute the same select query we used in the previous section,
+and then to execute additional CRUD statements.
+I'll create a new class with the _main_ method,
+and I'll call this **MusicDML**.
+As promised, I'll first demonstrate how you'd get a connection, 
+if you're using a JDBC driver, that's earlier than JDBC 4.0.
+Prior to that version, a driver had to be loaded explicitly.
+To load a class explicitly or manually,
+you have to call `class.forName`, 
+and pass the fully qualified class name as a string.
+
+```java  
+public class MusicDML {
+
+    public static void main(String[] args) {
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+This method will actually return a class instance,
+and can be used for other purposes, like reflection.
+You'll remember, we can call _getClass_ on any object, 
+to get a class instance.
+In this case, we're getting a class instance based on 
+a fully qualified class name in a string literal, 
+for a class we haven't included in any of our import statements.
+This won't compile without a _try-catch_,
+so I'll use IntelliJ to generate that code.
+`TheClass.forName` method was necessary in older JDBC versions, 
+and allowed the database driver to be registered dynamically.
+This gave programmers the flexibility to swap in different drivers 
+at runtime, or in different environments.
+This mechanism has since been replaced with something called 
+the _Service Provider Interface_.
+I'll talk about _Service Providers_ and this interface later in the course.
+Even though it's no longer necessary to use this _Class.forName_ call,
+let's see what happens if we do.
+Legacy code or older applications may still use this approach, 
+and you should at least recognize it.
+
+```java  
+public class MusicDML {
+
+    public static void main(String[] args) {
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        
+        try (Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3335/music",
+                System.getenv("MYSQL_USER"),
+                System.getenv("MYSQL_PASS"));
+             Statement statement = connection.createStatement();
+        ) {
+            
+            String artist = "Elf";
+            String query = "SELECT * FROM artists WHERE artist_name='%s'"
+                    .formatted(artist);
+            
+            boolean result = statement.execute(query);
+            System.out.println("result = " + result);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+Once the driver was registered, the process was the same to get a connection.
+I'll set up a _try-with-resources_, and in that, 
+I'll set up a new connection, using **DriverManager** this time. 
+I'll pass my connection string for the MySQL database.
+I'll pass the username, stored in an environment variable this time. 
+I'll do the same for the password. 
+I'll be setting these up in the run configuration in a minute.
+I'll also set up a Statement in my _try-with-resources_.
+And as always, I'll deal with the _SQLException_.
+Within the _try_ clause, I'll be querying the **artist** table, 
+so I'll start with a variable for an artists' name.
+I'll set that to _Elf_.
+My query variable will be set to a _Select_ statement,
+so `SELECT * FROM artists WHERE artist_name='%s'`.
+Notice here that I'm using **artists** without specifying the **music** schema.
+I had mentioned previously that we don't have to use the schema name
+if we have the database name in the connection, 
+so I'll show you this, in this example.
+This string will be _formatted_ using the _artist_ variable. 
+I'll now call the _execute_ method on the **statement**, instead of _executeQuery_. 
+This method returns a **boolean**. 
+So I'll print that _result_.
+The _execute_ method can be used for different kinds of statements, 
+like _insert_, _update_ and _delete_, in addition to the _select_ statement,
+and I'll cover all of these shortly.
+Before I run this, I'll again set up some environment variables,
+on the run configuration, for this class
+Because I've only created _MusicDML_ in this section, 
+and not yet run it, there is no configuration set. 
+So I'll create a new one by coming over here to the plus button
+to add a new one and selecting _Application_.
+I'll call this configuration _MusicDML_.
+I need to select the right class name, 
+which is the code we have been working on in this section.
+This time I'll set up both the username and password here. 
+I'll click _OK_ to save the configuration.
+Now, I'll run this code:
+
+```html  
+Loading class `com.mysql.jdbc.Driver'. This is deprecated. The new driver class is `com.mysql.cj.jdbc.Driver'. The driver is automatically registered via the SPI and manual loading of the driver class is generally unnecessary.
+result = true
+```
+
+Notice first that I get a message, that loading the class, 
+the way I was in this code, has been deprecated.
+It then tells me what the new driver class is,
+and that it's automatically registered, etc.
+Lastly, I get that the _result_ is **true**.
+Ok, so now I'll remove the code that uses `Class.forName`, 
+and its surrounding _try_ block as well.
+
+```java  
+public class MusicDML {
+
+    public static void main(String[] args) {
+/*
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+*/
+        
+        try (Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3335/music",
+                System.getenv("MYSQL_USER"),
+                System.getenv("MYSQL_PASS"));
+             Statement statement = connection.createStatement();
+        ) {
+            
+            //String artist = "Elf";
+            String artist = "Neil Young";
+            String query = "SELECT * FROM artists WHERE artist_name='%s'"
+                    .formatted(artist);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+Next, I'm going to change my artist name, from _Elf_, to _Neil Young_.
+I happen to know that Neil Young's not in the **artists** table.
+I'll run the code again:
+
+```html  
+result = true
+```
+
+This time, I don't get any message about deprecated code.
+I'm also still getting a _result_ that's **true**,
+even though I know for a certainty, 
+that _Neil Young_ isn't in the **artists** database.
+This method, _execute_, always returns **true** 
+when it's used with a _select_ statement.
+This means this boolean result can't be used to test 
+for the existence of a record in a table.
+Instead, I'll test the data in the _resultSet_.
+
+```java  
+public class MusicDML {
+
+    public static void main(String[] args) {
+
+        try (Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3335/music",
+                System.getenv("MYSQL_USER"),
+                System.getenv("MYSQL_PASS"));
+             Statement statement = connection.createStatement();
+        ) {
+
+            String artist = "Neil Young";
+            String query = "SELECT * FROM artists WHERE artist_name='%s'"
+                    .formatted(artist);
+
+            boolean result = statement.execute(query);
+            System.out.println("result = " + result);
+
+            var rs = statement.getResultSet();
+            boolean found = (rs != null && rs.next());
+            System.out.println("Artist was " + (found ? "found" : "not found"));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll use the _getResultSet_ method on statement to get that data. 
+I'll set up a **boolean** variable,
+which I'll call found, which will be true if the _resultSet_'s not **null**, 
+and the next method returns **true**. 
+I'll use this variable to print whether the artist was found or not found.
+Running this code again:
+
+```html  
+result = true
+Artist was not found
+```
+
+I still get _result_ is **true**, but now I get _artist was not found_.
+In general, you'll use _executeQuery_ for _select_ statements, 
+but there may be some isolated use cases 
+where using _execute_ makes more sense.
+Before I continue, I'm going to set up a few public static methods on this class.
+
+```java  
+public class MusicDML {
+
+    public static void main(String[] args) {
+
+        try (Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3335/music",
+                System.getenv("MYSQL_USER"),
+                System.getenv("MYSQL_PASS"));
+             Statement statement = connection.createStatement();
+        ) {
+
+            String artist = "Neil Young";
+            String query = "SELECT * FROM artists WHERE artist_name='%s'"
+                    .formatted(artist);
+
+            boolean result = statement.execute(query);
+            System.out.println("result = " + result);
+
+            var rs = statement.getResultSet();
+            boolean found = (rs != null && rs.next());
+            System.out.println("Artist was " + (found ? "found" : "not found"));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static boolean printRecords(ResultSet resultSet) throws SQLException {
+        
+        boolean foundData = false;
+        var meta = resultSet.getMetaData();
+
+        System.out.println("===================");
+
+        for (int i = 1; i <= meta.getColumnCount(); i++) {
+            System.out.printf("%-15s", meta.getColumnName(i).toUpperCase());
+        }
+        
+        System.out.println();
+
+        while (resultSet.next()) {
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
+                System.out.printf("%-15s", resultSet.getString(i));
+            }
+            System.out.println();
+            foundData = true;
+        }
+        return foundData;
+    }
+}
+```
+
+The first will _printRecords_, given a _resultSet_.
+I'll make it private and static, and it'll return a **boolean**,
+This will take a _resultSet_ as a parameter, 
+and throw an _SQLException_, and I'll call it _printRecords_.
+It will return **true** if records were found.
+I'll initialize a **boolean** variable, found data, to **false**. 
+I'll return this value from this method.
+I'll open up the **Main** class, from the previous section, 
+and what I want to do is, copy the code 
+that prints the _resultSet_ in tabular form.
+I'll copy the code, starting at the line,
+where I declare the meta variable, 
+and copy all the statements through to the end of the _while_ loop code.
+I'll paste that in my new private method on the **MusicDML** class.
+Finally, I just want to set the variable, _foundData_, 
+to **true** in the _while_ loop.
+I'll put this at the end of the _while_ loop.
+So this method will print records found returning **true**, 
+or else just return **false** if no records were found.
+The next method I'll create is an _executeSelect_ method,
+also private and static, and returning a **boolean**.
+
+```java  
+public class MusicDML {
+
+    public static void main(String[] args) {
+
+        try (Connection connection = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3335/music",
+                System.getenv("MYSQL_USER"),
+                System.getenv("MYSQL_PASS"));
+             Statement statement = connection.createStatement();
+        ) {
+
+            String artist = "Neil Young";
+            String query = "SELECT * FROM artists WHERE artist_name='%s'"
+                    .formatted(artist);
+
+            boolean result = statement.execute(query);
+            System.out.println("result = " + result);
+
+            var rs = statement.getResultSet();
+            boolean found = (rs != null && rs.next());
+            System.out.println("Artist was " + (found ? "found" : "not found"));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static boolean printRecords(ResultSet resultSet) throws SQLException {
+
+        boolean foundData = false;
+        var meta = resultSet.getMetaData();
+
+        System.out.println("===================");
+
+        for (int i = 1; i <= meta.getColumnCount(); i++) {
+            System.out.printf("%-15s", meta.getColumnName(i).toUpperCase());
+        }
+
+        System.out.println();
+
+        while (resultSet.next()) {
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
+                System.out.printf("%-15s", resultSet.getString(i));
+            }
+            System.out.println();
+            foundData = true;
+        }
+        return foundData;
+    }
+
+    private static boolean executeSelect(Statement statement, String table, String columnName, String columnValue)
+          throws SQLException {
+        
+        String query = "SELECT * FROM %s WHERE %s='%s'".formatted(table, columnName, columnValue);
+        var rs = statement.executeQuery(query);
+        if (rs != null) {
+            return printRecords(rs);
+        }
+        return false;
+    }
+}
+```
+
+I'll make this generic, so that it can be used to select data from any record,
+using a single column name and value.
+This method has four parameters, 
+the _statement_ object, a _tableName_, a _columnName_, and a _columnValue_.
+It'll throw an _SQLException_, so I don't have to handle it in the method.
+I'll create the _SELECT_ statement, using the data passed. 
+In this case, I'll go back to calling `statement.executeQuery`, 
+and getting a _resultSet_ back from that. 
+If I get a _resultSet_ back, I'll execute the _printRecords_ method,
+and return it's **boolean** value.
+Otherwise, I'll return **false** from this method.
+What's significant about this method is it's not creating the connection 
+to the database or an additional statement.
+Instead, an existing statement is passed to it.
+Creating connections and statements can be expensive operations.
+It's good practice to close connections,
+as soon as you're done using them, it's true.
+But on the other hand, it's also a good idea to keep them open 
+if you know you're going to be executing a series of related statements.
+So this method will be used with an existing open statement.
+Getting back to the _main_ method on this class, 
+I'm going to remove the code I've got that queries the **artists** table.
+
+```java  
+public static void main(String[] args) {
+    
+    try (Connection connection = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3335/music", 
+            System.getenv("MYSQL_USER"), 
+            System.getenv("MYSQL_PASS")); 
+         Statement statement = connection.createStatement();
+         ) {
+/*
+        String artist = "Neil Young";
+        String query = "SELECT * FROM artists WHERE artist_name='%s'"
+                .formatted(artist);
+
+        boolean result = statement.execute(query);
+        System.out.println("result = " + result);
+
+        var rs = statement.getResultSet();
+        boolean found = (rs != null && rs.next());
+        System.out.println("Artist was " + (found ? "found" : "not found"));
+*/
+
+        String tableName = "music.artists";
+        String columnName = "artist_name";
+        String columnValue = "Elf";
+        if (!executeSelect(statement, tableName, columnName, columnValue)) {
+            System.out.println("Maybe we should add this record");
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+So I'll remove everything in the _try_ block.
+Next, I'll set up a couple of variables,
+table name, column name, and column value.
+I'll set up the _tableName_. 
+This time I'll go back to including the schema name 
+as part of the table name. 
+My _columnName_ is _artist_name_. 
+The _columnValue_ is the value of the artist name,
+so I'll use _Elf_ again here. 
+I'll call _executeSelect_, passing the statement, table, and column data.
+I'll wrap this in an _if_ statement, 
+so that if nothing is found for this artist, 
+I'll print that _maybe we should add this record_.
+I'll run this:
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME
+2              Elf
+```
+
+And here, because I'm using _Elf_, I'll get Elf's information 
+printed in tabular form.
+I'll again change _Elf_, to _Neil Young_.
+I'll rerun this:
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME
+Maybe we should add this record
+```
+
+This code still prints the column names,
+which means the _resultSet_ got returned with metadata, but not results.
+And I also see the text, _maybe we should add this record_.
+So let's do that.
+I'll create another private static method,
+this time to insert data into a table.
+
+```java  
+private static boolean insertRecord(Statement statement, String table, 
+                                    String[] columnNames, String[] columnValues)
+        throws SQLException {
+    
+    String colNames = String.join(",", columnNames);
+    String colValues = String.join("','", columnValues);
+    String query = "INSERT INTO %s (%s) VALUES ('%s')".formatted(table, colNames, colValues);
+    System.out.println(query);
+    boolean insertResult = statement.execute(query);
+    System.out.println("insertedResult= = " + insertResult);
+    return insertResult;    
+    int recordsInserted = statement.getUpdateCount();
+}
+```
+
+This will be similar to the _selectRecord_ method, 
+but I'll call it _insertRecord_,
+and instead of a single _columnName_ and single column value, 
+I'll pass arrays there.
+This method will also throw an _SQLException_.
+I'll join the column names into a comma-delimited string.
+I'll do the same with column values,
+but I want them to be enclosed in single quotes.
+I'll construct the `insert` DML query, with these values, 
+using the _formatted_ method.
+I'll print the generated _insert_ statement, 
+so you can see it. 
+I'll call _execute_ on the _statement_,
+passing it my generated _insert_ query, 
+and getting the **boolean** result back.
+I'll print the result.
+And return that result.
+Ok, so now, I'll add a call to this,
+in the code in the _main_ method.
+
+```java  
+public static void main(String[] args) {
+    
+    try (Connection connection = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3335/music", 
+            System.getenv("MYSQL_USER"), 
+            System.getenv("MYSQL_PASS")); 
+         Statement statement = connection.createStatement();
+         ) {
+
+        String tableName = "music.artists";
+        String columnName = "artist_name";
+        String columnValue = "Neil Young";
+        if (!executeSelect(statement, tableName, columnName, columnValue)) {
+            System.out.println("Maybe we should add this record");
+            insertRecord(statement, tableName, new String[]{columnName}, new String[]{columnValue});
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+I'll pass the _statement_ and _tableName_,
+and I'll pass string _arrays_, using a single value in each array, 
+the same values as before.
+Let's run this and see what happens.
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME
+Maybe we should add this record
+INSERT INTO music.artists (artist_name) VALUES ('Neil Young')
+insertResult = false
+```
+
+You can see the insert DML statement that was created printed out.
+Then `insertResult = false`, is printed.
+Does this mean this statement failed?
+No, actually it doesn't.
+First, if a SQL statement really fails, 
+meaning if it gets an error, I would've gotten an exception,
+and the application would have ended there.
+Are you wondering if this statement didn't work
+because we didn't include artist id?
+Actually, for any of the tables in this database,
+the IDs are automatically generated for us 
+when a new record is inserted,
+because of how this schema was set up.
+This means we don't have to include artist ID in the insert statement, 
+as one of the values that need to get inserted.
+If you have MySQL WorkBench open, you can try running a select query
+to confirm _Neil Young_ was really added.
+So why did we get false back?
+As it turns out, we'll only get **true** back 
+if we're running a select query, so again
+you can't use this boolean value, 
+to confirm whether the record was added.
+
+```java  
+private static boolean insertRecord(Statement statement, String table, 
+                                    String[] columnNames, String[] columnValues)
+        throws SQLException {
+    
+    String colNames = String.join(",", columnNames);
+    String colValues = String.join("','", columnValues);
+    String query = "INSERT INTO %s (%s) VALUES ('%s')".formatted(table, colNames, colValues);
+    System.out.println(query);
+    boolean insertResult = statement.execute(query);
+    
+    //System.out.println("insertedResult= = " + insertResult);
+    //return insertResult;    
+    
+    int recordsInserted = statement.getUpdateCount();
+    if (recordsInserted > 0) {
+        executeSelect(statement, table, columnNames[0], columnValues[0]);
+    }
+    return recordsInserted > 0;
+}
+```
+
+I'll remove that code from the _insertRecord_ method.
+Instead, I'll check the _getUpdateCount_, on the statement.
+I'll pass that value to a _recordsInserted_ variable. 
+If that's greater than zero,
+then that means a record was inserted in this case. 
+For good measure, I'll call _executeSelect_,
+passing the first column name and value, to select the data. 
+I'll return **true** if the number of records inserted is greater than zero.
+I'll run my code again:
+
+```html  
+ARTIST_ID      ARTIST_NAME
+202            Neil Young
+```
+
+This prints out that _Neil Young_ was added, 
+with the generated artist id, that MySQL automatically generated.
+This didn't execute an insert, because we inserted this in the previous run.
+So I'll change the artist name again:
+
+```java  
+public static void main(String[] args) {
+    
+    try (Connection connection = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3335/music", 
+            System.getenv("MYSQL_USER"), 
+            System.getenv("MYSQL_PASS")); 
+         Statement statement = connection.createStatement();
+         ) {
+
+        String tableName = "music.artists";
+        String columnName = "artist_name";
+        String columnValue = "Bob Dylan";
+        if (!executeSelect(statement, tableName, columnName, columnValue)) {
+            System.out.println("Maybe we should add this record");
+            insertRecord(statement, tableName, new String[]{columnName}, new String[]{columnValue});
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+this time to _Bob Dylan_.
+I'll re-run this code.
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME
+Maybe we should add this record
+INSERT INTO music.artists (artist_name) VALUES ('Bob Dylan')
+===================
+ARTIST_ID      ARTIST_NAME
+203            Bob Dylan
+```
+
+Now I can see the insert statement that was executed,
+and I get confirmation the _Bob Dylan_ was added.
+
+So _execute_ method on the **Statement** type 
+can be used for any SQL statement.
+This method returns a **boolean** value which can be a bit confusing.
+We looked at using _execute_ for both the _select_ and _insert_ statements.
+I'll be continuing this discussion, 
+but I'll now cover the _delete_ and _update_ statements.
+So again, I'll create a method. 
+This method will execute a _delete_ statement generically, 
+given a table name, column name, and column value.
+
+```java  
+private static boolean deleteRecord(Statement statement, String table, String columnName, String columnValue)
+        throws SQLException {
+    
+    String query = "DELETE FROM %s WHERE %s='%s'".formatted(table, columnName, columnValue);
+    System.out.println(query);
+    statement.execute(query);
+  
+    int recordsDeleted = statement.getUpdateCount();
+    if (recordsDeleted > 0) {
+        executeSelect(statement, table, columnName, columnValue);
+    }
+    return recordsDeleted > 0;
+}
+```
+
+This is a little dangerous without any validation, 
+but let's just assume validation took place already somewhere.
+I'll construct a DELETE SQL statement.
+Here I'm using the _formatted_ method, with the method arguments, 
+which you've seen me do a lot. 
+I'll print the generated query. 
+I'll execute it.
+I'll get the update count like I did when I ran the update statement. 
+This time it returns the number of records deleted. 
+I can use this method when I execute any _update_, _delete_, 
+or _insert_ statement. 
+If that number's greater than zero,
+I'll run a select query again, just to confirm the data was deleted. 
+I'll return **true** if any records were deleted.
+Now that I've got this method,
+I'll add a call to it, in the _main_ method.
+
+```java  
+public static void main(String[] args) {
+    
+    try (Connection connection = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3335/music", 
+            System.getenv("MYSQL_USER"), 
+            System.getenv("MYSQL_PASS")); 
+         Statement statement = connection.createStatement();
+         ) {
+
+        String tableName = "music.artists";
+        String columnName = "artist_name";
+        String columnValue = "Bob Dylan";
+        if (!executeSelect(statement, tableName, columnName, columnValue)) {
+            System.out.println("Maybe we should add this record");
+            insertRecord(statement, tableName, new String[]{columnName}, new String[]{columnValue});
+        } else {
+          deleteRecord(statement, tableName, columnName, columnValue);
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+I'll do this by adding an else block,
+so if a record was found, I'll delete it
+with a call to my deleteRecord method.
+Running this code:
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    
+203            Bob Dylan      
+DELETE FROM music.artists WHERE artist_name='Bob Dylan'
+===================
+ARTIST_ID      ARTIST_NAME
+```
+
+I can see that the initial select returns _Bob Dylan_.
+Then I see the generated _delete_ statement.
+And the next select returns no data for _Bob Dylan_.
+So I've successfully deleted _Bob Dylan_ from the **music** database.
+Now I'll change the value from _Bob Dylan_,
+to _Elf_ who already had data set up,
+when I imported the database.
+I'll rerun this code for Elf:
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME
+2              Elf
+DELETE FROM music.artists WHERE artist_name='Elf'
+Exception in thread "main" java.lang.RuntimeException: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`music`.`albums`, CONSTRAINT `FK_ARTISTID` FOREIGN KEY (`artist_id`) REFERENCES `artists` (`artist_id`))
+at .MusicDML.main()
+Caused by: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`music`.`albums`, CONSTRAINT `FK_ARTISTID` FOREIGN KEY (`artist_id`) REFERENCES `artists` (`artist_id`))
+at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:118)
+at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:770)
+at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:653)
+at .MusicDML.deleteRecord()
+at .MusicDML.main()
+```
+
+I can see the output from the select record, 
+followed by the _delete_ statement that was generated.
+But after that, I can see that the _execute_ statement failed.
+I get an _SQLIntegrityConstraintViolationException_ with the message 
+that I can't _delete_ or _update_ a parent row,
+since a foreign key constraint fails.
+Ok, so what does this mean?
+
+![image45](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image45.png?raw=true)
+
+You might remember this diagram from an earlier section.
+I showed it to you when we imported 
+the **music** database into _MySQL workbench_.
+Notice where FK is shown on the **songs** and **albums** table.
+These are foreign keys which describe dependencies.
+**Albums** has a foreign key, the artist ID, 
+as a column in its table.
+If I'd been successful at deleting _Elf_ in my code, 
+I would have been stuck with records in the **albums** table, 
+for an artist who no longer existed in our data.
+This would break the integrity of the data 
+and cause a lot of problems.
+Since this is pretty undesirable, 
+Foreign key relationships are commonly set up in databases, 
+to prevent users from inadvertently deleting parent records,
+and leaving orphaned child records around.
+Now we didn't have this problem with _Bob Dylan_,
+because we never created any album records for that artist,
+and therefore no song records either.
+We can change this behavior in the database
+by allowing a _cascade delete_.
+This means, when we delete an artist,
+the _delete_ would then be applied, 
+or cascaded down to the albums, 
+deleting all albums whose artist id is the deleted artist.
+We'd also have to enable cascade delete on the **songs** table, 
+so that if an album is deleted, 
+songs associated with that album would get deleted too.
+For now, I'm not going to change the **music** database,
+and I'll keep the restrictions on deletion.
+So far, I've shown you 
+three of the four crud operations, using `statement.execute`.
+The final statement is the _u_ in _crud_, the _update_ statement, 
+so I'll implement that next.
+Again, I'll create a private static method.
+
+```java  
+private static boolean updateRecord(Statement statement, String table, 
+                                    String matchedColumn, String matchedValue,
+                                    String updatedColumn, String updatedValue) 
+        throws SQLException {
+    
+    String query = "UPDATE %s SET %s = '%s' WHERE %s='%s'"
+            .formatted(table, updatedColumn, updatedValue, matchedColumn, matchedValue);
+    System.out.println(query);
+    statement.execute(query);
+  
+    int recordsUpdated = statement.getUpdateCount();
+    if (recordsUpdated > 0) {
+        executeSelect(statement, table, updatedColumn, updatedValue);
+    }
+    return recordsUpdated > 0;
+}
+```
+
+This time I'll copy the _deleteRecord_ method, and paste a copy just below.
+I'll change the name to _updateRecord_. 
+I'll also change the parameter names, from _columnName_ and _columnValue_, 
+to _updatedColumn_ and _updatedValue_ respectively.
+These represent the column that needs to be updated, 
+and the value it will get updated to.
+I'll next remove the query string,
+and replace it with an _Update_ query.
+And on the _formatted_ part,
+I'll again change the names of the last two arguments,
+to _updatedColumn_ and _updatedValue_.
+I need to do the same thing, 
+when I call the _executeSelect_ statement, 
+a couple lines below, in the if _recordsDeleted_ clause.
+I'll also take the opportunity, 
+to change the name of _recordsDeleted_, to _recordsUpdated_, 
+in line with the other changes; we have made in this method.
+Next, I'll add two additional parameters,
+to the method's declaration.
+These will identify the data, used in the _where_ clause,
+so I'll call the _matchedColumn_ and _matchedValue_.
+I'll insert these as the third and four parameters.
+I'll add these to the _formatted_ method.
+This is the data used to create the _where_ clause.
+I'll add these two new arguments, 
+as additional arguments to the _formatted_ method.
+That's all I need to do in this method.
+To call it, I'll go back to the _main_ method,
+and I'll comment out that _deleteRecord_ call.
+Then I'll instead call the _updateRecord_.
+
+```java  
+public static void main(String[] args) {
+    
+    try (Connection connection = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3335/music", 
+            System.getenv("MYSQL_USER"), 
+            System.getenv("MYSQL_PASS")); 
+         Statement statement = connection.createStatement();
+         ) {
+
+        String tableName = "music.artists";
+        String columnName = "artist_name";
+        String columnValue = "Elf";
+        if (!executeSelect(statement, tableName, columnName, columnValue)) {
+            System.out.println("Maybe we should add this record");
+            insertRecord(statement, tableName, new String[]{columnName}, new String[]{columnValue});
+        } else {
+          //deleteRecord(statement, tableName, columnName, columnValue);
+
+          updateRecord(statement, tableName, columnName,
+                  columnValue, columnName,
+                  columnValue.toUpperCase());
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+This starts out like the others, so I'll pass statement, 
+the table name and column name.
+Next, I'll pass the column value. 
+The second and third arguments will look for an artist,
+whatever I have in column value. 
+Next, I need to say what will be updated, 
+so I'll pass column name again,
+because I'm updating the same column I'm matching on, 
+in this case the artist name. 
+And I want to update the artist's name to all _uppercases_.
+Running this code:
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    
+2              Elf            
+UPDATE music.artists SET artist_name = 'ELF' WHERE artist_name='Elf'
+===================
+ARTIST_ID      ARTIST_NAME    
+2              ELF 
+```
+
+The code gets the data for an Artist named _Elf_ in mixed case 
+and displays it, and I see the artist id and artist name.
+Then I can see the update statement I generated.
+This updates the **artists** table, 
+setting the artist name to _ELF_ in uppercase.
+This update is done on the record 
+which currently has artist name equal to _Elf_.
+The code does a final query on the artist table,
+but it's using the new artist name,
+and you can see that printed out.
+In this case, I've successfully updated a record in the **music** database.
+All the examples I've shown you so far,
+using _insert_, _delete_ and _update_, have been focused on 
+a single record in the database.
+In the next scenario, I'll be inserting all the data needed, 
+to add an album with songs, for a new artist.
+To demonstrate this, I'll create a new method,
+private static void, called _insertArtistAlbum_.
+
+```java  
+private static void insertArtistAlbum(Statement statement, String artistName, String albumName) 
+        throws SQLException {
+    
+    String artistInsert = "INSERT INTO music.artists (artist_name) VALUES (%s)"
+            .formatted(statement.enquoteLiteral(artistName));
+    System.out.println(artistInsert);
+    statement.execute(artistInsert, Statement.RETURN_GENERATED_KEYS);
+
+}
+```
+
+This will take a statement, an artist name, and an album name, 
+and it'll throw an _SQLException_.
+I'll start with inserting the artist, 
+which ultimately is the top of the relationship tree.
+I'll again manually create this _insert_ statement. 
+This time, though, I'm not going to enclose the `%s` in single quotes. 
+Instead, I'll call `statement.enquoteLiteral`, passing it _artistName_. 
+This method will enclose the string in single quotes, 
+as well as escape any single quotes contained in the text, 
+so it's better to use this if your driver supports it. 
+This method was added in _JDK.9_ to the **statement** interface, 
+as a default method. 
+I'll print this statement out. 
+This time, I'll call an overloaded version of the _execute_ method.
+This one has a second argument, which takes an **int**, 
+and in this case I'll pass a constant on the **Statement** interface,
+called _RETURN_GENERATED_KEYS_. 
+Doing this will return the automatically generated ID,
+and store it in a special _resultSet_. 
+The reason I want to do this is I need the artist id 
+when I create the album record, 
+because of the foreign key field in that table. 
+Using this mechanism, I don't have to include my own select query 
+to get the newly generated id.
+
+```java  
+private static void insertArtistAlbum(Statement statement, String artistName, String albumName) 
+        throws SQLException {
+    
+    String artistInsert = "INSERT INTO music.artists (artist_name) VALUES (%s)"
+            .formatted(statement.enquoteLiteral(artistName));
+    System.out.println(artistInsert);
+    statement.execute(artistInsert, Statement.RETURN_GENERATED_KEYS);
+
+    ResultSet rs = statement.getGeneratedKeys();
+    int artistId = (rs != null && rs.next()) ? rs.getInt(1) : -1;
+    String albumInsert = ("INSERT INTO music.albums (album_name, artist_id)" + 
+            " VALUES (%s, %d)").formatted(statement.enquoteLiteral(albumName), artistId);
+    System.out.println(albumInsert);
+    statement.execute(albumInsert, Statement.RETURN_GENERATED_KEYS);
+    rs = statement.getGeneratedKeys();
+    int albumId = (rs != null && rs.next()) ? rs.getInt(1) : -1;
+    
+}
+```
+
+The key, the artist id in this case, gets returned in a _resultSet_ 
+I get by calling _getGeneratedKeys_.
+I'll set up a variable, called artist id, 
+and if I got data back from the previous statement,
+I'll set it to `rs.getInt`, passing a `1` there. 
+Otherwise, I'll just set this value to a default of `-1`. 
+If I did have an artist id of `-1`, 
+I'd probably want to abort this operation, 
+but I'm just going to keep this code simple here, 
+and assume this is successful,
+and I'll get a good artist id. 
+Now I can generate an _albumInsert_ statement, 
+using the artist id I got back, which this record needs, 
+because it's a child record of the artist.
+Again, I'll use the _enquoteLiteral_ method on _albumName_ here. 
+I'll print this statement out.
+I'll again call _execute_, with _RETURN_GENERATED_KEYS_ passed to it.
+As I did before, I'll use _getGeneratedKeys_ to get the _resultSet_
+that has the key, the album id.
+And like I did before, I'll retrieve my new album id from that _resultSet_.
+
+```java  
+private static void insertArtistAlbum(Statement statement, String artistName, String albumName) 
+        throws SQLException {
+    
+    String artistInsert = "INSERT INTO music.artists (artist_name) VALUES (%s)"
+            .formatted(statement.enquoteLiteral(artistName));
+    System.out.println(artistInsert);
+    statement.execute(artistInsert, Statement.RETURN_GENERATED_KEYS);
+
+    ResultSet rs = statement.getGeneratedKeys();
+    int artistId = (rs != null && rs.next()) ? rs.getInt(1) : -1;
+    String albumInsert = ("INSERT INTO music.albums (album_name, artist_id)" + 
+            " VALUES (%s, %d)").formatted(statement.enquoteLiteral(albumName), artistId);
+    System.out.println(albumInsert);
+    statement.execute(albumInsert, Statement.RETURN_GENERATED_KEYS);
+    rs = statement.getGeneratedKeys();
+    int albumId = (rs != null && rs.next()) ? rs.getInt(1) : -1;
+    
+    String[] songs = new String[]{
+            "You're No Good",
+            "Talkin' New York",
+            "In My Time of Dyin'",
+            "Man of Constant Sorrow",
+            "Fixin' to Die",
+            "Pretty Peggy-O",
+            "Highway 51 Blues"
+    };
+
+    String songInsert = "INSERT INTO music.songs " + 
+            "(track_number, song_title, album_id) VALUES (%d, %s, %d)";
+  
+    for (int i = 0; i < songs.length; i++) {
+        String songQuery = songInsert.formatted(i + 1, statement.enquoteLiteral(songs[i]), albumId);
+        System.out.println(songQuery);
+        statement.execute(songQuery);
+    }
+    executeSelect(statement, "music.albumview", "album_name", "Bob Dylan");
+}
+```
+
+I'll set up an array of song titles, from _Bob Dylan_'s record album of the same name.
+First, _You're no good_. 
+Then, _Talkin' New York_.
+You'll see here that several of his titles include a single quote in them. 
+I'll continue with _In My Time of Dyin_. 
+_Man of Constant Sorrow_. 
+_Fixin' to Die_, _Pretty Peggy-O_, 
+and I'll stop at _Highway 51 Blues_,
+even though there are 6 more songs on this album.
+I'll set up the _songInsert_ **String**.
+I'll insert a track number, song title, and album id.
+I'll loop through the array of songs.
+And create a song query each time, constructed using the _songInsert_ string.
+This time the _enquoteLiteral_ method will escape the single quote 
+in the song title as well.
+I'll print each of these queries out.
+And I'll execute each.
+Finally, I'll call the _executeSelect_ method on _albumview_, 
+which will give us all the related data, in one single select statement.
+Reviewing this code, I first insert the artist data, 
+and get a key back, the artist id in this case.
+I then can use that key to insert the related album record, 
+a child of the artist table's record for this artist.
+Again, I get the album key back, and then use that, 
+to create the dependent song records.
+Now, to run this code,
+I'll edit the _main_ method to use this.
+
+```java  
+public static void main(String[] args) {
+    
+    try (Connection connection = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3335/music", 
+            System.getenv("MYSQL_USER"), 
+            System.getenv("MYSQL_PASS")); 
+         Statement statement = connection.createStatement();
+         ) {
+
+        String tableName = "music.artists";
+        String columnName = "artist_name";
+        //String columnValue = "Elf";
+        String columnValue = "Bob Dylan";
+        if (!executeSelect(statement, tableName, columnName, columnValue)) {
+            //System.out.println("Maybe we should add this record");
+            //insertRecord(statement, tableName, new String[]{columnName}, new String[]{columnValue});
+          insertArtistAlbum(statement, columnValue, columnValue);
+        } else {
+          updateRecord(statement, tableName, columnName,
+                  columnValue, columnName,
+                  columnValue.toUpperCase());
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+I'll first remove the code in the _if-clause_.
+I'll replace those with a call to my new method, _insertArtistAlbum_.
+This takes the statement, and the artist name, which is the second argument. 
+In this case, I'll pass that as the third value here as well,
+because I'm going to have my album be the same name as the artist, for my test case.
+I'll use _Bob Dylan_ again, so I'll change the _columnValue_ here, from _Elf_ to _Bob Dylan_.
+Ok, so it's time to test this out, so I'll run it.
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    
+INSERT INTO music.artists (artist_name) VALUES ('Bob Dylan')
+INSERT INTO music.albums (album_name, artist_id) VALUES ('Bob Dylan', 204)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (1, 'You''re No Good', 879)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (2, 'Talkin'' New York', 879)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (3, 'In My Time of Dyin''', 879)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (4, 'Man of Constant Sorrow', 879)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (5, 'Fixin'' to Die', 879)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (6, 'Pretty Peggy-O', 879)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (7, 'Highway 51 Blues', 879)
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Bob Dylan      Bob Dylan      1              You're No Good 
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die  
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O 
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+```
+
+First, our _select_ statement, which prints a table of records, 
+just printed a header row, because _Bob Dylan_ isn't in the **music** database yet.
+Then we start seeing the generated _insert_ statements.
+The first isn't that interesting, except to check
+that the _enclosedLiteral_ method worked, 
+and we can see that with the single quotes around _Bob Dylan_.
+The next statement, though, notices that I've got the artist ID there,
+which I got by specifying _RETURN_GENERATED_KEYS_ in the _execute_ method.
+Then I see a series of song inserts, and there too 
+you can see the album id is passed to each of these.
+I again used _RETURN_GENERATED_KEYS_ to make that happen.
+Finally, the call to _executeSelect_ that queries the view 
+confirms all the data was added and correctly set up.
+
+This time, I'll be deleting all the records in three tables, 
+associated with a single artist.
+I'll start by deleting the songs, then the associated album, 
+and finally the artist.
+I want all of this data to be deleted in a single _transaction_.
+What I mean by that is, if something goes wrong with deleting 
+any single one of these records, I don't want any of the records to be deleted.
+I want all records to be deleted, or none at all in other words.
+To do this, I need to exercise more control over 
+how the statement commits the changes to the database.
+
+In all the statements I've executed so far, 
+I've been doing an implicit commit, 
+taking advantage of an auto commit setting on the connection.
+The **AUTOCOMMIT** option tells the database,
+to automatically commit changes after every statement.
+We never manually had to call commit on the statement for our changes 
+to be persisted to the database.
+**By default, a connection object is in auto-commit mode.**
+This can be useful for small changes, 
+but it can also be dangerous if you make a mistake. 
+When you make changes by executing queries,
+these changes are first stored in a temporary location, 
+called a redo log or journal file.
+When you execute a commit, 
+these changes are then persisted permanently to the database.
+If you turn _autocommit_ off, you can run a series of statements 
+and review the effects of your changes from this temporary location, 
+before you execute a manual commit.
+It's a good idea to turn _AUTOCOMMIT_ off, 
+if you want a series of related statements to be treated, 
+as a single atomic operation.
+This means all the statements in that group have to be run successfully 
+before they actually get persisted permanently.
+
+In the database world, a transaction is a series of one 
+or more database operations (such as inserts, updates, or deletes)
+that are treated as a single unit of work.
+**Transactions** ensure that database operations are atomic, 
+meaning they either all succeed, or all fail.
+If any part of the _transaction_ fails,
+the _transaction_ gets **rolled back**, 
+and no changes are applied to the database.
+In JDBC, a _transaction_ is initialized 
+when we turn _AUTOCOMMIT_ off, on the **connection** object. 
+Let's look at this in some code.
+
+I'm going to add a method to the **MusicDML** class, 
+as the last method in that class.
+This will be private, static and void.
+I'll call it _deleteArtistAlbum_.
+
+```java  
+private static void deleteArtistAlbum(Connection conn, Statement statement, String artistName, String albumName)
+        throws SQLException {
+  
+    System.out.println("AUTOCOMMIT = " + conn.getAutoCommit());
+}
+```
+
+The first parameter I'll pass to this is my connection, 
+and you'll see why in just a minute.
+After this, like the _insertArtistAlbum_, 
+I'll include the statement, the artist name, and the album name.
+This method will throw an _SQLException_.
+I'll start with one statement in this method, 
+and I'll just print out what I get by calling get _autocommit_ method on the connection.
+I'll be coming back to this method, but first, 
+I'll invoke it from the _main_ method.
+I want to run it, to see what the connection's current auto commit value is,
+before I do anything else.
+
+```java  
+public static void main(String[] args) {
+    
+    try (Connection connection = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3335/music", 
+            System.getenv("MYSQL_USER"), 
+            System.getenv("MYSQL_PASS")); 
+         Statement statement = connection.createStatement();
+         ) {
+
+        String tableName = "music.artists";
+        String columnName = "artist_name";
+        String columnValue = "Bob Dylan";
+        if (!executeSelect(statement, tableName, columnName, columnValue)) {
+            insertArtistAlbum(statement, columnValue, columnValue);
+        } else {
+            //updateRecord(statement, tableName, columnName, columnValue, columnName, columnValue.toUpperCase());
+            try {
+                deleteArtistAlbum(connection, statement, columnValue, columnValue);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            executeSelect(statement, "music.albumview", "album_name", columnValue);
+            executeSelect(statement, "music.albums", "album_name", columnValue);
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+So in the _main_ method, I'll be replacing the code I have in the _else_ statement.
+I'll start by deleting the statements that are there now.
+I'll make a call to my _deleteArtistAlbum_ statement instead.
+First, I'll wrap this in a _try-catch_, 
+because I want to see the results even if I get an error.
+I'll pass the connection first, then the statement.
+And since I'm deleting _Bob Dylan_ here,
+I'll pass artist name as the album name too.
+If I do get an exception executing the _delete_
+I'll print its stack trace. 
+After this, I'll print out any album data, from the _albumview_.
+There shouldn't be any records after the _delete_ method 
+if it's successful, but this will confirm it. 
+For good measure, I'll also print any data in `music.albums` for this album
+I'll run this:
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    
+204            Bob Dylan      
+AUTOCOMMIT = true
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Bob Dylan      Bob Dylan      1              You're No Good 
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die  
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O 
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+===================
+ALBUM_ID       ALBUM_NAME     ARTIST_ID      
+879            Bob Dylan      204 
+```
+
+I'll get _Bob Dylan_ back with his artist id,
+because he's already in the database,
+we inserted him before.
+And you can see _AUTOCOMMIT_ on the **connection** is set to **true**.
+This is the default, for any JDBC connection.
+Getting back to my _deleteArtistAlbum_ method,
+I'll start setting up some _delete_ queries.
+
+```java  
+private static void deleteArtistAlbum(Connection conn, Statement statement, String artistName, String albumName)
+        throws SQLException {
+
+    System.out.println("AUTOCOMMIT = " + conn.getAutoCommit());
+    String deleteSongs = """
+            DELETE FROM music.songs WHERE album_id =
+            (SELECT ALBUM_ID from music.albums WHERE album_name = '%s')"""
+            .formatted(albumName);
+  
+    int deletedSongs = statement.executeUpdate(deleteSongs);
+    System.out.printf("Deleted %d rows from music.songs%n", deletedSongs);
+    String deleteAlbums = "DELETE FROM music.albums WHERE album_name='%s".formatted(albumName);
+    int deletedAlbums = statement.executeUpdate(deleteAlbums);
+    System.out.printf("Deleted %d rows from music.albums%n", deletedAlbums);
+}
+```
+
+I'll set up the **songs** query as a text block, so `deleteSongs = """`.
+I'll delete from `music.songs`.
+I could have done a query to figure out what album id was first. 
+Instead, I can use a subquery in my SQL,
+which does the same thing, 
+so I'll set album id to the result of this subquery.
+The SQL subquery is in parentheses, 
+and is just another _Select_ statement.
+This lets me query the _ALBUM_ID_ from `music.albums` 
+within the same SQL statement.
+Don't worry if you don't understand the SQL completely.
+My goal here is not to teach you SQL, 
+but to teach you how Java executes it,
+and the consequences to expect, depending on how you execute it. 
+I'll pass _albumName_ to the _formatted_ method. 
+So next, instead of using _execute_, 
+I'll use another method on statement, called _executeUpdate_. 
+This returns the number of records that were affected by this statement,
+so in this case, it'll return the number of records deleted. 
+I'll print that number out.
+I'll now set up the _deleteAlbums_ query.
+Once songs are deleted, 
+I should be able to successfully delete the associated album.
+So here, I'll delete from albums, but in this case,
+let's imagine I forgot the closing single quote. 
+And again, I'll call _executeUpdate_ and return the result 
+to a variable called _deletedAlbums_. 
+And I'll print that out.
+I'll run this:
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    
+204            Bob Dylan      
+AUTOCOMMIT = true
+Deleted 7 rows from music.songs
+java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''Bob Dylan' at line 1
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeUpdateInternal(StatementImpl.java:1344)
+	at com.mysql.cj.jdbc.StatementImpl.executeLargeUpdate(StatementImpl.java:2090)
+	at com.mysql.cj.jdbc.StatementImpl.executeUpdate(StatementImpl.java:1253)
+	at .MusicDML.deleteArtistAlbum()
+	at .MusicDML.main()
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+===================
+ALBUM_ID       ALBUM_NAME     ARTIST_ID      
+879            Bob Dylan      204 
+```
+
+So you can see first, that _Bob Dylan_ is still in our database,
+and I've deleted `7` songs successfully.
+Then I get an exception that there's an error in the SQL syntax.
+After this, I can see the data in the view get printed, 
+but there's no data in the view.
+If I only queried the view, 
+I wouldn't realize I've got a problem in my database.
+I have an album that exists, that has no songs in it.
+There's no foreign key constraint that prevents this scenario,
+but it's still probably not an ideal situation,
+to have an album with no songs in our data.
+For this reason, I don't want any songs 
+to get deleted if the album record deletion fails.
+I want to treat these two _execute_ methods as a unit,
+so it's either all success or all failure.
+In other words, I want to establish a **transaction**.
+To achieve this, I first have to turn _autocommit_ off on the **connection**.
+Before that, I'll first fix my error in the code, 
+and include the ending single quote in the _deleteAlbums_ string.
+
+```java  
+private static void deleteArtistAlbum(Connection conn, Statement statement, String artistName, String albumName)
+        throws SQLException {
+
+    System.out.println("AUTOCOMMIT = " + conn.getAutoCommit());
+    String deleteSongs = """
+            DELETE FROM music.songs WHERE album_id =
+            (SELECT ALBUM_ID from music.albums WHERE album_name = '%s')"""
+            .formatted(albumName);
+  
+    int deletedSongs = statement.executeUpdate(deleteSongs);
+    System.out.printf("Deleted %d rows from music.songs%n", deletedSongs);
+    //String deleteAlbums = "DELETE FROM music.albums WHERE album_name='%s".formatted(albumName);
+    String deleteAlbums = "DELETE FROM music.albums WHERE album_name='%s'".formatted(albumName);
+    
+    int deletedAlbums = statement.executeUpdate(deleteAlbums);
+    System.out.printf("Deleted %d rows from music.albums%n", deletedAlbums);
+    
+    String deleteArtist = "DELETE FROM music.artists WHERE artist_name='%s'".formatted(artistName);
+    int deletedArtists = statement.executeUpdate(deleteAlbums);
+    System.out.printf("Deleted %d rows from music.albums%n", deletedAlbums);
+}
+```
+
+I'll include deleting _Bob Dylan_ from the artist table.
+I want my code to fully delete all _Bob Dylan_ data.
+My delete artist statement is straightforward, similar to delete album.
+I'll call _executeUpdate_ again, and get the count of _deletedArtists_.
+I'll print how many artists were deleted, which is hopefully only one.
+I'll run the code as it is, so that all the _Bob Dylan_ data is removed.
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME
+204            Bob Dylan
+AUTOCOMMIT = true
+Deleted 0 rows from music.songs
+Deleted 1 rows from music.albums
+Deleted 1 rows from music.albums
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE
+===================
+ALBUM_ID       ALBUM_NAME     ARTIST_ID 
+```
+
+I'll run it again, which will insert all the data.
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME
+INSERT INTO music.artists (artist_name) VALUES ('Bob Dylan')
+INSERT INTO music.albums (album_name, artist_id) VALUES ('Bob Dylan', 205)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (1, 'You''re No Good', 880)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (2, 'Talkin'' New York', 880)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (3, 'In My Time of Dyin''', 880)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (4, 'Man of Constant Sorrow', 880)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (5, 'Fixin'' to Die', 880)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (6, 'Pretty Peggy-O', 880)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (7, 'Highway 51 Blues', 880)
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE
+Bob Dylan      Bob Dylan      1              You're No Good
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+```
+
+Now, I've got my seven songs back.
+Getting back to my _deleteArtistAlbum_ method,
+I'll remove that single quote again, 
+in the _deleteAlbums_ string, to force an exception.
+
+```java  
+private static void deleteArtistAlbum(Connection conn, Statement statement, String artistName, String albumName)
+        throws SQLException {
+
+    System.out.println("AUTOCOMMIT = " + conn.getAutoCommit());
+    conn.setAutoCommit(false);
+    String deleteSongs = """
+            DELETE FROM music.songs WHERE album_id =
+            (SELECT ALBUM_ID from music.albums WHERE album_name = '%s')"""
+            .formatted(albumName);
+  
+    int deletedSongs = statement.executeUpdate(deleteSongs);
+    System.out.printf("Deleted %d rows from music.songs%n", deletedSongs);
+    String deleteAlbums = "DELETE FROM music.albums WHERE album_name='%s".formatted(albumName);
+    //String deleteAlbums = "DELETE FROM music.albums WHERE album_name='%s'".formatted(albumName);
+  
+    int deletedAlbums = statement.executeUpdate(deleteAlbums);
+    System.out.printf("Deleted %d rows from music.albums%n", deletedAlbums);
+  
+    String deleteArtist = "DELETE FROM music.artists WHERE artist_name='%s'".formatted(artistName);
+    int deletedArtists = statement.executeUpdate(deleteArtist);
+    System.out.printf("Deleted %d rows from music.albums%n", deleteArtist);
+    conn.commit();
+    conn.setAutoCommit(true);
+}
+```
+
+This time, though, I'll put all these _delete_ statements inside a **transaction**.
+To do this, I'll first turn auto commit off.
+This is done by calling _setAutoCommit_ 
+on the **connection**, and passing it **false**.
+At the end of this method, I'll manually commit 
+by calling the _commit_ method on the **connection**.
+After this transaction completes, I want to set auto commit back to **true**.
+I'll run this again, with these changes.
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    
+205            Bob Dylan      
+AUTOCOMMIT = true
+Deleted 7 rows from music.songs
+java.sql.SQLSyntaxErrorException : You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''Bob Dylan' at line 1
+    at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException()
+    at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException()
+    at com.mysql.cj.jdbc.StatementImpl.executeUpdateInternal()
+    at com.mysql.cj.jdbc.StatementImpl.executeLargeUpdate()
+    at .MusicDML.deleteArtistAlbum()
+    at .MusicDML.main()
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+===================
+ALBUM_ID       ALBUM_NAME     ARTIST_ID 
+```
+
+This output looks exactly the same as before.
+It looks like `7` rows were deleted.
+Until another commit is done,
+this deletion operation's results are sitting in a temporary location, 
+waiting to be committed.
+We really don't want them to be committed to this connection.
+I really want these data to be rolled back from the temporary location,
+as if they were never executed.
+
+```java  
+private static void deleteArtistAlbum(Connection conn, Statement statement, String artistName, String albumName)
+        throws SQLException {
+    try {
+        System.out.println("AUTOCOMMIT = " + conn.getAutoCommit());
+        conn.setAutoCommit(false);
+        String deleteSongs = """
+            DELETE FROM music.songs WHERE album_id =
+            (SELECT ALBUM_ID from music.albums WHERE album_name = '%s')"""
+                .formatted(albumName);
+
+        int deletedSongs = statement.executeUpdate(deleteSongs);
+        System.out.printf("Deleted %d rows from music.songs%n", deletedSongs);
+        String deleteAlbums = "DELETE FROM music.albums WHERE album_name='%s".formatted(albumName);
+        int deletedAlbums = statement.executeUpdate(deleteAlbums);
+        System.out.printf("Deleted %d rows from music.albums%n", deletedAlbums);
+        
+        String deleteArtist = "DELETE FROM music.artists WHERE artist_name='%s'".formatted(artistName);
+        int deletedArtists = statement.executeUpdate(deleteArtist);
+        System.out.printf("Deleted %d rows from music.albums%n", deletedArtists);
+        conn.commit();
+    } catch (SQLException e) {
+        e.printStackTrace();
+        conn.rollback();
+    }
+    conn.setAutoCommit(true);
+}
+```
+
+To do this, I need to wrap a _try_ block around my transaction code.
+I'll add a _try_ statement at the start.
+And I want the catch to be after I attempt the commit, 
+and before I set _autocommit_ to **true**.
+I'll catch the _SQLException_ here.
+And print the stack trace.
+Finally, I'll call rollback on the connection. 
+This will set the state of the temporary storage back 
+to the original state when the transaction started, 
+before I executed any statements at all.
+I'll run this.
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    
+205            Bob Dylan      
+AUTOCOMMIT = true
+Deleted 7 rows from music.songs
+java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''Bob Dylan' at line 1
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeUpdateInternal(StatementImpl.java:1344)
+	at com.mysql.cj.jdbc.StatementImpl.executeLargeUpdate(StatementImpl.java:2090)
+	at com.mysql.cj.jdbc.StatementImpl.executeUpdate(StatementImpl.java:1253)
+	at .MusicDML.deleteArtistAlbum()
+	at .MusicDML.main()
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Bob Dylan      Bob Dylan      1              You're No Good 
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die  
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O 
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+===================
+ALBUM_ID       ALBUM_NAME     ARTIST_ID      
+880            Bob Dylan      205      
+```
+
+My output starts out the same with it looking like `7` songs were deleted.
+But now I can see them in the view, even after the exception.
+Because I'm sharing my connection across a session with multiple methods, 
+I have to execute the _rollback_ method here,
+to clean up the data so other sessions don't inadvertently work 
+with my uncommitted changes, or even worse commit them.
+If I had opened and closed the connection in my delete artist album method, 
+this wouldn't have been an issue. 
+I'll fix the error in my code again.
+I'll run that again:
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    
+205            Bob Dylan      
+AUTOCOMMIT = true
+Deleted 7 rows from music.songs
+Deleted 1 rows from music.albums
+Deleted 1 rows from music.albums
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+===================
+ALBUM_ID       ALBUM_NAME     ARTIST_ID   
+```
+
+Now, Bob Dylan and his album and songs have all been deleted as a single unit,
+in a database transaction that consisted of three individual SQL deletion statements.
+Each _executeUpdate_ statement makes a round-trip to the database, 
+which for a remote database server, can be expensive.
+You can usually increase performance if you batch up your statements.
+To demonstrate this, I'll first remove each of the _executeUpdate_ statements 
+in my method, and the print statement that follows each one.
+
+```java  
+private static void deleteArtistAlbum(Connection conn, Statement statement, String artistName, String albumName)
+        throws SQLException {
+    try {
+        System.out.println("AUTOCOMMIT = " + conn.getAutoCommit());
+        conn.setAutoCommit(false);
+        String deleteSongs = """
+            DELETE FROM music.songs WHERE album_id =
+            (SELECT ALBUM_ID from music.albums WHERE album_name = '%s')"""
+                .formatted(albumName);
+
+        //int deletedSongs = statement.executeUpdate(deleteSongs);
+        //System.out.printf("Deleted %d rows from music.songs%n", deletedSongs);
+        String deleteAlbums = "DELETE FROM music.albums WHERE album_name='%s'".formatted(albumName);
+        
+        //int deletedAlbums = statement.executeUpdate(deleteAlbums);
+        //System.out.printf("Deleted %d rows from music.albums%n", deletedAlbums);
+        String deleteArtist = "DELETE FROM music.artists WHERE artist_name='%s'".formatted(artistName);
+        
+        //int deletedArtists = statement.executeUpdate(deleteArtist);
+        //System.out.printf("Deleted %d rows from music.albums%n", deletedArtists);
+      
+        statement.addBatch(deleteSongs);
+        statement.addBatch(deleteAlbums);
+        statement.addBatch(deleteArtist);
+        int[] results = statement.executeBatch();
+        System.out.println(Arrays.toString(results));
+        conn.commit();
+    } catch (SQLException e) {
+        e.printStackTrace();
+        conn.rollback();
+    }
+    conn.setAutoCommit(true);
+}
+```
+
+Before the commit statement, I'll add three _addBatch_ statements, one for each query.
+The _addBatch_ method is on statement, 
+so here I'll pass the _deleteSongs_ string to that method. 
+I'll next add the _deleteAlbums_ string. 
+And finally, the _deleteArtist_ string.
+The _addBatch_ method doesn't execute anything, 
+it simply adds the statement to a list of statements,
+that will get passed to the server.
+To execute the statements, I have to call `statement.executeBatch`.
+This method returns an integer array, containing the results of each statement, 
+as if we ran _executeUpdate_ on each, so in our case,
+we should get the number of records deleted for each statement. 
+I'll print this data out.
+I'll run this:
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    
+INSERT INTO music.artists (artist_name) VALUES ('Bob Dylan')
+INSERT INTO music.albums (album_name, artist_id) VALUES ('Bob Dylan', 206)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (1, 'You''re No Good', 885)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (2, 'Talkin'' New York', 885)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (3, 'In My Time of Dyin''', 885)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (4, 'Man of Constant Sorrow', 885)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (5, 'Fixin'' to Die', 885)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (6, 'Pretty Peggy-O', 885)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (7, 'Highway 51 Blues', 885)
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Bob Dylan      Bob Dylan      1              You're No Good 
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die  
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O 
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+```
+
+and again I have to run it twice, first to insert _Bob Dylan_'s data, 
+and the second to execute this code.
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME
+206            Bob Dylan      
+AUTOCOMMIT = true
+[7, 1, 1]
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+===================
+ALBUM_ID       ALBUM_NAME     ARTIST_ID   
+```
+
+In this output, after the _autocommit_ equals **true**,
+you can see the individual results of this batch execution, 
+printed in the integer array.
+The first statement affected `7` records,
+and the next two affected `1` record, 
+so this is consistent with the results we saw before.
+So again, I'll introduce my error on the album string, 
+removing the last single quote.
+
+```java  
+private static void deleteArtistAlbum(Connection conn, Statement statement, String artistName, String albumName)
+        throws SQLException {
+    try {
+        System.out.println("AUTOCOMMIT = " + conn.getAutoCommit());
+        conn.setAutoCommit(false);
+        String deleteSongs = """
+            DELETE FROM music.songs WHERE album_id =
+            (SELECT ALBUM_ID from music.albums WHERE album_name = '%s')"""
+                .formatted(albumName);
+
+        //String deleteAlbums = "DELETE FROM music.albums WHERE album_name='%s'".formatted(albumName);
+        String deleteAlbums = "DELETE FROM music.albums WHERE album_name='%s".formatted(albumName);
+        
+        String deleteArtist = "DELETE FROM music.artists WHERE artist_name='%s'".formatted(artistName);
+        
+        statement.addBatch(deleteSongs);
+        statement.addBatch(deleteAlbums);
+        statement.addBatch(deleteArtist);
+        int[] results = statement.executeBatch();
+        System.out.println(Arrays.toString(results));
+        conn.commit();
+    } catch (SQLException e) {
+        e.printStackTrace();
+        conn.rollback();
+    }
+    conn.setAutoCommit(true);
+}
+```
+
+I'll run the code, first to insert the bob Dylan records: 
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    
+INSERT INTO music.artists (artist_name) VALUES ('Bob Dylan')
+INSERT INTO music.albums (album_name, artist_id) VALUES ('Bob Dylan', 207)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (1, 'You''re No Good', 886)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (2, 'Talkin'' New York', 886)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (3, 'In My Time of Dyin''', 886)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (4, 'Man of Constant Sorrow', 886)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (5, 'Fixin'' to Die', 886)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (6, 'Pretty Peggy-O', 886)
+INSERT INTO music.songs (track_number, song_title, album_id) VALUES (7, 'Highway 51 Blues', 886)
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Bob Dylan      Bob Dylan      1              You're No Good 
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die  
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O 
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+```
+
+Then to delete them:
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    
+211            Bob Dylan      
+AUTOCOMMIT = true
+java.sql.BatchUpdateException: Cannot delete or update a parent row: a foreign key constraint fails (`music`.`albums`, CONSTRAINT `FK_ARTISTID` FOREIGN KEY (`artist_id`) REFERENCES `artists` (`artist_id`))
+	at com.mysql.cj.jdbc.exceptions.SQLError.createBatchUpdateException(SQLError.java:223)
+	at com.mysql.cj.jdbc.StatementImpl.executeBatchInternal(StatementImpl.java:900)
+	at com.mysql.cj.jdbc.StatementImpl.executeBatch(StatementImpl.java:802)
+	at .MusicDML.deleteArtistAlbum()
+	at .MusicDML.main()
+Caused by: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`music`.`albums`, CONSTRAINT `FK_ARTISTID` FOREIGN KEY (`artist_id`) REFERENCES `artists` (`artist_id`))
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:118)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeUpdateInternal(StatementImpl.java:1344)
+	at com.mysql.cj.jdbc.StatementImpl.executeBatchInternal(StatementImpl.java:866)
+	... 3 more
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Bob Dylan      Bob Dylan      1              You're No Good 
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die  
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O 
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+===================
+ALBUM_ID       ALBUM_NAME     ARTIST_ID      
+886            Bob Dylan      207  
+```
+
+So whether it's batch or not, I get an error 
+and this code will roll back the changes as you can see, 
+because the songs being listed here in the output.
+But examine the error we're getting here.
+It's not the error I was expecting which was an SQL Syntax Error, 
+the error I got previously.
+Instead, I'm getting a **foreign key constraint**.
+This error would be thrown if the code was trying to delete an artist,
+and a related album still exists.
+Is this batch code, `int[] results = statement.executeBatch();`, 
+actually executing all three statements?
+Well, yes, it is.
+That may seem like unexpected behavior, 
+but each JDBC provider can choose how they want to handle batch statements.
+The _MySQL ConnectorJ_ driver, by default, will execute every statement,
+even if previous statements throw errors.
+
+This can be controlled by a property on the driver.
+I'll pull up the Driver's API information.
+On this page, we have properties 
+that are associated with the JDBC Statement class in the MySQL driver.
+The second property is called continue Batch on Error, 
+and the default value is set to true,
+so the behavior we seem to be seeing corresponds to this documentation.
+To change this, I can set a property with a Properties file, 
+but since I'm not using a _Properties_ file, in this case, 
+I'll simply set the value in the _url_ string.
+
+```java  
+public static void main(String[] args) {
+    
+    try (Connection connection = DriverManager.getConnection(
+            //"jdbc:mysql://localhost:3335/music", 
+            "jdbc:mysql://localhost:3335/music?continueBatchOnError=false", 
+            System.getenv("MYSQL_USER"), 
+            System.getenv("MYSQL_PASS")); 
+         Statement statement = connection.createStatement();
+         ) {
+
+        String tableName = "music.artists";
+        String columnName = "artist_name";
+        String columnValue = "Bob Dylan";
+        if (!executeSelect(statement, tableName, columnName, columnValue)) {
+            insertArtistAlbum(statement, columnValue, columnValue);
+        } else {
+            //updateRecord(statement, tableName, columnName, columnValue, columnName, columnValue.toUpperCase());
+            try {
+                deleteArtistAlbum(connection, statement, columnValue, columnValue);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            executeSelect(statement, "music.albumview", "album_name", columnValue);
+            executeSelect(statement, "music.albums", "album_name", columnValue);
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+So in the _main_ method, where I have my jdbc connection string, 
+I can add parameters, by first adding a question mark, 
+after the schema name, and then provide a list of values.
+Here I want the _continueBatchOnError_ field to be set to **false**, 
+so I'll add that.
+I'll rerun the code after this change.
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    
+207            Bob Dylan      
+AUTOCOMMIT = true
+java.sql.BatchUpdateException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''Bob Dylan' at line 1
+	at com.mysql.cj.jdbc.exceptions.SQLError.createBatchUpdateException(SQLError.java:223)
+	at com.mysql.cj.jdbc.StatementImpl.executeBatchInternal(StatementImpl.java:900)
+	at com.mysql.cj.jdbc.StatementImpl.executeBatch(StatementImpl.java:802)
+	at .MusicDML.deleteArtistAlbum()
+	at .MusicDML.main()
+Caused by: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''Bob Dylan' at line 1
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeUpdateInternal(StatementImpl.java:1344)
+	at com.mysql.cj.jdbc.StatementImpl.executeBatchInternal(StatementImpl.java:866)
+	... 3 more
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Bob Dylan      Bob Dylan      1              You're No Good 
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die  
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O 
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+===================
+ALBUM_ID       ALBUM_NAME     ARTIST_ID      
+886            Bob Dylan      207  
+```
+
+And again, I get an error, but this time, 
+it's significant that it's the SQL syntax error.
+Setting this property may or may not make sense 
+depending on what you want to happen.
+But if you're expecting these statements to be run as a single transaction, 
+it makes sense to set this to false, 
+and have the batch processing stop after the first failure.
+I'll fix my error.
+I'll run that again:
+
+```html  
+===================
+ARTIST_ID      ARTIST_NAME    
+207            Bob Dylan      
+AUTOCOMMIT = true
+[7, 1, 1]
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+===================
+ALBUM_ID       ALBUM_NAME     ARTIST_ID   
+```
+
+Successfully deleting any data for _Bob Dylan_.
+
+I want to reiterate a few key points about using _executeBatch_:
+
+* Multiple SQL statements can be bundled together 
+and sent to the database in one trip, 
+reducing the overhead of multiple round-trips to the database.
+* _executeBatch_ does not necessarily execute all statements sent 
+if a failure occurs in one of the statements. 
+This depends on the type of driver and how it's configured, 
+as this example showed.
+* It's still important to manage transactions 
+with the use of commit and roll back when you use this method. 
+* Batch processing is often used to improve the performance of inserting, 
+updating, or deleting multiple rows in a database at once.
 </div>
 
 
