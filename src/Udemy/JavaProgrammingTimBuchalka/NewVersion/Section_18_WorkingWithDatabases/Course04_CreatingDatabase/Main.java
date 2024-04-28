@@ -1,4 +1,4 @@
-package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04_CreatingDatabase;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import java.sql.Connection;

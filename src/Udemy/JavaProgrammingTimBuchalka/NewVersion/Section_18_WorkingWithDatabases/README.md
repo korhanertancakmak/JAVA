@@ -5075,8 +5075,8 @@ java.sql.SQLSyntaxErrorException: Unknown database 'storefront'
 	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
 	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:770)
 	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:653)
-	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04.Main.checkSchema(Main.java:32)
-	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04.Main.main(Main.java:21)
+	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04_CreatingDatabase.Main.checkSchema(Main.java:32)
+	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04_CreatingDatabase.Main.main(Main.java:21)
 ```
 
 And sure enough, I get an unknown database, _storefront_.
@@ -5267,8 +5267,8 @@ java.sql.SQLSyntaxErrorException: Unknown database 'storefront'
 	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
 	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:770)
 	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:653)
-	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04.Main.checkSchema(Main.java:59)
-	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04.Main.main(Main.java:36)
+	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04_CreatingDatabase.Main.checkSchema(Main.java:59)
+	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04_CreatingDatabase.Main.main(Main.java:36)
 storefront schema does not exist
 ```
 
@@ -5372,8 +5372,8 @@ java.sql.SQLSyntaxErrorException: Unknown database 'storefront'
 	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
 	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:770)
 	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:653)
-	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04.Main.checkSchema(Main.java:76)
-	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04.Main.main(Main.java:39)
+	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04_CreatingDatabase.Main.checkSchema(Main.java:76)
+	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04_CreatingDatabase.Main.main(Main.java:39)
 storefront schema does not exist
 ```
 
@@ -5593,8 +5593,8 @@ java.sql.SQLSyntaxErrorException: Unknown database 'storefront'
 	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
 	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:770)
 	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:653)
-	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04.Main.checkSchema(Main.java:88)
-	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04.Main.main(Main.java:52)
+	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04_CreatingDatabase.Main.checkSchema(Main.java:88)
+	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04_CreatingDatabase.Main.main(Main.java:52)
 storefront schema does not exist
 Creating storefront Database
 Successfully Created Order
@@ -5635,370 +5635,114 @@ Select _SQL Editor_ on the left pane.
 In the right panel, there's a section called 
 _MySQL_ session, with three entries.
 
-
+![image51](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image51.png?raw=true)
 
 The second one is the read time out interval,
 and the one you want to change.
 Set this to 1 second.
-Click ok, and now, as you're working on
-this challenge, you can jump over to SQL
-Workbench, to test your results.
+Click ok, and now, as you're working on this challenge, 
+you can jump over to SQL Workbench to test your results.
+
 For your first JDBC Challenge,
-I want you to Write the Java code that
-inserts an Order, and at least two Order
-details into your database. 
+I want you to 
+
+* Write the Java code that inserts an _Order_, 
+and at least two _Order_ details into your database. 
+This should be done in a transaction. 
+* Use MySQL Workbench to confirm your inserts worked. 
+* Write Code that deletes an _Order_ and its _order details_.
+* Again, use MySQL Workbench to confirm your order and its line items, 
+were actually deleted.
+
+I've included the date time format that MySQL expects this field to be in.
+
+```html  
+Hint: The MySQL Date Time Format is: yyyy-MM-dd HH:mm:ss
+```
+</div>
+
+
+
+<div align="justify">
 
 ```java  
 
 ```
 
-This should be
-done in a transaction. Use MySQL Workbench
-to confirm your inserts worked. Write Code that
-deletes an Order and its order details.
-Again, use MySQL Workbench to confirm your order and it's
-line items, were actually deleted.
-I've included the date time format,
-that MySQL expects this field to be in.
-Ok, so go give that a try.
-Pause the video here, and go away and work
-on that challenge, and see how you do.
-When you're done, or you get stuck, come back,
-and we'll walk through my solution together.
-Welcome Back.
-So how did you do?
-Were you able to change the code, to insert the
-order and order details, in a single transaction?
-Did you add some data in both
-tables, and then delete that data?
-Ok, so let's get started.
-Here I am back in My SQL Workbench.
-Here I can see the storefront schema.
-I'll leave the work bench open, coming back to it,
-to verify the data as I run my code in Java.
+```html  
+
+```
+
+</div>
+
+
+
+<div align="justify">
+
+```java  
+
+```
 
 ```html  
 
 ```
 
-I'll get back to IntelliJ.
-I've got the JDBC Challenges project open,
-where we left off in the last video.
-I'll create a new method, called add Order.
-I'll make this private, static, and it
-returns an int, which will be the auto
-incremented id I get back from MySQL.
-This method will take a connection,
-and a String array, which will be
-the item descriptions, of the order details.
-I'll start by declaring an order id variable,
-and initialize that to minus 1. I'll set up
-my insert SQL statement, which is INSERT INTO
-storefront.order, followed by a list of column
-names in parens. In this case I only need order date.
-After that, we specify VALUES, and another
-set of parentheses. I'll surround my format string
-specifier with single quotes. The insert for the
-storefront.order_details starts out similarly,
-so insert into storefront.order details in
-this case. I'll define two columns, order_id,
-and item description, and two specifiers in this
-string, an integer and a string.
-For the string,I'll use enquoteLiteral in my code that formats
-it, so I'll leave out the single quotes here.
-I'll be returning order id from this method.
-Next, I want to get the order date. I'll start
-with a DateTimeFormatter object. I can create
-a Pattern, and I'll use the one I showed you on
-the challenge slide. I'll get the current
-date and time, using local date time.now,
-and I'll chain the format method to that, passing
-it my date time formatter variable. I'll print that out.
-I'll use this string, to populate the
-insert order statement. I'll print that out too.
-Now, I could have used date time specifiers
-in my formatted string, as an alternative to
-using the DateTimeFormatter.
-In fact, let me just review
-what that would look like.
-The insert starts out the same way,
-But the specifiers are a lot more cryptic.
-The 1 dollar sign in both cases means I can just pass a single date time variable for both of these values.
-The tF will print the date in the format y y y y, dash, m m, dash, d d.
-In the second specifier lowercase t, uppercase T,
-is the key to the time, being printed in the
-format we want.
-I'll print this out usingLocalDateTime now as the argument.
-So this is an alternative.
-I'll run this code, since nothing will
+</div>
+
+
+
+<div align="justify">
+
+```java  
+
+```
 
 ```html  
 
 ```
 
-get inserted yet, so you can see what
-this output looks like right now.
-I'll jump back up to the main method,
-and make a call to my new add Order method.
-I'll pass that the connection, and an array of
-strings, and I'll just use clothing in my
-store front order, so my items are shoes,
-shirt, and socks. I'll assign the id I get back,
-to the newOrder variable. and I'll print the new order id out.
-I'll run this.
+</div>
+
+
+
+<div align="justify">
+
+```java  
+
+```
 
 ```html  
 
 ```
 
-You can see the formatted date, using date
-time formatter, which gave us a string.
-I used that string as an argument to the percent
-s specifier, in my first insert order string.
-In the second example, I used date
-time specifiers instead or percent t,
-and you can see both give me the same result.
-Now let's actually use this insert method.
-I'll get back to the add Order method,
-and set up my try with resources block.
-I'll wrap a new statement in this
-try. Since we need a transaction,
-I'll set autocommit to false. I'll set up a
-variable, inserts, then call executeUpdate,
-passing that my formatted string, and since
-I want the generated key back, I can pass
-Statement dot return GENERATED KEYS as the second
-argument. I'll call commit after this. And then
-set autocommit to true. In the catch clause, If I
-get an exception, I want to roll the transaction back.
-Then I'll throw a runtime exception.
-Notice that I've got an error on rollback,
-and that's because that throws an SQL
-Exception too, and I need to handle it.
-I'll hover over that and select,
-add exception to method signature.
-I'm not done yet, because I still have
-to insert the order detail records.
-If I get a one back from inserting the order,
-I know my order was added successfully,
-and only in this case, do I want to proceed. So
-next, I need to get the generated key back from
-the insert order statement, and don't
-forget that's retrieved by calling get
-Generated Keys. That returns a result set.
-The first record in that result set, should
-have the key I want. The key will be at index1. I'll set up another local variable, count,
-which I'll use to test how many detail items get
-inserted. I'll loop through the items passed to
-this method. I'll format my string, using the
-order id as the first argument.
-Here, I'll enquote the item string, using statement.enquote literal.
-I'll call statement.executeUpdate,with this formatted string,
-returning the result back to my inserts variable. I'll add
-the value in inserts to my count variable.
-If we get an exception saving the records,
-the data will be rolled back,
-and a runtime exception thrown.
-But some database problems are silent,
-meaning we may not get an exception,
-but something may not go as we expected, because
-of problems with the logic in our queries.
-I'll add an additional test, in this code, to make
-sure the results are what I expected them to be.
-I'll check if the value in count, or
-the records inserted, is the same as
-the number of items passed to this method.
-If it's not, I'll set order Id back to -1.
-And I'll print out the issue.
-I'll roll back the transaction if this happens.
-I'll wrap an else statement around the commit statement
-Ok, time to test this out, so I'll run this code.
+</div>
+
+
+
+<div align="justify">
+
+```java  
+
+```
 
 ```html  
 
 ```
 
-I see the two insert strings again,
-but now I see new order equals 1.
-That's a good sign.
-I'll open up MySQL Workbench.
-I'll click on the order table, and select
-the grid or spreadsheet like icon.
-This will open an SQL editor pane
-showing an executed select statement,
-with a result grid below, so you should see
-order 1, with the order date listed there.
-I'll do the same for order details,
-clicking the table like icon there.
-Here I can see all three of the order details
-listed, associated with order 1, so that's it.
-Hopefully, you were able to do that, and you
-figured out how to persist some data of your own.
-The second part of the challenge was to delete
-an order, which includes it's line items.
-Getting back to IntelliJ, and
-the JDBC Challenges project,
-I'll add a new method to do this, and I'll
-insert this method after the addOrder method.
-This will be private, static,
-void, and called delete Order.
-It'll take a connection, and the
-order id, of the order to be deleted.
-I'll start with a formatted string, so Delete
-from storefront.order, where order id equals,
-percent d. I'll format that, using the
-orderId.
-I'll get a new statement in a try with resources block.
-I'll set up a variable called deleteRecords, and assign that the value of executeUpdate.
-I'll pass that, my deleteQuery
-string. I'll print how many records got deleted.
-That should be one in every case. If I get an
-exception, I'll throw a runtime exception.
-Getting back to the main method, I'll comment out
-the add order code, and the println below that.
-I'll make a call to the delete method before that
-code. I want to delete order id 1, in this case.
-I'll run this code.
+</div>
+
+
+
+<div align="justify">
+
+```java  
+
+```
 
 ```html  
 
 ```
 
-The output says one record was deleted.
-I'll verify the results in MySQL WorkBench,
-by re-executing the select statements.
-First on Order, and the result grid has no data.
-I'll do the same on Order details.
-You can see I no longer have either
-the order or the order detail records.
-Because of the cascade delete, defined in the
-order detail table, I didn't actually have to
-include the delete order details code in Java.
-This was optional for this scenario.
-Maybe you did code this, and
-included it in a transaction.
-This is a valid solution as well.
-I'll change my code a little, to do it that way.
-First, I'll uncomment the code
-that creates a new order,
-and re run my code, so I have an order to delete.
-
-```html  
-
-```
-
-This will set up order number 2, as you can see.
-I'll change the number from
-1 to 2 in the deleteOrder.
-Next, I'll start by adding the
-transaction code to my delete method.
-So first, I'll set auto commit to false.
-I'll call commit as the last
-statement in the try block.
-I'll execute a roll back if I get an exception.
-I'll again over hover the error I get on rollback,
-and select to have the SQL exception
-added to the methods' throw clause.
-I'll add a finally clause in this case, because
-I am throwing an exception in the catch clause.
-In either case I want to set
-auto commit back to true.
-Putting that in a finally clause
-ensures it always happens.
-Now, I'm going to make the delete
-Order string more generic, and put
-a place holder in for the table name.
-I'll change the name of the variable
-deleteQuery to parentQuery.
-Then, I'll pass the table name,
-storefront.order, as the first argument here.
-Next, I'll create a childQuery, using the
-same formattable string,
-this time passing the order details table,
-and I'll still delete by order id, Remember, the
-child table has this id in it as a foreign key.
-I'll change the name of the query in
-the execute update to be child query.
-I'll change my print statement to say
-how many child records were printed.
-Now, I just need to add the code,
-to delete the parent record.
-I'll executeUpdate on the parentQuery and return
-results to the same variable, deleteRecords.
-Again, it's possible something could go amiss,
-and not throw an exception, so I want to confirm
-one and only one order is deleted in this case.
-I'll print that my order was successfully deleted.
-I'll include an else statement, and rollback if
-my result wasn't one. I probably should have a
-statement printed here too, but you get the gist.
-Before I run this, I'll comment out the code that
-
-```html  
-
-```
-
-adds a new order.
-Ok, I'll run this.
-
-```html  
-
-```
-
-I'll see that three child records were deleted,
-and then order 2 was successfully deleted.
-I'll pop back over to MySQL Workbench, and
-re-execute the queries, that were generated,
-when I displayed the table results. These
-are currently showing as no data from last time.
-Remember we have created records again
-and deleted them, before coming back here.
-I'll start with Order, and running that select
-
-```html  
-
-```
-
-again, In the result grid below, I should have
-no data again, so I know this code worked.
-I'll do the same for order_details, opening that
-tab, and executing that select query again.
-And I get no data, so that's good.
-So Should you manually delete child records in
-your Java code, or depend on cascade deletion?
-The answer to that question,
-is as usual, it depends.
-If you're trying to be database agnostic,
-meaning your application is going to be deployed
-in many environments with different databases.
-In this scenario, You'll probably be working
-with varying degrees of database support,
-so then maybe you'd manually code the delete
-child records, and you'd have confidence your
-code is always cleaning up the child records,
-regardless of how the database is configured.
-Doing this might be simpler, than having to
-publish requirements, on how the database needs
-to be set up, with cascade deletes implemented.
-If you're deleting a large amount of data,
-it's probably more efficient to take
-advantage of the table's cascade deletes,
-done on the database server's implementation.
-All the major RDBMS vendors support cascade
-deletes, so that's a positive, but there may be
-some vendors or lightweight RDBMS's that don't.
-Also, don't forget your JDBC backend could
-even be files, like csv or jayson files,
-so in that case, you'd want to implement the
-delete order_detail functionality yourself.
-In the delete order detail code, you can
-see I parameterized the SQL statement,
-with the item description.
-Ultimately though, I passed
-a static string to the executeUpdate method.
-In the next video, I'll show you an alternative
-for parameterized SQL, in the
-form of a Prepared Statement.
 </div>
 
 

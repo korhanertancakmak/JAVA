@@ -235,11 +235,9 @@ What we will learn from this Path:
 ### [d. Connecting to a database with JDBC]()
 ### [e. Querying Data by MySQLDataSource Class]()
 ### [f. Manipulating Data by DriverManager Class]()
+### [g. Creating a Database with SQL Exceptions]()
+### [h. JDBC Challenge]()
 
-    * SQL Injection and ANSI SQL
-    * Update, Delete, Insert Statements
-    * Transactions, Commits, Rollback, Batch Execution
-    * SQL Exceptions
     * PreparedStatement
     * CallableStatement
     * JPA and ORM
