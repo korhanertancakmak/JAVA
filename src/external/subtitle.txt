@@ -2,738 +2,777 @@ WEBVTT
 Kind: captions
 Language: en
 
-00:00:05.360 --> 00:00:10.920
-In the last several videos, I've been focusing
-on DML, or Data Manipulation Language, because in
+00:00:05.360 --> 00:00:09.800
+In this challenge, you'll be using My SQL
+Workbench, to verify that the changes you
 
-00:00:10.920 --> 00:00:16.000
-many ways it's easier to learn and understand.
-In this video, I'll use the methods I've been
+00:00:09.800 --> 00:00:14.760
+make in Java, get persisted correctly.
+There is one change you'll probably need
 
-00:00:16.000 --> 00:00:19.850
-covering, but apply them to Data
-Definition Language, or D D L.
+00:00:14.760 --> 00:00:18.433
+to make though, to the settings
+in My SQL Workbench to do this.
 
 
-00:00:20.800 --> 00:00:26.137
-I've created a new project, which I've called
-JDBCChallenges, with the usual Main class.
+00:00:19.280 --> 00:00:23.160
+My SQL Workbench has something
+called connection caching,
 
 
-00:00:27.040 --> 00:00:31.280
-I need to include the JDBC driver again
-in this project, so I'll Right Click,
+00:00:23.160 --> 00:00:26.960
+This means data is cached and not
+refreshed immediately from persisted data.
 
-00:00:31.280 --> 00:00:35.705
-and select Module Settings, or in
-windows, that's F4 for the shortcut key.
 
+00:00:27.760 --> 00:00:31.534
+I'll show you how to configure it, to
+make the refresh interval much shorter.
 
-00:00:37.720 --> 00:00:43.400
-Select Libraries on the dialog that appears.
-Select The Plus Sign icon, and Select
 
-00:00:43.400 --> 00:00:47.680
-Java as the option.
-You'll get a file dialog,
+00:00:32.240 --> 00:00:37.233
+This'll let you see the changes made in your
+app, reflected immediately in MySQL Workbench.
 
-00:00:47.680 --> 00:00:51.728
-and hopefully you'll remember where you
-downloaded the my SQL connecter J jar file.
 
+00:00:38.080 --> 00:00:41.247
+Open MySQL Workbench, to
+your development session.
 
-00:00:55.480 --> 00:00:59.920
-I'll select mine, and I'll press
-OK, to any dialog that follows.
 
+00:00:42.000 --> 00:00:47.016
+Click on Edit, then Preferences.
+This will bring up a dialog.
 
-00:01:04.360 --> 00:01:08.405
-And that's it.
-Now, I'll go to my Main class.
 
+00:00:47.840 --> 00:00:52.760
+Select SQL Editor on the left pane.
+In the right panel, there's a section
 
-00:01:09.160 --> 00:01:12.720
-I'll set up a static query
-string, so private, static,
+00:00:52.760 --> 00:00:59.280
+called MySQL session, with three entries.
+The second one, is the read time out interval,
 
-00:01:12.720 --> 00:01:18.410
-final, String, USE underscore SCHEMA, and I'll
-set that to the literal text, USE Store front.
+00:00:59.280 --> 00:01:03.059
+and the one you want to change.
+Set this to 1 second.
 
 
-00:01:19.360 --> 00:01:24.528
-This statement is a DDL statement. It sets
-the default database for the session.
+00:01:04.000 --> 00:01:08.520
+Click ok, and now, as you're working on
+this challenge, you can jump over to SQL
 
+00:01:08.520 --> 00:01:14.903
+Workbench, to test your results.
+For your first JDBC Challenge,
 
-00:01:25.640 --> 00:01:29.840
-I'll use this statement, to test if I
-need to create the storefront database.
 
+00:01:15.680 --> 00:01:19.600
+I want you to Write the Java code that
+inserts an Order, and at least two Order
 
-00:01:30.440 --> 00:01:34.343
-To do this, in the main method,
-I'll set up a basic datasource.
+00:01:19.600 --> 00:01:26.240
+details into your database. This should be
+done in a transaction. Use MySQL Workbench
 
+00:01:26.240 --> 00:01:31.830
+to confirm your inserts worked. Write Code that
+deletes an Order and its order details.
 
-00:01:35.200 --> 00:01:38.680
-Since I'm running in a standalone
-environment, I'll create a new instance,
+00:01:32.630 --> 00:01:36.080
+Again, use MySQL Workbench to confirm your order and it's
 
-00:01:38.680 --> 00:01:43.920
-using the class name of the my SQL
-data source. I'll set the server name,
+00:01:36.080 --> 00:01:40.960
+line items, were actually deleted.
+I've included the date time format,
 
-00:01:43.920 --> 00:01:51.960
-localhost, and the port, 3 3 0 6. I'll set
-the user, to be an environment variable,
+00:01:40.960 --> 00:01:43.274
+that MySQL expects this field to be in.
 
-00:01:51.960 --> 00:01:55.810
-which I've done before. I'll do
-the same thing for the password.
 
+00:01:44.027 --> 00:01:46.040
+Ok, so go give that a try.
 
-00:01:58.520 --> 00:02:02.400
-Notice that here, I'm not specifying
-any schema or database name,
 
-00:02:02.400 --> 00:02:06.781
-when I'm setting up the data source.
-That's because I plan to create it.
+00:01:46.840 --> 00:01:51.129
+Pause the video here, and go away and work
+on that challenge, and see how you do.
 
 
-00:02:07.800 --> 00:02:12.577
-First though, I'll set up a method, to test
-if the database exists, so I'll create that.
+00:01:52.000 --> 00:01:56.795
+When you're done, or you get stuck, come back,
+and we'll walk through my solution together.
 
 
-00:02:13.480 --> 00:02:16.373
-I'll make this private and
-static, and return a boolean.
+00:02:00.160 --> 00:02:03.216
+Welcome Back.
+So how did you do?
 
 
-00:02:17.160 --> 00:02:20.457
-I'll call it checkSchema, and
-pass it an existing connection.
+00:02:04.040 --> 00:02:09.626
+Were you able to change the code, to insert the
+order and order details, in a single transaction?
 
 
-00:02:20.920 --> 00:02:26.000
-It's complaining about the import, I'll fix that
-in a bit. I'll create a new statement object,
+00:02:10.520 --> 00:02:14.127
+Did you add some data in both
+tables, and then delete that data?
 
-00:02:26.000 --> 00:02:34.640
-in a try with resources. I'll execute the USE
-SCHEMA statement. If this throws an exception,
 
-00:02:34.640 --> 00:02:42.465
-I'll print the stack trace. And return false, if I
-do get an exception. Otherwise, I'll return true.
+00:02:15.000 --> 00:02:20.289
+Ok, so let's get started.
+Here I am back in My SQL Workbench.
 
 
-00:02:44.040 --> 00:02:46.560
-If you get into a situation
-where IntelliJ doesn't show
+00:02:21.160 --> 00:02:26.480
+Here I can see the storefront schema.
+I'll leave the work bench open, coming back to it,
 
-00:02:46.560 --> 00:02:49.296
-the import popup, do this to force the popup.
+00:02:26.480 --> 00:02:31.743
+to verify the data as I run my code in Java.
+I'll get back to IntelliJ.
 
-00:02:53.928 --> 00:02:56.530
-We want to choose java.sql Connection here.
 
-00:02:58.120 --> 00:03:02.789
-This should fix the import for Statement as well.
-Scrolling up you can see it has.
+00:02:32.520 --> 00:02:37.009
+I've got the JDBC Challenges project open,
+where we left off in the last video.
 
 
-00:03:04.480 --> 00:03:06.785
-Next, I'll call this method from the main method.
+00:02:37.880 --> 00:02:43.280
+I'll create a new method, called add Order.
+I'll make this private, static, and it
 
+00:02:43.280 --> 00:02:47.332
+returns an int, which will be the auto
+incremented id I get back from MySQL.
 
-00:03:09.842 --> 00:03:14.034
-I'll use a try with resources, to first get the
-connection from the data source,
 
-00:03:14.034 --> 00:03:18.160
-with the getConnection method. I'll execute checkSchema,
+00:02:48.320 --> 00:02:51.600
+This method will take a connection,
+and a String array, which will be
 
-00:03:18.160 --> 00:03:22.400
-as part of an if condition. So if
-it returns false, I'll print that
+00:02:51.600 --> 00:02:58.200
+the item descriptions, of the order details.
+I'll start by declaring an order id variable,
 
-00:03:22.400 --> 00:03:24.423
-the storefront schema doesn't exist.
+00:02:58.200 --> 00:03:03.960
+and initialize that to minus 1. I'll set up
+my insert SQL statement, which is INSERT INTO
 
-00:03:26.716 --> 00:03:28.924
-AndI'll set up the usual catch clause here.
+00:03:03.960 --> 00:03:10.511
+storefront.order, followed by a list of column
+names in parens. In this case I only need order date.
 
+00:03:11.381 --> 00:03:17.640
+After that, we specify VALUES, and another
+set of parentheses. I'll surround my format string
 
-00:03:31.520 --> 00:03:35.206
-I'll set up my environment variables,
-as part of the run configuration.
+00:03:17.640 --> 00:03:24.520
+specifier with single quotes. The insert for the
+storefront.order_details starts out similarly,
 
+00:03:24.520 --> 00:03:31.440
+so insert into storefront.order details in
+this case. I'll define two columns, order_id,
 
-00:03:36.040 --> 00:03:39.480
-You've seen me do this several times
-by now, so I'll just do it real quick.
+00:03:31.440 --> 00:03:36.124
+and item description, and two specifiers in this
+string, an integer and a string.
 
+00:03:37.089 --> 00:03:41.976
+For the string,I'll use enquoteLiteral in my code that formats
+it, so I'll leave out the single quotes here.
 
-00:03:40.360 --> 00:03:42.543
-So Run, Edit Configurations.
+00:03:42.800 --> 00:03:49.280
+I'll be returning order id from this method.
+Next, I want to get the order date. I'll start
 
+00:03:49.280 --> 00:03:54.520
+with a DateTimeFormatter object. I can create
+a Pattern, and I'll use the one I showed you on
 
-00:03:52.177 --> 00:03:54.177
-In the environment variables input field,
+00:03:54.520 --> 00:04:00.520
+the challenge slide. I'll get the current
+date and time, using local date time.now,
 
-00:03:54.177 --> 00:04:00.417
-I'll set up My SQL User, equal to dev user, then I need
-to follow that with a semi colon, not a comma.
+00:04:00.520 --> 00:04:06.800
+and I'll chain the format method to that, passing
+it my date time formatter variable. I'll print that out.
 
+00:04:09.059 --> 00:04:14.614
+I'll use this string, to populate the
+insert order statement. I'll print that out too.
 
-00:04:01.320 --> 00:04:05.000
-Then I'll type My SQL, P A S S
-and set that to my password.
 
+00:04:17.155 --> 00:04:21.800
+Now, I could have used date time specifiers
+in my formatted string, as an alternative to
 
-00:04:05.840 --> 00:04:11.480
-You'd put your own password there.
-Now I can run this code.
+00:04:21.800 --> 00:04:25.640
+using the DateTimeFormatter.
+In fact, let me just review
 
+00:04:25.640 --> 00:04:29.480
+what that would look like.
+The insert starts out the same way,
 
-00:04:13.564 --> 00:04:17.063
-And sure enough, I get unknown
-database, store front.
+00:04:29.480 --> 00:04:31.837
+But the specifiers are a lot more cryptic.
 
+00:04:34.214 --> 00:04:39.344
+The 1 dollar sign in both cases means I can just pass a single date time variable for both of these values.
 
-00:04:18.800 --> 00:04:23.840
-Now in truth, the code in the checkSchema method
-is flawed, since it just assumes any exception
+00:04:40.309 --> 00:04:46.361
+The tF will print the date in the format y y y y, dash, m m, dash, d d.
 
-00:04:23.840 --> 00:04:29.640
-thrown, means that the database doesn't exist.
-A lot of problems could happen here,
+00:04:47.279 --> 00:04:51.320
+In the second specifier lowercase t, uppercase T,
 
-00:04:29.640 --> 00:04:32.600
-that have nothing to do with whether
-this database exists or not.
+00:04:51.320 --> 00:04:54.595
+is the key to the time, being printed in the
+format we want.
 
+00:04:55.513 --> 00:04:58.074
+I'll print this out usingLocalDateTime now as the argument.
 
-00:04:33.480 --> 00:04:36.747
-The SQL Exception comes with
-additional information we can examine.
 
 
-00:04:37.720 --> 00:04:42.280
-This includes an SQL state String, derived
-from a list of codes, from one of two
+00:05:02.287 --> 00:05:03.746
+So this is an alternative.
 
-00:04:42.280 --> 00:04:48.120
-possible conventions used to standardize codes.
-To figure out which convention the driver uses,
+00:05:04.640 --> 00:05:08.280
+I'll run this code, since nothing will
+get inserted yet, so you can see what
 
-00:04:48.120 --> 00:04:52.394
-we can query a class called DatabaseMetaData,
-which we can get from the connection.
+00:05:08.280 --> 00:05:12.520
+this output looks like right now.
+I'll jump back up to the main method,
 
+00:05:12.520 --> 00:05:18.600
+and make a call to my new add Order method.
+I'll pass that the connection, and an array of
 
-00:04:53.320 --> 00:04:57.370
-Next, there's an integer error code,
-that's specific to each vendor.
+00:05:18.600 --> 00:05:23.520
+strings, and I'll just use clothing in my
+store front order, so my items are shoes,
 
+00:05:23.520 --> 00:05:31.965
+shirt, and socks. I'll assign the id I get back,
+to the newOrder variable. and I'll print the new order id out.
 
-00:04:58.320 --> 00:05:03.164
-These codes can often help determine, with
-more accuracy, the exact error that occurred.
+00:05:34.342 --> 00:05:35.381
+I'll run this.
 
 
-00:05:04.160 --> 00:05:08.987
-Before I add any more code, I'll show you how to
-get information from the database metadata class.
+00:05:37.240 --> 00:05:41.546
+You can see the formatted date, using date
+time formatter, which gave us a string.
 
 
-00:05:09.960 --> 00:05:13.973
-This can be retrieved from the connection
-object, with a method called getMetaData.
+00:05:42.440 --> 00:05:47.162
+I used that string as an argument to the percent
+s specifier, in my first insert order string.
 
 
-00:05:14.760 --> 00:05:17.680
-I'll add this code as the first
-statement inside the try block
+00:05:48.080 --> 00:05:52.360
+In the second example, I used date
+time specifiers instead or percent t,
 
+00:05:52.360 --> 00:05:57.456
+and you can see both give me the same result.
+Now let's actually use this insert method.
 
-00:05:18.560 --> 00:05:23.074
-I'll create a variable called metaData, assign
-it the value I get from the getMetaData method.
 
-00:05:24.000 --> 00:05:28.640
-I'll pause after I type metadata dot.
-I want you to see the many things you can
+00:05:58.280 --> 00:06:02.369
+I'll get back to the add Order method,
+and set up my try with resources block.
 
-00:05:28.640 --> 00:05:35.080
-learn about your database, from this instance.
-If you're writing JDBC code, you really should try
 
-00:05:35.080 --> 00:05:40.040
-to be familiar with your driver's features, and
-this class and its methods, will help you explore
+00:06:05.640 --> 00:06:11.680
+I'll wrap a new statement in this
+try. Since we need a transaction,
 
-00:05:40.040 --> 00:05:46.920
-the driver configuration, and database specifics.
-In this case I want to execute getSQLStateType,
+00:06:11.680 --> 00:06:18.200
+I'll set autocommit to false. I'll set up a
+variable, inserts, then call executeUpdate,
 
-00:05:46.920 --> 00:05:48.736
-so I'll scroll down and select that.
+00:06:18.200 --> 00:06:22.760
+passing that my formatted string, and since
+I want the generated key back, I can pass
 
+00:06:22.760 --> 00:06:30.080
+Statement dot return GENERATED KEYS as the second
+argument. I'll call commit after this. And then
 
+00:06:30.080 --> 00:06:37.278
+set autocommit to true. In the catch clause, If I
+get an exception, I want to roll the transaction back.
 
-00:05:53.993 --> 00:05:55.298
-I'll run the code again.
+00:06:38.196 --> 00:06:43.480
+Then I'll throw a runtime exception.
+Notice that I've got an error on rollback,
 
-00:05:57.560 --> 00:06:01.050
-Notice, that a 2 is printed
-out, before the exception.
+00:06:43.480 --> 00:06:47.400
+and that's because that throws an SQL
+Exception too, and I need to handle it.
 
 
-00:06:02.000 --> 00:06:06.680
-That's not immediately useful information.
-I'll control click, on the class
+00:06:48.200 --> 00:06:51.525
+I'll hover over that and select,
+add exception to method signature.
 
-00:06:06.680 --> 00:06:08.023
-DatabaseMetaData,
 
-00:06:10.223 --> 00:06:11.976
-and search for SQLState.
+00:06:59.786 --> 00:07:03.720
+I'm not done yet, because I still have
+to insert the order detail records.
 
-00:06:16.979 --> 00:06:19.301
-Here you can see there's a couple of constant values,
 
-00:06:19.301 --> 00:06:26.550
-and the s q l state S Q L is set to 2.
-This indicates this driver is using the latest SQL conventions,
+00:07:05.320 --> 00:07:09.880
+If I get a one back from inserting the order,
+I know my order was added successfully,
 
-00:06:26.550 --> 00:06:31.240
-and not the X OPEN conventions.
-I'll show you how to look codes up, using one of
+00:07:09.880 --> 00:07:15.840
+and only in this case, do I want to proceed. So
+next, I need to get the generated key back from
 
-00:06:31.240 --> 00:06:35.680
-these conventions, in a minute.
-First, I'll write some code,
+00:07:15.840 --> 00:07:19.480
+the insert order statement, and don't
+forget that's retrieved by calling get
 
-00:06:35.680 --> 00:06:40.600
-to explore the error I got back.
-I'll add this code after the printStackTrace,
+00:07:19.480 --> 00:07:26.240
+Generated Keys. That returns a result set.
+The first record in that result set, should
 
-00:06:40.600 --> 00:06:44.701
-in the checkSchema method.
-I'll print the SQL State first.
+00:07:26.240 --> 00:07:34.480
+have the key I want. The key will be at index
+1. I'll set up another local variable, count,
 
-00:06:47.040 --> 00:06:48.193
-Then the error code,
+00:07:34.480 --> 00:07:39.640
+which I'll use to test how many detail items get
+inserted. I'll loop through the items passed to
 
-00:06:51.273 --> 00:06:52.648
-and finally the message.
+00:07:39.640 --> 00:07:45.000
+this method. I'll format my string, using the
+order id as the first argument.
 
+00:07:46.028 --> 00:07:49.800
+Here, I'll enquote the item string, using statement.enquote
+literal.
 
-00:06:56.006 --> 00:06:59.859
-Notice here, I'm using System.err, and not System.out,
+00:07:50.788 --> 00:07:54.271
+I'll call statement.executeUpdate,with this formatted string,
 
-00:06:59.859 --> 00:07:04.796
-which I don't think I've used before.
-System.err is standard output for errors.
+00:07:54.271 --> 00:07:58.080
+returning the result back to my inserts variable. I'll add
 
+00:07:58.080 --> 00:08:04.160
+the value in inserts to my count variable.
+If we get an exception saving the records,
 
-00:07:05.560 --> 00:07:08.970
-In our case System.err and System.out
-both output to the console.
+00:08:04.160 --> 00:08:07.666
+the data will be rolled back,
+and a runtime exception thrown.
 
 
-00:07:09.920 --> 00:07:13.520
-If you're working in a production client
-server environment, it's good practice to
+00:08:08.560 --> 00:08:12.680
+But some database problems are silent,
+meaning we may not get an exception,
 
-00:07:13.520 --> 00:07:17.680
-output errors to System.err.
-These messages get displayed,
+00:08:12.680 --> 00:08:17.287
+but something may not go as we expected, because
+of problems with the logic in our queries.
 
-00:07:17.680 --> 00:07:22.177
-even if System.out messages get redirected
-to a file, or some other output stream.
 
+00:08:18.040 --> 00:08:23.160
+I'll add an additional test, in this code, to make
+sure the results are what I expected them to be.
 
-00:07:23.080 --> 00:07:27.080
-Configuring standard streams, to
-different output sources is more common,
 
-00:07:27.080 --> 00:07:31.069
-in a client server environment.
-I'll run this code again.
+00:08:23.960 --> 00:08:27.800
+I'll check if the value in count, or
+the records inserted, is the same as
 
+00:08:27.800 --> 00:08:33.654
+the number of items passed to this method.
+If it's not, I'll set order Id back to -1.
 
-00:07:33.200 --> 00:07:38.994
-Now I've got S Q L state = 42 thousand.
-And Error Code = 10 49.
+00:08:34.360 --> 00:08:35.825
+And I'll print out the issue.
 
+00:08:38.578 --> 00:08:40.578
+I'll roll back the transaction if this happens.
 
-00:07:39.920 --> 00:07:46.838
-And the message is, unknown database storefront.
-I'll go to a browser and type 'wiki SQL STATE'.
+00:08:41.661 --> 00:08:43.911
+I'll wrap an else statement around the commit statement
 
 
-00:07:52.720 --> 00:07:56.581
-This brings up the wikipedia
-page, for SQL State values.
 
+00:08:48.100 --> 00:08:51.159
+Ok, time to test this out, so I'll run this code.
 
-00:07:57.600 --> 00:08:02.440
-Here, I'll search for 42000.
-The message for this code is,
+00:08:53.160 --> 00:08:57.343
+I see the two insert strings again,
+but now I see new order equals 1.
 
-00:08:02.440 --> 00:08:07.600
-syntax error or access rule violation.
-Since these are standard codes,
 
-00:08:07.600 --> 00:08:12.000
-it's a good idea to try to use these if
-you can, versus the database vendor code.
+00:08:58.120 --> 00:09:02.277
+That's a good sign.
+I'll open up MySQL Workbench.
 
 
-00:08:13.320 --> 00:08:16.141
-For this scenario though, that
-code is not super useful.
+00:09:04.960 --> 00:09:08.757
+I'll click on the order table, and select
+the grid or spreadsheet like icon.
 
 
-00:08:17.160 --> 00:08:20.520
-We don't really know if we have a
-syntax error, it's an access issue,
+00:09:10.240 --> 00:09:13.840
+This will open an SQL editor pane
+showing an executed select statement,
 
-00:08:20.520 --> 00:08:25.497
-or the schema just doesn't exist.
-Now let's look up the MySQL Error code.
+00:09:13.840 --> 00:09:18.710
+with a result grid below, so you should see
+order 1, with the order date listed there.
 
 
-00:08:26.400 --> 00:08:30.154
-I'll pull up the server error reference
-page on My SQL's documentation.
+00:09:19.440 --> 00:09:23.209
+I'll do the same for order details,
+clicking the table like icon there.
 
 
-00:08:31.960 --> 00:08:38.880
-I'll search for 10 49.
-And here, you see the MySQL string code, and
+00:09:24.080 --> 00:09:29.120
+Here I can see all three of the order details
+listed, associated with order 1, so that's it.
 
-00:08:38.880 --> 00:08:44.720
-that's followed by the SQL State, 42 thousand.
-This is followed by a specific message,
 
-00:08:44.720 --> 00:08:47.977
-unknown database, which was
-printed in the exception we got.
+00:09:30.040 --> 00:09:34.489
+Hopefully, you were able to do that, and you
+figured out how to persist some data of your own.
 
 
-00:08:48.880 --> 00:08:53.800
-Let's search for 42 000 on this page.
-You can see, there are many errors that
+00:09:35.360 --> 00:09:39.656
+The second part of the challenge was to delete
+an order, which includes it's line items.
 
-00:08:53.800 --> 00:08:58.560
-fall into that state.
-I'll change the code,
 
-00:08:58.560 --> 00:09:04.766
-to test the more specific MySQL error code.
-First, I'll set up a constant on my class.
+00:09:40.480 --> 00:09:44.480
+Getting back to IntelliJ, and
+the JDBC Challenges project,
 
+00:09:44.480 --> 00:09:48.586
+I'll add a new method to do this, and I'll
+insert this method after the addOrder method.
 
-00:09:05.600 --> 00:09:10.000
-I'll call this My SQL DB NOT
-FOUND, and assign that, 1 0 4 9.
 
+00:09:49.480 --> 00:09:53.470
+This will be private, static,
+void, and called delete Order.
 
-00:09:11.480 --> 00:09:16.937
-Next, in my exception clause, I'll test both
-the database product name, and the error code.
 
+00:09:54.200 --> 00:09:58.353
+It'll take a connection, and the
+order id, of the order to be deleted.
 
-00:09:17.840 --> 00:09:23.480
-If my database product is my SQL, and the error
-code is 10 49, then I know for sure the schema
 
-00:09:23.480 --> 00:09:28.640
-doesn't exist, in the MySQL server.
-I'll remove the return false statement,
+00:09:59.200 --> 00:10:04.640
+I'll start with a formatted string, so Delete
+from storefront.order, where order id equals,
 
-00:09:28.640 --> 00:09:33.280
-and replace it with the following code.
-I'll use getMetaData, and chain the
+00:10:04.640 --> 00:10:08.774
+percent d. I'll format that, using the
+orderId.
 
-00:09:33.280 --> 00:09:37.480
-getDatabaseProductName to that, and compare
-that value to the literal string value,
+00:10:10.916 --> 00:10:13.457
+I'll get a new statement in a try with resources block.
 
-00:09:37.480 --> 00:09:43.659
-MySQL. Additionally, I'll check if the
-error code equals my SQL DB NOT FOUND's value.
+00:10:14.906 --> 00:10:19.490
+I'll set up a variable called deleteRecords, and assign that the value of executeUpdate.
 
-00:09:44.539 --> 00:09:48.120
- If both these conditions are
-true, then I'll return false, meaning
+00:10:20.431 --> 00:10:25.840
+I'll pass that, my deleteQuery
+string. I'll print how many records got deleted.
 
-00:09:48.120 --> 00:09:54.250
-the storefront database doesn't exist. Otherwise,
-I'll propagate the error out to the main method.
+00:10:26.640 --> 00:10:32.526
+That should be one in every case. If I get an
+exception, I'll throw a runtime exception.
 
 
-00:09:55.200 --> 00:09:59.920
-This code doesn't compile though, because I need
-to catch or specify, so I'll include the throws
+00:10:36.080 --> 00:10:40.720
+Getting back to the main method, I'll comment out
+the add order code, and the println below that.
 
-00:09:59.920 --> 00:10:05.000
-SQL exception, in the method declaration.
-I'll just add that manually.
 
+00:10:43.120 --> 00:10:49.303
+I'll make a call to the delete method before that
+code. I want to delete order id 1, in this case.
 
-00:10:07.800 --> 00:10:13.400
-Let's run this again.
-I get the same result, but now I have confidence
 
-00:10:13.400 --> 00:10:17.600
-that I know exactly what the problem is.
-I wanted to spend a little extra time
+00:10:50.880 --> 00:10:56.666
+I'll run this code.
+The output says one record was deleted.
 
-00:10:17.600 --> 00:10:22.640
-with SQL exceptions, because it's important to
-understand as much about the error as possible,
 
-00:10:22.640 --> 00:10:27.836
-that's returned from the database server.
-Ok, so let's create the storefront now.
+00:10:57.560 --> 00:11:02.339
+I'll verify the results in MySQL WorkBench,
+by re-executing the select statements.
 
 
-00:10:29.960 --> 00:10:34.200
-I'll create a new method, that'll
-be private and static, returns void,
+00:11:03.280 --> 00:11:11.830
+First on Order, and the result grid has no data.
+I'll do the same on Order details.
 
-00:10:34.200 --> 00:10:37.840
-and I'll call it setUpSchema.
-It'll take a connection,
 
-00:10:37.840 --> 00:10:43.440
-throwing an SQL Exception.
-Remember that for My SQL, the terms database
+00:11:14.654 --> 00:11:17.746
+You can see I no longer have either
+the order or the order detail records.
 
-00:10:43.440 --> 00:10:49.160
-and schema are used interchangeably, so the first
-statement I need is, CREATE SCHEMA storefront,
 
-00:10:49.160 --> 00:10:55.720
-which will create the storefront database when
-executed. My first table, is the order table,
+00:11:18.640 --> 00:11:23.360
+Because of the cascade delete, defined in the
+order detail table, I didn't actually have to
 
-00:10:55.720 --> 00:11:02.720
-so I'll have a createOrder string using a textblock,
-The DDL I need is, CREATE table, storefront.order,
+00:11:23.360 --> 00:11:28.960
+include the delete order details code in Java.
+This was optional for this scenario.
 
-00:11:02.720 --> 00:11:08.520
-followed by an opening parentheses. That's
-followed by a list of columns, and types.
 
-00:11:09.400 --> 00:11:17.000
-My first column is order id, an int, it can't be null, and
-it's going to auto increment. Next, order date,
+00:11:29.640 --> 00:11:32.875
+Maybe you did code this, and
+included it in a transaction.
 
-00:11:17.000 --> 00:11:23.080
-a datetime field, and again that should never be
-null. I need to specify the primary key, which
 
-00:11:23.080 --> 00:11:29.423
-is order id. A closing parentheses ends the column
-list, and that's all I need to create this table.
+00:11:33.840 --> 00:11:39.125
+This is a valid solution as well.
+I'll change my code a little, to do it that way.
 
 
-00:11:35.920 --> 00:11:40.714
-I'll add a second table, that has a
-relationship to the first, named order details.
+00:11:40.160 --> 00:11:42.936
+First, I'll uncomment the code
+that creates a new order,
 
 
-00:11:41.640 --> 00:11:49.168
-This will be similar to the code for order.
-So create table, storefront.order_details, left parenthesis.
+00:11:43.760 --> 00:11:50.731
+and re run my code, so I have an order to delete.
+This will set up order number 2, as you can see.
 
-00:11:50.211 --> 00:11:56.880
-The order detail id, an int, can't be
-null, and gets auto incremented. Item description,
 
-00:11:56.880 --> 00:12:04.450
-is a text field. The third column is order_id.
-This is the column that connects the two tables.
+00:11:54.520 --> 00:11:57.402
+I'll change the number from
+1 to 2 in the deleteOrder.
 
-00:12:05.400 --> 00:12:13.400
-My primary key is order detail id. But there's
-another key, a foreign key. It's pretty common,
 
-00:12:13.400 --> 00:12:20.880
-to prefix a foreign key with FK, so I'll call it
-FK_ORDER ID. This foreign key is on the column,
+00:11:58.320 --> 00:12:01.689
+Next, I'll start by adding the
+transaction code to my delete method.
 
-00:12:20.880 --> 00:12:27.280
-order id. Next, I have to describe what's
-called a constraint. This describes both
 
-00:12:27.280 --> 00:12:32.640
-the relationship to the other table, as well as
-limitations or constraints on table processing.
+00:12:04.560 --> 00:12:07.002
+So first, I'll set auto commit to false.
 
-00:12:33.520 --> 00:12:38.796
-So order id in this table, references order id
-in the parent table, storefront.order.
 
-00:12:39.745 --> 00:12:43.092
-This time,I want a delete to cascade to its child records.
+00:12:09.520 --> 00:12:12.282
+I'll call commit as the last
+statement in the try block.
 
-00:12:47.909 --> 00:12:51.692
-This code will set up a parent child relationship between these two tables.
 
-00:12:52.657 --> 00:12:56.310
-And importantly, they are treated like a
-single unit when I delete the parent.
+00:12:14.800 --> 00:12:21.120
+I'll execute a roll back if I get an exception.
+I'll again over hover the error I get on rollback,
 
-00:12:57.329 --> 00:12:59.560
-This means, if I delete an order,
+00:12:21.120 --> 00:12:24.557
+and select to have the SQL exception
+added to the methods' throw clause.
 
-00:12:59.560 --> 00:13:03.640
-the details will also get deleted.
-Don't worry if you don't understand
 
-00:13:03.640 --> 00:13:07.360
-all of this SQL code.
-My goal here is first,
+00:12:28.040 --> 00:12:32.449
+I'll add a finally clause in this case, because
+I am throwing an exception in the catch clause.
 
-00:13:07.360 --> 00:13:12.943
-to show you that whether you execute DML, or
-DDL, the process to do it in Java, is the same.
 
+00:12:33.438 --> 00:12:35.986
+In either case I want to set
+auto commit back to true.
 
-00:13:13.800 --> 00:13:16.663
-There is one significant difference
-I want to note, however.
 
+00:12:36.880 --> 00:12:39.814
+Putting that in a finally clause
+ensures it always happens.
 
-00:13:17.520 --> 00:13:22.960
-You can't roll back many of the DDL statements, so
-it's less common to execute DDL in a transaction.
 
+00:12:41.320 --> 00:12:44.240
+Now, I'm going to make the delete
+Order string more generic, and put
 
-00:13:23.840 --> 00:13:27.198
-Whether or not you can execute DDL
-statements in a transaction, is
+00:12:44.240 --> 00:12:48.400
+a place holder in for the table name.
+I'll change the name of the variable
 
-00:13:27.198 --> 00:13:33.080
-something that's specific to the database vendor.
-The second objective of this exercise, was to give
+00:12:48.400 --> 00:12:52.880
+deleteQuery to parentQuery.
+Then, I'll pass the table name,
 
-00:13:33.080 --> 00:13:37.760
-you a schema, for upcoming challenges.
-Now, I have to add the code
+00:12:52.880 --> 00:12:55.846
+storefront.order, as the first argument here.
 
-00:13:37.760 --> 00:13:42.200
-to execute these statements.
-I'll use a try with resources again,
 
+00:12:57.682 --> 00:13:01.683
+Next, I'll create a childQuery, using the
+same formattable string,
 
-00:13:43.080 --> 00:13:48.608
-Creating a statement within that. I'll print
-that this is creating a storefront database.
+00:13:01.683 --> 00:13:04.160
+this time passing the order details table,
 
-00:13:49.280 --> 00:13:54.760
-I'll call execute on my createSchema first.
-I'll double check that it really got created,
+00:13:04.160 --> 00:13:10.776
+and I'll still delete by order id, Remember, the
+child table has this id in it as a foreign key.
 
-00:13:54.760 --> 00:14:02.112
-by calling checkSchema. If that's true, I'll
-create the order table. I'll print that it was. created.
 
-00:14:04.219 --> 00:14:09.160
-I'll execute the creation of the order
-details table next. And I'll again print that
+00:13:11.600 --> 00:13:15.000
+I'll change the name of the query in
+the execute update to be child query.
 
-00:14:09.160 --> 00:14:15.644
-it was successfully created. Otherwise,
-I'll catch the exception and print it.
 
+00:13:16.840 --> 00:13:20.289
+I'll change my print statement to say
+how many child records were printed.
 
-00:14:20.600 --> 00:14:22.701
-I'll add the call to this
-method in the main method.
 
+00:13:21.560 --> 00:13:25.110
+Now, I just need to add the code,
+to delete the parent record.
 
-00:14:23.720 --> 00:14:27.234
-I'll put it in the if statement, after
-the system.out.println statement.
 
+00:13:25.840 --> 00:13:31.228
+I'll executeUpdate on the parentQuery and return
+results to the same variable, deleteRecords.
 
-00:14:28.160 --> 00:14:34.520
-I need to pass that the connection instance.
-Before I run this, I'm going to first open a
+00:13:32.146 --> 00:13:37.200
+Again, it's possible something could go amiss,
+and not throw an exception, so I want to confirm
 
-00:14:34.520 --> 00:14:38.040
-session, in My SQL WorkBench, for my dev user.
+00:13:37.200 --> 00:13:43.910
+one and only one order is deleted in this case.
+I'll print that my order was successfully deleted.
 
-00:14:43.575 --> 00:14:47.636
-I'll use the workbench, to independently
-confirm the schema and tables got added.
+00:13:45.440 --> 00:13:50.600
+I'll include an else statement, and rollback if
+my result wasn't one. I probably should have a
 
-00:14:48.577 --> 00:14:51.379
-Getting back to IntelliJ, I'll run my code.
+00:13:50.600 --> 00:13:56.600
+statement printed here too, but you get the gist.
+Before I run this, I'll comment out the code that
 
+00:13:56.600 --> 00:13:58.147
+adds a new order.
 
-00:14:53.440 --> 00:14:57.760
-Everything seems to have worked fine.
-I get that the application successfully
 
-00:14:57.760 --> 00:15:02.398
-created order, and order details, and
-that the storefront schema was created.
 
+00:14:02.571 --> 00:14:04.147
+Ok, I'll run this.
 
-00:15:05.200 --> 00:15:08.857
-Jumping back to My SQL Workbench,
-I'll refresh the schema panel.
+00:14:06.360 --> 00:14:11.418
+I'll see that three child records were deleted,
+and then order 2 was successfully deleted.
 
 
-00:15:09.760 --> 00:15:12.410
-The refresh icon is on the
-right of the SCHEMAS label.
+00:14:13.960 --> 00:14:19.160
+I'll pop back over to MySQL Workbench, and
+re-execute the queries, that were generated,
 
+00:14:19.160 --> 00:14:24.527
+when I displayed the table results. These
+are currently showing as no data from last time.
 
-00:15:13.360 --> 00:15:17.594
-When I click on that,
-I should now see the storefront schema listed.
+00:14:25.539 --> 00:14:29.736
+Remember we have created records again
+and deleted them, before coming back here.
 
 
-00:15:18.520 --> 00:15:23.200
-I'll expand that, and I'll expand Tables, and
-there I can see my two tables that were created
+00:14:30.560 --> 00:14:37.320
+I'll start with Order, and running that select
+again, In the result grid below, I should have
 
-00:15:23.200 --> 00:15:28.400
-by the Java code, Order and Order Details.
-If you have any problems at all with your own
+00:14:37.320 --> 00:14:43.480
+no data again, so I know this code worked.
+I'll do the same for order_details, opening that
 
-00:15:28.400 --> 00:15:31.703
-code, you can right click on the
-storefront schema in this tool,
+00:14:43.480 --> 00:14:50.000
+tab, and executing that select query again.
+And I get no data, so that's good.
 
 
-00:15:32.560 --> 00:15:38.065
-and select drop schema, then try your java code
-again, to recreate the schema from scratch again.
+00:14:50.840 --> 00:14:55.979
+So Should you manually delete child records in
+your Java code, or depend on cascade deletion?
 
 
-00:15:39.015 --> 00:15:43.840
-Ok, so I'm going to bring this video to a close.
-Hopefully you were able to follow along and
+00:14:56.920 --> 00:15:00.449
+The answer to that question,
+is as usual, it depends.
 
-00:15:43.840 --> 00:15:47.059
-you've got a storefront schema
-set up, and ready to be used.
 
+00:15:01.320 --> 00:15:03.320
+If you're trying to be database agnostic,
 
-00:15:47.800 --> 00:15:52.480
-In the next video, I'll have a challenge,
-using this schema, so keep this project open.
+00:15:03.320 --> 00:15:07.602
+meaning your application is going to be deployed
+in many environments with different databases.
+
+
+00:15:08.520 --> 00:15:12.880
+In this scenario, You'll probably be working
+with varying degrees of database support,
+
+00:15:12.880 --> 00:15:17.080
+so then maybe you'd manually code the delete
+child records, and you'd have confidence your
+
+00:15:17.080 --> 00:15:22.120
+code is always cleaning up the child records,
+regardless of how the database is configured.
+
+
+00:15:22.920 --> 00:15:27.680
+Doing this might be simpler, than having to
+publish requirements, on how the database needs
+
+00:15:27.680 --> 00:15:33.840
+to be set up, with cascade deletes implemented.
+If you're deleting a large amount of data,
+
+00:15:33.840 --> 00:15:38.000
+it's probably more efficient to take
+advantage of the table's cascade deletes,
+
+00:15:38.000 --> 00:15:43.800
+done on the database server's implementation.
+All the major RDBMS vendors support cascade
+
+00:15:43.800 --> 00:15:49.157
+deletes, so that's a positive, but there may be
+some vendors or lightweight RDBMS's that don't.
+
+
+00:15:50.099 --> 00:15:56.120
+Also, don't forget your JDBC backend could
+even be files, like csv or jayson files,
+
+00:15:56.120 --> 00:16:01.259
+so in that case, you'd want to implement the
+delete order_detail functionality yourself.
+
+
+00:16:02.600 --> 00:16:08.000
+In the delete order detail code, you can
+see I parameterized the SQL statement,
+
+00:16:08.000 --> 00:16:11.840
+with the item description.
+Ultimately though, I passed
+
+00:16:11.840 --> 00:16:17.040
+a static string to the executeUpdate method.
+In the next video, I'll show you an alternative
+
+00:16:17.040 --> 00:16:20.776
+for parameterized SQL, in the
+form of a Prepared Statement.

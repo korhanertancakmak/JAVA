@@ -4952,32 +4952,1053 @@ with the use of commit and roll back when you use this method.
 updating, or deleting multiple rows in a database at once.
 </div>
 
-
-
+## [g. Creating a Database with SQL Exceptions]()
 <div align="justify">
 
-```java  
+In the last several sections, I've been focusing on DML, or Data Manipulation Language, 
+because in many ways it's easier to learn and understand.
+In this section, I'll use the methods I've been covering, 
+but apply them to Data Definition Language, or DDL.
+I've created a new Main class.
 
+```java  
+public class Main {
+
+    private static String USE_SCHEMA = "USE storefront";
+    
+    public static void main(String[] args) {
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName("localhost");
+        dataSource.setPort(3335);
+        dataSource.setUser(System.getenv("MYSQLUSER"));
+        dataSource.setPassword(System.getenv("MYSQLPASS"));
+    }
+}
 ```
+
+I'll set up a static query string, 
+so private, static, final, String, _USE_SCHEMA_,
+and I'll set that to the literal text, _USE storefront_.
+This statement is a DDL statement.
+It sets the default database for the session.
+I'll use this statement to test if I need to create the storefront database.
+To do this, in the _main_ method, I'll set up a basic datasource.
+Since I'm running in a standalone environment, 
+I'll create a new instance, using the class name of the _MysqlDataSource_. 
+I'll set the server name, localhost, and the port, `3335`. 
+I'll set the user to be an environment variable, which I've done before. 
+I'll do the same thing for the password.
+Notice that here, I'm not specifying any schema or database name,
+when I'm setting up the data source.
+That's because I plan to create it.
+First, though, I'll set up a method to test if the database exists, 
+so I'll create that.
+
+```java  
+import com.mysql.cj.jdbc.MysqlDataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+public class Main {
+
+    private static String USE_SCHEMA = "USE storefront";
+    
+    public static void main(String[] args) {
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName("localhost");
+        dataSource.setPort(3335);
+        dataSource.setUser(System.getenv("MYSQLUSER"));
+        dataSource.setPassword(System.getenv("MYSQLPASS"));
+        
+        try (Connection conn = dataSource.getConnection()) {
+            
+            if (!checkSchema(conn)) {
+                System.out.println("storefront schema does not exist");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    private static boolean checkSchema(Connection conn) {
+        
+        try (Statement statement = conn.createStatement()) {
+            statement.execute(USE_SCHEMA);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+}
+```
+
+I'll make this private and static, and return a boolean.
+I'll call it checkSchema, and pass it an existing connection.
+It's complaining about the import, I'll fix that in a bit. 
+I'll create a new statement object in a _try-with-resources_. 
+I'll execute the _USE_SCHEMA_ statement. 
+If this throws an exception, I'll print the stack trace. 
+And return **false** if I do get an exception. 
+Otherwise, I'll return **true**.
+If you get into a situation 
+where IntelliJ doesn't show the import popup, 
+do this to force the popup.
+We want to choose `java.sqlConnection` here.
+This should fix the import for **Statement** as well.
+Scrolling up, you can see it.
+Next, I'll call this method from the _main_ method.
+I'll use a _try-with-resources_, 
+to first get the connection from the data source,
+with the _getConnection_ method. 
+I'll execute _checkSchema_, as part of an _if_ condition. 
+So if it returns **false**, 
+I'll print that the _storefront_ schema does not exist.
+AndI'll set up the usual _catch_ clause here.
+I'll set up my environment variables,
+as part of the run configuration.
+You've seen me do this several times by now, 
+so I'll just do it real quickly.
+So Run, Edit Configurations.
+In the environment variables input field,
+I'll set up _MYSQLUSER_, equal to _devUser_, 
+then I need to follow that with a semicolon, not a comma.
+Then I'll type _MYSQLPASS_ and set that to my password.
+You'd put your own password there.
+Now I can run this code:
 
 ```html  
-
+java.sql.SQLSyntaxErrorException: Unknown database 'storefront'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:770)
+	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:653)
+	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04.Main.checkSchema(Main.java:32)
+	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04.Main.main(Main.java:21)
 ```
 
+And sure enough, I get an unknown database, _storefront_.
+Now, in truth, the code in the _checkSchema_ method is flawed, 
+since it just assumes any exception thrown, 
+means that the database doesn't exist.
+A lot of problems could happen here,
+that have nothing to do with whether this database exists or not.
+The _SQLException_ comes with additional information we can examine.
+This includes an SQL state String, derived from a list of codes, 
+from one of two possible conventions used to standardize codes.
+To figure out which convention the driver uses,
+we can query a class called _DatabaseMetaData_,
+which we can get from the connection.
+Next, there's an integer error code, that's specific to each vendor.
+These codes can often help determine, with more accuracy, 
+the exact error that occurred.
+Before I add any more code, I'll show you how 
+to get information from the database metadata class.
+This can be retrieved from the **connection** object, 
+with a method called _getMetaData_.
+I'll add this code as the first statement inside the _try_ block
+I'll create a variable called _metaData_, 
+assign it the value I get from the _getMetaData_ method.
+
+```java  
+public class Main {
+
+    private static String USE_SCHEMA = "USE storefront";
+    
+    public static void main(String[] args) {
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName("localhost");
+        dataSource.setPort(3335);
+        dataSource.setUser(System.getenv("MYSQLUSER"));
+        dataSource.setPassword(System.getenv("MYSQLPASS"));
+        
+        try (Connection conn = dataSource.getConnection()) {
+            
+            DatabaseMetaData metaData = conn.getMetaData();
+            System.out.println(metaData.getSQLStateType());
+            if (!checkSchema(conn)) {
+                System.out.println("storefront schema does not exist");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    private static boolean checkSchema(Connection conn) {
+        
+        try (Statement statement = conn.createStatement()) {
+            statement.execute(USE_SCHEMA);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+}
+```
+
+I'll pause after I type `metadata.`.
+I want you to see the many things you can learn about your database, from this instance.
+If you're writing JDBC code, you really should try 
+to be familiar with your driver's features, 
+and this class and its methods will help you explore
+the driver configuration and database specifics.
+In this case, I want to execute _getSQLStateType_,
+so I'll scroll down and select that.
+I'll run the code again:
+
+```html  
+2
+java.sql.SQLSyntaxErrorException: Unknown database 'storefront'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:770)
+	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:653)
+	at .Main.checkSchema()
+	at .Main.main()
+storefront schema does not exist
+```
+
+Notice that a `2` is printed out, before the exception.
+That's not immediately useful information.
+I'll control click on the class **DatabaseMetaData**, and search for _SQLState_.
+
+```java  
+int sqlStateXOpen = 1;
+
+/**
+ *  A possible return value for the method
+ * {@code DatabaseMetaData.getSQLStateType} which is used to indicate
+ * whether the value returned by the method
+ * {@code SQLException.getSQLState} is an SQLSTATE value.
+ *
+ * @since 1.6
+ */
+int sqlStateSQL = 2;
+
+/**
+ *  A possible return value for the method
+ * {@code DatabaseMetaData.getSQLStateType} which is used to indicate
+ * whether the value returned by the method
+ * {@code SQLException.getSQLState} is an SQL99 SQLSTATE value.
+ * <P>
+ * <b>Note:</b>This constant remains only for compatibility reasons. Developers
+ * should use the constant {@code sqlStateSQL} instead.
+ *
+ * @since 1.4
+ */
+int sqlStateSQL99 = sqlStateSQL;
+```
+
+Here you can see there's a couple of constant values,
+and the _sqlstateSQL_ is set to 2.
+This indicates this driver is using the latest SQL conventions,
+and not the _sqlStateXOpen_ conventions.
+I'll show you how to look codes up, using one of these conventions, in a minute.
+First, I'll write some code to explore the error I got back.
+
+```java  
+public class Main {
+
+    private static String USE_SCHEMA = "USE storefront";
+    
+    public static void main(String[] args) {
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName("localhost");
+        dataSource.setPort(3335);
+        dataSource.setUser(System.getenv("MYSQLUSER"));
+        dataSource.setPassword(System.getenv("MYSQLPASS"));
+        
+        try (Connection conn = dataSource.getConnection()) {
+            
+            DatabaseMetaData metaData = conn.getMetaData();
+            System.out.println(metaData.getSQLStateType());
+            if (!checkSchema(conn)) {
+                System.out.println("storefront schema does not exist");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    private static boolean checkSchema(Connection conn) {
+        
+        try (Statement statement = conn.createStatement()) {
+            statement.execute(USE_SCHEMA);
+        } catch (SQLException e) {
+            System.err.println("SQLState: " + e.getSQLState());
+            System.err.println("Error Code: " + e.getErrorCode());
+            System.err.println("Message: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+}
+```
+
+I'll add this code after the _printStackTrace_, in the _checkSchema_ method.
+I'll print the _SQLState_ first.
+Then the _error code_, and finally the _message_.
+Notice here, I'm using `System.err`, and not `System.out`,
+which I don't think I've used before.
+`System.err` is standard output for errors.
+In our case, `System.err` and `System.out` both output to the console.
+If you're working in a production client server environment, 
+it's good practice to output errors to `System.err`.
+These messages get displayed,
+even if `System.out` messages get redirected to a file, 
+or some other output stream.
+Configuring standard streams to different output sources is more common,
+in a client server environment.
+I'll run this code again:
+
+```html  
+2
+SQLState: 42000
+Error Code: 1049
+Message: Unknown database 'storefront'
+java.sql.SQLSyntaxErrorException: Unknown database 'storefront'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:770)
+	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:653)
+	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04.Main.checkSchema(Main.java:59)
+	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04.Main.main(Main.java:36)
+storefront schema does not exist
+```
+
+Now I've got `SQLState = 42000`.
+And `Error Code = 1049`.
+And the message is an unknown database storefront.
+I'll go to a browser and type _wiki SQLSTATE_.
+This brings up the wikipedia page for SQLState values.
+Here, I'll search for 42000.
+The message for this code is, _syntax error or access rule violation_.
+Since these are standard codes, it's a good idea 
+to try to use these if you can, versus the database vendor code.
+For this scenario, though, that code is not super useful.
+We don't really know if we have a syntax error, it's an access issue,
+or the schema just doesn't exist.
+Now let's look up the MySQL Error code.
+I'll pull up the server error reference page on MySQL's documentation.
+I'll search for 1049.
+And here, you see the MySQL string code, 
+and that's followed by the SQLState, 42000.
+This is followed by a specific message, _unknown database_, 
+which was printed in the exception we got.
+Let's search for 42000 on this page.
+You can see, there are many errors that fall into that state.
+I'll change the code to test the more specific MySQL error code.
+
+```java  
+public class Main {
+
+    private static String USE_SCHEMA = "USE storefront";
+    
+    private static int MYSQL_DB_NOT_FOUND = 1049;
+    
+    public static void main(String[] args) {
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName("localhost");
+        dataSource.setPort(3335);
+        dataSource.setUser(System.getenv("MYSQLUSER"));
+        dataSource.setPassword(System.getenv("MYSQLPASS"));
+        
+        try (Connection conn = dataSource.getConnection()) {
+            
+            DatabaseMetaData metaData = conn.getMetaData();
+            System.out.println(metaData.getSQLStateType());
+            if (!checkSchema(conn)) {
+                System.out.println("storefront schema does not exist");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    //private static boolean checkSchema(Connection conn) {
+    private static boolean checkSchema(Connection conn) throws SQLException{
+        
+        try (Statement statement = conn.createStatement()) {
+            statement.execute(USE_SCHEMA);
+        } catch (SQLException e) {
+            System.err.println("SQLState: " + e.getSQLState());
+            System.err.println("Error Code: " + e.getErrorCode());
+            System.err.println("Message: " + e.getMessage());
+            e.printStackTrace();
+          
+            //return false;
+            if (conn.getMetaData().getDatabaseProductName().equals("MySQL") && e.getErrorCode() == MYSQL_DB_NOT_FOUND) {
+                return false;
+            } else throw e;
+        }
+        return true;
+    }
+}
+```
+
+First, I'll set up a constant on my class.
+I'll call this _MYSQL_DB_NOT_FOUND_, and assign that, 1049.
+Next, in my exception clause, 
+I'll test both the database product name, and the error code.
+If my database product is _MySQL_, and the error code is _1049_, 
+then I know for sure the schema doesn't exist in the _MySQL_ server.
+I'll remove the return false statement,
+and replace it with the following code.
+I'll use _getMetaData_, and chain the _getDatabaseProductName_ to that, 
+and compare that value to the literal string value, _MySQL_.
+Additionally, I'll check if the error code equals _MYSQL_DB_NOT_FOUND_'s value.
+If both these conditions are **true**, then I'll return **false**, 
+meaning the _storefront_ database doesn't exist. 
+Otherwise, I'll propagate the error out to the _main_ method.
+This code doesn't compile though, because I need to catch or specify, 
+so I'll include the throws _SQLException_ in the method declaration.
+I'll just add that manually.
+Let's run this again:
+
+```html  
+2
+SQLState: 42000
+Error Code: 1049
+Message: Unknown database 'storefront'
+java.sql.SQLSyntaxErrorException: Unknown database 'storefront'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:770)
+	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:653)
+	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04.Main.checkSchema(Main.java:76)
+	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04.Main.main(Main.java:39)
+storefront schema does not exist
+```
+
+I get the same result, but now I have confidence 
+that I know exactly what the problem is.
+I wanted to spend a little extra time with _SQLExceptions_, 
+because it's important to understand as much about the error as possible, 
+that's returned from the database server.
+Ok, so let's create the _storefront_ now.
+
+```java  
+public class Main {
+
+    private static String USE_SCHEMA = "USE storefront";
+    
+    private static int MYSQL_DB_NOT_FOUND = 1049;
+    
+    public static void main(String[] args) {
+        
+        var dataSource = new MysqlDataSource();
+        dataSource.setServerName("localhost");
+        dataSource.setPort(3335);
+        dataSource.setUser(System.getenv("MYSQLUSER"));
+        dataSource.setPassword(System.getenv("MYSQLPASS"));
+        
+        try (Connection conn = dataSource.getConnection()) {
+            
+            DatabaseMetaData metaData = conn.getMetaData();
+            System.out.println(metaData.getSQLStateType());
+            if (!checkSchema(conn)) {
+                System.out.println("storefront schema does not exist");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    private static boolean checkSchema(Connection conn) throws SQLException{
+        
+        try (Statement statement = conn.createStatement()) {
+            statement.execute(USE_SCHEMA);
+        } catch (SQLException e) {
+            System.err.println("SQLState: " + e.getSQLState());
+            System.err.println("Error Code: " + e.getErrorCode());
+            System.err.println("Message: " + e.getMessage());
+            e.printStackTrace();
+          
+            if (conn.getMetaData().getDatabaseProductName().equals("MySQL") && e.getErrorCode() == MYSQL_DB_NOT_FOUND) {
+                return false;
+            } else throw e;
+        }
+        return true;
+    }
+    
+    private static void setUpSchema(Connection conn) throws SQLExceptipon {
+        
+        String createSchema = "CREATE SCHEMA storefront";
+        
+        String createOrder = """
+                CREATE TABLE storefront.order (
+                order_id int NOT NULL AUTO_INCREMENT,
+                order_date DATETIME NOT NULL,
+                PRIMARY KEY (order_id)
+                )""";
+        
+        String createOrderDetails = """
+                CREATE TABLE storefront.order_details (
+                order_detail_id int NOT NULL AUTO_INCREMENT,
+                item_description text,
+                order_id int DEFAULT NULL,
+                PRIMARY KEY (order_detail_id),
+                KEY FK_ORDERID (order_id),
+                CONSTRAINT FK_ORDERID FOREIGN KEY (order_id)
+                REFERENCES storefront.order (order_id) ON DELETE CASCADE
+                )""";
+    }
+}
+```
+
+I'll create a new method, that'll be private and static, returns void,
+and I'll call it _setUpSchema_.
+It'll take a connection throwing an _SQLException_.
+Remember that for MySQL, the term database and schema are used interchangeably, 
+so the first statement I need is, `CREATE SCHEMA storefront`,
+which will create the _storefront_ database when executed. 
+My first table is the order table,
+so I'll have a _createOrder_ string using a _text block_,
+The DDL I need is, `CREATE TABLE storefront.order`, followed by an opening parentheses. 
+That's followed by a list of columns and types.
+My first column is _order_id_, an **int**, it can't be **null**, 
+and it's going to auto increment.
+Next, _order_date_, a datetime field, and again that should never be **null**. 
+I need to specify the primary key, which is _order_id_. 
+The closing parentheses end the column list, 
+and that's all I need to create this table.
+I'll add a second table that has a relationship to the first, named _createOrderDetails_.
+This will be similar to the code for order.
+So `CREATE TABLE storefront.order_details (`.
+The _order_detail_id_, an **int**, can't be **null**, 
+and gets auto incremented.
+_item_description_ is a **text** field. 
+The third column is _order_id_.
+This is the column that connects the two tables.
+My primary key is _order_detail_id_. 
+But there's another key, a foreign key. 
+It's pretty common to prefix a foreign key with _FK_, 
+so I'll call it _FK_ORDERID_. 
+This foreign key is on the column, _order_id_. 
+Next, I have to describe what's called a constraint. 
+This describes both the relationship to the other table, 
+and limitations or constraints on table processing.
+So _order_id_ in this table references order_id in the parent table, `storefront.order`.
+This time, I want a _delete to cascade_ to its child records.
+This code will set up a parent child relationship between these two tables.
+And importantly, they are treated like a single unit when I delete the parent.
+This means, if I delete an order, the details will also get deleted.
+Don't worry if you don't understand all of this SQL code.
+My goal here is first to show you that whether you execute DML, or DDL, 
+the process to do it in Java, is the same.
+There is one significant difference I want to note, however.
+You can roll back a few of the DDL statements, 
+so it's less common to execute DDL in a transaction.
+Whether you can execute DDL statements in a transaction is something 
+that's specific to the database vendor.
+The second goal of this exercise was to give you a schema, for upcoming challenges.
+Now, I have to add the code to execute these statements.
+
+```java  
+private static void setUpSchema(Connection conn) throws SQLException {
+    
+    String createSchema = "CREATE SCHEMA storefront";
+
+    String createOrder = """
+            CREATE TABLE storefront.order (
+            order_id int NOT NULL AUTO_INCREMENT,
+            order_date DATETIME NOT NULL,
+            PRIMARY KEY (order_id)
+            )""";
+  
+    String createOrderDetails = """
+            CREATE TABLE storefront.order_details (
+            order_detail_id int NOT NULL AUTO_INCREMENT,
+            item_description text,
+            order_id int DEFAULT NULL,
+            PRIMARY KEY (order_detail_id),
+            KEY FK_ORDERID (order_id),
+            CONSTRAINT FK_ORDERID FOREIGN KEY (order_id)
+            REFERENCES storefront.order (order_id) ON DELETE CASCADE
+            )""";
+    
+    try (Statement statement = conn.createStatement()) {
+        System.out.println("Creating storefront Database");
+        statement.execute(createSchema);
+        if (checkSchema(conn)) {
+            statement.execute(createOrder);
+            System.out.println("Successfully Created Order");
+            statement.execute(createOrderDetails);
+            System.out.println("Successfully Created Order Details");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+I'll use it a _try-with-resources_ again.
+Creating a statement within that. 
+I'll print that this is creating a _storefront_ database.
+I'll call _execute_ on my _createSchema_ first.
+I'll double-check that it really got created by calling _checkSchema_. 
+If that's true, I'll create the _order_ table. 
+I'll print that it was. 
+Created.
+I'll execute the creation of the _order details_ table next. 
+And I'll again print that it was successfully created. 
+Otherwise, I'll catch the exception and print it.
+I'll add the call to this method in the _main_ method.
+
+```java  
+public static void main(String[] args) {
+    
+    
+    var dataSource = new MysqlDataSource();
+    dataSource.setServerName("localhost");
+    dataSource.setPort(3335);
+    dataSource.setUser(System.getenv("MYSQLUSER"));
+    dataSource.setPassword(System.getenv("MYSQLPASS"));
+  
+    try (Connection conn = dataSource.getConnection()) {
+        DatabaseMetaData metaData = conn.getMetaData();
+        System.out.println(metaData.getSQLStateType());
+        if (!checkSchema(conn)) {
+            System.out.println("storefront schema does not exist");
+            
+            setUpSchema(conn);
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+I'll put it in the _if_ statement, after the `system.out.println` statement.
+I need to pass that the connection instance.
+Before I run this, I'm going to first open a session, 
+in MySQL WorkBench, for my devUser.
+I'll use the workbench, to independently confirm the schema and tables got added.
+Getting back to IntelliJ, I'll run my code:
+
+```html  
+2
+SQLState: 42000
+Error Code: 1049
+Message: Unknown database 'storefront'
+java.sql.SQLSyntaxErrorException: Unknown database 'storefront'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:770)
+	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:653)
+	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04.Main.checkSchema(Main.java:88)
+	at Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course04.Main.main(Main.java:52)
+storefront schema does not exist
+Creating storefront Database
+Successfully Created Order
+Successfully Created Order Details
+```
+
+Everything seems to have worked fine.
+I get that the application successfully created order, and order details, 
+and that the storefront schema was created.
+Jumping back to MySQL Workbench, I'll refresh the schema panel.
+The refresh icon is on the right of the _SCHEMAS_ label.
+When I click on that, I should now see the _storefront_ schema listed.
+I'll expand that, and I'll expand _Tables_, 
+and there I can see my two tables created by the Java code, 
+_Order_ and _Order Details_.
+If you have any problems at all with your own code, 
+you can right-click on the _storefront_ schema in this tool,
+and select drop schema, then try your java code again, 
+to recreate the schema from scratch again.
 </div>
 
-
-
+## [h. JDBC Challenge]()
 <div align="justify">
+
+In this challenge, you'll be using MySQL Workbench, 
+to verify that the changes you make in Java get persisted correctly.
+There is one change you'll probably need to make, though, 
+to the settings in MySQL Workbench to do this.
+My SQL Workbench has something called connection caching,
+This means data is cached and not refreshed immediately from persisted data.
+I'll show you how to configure it, to make the refresh interval much shorter.
+This will let you see the changes made in your app, 
+reflected immediately in MySQL Workbench. 
+Open MySQL Workbench to your development session.
+Click on _Edit_, then _Preferences_.
+This will bring up a dialog.
+Select _SQL Editor_ on the left pane.
+In the right panel, there's a section called 
+_MySQL_ session, with three entries.
+
+
+
+The second one is the read time out interval,
+and the one you want to change.
+Set this to 1 second.
+Click ok, and now, as you're working on
+this challenge, you can jump over to SQL
+Workbench, to test your results.
+For your first JDBC Challenge,
+I want you to Write the Java code that
+inserts an Order, and at least two Order
+details into your database. 
 
 ```java  
 
 ```
 
+This should be
+done in a transaction. Use MySQL Workbench
+to confirm your inserts worked. Write Code that
+deletes an Order and its order details.
+Again, use MySQL Workbench to confirm your order and it's
+line items, were actually deleted.
+I've included the date time format,
+that MySQL expects this field to be in.
+Ok, so go give that a try.
+Pause the video here, and go away and work
+on that challenge, and see how you do.
+When you're done, or you get stuck, come back,
+and we'll walk through my solution together.
+Welcome Back.
+So how did you do?
+Were you able to change the code, to insert the
+order and order details, in a single transaction?
+Did you add some data in both
+tables, and then delete that data?
+Ok, so let's get started.
+Here I am back in My SQL Workbench.
+Here I can see the storefront schema.
+I'll leave the work bench open, coming back to it,
+to verify the data as I run my code in Java.
+
 ```html  
 
 ```
 
+I'll get back to IntelliJ.
+I've got the JDBC Challenges project open,
+where we left off in the last video.
+I'll create a new method, called add Order.
+I'll make this private, static, and it
+returns an int, which will be the auto
+incremented id I get back from MySQL.
+This method will take a connection,
+and a String array, which will be
+the item descriptions, of the order details.
+I'll start by declaring an order id variable,
+and initialize that to minus 1. I'll set up
+my insert SQL statement, which is INSERT INTO
+storefront.order, followed by a list of column
+names in parens. In this case I only need order date.
+After that, we specify VALUES, and another
+set of parentheses. I'll surround my format string
+specifier with single quotes. The insert for the
+storefront.order_details starts out similarly,
+so insert into storefront.order details in
+this case. I'll define two columns, order_id,
+and item description, and two specifiers in this
+string, an integer and a string.
+For the string,I'll use enquoteLiteral in my code that formats
+it, so I'll leave out the single quotes here.
+I'll be returning order id from this method.
+Next, I want to get the order date. I'll start
+with a DateTimeFormatter object. I can create
+a Pattern, and I'll use the one I showed you on
+the challenge slide. I'll get the current
+date and time, using local date time.now,
+and I'll chain the format method to that, passing
+it my date time formatter variable. I'll print that out.
+I'll use this string, to populate the
+insert order statement. I'll print that out too.
+Now, I could have used date time specifiers
+in my formatted string, as an alternative to
+using the DateTimeFormatter.
+In fact, let me just review
+what that would look like.
+The insert starts out the same way,
+But the specifiers are a lot more cryptic.
+The 1 dollar sign in both cases means I can just pass a single date time variable for both of these values.
+The tF will print the date in the format y y y y, dash, m m, dash, d d.
+In the second specifier lowercase t, uppercase T,
+is the key to the time, being printed in the
+format we want.
+I'll print this out usingLocalDateTime now as the argument.
+So this is an alternative.
+I'll run this code, since nothing will
+
+```html  
+
+```
+
+get inserted yet, so you can see what
+this output looks like right now.
+I'll jump back up to the main method,
+and make a call to my new add Order method.
+I'll pass that the connection, and an array of
+strings, and I'll just use clothing in my
+store front order, so my items are shoes,
+shirt, and socks. I'll assign the id I get back,
+to the newOrder variable. and I'll print the new order id out.
+I'll run this.
+
+```html  
+
+```
+
+You can see the formatted date, using date
+time formatter, which gave us a string.
+I used that string as an argument to the percent
+s specifier, in my first insert order string.
+In the second example, I used date
+time specifiers instead or percent t,
+and you can see both give me the same result.
+Now let's actually use this insert method.
+I'll get back to the add Order method,
+and set up my try with resources block.
+I'll wrap a new statement in this
+try. Since we need a transaction,
+I'll set autocommit to false. I'll set up a
+variable, inserts, then call executeUpdate,
+passing that my formatted string, and since
+I want the generated key back, I can pass
+Statement dot return GENERATED KEYS as the second
+argument. I'll call commit after this. And then
+set autocommit to true. In the catch clause, If I
+get an exception, I want to roll the transaction back.
+Then I'll throw a runtime exception.
+Notice that I've got an error on rollback,
+and that's because that throws an SQL
+Exception too, and I need to handle it.
+I'll hover over that and select,
+add exception to method signature.
+I'm not done yet, because I still have
+to insert the order detail records.
+If I get a one back from inserting the order,
+I know my order was added successfully,
+and only in this case, do I want to proceed. So
+next, I need to get the generated key back from
+the insert order statement, and don't
+forget that's retrieved by calling get
+Generated Keys. That returns a result set.
+The first record in that result set, should
+have the key I want. The key will be at index1. I'll set up another local variable, count,
+which I'll use to test how many detail items get
+inserted. I'll loop through the items passed to
+this method. I'll format my string, using the
+order id as the first argument.
+Here, I'll enquote the item string, using statement.enquote literal.
+I'll call statement.executeUpdate,with this formatted string,
+returning the result back to my inserts variable. I'll add
+the value in inserts to my count variable.
+If we get an exception saving the records,
+the data will be rolled back,
+and a runtime exception thrown.
+But some database problems are silent,
+meaning we may not get an exception,
+but something may not go as we expected, because
+of problems with the logic in our queries.
+I'll add an additional test, in this code, to make
+sure the results are what I expected them to be.
+I'll check if the value in count, or
+the records inserted, is the same as
+the number of items passed to this method.
+If it's not, I'll set order Id back to -1.
+And I'll print out the issue.
+I'll roll back the transaction if this happens.
+I'll wrap an else statement around the commit statement
+Ok, time to test this out, so I'll run this code.
+
+```html  
+
+```
+
+I see the two insert strings again,
+but now I see new order equals 1.
+That's a good sign.
+I'll open up MySQL Workbench.
+I'll click on the order table, and select
+the grid or spreadsheet like icon.
+This will open an SQL editor pane
+showing an executed select statement,
+with a result grid below, so you should see
+order 1, with the order date listed there.
+I'll do the same for order details,
+clicking the table like icon there.
+Here I can see all three of the order details
+listed, associated with order 1, so that's it.
+Hopefully, you were able to do that, and you
+figured out how to persist some data of your own.
+The second part of the challenge was to delete
+an order, which includes it's line items.
+Getting back to IntelliJ, and
+the JDBC Challenges project,
+I'll add a new method to do this, and I'll
+insert this method after the addOrder method.
+This will be private, static,
+void, and called delete Order.
+It'll take a connection, and the
+order id, of the order to be deleted.
+I'll start with a formatted string, so Delete
+from storefront.order, where order id equals,
+percent d. I'll format that, using the
+orderId.
+I'll get a new statement in a try with resources block.
+I'll set up a variable called deleteRecords, and assign that the value of executeUpdate.
+I'll pass that, my deleteQuery
+string. I'll print how many records got deleted.
+That should be one in every case. If I get an
+exception, I'll throw a runtime exception.
+Getting back to the main method, I'll comment out
+the add order code, and the println below that.
+I'll make a call to the delete method before that
+code. I want to delete order id 1, in this case.
+I'll run this code.
+
+```html  
+
+```
+
+The output says one record was deleted.
+I'll verify the results in MySQL WorkBench,
+by re-executing the select statements.
+First on Order, and the result grid has no data.
+I'll do the same on Order details.
+You can see I no longer have either
+the order or the order detail records.
+Because of the cascade delete, defined in the
+order detail table, I didn't actually have to
+include the delete order details code in Java.
+This was optional for this scenario.
+Maybe you did code this, and
+included it in a transaction.
+This is a valid solution as well.
+I'll change my code a little, to do it that way.
+First, I'll uncomment the code
+that creates a new order,
+and re run my code, so I have an order to delete.
+
+```html  
+
+```
+
+This will set up order number 2, as you can see.
+I'll change the number from
+1 to 2 in the deleteOrder.
+Next, I'll start by adding the
+transaction code to my delete method.
+So first, I'll set auto commit to false.
+I'll call commit as the last
+statement in the try block.
+I'll execute a roll back if I get an exception.
+I'll again over hover the error I get on rollback,
+and select to have the SQL exception
+added to the methods' throw clause.
+I'll add a finally clause in this case, because
+I am throwing an exception in the catch clause.
+In either case I want to set
+auto commit back to true.
+Putting that in a finally clause
+ensures it always happens.
+Now, I'm going to make the delete
+Order string more generic, and put
+a place holder in for the table name.
+I'll change the name of the variable
+deleteQuery to parentQuery.
+Then, I'll pass the table name,
+storefront.order, as the first argument here.
+Next, I'll create a childQuery, using the
+same formattable string,
+this time passing the order details table,
+and I'll still delete by order id, Remember, the
+child table has this id in it as a foreign key.
+I'll change the name of the query in
+the execute update to be child query.
+I'll change my print statement to say
+how many child records were printed.
+Now, I just need to add the code,
+to delete the parent record.
+I'll executeUpdate on the parentQuery and return
+results to the same variable, deleteRecords.
+Again, it's possible something could go amiss,
+and not throw an exception, so I want to confirm
+one and only one order is deleted in this case.
+I'll print that my order was successfully deleted.
+I'll include an else statement, and rollback if
+my result wasn't one. I probably should have a
+statement printed here too, but you get the gist.
+Before I run this, I'll comment out the code that
+
+```html  
+
+```
+
+adds a new order.
+Ok, I'll run this.
+
+```html  
+
+```
+
+I'll see that three child records were deleted,
+and then order 2 was successfully deleted.
+I'll pop back over to MySQL Workbench, and
+re-execute the queries, that were generated,
+when I displayed the table results. These
+are currently showing as no data from last time.
+Remember we have created records again
+and deleted them, before coming back here.
+I'll start with Order, and running that select
+
+```html  
+
+```
+
+again, In the result grid below, I should have
+no data again, so I know this code worked.
+I'll do the same for order_details, opening that
+tab, and executing that select query again.
+And I get no data, so that's good.
+So Should you manually delete child records in
+your Java code, or depend on cascade deletion?
+The answer to that question,
+is as usual, it depends.
+If you're trying to be database agnostic,
+meaning your application is going to be deployed
+in many environments with different databases.
+In this scenario, You'll probably be working
+with varying degrees of database support,
+so then maybe you'd manually code the delete
+child records, and you'd have confidence your
+code is always cleaning up the child records,
+regardless of how the database is configured.
+Doing this might be simpler, than having to
+publish requirements, on how the database needs
+to be set up, with cascade deletes implemented.
+If you're deleting a large amount of data,
+it's probably more efficient to take
+advantage of the table's cascade deletes,
+done on the database server's implementation.
+All the major RDBMS vendors support cascade
+deletes, so that's a positive, but there may be
+some vendors or lightweight RDBMS's that don't.
+Also, don't forget your JDBC backend could
+even be files, like csv or jayson files,
+so in that case, you'd want to implement the
+delete order_detail functionality yourself.
+In the delete order detail code, you can
+see I parameterized the SQL statement,
+with the item description.
+Ultimately though, I passed
+a static string to the executeUpdate method.
+In the next video, I'll show you an alternative
+for parameterized SQL, in the
+form of a Prepared Statement.
 </div>
 
 
