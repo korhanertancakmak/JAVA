@@ -586,12 +586,14 @@ And then the prepared statement for the order is printed out.
 That's followed by all the order information.
 I'll switch back to MySQL Workbench and look at this data there.
 
-
+![image66](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image66.png?raw=true)
 
 I'll highlight the order and then pick the grid icon.
-Here, you see four orders added,
-which confirms the Java output.
-I'll do the same for the Order details.
+Here, you see four orders added, which confirms the Java output.
+I'll do the same for the _order details_.
+
+
+
 And you can see order
 details for those four orders.
 So hopefully you got a lot out of this challenge.
