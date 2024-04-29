@@ -122,6 +122,7 @@ public class Main {
         return albumId;
     }
 
+/*
     private static int addSong(PreparedStatement ps, Connection conn, int albumId, int trackNo, String songTitle) throws SQLException {
 
         int songId = -1;
@@ -137,6 +138,17 @@ public class Main {
             }
         }
         return songId;
+    }
+*/
+
+    private static void addSong(PreparedStatement ps, Connection conn, int albumId, int trackNo, String songTitle)
+            throws SQLException {
+
+        ps.setInt(1, albumId);
+        ps.setInt(2, trackNo);
+        ps.setString(3, songTitle);
+
+        ps.addBatch();
     }
 
     private static void addDataFromFile(Connection conn) throws SQLException {
@@ -154,6 +166,7 @@ public class Main {
         int artistId = -1;
         int albumId = -1;
 
+/*
         try (PreparedStatement psArtist = conn.prepareStatement(ARTIST_INSERT, Statement.RETURN_GENERATED_KEYS);
              PreparedStatement psAlbum = conn.prepareStatement(ALBUM_INSERT, Statement.RETURN_GENERATED_KEYS);
              PreparedStatement psSong = conn.prepareStatement(SONG_INSERT, Statement.RETURN_GENERATED_KEYS);
@@ -179,8 +192,8 @@ public class Main {
             conn.rollback();
             throw new RuntimeException(e);
         }
+*/
 
-/*
         try (PreparedStatement psArtist = conn.prepareStatement(ARTIST_INSERT, Statement.RETURN_GENERATED_KEYS);
              PreparedStatement psAlbum = conn.prepareStatement(ALBUM_INSERT, Statement.RETURN_GENERATED_KEYS);
              PreparedStatement psSong = conn.prepareStatement(SONG_INSERT, Statement.RETURN_GENERATED_KEYS);
@@ -208,8 +221,5 @@ public class Main {
             conn.rollback();
             throw new RuntimeException(e);
         }
-*/
-
-
     }
 }

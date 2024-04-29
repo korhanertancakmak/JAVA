@@ -4989,7 +4989,7 @@ I'll create a new instance, using the class name of the _MysqlDataSource_.
 I'll set the server name, localhost, and the port, `3335`. 
 I'll set the user to be an environment variable, which I've done before. 
 I'll do the same thing for the password.
-Notice that here, I'm not specifying any schema or database name,
+Notice that here, I'm not specifying any schema or database name
 when I'm setting up the data source.
 That's because I plan to create it.
 First, though, I'll set up a method to test if the database exists, 
@@ -5057,7 +5057,7 @@ I'll execute _checkSchema_, as part of an _if_ condition.
 So if it returns **false**, 
 I'll print that the _storefront_ schema does not exist.
 AndI'll set up the usual _catch_ clause here.
-I'll set up my environment variables,
+I'll set up my environment variables
 as part of the run configuration.
 You've seen me do this several times by now, 
 so I'll just do it real quickly.
@@ -5455,7 +5455,7 @@ public class Main {
 
 I'll create a new method, that'll be private and static, returns void,
 and I'll call it _setUpSchema_.
-It'll take a connection throwing an _SQLException_.
+It will take a connection throwing an _SQLException_.
 Remember that for MySQL, the term database and schema are used interchangeably, 
 so the first statement I need is, `CREATE SCHEMA storefront`,
 which will create the _storefront_ database when executed. 
@@ -5474,7 +5474,7 @@ This will be similar to the code for order.
 So `CREATE TABLE storefront.order_details (`.
 The _order_detail_id_, an **int**, can't be **null**, 
 and gets auto incremented.
-_item_description_ is a **text** field. 
+_Item_description_ is a **text** field. 
 The third column is _order_id_.
 This is the column that connects the two tables.
 My primary key is _order_detail_id_. 
@@ -5498,7 +5498,7 @@ You can roll back a few of the DDL statements,
 so it's less common to execute DDL in a transaction.
 Whether you can execute DDL statements in a transaction is something 
 that's specific to the database vendor.
-The second goal of this exercise was to give you a schema, for upcoming challenges.
+The second goal of this exercise was to give you a schema for upcoming challenges.
 Now, I have to add the code to execute these statements.
 
 ```java  
@@ -5619,7 +5619,7 @@ to recreate the schema from scratch again.
 ## [h. JDBC Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course05_JDBCChallenge/README.md#jdbc-challenge)
 <div align="justify">
 
-In this challenge, you'll be using MySQL Workbench, 
+In this challenge, you'll be using MySQL Workbench 
 to verify that the changes you make in Java get persisted correctly.
 There is one change you'll probably need to make, though, 
 to the settings in MySQL Workbench to do this.
@@ -5651,7 +5651,7 @@ and at least two _Order_ details into your database.
 This should be done in a transaction. 
 * Use MySQL Workbench to confirm your inserts worked. 
 * Write Code that deletes an _Order_ and its _order details_.
-* Again, use MySQL Workbench to confirm your order and its line items, 
+* Again, use MySQL Workbench to confirm your order and its line items 
 were actually deleted.
 
 I've included the date time format that MySQL expects this field to be in.
@@ -6071,7 +6071,7 @@ Now I've got add methods for all three tables, related to an artist.
 I need to create a method that loops through the records in the csv file, 
 and then calls each of these methods appropriately.
 
-I'm not creating the prepared statement in any of these methods, 
+I'm not creating the prepared statement in any of these methods 
 because they may be called multiple times. 
 Instead, I'm passing a prepared statement to each method.
 To execute these, I'll create a method that will loop through 
@@ -6372,181 +6372,272 @@ I'll hit the next _apply_ button.
 And finally, the _finish_ button.
 To test this, I'll open a query tab.
 
-
+![image59](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image59.png?raw=true)
 
 This is the first icon under the top menu listing.
-First let's query the view for Bob Dylan data.
+First, let's query the view for _Bob Dylan_ data.
 Executing this statement with the lightning bolt,
-I should get the same information my
-java code listed in the last execution.
-Now I'll delete the artist Bob Dylan.
-If I set my cursor directly before
-the word delete, I can run just this
+I should get the same information my java code listed in the last execution.
+Now I'll delete the artist _Bob Dylan_.
+If I set my cursor directly before the word delete, I can run just this statement 
+by selecting the lightning bolt icon, with an eye over the top of it.
 
-```html  
+![image61](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image61.png?raw=true)
 
-```
-
-statement, by selecting the lightning
-bolt icon, with an eye over the top of it.
-You can see at the bottom of the screen I
-get Error Code 1175 - You are using Safe mode.
-This is a built in MySQL Workbench feature that
-prevents you doing an entire table deletion.
+You can see at the bottom of the screen I get `Error Code 1175`.
+You are using _Safe_ mode.
+This is a built-in MySQL Workbench feature 
+that prevents you doing an entire table deletion.
 It's a useful feature to prevent a potential disaster.
-You often do not want to delete an
-entire tables contents, after all.
+You often do not want to delete an entire table contents, after all.
 But here, we do want to do that.
 I need to go into preferences and turn off this feature.
-So I'll clickEdit and select Preferences.
+So I'll click _Edit_ and select _Preferences_.
 I'll then click SQL Editor.
-And turn off this safe guard
-by unchecking the Safe Updates box.
-Note that it protects both deletes and updates
-of an entire table. Which happens when we
-do not filtering the SQL Statement in some
-way. As is the case here. I'll click OK.
-I'll re-run the sql delete code
-again, and, I get the same error.
-I'll try a refresh but I think I have to restart
-MySQL Workbench for this change to take effect.
-I'll reexecute the select again,
-just to see if that works.
-I'm still getting the same error, so I'll
-close down and re-start MySQL Workbench.
+
+![image62](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image62.png?raw=true)
+
+And turn off this safeguard by unchecking the _Safe Updates box_.
+Note that it protects both deletes and updates of an entire table. 
+Which happens when we do not filter the SQL Statement in some way. 
+As is the case, here. 
+I'll click _OK_.
+I'll re-run the sql delete code again, and I get the same error.
+I'll try a refresh, but I think I have to restart MySQL Workbench 
+for this change to take effect.
+I'll re-execute the select again, just to see if that works.
+I'm still getting the same error, so I'll close down and re-start MySQL Workbench.
 Right, so let's try the select and delete again.
+
+![image63](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image63.png?raw=true)
+
 Success, finally. We don't get any errors.
-Without the cascade delete, I would
-have gotten errors trying to do this.
+Without the _cascade delete_, I would have gotten errors trying to do this.
 I'll set my cursor before the select keyword,
-and again click the execute inline icon.
-This executes the select against
-the view, and now I have no data.
-So my single delete statement, deleted two
-related albums, as well as 27 related songs.
-I'll jump back to IntelliJ, and
-I'll make some changes to this code,
+and again click the _execute_ inline icon.
+This executes the select against the view, and now I have no data.
+
+![image64](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image64.png?raw=true),
+
+So my single delete statement, deleted two related albums, 
+as well as 27 related songs.
+I'll jump back to IntelliJ, and I'll make some changes to this code,
 to support batching up all the song records.
-I'll start with the addSong method.
-First, I'll make the return
-type void, and not int.
-Then I'll remove the first statement,
-where I initialize song ID.
-I'll remove the entire if statement,
-and all the statements in there.
-I don't need to get the song IDs for
-my code, so I'll remove all these.
-Finally, I'll remove the return statement.
-Next, I'll remove the execute update method call,
-since we are batching the addition of the songs.
-I'll execute add Batch on the prepared statement.
-Again, add batch won't execute anything, it just
-populates a list of statements that will be run,
+I'll start with the _addSong_ method.
 
-```html  
+```java  
+//private static int addSong(PreparedStatement ps, Connection conn, int albumId, int trackNo, String songTitle) 
+private static void addSong(PreparedStatement ps, Connection conn, int albumId, int trackNo, String songTitle) 
+        throws SQLException {
 
+    //int songId = -1;
+    ps.setInt(1, albumId);
+    ps.setInt(2, trackNo);
+    ps.setString(3, songTitle);
+    
+/*
+    int insertedCount = ps.executeUpdate();
+    if (insertedCount > 0) {
+        ResultSet generatedKeys = ps.getGeneratedKeys();
+        if (generatedKeys.next()) {
+          songId = generatedKeys.getInt(1);
+          System.out.println("Auto-incremented ID: " + songId);
+        }
+    }
+    return songId;
+*/
+    
+    ps.addBatch();
+}
 ```
 
+First, I'll make the return type **void**, and not **int**.
+Then I'll remove the first statement, where I initialize _songID_.
+I'll remove the entire if statement, and all the statements in there.
+I don't need to get the *songID*s for my code, so I'll remove all these.
+Finally, I'll remove the return statement.
+Next, I'll remove the _executeUpdate_ method call,
+since we are batching the addition of the songs.
+I'll execute add Batch on the prepared statement.
+Again, add batch won't execute anything 
+it just populates a list of statements that will be run,
 when the executeBatch method gets called.
-I'll go back to the addData From File method,
+I'll go back to the _addDataFromFile_ method,
 and scroll down, to just before
 the commit statement I make.
-Here, I'll be executing all the queued up
-statements, on the PS Songs prepared statement.
-Each statement returns the number of records
-effected, returned as an int array there.
-I'll set up an int array variable called inserts,
-and then execute batch. If everything worked
-perfectly, the inserts length should
-be the number of records inserted,
-but it's possible a count could be zero, if
-something went wrong. I'll create a total
-inserts variable. I'll set up a mini stream here,
-with Arrays.stream, passing it the inserts array,
-and then terminating with the sum operation.
+
+```java  
+private static void addDataFromFile(Connection conn) throws SQLException {
+
+    List<String> records = null;
+    try {
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course06_PreparedStatements/NewAlbums.csv";
+        records = Files.readAllLines(Path.of(pathName));
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+  
+    String lastAlbum = null;
+    String lastArtist = null;
+    int artistId = -1;
+    int albumId = -1;
+  
+    try (PreparedStatement psArtist = conn.prepareStatement(ARTIST_INSERT, Statement.RETURN_GENERATED_KEYS);
+         PreparedStatement psAlbum = conn.prepareStatement(ALBUM_INSERT, Statement.RETURN_GENERATED_KEYS);
+         PreparedStatement psSong = conn.prepareStatement(SONG_INSERT, Statement.RETURN_GENERATED_KEYS);
+    ) {
+        conn.setAutoCommit(false);
+    
+        for (String record : records) {
+            String[] columns = record.split(",");
+            if (lastArtist == null || !lastArtist.equals(columns[0])) {
+                lastArtist = columns[0];
+                artistId = addArtist(psArtist, conn, lastArtist);
+            }
+            if (lastAlbum == null || !lastAlbum.equals(columns[1])) {
+                lastAlbum = columns[1];
+                albumId = addAlbum(psAlbum, conn, artistId, lastAlbum);
+            }
+            addSong(psSong, conn, albumId, Integer.parseInt(columns[2]), columns[3]);
+        }
+
+        int[] inserts = psSong.executeBatch();
+        int totalInserts = Arrays.stream(inserts).sum();
+        System.out.printf("%d song records added %n", inserts.length);
+        
+        conn.commit();
+        conn.setAutoCommit(true);
+    } catch (SQLException e) {
+        conn.rollback();
+        throw new RuntimeException(e);
+    }
+}
+```
+
+Here, I'll be executing all the queued up statements 
+on the _psSong_ **prepareStatement**.
+Each statement returns the number of records effected,
+returned as an **int** array there.
+I'll set up an **int** array variable called _inserts_, 
+and then _executeBatch_. 
+If everything worked perfectly, 
+the _inserts_ length should be the number of records inserted,
+but it's possible a count could be zero if something went wrong. 
+I'll create a _totalInserts_ variable. 
+I'll set up a mini stream here, with `Arrays.stream`, 
+passing it the _inserts_ array and then terminating with the _sum_ operation.
 This quickly sums all this data.
 I'll print this information out.
 And I'll run this again.
 
 ```html  
-
+Auto-incremented ID: 213
+Auto-incremented ID: 889
+Auto-incremented ID: 890
+27 song records added 
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Blonde on BlondeBob Dylan      1              Rainy Day Women
+Blonde on BlondeBob Dylan      2              Pledging My Time
+Blonde on BlondeBob Dylan      3              Visions of Johanna
+Blonde on BlondeBob Dylan      4              One of Us Must Know (Sooner or Later)
+Blonde on BlondeBob Dylan      5              I Want You     
+Blonde on BlondeBob Dylan      6              Stuck Inside of Mobile with the Memphis Blues Again
+Blonde on BlondeBob Dylan      7              Leopard-Skin Pill-Box Hat
+Blonde on BlondeBob Dylan      8              Just Like a Woman
+Blonde on BlondeBob Dylan      9              Most Likely You Go Your Way (And I'll Go Mine)
+Blonde on BlondeBob Dylan      10             Temporary Like Achilles
+Blonde on BlondeBob Dylan      11             Absolutely Sweet Marie
+Blonde on BlondeBob Dylan      12             Fourth Time Around
+Blonde on BlondeBob Dylan      13             Obviously Five Believers
+Blonde on BlondeBob Dylan      14             Sad-Eyed Lady of the Lowlands
+Bob Dylan      Bob Dylan      1              You're No Good 
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die  
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O 
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+Bob Dylan      Bob Dylan      8              Gospel Plow    
+Bob Dylan      Bob Dylan      9              Baby Let Me Follow You Down
+Bob Dylan      Bob Dylan      10             House of the Risin' Sun
+Bob Dylan      Bob Dylan      11             Freight Train Blues
+Bob Dylan      Bob Dylan      12             Song to Woody  
+Bob Dylan      Bob Dylan      13             See That My Grave Is Kept Clean
 ```
 
-My first three statements of output are
-the artist id, and the 2 new album IDs.
-Then I get the statement that 27 songs
-were inserted, this was done with
-one trip to the database server.
-And then I can see from the view,
-the records are all there.
-Anytime you're executing a
-series of statements, whose only difference is
-column values, as was the case in this code,
-you should use a prepared statement.
-The PreparedStatement has many advantages over the Statement.
-Pre-compilation involves parsing,
-optimizing, and storing the SQL statement, in
-a format that can be efficiently executed by
-the database server. This process occurs only
-once, making subsequent executions faster.
-Parameterized Queries are supported with
-placeholders. These are identified as
-question marks in the S Q L string.
+My first three statements of output are the artist id, 
+and the `2` new albumIDs.
+Then I get the statement that 27 songs were inserted.
+This was done with one trip to the database server.
+And then I can see from the view, the records are all there.
+Anytime you're executing a series of statements, 
+whose only difference is column values, 
+as was the case in this code, you should use a prepared statement.
+The _PreparedStatement_ has many advantages over the Statement.
+
+* **Pre-compilation** involves parsing, optimizing, 
+and storing the SQL statement in a format 
+that can be efficiently executed by the database server. 
+This process occurs only once, making subsequent executions faster.
+* **Parameterized Queries** are supported with placeholders. 
+These are identified as question marks in the SQL string.
 They're used for dynamic data values,
 and get replaced with actual values at runtime.
-These help prevent SQL injection attacks,
-by separating SQL code, from user input.
-Another advantage is Efficient Reuse.
-A PreparedStatement can be used multiple times,
-executing the same or similar SQL statements
-with different parameter values. This results in
-improved performance. With parameterized queries,
-we get Automatic Type Conversion.This meansA
-PreparedStatement handles the conversion,
-between Java and SQL data types, ensuring data
-compatibility. Using Prepared statements help
-with Readability and Maintainability.Code
-that uses PreparedStatements is easier to
-read and understand, than looking at a series
-of concatenated SQL strings with user input,
-for example.A PreparedStatement also provides
-Type Safety when binding parameters to SQL statements.
-This helps avoid data type mismatches,
-that lead to runtime errors or data corruption.
-With all of that being said, our insert code
-still has a couple of major flaws, because of
-the very nature of having to execute up to three
-insert statements, for a single song in an album.
-I wasn't able to batch the entire process.
-So if I had 1000 new albums, and 1000 new
-artists, I'd still be doing 2000
-round trips to the database.
-If a problem occurred inserting the second
-album, none of the song titles for the first
-album would have been inserted,
-because of the way I coded this.
-In the next video, I'll demonstrate
-how to address some of these problems,
-with something called a stored procedure.
-You can think of this as a method on the
-database server, we can access.
-But before I get into that,
-I've got another challenge for you.
-So I'll see you in that next video.
+These help prevent SQL injection attacks, by separating SQL code, from user input.
+* Another advantage is **Efficient Reuse**.
+A PreparedStatement can be used multiple times, 
+executing the same or similar SQL statements with different parameter values. 
+This results in improved performance. 
+* With parameterized queries, we get **Automatic Type Conversion**. 
+This means a **PreparedStatement** handles the conversion,
+between Java and SQL data types, ensuring data compatibility. 
+* Using prepared statements help with **Readability and Maintainability**. 
+Code that uses PreparedStatements is easier to read and understand, 
+than looking at a series of concatenated SQL strings with user input, for example. 
+* A PreparedStatement also provides **Type Safety** 
+when binding parameters to SQL statements.
+This helps avoid data type mismatches, that lead to runtime errors or data corruption.
 
+With all of that being said, our insert code still has a couple of major flaws, 
+because of the very nature of having to execute up to three insert statements 
+for a single song on an album.
+I wasn't able to batch the entire process.
+So if I had 1000 new albums and 1000 new artists, 
+I'd still be doing 2000 round trips to the database.
+If a problem occurred inserting the second album, 
+none of the song titles for the first album would have been inserted
+because of the way I coded this.
+In the next section, I'll demonstrate how to address some of these problems,
+with something called a stored procedure.
+You can think of this as a method on the database server, we can access.
+But before I get into that, I've got another challenge for you.
 </div>
 
 ## [j. PreparedStatement Challenge]()
 <div align="justify">
 
-```java  
+It's now your turn to apply the skills you just learned, about DDL, 
+PreparedStatements, transactions, and batch processing.
+You can start with the code in the previous section,
+but create a new class for this code.
+First, I want you to 
 
-```
-
-```html  
-
-```
-
+* Change the structure of the _order_details_ table, 
+adding a new column called quantity, a number.
+I'm purposely not telling you which DDL command to use, 
+since this should be easy to look up.
+Once you've made this change to your database, 
+you'll proceed with adding data.
+* Use data from `Orders.csv` to add orders to your _storefront_ database.
+I've included this file in the package folder, to use as input.
+This file contains information for `5` different orders.
+The format of this file is different from the last section, 
+so be sure to study it a little bit, so you know how to read it.
+* Use PreparedStatements to insert each order and its related items. 
+* Batch up the line items for each order, but batch only line items for a single order.
+* Use a transaction for each individual order, rolling back the order insert 
+if something fails, but allowing other orders to be inserted.
 </div>
 
 ## [k. CallableStatement]()
@@ -6646,6 +6737,298 @@ So I'll see you in that next video.
 ```java  
 
 ```
+
+I've created a new class, which I've called **Challenge2**.
+I'll start by copying the _main_ method,
+from the **Main** class in the previous section,
+pasting that in my new class.
+I'll remove all the code in the try block.
+Next, I'll set up an ALTER TABLE statement.
+Hopefully you were able to research that,
+and found that the way to change a table,
+in the database, is to use the ALTER DDL Statement.
+In this case, I'll alter storefront.order_details,
+and ADD COLUMN, quantity, int. There are options
+you can include for the column, but let's just
+keep this simple. Next, I'll get a statement,
+and call execute, passing the alter string.
+So you might be asking why I didn't
+use a PreparedStatement here.
+In general, you don't use
+PreparedStatements for Data
+Definition Language or DDL statements in Java.
+PreparedStatements are typically used to execute
+Data Manipulation Language or DML statements,
+where the same SQL statement may be executed
+multiple times with different parameter values.
+DDL statements, on the other hand, like this one,
+wouldn't be run twice, and you wouldn't get
+
+```html  
+
+```
+
+the benefit of the precompiled statement.
+Let's run this.
+
+```html  
+
+```
+
+If you haven't already done so,
+don't forget to set your environment variables,
+for the MYSQL USER and MYSQL Password,
+in the run configuration for this class.
+
+```html  
+
+```
+
+Now, there's no output, but we don't
+get an exception either.
+I'll open My SQL Work bench,
+and choose the development session.
+In the schemas panel, I'll expand the
+storefront database, then tables,
+and highlight order_details.
+This time I'll select the info icon,
+and then select the columns tab.
+Here you can see that quantity
+is now a column in this table.
+I'll go back to my Java code.
+We only have to do this once,
+so I'll now comment out this code.
+So next, I'll write the code to read the data
+from the file, that has the order data.
+Let me open this file a minute.
+In this file, the order data has the key word
+order in the first column, whereas the details
+have the key word item, in that column.
+Notice that the order records have dates,
+already formatted the way we want them to be.
+Also notice, the time changes by 1 minute,
+you can use this to recognize the orders.
+I'll use a different approach in this code,
+just to show you an alternative.
+First I'll set up two records,
+one for Order, and one for OrderDetails,
+in the Challenge2.java source file.
+I'll start with the OrderDetail.
+This record has three fields, order detail id,
+an int, the item description, a string, and
+quantity, an int. I'll create a custom constructor
+for this, because I won't have an order id, as
+I'm reading the data in from the file. So I want
+a constructor with just item description and
+quantity. And this has to call the canonical
+constructor, so I'll pass -1 as the ID.
+Next, I'll create a record for the order.
+This will have order ID, date string, and
+list of order details. And this one will
+have a custom constructor too, for just the date
+string. So when I call the canonical constructor,
+I'll pass -1 for the order id, and I'll
+create a new ArrayList for the details here.
+The only other thing I'll add, is an addDetail
+method, that'll take an item description,
+and a quantity. I'll create an instance of the
+Order Detail, pass that the description, and the quantity.
+And I'll add that to the details array.
+Now that I have types to put the data in,
+I'll write the read data method.
+This will return a list of orders.
+I'll initialize an array list of orders to start
+with. This time, I'll use a Scanner. If you used
+Files or some other method, that's fine. I'm
+really choosing this method just to remind you,
+that you can use scanner, to read data from a
+file. I'm putting this in a try with resources block.
+Unlike Files.readLines, the scanner won't
+get closed automatically, so if I put it in this
+type of try statement, I don't have to remember
+to close it. I'll set the delimiter to be either
+a comma, or a new line. This means, instead of
+splitting the data by line, it's going to split
+the data by commas. I'll create a list of strings,
+by calling scanner.tokens. That gives me a stream
+of strings, so I'll use map to trim each value,
+then terminate the stream, collecting it into a list.
+I'll print each value, in my Order list.
+And I'll return my order list from this method.
+This won't compile, so I'll use
+IntelliJ to add a catch clause.
+Obviously I'm not done yet, because I have
+to create the Order, and OrderDetails.
+I'll loop through every column value,
+one at a time.
+I'll get the column value, from the list.
+If that token has the value order,
+then I know I need to set up an order.
+The date is the next place in the list, so I'll do a
+pre-increment, then get the next value.
+I'll create and Order, and add it to the order list.
+Similarly, I'll check for the keyword item,
+which indicates the tokens that follow are item fields.
+I'll parse the next field, the quantity. Now, in a
+normal world, you'd want to do more validation,
+but again, I'll just keep this simple. the item
+description is next. I can get the order that goes
+with the details, by just getting the last order added.
+And I'll add the detail to that order.
+I'll test this code out, by calling this method.
+I'll insert a call to this method, before
+I open a database connection. So first,
+I'll create a List variable, called orders,
+and assign that the value of read data.
+I'll run this now, to make sure I
+
+```html  
+
+```
+
+get each order, as a coherent unit.
+And you can see, this code has 5
+orders, and all the information
+is stored now, in this array of Orders.
+Next, I'll create the add Order method.
+This method will take a connection, two
+different prepared statements, and an order.
+I'll set up the prepared statements outside
+of this method, so they can be reused.
+This will throw an SQL Exception. Here, I'll use
+a regular try, because I don't want to close any
+resources, if this code fails. Instead I'll be
+ignoring the error, and continuing to process
+other orders. I do want the code in this
+method to be part of a single transaction,
+so that starts by setting auto commit to false.
+I'll leave some space for the code here. I'll
+end the try block with a commit statement. I'll
+catch the SQL Exception, and rollback any changes,
+if I do get one. Then, I'll rethrow the exception.
+And I do want a finally clause, because I want to
+be sure auto commit is set to true in any case.
+That's the set up for a transaction.
+Between the first auto commit, and the commit
+method, I need jdbc code, so I'll start by
+initializing an order ID variable, to minus 1.
+I'll now set the only parameter, on the prepared
+Statement for the order. I can use setString,
+even when the field is a date time field.
+I'll call the executeUpdate method on that, inside an
+if condition,
+checking to make sure only 1 record was inserted.
+So if that's true, I know I can get
+the generated keys, from the prepared statement.
+And you've seen me do this often enough,
+so I'll just get that, and print it out.
+Next, I'll add the code to batch up the details
+for each order, before executing the whole batch.
+I'll insert this code in the nested if.
+If the order id is greater than minus 1, then I
+know my order, the parent record, was created ok.
+I'll use the prepared statement for detail,
+and I'll set the order id, which is the first place
+holder. Now, I'll loop through the order details.
+And set the 2nd and 3rd parameters, that's item
+description, and quantity. I'll call add batch
+on that prepared statement. After I've batched
+up all the statements, I'll call execute Batch,
+which returns an array of integers. And I'll sum
+those values up with a quick stream, which I did
+in the last video. I'll check if the rowsInserted,
+is different from the size, of the details.
+If they're different, I'll throw an exception.
+Did you notice something here?
+That I set the order id outside of the loop.
+Because I'm reusing the preparedStatement,
+the parameters I used previously
+are still set, so here I can
+just set order id once, and it will stay set.
+The other thing is that I didn't set the flag on
+the connection, thesetContinueBatchOnError flag.
+This makes this code a little less efficient,
+so if you did add it, that's great.
+I'll just mention it, but I'll leave
+the code as is.
+We're almost done.
+I need a method, which I'll call add Orders.
+That'll take the connection,
+and the list of orders.
+I'll set up a string for the insert order.
+Now don't forget, you need to specify
+parameters with a question mark, and not a string specifier.
+I only have one placeholder, and that's
+for the order date. And I'll set up the string for
+insert detail, and that's very similar, but it has
+three placeholders. I'll use a try with resources,
+creating my prepared statements here. So ps Order
+is the prepared statement for the insert order string.
+For prepared statements, I specify
+if I want generated keys back at this point,
+and not in the execute Update method.
+I'll create ps Detail the same way.
+This won't compile, so I'll have
+IntelliJ generate the catch clause.
+Now it's time to put it all together.
+I'll loop through the orders using for each,
+and start a multi line lambda. I'll include a
+try catch clause in this lambda. I'll execute add
+Order, passing the connection, the two different
+prepared statements, and the order.
+Here,I'll catch the SQL exception, because I want to
+handle it, and continue processing. And just to
+reinforce some of the lecture material, I'll print
+the error code, the S Q L state, and the message.
+I'll print the state of the prepared statement
+for the order. And I'll print the order itself.
+Finally, I just have to call
+this from the main method.
+I'll add this inside the try catch clause.
+And that's it.
+I'll run that.
+
+```html  
+
+```
+
+So what I didn't tell you in the beginning,
+was there was an error in the data.
+I did this on purpose, so it would
+test the requirements of this challenge.
+The challenge was to make sure the order
+would be rolled back, but orders after
+the bad order, would still get processed.
+So you can see the problem was with the fourth
+order, and that's because I had a bad date there.
+This format is the year, the month,
+then the day, so I have November
+31st here, which isn't a valid date.
+You can see the MySQL error code was 1292,
+the SQL State code was 22 001, and the
+message says Incorrect datetime value.
+And then the prepared statement
+for the order is printed out
+That's followed by all the order information.
+I'll switch back to MySQL Workbench,
+and look at this data there.
+I'll highlight order and then pick the grid icon.
+Here, you see 4 orders added,
+which confirms the Java output.
+I'll do the same for the Order details.
+And you can see order
+details for those four orders.
+So hopefully you got a lot out of this challenge.
+There was a lot to it, I know.
+This challenge included a DDL statement,
+prepared statements, batch processing
+and transactional processing.
+In the next video, I'll be talking
+about using callable statements,
+which are used to call server side methods,
+or functions, which are sometimes generically
+called stored procedures, in a database.
+So I'll see you in that next video.
 
 ```html  
 

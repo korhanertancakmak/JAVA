@@ -1,686 +1,322 @@
-WEBVTT
-Kind: captions
-Language: en
+# [PreparedStatement Challenge]()
+<div align="justify">
 
-00:00:05.360 --> 00:00:09.360
-Welcome to your next Challenge.
-It's now your turn to apply the skills you
-
-00:00:09.360 --> 00:00:14.893
-just learned, about DDL, PreparedStatements,
-transactions, and batch processing.
-
-
-00:00:15.760 --> 00:00:19.080
-You should Start with the JDBCChallenge
-project from that challenge,
-
-00:00:19.080 --> 00:00:23.800
-but create a new class for this code.
-First, I want you to Change the structure
-
-00:00:23.800 --> 00:00:28.436
-of the order_details table, adding a
-new column called quantity, a number.
-
-
-00:00:29.280 --> 00:00:33.599
-I'm purposely not telling you which DDL command
-to use, since this should be easy to look up.
-
-
-00:00:34.560 --> 00:00:38.283
-Once you've made this change to your
-database, you'll proceed with adding data.
-
-
-00:00:39.080 --> 00:00:43.860
-Use data from Orders.csv, to add
-orders to your storefront database.
-
-
-00:00:44.680 --> 00:00:48.110
-I've included this file in the
-resources folder, to use as input.
-
-
-00:00:49.000 --> 00:00:51.964
-This file contains information
-for 5 different orders.
-
-
-00:00:52.760 --> 00:00:56.240
-The format of this file is different from
-the last video, so be sure to study it
-
-00:00:56.240 --> 00:01:01.480
-a little bit, so you know how to read it.
-Use PreparedStatements to insert each order,
-
-00:01:01.480 --> 00:01:05.960
-and its related items. Batch up
-the line items for each order,
-
-00:01:05.960 --> 00:01:11.520
-but batch only line items for a single order.;
-Use a transaction for each individual order,
-
-00:01:11.520 --> 00:01:16.708
-rolling back the order insert, if something fails,
-but allowing other orders to be inserted.
-
-
-00:01:17.669 --> 00:01:21.580
-Ok, so pause the video here, and
-go away and give that a try.
-
-
-00:01:22.400 --> 00:01:25.446
-When you've got it done, or you get stuck,
-come back,
-
-00:01:25.446 --> 00:01:27.395
-and we'll walk through mysolution together.
-
-
-
-00:01:31.214 --> 00:01:32.324
-Welcome back.
-
-00:01:33.160 --> 00:01:36.676
-I hope you found that challenging,
-but were able to make good progress.
-
-
-00:01:37.520 --> 00:01:41.960
-I've got the project JDBC Challenges
-open, and I've created a new class,
-
-00:01:41.960 --> 00:01:46.320
-which I've called Challenge2.
-I'll start by copying the main method,
-
-00:01:46.320 --> 00:01:49.863
-from the Main class in this project,
+I've created a new class, which I've called **Challenge2**.
+I'll start by copying the _main_ method,
+from the **Main** class in the previous section,
 pasting that in my new class.
 
+```java  
+public static void main(String[] args) {
 
-00:01:55.440 --> 00:01:57.707
+    var dataSource = new MysqlDataSource();
+    dataSource.setServerName("localhost");
+    dataSource.setPort(3306);
+    dataSource.setUser(System.getenv("MYSQLUSER"));
+    dataSource.setPassword(System.getenv("MYSQLPASS"));
+
+    try (Connection conn = dataSource.getConnection()) {
+        
+/*
+        DatabaseMetaData metaData = conn.getMetaData();
+        System.out.println(metaData.getSQLStateType());
+        if (!checkSchema(conn)) {
+            System.out.println("storefront schema does not exist");
+            setUpSchema(conn);
+        }
+
+        deleteOrder(conn, 2);
+        //int newOrder = addOrder(conn, new String[]{"shoes", "shirt", "socks"});
+        //System.out.println("New Order = " + newOrder);
+*/
+        
+        String alterString = "ALTER TABLE storefront.order_details ADD COLUMN quantity INT";
+        Statement statement = conn.createStatement();
+        statement.execute(alterString);
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
 I'll remove all the code in the try block.
-
-
-
-00:02:04.830 --> 00:02:07.027
-Next, I'll set up an ALTER TABLE statement.
-
-00:02:08.035 --> 00:02:11.979
+Next, I'll set up an `ALTER TABLE` statement.
 Hopefully you were able to research that,
-and found that the way to change a table,
-
-00:02:11.979 --> 00:02:19.800
-in the database, is to use the ALTER DDL Statement.
-In this case, I'll alter storefront.order_details,
-
-00:02:19.800 --> 00:02:25.560
-and ADD COLUMN, quantity, int. There are options
-you can include for the column, but let's just
-
-00:02:25.560 --> 00:02:31.622
-keep this simple. Next, I'll get a statement,
-and call execute, passing the alter string.
-
-
-00:02:33.426 --> 00:02:36.262
-So you might be asking why I didn't
-use a PreparedStatement here.
-
-
-00:02:37.200 --> 00:02:39.720
-In general, you don't use
-PreparedStatements for Data
-
-00:02:39.720 --> 00:02:45.440
-Definition Language or DDL statements in Java.
-PreparedStatements are typically used to execute
-
-00:02:45.440 --> 00:02:50.440
-Data Manipulation Language or DML statements,
-where the same SQL statement may be executed
-
-00:02:50.440 --> 00:02:56.880
-multiple times with different parameter values.
-DDL statements, on the other hand, like this one,
-
-00:02:56.880 --> 00:03:00.896
+and found that the way to change a table, in the database 
+is to use the `ALTER` DDL Statement.
+In this case, I'll alter `storefront.order_details`,
+and `ADD COLUMN quantity INT`. 
+There are options you can include for the column, 
+but let's keep this simple. 
+Next, I'll get a statement, and call execute, 
+passing the alter string.
+So you might be asking why I didn't use a **PreparedStatement** here.
+In general, you don't use **PreparedStatements** 
+for _Data Definition Language or DDL_ statements in Java.
+**PreparedStatements** are typically used to execute 
+_Data Manipulation Language or DML_ statements,
+where the same SQL statement may be executed multiple times 
+with different parameter values.
+DDL statements, on the other hand, like this one, 
 wouldn't be run twice, and you wouldn't get
 the benefit of the precompiled statement.
-
-
-00:03:01.880 --> 00:03:02.896
-Let's run this.
-
-00:03:05.492 --> 00:03:07.000
 If you haven't already done so,
-
-00:03:07.160 --> 00:03:12.560
-don't forget to set your environment variables,
-for the MYSQL USER and MYSQL Password,
-
-00:03:12.560 --> 00:03:15.180
+remember to set your environment variables
+for the _MYSQL_USER_ and _MYSQL_Password_,
 in the run configuration for this class.
+Let's run this:
 
-00:03:21.928 --> 00:03:25.000
-Now, there's no output, but we don't
-get an exception either.
+```html  
+Process finished with exit code 0
+```
 
-00:03:27.841 --> 00:03:29.520
-I'll open My SQL Work bench,
-
-00:03:29.520 --> 00:03:33.960
-and choose the development session.
-In the schemas panel, I'll expand the
-
-00:03:33.960 --> 00:03:38.583
-storefront database, then tables,
-and highlight order_details.
+Now, there's no output, but we don't get an exception either.
+I'll open MySQL Workbench, and choose the _development_ session.
 
 
-00:03:39.403 --> 00:03:42.995
-This time I'll select the info icon,
-and then select the columns tab.
 
-
-00:03:44.026 --> 00:03:46.609
-Here you can see that quantity
-is now a column in this table.
-
-
-00:03:47.640 --> 00:03:51.640
+In the _schemas_ panel, I'll expand the _storefront_ database, 
+then _tables_, and highlight _order_details_.
+This time I'll select the _info icon_, and then select the _columns_ tab.
+Here you can see that _quantity_ is now a column in this table.
 I'll go back to my Java code.
-We only have to do this once,
 
-00:03:51.640 --> 00:03:57.080
+We only have to do this once,
 so I'll now comment out this code.
 So next, I'll write the code to read the data
-
-00:03:57.080 --> 00:04:01.478
 from the file, that has the order data.
 Let me open this file a minute.
-
-
-00:04:06.000 --> 00:04:10.880
 In this file, the order data has the key word
 order in the first column, whereas the details
-
-00:04:10.880 --> 00:04:16.040
 have the key word item, in that column.
 Notice that the order records have dates,
-
-00:04:16.040 --> 00:04:21.720
 already formatted the way we want them to be.
 Also notice, the time changes by 1 minute,
-
-00:04:21.720 --> 00:04:26.960
 you can use this to recognize the orders.
 I'll use a different approach in this code,
-
-00:04:26.960 --> 00:04:31.040
 just to show you an alternative.
 First I'll set up two records,
-
-00:04:31.040 --> 00:04:36.013
 one for Order, and one for OrderDetails,
 in the Challenge2.java source file.
-
-
-00:04:36.880 --> 00:04:42.520
 I'll start with the OrderDetail.
 This record has three fields, order detail id,
-
-00:04:42.520 --> 00:04:49.520
 an int, the item description, a string, and
 quantity, an int. I'll create a custom constructor
-
-00:04:49.520 --> 00:04:55.160
 for this, because I won't have an order id, as
 I'm reading the data in from the file. So I want
-
-00:04:55.160 --> 00:04:59.840
 a constructor with just item description and
 quantity. And this has to call the canonical
-
-00:04:59.840 --> 00:05:07.550
 constructor, so I'll pass -1 as the ID.
 Next, I'll create a record for the order.
-
-
-00:05:08.440 --> 00:05:14.160
 This will have order ID, date string, and
 list of order details. And this one will
-
-00:05:14.160 --> 00:05:19.960
 have a custom constructor too, for just the date
 string. So when I call the canonical constructor,
-
-00:05:19.960 --> 00:05:24.790
 I'll pass -1 for the order id, and I'll
 create a new ArrayList for the details here.
-
-
-00:05:28.680 --> 00:05:33.160
 The only other thing I'll add, is an addDetail
 method, that'll take an item description,
-
-00:05:33.160 --> 00:05:39.235
 and a quantity. I'll create an instance of the
 Order Detail, pass that the description, and the quantity.
-
-00:05:40.196 --> 00:05:42.183
 And I'll add that to the details array.
-
-
-00:05:46.987 --> 00:05:48.729
 Now that I have types to put the data in,
-
-00:05:48.729 --> 00:05:53.071
 I'll write the read data method.
 This will return a list of orders.
-
-
-00:05:54.360 --> 00:06:02.160
 I'll initialize an array list of orders to start
 with. This time, I'll use a Scanner. If you used
-
-00:06:02.160 --> 00:06:07.560
 Files or some other method, that's fine. I'm
 really choosing this method just to remind you,
-
-00:06:07.560 --> 00:06:13.318
 that you can use scanner, to read data from a
 file. I'm putting this in a try with resources block.
-
-00:06:14.349 --> 00:06:19.280
 Unlike Files.readLines, the scanner won't
 get closed automatically, so if I put it in this
-
-00:06:19.280 --> 00:06:24.320
 type of try statement, I don't have to remember
 to close it. I'll set the delimiter to be either
-
-00:06:24.320 --> 00:06:30.480
 a comma, or a new line. This means, instead of
 splitting the data by line, it's going to split
-
-00:06:30.480 --> 00:06:38.120
 the data by commas. I'll create a list of strings,
 by calling scanner.tokens. That gives me a stream
-
-00:06:38.120 --> 00:06:44.015
 of strings, so I'll use map to trim each value,
 then terminate the stream, collecting it into a list.
-
-00:06:45.233 --> 00:06:52.147
 I'll print each value, in my Order list.
 And I'll return my order list from this method.
-
-
-00:06:53.506 --> 00:06:57.256
 This won't compile, so I'll use
 IntelliJ to add a catch clause.
-
-
-00:06:58.920 --> 00:07:03.310
 Obviously I'm not done yet, because I have
 to create the Order, and OrderDetails.
-
-
-00:07:04.200 --> 00:07:06.883
 I'll loop through every column value,
 one at a time.
-
-00:07:09.578 --> 00:07:11.578
 I'll get the column value, from the list.
-
-00:07:12.881 --> 00:07:16.401
 If that token has the value order,
 then I know I need to set up an order.
-
-00:07:17.362 --> 00:07:21.548
 The date is the next place in the list, so I'll do a
 pre-increment, then get the next value.
-
-00:07:22.439 --> 00:07:25.112
 I'll create and Order, and add it to the order list.
-
-00:07:29.775 --> 00:07:32.337
 Similarly, I'll check for the keyword item,
-
-00:07:32.539 --> 00:07:40.800
 which indicates the tokens that follow are item fields.
 I'll parse the next field, the quantity. Now, in a
-
-00:07:40.800 --> 00:07:47.080
 normal world, you'd want to do more validation,
-but again, I'll just keep this simple. the item
-
-00:07:47.080 --> 00:07:53.705
+but again, I'll just keep this simple. The item
 description is next. I can get the order that goes
 with the details, by just getting the last order added.
-
-00:07:54.689 --> 00:08:01.516
 And I'll add the detail to that order.
 I'll test this code out, by calling this method.
-
-
-00:08:02.360 --> 00:08:07.880
 I'll insert a call to this method, before
 I open a database connection. So first,
-
-00:08:07.880 --> 00:08:12.582
 I'll create a List variable, called orders,
 and assign that the value of read data.
-
-
-00:08:14.480 --> 00:08:18.086
 I'll run this now, to make sure I
+
+```html  
+
+```
+
 get each order, as a coherent unit.
-
-
-00:08:19.000 --> 00:08:22.560
 And you can see, this code has 5
 orders, and all the information
-
-00:08:22.560 --> 00:08:25.128
 is stored now, in this array of Orders.
-
-
-
-00:08:28.760 --> 00:08:30.760
 Next, I'll create the add Order method.
-
-00:08:35.320 --> 00:08:39.476
 This method will take a connection, two
 different prepared statements, and an order.
-
-
-00:08:40.320 --> 00:08:44.312
 I'll set up the prepared statements outside
 of this method, so they can be reused.
-
-
-00:08:45.320 --> 00:08:52.040
 This will throw an SQL Exception. Here, I'll use
 a regular try, because I don't want to close any
-
-00:08:52.040 --> 00:08:58.120
 resources, if this code fails. Instead I'll be
 ignoring the error, and continuing to process
-
-00:08:58.120 --> 00:09:02.960
 other orders. I do want the code in this
 method to be part of a single transaction,
-
-00:09:02.960 --> 00:09:09.080
 so that starts by setting auto commit to false.
 I'll leave some space for the code here. I'll
-
-00:09:09.080 --> 00:09:15.480
 end the try block with a commit statement. I'll
 catch the SQL Exception, and rollback any changes,
-
-00:09:15.480 --> 00:09:22.680
 if I do get one. Then, I'll rethrow the exception.
 And I do want a finally clause, because I want to
-
-00:09:22.680 --> 00:09:28.329
 be sure auto commit is set to true in any case.
 That's the set up for a transaction.
-
-
-00:09:29.360 --> 00:09:34.880
 Between the first auto commit, and the commit
 method, I need jdbc code, so I'll start by
-
-00:09:34.880 --> 00:09:41.080
 initializing an order ID variable, to minus 1.
 I'll now set the only parameter, on the prepared
-
-00:09:41.080 --> 00:09:46.224
 Statement for the order. I can use setString,
 even when the field is a date time field.
-
-00:09:47.373 --> 00:09:50.927
 I'll call the executeUpdate method on that, inside an
 if condition,
-
-00:09:50.927 --> 00:09:53.325
 checking to make sure only 1 record was inserted.
-
-00:09:54.301 --> 00:09:59.120
 So if that's true, I know I can get
 the generated keys, from the prepared statement.
-
-00:09:59.920 --> 00:10:03.814
 And you've seen me do this often enough,
 so I'll just get that, and print it out.
-
-
-00:10:07.516 --> 00:10:12.503
 Next, I'll add the code to batch up the details
 for each order, before executing the whole batch.
-
-
-00:10:18.080 --> 00:10:23.240
 I'll insert this code in the nested if.
 If the order id is greater than minus 1, then I
-
-00:10:23.240 --> 00:10:29.803
 know my order, the parent record, was created ok.
 I'll use the prepared statement for detail,
-
-00:10:29.803 --> 00:10:36.258
 and I'll set the order id, which is the first place
 holder. Now, I'll loop through the order details.
-
-00:10:38.320 --> 00:10:45.120
 And set the 2nd and 3rd parameters, that's item
 description, and quantity. I'll call add batch
-
-00:10:45.120 --> 00:10:50.920
 on that prepared statement. After I've batched
 up all the statements, I'll call execute Batch,
-
-00:10:50.920 --> 00:10:56.200
 which returns an array of integers. And I'll sum
 those values up with a quick stream, which I did
-
-00:10:56.200 --> 00:11:02.908
 in the last video. I'll check if the rowsInserted,
 is different from the size, of the details.
-
-00:11:03.893 --> 00:11:10.406
 If they're different, I'll throw an exception.
 Did you notice something here?
-
-
-00:11:11.320 --> 00:11:16.600
 That I set the order id outside of the loop.
 Because I'm reusing the preparedStatement,
-
-00:11:16.600 --> 00:11:19.840
 the parameters I used previously
 are still set, so here I can
-
-00:11:19.840 --> 00:11:25.080
 just set order id once, and it will stay set.
 The other thing is that I didn't set the flag on
-
-00:11:25.080 --> 00:11:30.720
 the connection, thesetContinueBatchOnError flag.
 This makes this code a little less efficient,
-
-00:11:30.720 --> 00:11:34.880
 so if you did add it, that's great.
 I'll just mention it, but I'll leave
-
-00:11:34.880 --> 00:11:37.919
 the code as is.
 We're almost done.
-
-
-00:11:38.880 --> 00:11:43.600
 I need a method, which I'll call add Orders.
 That'll take the connection,
-
-00:11:43.600 --> 00:11:47.671
 and the list of orders.
 I'll set up a string for the insert order.
-
-00:11:48.632 --> 00:11:53.463
 Now don't forget, you need to specify
 parameters with a question mark, and not a string specifier.
-
-00:11:54.447 --> 00:11:59.280
 I only have one placeholder, and that's
 for the order date. And I'll set up the string for
-
-00:11:59.280 --> 00:12:09.120
 insert detail, and that's very similar, but it has
 three placeholders. I'll use a try with resources,
-
-00:12:09.120 --> 00:12:15.179
 creating my prepared statements here. So ps Order
 is the prepared statement for the insert order string.
-
-00:12:16.608 --> 00:12:20.640
 For prepared statements, I specify
 if I want generated keys back at this point,
-
-00:12:20.640 --> 00:12:25.811
 and not in the execute Update method.
 I'll create ps Detail the same way.
-
-
-00:12:31.080 --> 00:12:34.891
 This won't compile, so I'll have
 IntelliJ generate the catch clause.
-
-
-00:12:37.000 --> 00:12:41.920
 Now it's time to put it all together.
 I'll loop through the orders using for each,
-
-00:12:41.920 --> 00:12:48.480
 and start a multi line lambda. I'll include a
 try catch clause in this lambda. I'll execute add
-
-00:12:48.480 --> 00:12:53.011
 Order, passing the connection, the two different
 prepared statements, and the order.
-
-00:12:53.971 --> 00:13:00.280
 Here,I'll catch the SQL exception, because I want to
 handle it, and continue processing. And just to
-
-00:13:00.280 --> 00:13:06.043
 reinforce some of the lecture material, I'll print
 the error code, the S Q L state, and the message.
-
-00:13:06.840 --> 00:13:12.860
 I'll print the state of the prepared statement
 for the order. And I'll print the order itself.
-
-
-00:13:15.906 --> 00:13:18.471
 Finally, I just have to call
 this from the main method.
-
-
-00:13:23.720 --> 00:13:28.315
 I'll add this inside the try catch clause.
 And that's it.
-
-
-00:13:29.280 --> 00:13:34.160
 I'll run that.
-So what I didn't tell you in the beginning,
 
-00:13:34.160 --> 00:13:38.440
+```html  
+
+```
+
+So what I didn't tell you in the beginning,
 was there was an error in the data.
 I did this on purpose, so it would
-
-00:13:38.440 --> 00:13:42.880
 test the requirements of this challenge.
 The challenge was to make sure the order
-
-00:13:42.880 --> 00:13:47.383
 would be rolled back, but orders after
 the bad order, would still get processed.
-
-
-00:13:48.320 --> 00:13:52.399
 So you can see the problem was with the fourth
 order, and that's because I had a bad date there.
-
-
-00:13:53.360 --> 00:13:57.400
 This format is the year, the month,
 then the day, so I have November
-
-00:13:57.400 --> 00:14:03.720
 31st here, which isn't a valid date.
 You can see the MySQL error code was 1292,
-
-00:14:03.720 --> 00:14:09.013
 the SQL State code was 22 001, and the
 message says Incorrect datetime value.
-
-
-00:14:09.880 --> 00:14:12.289
 And then the prepared statement
 for the order is printed out
-
-
-00:14:13.320 --> 00:14:19.480
 That's followed by all the order information.
 I'll switch back to MySQL Workbench,
-
-00:14:19.480 --> 00:14:23.702
 and look at this data there.
 I'll highlight order and then pick the grid icon.
-
-
-00:14:25.506 --> 00:14:29.450
 Here, you see 4 orders added,
 which confirms the Java output.
-
-
-00:14:30.200 --> 00:14:35.120
 I'll do the same for the Order details.
 And you can see order
-
-00:14:35.120 --> 00:14:40.740
 details for those four orders.
 So hopefully you got a lot out of this challenge.
-
-
-00:14:41.560 --> 00:14:46.480
 There was a lot to it, I know.
 This challenge included a DDL statement,
-
-00:14:46.480 --> 00:14:50.246
 prepared statements, batch processing
 and transactional processing.
-
-
-00:14:51.160 --> 00:14:54.560
 In the next video, I'll be talking
 about using callable statements,
-
-00:14:54.560 --> 00:14:59.160
 which are used to call server side methods,
 or functions, which are sometimes generically
-
-00:14:59.160 --> 00:15:04.520
 called stored procedures, in a database.
 So I'll see you in that next video.
+
+```html  
+
+```
+
+</div>
