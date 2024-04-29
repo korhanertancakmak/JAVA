@@ -592,19 +592,12 @@ I'll highlight the order and then pick the grid icon.
 Here, you see four orders added, which confirms the Java output.
 I'll do the same for the _order details_.
 
+![image67](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image67.png?raw=true)
 
-
-And you can see order
-details for those four orders.
-So hopefully you got a lot out of this challenge.
-There was a lot to it, I know.
-This challenge included a DDL statement,
-prepared statements, batch processing
-and transactional processing.
-In the next video, I'll be talking
-about using callable statements,
-which are used to call server side methods,
-or functions, which are sometimes generically
-called stored procedures, in a database.
-So I'll see you in that next video.
+And you can see order details for those four orders.
+This challenge included a DDL statement, prepared statements, 
+batch processing and transactional processing.
+Next, I'll be talking about using callable statements,
+which are used to call server side methods, or functions, 
+which are sometimes generically called stored procedures, in a database.
 </div>
