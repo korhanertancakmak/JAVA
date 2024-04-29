@@ -5698,6 +5698,7 @@ its syntax tested, and some optimizations may optionally be applied.
 There is some overhead with this process,
 so if you're using the statement multiple times,
 it makes sense to precompile it.
+
 A _PreparedStatement_ is used to execute the same statement multiple times,
 with parameter value placeholders.
 This can improve performance, as I just stated, 
@@ -5723,233 +5724,817 @@ For example, album id in the **songs** table is a number.
 Specifying placeholders is the same, regardless of the type of parameter,
 as I show here, in this example.
 
+![image55](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image55.png?raw=true)
 
-
-Let's get back to some code,
-and set up a couple of prepared statements.
-To demonstrate the prepared statement, I've created a new Project called PreparedStatement.
-I've added the MySQL JDBC driver jar file
-as a library jar, which you
-should know how to do by now.
-I've got the usual Main class in
-this project in the dev lpa package.
+Let's get back to some code, and set up a couple of prepared statements.
+I've got a new Main class.
 In this code, I'll again use a datasource.
-In a server environment, you wouldn't
-be instantiating a new instance of a
-known driver class like we'll do here,
+In a server environment, you wouldn't be instantiating
+a new instance of a known driver class like we'll do here,
 but all other operations would be the same.
-I'll create a new source, with my specific
-driver here, which gives me a basic data source.
-You may or may not have to manually include an
-import statement for this, since IntelliJ may
-not. You should be able to hover over that class,
-and select import class in most cases, if the
-auto import doesn't work. I'll use the set methods
-on the data source, to set the server name, so
-localhost, the port, 3306, and the database name,
-so I'll be using music again for this video.
-In a previous video I added a property on the
-connection string, called set continue
-batch on error, which I set to false.
-Without setting this to false, my
-batched statements will all get executed,
+
+```java  
+import com.mysql.cj.jdbc.MysqlDataSource;
+public class Main {
+
+    public static void main(String[] args) {
+        
+        var dataSource = new MysqlDataSource();
+        
+        dataSource.setServerName("localhost");
+        dataSource.setPort(3335);
+        dataSource.setDatabaseName("music");
+        try {
+            dataSource.setContinueBatchOnError(false);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+I'll create a new source with my specific driver here, 
+which gives me a basic data source.
+You may or may not have to manually 
+include an import statement for this, since IntelliJ may not. 
+You should be able to hover over that class,
+and select import class in most cases if the auto import doesn't work. 
+I'll use the set methods on the data source, to set the server name, 
+so localhost, the port, 3335, and the database name,
+so I'll be using _music_ again for this section.
+In a previous section, I added a property on the connection string, 
+called _setContinueBatchOnError_, which I set to **false**.
+Without setting this to **false**, 
+my batched statements will all get executed,
 instead of stopping at the first error.
-I can use one of the set methods, on my datasource
-to do this, so I'll call setContinueBatchOnError.
-I need to wrap that with a try catch,
+I can use one of the set methods on my datasource to do this, 
+so I'll call _setContinueBatchOnError_.
+I need to wrap that with a _try-catch_,
 so I'll use IntelliJ's help to do that.
-I'll set up my username and password as
-environment variables,
-whichI've done multiple times.
-So I'll select Run from the
+I'll set up my username and password as environment variables,
+which I've done multiple times.
+So I'll select _Run_ from the menu, then _edit configurations_.
+In the dialog, I'll set up the two variables as I did previously.
 
-```html  
+```java  
+import com.mysql.cj.jdbc.MysqlDataSource;
+public class Main {
 
+    public static void main(String[] args) {
+        
+        var dataSource = new MysqlDataSource();
+        
+        dataSource.setServerName("localhost");
+        dataSource.setPort(3335);
+        dataSource.setDatabaseName("music");
+        try {
+            dataSource.setContinueBatchOnError(false);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        try (Connection connection = dataSource.getConnection(
+                System.getenv("MYSQL_USER"),
+                System.getenv("MYSQL_PASS"));
+        ) {
+            String sql = "SELECT * FROM music.albumview where artist_name = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, "Elf");
+            ResultSet resultSet = ps.executeQuery();
+            printRecords(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static boolean printRecords(ResultSet resultSet) throws SQLException {
+        boolean foundData = false;
+        var meta = resultSet.getMetaData();
+        System.out.println("===================");
+
+        for (int i = 1; i <= meta.getColumnCount(); i++) {
+            System.out.printf("%-15s", meta.getColumnName(i).toUpperCase());
+        }
+        System.out.println();
+
+        while (resultSet.next()) {
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
+            System.out.printf("%-15s", resultSet.getString(i));
+        }
+        System.out.println();
+        foundData = true;
+        }
+        return foundData;
+    }
+}
 ```
 
-menu, then edit configurations.
-In the dialog, I'll set up the two
-variables as I did previously.
-Ok, once we've done that, I'll
-get a connection next in my code.
-I'll do this in a try with resources, and call
-get Connection on data source.
-I'll pass the environment variables, for the username, and
-password.
-I'll add the usual catch clause.
-Next I'll set up a simple select
-statement, as a string, which will
-get data from the music.albumview.
-You've seen this before, but now,
-instead of using a formatted static string, or a
-concatenated string, for the artist name value,
-I'll insert a question mark there. This
-is how you parameterize an SQL statement,
+Ok, once we've done that, I'll get a connection next to my code.
+I'll do this in a _try-with-resources_, and call _getConnection_ on datasource.
+I'll pass the environment variables, for the username, and password.
+I'll add the usual _catch_ clause.
+Next I'll set up a simple select statement, as a string, 
+which will get data from the `music.albumview`.
+You've seen this before, but now, 
+instead of using a formatted static string, 
+or a concatenated string, for the artist name value,
+I'll insert a question mark there. 
+This is how you parameterize an SQL statement
 when you plan to use it in a prepared statement.
-I'll set up my prepared statement, which I'll call ps.
-I'll call connection.prepareStatement,
+I'll set up my prepared statement, which I'll call _ps_.
+I'll call `connection.prepareStatement`, 
 passing this method the SQL string variable.
-Next,I can set the value of that parameter, by
-calling setString on the prepared statement.
-This method takes an index, and again, S Q L
-starts at index 1. I'll pass Elf as the value,
-the artist, to this statement. I can invoke
-executeQuery on a prepared statement as well,
+Next, I can set the value of that parameter
+by calling _setString_ on the prepared statement.
+This method takes an index, and again, SQL starts at index 1. 
+I'll pass _Elf_ as the value, the artist, to this statement. 
+I can invoke _executeQuery_ on a prepared statement as well,
 which will return a result set.
-So note, I'm not calling
-the enquote literal method.
-When replacing a placeholder in a prepared
-statement, you specify the type, by calling the
-relevant set method, set string in this case.
-The server will appropriately enquote
-literals as needed, based on that type.
-Before I run this, I'll
-
-```html  
-
-```
-
-add a printRecords method.
-I had this method, in the QueryMusic
-project's MusicDML class.
-I'll just paste this into my class, and since I've
-discussed it previously, I won't re hash it here.
-Getting back to the main method,
-I'll add a call to the printRecords,
+So note, I'm not calling the _enquoteLiteral_ method.
+When replacing a placeholder in a prepared statement, 
+you specify the type by calling the relevant _set_ method, 
+_setString_ in this case.
+The server will appropriately _enquoteLiterals_ as needed, based on that type.
+Before I run this, I'll add a _printRecords_ method.
+I had this method in the **MusicDML** class.
+I'll just paste this into my class, and since I've discussed it previously, 
+I won't re-hash it here.
+Getting back to the _main_ method, I'll add a call to the _printRecords_,
 after I execute the query.
-Ok, as you can see,
-it's not too different from a Statement,
-except when you get a preparedStatement,
+Ok, as you can see, `PreparedStatement ps = connection.prepareStatement(sql);`
+it's not too different from a **Statement**,
+except when you get a _preparedStatement_,
 you have to pass a sql statement to that method.
-In most cases, this SQL statement is sent to the
-DBMS, when you call prepareStatement,
-and it gets compiled at that point.
-This means the prepared statement object
-contains a precompiled statement instance.
-That then gets passed to the server,
-when statements are executed.
-The string that gets passed to
-the prepareStatement method,
+In most cases, this SQL statement is sent to the DBMS, 
+when you call _prepareStatement_, and it gets compiled at that point.
+This means the prepared statement object contains a precompiled statement instance.
+That then gets passed to the server, when statements are executed.
+The string gets passed to the _prepareStatement_ method,
 can optionally contain parameters.
-Parameters are specified using question
-marks in the query statement, as I showed you on
-the slides, so these are placeholders for data.
-I can set the parameter values
-by calling a set method.
-These placeholders are another important
-feature of the prepared statement.
-They ensure that user input is always treated as
-data values, and never as executable SQL code.
-This makes it difficult for attackers
-to inject malicious SQL statements.
-In this case, I use set
-String, to set the data value.
-If the data type is something else, there's
-a whole series of set methods to choose from,
-like setArray, setBlob, and the usual
-ones, setLong, setDouble and so forth.
-I'll run this code.
+Parameters are specified using question marks in the query statement, 
+as I showed you above, so these are placeholders for data.
+I can set the parameter values by calling a _set_ method.
+These placeholders are another important feature of the prepared statement.
+They ensure that user input is always treated as data values, 
+and never as executable SQL code.
+This makes it difficult for attackers to inject malicious SQL statements.
+In this case, I use _setString_, to set the data value.
+If the data type is something else, 
+there's a whole series of set methods to choose from,
+like _setArray_, _setBlob_, and the usual ones, 
+_setLong_, _setDouble_ and so forth.
+I'll run this code:
+
+```html  
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Carolina County BallELF            1              Carolina County Ball
+Carolina County BallELF            2              L.A. 59        
+Carolina County BallELF            3              Ain't It All Amusing
+Carolina County BallELF            4              Happy          
+Carolina County BallELF            5              Annie New Orleans
+Carolina County BallELF            6              Rocking Chair Rock 'n Roll Blues
+Carolina County BallELF            7              Rainbow        
+Carolina County BallELF            8              Do The Same Thing
+Carolina County BallELF            9              Blanche        
+Trying To Burn The SunELF            1              Black Swampy Water
+Trying To Burn The SunELF            2              Prentice Wood  
+Trying To Burn The SunELF            3              When She Smiles
+Trying To Burn The SunELF            4              Good Time Music
+Trying To Burn The SunELF            5              Liberty Road   
+Trying To Burn The SunELF            6              Shotgun Boogie 
+Trying To Burn The SunELF            7              Wonderworld    
+Trying To Burn The SunELF            8              Streetwalker 
+```
+
+And here I get the data for the artist _Elf_'s two albums.
+Another important aspect of the prepared statement is its ability to be reused.
+I'll next use _preparedStatements_ to again insert data into the **music** database.
+This time I'll insert the data from a csv file.
+You can find this file, named `NewAlbums.csv`.
+I've included the file in my package folder.
+I'll open this, so you can see what it contains.
+
+```html  
+Bob Dylan,Bob Dylan,1,You're No Good
+Bob Dylan,Bob Dylan,2,Talkin' New York
+Bob Dylan,Bob Dylan,3,In My Time of Dyin'
+Bob Dylan,Bob Dylan,4,Man of Constant Sorrow
+Bob Dylan,Bob Dylan,5,Fixin' to Die
+Bob Dylan,Bob Dylan,6,Pretty Peggy-O
+Bob Dylan,Bob Dylan,7,Highway 51 Blues
+Bob Dylan,Bob Dylan,8,Gospel Plow
+Bob Dylan,Bob Dylan,9,Baby Let Me Follow You Down
+Bob Dylan,Bob Dylan,10,House of the Risin' Sun
+Bob Dylan,Bob Dylan,11,Freight Train Blues
+Bob Dylan,Bob Dylan,12,Song to Woody
+Bob Dylan,Bob Dylan,13,See That My Grave Is Kept Clean
+Bob Dylan,Blonde on Blonde,1,Rainy Day Women
+Bob Dylan,Blonde on Blonde,2,Pledging My Time
+Bob Dylan,Blonde on Blonde,3,Visions of Johanna
+Bob Dylan,Blonde on Blonde,4,One of Us Must Know (Sooner or Later)
+Bob Dylan,Blonde on Blonde,5,I Want You
+Bob Dylan,Blonde on Blonde,6,Stuck Inside of Mobile with the Memphis Blues Again
+Bob Dylan,Blonde on Blonde,7,Leopard-Skin Pill-Box Hat
+Bob Dylan,Blonde on Blonde,8,Just Like a Woman
+Bob Dylan,Blonde on Blonde,9,Most Likely You Go Your Way (And I'll Go Mine)
+Bob Dylan,Blonde on Blonde,10,Temporary Like Achilles
+Bob Dylan,Blonde on Blonde,11,Absolutely Sweet Marie
+Bob Dylan,Blonde on Blonde,12,Fourth Time Around
+Bob Dylan,Blonde on Blonde,13,Obviously Five Believers
+Bob Dylan,Blonde on Blonde,14,Sad-Eyed Lady of the Lowlands
+```
+
+In this case, I've got two of _Bob Dylan_'s albums set up as a series of records.
+This looks a lot like the album view.
+Each record has the artist name, the album name, the track number, and the song title.
+I'll start with the parameterized strings, as static strings.
+
+```java  
+private static String ARTIST_INSERT = "INSERT INTO music.artists (artist_name) VALUES (?)";
+private static String ALBUM_INSERT = "INSERT INTO music.albums (artist_id, album_name) VALUES (?, ?)";
+private static String SONG_INSERT = "INSERT INTO music.songs (album_id, track_number, song_title) VALUES (?, ?, ?)";
+```
+
+The first will be the `Artist insert` statement.
+This is a simple _insert_ statement that inserts one parameterized value, the artist name. 
+Next is the `Album insert` statement. 
+The _album insert_ statement has two columns which need to be added, 
+the artist id and the album name, so I'll set up two placeholders. 
+Lastly, there's the `song insert` statement. 
+Here, we've got 3 columns, and 3 placeholders,
+for album id, track number, and song title.
+Next, I'll create a method called _addArtist_.
+
+```java  
+private static int addArtist(PreparedStatement ps, Connection conn, String artistName) throws SQLException {
+
+    int artistId = -1;
+    ps.setString(1, artistName);
+    int insertedCount = ps.executeUpdate();
+    if (insertedCount > 0) {
+        ResultSet generatedKeys = ps.getGeneratedKeys();
+        if (generatedKeys.next()) {
+            artistId = generatedKeys.getInt(1);
+            System.out.println("Auto-incremented ID: " + artistId);
+        }
+    }
+    return artistId;
+}
+```
+
+This will take a prepared statement, a connection, and an _artistName_.
+It throws an _SQLException_.
+I'll initialize the _artistId_ to `-1`. 
+I'll set the first parameter to the _artistName_.
+I'll then call _executeUpdate_, to get the insert count.
+If the count is greater than zero, I'll get the generated key, which is the _artistId_. 
+I get any generated keys by calling _getGeneratedKeys_ on the prepared statement. 
+That returns a _resultSet_ containing the keys. 
+I'll get the first key, since I'll only have one record. 
+And I'll set id to the first field in the _resultSet_.
+I'll print that out.
+And I'll return the artist id from this method, 
+because I'll need it when I insert the other records.
+I'll copy that code, and make a copy directly below.
+
+```java  
+private static int addAlbum(PreparedStatement ps, Connection conn, int artistId, String albumName) 
+        throws SQLException {
+    
+    int albumId = -1;
+    ps.setInt(1, artistId);
+    ps.setString(2, albumName);
+    int insertedCount = ps.executeUpdate();
+    if (insertedCount > 0) {
+        ResultSet generatedKeys = ps.getGeneratedKeys();
+        if (generatedKeys.next()) {
+          albumId = generatedKeys.getInt(1);
+          System.out.println("Auto-incremented ID: " + albumId);
+        }
+    }
+    return albumId;
+}
+```
+
+I'll change the name to _addAlbum_,
+and insert an _artistId_ as the third argument.
+I need to change _artistName_ to _albumName_, for the fourth argument.
+In the `ps.setString` statement, I have to both change the parameter index, 
+from _1_ to _2_, and change _artistName_ to _albumName_
+Next, I'll change _albumId_ to _artistId_, in four instances.
+So first, when I'm declaring the first variable.
+Then in the if `generatedKeys.next` block, where I assign the generated key.
+And I want to print _albumId_ in the statement after that.
+Lastly, I'll return _albumId_, not _artistId_ from this method.
+Finally, I need to include the _artistId_ as the first parameter 
+that gets set on the prepared statement.
+The first parameter in the sql is for _artistId_. 
+This time, I'll use set int to do this, passing it _artistId_.
+For the next method, _addSong_, I'll just type this one in.
+This method starts the same way, so private, static and int.
+
+```java  
+private static int addSong(PreparedStatement ps, Connection conn, int albumId, int trackNo, String songTitle) 
+        throws SQLException {
+
+    int songId = -1;
+    ps.setInt(1, albumId);
+    ps.setInt(2, trackNo);
+    ps.setString(3, songTitle);
+    int insertedCount = ps.executeUpdate();
+    if (insertedCount > 0) {
+        ResultSet generatedKeys = ps.getGeneratedKeys();
+        if (generatedKeys.next()) {
+          songId = generatedKeys.getInt(1);
+          System.out.println("Auto-incremented ID: " + songId);
+        }
+    }
+    return songId;
+}
+```
+
+I'll call it _addSong_, and the parameters are _PreparedStatement_, 
+_connection_, _albumId_, _trackNo_, and _songTitle_.
+This also throws an _SQLException_.
+I'll set the initial value of the _songId_ to `-1`. 
+The first parameter is the _albumId_, an **int**. 
+The second parameter is another **int**, the track number. 
+And then the song title, a **string**, as the third one. 
+I'll call _executeUpdate_ on the prepared statement, 
+and that returns the number of rows inserted.
+If something was inserted, then, I'll retrieve the generated key, the _songId_. 
+First, I'll call next on that _resultSet_. 
+Then, the first column will contain the _songId_. 
+I'll print that out.
+Now I've got add methods for all three tables, related to an artist.
+I need to create a method that loops through the records in the csv file, 
+and then calls each of these methods appropriately.
+
+I'm not creating the prepared statement in any of these methods, 
+because they may be called multiple times. 
+Instead, I'm passing a prepared statement to each method.
+To execute these, I'll create a method that will loop through 
+the records in my csv file, determining when each needs to be called, 
+and executing them.
+
+```java  
+private static void addDataFromFile(Connection conn) throws SQLException {
+
+    List<String> records = null;
+    try {
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course06_PreparedStatements/NewAlbums.csv";
+        records = Files.readAllLines(Path.of(pathName));
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+  
+    String lastAlbum = null;
+    String lastArtist = null;
+    int artistId = -1;
+    int albumId = -1;
+    try (PreparedStatement psArtist = conn.prepareStatement(ARTIST_INSERT, Statement.RETURN_GENERATED_KEYS);
+         PreparedStatement psAlbum = conn.prepareStatement(ALBUM_INSERT, Statement.RETURN_GENERATED_KEYS);
+         PreparedStatement psSong = conn.prepareStatement(SONG_INSERT, Statement.RETURN_GENERATED_KEYS);
+    ) {
+        
+    } catch (SQLException e) {
+        conn.rollback();
+        throw new RuntimeException(e);
+    }
+}
+```
+
+I'll call this method, _addDataFromFile_, 
+and that'll take an open connection, and throw an _SQLException_.
+I'll set a variable for the records in the file, so a list of string. 
+I'll need a _try-catch_, 
+because I'll be calling _readAllLines_ on the **Files** class. 
+I'll pass it the path of my file, which is in the package directory. 
+And it's named `NewAlbums.csv`. 
+If an _IOException_ is thrown, I'll throw a runtime exception instead.
+After this, I'll have a list of records, which are comma-delimited.
+I'll set up some local variables next.
+I'll initialize _lastAlbum_ to **null**, and the same
+with a variable named _lastArtist_.
+I'll check these variables to determine 
+if a new album or new artist is indicated in the file.
+The file has grouped the artist, there's only one, _Bob Dylan_, 
+and it's grouped the 2 album's song titles.
+I'll initialize the _artistId_ to `-1`.
+And the same for _albumId_. 
+Next, I'll set up a _try-with-resources_ block, and in the _try_ clause,
+I'll get prepared statements for each of my insert queries. 
+The first I'll call _psArtist_. 
+Because I want the generated key back, 
+I can pass the _RETURN_GENERATED_KEYS_ to the _prepareStatement_ method, as a second argument. 
+Next, I've got _psAlbum_, for the album insert statement, 
+and again I'll pass that constant. 
+The last prepared statement is for the insert song code, 
+and again I'll want the auto generated key back.
+I'll leave the _try_ block empty for the moment.
+I'll complete the _try with a catch_ clause.
+Here, I'll call the rollback method on a connection 
+if something throws an error. 
+And I'll propagate the error up, but as a runtime exception. 
+
+```java  
+private static void addDataFromFile(Connection conn) throws SQLException {
+
+    List<String> records = null;
+    try {
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course06_PreparedStatements/NewAlbums.csv";
+        records = Files.readAllLines(Path.of(pathName));
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+  
+    String lastAlbum = null;
+    String lastArtist = null;
+    int artistId = -1;
+    int albumId = -1;
+    try (PreparedStatement psArtist = conn.prepareStatement(ARTIST_INSERT, Statement.RETURN_GENERATED_KEYS);
+         PreparedStatement psAlbum = conn.prepareStatement(ALBUM_INSERT, Statement.RETURN_GENERATED_KEYS);
+         PreparedStatement psSong = conn.prepareStatement(SONG_INSERT, Statement.RETURN_GENERATED_KEYS);
+    ) {
+        conn.setAutoCommit(false);
+        for (String record : records) {
+            String[] columns = record.split(",");
+            if (lastArtist == null || !lastArtist.equals(columns[0])) {
+                lastArtist = columns[0];
+                artistId = addArtist(psArtist, conn, lastArtist);
+            }
+            if (lastAlbum == null || !lastAlbum.equals(columns[1])) {
+                lastAlbum = columns[1];
+                albumId = addAlbum(psAlbum, conn, artistId, lastAlbum);
+            }
+            addSong(psSong, conn, albumId, Integer.parseInt(columns[2]), columns[3]);
+        }
+
+        conn.commit();
+        conn.setAutoCommit(true);
+    } catch (SQLException e) {
+        conn.rollback();
+        throw new RuntimeException(e);
+    }
+}
+```
+
+In the _try_ clause, the first thing I want to do is turn off autocommit.
+I do that by passing **false**, to the set _AutoCommit_ method on connection. 
+I'll loop through the records I got from the file.
+I'll split each record into columns, using the comma as a delimiter. 
+I only want to insert an artist once,
+so I'll check if the artist name has changed or if it's **null**. 
+If either of these conditions was met, 
+then I'll set the _lastArtist_ to the value in the first column, 
+which is the artist name in my file.
+I'm assuming here that these are all new artists for simplicity's sake. 
+And I'll execute my method, _addArtist_, passing it my prepared Statement, 
+the connection and the artist name. 
+I'll do the same thing for album name, so it will only get inserted once 
+when the value of _lastAlbum_ changes. 
+Album name is in the second column, in my file. 
+Then I'll call my _addAlbum_ method, 
+passing the album prepared statement, the connection, 
+the _artistId_ I got when I called _addArtist_, 
+and the _lastAlbum_, which should have the value of the new album to be added. 
+This method returns the _albumId_. 
+Finally, each record represents a song on the album.
+So I'll call _addSong_ for every record,
+passing the prepared statement for the song SQL, 
+the connection, the _albumId_ I got back from adding the last album. 
+The last two arguments are the track number, and song title,
+which are my third and fourth columns in the csv file. 
+If all of these statements executed successfully, I'll call _commit_.
+And I'll set _autocommit_ back to **true**.
+Finally, I'll just call this last method from the _main_ method.
+
+```java  
+public static void main(String[] args) {
+    
+    var dataSource = new MysqlDataSource();
+
+    dataSource.setServerName("localhost");
+    dataSource.setPort(3335);
+    dataSource.setDatabaseName("music");
+    try {
+        dataSource.setContinueBatchOnError(false);
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+  
+    try (Connection connection = dataSource.getConnection(
+            System.getenv("MYSQL_USER"),
+            System.getenv("MYSQL_PASS"));
+    ) {
+        addDataFromFile(connection);
+        
+        String sql = "SELECT * FROM music.albumview where artist_name = ?";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        //ps.setString(1, "Elf");
+        ps.setString(1, "Bob Dylan");
+        ResultSet resultSet = ps.executeQuery();
+        printRecords(resultSet);
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+I'll call this method first, passing it the current connection. 
+I want to see the data we get back from the view 
+after the execution of this method, so that's why I put it here,
+before the select code below.
+I'll update the parameter for the prepared statement I use to select data,
+making that _Bob Dylan_ instead of _Elf_.
+I'll run this code and see what happens.
+
+```html  
+Auto-incremented ID: 212
+Auto-incremented ID: 887
+Auto-incremented ID: 5407
+Auto-incremented ID: 5408
+Auto-incremented ID: 5409
+Auto-incremented ID: 5410
+Auto-incremented ID: 5411
+Auto-incremented ID: 5412
+Auto-incremented ID: 5413
+Auto-incremented ID: 5414
+Auto-incremented ID: 5415
+Auto-incremented ID: 5416
+Auto-incremented ID: 5417
+Auto-incremented ID: 5418
+Auto-incremented ID: 5419
+Auto-incremented ID: 888
+Auto-incremented ID: 5420
+Auto-incremented ID: 5421
+Auto-incremented ID: 5422
+Auto-incremented ID: 5423
+Auto-incremented ID: 5424
+Auto-incremented ID: 5425
+Auto-incremented ID: 5426
+Auto-incremented ID: 5427
+Auto-incremented ID: 5428
+Auto-incremented ID: 5429
+Auto-incremented ID: 5430
+Auto-incremented ID: 5431
+Auto-incremented ID: 5432
+Auto-incremented ID: 5433
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Blonde on BlondeBob Dylan      1              Rainy Day Women
+Blonde on BlondeBob Dylan      2              Pledging My Time
+Blonde on BlondeBob Dylan      3              Visions of Johanna
+Blonde on BlondeBob Dylan      4              One of Us Must Know (Sooner or Later)
+Blonde on BlondeBob Dylan      5              I Want You     
+Blonde on BlondeBob Dylan      6              Stuck Inside of Mobile with the Memphis Blues Again
+Blonde on BlondeBob Dylan      7              Leopard-Skin Pill-Box Hat
+Blonde on BlondeBob Dylan      8              Just Like a Woman
+Blonde on BlondeBob Dylan      9              Most Likely You Go Your Way (And I'll Go Mine)
+Blonde on BlondeBob Dylan      10             Temporary Like Achilles
+Blonde on BlondeBob Dylan      11             Absolutely Sweet Marie
+Blonde on BlondeBob Dylan      12             Fourth Time Around
+Blonde on BlondeBob Dylan      13             Obviously Five Believers
+Blonde on BlondeBob Dylan      14             Sad-Eyed Lady of the Lowlands
+Bob Dylan      Bob Dylan      1              You're No Good 
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die  
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O 
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+Bob Dylan      Bob Dylan      8              Gospel Plow    
+Bob Dylan      Bob Dylan      9              Baby Let Me Follow You Down
+Bob Dylan      Bob Dylan      10             House of the Risin' Sun
+Bob Dylan      Bob Dylan      11             Freight Train Blues
+Bob Dylan      Bob Dylan      12             Song to Woody  
+Bob Dylan      Bob Dylan      13             See That My Grave Is Kept Clean
+```
+
+First, I can see a series of statements with IDs printed,
+these don't include the type, but I can guess, by their order.
+At the start, there's the artist, then the album,
+then followed by a series of song inserts.
+You can see the consecutive numbers listed for the song inserts.
+And after this code runs, you can see all the data
+from the select from the albumview was printed.
+Even though I'm not using batch processing here, 
+I've still been able to take advantage of the prepared statement's precompiled feature.
+This means the execution of each of these queries should be much faster than 
+if I had just used a statement.
+But I'm still making a round trip to the database server, 
+so about 30 round trips in this case.
+Let's add batch processing to this code.
+Because I need to retrieve the automatically
+generated artist id and album id,
+I can't batch these statements.
+But I can batch up the song insert records, 
+for a little more efficiency.
+Before I do this, I'll open up SQL Workbench, 
+and change the album and songs tables, to allow cascade deletes, 
+and then we'll delete all this data for _Bob Dylan_ before we re-run.
+So open My SQL Workbench for your dev user.
+
+
+
+Make sure you have the schemas tab open
+in the left panel, and highlight albums.
+Click the tool or wrench icon to the right.
+Look for a series of tabs below the form.
+Select the Foreign Keys tab.
+On this screen, highlight FK ARTIST ID.
+This lists the columns, and any referenced
+column, so you can see artist id
+does have a referenced column.
+On the furthest right panel,
+are some foreign key options.
+You can see that on Delete, it's set to restrict.
+I'll change this to CASCADE from the drop down.
+I'll select the Apply button.
+This will display the DDL Script that
+gets run to effect this change.
 
 ```html  
 
 ```
 
-And here I get the data for the artist Elf's two albums.
-Another important aspect of the prepared
-statement
-is it's ability to be reused.
-I'll next use preparedStatements,
-to again insert data into the music database.
-This time I'll insert the data from a csv file.
-You can find this file, named NewAlbums.csv,
-in the resources section of this video.
-I've included the file at the
-root of my project folder.
-I'll open this, so you can see what it contains.
-In this case, I've got two of Bob Dylan's
-albums set up as a series of records.
-This looks a lot like the album view.
-Each record has the artist name, the album
-name, the track number, and the song title.
-I'll start with the parameterized
-strings, as static strings.
-The first will be the Artist insert statement.
-This is a simple insert statement, that inserts
-one parameterized value, the artist name. Next
-is the Album insert statement. the album insert
-statement has two columns which need to be
-added, the artist id and the album name,
-so I'll set up two placeholders. Lastly,
-there's the song insert statement. Here,
-we've got 3 columns, and 3 placeholders,
-for album id, track number, and song title.
-Next, I'll create a method called addArtist.
-This will take a prepared statement,
-a connection, and an artist name.
-It throws an S Q L exception.
-I'll initialize the artist id to minus one. I'll
-set the first parameter, to the artist name.
-I'll then call executeUpdate, to get the insert count.
-If the count is greater than zero, I'll get the
-generated key, which is the artist id. I get
-any generated keys by calling getGeneratedKeys
-on the prepared statement. That returns a result
-set containing the keys. I'll get the first key,
-since I'll only have one record. And I'll set
-id to the first field in the result set.
-I'll print that out.
-And I'll return the artist id
-from this method, because I'll need it when I insert the other records.
-I'll copy that code, and make a copy directly below.
-I'll change the name to addAlbum,
-and insert an artist id as the third argument.
-I need to change artist name to album name,
-for the fourth argument.
-In the ps.setString statement,
-I have to both change the parameter index, from
-1 to 2, and change artistName to albumName
-Next, I'll change album Id to
-artistId, in four instances.
-So first, when I'm declaring the first variable.
-Then in the if generatedKeys.next block,
-where I assign the generated key.
-And I want to print album id
-in the statement after that.
-Lastly, I'll return album id,
-not artist id from this method.
-Finally, I need to include the artist
-id as the first parameter that gets set,
-on the prepared statement.
-The first parameter in the s q l,
-is for artist id. This time, I'll use set
-int to do this, passing it artist id.
-For the next method, addSong,
-I'll just type this one in.
-This method starts the same way,
-so private, static and int.
-I'll call it add song, and the parameters
-are PreparedStatement, connection,
-album id, track number, and song title.
-This also throws an S Q L Exception.
-I'll set the initial value of the song Id to
-minus one. The first parameter is the album id,
-an int. The second parameter is another
-int, the track number. And then song title,
-a string, as the third one. I'll call
-executeUpdate on the prepared statement,
-and that returns the number of rows inserted.
-if something was inserted, then, I'll retrieve
-the generated key, the song id. First I'll call
-next on that result set. Then, the first column
-will contain the song id. I'll print that out.
-Now I've got add methods for all three tables,
-related to an artist.
-I need to create a method that
-loops through the records in the csv file, and
-then calls each of these methods appropriately.
-Because this video is getting a bit long, I'll
-end this video here, and finish coding this last
-method and running the code, in the next video.
+I'll select APPLY next.
+I should get a message that the SQL script
+was successfully applied to the database.
+I'll select Finish, and I'll go through the
+same series of steps for the songs table.
+So I'll select songs, and click the wrench icon.
+That pops up a tab,
+and I'll select foreign keys again.
+I'll highlight FK ALBUM ID this time.
+I'll change the value of the On Delete
+option from RESTRICT to CASCADE.
+I'll again hit the Apply button.
+I'll hit the next apply button.
+And finally the finish button.
+To test this, I'll open a query tab.
+This is the first icon
+under the top menu listing.
+First let's query the view for Bob Dylan data.
+Executing this statement with the lightning bolt,
+I should get the same information my
+java code listed in the last execution.
+Now I'll delete the artist Bob Dylan.
+If I set my cursor directly before
+the word delete, I can run just this
+
+```html  
+
+```
+
+statement, by selecting the lightning
+bolt icon, with an eye over the top of it.
+You can see at the bottom of the screen I
+get Error Code 1175 - You are using Safe mode.
+This is a built in MySQL Workbench feature that
+prevents you doing an entire table deletion.
+It's a useful feature to prevent a potential disaster.
+You often do not want to delete an
+entire tables contents, after all.
+But here, we do want to do that.
+I need to go into preferences and turn off this feature.
+So I'll clickEdit and select Preferences.
+I'll then click SQL Editor.
+And turn off this safe guard
+by unchecking the Safe Updates box.
+Note that it protects both deletes and updates
+of an entire table. Which happens when we
+do not filtering the SQL Statement in some
+way. As is the case here. I'll click OK.
+I'll re-run the sql delete code
+again, and, I get the same error.
+I'll try a refresh but I think I have to restart
+MySQL Workbench for this change to take effect.
+I'll reexecute the select again,
+just to see if that works.
+I'm still getting the same error, so I'll
+close down and re-start MySQL Workbench.
+Right, so let's try the select and delete again.
+Success, finally. We don't get any errors.
+Without the cascade delete, I would
+have gotten errors trying to do this.
+I'll set my cursor before the select keyword,
+and again click the execute inline icon.
+This executes the select against
+the view, and now I have no data.
+So my single delete statement, deleted two
+related albums, as well as 27 related songs.
+I'll jump back to IntelliJ, and
+I'll make some changes to this code,
+to support batching up all the song records.
+I'll start with the addSong method.
+First, I'll make the return
+type void, and not int.
+Then I'll remove the first statement,
+where I initialize song ID.
+I'll remove the entire if statement,
+and all the statements in there.
+I don't need to get the song IDs for
+my code, so I'll remove all these.
+Finally, I'll remove the return statement.
+Next, I'll remove the execute update method call,
+since we are batching the addition of the songs.
+I'll execute add Batch on the prepared statement.
+Again, add batch won't execute anything, it just
+populates a list of statements that will be run,
+
+```html  
+
+```
+
+when the executeBatch method gets called.
+I'll go back to the addData From File method,
+and scroll down, to just before
+the commit statement I make.
+Here, I'll be executing all the queued up
+statements, on the PS Songs prepared statement.
+Each statement returns the number of records
+effected, returned as an int array there.
+I'll set up an int array variable called inserts,
+and then execute batch. If everything worked
+perfectly, the inserts length should
+be the number of records inserted,
+but it's possible a count could be zero, if
+something went wrong. I'll create a total
+inserts variable. I'll set up a mini stream here,
+with Arrays.stream, passing it the inserts array,
+and then terminating with the sum operation.
+This quickly sums all this data.
+I'll print this information out.
+And I'll run this again.
+
+```html  
+
+```
+
+My first three statements of output are
+the artist id, and the 2 new album IDs.
+Then I get the statement that 27 songs
+were inserted, this was done with
+one trip to the database server.
+And then I can see from the view,
+the records are all there.
+Anytime you're executing a
+series of statements, whose only difference is
+column values, as was the case in this code,
+you should use a prepared statement.
+The PreparedStatement has many advantages over the Statement.
+Pre-compilation involves parsing,
+optimizing, and storing the SQL statement, in
+a format that can be efficiently executed by
+the database server. This process occurs only
+once, making subsequent executions faster.
+Parameterized Queries are supported with
+placeholders. These are identified as
+question marks in the S Q L string.
+They're used for dynamic data values,
+and get replaced with actual values at runtime.
+These help prevent SQL injection attacks,
+by separating SQL code, from user input.
+Another advantage is Efficient Reuse.
+A PreparedStatement can be used multiple times,
+executing the same or similar SQL statements
+with different parameter values. This results in
+improved performance. With parameterized queries,
+we get Automatic Type Conversion.This meansA
+PreparedStatement handles the conversion,
+between Java and SQL data types, ensuring data
+compatibility. Using Prepared statements help
+with Readability and Maintainability.Code
+that uses PreparedStatements is easier to
+read and understand, than looking at a series
+of concatenated SQL strings with user input,
+for example.A PreparedStatement also provides
+Type Safety when binding parameters to SQL statements.
+This helps avoid data type mismatches,
+that lead to runtime errors or data corruption.
+With all of that being said, our insert code
+still has a couple of major flaws, because of
+the very nature of having to execute up to three
+insert statements, for a single song in an album.
+I wasn't able to batch the entire process.
+So if I had 1000 new albums, and 1000 new
+artists, I'd still be doing 2000
+round trips to the database.
+If a problem occurred inserting the second
+album, none of the song titles for the first
+album would have been inserted,
+because of the way I coded this.
+In the next video, I'll demonstrate
+how to address some of these problems,
+with something called a stored procedure.
+You can think of this as a method on the
+database server, we can access.
+But before I get into that,
+I've got another challenge for you.
+So I'll see you in that next video.
+
 </div>
 
 ## [j. PreparedStatement Challenge]()

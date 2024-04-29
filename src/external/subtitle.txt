@@ -2,635 +2,668 @@ WEBVTT
 Kind: captions
 Language: en
 
-00:00:05.680 --> 00:00:10.964
-So far, up until now, to run SQL on the server,
-I've first constructed a static string.
+00:00:05.320 --> 00:00:09.349
+In this video, I'm picking up where I left
+off, in the PreparedStatement project.
 
 
-00:00:11.880 --> 00:00:16.960
-This was done by either hard coding all values
-to be used in the query, by string concatenation,
+00:00:10.240 --> 00:00:13.946
+I've created methods to add an
+artist, add an album, and add a song.
 
-00:00:16.960 --> 00:00:20.480
-or using formatted strings.
-I've then called any one of
+00:00:14.880 --> 00:00:19.640
+Each method takes a prepared statement.
+I'm not creating the prepared statement,
 
-00:00:20.480 --> 00:00:24.044
-several execute methods, which in
-general follow the same process.
+00:00:19.640 --> 00:00:24.880
+in any of these methods, because they
+may be called multiple times. Instead,
 
+00:00:24.880 --> 00:00:30.360
+I'm passing a prepared statement to each method.
+To execute these, I'll create a method,
 
-00:00:24.960 --> 00:00:28.560
-When the request is received
-by the Database Server
+00:00:30.360 --> 00:00:36.116
+that will loop through the records in my csv
+file, determining when each needs to be called, and executing them.
 
+00:00:37.094 --> 00:00:41.184
+I'll call this method, addData From file,
+and that'll take an open connection,
 
-00:00:28.560 --> 00:00:33.440
-the Query is Parsed into operable code,
-which means The S Q L syntax is checked,
+00:00:41.184 --> 00:00:42.950
+and throw an SQL exception.
 
-00:00:33.440 --> 00:00:39.000
-and Tables and column names are verified. An
-Execution Plan is Created, which means the
 
-00:00:39.000 --> 00:00:43.723
-database server analyzes the query, and works
-out an optimal way to execute the statement.
+00:00:44.080 --> 00:00:49.880
+I'll set a variable for the records in the file,
+so a list of string. I'll need a try catch,
 
+00:00:49.880 --> 00:00:55.200
+Because I'll be calling readAllLines on the
+Files class. I'll pass it the path of my file,
 
-00:00:44.680 --> 00:00:49.000
-The result is a compiled statement.
-Once the statement is compiled,
+00:00:55.200 --> 00:01:02.480
+which is in the working directory. And it's named
+New Albums.csv. If an IO Exception is thrown,
 
-00:00:49.000 --> 00:00:54.240
-it's stored in a cache on the database server.
-This means it can be reused, without having
+00:01:02.480 --> 00:01:04.666
+I'll throw a runtime exception instead.
 
-00:00:54.240 --> 00:01:00.280
-to be recompiled each time it is executed.
-Importantly, this compiled statement, can also be
+00:01:07.274 --> 00:01:10.621
+After this, I'll have a list of records,
+which are comma delimited.
 
-00:01:00.280 --> 00:01:07.160
-stored as a special kind of JDBC statement.
-A PreparedStatement in JDBC,
+00:01:11.685 --> 00:01:13.575
+I'll set up some local variables next.
 
-00:01:07.160 --> 00:01:12.080
-is a precompiled SQL statement.
-You might remember, when we were reviewing
 
-00:01:12.080 --> 00:01:17.323
-regular expressions, we could get a compiled
-regular expression, by using the Pattern.compile.
+00:01:14.640 --> 00:01:19.089
+I'll initialize lastAlbum to null, and the same
+with a variable named last Artist.
 
+00:01:20.132 --> 00:01:25.172
+I'll check these variables to determine if a new album
+or new artist is indicated in the file.
 
-00:01:18.280 --> 00:01:22.023
-In some ways, this is similar to
-precompiling an S Q L statement.
+00:01:26.150 --> 00:01:32.256
+The file has grouped the artist, there's only one,
+Bob Dylan, and it's grouped the 2 album's song titles.
 
+00:01:33.190 --> 00:01:39.920
+I'll initialize the artist id to minus
+And the same for album id. Next, I'll set up
 
-00:01:22.960 --> 00:01:27.120
-In both cases, a String is passed,
-which needs to get interpreted,
+00:01:39.920 --> 00:01:45.400
+a try with resources block, and in the try clause,
+I'll get prepared statements for each of my insert
 
-00:01:27.120 --> 00:01:31.840
-as some operation that will occur.
-The string first needs to get parsed,
+00:01:45.400 --> 00:01:53.120
+queries. The first I'll call PS Artist. Because I
+want the generated key back, I can pass the RETURN
 
-00:01:31.840 --> 00:01:35.924
-its syntax tested, and some
-optimizations may optionally be applied.
+00:01:53.120 --> 00:01:59.800
+GENERATED KEYS to the prepareStatement method,
+as a second argument. Next, I've got PS Album,
 
+00:01:59.800 --> 00:02:05.160
+for the album insert statement, and again
+I'll pass that constant. The last prepared
 
-00:01:36.840 --> 00:01:41.080
-There is some overhead with this process, so
-if you're using the statement multiple times,
+00:02:05.160 --> 00:02:09.593
+statement is for the insert song code, and
+again I'll want the auto generated key back.
 
-00:01:41.080 --> 00:01:46.480
-it makes sense to precompile it.
-A PreparedStatement is used to execute
+00:02:10.680 --> 00:02:15.758
+I'll leave the try block empty for the moment.
+I'll complete the try with a catch clause.
 
-00:01:46.480 --> 00:01:50.428
-the same statement multiple times,
-with parameter value placeholders.
+00:02:16.845 --> 00:02:22.040
+Here, I'll call the rollback method on a connection if
+something throws an error. And I'll propagate the
 
+00:02:22.040 --> 00:02:28.120
+error up, but as a runtime exception
+In the try clause, the first thing
 
-00:01:51.240 --> 00:01:55.040
-This can improve performance, as
-I just stated, since the database
+00:02:28.120 --> 00:02:32.960
+I want to do is turn off auto commit.
+I do that by passing false, to the set
 
-00:01:55.040 --> 00:01:58.881
-server doesn't need to parse and compile
-the statement, each time it is executed.
+00:02:32.960 --> 00:02:37.818
+Auto Commit method on connection. I'll loop
+through the records I got from the file.
 
+00:02:39.491 --> 00:02:45.840
+I'll split each record into columns, using the comma as
+a delimiter. I only want to insert an artist once,
 
-00:01:59.880 --> 00:02:04.160
-A parameter in an SQL string passed to a
-PreparedStatement, is defined with a question
+00:02:45.840 --> 00:02:51.440
+so I'll check if the artist name has changed or if
+it's null. If either of these conditions was met,
 
-00:02:04.160 --> 00:02:09.680
-mark as a placeholder, shown in this example.
-Notice here, that I'm not including single
+00:02:51.440 --> 00:02:56.062
+then I'll set the last artist to the value in the
+first column, which is the artist name in my file.
 
-00:02:09.680 --> 00:02:14.440
-quotes around the question mark.
-This is because, when you use a prepared
+00:02:57.040 --> 00:03:02.800
+I'm assuming here that these are all new artists,
+for simplicity's sake. And I'll execute my method,
 
-00:02:14.440 --> 00:02:19.343
-statement, the work of enclosing literals,
-is determined by the type and done for us.
+00:03:02.800 --> 00:03:08.520
+add artist, passing it my prepared Statement, the
+connection and the artist name. I'll do the same
 
+00:03:08.520 --> 00:03:14.920
+thing for album name, so it will only get inserted
+once, when the value of last Album changes. album
 
-00:02:20.280 --> 00:02:23.960
-When you use the prepared statement,
-you'll pass the values at that time,
+00:03:14.920 --> 00:03:20.640
+name is in the second column, in my file Then
+I'll call my add album method, passing the album
 
-00:02:23.960 --> 00:02:28.920
-specifying their data types as well.
-This means the values passed as data,
+00:03:20.640 --> 00:03:26.280
+prepared statement, the connection, the artist id
+I got when I called add Artist, and the lastAlbum,
 
-00:02:28.920 --> 00:02:34.760
-will never be interpreted as S Q L code.
-Because of this, and very Importantly,
+00:03:26.280 --> 00:03:33.000
+which should have the value of the new album to be
+added. This method returns the album id. Finally,
 
-00:02:34.760 --> 00:02:38.020
-PreparedStatements help
-prevent SQL injection attacks.
+00:03:33.000 --> 00:03:38.040
+each record represents a song on the album.
+so I'll call add Song for every record,
 
+00:03:38.040 --> 00:03:42.520
+passing the prepared statement for the song
+S Q L, the connection, the album id I got
 
-00:02:40.080 --> 00:02:44.100
-You can have multiple parameters in the SQL
-string, and they can be different types.
+00:03:42.520 --> 00:03:47.640
+back from adding the last album, The last two
+arguments are the track number, and song title,
 
+00:03:47.640 --> 00:03:52.400
+which are my third and fourth columns in
+the csv file. If all of these statements
 
-00:02:45.120 --> 00:02:48.399
-For example, album id in the
-songs table is a number.
+00:03:52.400 --> 00:03:57.744
+executed successfully, I'll call commit.
+And I'll set auto commit back to true.
 
 
-00:02:49.398 --> 00:02:53.520
-Specifying placeholders is the same,
-regardless of the type of parameter,
+00:03:59.200 --> 00:04:02.184
+Finally, I'll just call this last
+method from the main method.
 
-00:02:53.520 --> 00:02:58.320
-as I show here, in this example.
-Let's get back to some code,
 
-00:02:58.320 --> 00:03:00.588
-and set up a couple of prepared statements.
+00:04:05.400 --> 00:04:10.280
+I'll call this method first, passing it the
+current connection. I want to see the data
 
+00:04:10.280 --> 00:04:14.360
+we get back from the view after the execution
+of this method, so that's why I put it here,
 
-00:03:02.940 --> 00:03:07.250
-To demonstrate the prepared statement, I've created a new Project called PreparedStatement.
+00:04:14.360 --> 00:04:18.320
+before the select code below.
+I'll update the parameter for the
 
-00:03:08.226 --> 00:03:10.960
-I've added the MySQL JDBC driver jar file
+00:04:18.320 --> 00:04:22.391
+prepared statement I use to select data,
+making that Bob Dylan instead of Elf.
 
-00:03:10.960 --> 00:03:13.928
-as a library jar, which you
-should know how to do by now.
 
+00:04:23.760 --> 00:04:25.765
+I'll run this code and see what happens.
 
-00:03:14.760 --> 00:03:18.204
-I've got the usual Main class in
-this project in the dev lpa package.
 
+00:04:29.720 --> 00:04:32.915
+First, I can see a series of statements
+with IDs printed,
 
-00:03:19.120 --> 00:03:24.200
-In this code, I'll again use a datasource.
-In a server environment, you wouldn't
+00:04:32.915 --> 00:04:36.644
+these don't include the
+type, but I can guess, by their order.
 
-00:03:24.200 --> 00:03:27.840
-be instantiating a new instance of a
-known driver class like we'll do here,
 
-00:03:27.840 --> 00:03:33.000
-but all other operations would be the same.
-I'll create a new source, with my specific
+00:04:37.600 --> 00:04:42.992
+At the start, there's the artist, then the album,
+then followed by a series of song inserts.
 
-00:03:33.000 --> 00:03:38.560
-driver here, which gives me a basic data source.
-You may or may not have to manually include an
 
-00:03:38.560 --> 00:03:44.640
-import statement for this, since IntelliJ may
-not. You should be able to hover over that class,
+00:04:43.840 --> 00:04:47.014
+You can see the consecutive numbers
+listed for the song inserts.
 
-00:03:44.640 --> 00:03:50.720
-and select import class in most cases, if the
-auto import doesn't work. I'll use the set methods
 
-00:03:50.720 --> 00:03:59.680
-on the data source, to set the server name, so
-localhost, the port, 3306, and the database name,
+00:04:47.840 --> 00:04:52.247
+And after this code runs, you can see all the data
+from the select from the album view was printed.
 
-00:03:59.680 --> 00:04:05.160
-so I'll be using music again for this video.
-In a previous video I added a property on the
 
-00:04:05.160 --> 00:04:09.243
-connection string, called set continue
-batch on error, which I set to false.
+00:04:53.160 --> 00:04:56.880
+Even though I'm not using batch processing
+here, I've still been able to take advantage
 
+00:04:56.880 --> 00:05:02.520
+of the prepared statement's precompiled feature.
+This means the execution of each of these queries,
 
-00:04:10.200 --> 00:04:14.080
-Without setting this to false, my
-batched statements will all get executed,
+00:05:02.520 --> 00:05:05.127
+should be much faster than if
+I had just used a statement.
 
-00:04:14.080 --> 00:04:19.240
-instead of stopping at the first error.
-I can use one of the set methods, on my datasource
 
-00:04:19.240 --> 00:04:25.040
-to do this, so I'll call setContinueBatchOnError.
-I need to wrap that with a try catch,
+00:05:06.040 --> 00:05:10.974
+But I'm still making a round trip to the database
+server, so about 30 round trips in this case.
 
-00:04:25.040 --> 00:04:27.279
-so I'll use IntelliJ's help to do that.
 
+00:05:11.800 --> 00:05:16.560
+Let's add batch processing to this code.
+Because I need to retrieve the automatically
 
-00:04:29.631 --> 00:04:32.607
-I'll set up my username and password as
-environment variables,
+00:05:16.560 --> 00:05:20.506
+generated artist id and album id,
+I can't batch these statements.
 
-00:04:32.607 --> 00:04:34.225
-whichI've done multiple times.
 
+00:05:21.440 --> 00:05:25.422
+But I can batch up the song insert
+records, for a little more efficiency.
 
-00:04:35.120 --> 00:04:38.319
-So I'll select Run from the
-menu, then edit configurations.
 
+00:05:26.291 --> 00:05:31.640
+Before I do this, I'll open up SQL Work
+bench, and change the album and songs tables,
 
-00:04:39.880 --> 00:04:43.577
-In the dialog, I'll set up the two
-variables as I did previously.
+00:05:31.640 --> 00:05:37.182
+to allow cascade deletes, and then we'll delete
+all this data for Bob Dylan, before we re-run.
 
 
-00:04:53.640 --> 00:04:56.865
-Ok, once we've done that, I'll
-get a connection next in my code.
+00:05:39.160 --> 00:05:44.200
+So open My SQL Workbench for your dev user.
+Make sure you have the schemas tab open
 
+00:05:44.200 --> 00:05:49.623
+in the left panel, and highlight albums.
+Click the tool or wrench icon to the right.
 
-00:04:58.800 --> 00:05:02.879
-I'll do this in a try with resources, and call
-get Connection on data source.
 
-00:05:03.795 --> 00:05:07.692
-I'll pass the environment variables, for the username, and
-password.
+00:05:50.840 --> 00:05:56.159
+Look for a series of tabs below the form.
+Select the Foreign Keys tab.
 
 
-00:05:10.855 --> 00:05:12.584
-I'll add the usual catch clause.
+00:05:56.920 --> 00:06:02.720
+On this screen, highlight FK ARTIST ID.
+This lists the columns, and any referenced
 
-00:05:15.080 --> 00:05:18.360
-Next I'll set up a simple select
-statement, as a string, which will
+00:06:02.720 --> 00:06:06.214
+column, so you can see artist id
+does have a referenced column.
 
-00:05:18.360 --> 00:05:23.360
-get data from the music.albumview.
-You've seen this before, but now,
 
-00:05:23.360 --> 00:05:28.920
-instead of using a formatted static string, or a
-concatenated string, for the artist name value,
+00:06:07.040 --> 00:06:10.091
+On the furthest right panel,
+are some foreign key options.
 
-00:05:28.920 --> 00:05:33.920
-I'll insert a question mark there. This
-is how you parameterize an SQL statement,
 
-00:05:33.920 --> 00:05:39.796
-when you plan to use it in a prepared statement.
-I'll set up my prepared statement, which I'll call ps.
+00:06:10.960 --> 00:06:16.660
+You can see that on Delete, it's set to restrict.
+I'll change this to CASCADE from the drop down.
 
-00:05:40.795 --> 00:05:45.259
- I'll call connection.prepareStatement,
-passing this method the SQL string variable.
 
-00:05:46.216 --> 00:05:50.881
-Next,I can set the value of that parameter, by
-calling setString on the prepared statement.
+00:06:17.920 --> 00:06:22.280
+I'll select the Apply button.
+This will display the DDL Script that
 
-00:05:51.880 --> 00:05:59.000
-This method takes an index, and again, S Q L
-starts at index 1. I'll pass Elf as the value,
+00:06:22.280 --> 00:06:26.540
+gets run to effect this change.
+I'll select APPLY next.
 
-00:05:59.000 --> 00:06:04.680
-the artist, to this statement. I can invoke
-executeQuery on a prepared statement as well,
 
-00:06:04.680 --> 00:06:09.000
-which will return a result set.
-So note, I'm not calling
+00:06:27.800 --> 00:06:31.891
+I should get a message that the SQL script
+was successfully applied to the database.
 
-00:06:09.000 --> 00:06:13.160
-the enquote literal method.
-When replacing a placeholder in a prepared
 
-00:06:13.160 --> 00:06:18.678
-statement, you specify the type, by calling the
-relevant set method, set string in this case.
+00:06:32.760 --> 00:06:36.909
+I'll select Finish, and I'll go through the
+same series of steps for the songs table.
 
 
-00:06:19.760 --> 00:06:23.763
-The server will appropriately enquote
-literals as needed, based on that type.
+00:06:37.800 --> 00:06:42.960
+So I'll select songs, and click the wrench icon.
+That pops up a tab,
 
+00:06:42.960 --> 00:06:47.749
+and I'll select foreign keys again.
+I'll highlight FK ALBUM ID this time.
 
-00:06:24.637 --> 00:06:27.361
-Before I run this, I'll
-add a printRecords method.
 
+00:06:48.640 --> 00:06:51.607
+I'll change the value of the On Delete
+option from RESTRICT to CASCADE.
 
-00:06:28.360 --> 00:06:32.366
-I had this method, in the QueryMusic
-project's MusicDML class.
 
+00:06:52.520 --> 00:06:56.299
+I'll again hit the Apply button.
+I'll hit the next apply button.
 
-00:06:33.240 --> 00:06:38.385
-I'll just paste this into my class, and since I've
-discussed it previously, I won't re hash it here.
 
+00:06:57.320 --> 00:06:59.360
+And finally the finish button.
 
-00:06:39.280 --> 00:06:44.080
-Getting back to the main method,
-I'll add a call to the printRecords,
+00:07:00.603 --> 00:07:02.964
+To test this, I'll open a query tab.
 
-00:06:44.080 --> 00:06:48.640
-after I execute the query.
-Ok, as you can see,
 
-00:06:48.640 --> 00:06:52.280
-it's not too different from a Statement,
-except when you get a preparedStatement,
+00:07:03.920 --> 00:07:06.426
+This is the first icon
+under the top menu listing.
 
-00:06:52.280 --> 00:06:58.560
-you have to pass a sql statement to that method.
-In most cases, this SQL statement is sent to the
 
-00:06:58.560 --> 00:07:02.641
-DBMS, when you call prepareStatement,
-and it gets compiled at that point.
+00:07:07.360 --> 00:07:13.993
+First let's query the view for Bob Dylan data.
+Executing this statement with the lightning bolt,
 
+00:07:15.080 --> 00:07:18.963
+I should get the same information my
+java code listed in the last execution.
 
-00:07:03.640 --> 00:07:07.707
-This means the prepared statement object
-contains a precompiled statement instance.
 
+00:07:24.200 --> 00:07:30.200
+Now I'll delete the artist Bob Dylan.
+If I set my cursor directly before
 
-00:07:08.560 --> 00:07:11.884
-That then gets passed to the server,
-when statements are executed.
+00:07:30.200 --> 00:07:33.840
+the word delete, I can run just this
+statement, by selecting the lightning
 
+00:07:33.840 --> 00:07:40.360
+bolt icon, with an eye over the top of it.
+You can see at the bottom of the screen I
 
-00:07:12.800 --> 00:07:15.440
-The string that gets passed to
-the prepareStatement method,
+00:07:40.360 --> 00:07:46.840
+get Error Code 1175 - You are using Safe mode.
+This is a built in MySQL Workbench feature that
 
-00:07:15.440 --> 00:07:19.960
-can optionally contain parameters.
-Parameters are specified using question
+00:07:46.840 --> 00:07:52.775
+prevents you doing an entire table deletion.
+It's a useful feature to prevent a potential disaster.
 
-00:07:19.960 --> 00:07:25.000
-marks in the query statement, as I showed you on
-the slides, so these are placeholders for data.
+00:07:53.732 --> 00:07:57.391
+You often do not want to delete an
+entire tables contents, after all.
 
+00:07:58.107 --> 00:08:03.198
+But here, we do want to do that.
+I need to go into preferences and turn off this feature.
 
-00:07:25.840 --> 00:07:28.500
-I can set the parameter values
-by calling a set method.
+00:08:04.133 --> 00:08:06.229
+So I'll clickEdit and select Preferences.
 
+00:08:08.359 --> 00:08:10.000
+ I'll then click SQL Editor.
 
-00:07:29.416 --> 00:07:32.662
-These placeholders are another important
-feature of the prepared statement.
+00:08:10.814 --> 00:08:14.020
+And turn off this safe guard
+by unchecking the Safe Updates box.
 
+00:08:15.000 --> 00:08:19.160
+ Note that it protects both deletes and updates
+of an entire table. Which happens when we
 
-00:07:33.640 --> 00:07:39.078
-They ensure that user input is always treated as
-data values, and never as executable SQL code.
+00:08:19.160 --> 00:08:25.000
+do not filtering the SQL Statement in some
+way. As is the case here. I'll click OK.
 
 
-00:07:40.160 --> 00:07:43.943
-This makes it difficult for attackers
-to inject malicious SQL statements.
+00:08:25.760 --> 00:08:30.752
+I'll re-run the sql delete code
+again, and, I get the same error.
 
 
-00:07:44.880 --> 00:07:48.423
-In this case, I use set
-String, to set the data value.
+00:08:31.600 --> 00:08:36.865
+I'll try a refresh but I think I have to restart
+MySQL Workbench for this change to take effect.
 
 
-00:07:49.360 --> 00:07:53.960
-If the data type is something else, there's
-a whole series of set methods to choose from,
+00:08:37.560 --> 00:08:41.025
+I'll reexecute the select again,
+just to see if that works.
 
-00:07:53.960 --> 00:07:59.320
-like setArray, setBlob, and the usual
-ones, setLong, setDouble and so forth.
 
+00:08:44.480 --> 00:08:49.073
+I'm still getting the same error, so I'll
+close down and re-start MySQL Workbench.
 
-00:08:00.360 --> 00:08:01.459
-I'll run this code.
 
+00:09:00.000 --> 00:09:03.696
+Right, so let's try the select and delete again.
 
-00:08:04.373 --> 00:08:06.935
-And here I get the data for the artist Elf's two albums.
+00:09:12.085 --> 00:09:16.019
+Success, finally. We don't get any errors.
 
-00:08:07.931 --> 00:08:10.506
-Another important aspect of the prepared
-statement
 
-00:08:10.506 --> 00:08:14.800
- is it's ability to be reused.
-I'll next use preparedStatements,
+00:09:16.880 --> 00:09:20.498
+Without the cascade delete, I would
+have gotten errors trying to do this.
 
-00:08:14.800 --> 00:08:21.084
-to again insert data into the music database.
-This time I'll insert the data from a csv file.
 
+00:09:21.280 --> 00:09:25.992
+I'll set my cursor before the select keyword,
+and again click the execute inline icon.
 
-00:08:22.000 --> 00:08:27.585
-You can find this file, named NewAlbums.csv,
-in the resources section of this video.
 
+00:09:26.840 --> 00:09:30.112
+This executes the select against
+the view, and now I have no data.
 
-00:08:28.480 --> 00:08:30.907
-I've included the file at the
-root of my project folder.
 
+00:09:30.960 --> 00:09:36.832
+So my single delete statement, deleted two
+related albums, as well as 27 related songs.
 
-00:08:31.760 --> 00:08:38.760
-I'll open this, so you can see what it contains.
-In this case, I've got two of Bob Dylan's
 
-00:08:38.760 --> 00:08:43.590
-albums set up as a series of records.
-This looks a lot like the album view.
+00:09:37.680 --> 00:09:41.520
+I'll jump back to IntelliJ, and
+I'll make some changes to this code,
 
+00:09:41.520 --> 00:09:47.255
+to support batching up all the song records.
+I'll start with the addSong method.
 
-00:08:44.360 --> 00:08:49.368
-Each record has the artist name, the album
-name, the track number, and the song title.
 
+00:09:48.233 --> 00:09:51.139
+First, I'll make the return
+type void, and not int.
 
-00:08:50.200 --> 00:08:53.645
-I'll start with the parameterized
-strings, as static strings.
 
+00:09:52.160 --> 00:09:55.494
+Then I'll remove the first statement,
+where I initialize song ID.
 
-00:08:57.120 --> 00:09:02.920
-The first will be the Artist insert statement.
-This is a simple insert statement, that inserts
 
-00:09:02.920 --> 00:09:10.400
-one parameterized value, the artist name. Next
-is the Album insert statement. the album insert
+00:09:56.320 --> 00:09:59.120
+I'll remove the entire if statement,
+and all the statements in there.
 
-00:09:10.400 --> 00:09:14.640
-statement has two columns which need to be
-added, the artist id and the album name,
 
-00:09:14.640 --> 00:09:21.480
-so I'll set up two placeholders. Lastly,
-there's the song insert statement. Here,
+00:10:00.160 --> 00:10:03.780
+I don't need to get the song IDs for
+my code, so I'll remove all these.
 
-00:09:21.480 --> 00:09:29.120
-we've got 3 columns, and 3 placeholders,
-for album id, track number, and song title.
 
+00:10:05.040 --> 00:10:11.400
+Finally, I'll remove the return statement.
+Next, I'll remove the execute update method call,
 
-00:09:34.096 --> 00:09:38.760
-Next, I'll create a method called addArtist.
-This will take a prepared statement,
+00:10:11.400 --> 00:10:16.651
+since we are batching the addition of the songs.
+I'll execute add Batch on the prepared statement.
 
-00:09:38.760 --> 00:09:43.508
-a connection, and an artist name.
-It throws an S Q L exception.
 
+00:10:18.368 --> 00:10:23.568
+Again, add batch won't execute anything, it just
+populates a list of statements that will be run,
 
-00:09:44.840 --> 00:09:50.780
-I'll initialize the artist id to minus one. I'll
-set the first parameter, to the artist name.
+00:10:23.720 --> 00:10:28.720
+when the executeBatch method gets called.
+I'll go back to the addData From File method,
 
-00:09:51.696 --> 00:09:57.480
-I'll then call executeUpdate, to get the insert count.
-If the count is greater than zero, I'll get the
+00:10:28.720 --> 00:10:32.124
+and scroll down, to just before
+the commit statement I make.
 
-00:09:57.480 --> 00:10:03.640
-generated key, which is the artist id. I get
-any generated keys by calling getGeneratedKeys
 
-00:10:03.640 --> 00:10:10.680
-on the prepared statement. That returns a result
-set containing the keys. I'll get the first key,
+00:10:32.971 --> 00:10:37.625
+Here, I'll be executing all the queued up
+statements, on the PS Songs prepared statement.
 
-00:10:10.680 --> 00:10:15.542
-since I'll only have one record. And I'll set
-id to the first field in the result set.
 
-00:10:16.874 --> 00:10:17.894
-I'll print that out.
+00:10:38.560 --> 00:10:42.861
+Each statement returns the number of records
+effected, returned as an int array there.
 
-00:10:21.161 --> 00:10:25.471
-And I'll return the artist id
-from this method, because I'll need it when I insert the other records.
 
-00:10:27.218 --> 00:10:30.268
-I'll copy that code, and make a copy directly below.
+00:10:43.730 --> 00:10:49.440
+I'll set up an int array variable called inserts,
+and then execute batch. If everything worked
 
-00:10:32.141 --> 00:10:33.561
-I'll change the name to addAlbum,
+00:10:49.440 --> 00:10:53.320
+perfectly, the inserts length should
+be the number of records inserted,
 
-00:10:35.163 --> 00:10:40.920
-and insert an artist id as the third argument.
-I need to change artist name to album name,
+00:10:53.320 --> 00:10:58.160
+but it's possible a count could be zero, if
+something went wrong. I'll create a total
 
-00:10:40.920 --> 00:10:45.120
-for the fourth argument.
-In the ps.setString statement,
+00:10:58.160 --> 00:11:05.240
+inserts variable. I'll set up a mini stream here,
+with Arrays.stream, passing it the inserts array,
 
-00:10:45.120 --> 00:10:50.518
-I have to both change the parameter index, from
-1 to 2, and change artistName to albumName
+00:11:05.240 --> 00:11:10.000
+and then terminating with the sum operation.
+This quickly sums all this data.
 
+00:11:10.925 --> 00:11:12.425
+I'll print this information out.
 
-00:10:51.454 --> 00:10:55.585
-Next, I'll change album Id to
-artistId, in four instances.
 
 
-00:10:56.480 --> 00:10:59.040
-So first, when I'm declaring the first variable.
+00:11:15.490 --> 00:11:16.838
+And I'll run this again.
 
+00:11:20.640 --> 00:11:25.134
+My first three statements of output are
+the artist id, and the 2 new album IDs.
 
-00:11:01.560 --> 00:11:05.787
-Then in the if generatedKeys.next block,
-where I assign the generated key.
 
+00:11:25.960 --> 00:11:29.600
+Then I get the statement that 27 songs
+were inserted, this was done with
 
-00:11:06.640 --> 00:11:09.055
-And I want to print album id
-in the statement after that.
+00:11:29.600 --> 00:11:33.840
+one trip to the database server.
+And then I can see from the view,
 
+00:11:33.840 --> 00:11:37.280
+the records are all there.
+Anytime you're executing a
 
-00:11:10.000 --> 00:11:13.863
-Lastly, I'll return album id,
-not artist id from this method.
+00:11:37.280 --> 00:11:42.400
+series of statements, whose only difference is
+column values, as was the case in this code,
 
+00:11:42.400 --> 00:11:44.227
+you should use a prepared statement.
 
-00:11:15.416 --> 00:11:19.496
-Finally, I need to include the artist
-id as the first parameter that gets set,
+00:11:46.118 --> 00:11:48.879
+The PreparedStatement has many advantages over the Statement.
 
-00:11:19.600 --> 00:11:23.880
-on the prepared statement.
-The first parameter in the s q l,
+00:11:49.856 --> 00:11:51.720
+Pre-compilation involves parsing,
 
-00:11:23.880 --> 00:11:29.872
-is for artist id. This time, I'll use set
-int to do this, passing it artist id.
+00:11:51.720 --> 00:11:56.840
+optimizing, and storing the SQL statement, in
+a format that can be efficiently executed by
 
+00:11:56.840 --> 00:12:02.946
+the database server. This process occurs only
+once, making subsequent executions faster.
 
-00:11:30.600 --> 00:11:33.791
-For the next method, addSong,
-I'll just type this one in.
 
+00:12:03.880 --> 00:12:08.720
+Parameterized Queries are supported with
+placeholders. These are identified as
 
-00:11:35.560 --> 00:11:38.982
-This method starts the same way,
-so private, static and int.
+00:12:08.720 --> 00:12:13.560
+question marks in the S Q L string.
+They're used for dynamic data values,
 
+00:12:13.560 --> 00:12:19.360
+and get replaced with actual values at runtime.
+These help prevent SQL injection attacks,
 
-00:11:39.960 --> 00:11:44.120
-I'll call it add song, and the parameters
-are PreparedStatement, connection,
+00:12:19.360 --> 00:12:25.419
+by separating SQL code, from user input.
+Another advantage is Efficient Reuse.
 
-00:11:44.120 --> 00:11:50.398
-album id, track number, and song title.
-This also throws an S Q L Exception.
+00:12:26.331 --> 00:12:31.440
+A PreparedStatement can be used multiple times,
+executing the same or similar SQL statements
 
+00:12:31.440 --> 00:12:38.680
+with different parameter values. This results in
+improved performance. With parameterized queries,
 
-00:11:51.480 --> 00:11:57.200
-I'll set the initial value of the song Id to
-minus one. The first parameter is the album id,
+00:12:38.680 --> 00:12:44.160
+we get Automatic Type Conversion.This meansA
+PreparedStatement handles the conversion,
 
-00:11:57.200 --> 00:12:03.920
-an int. The second parameter is another
-int, the track number. And then song title,
+00:12:44.160 --> 00:12:50.640
+between Java and SQL data types, ensuring data
+compatibility. Using Prepared statements help
 
-00:12:03.920 --> 00:12:09.200
-a string, as the third one. I'll call
-executeUpdate on the prepared statement,
+00:12:50.640 --> 00:12:55.520
+with Readability and Maintainability.Code
+that uses PreparedStatements is easier to
 
-00:12:09.200 --> 00:12:14.720
-and that returns the number of rows inserted.
-if something was inserted, then, I'll retrieve
+00:12:55.520 --> 00:13:00.440
+read and understand, than looking at a series
+of concatenated SQL strings with user input,
 
-00:12:14.720 --> 00:12:22.720
-the generated key, the song id. First I'll call
-next on that result set. Then, the first column
+00:13:00.440 --> 00:13:07.019
+for example.A PreparedStatement also provides
+Type Safety when binding parameters to SQL statements.
 
-00:12:22.720 --> 00:12:26.158
-will contain the song id. I'll print that out.
+00:13:08.040 --> 00:13:13.138
+This helps avoid data type mismatches,
+that lead to runtime errors or data corruption.
 
 
-00:12:30.133 --> 00:12:32.360
-Now I've got add methods for all three tables,
+00:13:13.920 --> 00:13:18.640
+With all of that being said, our insert code
+still has a couple of major flaws, because of
 
-00:12:32.360 --> 00:12:35.760
-related to an artist.
-I need to create a method that
+00:13:18.640 --> 00:13:23.647
+the very nature of having to execute up to three
+insert statements, for a single song in an album.
 
-00:12:35.760 --> 00:12:40.361
-loops through the records in the csv file, and
-then calls each of these methods appropriately.
 
+00:13:24.560 --> 00:13:30.320
+I wasn't able to batch the entire process.
+So if I had 1000 new albums, and 1000 new
 
-00:12:41.360 --> 00:12:46.040
-Because this video is getting a bit long, I'll
-end this video here, and finish coding this last
+00:13:30.320 --> 00:13:34.011
+artists, I'd still be doing 2000
+round trips to the database.
 
-00:12:46.040 --> 00:12:51.080
-method and running the code, in the next video.
+
+00:13:34.880 --> 00:13:39.120
+If a problem occurred inserting the second
+album, none of the song titles for the first
+
+00:13:39.120 --> 00:13:42.407
+album would have been inserted,
+because of the way I coded this.
+
+
+00:13:43.320 --> 00:13:46.760
+In the next video, I'll demonstrate
+how to address some of these problems,
+
+00:13:46.760 --> 00:13:51.040
+with something called a stored procedure.
+You can think of this as a method on the
+
+00:13:51.040 --> 00:13:55.320
+database server, we can access.
+But before I get into that,
+
+00:13:55.320 --> 00:13:59.282
+I've got another challenge for you.
 So I'll see you in that next video.
