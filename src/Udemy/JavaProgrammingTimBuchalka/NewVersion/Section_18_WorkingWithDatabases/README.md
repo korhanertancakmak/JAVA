@@ -6357,20 +6357,24 @@ that gets run to effect this change.
 I'll select _APPLY_ next.
 I should get a message that the SQL script
 was successfully applied to the database.
-I'll select Finish, and I'll go through the
-same series of steps for the songs table.
+
+![image58](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image58.png?raw=true)
+
+I'll select _Finish_, and I'll go through the same series of steps 
+for the _songs_ table.
 So I'll select songs, and click the wrench icon.
-That pops up a tab,
-and I'll select foreign keys again.
-I'll highlight FK ALBUM ID this time.
-I'll change the value of the On Delete
-option from RESTRICT to CASCADE.
-I'll again hit the Apply button.
-I'll hit the next apply button.
-And finally the finish button.
+That pops up a tab, and I'll select foreign keys again.
+I'll highlight _FK ALBUM ID_ this time.
+I'll change the value of the On _Delete_ option 
+from _RESTRICT_ to _CASCADE_.
+I'll again hit the _Apply_ button.
+I'll hit the next _apply_ button.
+And finally, the _finish_ button.
 To test this, I'll open a query tab.
-This is the first icon
-under the top menu listing.
+
+
+
+This is the first icon under the top menu listing.
 First let's query the view for Bob Dylan data.
 Executing this statement with the lightning bolt,
 I should get the same information my
