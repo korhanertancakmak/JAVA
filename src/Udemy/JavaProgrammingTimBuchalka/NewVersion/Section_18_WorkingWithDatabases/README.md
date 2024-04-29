@@ -6336,30 +6336,25 @@ and change the album and songs tables, to allow cascade deletes,
 and then we'll delete all this data for _Bob Dylan_ before we re-run.
 So open My SQL Workbench for your dev user.
 
+![image56](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image56.png?raw=true)
 
-
-Make sure you have the schemas tab open
-in the left panel, and highlight albums.
+Make sure you have the _schemas_ tab open in the left panel, and highlight albums.
 Click the tool or wrench icon to the right.
 Look for a series of tabs below the form.
-Select the Foreign Keys tab.
-On this screen, highlight FK ARTIST ID.
-This lists the columns, and any referenced
-column, so you can see artist id
-does have a referenced column.
-On the furthest right panel,
-are some foreign key options.
-You can see that on Delete, it's set to restrict.
-I'll change this to CASCADE from the drop down.
-I'll select the Apply button.
-This will display the DDL Script that
-gets run to effect this change.
+Select the _Foreign Keys_ tab.
+On this screen, highlight _FK ARTIST ID_.
+This lists the columns and any referenced column, 
+so you can see artist id does have a referenced column.
+On the furthest right panel, are some foreign key options.
+You can see that on _Delete_, it's set to _restrict_.
+I'll change this to _CASCADE_ from the drop-down.
+I'll select the _Apply_ button.
+This will display the DDL Script 
+that gets run to effect this change.
 
-```html  
+![image57](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image57.png?raw=true)
 
-```
-
-I'll select APPLY next.
+I'll select _APPLY_ next.
 I should get a message that the SQL script
 was successfully applied to the database.
 I'll select Finish, and I'll go through the
