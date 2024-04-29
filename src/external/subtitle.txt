@@ -2,685 +2,716 @@ WEBVTT
 Kind: captions
 Language: en
 
-00:00:05.360 --> 00:00:09.360
-Welcome to your next Challenge.
-It's now your turn to apply the skills you
+00:00:05.400 --> 00:00:10.235
+There are many challenges and concerns, when
+you're working with databases via JDBC.
 
-00:00:09.360 --> 00:00:14.893
-just learned, about DDL, PreparedStatements,
-transactions, and batch processing.
 
+00:00:11.080 --> 00:00:12.394
+I've listed many of them here.
 
-00:00:15.760 --> 00:00:19.080
-You should Start with the JDBCChallenge
-project from that challenge,
+00:00:13.320 --> 00:00:17.828
+This can be a daunting list for a Java
+developer, whose not an expert in databases.
 
-00:00:19.080 --> 00:00:23.800
-but create a new class for this code.
-First, I want you to Change the structure
 
-00:00:23.800 --> 00:00:28.436
-of the order_details table, adding a
-new column called quantity, a number.
+00:00:18.720 --> 00:00:22.640
+If you're working in an environment that's
+using an enterprise database, you've probably
 
+00:00:22.640 --> 00:00:26.840
+got people on your team, who have a lot more
+knowledge about many of these issues than you do,
 
-00:00:29.280 --> 00:00:33.599
-I'm purposely not telling you which DDL command
-to use, since this should be easy to look up.
+00:00:26.840 --> 00:00:31.680
+or can hope to learn in a short time.
+For this reason, the best place to deal
 
+00:00:31.680 --> 00:00:35.141
+with many of these issues, is
+on the database server itself.
 
-00:00:34.560 --> 00:00:38.283
-Once you've made this change to your
-database, you'll proceed with adding data.
 
+00:00:36.080 --> 00:00:42.162
+If you've got Database Administrators or DBAs, and
+S Q L Developers, your job will get a lot easier.
 
-00:00:39.080 --> 00:00:43.860
-Use data from Orders.csv, to add
-orders to your storefront database.
 
+00:00:42.960 --> 00:00:48.120
+They'll tackle many of these issues with database
+server features, like indices, constraints,
 
-00:00:44.680 --> 00:00:48.110
-I've included this file in the
-resources folder, to use as input.
+00:00:48.120 --> 00:00:52.600
+triggers, and stored procedures.
+They'll puzzle over explain plans
 
+00:00:52.600 --> 00:00:56.515
+for performance issues, and write all
+kinds of monitoring and logging code.
 
-00:00:49.000 --> 00:00:51.964
-This file contains information
-for 5 different orders.
 
+00:00:57.360 --> 00:01:01.000
+They're often experts in tuning queries,
+so who better to write your queries than
 
-00:00:52.760 --> 00:00:56.240
-The format of this file is different from
-the last video, so be sure to study it
+00:01:01.000 --> 00:01:04.720
+this impressive group of people.
+Even if you don't have access to
 
-00:00:56.240 --> 00:01:01.480
-a little bit, so you know how to read it.
-Use PreparedStatements to insert each order,
+00:01:04.720 --> 00:01:08.720
+this talent pool, You should consider
+addressing, at least some of the problems
 
-00:01:01.480 --> 00:01:05.960
-and its related items. Batch up
-the line items for each order,
+00:01:08.720 --> 00:01:14.480
+listed on this slide, with server solutions.
+This is often done with functions and routines,
 
-00:01:05.960 --> 00:01:11.520
-but batch only line items for a single order.;
-Use a transaction for each individual order,
+00:01:14.480 --> 00:01:20.127
+written in SQL, or transactional or procedural
+languages, that integrate easily with SQL.
 
-00:01:11.520 --> 00:01:16.708
-rolling back the order insert, if something fails,
-but allowing other orders to be inserted.
 
+00:01:21.043 --> 00:01:25.840
+These items are often called stored procedures as
+a category, though there are two separate database
 
-00:01:17.669 --> 00:01:21.580
-Ok, so pause the video here, and
-go away and give that a try.
+00:01:25.840 --> 00:01:32.160
+artifacts, the procedure and the function.
+Stored procedures are a way to encapsulate
 
+00:01:32.160 --> 00:01:37.040
+complex SQL logic, and data
+manipulation, into reusable modules,
 
-00:01:22.400 --> 00:01:25.446
-When you've got it done, or you get stuck,
-come back,
+00:01:37.040 --> 00:01:41.600
+that can be called from within the database.
+They can help to improve application
 
-00:01:25.446 --> 00:01:27.395
-and we'll walk through mysolution together.
+00:01:41.600 --> 00:01:48.320
+performance, modularity, and security.
+They're precompiled queries, or segments of code,
 
+00:01:48.320 --> 00:01:54.440
+that are stored as just another database object.
+Your JDBC code can be simplified quite a bit,
 
+00:01:54.440 --> 00:01:57.242
+if you're able to take
+advantage of stored procedures.
 
-00:01:31.214 --> 00:01:32.324
-Welcome back.
 
-00:01:33.160 --> 00:01:36.676
-I hope you found that challenging,
-but were able to make good progress.
+00:01:58.040 --> 00:02:03.200
+A stored procedure can also be written
+externally, in Java, Python, or c, and
 
+00:02:03.200 --> 00:02:07.842
+stored with a wrapping procedure in the database,
+which means that code will run on the server.
 
-00:01:37.520 --> 00:01:41.960
-I've got the project JDBC Challenges
-open, and I've created a new class,
 
-00:01:41.960 --> 00:01:46.320
-which I've called Challenge2.
-I'll start by copying the main method,
+00:02:08.640 --> 00:02:12.640
+I won't be covering this last bit, but
+you should know that some databases,
 
-00:01:46.320 --> 00:01:49.863
-from the Main class in this project,
-pasting that in my new class.
+00:02:12.640 --> 00:02:17.651
+like S Q L Lite and H2, only support these
+external types of stored procedures.
 
 
-00:01:55.440 --> 00:01:57.707
-I'll remove all the code in the try block.
+00:02:18.520 --> 00:02:22.564
+I'll be covering functions in a later video,
+and will explain the differences later.
 
 
+00:02:24.560 --> 00:02:29.440
+It's very common in an enterprise environment, to
+protect access to the database, and to restrict
 
-00:02:04.830 --> 00:02:07.027
-Next, I'll set up an ALTER TABLE statement.
+00:02:29.440 --> 00:02:33.960
+what your clients are allowed to do.
+Because of this, you might find that
 
-00:02:08.035 --> 00:02:11.979
-Hopefully you were able to research that,
-and found that the way to change a table,
+00:02:33.960 --> 00:02:39.360
+most of your JDBC work, will be done
+with requests to stored procedures.
 
-00:02:11.979 --> 00:02:19.800
-in the database, is to use the ALTER DDL Statement.
-In this case, I'll alter storefront.order_details,
 
-00:02:19.800 --> 00:02:25.560
-and ADD COLUMN, quantity, int. There are options
-you can include for the column, but let's just
+00:02:39.360 --> 00:02:44.920
+Java supports the execution, and retrieval of
+results, from these code segments, with a special
 
-00:02:25.560 --> 00:02:31.622
-keep this simple. Next, I'll get a statement,
-and call execute, passing the alter string.
+00:02:44.920 --> 00:02:50.720
+kind of statement, named the CallableStatement.
+Like a PreparedStatement, this first takes a
 
+00:02:50.720 --> 00:02:55.480
+parameterized string, when you get an instance.
+The object referenced will already
 
-00:02:33.426 --> 00:02:36.262
-So you might be asking why I didn't
-use a PreparedStatement here.
+00:02:55.480 --> 00:03:00.680
+be compiled in the database server.
+Like a method in Java, you pass in data with
 
+00:03:00.680 --> 00:03:07.160
+parameters, and you may or may not get data back.
+Depending on your database, the data coming back
 
-00:02:37.200 --> 00:02:39.720
-In general, you don't use
-PreparedStatements for Data
+00:03:07.160 --> 00:03:09.760
+might be a result returned
+from a function, or it could
 
-00:02:39.720 --> 00:02:45.440
-Definition Language or DDL statements in Java.
-PreparedStatements are typically used to execute
+00:03:09.760 --> 00:03:15.960
+be returned with declared output parameters.
+Some databases also support a hybrid parameter,
 
-00:02:45.440 --> 00:02:50.440
-Data Manipulation Language or DML statements,
-where the same SQL statement may be executed
+00:03:15.960 --> 00:03:19.120
+an input output parameter, which
+lets you pass data which may be
 
-00:02:50.440 --> 00:02:56.880
-multiple times with different parameter values.
-DDL statements, on the other hand, like this one,
+00:03:19.120 --> 00:03:25.120
+modified by the procedure, and passed back.
+I'll explain these parameters a bit more later,
 
-00:02:56.880 --> 00:03:00.896
-wouldn't be run twice, and you wouldn't get
-the benefit of the precompiled statement.
+00:03:25.120 --> 00:03:30.332
+as we explore how to use the CallableStatement.
+First, we need access to one.
 
 
-00:03:01.880 --> 00:03:02.896
-Let's run this.
+00:03:32.680 --> 00:03:38.148
+I've included a DDL script in the resources folder
+of this lecture, named add Album Songs dot S Q L.
 
-00:03:05.492 --> 00:03:07.000
-If you haven't already done so,
 
-00:03:07.160 --> 00:03:12.560
-don't forget to set your environment variables,
-for the MYSQL USER and MYSQL Password,
+00:03:39.040 --> 00:03:42.960
+You should download that script, and put
+it somewhere on your local file system,
 
-00:03:12.560 --> 00:03:15.180
-in the run configuration for this class.
+00:03:42.960 --> 00:03:47.800
+where you can access it easily.
+Next, open MySQL Workbench, to your
 
-00:03:21.928 --> 00:03:25.000
-Now, there's no output, but we don't
-get an exception either.
+00:03:47.800 --> 00:03:49.162
+development connection.
 
-00:03:27.841 --> 00:03:29.520
-I'll open My SQL Work bench,
+00:03:55.150 --> 00:03:58.512
+In this case,you'll select the second SQL Editor icon,
 
-00:03:29.520 --> 00:03:33.960
-and choose the development session.
-In the schemas panel, I'll expand the
+00:04:00.954 --> 00:04:03.338
+which will prompt you to open an S Q L script.
 
-00:03:33.960 --> 00:03:38.583
-storefront database, then tables,
-and highlight order_details.
 
+00:04:04.160 --> 00:04:07.707
+Find the script you downloaded, and
+select it, and hit the open button.
 
-00:03:39.403 --> 00:03:42.995
-This time I'll select the info icon,
-and then select the columns tab.
 
+00:04:09.280 --> 00:04:14.760
+That should load this script in your edit panel.
+Now, you just want to execute this script, so the
 
-00:03:44.026 --> 00:03:46.609
-Here you can see that quantity
-is now a column in this table.
+00:04:14.760 --> 00:04:21.080
+first lightning bolt icon there, will do it.
+If you refresh the schema panel, you should
 
+00:04:21.080 --> 00:04:26.167
+confirm that you see this new procedure, named
+add Album, under the Stored Procedures listing.
 
-00:03:47.640 --> 00:03:51.640
-I'll go back to my Java code.
-We only have to do this once,
 
-00:03:51.640 --> 00:03:57.080
-so I'll now comment out this code.
-So next, I'll write the code to read the data
+00:04:27.200 --> 00:04:29.788
+Click on that, and select the
+wrench or tool icon there.
 
-00:03:57.080 --> 00:04:01.478
-from the file, that has the order data.
-Let me open this file a minute.
 
+00:04:31.240 --> 00:04:36.240
+This will load up the stored procedure's code.
+I won't get into this code too much,
 
-00:04:06.000 --> 00:04:10.880
-In this file, the order data has the key word
-order in the first column, whereas the details
+00:04:36.240 --> 00:04:40.000
+but what you do need to know, is what
+the parameters are, to this routine.
 
-00:04:10.880 --> 00:04:16.040
-have the key word item, in that column.
-Notice that the order records have dates,
 
-00:04:16.040 --> 00:04:21.720
-already formatted the way we want them to be.
-Also notice, the time changes by 1 minute,
+00:04:40.920 --> 00:04:46.560
+There's three of them, an artist name,
+a text field, an album name, also text,
 
-00:04:21.720 --> 00:04:26.960
-you can use this to recognize the orders.
-I'll use a different approach in this code,
+00:04:46.560 --> 00:04:52.320
+and the last is songs, a jayson type.
+MySQL stored procedures don't currently
 
-00:04:26.960 --> 00:04:31.040
-just to show you an alternative.
-First I'll set up two records,
+00:04:52.320 --> 00:04:56.917
+support arrays, but they do support
+jayson objects, which can include arrays.
 
-00:04:31.040 --> 00:04:36.013
-one for Order, and one for OrderDetails,
-in the Challenge2.java source file.
 
+00:04:57.880 --> 00:05:01.800
+In this case, this is a way to pass an
+array of text, which will be an array
 
-00:04:36.880 --> 00:04:42.520
-I'll start with the OrderDetail.
-This record has three fields, order detail id,
+00:05:01.800 --> 00:05:06.480
+of song titles to this stored procedure.
+This code will add the artist if it's not in
 
-00:04:42.520 --> 00:04:49.520
-an int, the item description, a string, and
-quantity, an int. I'll create a custom constructor
+00:05:06.480 --> 00:05:13.040
+the database, or get the artist id if it is.
+It'll then add the album if it's not there,
 
-00:04:49.520 --> 00:04:55.160
-for this, because I won't have an order id, as
-I'm reading the data in from the file. So I want
+00:05:13.040 --> 00:05:17.680
+then inserts all the songs associated with that
+album, looping through the songs parameter,
 
-00:04:55.160 --> 00:04:59.840
-a constructor with just item description and
-quantity. And this has to call the canonical
+00:05:17.680 --> 00:05:22.560
+using MySQL JSON functions.
+All three of these parameters
 
-00:04:59.840 --> 00:05:07.550
-constructor, so I'll pass -1 as the ID.
-Next, I'll create a record for the order.
+00:05:22.560 --> 00:05:25.985
+are input parameters.
+How do I know?
 
 
-00:05:08.440 --> 00:05:14.160
-This will have order ID, date string, and
-list of order details. And this one will
+00:05:26.760 --> 00:05:32.200
+If you don't see one of the keywords, in, OUT, or
+in OUT, then the parameter is by default an input
 
-00:05:14.160 --> 00:05:19.960
-have a custom constructor too, for just the date
-string. So when I call the canonical constructor,
+00:05:32.200 --> 00:05:37.120
+parameter, so the keyword in, is implied.
+This is important to know,
 
-00:05:19.960 --> 00:05:24.790
-I'll pass -1 for the order id, and I'll
-create a new ArrayList for the details here.
+00:05:37.120 --> 00:05:41.680
+for the callable statement.
+Before we get back to IntelliJ,
 
+00:05:41.680 --> 00:05:45.435
+let's make sure we've removed any Bob
+Dylan records in the music data set.
 
-00:05:28.680 --> 00:05:33.160
-The only other thing I'll add, is an addDetail
-method, that'll take an item description,
 
-00:05:33.160 --> 00:05:39.235
-and a quantity. I'll create an instance of the
-Order Detail, pass that the description, and the quantity.
+00:05:46.280 --> 00:05:49.804
+I'll open another SQL edit panel,
+and type in a delete statement.
 
-00:05:40.196 --> 00:05:42.183
-And I'll add that to the details array.
 
+00:05:50.720 --> 00:05:56.637
+So delete from music.artists, where artist name,
+equals Bob Dylan, with his name in single quotes.
 
-00:05:46.987 --> 00:05:48.729
-Now that I have types to put the data in,
 
-00:05:48.729 --> 00:05:53.071
-I'll write the read data method.
-This will return a list of orders.
+00:05:57.600 --> 00:06:02.200
+In this case, I'm using all lower case
+for the SQL keywords as I type it in,
 
+00:06:02.200 --> 00:06:07.520
+since this is just an adhoc query.
+I told you to use uppercase for SQL keywords,
 
-00:05:54.360 --> 00:06:02.160
-I'll initialize an array list of orders to start
-with. This time, I'll use a Scanner. If you used
+00:06:07.520 --> 00:06:11.470
+and I know I haven't always been consistent,
+and will sometimes forget to do it myself.
 
-00:06:02.160 --> 00:06:07.560
-Files or some other method, that's fine. I'm
-really choosing this method just to remind you,
 
-00:06:07.560 --> 00:06:13.318
-that you can use scanner, to read data from a
-file. I'm putting this in a try with resources block.
+00:06:12.480 --> 00:06:17.268
+There's a beautify reformat option in this SQL
+Edit panel, and that's the little broom icon.
 
-00:06:14.349 --> 00:06:19.280
-Unlike Files.readLines, the scanner won't
-get closed automatically, so if I put it in this
 
-00:06:19.280 --> 00:06:24.320
-type of try statement, I don't have to remember
-to close it. I'll set the delimiter to be either
+00:06:18.160 --> 00:06:22.800
+I'll click that.
+I don't always like the way it reformats it, but
 
-00:06:24.320 --> 00:06:30.480
-a comma, or a new line. This means, instead of
-splitting the data by line, it's going to split
+00:06:22.800 --> 00:06:28.160
+it does change the keywords, to be upper case.
+Sometimes I just want my query to be on a
 
-00:06:30.480 --> 00:06:38.120
-the data by commas. I'll create a list of strings,
-by calling scanner.tokens. That gives me a stream
+00:06:28.160 --> 00:06:31.247
+single line and quickly execute
+it, so I may not beautify it.
 
-00:06:38.120 --> 00:06:44.015
-of strings, so I'll use map to trim each value,
-then terminate the stream, collecting it into a list.
 
-00:06:45.233 --> 00:06:52.147
-I'll print each value, in my Order list.
-And I'll return my order list from this method.
+00:06:32.280 --> 00:06:36.320
+But if I am using the code in a JDBC
+statement, or a stored procedure,
 
+00:06:36.320 --> 00:06:38.627
+I do try to be more disciplined.
+At any rate, I'll execute this statement.
 
-00:06:53.506 --> 00:06:57.256
-This won't compile, so I'll use
-IntelliJ to add a catch clause.
 
+00:06:39.590 --> 00:06:43.867
+I'll execute that, so that the music
+database won't have any data for Bob Dylan,
 
-00:06:58.920 --> 00:07:03.310
-Obviously I'm not done yet, because I have
-to create the Order, and OrderDetails.
+00:06:43.867 --> 00:06:49.120
+when we first execute this procedure.
+You'll hopefully remember, that we added cascade
 
+00:06:49.120 --> 00:06:54.195
+deletes on the albums and songs, so this single
+statement, will clean up all that related data.
 
-00:07:04.200 --> 00:07:06.883
-I'll loop through every column value,
-one at a time.
 
-00:07:09.578 --> 00:07:11.578
-I'll get the column value, from the list.
+00:06:55.040 --> 00:06:59.400
+Switching back to IntelliJ, I'll reopen
+the PreparedStatement project again.
 
-00:07:12.881 --> 00:07:16.401
-If that token has the value order,
-then I know I need to set up an order.
 
-00:07:17.362 --> 00:07:21.548
-The date is the next place in the list, so I'll do a
-pre-increment, then get the next value.
+00:07:01.400 --> 00:07:05.887
+I'll create a new class in the dev lpa package,
+which I'll call MusicCallableStatement,
 
-00:07:22.439 --> 00:07:25.112
-I'll create and Order, and add it to the order list.
+00:07:10.560 --> 00:07:15.781
+and it'll have a main method.
+I'll start by setting up a couple of constants.
 
-00:07:29.775 --> 00:07:32.337
-Similarly, I'll check for the keyword item,
 
-00:07:32.539 --> 00:07:40.800
-which indicates the tokens that follow are item fields.
-I'll parse the next field, the quantity. Now, in a
+00:07:16.720 --> 00:07:20.924
+These constants just represent the column
+index of the data, in the csv file.
 
-00:07:40.800 --> 00:07:47.080
-normal world, you'd want to do more validation,
-but again, I'll just keep this simple. the item
 
-00:07:47.080 --> 00:07:53.705
-description is next. I can get the order that goes
-with the details, by just getting the last order added.
+00:07:21.840 --> 00:07:27.080
+So the artist name is in the first column,
+so artist column equals zero. The Album's
 
-00:07:54.689 --> 00:08:01.516
-And I'll add the detail to that order.
-I'll test this code out, by calling this method.
+00:07:27.080 --> 00:07:33.077
+in the next column, index 1. The song
+title's in column 4, so index 3 here.
 
+00:07:34.040 --> 00:07:40.000
+I'm not going to use track number in this case.
+The stored procedure will assign the track number
 
-00:08:02.360 --> 00:08:07.880
-I'll insert a call to this method, before
-I open a database connection. So first,
+00:07:40.000 --> 00:07:45.040
+in order, based on the order of the songs.
+I'll be setting this up as a Map,
 
-00:08:07.880 --> 00:08:12.582
-I'll create a List variable, called orders,
-and assign that the value of read data.
+00:07:45.040 --> 00:07:52.680
+keyed by string, with a nested map as the value.
+I'll set up my map variable. It's value is a map,
 
+00:07:52.680 --> 00:07:58.357
+keyed by string, with a value of string. I'll
+call this albums and initialize it to null.
 
-00:08:14.480 --> 00:08:18.086
-I'll run this now, to make sure I
-get each order, as a coherent unit.
 
+00:08:00.200 --> 00:08:04.034
+I'll show you another way to read the
+song data, from the NewAlbums.csv.
 
-00:08:19.000 --> 00:08:22.560
-And you can see, this code has 5
-orders, and all the information
 
-00:08:22.560 --> 00:08:25.128
-is stored now, in this array of Orders.
+00:08:05.000 --> 00:08:08.881
+This time, I'll use the lines method,
+which returns a stream of string.
 
 
+00:08:09.880 --> 00:08:14.400
+All of this is a good review, of streams,
+and it'll actually make passing the data,
 
-00:08:28.760 --> 00:08:30.760
-Next, I'll create the add Order method.
+00:08:14.400 --> 00:08:20.560
+to the stored procedure, a bit easier.
+Just a reminder, that when you call Files.lines,
 
-00:08:35.320 --> 00:08:39.476
-This method will take a connection, two
-different prepared statements, and an order.
+00:08:20.560 --> 00:08:26.797
+you should do it in a try with resources, so the
+stream is automatically closed. I'll do that here.
 
+00:08:27.643 --> 00:08:34.400
+Inside the try clause, I'll set up a variable,
+simply called lines. I'll call Files.lines,
 
-00:08:40.320 --> 00:08:44.312
-I'll set up the prepared statements outside
-of this method, so they can be reused.
+00:08:34.400 --> 00:08:41.879
+with a Path, to the new albums.csv file, in the
+project folder. That returns a stream of strings.
 
 
-00:08:45.320 --> 00:08:52.040
-This will throw an SQL Exception. Here, I'll use
-a regular try, because I don't want to close any
+00:08:43.640 --> 00:08:47.575
+I've got an error on the lines method, because I
+need to include a catch clause,
 
-00:08:52.040 --> 00:08:58.120
-resources, if this code fails. Instead I'll be
-ignoring the error, and continuing to process
+00:08:47.575 --> 00:08:50.930
+so I'll hover over that error, and pick, add catch clause.
 
-00:08:58.120 --> 00:09:02.960
-other orders. I do want the code in this
-method to be part of a single transaction,
+00:08:54.805 --> 00:08:57.697
+Inside the try block, I'll set up the stream pipeline.
 
-00:09:02.960 --> 00:09:09.080
-so that starts by setting auto commit to false.
-I'll leave some space for the code here. I'll
+00:08:59.552 --> 00:09:02.467
+So the first thing I'll do is, split each line by the comma.
 
-00:09:09.080 --> 00:09:15.480
-end the try block with a commit statement. I'll
-catch the SQL Exception, and rollback any changes,
+00:09:03.524 --> 00:09:08.320
+I do this with the map operation,
+and a lambda that splits the string. This means
 
-00:09:15.480 --> 00:09:22.680
-if I do get one. Then, I'll rethrow the exception.
-And I do want a finally clause, because I want to
+00:09:08.320 --> 00:09:14.080
+my stream goes from a stream of strings, to a
+stream of arrays of strings. I'll collect this
 
-00:09:22.680 --> 00:09:28.329
-be sure auto commit is set to true in any case.
-That's the set up for a transaction.
+00:09:14.080 --> 00:09:21.400
+data into a map, with Collectors.grouping by.
+The first level is grouped by the artist. Now,
 
+00:09:21.400 --> 00:09:27.200
+my file only has Bob Dylan as an artist, but let's
+just say we didn't know that. The first level of
 
-00:09:29.360 --> 00:09:34.880
-Between the first auto commit, and the commit
-method, I need jdbc code, so I'll start by
+00:09:27.200 --> 00:09:33.560
+the mapping, is the artist. The next grouping is
+the album, I'll call Collectors.grouping By again,
 
-00:09:34.880 --> 00:09:41.080
-initializing an order ID variable, to minus 1.
-I'll now set the only parameter, on the prepared
+00:09:33.560 --> 00:09:39.745
+and pass the value in the album column. Then, I
+need to get at the song column to collect the song titles.
 
-00:09:41.080 --> 00:09:46.224
-Statement for the order. I can use setString,
-even when the field is a date time field.
+00:09:40.543 --> 00:09:46.920
+I'll do this with mapping, returning only
+the song title. Next, I'll use collectors.joining,
 
-00:09:47.373 --> 00:09:50.927
-I'll call the executeUpdate method on that, inside an
-if condition,
+00:09:46.920 --> 00:09:52.160
+which ultimately uses StringJoiner. The goal
+here is to make this look like a jayson array,
 
-00:09:50.927 --> 00:09:53.325
-checking to make sure only 1 record was inserted.
+00:09:52.160 --> 00:09:57.240
+which really just looks like a printed array.
+The delimiter is a comma, but I also need to
 
-00:09:54.301 --> 00:09:59.120
-So if that's true, I know I can get
-the generated keys, from the prepared statement.
+00:09:57.240 --> 00:10:01.560
+wrap each song title in double quotes, so I
+escape that with a back slash, on either side
 
-00:09:59.920 --> 00:10:03.814
-And you've seen me do this often enough,
-so I'll just get that, and print it out.
+00:10:01.560 --> 00:10:06.600
+of the comma. and that'll be wrapped in square
+brackets, which will be my prefix and suffix
 
+00:10:06.600 --> 00:10:12.840
+elements. I need the starting double quote
+as well, for the prefix. The same goes for
 
-00:10:07.516 --> 00:10:12.503
-Next, I'll add the code to batch up the details
-for each order, before executing the whole batch.
+00:10:12.840 --> 00:10:19.405
+the closing double quote, and closing bracket.
+I'll print this out, so you can see the result.
 
 
-00:10:18.080 --> 00:10:23.240
-I'll insert this code in the nested if.
-If the order id is greater than minus 1, then I
+00:10:20.720 --> 00:10:24.480
+I'll loop through the albums, the key was
+the artist name, and the value is that
 
-00:10:23.240 --> 00:10:29.803
-know my order, the parent record, was created ok.
-I'll use the prepared statement for detail,
+00:10:24.480 --> 00:10:31.440
+artist's albums. Next, I'll loop through the
+nested map's data. The key is the album name,
 
-00:10:29.803 --> 00:10:36.258
-and I'll set the order id, which is the first place
-holder. Now, I'll loop through the order details.
+00:10:31.440 --> 00:10:36.500
+and the value is the string value, the
+array of songs. I'll print that out.
 
-00:10:38.320 --> 00:10:45.120
-And set the 2nd and 3rd parameters, that's item
-description, and quantity. I'll call add batch
 
-00:10:45.120 --> 00:10:50.920
-on that prepared statement. After I've batched
-up all the statements, I'll call execute Batch,
+00:10:40.680 --> 00:10:41.781
+I'll run this.
 
-00:10:50.920 --> 00:10:56.200
-which returns an array of integers. And I'll sum
-those values up with a quick stream, which I did
+00:10:45.703 --> 00:10:47.703
+And you can see this file has two albums,
 
-00:10:56.200 --> 00:11:02.908
-in the last video. I'll check if the rowsInserted,
-is different from the size, of the details.
+00:10:47.703 --> 00:10:50.640
+and I've got all the
+songs in a single comma delimited string,
 
-00:11:03.893 --> 00:11:10.406
-If they're different, I'll throw an exception.
-Did you notice something here?
+00:10:50.640 --> 00:10:53.672
+each song title enclosed, in double quotes.
 
 
-00:11:11.320 --> 00:11:16.600
-That I set the order id outside of the loop.
-Because I'm reusing the preparedStatement,
+00:10:58.087 --> 00:11:01.092
+Next, I'll go over to the Main class from a previous video,
 
-00:11:16.600 --> 00:11:19.840
-the parameters I used previously
-are still set, so here I can
+00:11:01.092 --> 00:11:03.737
+and I basically want
+to copy the entire main method.
 
-00:11:19.840 --> 00:11:25.080
-just set order id once, and it will stay set.
-The other thing is that I didn't set the flag on
 
-00:11:25.080 --> 00:11:30.720
-the connection, thesetContinueBatchOnError flag.
-This makes this code a little less efficient,
+00:11:07.800 --> 00:11:10.538
+And I'll paste that at the end of
+the main method in the Main class.
 
-00:11:30.720 --> 00:11:34.880
-so if you did add it, that's great.
-I'll just mention it, but I'll leave
 
-00:11:34.880 --> 00:11:37.919
-the code as is.
-We're almost done.
+00:11:15.000 --> 00:11:18.040
+I'll remove the code that sets
+the continue batch on error flag,
 
+00:11:18.040 --> 00:11:23.520
+so that first pasted try catch block.
+I don't need to worry about this now,
 
-00:11:38.880 --> 00:11:43.600
-I need a method, which I'll call add Orders.
-That'll take the connection,
+00:11:23.520 --> 00:11:26.501
+because my stored procedure will
+handle the entire transaction.
 
-00:11:43.600 --> 00:11:47.671
-and the list of orders.
-I'll set up a string for the insert order.
 
-00:11:48.632 --> 00:11:53.463
-Now don't forget, you need to specify
-parameters with a question mark, and not a string specifier.
+00:11:27.440 --> 00:11:30.237
+I'll also remove the call to the
+add data from File method there.
 
-00:11:54.447 --> 00:11:59.280
-I only have one placeholder, and that's
-for the order date. And I'll set up the string for
 
-00:11:59.280 --> 00:12:09.120
-insert detail, and that's very similar, but it has
-three placeholders. I'll use a try with resources,
+00:11:33.360 --> 00:11:37.280
+I'll keep the select statement there, and the
+prepared statement that uses that, just to
 
-00:12:09.120 --> 00:12:15.179
-creating my prepared statements here. So ps Order
-is the prepared statement for the insert order string.
+00:11:37.280 --> 00:11:42.120
+confirm that data does really get added.
+Here is a case where I missed making an SQL
 
-00:12:16.608 --> 00:12:20.640
-For prepared statements, I specify
-if I want generated keys back at this point,
+00:11:42.120 --> 00:11:46.493
+keyword uppercase, so I'll change the case
+of the where clause, in this statement.
 
-00:12:20.640 --> 00:12:25.811
-and not in the execute Update method.
-I'll create ps Detail the same way.
 
+00:11:48.560 --> 00:11:52.748
+I've got a compiler error on printRecords,
+because that method's on the Main class.
 
-00:12:31.080 --> 00:12:34.891
-This won't compile, so I'll have
-IntelliJ generate the catch clause.
 
+00:11:53.640 --> 00:11:58.040
+I'll open the Main class, and change the
+modifier from private to public on that method.
 
-00:12:37.000 --> 00:12:41.920
-Now it's time to put it all together.
-I'll loop through the orders using for each,
 
-00:12:41.920 --> 00:12:48.480
-and start a multi line lambda. I'll include a
-try catch clause in this lambda. I'll execute add
+00:11:59.003 --> 00:12:04.120
+Now, back to the MusicCallableStatement class,
+I can just prefix the method printRecords,
 
-00:12:48.480 --> 00:12:53.011
-Order, passing the connection, the two different
-prepared statements, and the order.
+00:12:04.120 --> 00:12:11.160
+with the class name, Main.
+Ok, so now that this code compiles,
 
-00:12:53.971 --> 00:13:00.280
-Here,I'll catch the SQL exception, because I want to
-handle it, and continue processing. And just to
+00:12:11.160 --> 00:12:16.371
+I'll add some code, at the start of this try
+block, before my first S Q L statement there.
 
-00:13:00.280 --> 00:13:06.043
-reinforce some of the lecture material, I'll print
-the error code, the S Q L state, and the message.
 
-00:13:06.840 --> 00:13:12.860
-I'll print the state of the prepared statement
-for the order. And I'll print the order itself.
+00:12:17.240 --> 00:12:20.668
+I'll be executing the stored
+procedure, using a Callable Statement.
 
 
-00:13:15.906 --> 00:13:18.471
-Finally, I just have to call
-this from the main method.
+00:12:21.560 --> 00:12:25.680
+You get a callable statement, much in the
+same way as a preparedStatement, but you
 
+00:12:25.680 --> 00:12:32.760
+invoke prepare call. And you pass that an S Q L
+string. To execute a procedure in the database,
 
-00:13:23.720 --> 00:13:28.315
-I'll add this inside the try catch clause.
-And that's it.
+00:12:32.760 --> 00:12:38.800
+you usually use the keyword call, followed by the
+procedure name. Again, I'll prefix that with the
 
+00:12:38.800 --> 00:12:46.080
+schema name. And like a prepared statement, I use
+a question mark for parameters. In this case, the
 
-00:13:29.280 --> 00:13:34.160
-I'll run that.
-So what I didn't tell you in the beginning,
+00:12:46.080 --> 00:12:51.920
+stored procedure has three parameters, so I'll put
+three question marks there. A CallableStatement
 
-00:13:34.160 --> 00:13:38.440
-was there was an error in the data.
-I did this on purpose, so it would
+00:12:51.920 --> 00:12:55.952
+also gets parsed and compiled, which means
+I can re use this statement efficiently.
 
-00:13:38.440 --> 00:13:42.880
-test the requirements of this challenge.
-The challenge was to make sure the order
 
-00:13:42.880 --> 00:13:47.383
-would be rolled back, but orders after
-the bad order, would still get processed.
+00:12:59.483 --> 00:13:04.484
+Next, I'll use my albums map, looping through
+the keys and values, with a for each method.
 
 
-00:13:48.320 --> 00:13:52.399
-So you can see the problem was with the fourth
-order, and that's because I had a bad date there.
+00:13:05.400 --> 00:13:12.400
+The key is the artist, and the value is the nested
+map. I'll again use for each, and now the key is
 
+00:13:12.400 --> 00:13:18.720
+the album, and the value is the songs array, a
+string, a jayson array. I have to include a try
 
-00:13:53.360 --> 00:13:57.400
-This format is the year, the month,
-then the day, so I have November
+00:13:18.720 --> 00:13:24.560
+catch in this lambda expression. Like a prepared
+statement, I set the values for the placeholders,
 
-00:13:57.400 --> 00:14:03.720
-31st here, which isn't a valid date.
-You can see the MySQL error code was 1292,
+00:13:24.560 --> 00:13:31.065
+so first the artist, then the album, And next
+is the jayson, which is really just a string ultimately.
 
-00:14:03.720 --> 00:14:09.013
-the SQL State code was 22 001, and the
-message says Incorrect datetime value.
+00:13:31.957 --> 00:13:36.920
+I can run this, using the execute
+method. This stored procedure doesn't return any
 
+00:13:36.920 --> 00:13:43.266
+data back. If I get an exception, I'll print the
+more specific vendor error code and the message.
 
-00:14:09.880 --> 00:14:12.289
-And then the prepared statement
-for the order is printed out
 
+00:13:48.080 --> 00:13:52.040
+And that's all I need.
+Before I run this, I have to set up
 
-00:14:13.320 --> 00:14:19.480
-That's followed by all the order information.
-I'll switch back to MySQL Workbench,
+00:13:52.040 --> 00:13:57.000
+my system environment variables, as usual.
+I know for the challenge video,
 
-00:14:19.480 --> 00:14:23.702
-and look at this data there.
-I'll highlight order and then pick the grid icon.
+00:13:57.000 --> 00:14:00.254
+I used environment variable names
+that didn't include the underscores.
 
 
-00:14:25.506 --> 00:14:29.450
-Here, you see 4 orders added,
-which confirms the Java output.
+00:14:01.240 --> 00:14:06.200
+I hope that didn't confuse you. It doesn't
+really matter what the variable names really are,
 
+00:14:06.200 --> 00:14:10.000
+butI'll switch back here, and continue
+with these names, moving forward.
 
-00:14:30.200 --> 00:14:35.120
-I'll do the same for the Order details.
-And you can see order
 
-00:14:35.120 --> 00:14:40.740
-details for those four orders.
-So hopefully you got a lot out of this challenge.
+00:14:10.960 --> 00:14:15.833
+That's done in the run configuration.
+Once I have that set up, I'll run this code.
 
 
-00:14:41.560 --> 00:14:46.480
-There was a lot to it, I know.
-This challenge included a DDL statement,
+00:14:20.483 --> 00:14:24.680
+Here, you can see the data in the album view,
+which confirms that I successfully added the
 
-00:14:46.480 --> 00:14:50.246
-prepared statements, batch processing
-and transactional processing.
+00:14:24.680 --> 00:14:30.120
+artist, the two albums, and all the related
+songs in that csv file, with just two method
 
+00:14:30.120 --> 00:14:35.880
+calls, to code stored in the database.
+Some database vendors do support arrays,
 
-00:14:51.160 --> 00:14:54.560
-In the next video, I'll be talking
-about using callable statements,
+00:14:35.880 --> 00:14:39.710
+but MySQL is not one of them, so that's
+why I used the jayson workaround.
 
-00:14:54.560 --> 00:14:59.160
-which are used to call server side methods,
-or functions, which are sometimes generically
 
-00:14:59.160 --> 00:15:04.520
-called stored procedures, in a database.
-So I'll see you in that next video.
+00:14:40.720 --> 00:14:44.868
+As I've said, it's important to understand
+what features your RDMBS supports.
+
+
+00:14:45.760 --> 00:14:49.040
+If you're using callable statements,
+it's less likely you're concerned about
+
+00:14:49.040 --> 00:14:54.880
+being database agnostic with your JDBC code.
+So In this instance, I showed you an example
+
+00:14:54.880 --> 00:14:59.877
+of a stored procedure, that took three input
+parameters, and didn't return any data back.
+
+
+00:15:00.840 --> 00:15:04.743
+In the next video, I'll cover in, and
+out, parameters, and how to use them.
+
+
+00:15:05.800 --> 00:15:08.560
+Ok let's move on, andI'll
+see you in that next video.
