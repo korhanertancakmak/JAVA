@@ -42,6 +42,7 @@ public class Challenge2 {
         dataSource.setUser(System.getenv("MYSQL_USER"));
         dataSource.setPassword(System.getenv("MYSQL_PASS"));
 
+/*
         try (Connection conn = dataSource.getConnection()) {
 
             String alterString = "ALTER TABLE storefront.order_details ADD COLUMN quantity INT";
@@ -51,21 +52,23 @@ public class Challenge2 {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+*/
 
 /*
         List<Order> orders = readData();
         try (Connection conn = dataSource.getConnection()) {
 
-//            String alterString =
-//                    "ALTER TABLE storefront.order_details ADD COLUMN quantity INT";
-//            Statement statement = conn.createStatement();
-//            statement.execute(alterString);
-
-            addOrders(conn, orders);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 */
+
+        List<Order> orders = readData();
+        try (Connection conn = dataSource.getConnection()) {
+            addOrders(conn, orders);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -73,7 +76,8 @@ public class Challenge2 {
 
         List<Order> vals = new ArrayList<>();
 
-        try (Scanner scanner = new Scanner(Path.of("Orders.csv"))) {
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course07_PreparedStatementChallenge/Orders.csv";
+        try (Scanner scanner = new Scanner(Path.of(pathName))) {
 
             scanner.useDelimiter("[,\\n]");
             var list = scanner.tokens().map(String::trim).toList();
