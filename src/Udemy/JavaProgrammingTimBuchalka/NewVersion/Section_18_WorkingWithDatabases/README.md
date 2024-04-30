@@ -8681,52 +8681,48 @@ if you don't want this additional SQL challenge.
 Your Java code should use a _CallableStatement_ to call the _addOrder_ procedure.
 You'll pass a `java.sql.TimeStamp` as the first parameter.
 
+![image77](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image77.png?raw=true)
 
+A **TimeStamp** and **DateTime** field are often interchangeable in many databases.
+For this, you'll need to transform a string, into a `java.sql.TimeStamp`.
+You can do this with a **DateTimeFormatter**, and the use of **LocalDateTime**.
+Next, you'll pass a string as the second parameter.
+This will be the json string, representing an array of order details.
+The input for the array of details, as a json string, should look as shown above.
+Finally, you'll need to register two output parameters, 
+both ints, for the order id, and the number of order detail records inserted.
 
-A TimeStamp and DateTime field are
-often interchangeable in many databases.
-For this, you'll need to transform
-a string, into a java.sql.TimeStamp.
-You can do this with a DateTimeFormatter,
-and the use of LocalDateTime.
-Next, you'll pass a string
-as the second parameter.
-This will be the json string,
-representing an array of order details.
-The input for the array of details, as a json
-string, should look as shown on this slide.
-Finally, you'll need to register two output
-parameters, both ints, for the order id,
-and the number of order detail records inserted.
-Make sure you delete the orders in a
-MySQL Workbench session, which were
-inserted in the previous challenge.
-The SQL code shown on this slide shows you
-how to delete the order, and it's details.
-Remember, we have a cascade delete set up, so
-deleting the order, will delete any related
-records, in the order detail table as well
-I'm also showing the DDL statements, which
-will reset the auto increment to 1 on both tables.
-You can execute these statements, if you want your
-first order to have an id of 1 again.
+Make sure you delete the orders in a MySQL Workbench session, 
+which were inserted in the previous challenge.
+
+![image78](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image78.png?raw=true)
+
+This SQL code shows you how to _delete_ the order and its details.
+Remember, we have a _cascade delete_ set up, 
+so deleting the order, will delete any related records, 
+in the order detail table as well.
+I'm also showing the DDL statements, 
+which will reset the _AUTO_INCREMENT_ to `1` on both tables.
+You can execute these statements 
+if you want your first order to have an id of `1` again.
 The DDL statements are optional.
+
+![image79](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image79.png?raw=true)
+
 Earlier in the course, in a previous challenge,
-the File Writing Challenge, in the Input &amp; Output
-(I/O), Working with Files in Java, we created
-a toString, Intelli J template, and called it
-JsonBuilder, which used the StringJoiner.
-You could leverage this to create the JSON
-string parameter, if you walked through
-that exercise with me, and also created
-this template in your IntelliJ environment.
-This means, you can go through the process to
-add a to string method, but select
-the JsonBuilder template instead,
+the File Writing Challenge, in the Input-Output (I/O), 
+working with **Files** in Java, we created a _toString_, 
+IntelliJ template, and called it **JsonBuilder**, 
+which used the **StringJoiner**.
+You could leverage this to create the JSON string parameter 
+if you walked through that exercise with me, 
+and also created this template in your IntelliJ environment.
+This means you can go through the process to add a _toString_ method, 
+but select the **JsonBuilder** template instead,
 adding this to the order detail record.
-Alternately, you could just write
-your own method to do this.
-Use the DateTimeFormatter,
+Alternately, you could write your own method to do this.
+
+Use the **DateTimeFormatter**,
 with the pattern shown on this slide.
 You'll notice that I'm using a U, where I normally
 would use a Y, for the digits in the year.
