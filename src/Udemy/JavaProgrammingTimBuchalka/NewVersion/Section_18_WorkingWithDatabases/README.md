@@ -6703,7 +6703,7 @@ to protect access to the database,
 and to restrict what your clients are allowed to do.
 Because of this, you might find that
 most of your JDBC work will be done with requests to stored procedures.
-Java supports the execution, and retrieval of results 
+Java supports the execution and retrieval of results 
 from these code segments, with a special kind of statement, 
 named the **CallableStatement**.
 Like a **PreparedStatement**, 
@@ -7304,7 +7304,7 @@ First, MySQL has three different types of parameter types for its procedures.
 | INOUT          | Used to pass values to the stored procedure, which can modify the values and return the modified values back.  | Y     | Y      |
 
 The in Parameter is a read-only parameter, and the default type, 
-meaning we don't have to specify the keyword, _IN_ in our MySQL procedures,
+meaning we don't have to specify the keyword, _IN_ in our MySQL procedures
 if this is the type of parameter you want.
 This is data you pass to the procedure, and it doesn't get modified.
 The _OUT_ parameter is a write-only parameter.
@@ -7435,233 +7435,663 @@ Then finish.
 I'll refresh the schema panel,
 and I should see my new procedure there.
 
+![image73](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image73.png?raw=true)
 
-
-So I created an OUT Parameter,
-but I didn't actually do
-anything with this parameter, in my code.
+So I created an **OUT** parameter, 
+but I didn't do anything with this parameter in my code.
 I still have the procedure up in the edit window,
 so I'll scroll to the end of this code.
-Right after the commit, I'll set the count
-variable, to the value in the eye variable,
+
+~~~~sql  
+CREATE DEFINER=`devUser`@`localhost` 
+PROCEDURE `addAlbumReturnCounts`(IN artistName TEXT, IN albumName TEXT, IN songTitles JSON, OUT count INT)
+BEGIN
+
+    DECLARE val_artist_id INT DEFAULT NULL;
+    DECLARE val_album_id INT DEFAULT NULL;
+    DECLARE i INT DEFAULT 0;
+    DECLARE num_items INT;
+    DECLARE song_title VARCHAR(255);
+    SET num_items = JSON_LENGTH(songTitles);
+    
+    SELECT artist_id INTO val_artist_id FROM artists WHERE  artist_name = artistName;
+
+    START TRANSACTION;
+    IF val_artist_id IS NULL THEN
+        -- Insert a new order
+        INSERT INTO artists (artist_name) VALUES (artistName);
+        -- Get artist_id of last artist inserted
+        SELECT LAST_INSERT_ID() INTO val_artist_id;
+    END IF;
+
+    SELECT album_id INTO val_album_id FROM albums WHERE album_name = albumName AND artist_id = val_artist_id;
+        
+    IF val_album_id IS NULL THEN
+        -- Insert a new album
+        INSERT INTO albums (artist_id, album_name) VALUES (val_artist_id, albumName);
+        -- Get album_id of last artist inserted
+        SELECT LAST_INSERT_ID() INTO val_album_id;
+        
+        -- Loop through the JSON Song Titles Array
+        WHILE i < num_items DO
+            -- JSON functions extract the right element, and unquote it
+            SET song_title = JSON_UNQUOTE(JSON_EXTRACT(songTitles, CONCAT('$[', i, ']')));	
+            -- Insert a new song, track number is assigned here.
+            INSERT INTO songs (album_id, track_number, song_title) VALUES (val_album_id, i + 1, song_title); 
+            SET i = i + 1;
+        END WHILE;
+    END IF;    
+    COMMIT;
+    SET count = i;
+END
+~~~~
+
+Right after the _commit_, 
+I'll set the _count_ variable to the value in the eye variable,
 which will tell me how many songs got inserted.
-I'll say again, don't get too stressed
-about the code in this procedure.
-If you follow along with me, this should
-compile fine, and you don't really need to
-understand all the details about how this works.
-I've also included this procedure's script in
-the resources folder, if you have any troubles.
+I'll say again, don't get too stressed about the code in this procedure.
+If you follow along with me, this should compile fine, 
+and you don't really need to understand all the details about how this works.
+I've also included this procedure's script in the package folder 
+if you have any troubles.
 You can drop your version, and import the script,
-like I showed you, with the first
-procedure in a previous video.
-For now, I'll again Apply that,
-twice, and then hit finish.
-I'll open an S Q L edit panel, and
-delete all my data for Bob Dylan again.
-So that's delete from music.artists,
-where artist_name equals,
-and Bob Dylan in single quotes.
-Now, let's get back to IntelliJ,
-to the PreparedStatement project from the
-last video, and to the class I was using
-previously, MusicCallableStatement.
-In this code, I'll change the name of
-the stored procedure that gets called,
+like I showed you, with the first procedure in a previous section.
+For now, I'll again _Apply_ that, twice, and then hit _finish_.
+I'll open an SQL edit panel, 
+and delete all my data for _Bob Dylan_ again.
+
+~~~~sql  
+DELETE FROM music.artists WHERE artist_name = 'Bob Dylan';
+~~~~
+
+Now, let's get back to IntelliJ to the class 
+I was using previously, **MusicCallableStatement**.
+In this code, I'll change the name of the stored procedure that gets called,
 in the callable statement code here.
-I'll run this now, executing
 
+```java  
+public class MusicCallableStatement {
 
+    private static final int ARTIST_COLUMN = 0;
+    private static final int ALBUM_COLUMN = 1;
+    private static final int SONG_COLUMN = 3;
 
-the new stored procedure.
-This time, I get an error for each
-attempt, that the parameter, named count,
-is not registered as an output parameter.
-There are a couple of problems here actually.
-First, I need another question
-mark, as a parameter placeholder,
+    public static void main(String[] args) {
+      
+        Map<String, Map<String, String>> albums = null;
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course08_CallableStatements/NewAlbums.csv";
+        try (var lines = Files.lines(Path.of(pathName))) {          // Stream<String>
+
+            albums = lines.map(s -> s.split(","))
+                    .collect(Collectors.groupingBy(s -> s[ARTIST_COLUMN], 
+                            Collectors.groupingBy(s -> s[ALBUM_COLUMN], 
+                                    Collectors.mapping(s -> s[SONG_COLUMN], 
+                                            Collectors.joining(
+                                                    "\",\"",
+                                                    "[\"",
+                                                    "\"]"
+                                            )))));
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+
+        albums.forEach((artist, artistAlbums) -> {
+            artistAlbums.forEach((key, value) -> {
+                System.out.println(key + " : " + value);
+            });
+        });
+
+        var dataSource = new MysqlDataSource();
+  
+        dataSource.setServerName("localhost");
+        dataSource.setPort(3335);
+        dataSource.setDatabaseName("music");
+
+        try (Connection connection = dataSource.getConnection(System.getenv("MYSQL_USER"), System.getenv("MYSQL_PASS"));) {
+
+            //CallableStatement cs = connection.prepareCall("CALL music.addAlbum(?,?,?)");
+            CallableStatement cs = connection.prepareCall("CALL music.addAlbumReturnCounts(?,?,?)");
+          
+            albums.forEach((artist, albumMap) -> {
+                albumMap.forEach((album, songs) -> {
+                    try {
+                        cs.setString(1, artist);
+                        cs.setString(2, album);
+                        cs.setString(3, songs);
+                        cs.execute();
+  
+                    } catch (SQLException e) {
+                        System.err.println(e.getErrorCode() + " " + e.getMessage());
+                    }
+                });
+            });
+
+            String sql = "SELECT * FROM music.albumview WHERE artist_name = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, "Bob Dylan");
+            ResultSet resultSet = ps.executeQuery();
+            Main.printRecords(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+I'll run this now, executing the new stored procedure:
+
+```html  
+Bob Dylan : ["You're No Good","Talkin' New York","In My Time of Dyin'","Man of Constant Sorrow","Fixin' to Die","Pretty Peggy-O","Highway 51 Blues","Gospel Plow","Baby Let Me Follow You Down","House of the Risin' Sun","Freight Train Blues","Song to Woody","See That My Grave Is Kept Clean"]
+Blonde on Blonde : ["Rainy Day Women","Pledging My Time","Visions of Johanna","One of Us Must Know (Sooner or Later)","I Want You","Stuck Inside of Mobile with the Memphis Blues Again","Leopard-Skin Pill-Box Hat","Just Like a Woman","Most Likely You Go Your Way (And I'll Go Mine)","Temporary Like Achilles","Absolutely Sweet Marie","Fourth Time Around","Obviously Five Believers","Sad-Eyed Lady of the Lowlands"]
+0 Parameter count is not registered as an output parameter
+0 Parameter count is not registered as an output parameter
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE
+```
+
+This time, I get an error for each attempt that the parameter,
+named _count_ is not registered as an output parameter.
+There are a couple of problems here, actually.
+First, I need another question mark, as a parameter placeholder,
 in the call to this stored procedure.
 So I'll quickly add that.
+
+```java  
+//CallableStatement cs = connection.prepareCall("CALL music.addAlbum(?,?,?)");
+CallableStatement cs = connection.prepareCall("CALL music.addAlbumReturnCounts(?,?,?)");
+CallableStatement cs = connection.prepareCall("CALL music.addAlbumReturnCounts(?,?,?,?)");
+```
+
 And I'll try running this again.
 
 ```html  
-
+Bob Dylan : ["You're No Good","Talkin' New York","In My Time of Dyin'","Man of Constant Sorrow","Fixin' to Die","Pretty Peggy-O","Highway 51 Blues","Gospel Plow","Baby Let Me Follow You Down","House of the Risin' Sun","Freight Train Blues","Song to Woody","See That My Grave Is Kept Clean"]
+Blonde on Blonde : ["Rainy Day Women","Pledging My Time","Visions of Johanna","One of Us Must Know (Sooner or Later)","I Want You","Stuck Inside of Mobile with the Memphis Blues Again","Leopard-Skin Pill-Box Hat","Just Like a Woman","Most Likely You Go Your Way (And I'll Go Mine)","Temporary Like Achilles","Absolutely Sweet Marie","Fourth Time Around","Obviously Five Believers","Sad-Eyed Lady of the Lowlands"]
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Blonde on BlondeBob Dylan      1              Rainy Day Women
+Blonde on BlondeBob Dylan      2              Pledging My Time
+Blonde on BlondeBob Dylan      3              Visions of Johanna
+Blonde on BlondeBob Dylan      4              One of Us Must Know (Sooner or Later)
+Blonde on BlondeBob Dylan      5              I Want You     
+Blonde on BlondeBob Dylan      6              Stuck Inside of Mobile with the Memphis Blues Again
+Blonde on BlondeBob Dylan      7              Leopard-Skin Pill-Box Hat
+Blonde on BlondeBob Dylan      8              Just Like a Woman
+Blonde on BlondeBob Dylan      9              Most Likely You Go Your Way (And I'll Go Mine)
+Blonde on BlondeBob Dylan      10             Temporary Like Achilles
+Blonde on BlondeBob Dylan      11             Absolutely Sweet Marie
+Blonde on BlondeBob Dylan      12             Fourth Time Around
+Blonde on BlondeBob Dylan      13             Obviously Five Believers
+Blonde on BlondeBob Dylan      14             Sad-Eyed Lady of the Lowlands
+Bob Dylan      Bob Dylan      1              You're No Good 
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die  
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O 
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+Bob Dylan      Bob Dylan      8              Gospel Plow    
+Bob Dylan      Bob Dylan      9              Baby Let Me Follow You Down
+Bob Dylan      Bob Dylan      10             House of the Risin' Sun
+Bob Dylan      Bob Dylan      11             Freight Train Blues
+Bob Dylan      Bob Dylan      12             Song to Woody  
+Bob Dylan      Bob Dylan      13             See That My Grave Is Kept Clean
 ```
 
 And now this works, and data gets added.
-So registering an out parameter,
-isn't actually required.
-You register the out parameter,
-if you want to get the data back.
-Since I do want the result, that
-gets passed back in that parameter,
+So registering an _out_ parameter isn't actually required.
+You register the _out_ parameter if you want to get the data back.
+Since I do want the result that gets passed back in that parameter,
 I'll show you how to do that next.
 To get that data, there are two steps.
-Before the execute method, I need to call
-register out parameter, specifying the
-index as 4. The second parameter is the data
-type, and I'll set that to Types dot integer.
-Types is a class in the java.sql package,
-which defines constants used to identify
-generic SQL types, called JDBC types,
-which will be translated to java types.
-That's the first thing that needs to be done,
-to get data returned on the Callable Statement.
-The next part is to retrieve this data
-from the statement, after it's executed.
-I'll print the number of songs, and the album
-name. I can get the output parameter's value,
-by calling get Int, and passing the
-appropriate index, so the index is four here.
-Before I run this, I want to again delete the
 
-```html  
+```java  
+public class MusicCallableStatement {
 
+    private static final int ARTIST_COLUMN = 0;
+    private static final int ALBUM_COLUMN = 1;
+    private static final int SONG_COLUMN = 3;
+
+    public static void main(String[] args) {
+      
+        Map<String, Map<String, String>> albums = null;
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course08_CallableStatements/NewAlbums.csv";
+        try (var lines = Files.lines(Path.of(pathName))) {          // Stream<String>
+
+            albums = lines.map(s -> s.split(","))
+                    .collect(Collectors.groupingBy(s -> s[ARTIST_COLUMN], 
+                            Collectors.groupingBy(s -> s[ALBUM_COLUMN], 
+                                    Collectors.mapping(s -> s[SONG_COLUMN], 
+                                            Collectors.joining(
+                                                    "\",\"",
+                                                    "[\"",
+                                                    "\"]"
+                                            )))));
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+
+        albums.forEach((artist, artistAlbums) -> {
+            artistAlbums.forEach((key, value) -> {
+                System.out.println(key + " : " + value);
+            });
+        });
+
+        var dataSource = new MysqlDataSource();
+  
+        dataSource.setServerName("localhost");
+        dataSource.setPort(3335);
+        dataSource.setDatabaseName("music");
+
+        try (Connection connection = dataSource.getConnection(System.getenv("MYSQL_USER"), System.getenv("MYSQL_PASS"));) {
+
+            CallableStatement cs = connection.prepareCall("CALL music.addAlbumReturnCounts(?,?,?,?)");
+          
+            albums.forEach((artist, albumMap) -> {
+                albumMap.forEach((album, songs) -> {
+                    try {
+                        cs.setString(1, artist);
+                        cs.setString(2, album);
+                        cs.setString(3, songs);
+                        
+                        cs.registerOutParameter(4, Types.INTEGER);
+                        cs.execute();
+                        System.out.printf("%d songs were added for %s%n", cs.getInt(4), album);
+  
+                    } catch (SQLException e) {
+                        System.err.println(e.getErrorCode() + " " + e.getMessage());
+                    }
+                });
+            });
+
+            String sql = "SELECT * FROM music.albumview WHERE artist_name = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, "Bob Dylan");
+            ResultSet resultSet = ps.executeQuery();
+            Main.printRecords(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
 ```
 
-data for Bob Dylan, so I'll jump back to the
-MySQL Workbench session, and re execute
-the delete artists statement there.
+Before the _execute_ method, I need to call _registerOutParameter_, 
+specifying the index as 4. 
+The second parameter is the data type, and I'll set that to `Types.INTEGER`.
+Types is a class in the `java.sql` package, 
+which defines constants used to identify generic SQL types, 
+called JDBC types, which will be translated to java types.
+That's the first thing that needs to be done,
+to get data returned on the **CallableStatement**.
+The next part is to retrieve this data from the statement, after it's executed.
+I'll print the number of songs, and the album name. 
+I can get the output parameter's value by calling _getInt_, 
+and passing the appropriate index, so the index is 4 here.
+Before I run this, I want to again delete the data for _Bob Dylan_, 
+so I'll jump back to the MySQL Workbench session, 
+and re-execute the delete artists statement there.
 And now, back to IntelliJ, I'll run my code.
 
 ```html  
-
+Bob Dylan : ["You're No Good","Talkin' New York","In My Time of Dyin'","Man of Constant Sorrow","Fixin' to Die","Pretty Peggy-O","Highway 51 Blues","Gospel Plow","Baby Let Me Follow You Down","House of the Risin' Sun","Freight Train Blues","Song to Woody","See That My Grave Is Kept Clean"]
+Blonde on Blonde : ["Rainy Day Women","Pledging My Time","Visions of Johanna","One of Us Must Know (Sooner or Later)","I Want You","Stuck Inside of Mobile with the Memphis Blues Again","Leopard-Skin Pill-Box Hat","Just Like a Woman","Most Likely You Go Your Way (And I'll Go Mine)","Temporary Like Achilles","Absolutely Sweet Marie","Fourth Time Around","Obviously Five Believers","Sad-Eyed Lady of the Lowlands"]
+13 songs were added for Bob Dylan
+14 songs were added for Blonde on Blonde
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Blonde on BlondeBob Dylan      1              Rainy Day Women
+Blonde on BlondeBob Dylan      2              Pledging My Time
+Blonde on BlondeBob Dylan      3              Visions of Johanna
+Blonde on BlondeBob Dylan      4              One of Us Must Know (Sooner or Later)
+Blonde on BlondeBob Dylan      5              I Want You     
+Blonde on BlondeBob Dylan      6              Stuck Inside of Mobile with the Memphis Blues Again
+Blonde on BlondeBob Dylan      7              Leopard-Skin Pill-Box Hat
+Blonde on BlondeBob Dylan      8              Just Like a Woman
+Blonde on BlondeBob Dylan      9              Most Likely You Go Your Way (And I'll Go Mine)
+Blonde on BlondeBob Dylan      10             Temporary Like Achilles
+Blonde on BlondeBob Dylan      11             Absolutely Sweet Marie
+Blonde on BlondeBob Dylan      12             Fourth Time Around
+Blonde on BlondeBob Dylan      13             Obviously Five Believers
+Blonde on BlondeBob Dylan      14             Sad-Eyed Lady of the Lowlands
+Bob Dylan      Bob Dylan      1              You're No Good 
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die  
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O 
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+Bob Dylan      Bob Dylan      8              Gospel Plow    
+Bob Dylan      Bob Dylan      9              Baby Let Me Follow You Down
+Bob Dylan      Bob Dylan      10             House of the Risin' Sun
+Bob Dylan      Bob Dylan      11             Freight Train Blues
+Bob Dylan      Bob Dylan      12             Song to Woody  
+Bob Dylan      Bob Dylan      13             See That My Grave Is Kept Clean
 ```
 
-Before all the records are printed,
-notice the two statements there.
-13 songs were added for the album, Bob Dylan,
-and 14 songs were added for Blonde on Blonde.
-So that's a demonstration, of two way
-communication with a stored procedure.
-Next, I'll create a third procedure,
-in MySQL Workbench.
-This script will be in the resources folder as
-well, if you encounter any problems, just editing
-the current procedure, which I'll do here now.
-I'll be creating this manually, by editing
-another procedure, so I'll open the add Album
-Return Counts procedure, using the tool icon.
-I'll change the name to add Album, In, Out, Counts,
-and I'll change that fourth parameter
-from an out parameter, to an In, out, parameter.
-Before I apply these changes, I'll scroll to
-the bottom, and add an if statement, around the
-code that sets the value of the count parameter.
-In this case, I'll check if the number of records
-that got inserted, equals the count, passed
-as a parameter. If this were a real scenario,
-I might do something additional, like log the
-information, or pass data to an audit table,
+Before all the records are printed, notice the two statements there.
+`13` songs were added for the album, _Bob Dylan_,
+and `14` songs were added for _Blonde on Blonde_.
+So that's a demonstration of two-way communication with a stored procedure.
+
+Next, I'll create a third procedure, in MySQL Workbench.
+This script will be in the resources folder as well 
+if you encounter any problems, just editing the current procedure, 
+which I'll do here now.
+I'll be creating this manually, 
+by editing another procedure, 
+so I'll open the _addAlbumReturnCounts_ procedure, using the tool icon.
+
+~~~~sql  
+CREATE DEFINER=`devUser`@`localhost` 
+PROCEDURE `addAlbumInOutCounts`(IN artistName TEXT, IN albumName TEXT, IN songTitles JSON, INOUT count INT)
+BEGIN
+
+    DECLARE val_artist_id INT DEFAULT NULL;
+    DECLARE val_album_id INT DEFAULT NULL;
+    DECLARE i INT DEFAULT 0;
+    DECLARE num_items INT;
+    DECLARE song_title VARCHAR(255);
+    SET num_items = JSON_LENGTH(songTitles);
+    
+    SELECT artist_id INTO val_artist_id FROM artists WHERE  artist_name = artistName;
+
+    START TRANSACTION;
+    IF val_artist_id IS NULL THEN
+        -- Insert a new order
+        INSERT INTO artists (artist_name) VALUES (artistName);
+        -- Get artist_id of last artist inserted
+        SELECT LAST_INSERT_ID() INTO val_artist_id;
+    END IF;
+
+    SELECT album_id INTO val_album_id FROM albums WHERE album_name = albumName AND artist_id = val_artist_id;
+        
+    IF val_album_id IS NULL THEN
+        -- Insert a new album
+        INSERT INTO albums (artist_id, album_name) VALUES (val_artist_id, albumName);
+        -- Get album_id of last artist inserted
+        SELECT LAST_INSERT_ID() INTO val_album_id;
+        
+        -- Loop through the JSON Song Titles Array
+        WHILE i < num_items DO
+            -- JSON functions extract the right element, and unquote it
+            SET song_title = JSON_UNQUOTE(JSON_EXTRACT(songTitles, CONCAT('$[', i, ']')));	
+            -- Insert a new song, track number is assigned here.
+            INSERT INTO songs (album_id, track_number, song_title) VALUES (val_album_id, i + 1, song_title); 
+            SET i = i + 1;
+        END WHILE;
+    END IF;    
+    COMMIT;
+    IF count <> i THEN
+        -- LOGGING, AUDIT, EXCEPTION HANDLING HERE
+        SET count = i;
+    END IF;
+END
+~~~~
+
+I'll change the name to _addAlbumInOutCounts_,
+and I'll change that fourth parameter from an _OUT_ parameter 
+to an _INOUT_ parameter.
+Before I apply these changes, I'll scroll to the bottom, 
+and add an _if_ statement around the code 
+that sets the value of the _count_ parameter.
+In this case, I'll check if the number of records 
+that got inserted equals the count, passed as a parameter. 
+If this were a real scenario, I might do something additional, 
+like log the information, or pass data to an audit table,
 or raise some kind of error.
-I'll hit apply again,
-then finish.
+I'll hit _apply_ again then _finish_.
 I'll refresh the schema panel.
 I'll see my third stored procedure there,
 and now I can use it in my JDBC code.
-I'll again go to an S Q L editing panel,
-and delete the data for Bob Dylan.
-Getting back to my Java code in
-IntelliJ, I'll make two changes to my code.
-First I'll change the name of the procedure I'm
-calling, so fromaddAlbumReturnCounts,
-toaddAlbum, InOutCounts.
+I'll again go to an SQL editing panel,
+and delete the data for _Bob Dylan_.
+Getting back to my Java code in IntelliJ, I'll make two changes to my code.
+
+```java  
+public class MusicCallableStatement {
+
+    private static final int ARTIST_COLUMN = 0;
+    private static final int ALBUM_COLUMN = 1;
+    private static final int SONG_COLUMN = 3;
+
+    public static void main(String[] args) {
+      
+        Map<String, Map<String, String>> albums = null;
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course08_CallableStatements/NewAlbums.csv";
+        try (var lines = Files.lines(Path.of(pathName))) {          // Stream<String>
+
+            albums = lines.map(s -> s.split(","))
+                    .collect(Collectors.groupingBy(s -> s[ARTIST_COLUMN], 
+                            Collectors.groupingBy(s -> s[ALBUM_COLUMN], 
+                                    Collectors.mapping(s -> s[SONG_COLUMN], 
+                                            Collectors.joining(
+                                                    "\",\"",
+                                                    "[\"",
+                                                    "\"]"
+                                            )))));
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+
+        albums.forEach((artist, artistAlbums) -> {
+            artistAlbums.forEach((key, value) -> {
+                System.out.println(key + " : " + value);
+            });
+        });
+
+        var dataSource = new MysqlDataSource();
+  
+        dataSource.setServerName("localhost");
+        dataSource.setPort(3335);
+        dataSource.setDatabaseName("music");
+
+        try (Connection connection = dataSource.getConnection(System.getenv("MYSQL_USER"), System.getenv("MYSQL_PASS"));) {
+
+            //CallableStatement cs = connection.prepareCall("CALL music.addAlbumReturnCounts(?,?,?,?)");
+            CallableStatement cs = connection.prepareCall("CALL music.addAlbumInOutCounts(?,?,?,?)");
+          
+            albums.forEach((artist, albumMap) -> {
+                albumMap.forEach((album, songs) -> {
+                    try {
+                        cs.setString(1, artist);
+                        cs.setString(2, album);
+                        cs.setString(3, songs);
+                        
+                        cs.setInt(4, 10);
+                        cs.registerOutParameter(4, Types.INTEGER);
+                        cs.execute();
+                        System.out.printf("%d songs were added for %s%n", cs.getInt(4), album);
+  
+                    } catch (SQLException e) {
+                        System.err.println(e.getErrorCode() + " " + e.getMessage());
+                    }
+                });
+            });
+
+            String sql = "SELECT * FROM music.albumview WHERE artist_name = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, "Bob Dylan");
+            ResultSet resultSet = ps.executeQuery();
+            Main.printRecords(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+First, I'll change the name of the procedure I'm calling, 
+so from _addAlbumReturnCounts_ to _addAlbumInOutCounts_. 
 Next, I'll pass an initial value to parameter 4.
-Normally, this would be the record count
-you expect to be inserted, but I'll just
-set it to an arbitrary number, like 10.
-I'll call set int here, and parameter
-is 4, and the value of count is 10.
-I'll run this.
+Normally, this would be the record count you expect to be inserted, 
+but I'll just set it to an arbitrary number, like 10.
+I'll call set int here, and the parameter is 4, 
+and the value of count is 10.
+I'll run this:
 
 ```html  
-
+Bob Dylan : ["You're No Good","Talkin' New York","In My Time of Dyin'","Man of Constant Sorrow","Fixin' to Die","Pretty Peggy-O","Highway 51 Blues","Gospel Plow","Baby Let Me Follow You Down","House of the Risin' Sun","Freight Train Blues","Song to Woody","See That My Grave Is Kept Clean"]
+Blonde on Blonde : ["Rainy Day Women","Pledging My Time","Visions of Johanna","One of Us Must Know (Sooner or Later)","I Want You","Stuck Inside of Mobile with the Memphis Blues Again","Leopard-Skin Pill-Box Hat","Just Like a Woman","Most Likely You Go Your Way (And I'll Go Mine)","Temporary Like Achilles","Absolutely Sweet Marie","Fourth Time Around","Obviously Five Believers","Sad-Eyed Lady of the Lowlands"]
+13 songs were added for Bob Dylan
+14 songs were added for Blonde on Blonde
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Blonde on BlondeBob Dylan      1              Rainy Day Women
+Blonde on BlondeBob Dylan      2              Pledging My Time
+Blonde on BlondeBob Dylan      3              Visions of Johanna
+Blonde on BlondeBob Dylan      4              One of Us Must Know (Sooner or Later)
+Blonde on BlondeBob Dylan      5              I Want You     
+Blonde on BlondeBob Dylan      6              Stuck Inside of Mobile with the Memphis Blues Again
+Blonde on BlondeBob Dylan      7              Leopard-Skin Pill-Box Hat
+Blonde on BlondeBob Dylan      8              Just Like a Woman
+Blonde on BlondeBob Dylan      9              Most Likely You Go Your Way (And I'll Go Mine)
+Blonde on BlondeBob Dylan      10             Temporary Like Achilles
+Blonde on BlondeBob Dylan      11             Absolutely Sweet Marie
+Blonde on BlondeBob Dylan      12             Fourth Time Around
+Blonde on BlondeBob Dylan      13             Obviously Five Believers
+Blonde on BlondeBob Dylan      14             Sad-Eyed Lady of the Lowlands
+Bob Dylan      Bob Dylan      1              You're No Good 
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die  
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O 
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+Bob Dylan      Bob Dylan      8              Gospel Plow    
+Bob Dylan      Bob Dylan      9              Baby Let Me Follow You Down
+Bob Dylan      Bob Dylan      10             House of the Risin' Sun
+Bob Dylan      Bob Dylan      11             Freight Train Blues
+Bob Dylan      Bob Dylan      12             Song to Woody  
+Bob Dylan      Bob Dylan      13             See That My Grave Is Kept Clean
 ```
 
-So even though I passed
-in 10 as the count, to parameter 4, you can
-see that I'm getting the actual count back,
+So even though I passed in 10 as the _count_ to parameter 4, 
+you can see that I'm getting the actual count back,
 13 and 14 songs inserted there.
-If I rerun it immediately,
-without first deleting the data,
-You can see that 0 records were inserted,
+If I rerun it immediately without first deleting the data:
+
+```html  
+Bob Dylan : ["You're No Good","Talkin' New York","In My Time of Dyin'","Man of Constant Sorrow","Fixin' to Die","Pretty Peggy-O","Highway 51 Blues","Gospel Plow","Baby Let Me Follow You Down","House of the Risin' Sun","Freight Train Blues","Song to Woody","See That My Grave Is Kept Clean"]
+Blonde on Blonde : ["Rainy Day Women","Pledging My Time","Visions of Johanna","One of Us Must Know (Sooner or Later)","I Want You","Stuck Inside of Mobile with the Memphis Blues Again","Leopard-Skin Pill-Box Hat","Just Like a Woman","Most Likely You Go Your Way (And I'll Go Mine)","Temporary Like Achilles","Absolutely Sweet Marie","Fourth Time Around","Obviously Five Believers","Sad-Eyed Lady of the Lowlands"]
+0 songs were added for Bob Dylan
+0 songs were added for Blonde on Blonde
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Blonde on BlondeBob Dylan      1              Rainy Day Women
+Blonde on BlondeBob Dylan      2              Pledging My Time
+Blonde on BlondeBob Dylan      3              Visions of Johanna
+Blonde on BlondeBob Dylan      4              One of Us Must Know (Sooner or Later)
+Blonde on BlondeBob Dylan      5              I Want You     
+Blonde on BlondeBob Dylan      6              Stuck Inside of Mobile with the Memphis Blues Again
+Blonde on BlondeBob Dylan      7              Leopard-Skin Pill-Box Hat
+Blonde on BlondeBob Dylan      8              Just Like a Woman
+Blonde on BlondeBob Dylan      9              Most Likely You Go Your Way (And I'll Go Mine)
+Blonde on BlondeBob Dylan      10             Temporary Like Achilles
+Blonde on BlondeBob Dylan      11             Absolutely Sweet Marie
+Blonde on BlondeBob Dylan      12             Fourth Time Around
+Blonde on BlondeBob Dylan      13             Obviously Five Believers
+Blonde on BlondeBob Dylan      14             Sad-Eyed Lady of the Lowlands
+Bob Dylan      Bob Dylan      1              You're No Good 
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die  
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O 
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+Bob Dylan      Bob Dylan      8              Gospel Plow    
+Bob Dylan      Bob Dylan      9              Baby Let Me Follow You Down
+Bob Dylan      Bob Dylan      10             House of the Risin' Sun
+Bob Dylan      Bob Dylan      11             Freight Train Blues
+Bob Dylan      Bob Dylan      12             Song to Woody  
+Bob Dylan      Bob Dylan      13             See That My Grave Is Kept Clean
+```
+
+You can see that `0` records were inserted,
 which is what you'd expect in this case.
-Now I'll switch over to MySQL Workbench, and
-once again execute my delete statement.
+Now I'll switch over to MySQL Workbench, 
+and once again execute my _delete_ statement.
 And now, right back to IntelliJ.
-Before I run the code again, I'll first comment
+Before I run the code again, I'll first comment out the line, 
+where I'm setting the fourth parameter, to an initial value, 10 in this case.
+I'll see if I can run it this way:
 
 ```html  
-
+Bob Dylan : ["You're No Good","Talkin' New York","In My Time of Dyin'","Man of Constant Sorrow","Fixin' to Die","Pretty Peggy-O","Highway 51 Blues","Gospel Plow","Baby Let Me Follow You Down","House of the Risin' Sun","Freight Train Blues","Song to Woody","See That My Grave Is Kept Clean"]
+Blonde on Blonde : ["Rainy Day Women","Pledging My Time","Visions of Johanna","One of Us Must Know (Sooner or Later)","I Want You","Stuck Inside of Mobile with the Memphis Blues Again","Leopard-Skin Pill-Box Hat","Just Like a Woman","Most Likely You Go Your Way (And I'll Go Mine)","Temporary Like Achilles","Absolutely Sweet Marie","Fourth Time Around","Obviously Five Believers","Sad-Eyed Lady of the Lowlands"]
+0 songs were added for Bob Dylan
+0 songs were added for Blonde on Blonde
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Blonde on BlondeBob Dylan      1              Rainy Day Women
+Blonde on BlondeBob Dylan      2              Pledging My Time
+Blonde on BlondeBob Dylan      3              Visions of Johanna
+Blonde on BlondeBob Dylan      4              One of Us Must Know (Sooner or Later)
+Blonde on BlondeBob Dylan      5              I Want You     
+Blonde on BlondeBob Dylan      6              Stuck Inside of Mobile with the Memphis Blues Again
+Blonde on BlondeBob Dylan      7              Leopard-Skin Pill-Box Hat
+Blonde on BlondeBob Dylan      8              Just Like a Woman
+Blonde on BlondeBob Dylan      9              Most Likely You Go Your Way (And I'll Go Mine)
+Blonde on BlondeBob Dylan      10             Temporary Like Achilles
+Blonde on BlondeBob Dylan      11             Absolutely Sweet Marie
+Blonde on BlondeBob Dylan      12             Fourth Time Around
+Blonde on BlondeBob Dylan      13             Obviously Five Believers
+Blonde on BlondeBob Dylan      14             Sad-Eyed Lady of the Lowlands
+Bob Dylan      Bob Dylan      1              You're No Good 
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die  
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O 
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+Bob Dylan      Bob Dylan      8              Gospel Plow    
+Bob Dylan      Bob Dylan      9              Baby Let Me Follow You Down
+Bob Dylan      Bob Dylan      10             House of the Risin' Sun
+Bob Dylan      Bob Dylan      11             Freight Train Blues
+Bob Dylan      Bob Dylan      12             Song to Woody  
+Bob Dylan      Bob Dylan      13             See That My Grave Is Kept Clean
 ```
 
-out the line, where I'm setting the fourth
-parameter, to an initial value, 10 in this case.
-I'll see if I can run it this way,
-
-```html  
-
-```
-
-and yes, you can see this does actually run.
-
-```html  
-
-```
-
+And yes, you can see this does actually run.
 But the results are misleading.
-Notice that I do get data back, when I
-just deleted it, before running this code.
-
-```html  
-
-```
-
+Notice that I do get data back when I just deleted it, 
+before running this code.
 This means this code must have added the data.
-But it says 0 songs were added for each album.
-There's a couple of things going
-on here, I want to talk about.
-First, even if I don't set the
-in out parameter to a value,
+But it says `0` songs were added for each album.
+There's a couple of things going on here, I want to talk about.
+
+First, even if I don't set the _INOUT_ parameter to a value,
 it will get initialized to a default value,
 depending on the data type, and the DBMS vendor.
-Here, count wasn't initialized to
-zero, it was initialized to null.
-And null has unexpected and sometimes confusing
-results in S Q L code, if you're new to it.
-In this stored procedure, I first
-check if count is not equal to eye,
-and if it's not, I'll set count.
-The reason this returns false
-when value is NULL, is because the NULL
-variable represents an unknown value.
-In databases, avariable or parameter
-that's null isn't equal to, and it's
-also not equal to, another value.
+Here, _count_ wasn't initialized to `0`, it was initialized to **null**.
+And **null** has unexpected 
+and sometimes confusing results in SQL code if you're new to it.
+In this stored procedure, I first check if _count_ is not equal to _i_,
+and if it's not I'll set _count_.
+The reason this returns **false** when value is **NULL**, 
+is because the **NULL** variable represents **an unknown value**.
+In databases, a variable or parameter that's **null** isn't equal to, 
+and it's also not equal to, another value.
 This had an unexpected result here,
-and could produce unexpected results, if a null
-parameter value is used in S Q L statements.
-The moral of the story here is, that you should
-always initialize your in and inOUT parameters.
-This way, you can avoid any unexpected behavior
-that could arise, as we're seeing here.
-I'll uncomment that line there,
-so this code is operational.
-Ok, so those are the two ways to get
-data back from a stored procedure.
-There's another way to get data back
-from stored code in the database server,
-and that's by using Callable statement, but
-executing a function, rather than a procedure.
-A function's purpose is to return a value, usually
-the result of some calculation or formula.
-In contrast, a stored procedure is often
-used for performing a sequence of operations,
-data manipulation, or enforcing
-business rules within the database.
-So I'll continue in the next video,
-and look at MySQL functions, and how to
-execute and use them with JDBC code.
+and could produce unexpected results 
+if a null parameter value is used in SQL statements.
+The moral of the story here is 
+that you should always initialize your _IN_ and _INOUT_ parameters.
+This way, you can avoid any unexpected behavior that could arise, 
+as we're seeing here.
+I'll uncomment that line there so this code is operational.
+
+Ok, so those are the two ways to get data back from a stored procedure.
+There's another way to get data back from stored code in the database server,
+and that's by using **CallableStatement**, 
+but executing a function, rather than a procedure.
+A function's purpose is to return a value, 
+usually the result of some calculation or formula.
+In contrast, a stored procedure is often used for performing a sequence of operations,
+data manipulation, or enforcing business rules within the database.
 </div>
 
 ## [l. CallableStatement Challenge]()
@@ -7748,298 +8178,6 @@ execute and use them with JDBC code.
 ```java  
 
 ```
-
-I've created a new class, which I've called **Challenge2**.
-I'll start by copying the _main_ method,
-from the **Main** class in the previous section,
-pasting that in my new class.
-I'll remove all the code in the try block.
-Next, I'll set up an ALTER TABLE statement.
-Hopefully you were able to research that,
-and found that the way to change a table,
-in the database, is to use the ALTER DDL Statement.
-In this case, I'll alter storefront.order_details,
-and ADD COLUMN, quantity, int. There are options
-you can include for the column, but let's just
-keep this simple. Next, I'll get a statement,
-and call execute, passing the alter string.
-So you might be asking why I didn't
-use a PreparedStatement here.
-In general, you don't use
-PreparedStatements for Data
-Definition Language or DDL statements in Java.
-PreparedStatements are typically used to execute
-Data Manipulation Language or DML statements,
-where the same SQL statement may be executed
-multiple times with different parameter values.
-DDL statements, on the other hand, like this one,
-wouldn't be run twice, and you wouldn't get
-
-```html  
-
-```
-
-the benefit of the precompiled statement.
-Let's run this.
-
-```html  
-
-```
-
-If you haven't already done so,
-don't forget to set your environment variables,
-for the MYSQL USER and MYSQL Password,
-in the run configuration for this class.
-
-```html  
-
-```
-
-Now, there's no output, but we don't
-get an exception either.
-I'll open My SQL Work bench,
-and choose the development session.
-In the schemas panel, I'll expand the
-storefront database, then tables,
-and highlight order_details.
-This time I'll select the info icon,
-and then select the columns tab.
-Here you can see that quantity
-is now a column in this table.
-I'll go back to my Java code.
-We only have to do this once,
-so I'll now comment out this code.
-So next, I'll write the code to read the data
-from the file, that has the order data.
-Let me open this file a minute.
-In this file, the order data has the key word
-order in the first column, whereas the details
-have the key word item, in that column.
-Notice that the order records have dates,
-already formatted the way we want them to be.
-Also notice, the time changes by 1 minute,
-you can use this to recognize the orders.
-I'll use a different approach in this code,
-just to show you an alternative.
-First I'll set up two records,
-one for Order, and one for OrderDetails,
-in the Challenge2.java source file.
-I'll start with the OrderDetail.
-This record has three fields, order detail id,
-an int, the item description, a string, and
-quantity, an int. I'll create a custom constructor
-for this, because I won't have an order id, as
-I'm reading the data in from the file. So I want
-a constructor with just item description and
-quantity. And this has to call the canonical
-constructor, so I'll pass -1 as the ID.
-Next, I'll create a record for the order.
-This will have order ID, date string, and
-list of order details. And this one will
-have a custom constructor too, for just the date
-string. So when I call the canonical constructor,
-I'll pass -1 for the order id, and I'll
-create a new ArrayList for the details here.
-The only other thing I'll add, is an addDetail
-method, that'll take an item description,
-and a quantity. I'll create an instance of the
-Order Detail, pass that the description, and the quantity.
-And I'll add that to the details array.
-Now that I have types to put the data in,
-I'll write the read data method.
-This will return a list of orders.
-I'll initialize an array list of orders to start
-with. This time, I'll use a Scanner. If you used
-Files or some other method, that's fine. I'm
-really choosing this method just to remind you,
-that you can use scanner, to read data from a
-file. I'm putting this in a try with resources block.
-Unlike Files.readLines, the scanner won't
-get closed automatically, so if I put it in this
-type of try statement, I don't have to remember
-to close it. I'll set the delimiter to be either
-a comma, or a new line. This means, instead of
-splitting the data by line, it's going to split
-the data by commas. I'll create a list of strings,
-by calling scanner.tokens. That gives me a stream
-of strings, so I'll use map to trim each value,
-then terminate the stream, collecting it into a list.
-I'll print each value, in my Order list.
-And I'll return my order list from this method.
-This won't compile, so I'll use
-IntelliJ to add a catch clause.
-Obviously I'm not done yet, because I have
-to create the Order, and OrderDetails.
-I'll loop through every column value,
-one at a time.
-I'll get the column value, from the list.
-If that token has the value order,
-then I know I need to set up an order.
-The date is the next place in the list, so I'll do a
-pre-increment, then get the next value.
-I'll create and Order, and add it to the order list.
-Similarly, I'll check for the keyword item,
-which indicates the tokens that follow are item fields.
-I'll parse the next field, the quantity. Now, in a
-normal world, you'd want to do more validation,
-but again, I'll just keep this simple. the item
-description is next. I can get the order that goes
-with the details, by just getting the last order added.
-And I'll add the detail to that order.
-I'll test this code out, by calling this method.
-I'll insert a call to this method, before
-I open a database connection. So first,
-I'll create a List variable, called orders,
-and assign that the value of read data.
-I'll run this now, to make sure I
-
-```html  
-
-```
-
-get each order, as a coherent unit.
-And you can see, this code has 5
-orders, and all the information
-is stored now, in this array of Orders.
-Next, I'll create the add Order method.
-This method will take a connection, two
-different prepared statements, and an order.
-I'll set up the prepared statements outside
-of this method, so they can be reused.
-This will throw an SQL Exception. Here, I'll use
-a regular try, because I don't want to close any
-resources, if this code fails. Instead I'll be
-ignoring the error, and continuing to process
-other orders. I do want the code in this
-method to be part of a single transaction,
-so that starts by setting auto commit to false.
-I'll leave some space for the code here. I'll
-end the try block with a commit statement. I'll
-catch the SQL Exception, and rollback any changes,
-if I do get one. Then, I'll rethrow the exception.
-And I do want a finally clause, because I want to
-be sure auto commit is set to true in any case.
-That's the set up for a transaction.
-Between the first auto commit, and the commit
-method, I need jdbc code, so I'll start by
-initializing an order ID variable, to minus 1.
-I'll now set the only parameter, on the prepared
-Statement for the order. I can use setString,
-even when the field is a date time field.
-I'll call the executeUpdate method on that, inside an
-if condition,
-checking to make sure only 1 record was inserted.
-So if that's true, I know I can get
-the generated keys, from the prepared statement.
-And you've seen me do this often enough,
-so I'll just get that, and print it out.
-Next, I'll add the code to batch up the details
-for each order, before executing the whole batch.
-I'll insert this code in the nested if.
-If the order id is greater than minus 1, then I
-know my order, the parent record, was created ok.
-I'll use the prepared statement for detail,
-and I'll set the order id, which is the first place
-holder. Now, I'll loop through the order details.
-And set the 2nd and 3rd parameters, that's item
-description, and quantity. I'll call add batch
-on that prepared statement. After I've batched
-up all the statements, I'll call execute Batch,
-which returns an array of integers. And I'll sum
-those values up with a quick stream, which I did
-in the last video. I'll check if the rowsInserted,
-is different from the size, of the details.
-If they're different, I'll throw an exception.
-Did you notice something here?
-That I set the order id outside of the loop.
-Because I'm reusing the preparedStatement,
-the parameters I used previously
-are still set, so here I can
-just set order id once, and it will stay set.
-The other thing is that I didn't set the flag on
-the connection, thesetContinueBatchOnError flag.
-This makes this code a little less efficient,
-so if you did add it, that's great.
-I'll just mention it, but I'll leave
-the code as is.
-We're almost done.
-I need a method, which I'll call add Orders.
-That'll take the connection,
-and the list of orders.
-I'll set up a string for the insert order.
-Now don't forget, you need to specify
-parameters with a question mark, and not a string specifier.
-I only have one placeholder, and that's
-for the order date. And I'll set up the string for
-insert detail, and that's very similar, but it has
-three placeholders. I'll use a try with resources,
-creating my prepared statements here. So ps Order
-is the prepared statement for the insert order string.
-For prepared statements, I specify
-if I want generated keys back at this point,
-and not in the execute Update method.
-I'll create ps Detail the same way.
-This won't compile, so I'll have
-IntelliJ generate the catch clause.
-Now it's time to put it all together.
-I'll loop through the orders using for each,
-and start a multi line lambda. I'll include a
-try catch clause in this lambda. I'll execute add
-Order, passing the connection, the two different
-prepared statements, and the order.
-Here,I'll catch the SQL exception, because I want to
-handle it, and continue processing. And just to
-reinforce some of the lecture material, I'll print
-the error code, the S Q L state, and the message.
-I'll print the state of the prepared statement
-for the order. And I'll print the order itself.
-Finally, I just have to call
-this from the main method.
-I'll add this inside the try catch clause.
-And that's it.
-I'll run that.
-
-```html  
-
-```
-
-So what I didn't tell you in the beginning,
-was there was an error in the data.
-I did this on purpose, so it would
-test the requirements of this challenge.
-The challenge was to make sure the order
-would be rolled back, but orders after
-the bad order, would still get processed.
-So you can see the problem was with the fourth
-order, and that's because I had a bad date there.
-This format is the year, the month,
-then the day, so I have November
-31st here, which isn't a valid date.
-You can see the MySQL error code was 1292,
-the SQL State code was 22 001, and the
-message says Incorrect datetime value.
-And then the prepared statement
-for the order is printed out
-That's followed by all the order information.
-I'll switch back to MySQL Workbench,
-and look at this data there.
-I'll highlight order and then pick the grid icon.
-Here, you see 4 orders added,
-which confirms the Java output.
-I'll do the same for the Order details.
-And you can see order
-details for those four orders.
-So hopefully you got a lot out of this challenge.
-There was a lot to it, I know.
-This challenge included a DDL statement,
-prepared statements, batch processing
-and transactional processing.
-In the next video, I'll be talking
-about using callable statements,
-which are used to call server side methods,
-or functions, which are sometimes generically
-called stored procedures, in a database.
-So I'll see you in that next video.
 
 ```html  
 
