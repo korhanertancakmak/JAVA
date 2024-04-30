@@ -8297,168 +8297,545 @@ This gives you an idea of relative length if all the songs were a uniform record
 Now, let's see how we'd use this in Java code.
 I'll go back to my prepared statement project in IntelliJ.
 I'll be adding code to call this function in the **MusicCallableStatement** class.
-
-
-
-First, I'll comment out the code that calls
-the stored procedure.
-I'll use a block comment here, blocking out
-everything from the CallableStatement declaration,
-down to the end of the forEach looping.
+First, I'll comment out the code that calls the stored procedure.
+I'll use a block comment here, blocking out everything
+from the _CallableStatement_ declaration, down to the end of the _forEach_ looping.
 I'm going to call my function after the data is printed out,
-so after Main.printRecords.
-Whether you're calling a stored procedure,
-or a stored function, you still call prepareCall,
-on the connection. This time I'll assign it
-to a callable statement variable, named c
-s f. I'll pass the string that calls the calc
-album length function. In this case, I start
-with a question mark and equals sign, followed
-by the keyword call, then the stored function,
-music.calcAlbumLength, and that takes one parameter.
-The first question mark is for the result
-of the function.
-I only need to register the result once,
-and this is done just like an output parameter.
-The returned result is index 1.
-I'll use the java.sql.Types class, to specify the type
-as a double.
-Next, I'll loop through my data in the Map,
-so through the key, the artist, and the nested
-map, which has all the new album data. I'll
-loop through album map, but just the album name keys.
-I'll include a try clause. I'll
-set the function's parameter, index 2, to
-the album Name. What this means is, I'll be
-calling the calc album length for each of
-the bob dylan albums in my map. Next, I'll
-call execute on the c s f statement.
-I can get the result from the statement, by simply
-calling one of the get methods on index 1.
-I'll print this data out, so length of %s,
-that'll be the album name, is percent dot
-1f, that'll be the record length. And next,
-the usual catch clause.
-Ok so this code is similar to calling a stored
-procedure.
-I'll run this now.
+so after `Main.printRecords`.
 
-```html  
+```java  
+public class MusicCallableStatement {
 
+    private static final int ARTIST_COLUMN = 0;
+    private static final int ALBUM_COLUMN = 1;
+    private static final int SONG_COLUMN = 3;
+
+    public static void main(String[] args) {
+      
+        Map<String, Map<String, String>> albums = null;
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course08_CallableStatements/NewAlbums.csv";
+        try (var lines = Files.lines(Path.of(pathName))) {          // Stream<String>
+
+            albums = lines.map(s -> s.split(","))
+                    .collect(Collectors.groupingBy(s -> s[ARTIST_COLUMN], 
+                            Collectors.groupingBy(s -> s[ALBUM_COLUMN], 
+                                    Collectors.mapping(s -> s[SONG_COLUMN], 
+                                            Collectors.joining(
+                                                    "\",\"",
+                                                    "[\"",
+                                                    "\"]"
+                                            )))));
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+
+        albums.forEach((artist, artistAlbums) -> {
+            artistAlbums.forEach((key, value) -> {
+                System.out.println(key + " : " + value);
+            });
+        });
+
+        var dataSource = new MysqlDataSource();
+  
+        dataSource.setServerName("localhost");
+        dataSource.setPort(3335);
+        dataSource.setDatabaseName("music");
+
+        try (Connection connection = dataSource.getConnection(System.getenv("MYSQL_USER"), System.getenv("MYSQL_PASS"));) {
+/*
+            CallableStatement cs = connection.prepareCall("CALL music.addAlbumInOutCounts(?,?,?,?)");
+          
+            albums.forEach((artist, albumMap) -> {
+                albumMap.forEach((album, songs) -> {
+                    try {
+                        cs.setString(1, artist);
+                        cs.setString(2, album);
+                        cs.setString(3, songs);
+                        
+                        cs.setInt(4, 10);
+                        cs.registerOutParameter(4, Types.INTEGER);
+                        cs.execute();
+                        System.out.printf("%d songs were added for %s%n", cs.getInt(4), album);
+  
+                    } catch (SQLException e) {
+                        System.err.println(e.getErrorCode() + " " + e.getMessage());
+                    }
+                });
+            });
+*/
+
+            String sql = "SELECT * FROM music.albumview WHERE artist_name = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, "Bob Dylan");
+            ResultSet resultSet = ps.executeQuery();
+            Main.printRecords(resultSet);
+
+            CallableStatement csf = connection.prepareCall(" ? = CALL music.calcAlbumLength(?) ");
+            csf.registerOutParameter(1, Types.DOUBLE);
+
+            albums.forEach((artist, albumMap) -> {
+                albumMap.keySet().forEach((albumName) -> {
+                    try {
+                        csf.setString(2, albumName);
+                        csf.execute();
+                        double result = csf.getDouble(1);
+                        System.out.printf("Length of %s is %.1f%n", albumName, result);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
 ```
 
-But for this, I'm getting an error, parameter number 1 is not an out parameter.
-This error's a bit confusing, if you don't
-understand the problem.
-I'm going to go up to the prepareCall method,
-and make a minor change.
-I'll start and end the text that's in quotes,
-with an opening and closing curly brace.
-I'll run the code again.
+Whether you're calling a stored procedure or a stored function, 
+you still call _prepareCall_ on the connection. 
+This time I'll assign it to a callable statement variable, named _csf_. 
+I'll pass the string that calls the _calcAlbumLength_ function. 
+In this case, I start with a `?=` followed by the keyword call, then the stored function, 
+`music.calcAlbumLength` and that takes one parameter.
+The first question mark is for the result of the function.
+I only need to register the result once, 
+and this is done just like an output parameter.
+The returned result is index 1.
+I'll use the `java.sql.Types` class to specify the type as a **double**.
+Next, I'll loop through my data in the **Map**, so through the key, 
+the _artist_, and the nested map, which has all the new album data. 
+I'll loop through _albumMap_, but just the _albumName_ keys.
+I'll include a _try_ clause. 
+I'll set the function's parameter, index 2, to the _albumName_. 
+What this means is, I'll be calling 
+the _calcAlbumLength_ for each of the _bob dylan_ albums in my map. 
+Next, I'll call _execute_ on the _csf_ statement.
+I can get the result from the statement 
+by simply calling one of the get methods on index 1.
+I'll print this data out, so length of %s, 
+that'll be the _albumName_ is `%.1f`, that'll be the record length. 
+And next, the usual _catch_ clause.
+Ok, so this code is similar to calling a stored procedure.
+I'll run this now:
 
 ```html  
+Bob Dylan : ["You're No Good","Talkin' New York","In My Time of Dyin'","Man of Constant Sorrow","Fixin' to Die","Pretty Peggy-O","Highway 51 Blues","Gospel Plow","Baby Let Me Follow You Down","House of the Risin' Sun","Freight Train Blues","Song to Woody","See That My Grave Is Kept Clean"]
+Blonde on Blonde : ["Rainy Day Women","Pledging My Time","Visions of Johanna","One of Us Must Know (Sooner or Later)","I Want You","Stuck Inside of Mobile with the Memphis Blues Again","Leopard-Skin Pill-Box Hat","Just Like a Woman","Most Likely You Go Your Way (And I'll Go Mine)","Temporary Like Achilles","Absolutely Sweet Marie","Fourth Time Around","Obviously Five Believers","Sad-Eyed Lady of the Lowlands"]
+0 songs were added for Bob Dylan
+0 songs were added for Blonde on Blonde
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Blonde on BlondeBob Dylan      1              Rainy Day Women
+Blonde on BlondeBob Dylan      2              Pledging My Time
+Blonde on BlondeBob Dylan      3              Visions of Johanna
+Blonde on BlondeBob Dylan      4              One of Us Must Know (Sooner or Later)
+Blonde on BlondeBob Dylan      5              I Want You     
+Blonde on BlondeBob Dylan      6              Stuck Inside of Mobile with the Memphis Blues Again
+Blonde on BlondeBob Dylan      7              Leopard-Skin Pill-Box Hat
+Blonde on BlondeBob Dylan      8              Just Like a Woman
+Blonde on BlondeBob Dylan      9              Most Likely You Go Your Way (And I'll Go Mine)
+Blonde on BlondeBob Dylan      10             Temporary Like Achilles
+Blonde on BlondeBob Dylan      11             Absolutely Sweet Marie
+Blonde on BlondeBob Dylan      12             Fourth Time Around
+Blonde on BlondeBob Dylan      13             Obviously Five Believers
+Blonde on BlondeBob Dylan      14             Sad-Eyed Lady of the Lowlands
+Bob Dylan      Bob Dylan      1              You're No Good 
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die  
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O 
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+Bob Dylan      Bob Dylan      8              Gospel Plow    
+Bob Dylan      Bob Dylan      9              Baby Let Me Follow You Down
+Bob Dylan      Bob Dylan      10             House of the Risin' Sun
+Bob Dylan      Bob Dylan      11             Freight Train Blues
+Bob Dylan      Bob Dylan      12             Song to Woody  
+Bob Dylan      Bob Dylan      13             See That My Grave Is Kept Clean
+java.sql.SQLException : Parameter number 1 is not an OUT parameter
+    at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException()
+    at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException()
+    at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException()
+    at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException()
+    at com.mysql.cj.jdbc.CallableStatement.checkIsOutputParam()
+    at com.mysql.cj.jdbc.CallableStatement.registerOutParameter()
+    at com.mysql.cj.jdbc.CallableStatement.registerOutParameter()
+    at .MusicCallableStatement.main()
+```
 
+But for this, I'm getting an error, _parameter number 1 is not an out parameter_.
+This error's a bit confusing if you don't understand the problem.
+I'm going to go up to the prepareCall method, and make a minor change.
+
+```java  
+public class MusicCallableStatement {
+
+    private static final int ARTIST_COLUMN = 0;
+    private static final int ALBUM_COLUMN = 1;
+    private static final int SONG_COLUMN = 3;
+
+    public static void main(String[] args) {
+      
+        Map<String, Map<String, String>> albums = null;
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course08_CallableStatements/NewAlbums.csv";
+        try (var lines = Files.lines(Path.of(pathName))) {          // Stream<String>
+
+            albums = lines.map(s -> s.split(","))
+                    .collect(Collectors.groupingBy(s -> s[ARTIST_COLUMN], 
+                            Collectors.groupingBy(s -> s[ALBUM_COLUMN], 
+                                    Collectors.mapping(s -> s[SONG_COLUMN], 
+                                            Collectors.joining(
+                                                    "\",\"",
+                                                    "[\"",
+                                                    "\"]"
+                                            )))));
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+
+        albums.forEach((artist, artistAlbums) -> {
+            artistAlbums.forEach((key, value) -> {
+                System.out.println(key + " : " + value);
+            });
+        });
+
+        var dataSource = new MysqlDataSource();
+  
+        dataSource.setServerName("localhost");
+        dataSource.setPort(3335);
+        dataSource.setDatabaseName("music");
+
+        try (Connection connection = dataSource.getConnection(System.getenv("MYSQL_USER"), System.getenv("MYSQL_PASS"));) {
+
+            String sql = "SELECT * FROM music.albumview WHERE artist_name = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, "Bob Dylan");
+            ResultSet resultSet = ps.executeQuery();
+            Main.printRecords(resultSet);
+
+            //CallableStatement csf = connection.prepareCall(" ? = CALL music.calcAlbumLength(?) ");
+            CallableStatement csf = connection.prepareCall("{ ? = CALL music.calcAlbumLength(?) }");
+            csf.registerOutParameter(1, Types.DOUBLE);
+
+            albums.forEach((artist, albumMap) -> {
+                albumMap.keySet().forEach((albumName) -> {
+                    try {
+                        csf.setString(2, albumName);
+                        csf.execute();
+                        double result = csf.getDouble(1);
+                        System.out.printf("Length of %s is %.1f%n", albumName, result);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+I'll start and end the text in quotes, with an opening and closing curly brace.
+I'll run the code again:
+
+```html  
+Bob Dylan : ["You're No Good","Talkin' New York","In My Time of Dyin'","Man of Constant Sorrow","Fixin' to Die","Pretty Peggy-O","Highway 51 Blues","Gospel Plow","Baby Let Me Follow You Down","House of the Risin' Sun","Freight Train Blues","Song to Woody","See That My Grave Is Kept Clean"]
+Blonde on Blonde : ["Rainy Day Women","Pledging My Time","Visions of Johanna","One of Us Must Know (Sooner or Later)","I Want You","Stuck Inside of Mobile with the Memphis Blues Again","Leopard-Skin Pill-Box Hat","Just Like a Woman","Most Likely You Go Your Way (And I'll Go Mine)","Temporary Like Achilles","Absolutely Sweet Marie","Fourth Time Around","Obviously Five Believers","Sad-Eyed Lady of the Lowlands"]
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Blonde on BlondeBob Dylan      1              Rainy Day Women
+Blonde on BlondeBob Dylan      2              Pledging My Time
+Blonde on BlondeBob Dylan      3              Visions of Johanna
+Blonde on BlondeBob Dylan      4              One of Us Must Know (Sooner or Later)
+Blonde on BlondeBob Dylan      5              I Want You     
+Blonde on BlondeBob Dylan      6              Stuck Inside of Mobile with the Memphis Blues Again
+Blonde on BlondeBob Dylan      7              Leopard-Skin Pill-Box Hat
+Blonde on BlondeBob Dylan      8              Just Like a Woman
+Blonde on BlondeBob Dylan      9              Most Likely You Go Your Way (And I'll Go Mine)
+Blonde on BlondeBob Dylan      10             Temporary Like Achilles
+Blonde on BlondeBob Dylan      11             Absolutely Sweet Marie
+Blonde on BlondeBob Dylan      12             Fourth Time Around
+Blonde on BlondeBob Dylan      13             Obviously Five Believers
+Blonde on BlondeBob Dylan      14             Sad-Eyed Lady of the Lowlands
+Bob Dylan      Bob Dylan      1              You're No Good 
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die  
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O 
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+Bob Dylan      Bob Dylan      8              Gospel Plow    
+Bob Dylan      Bob Dylan      9              Baby Let Me Follow You Down
+Bob Dylan      Bob Dylan      10             House of the Risin' Sun
+Bob Dylan      Bob Dylan      11             Freight Train Blues
+Bob Dylan      Bob Dylan      12             Song to Woody  
+Bob Dylan      Bob Dylan      13             See That My Grave Is Kept Clean
+Length of Bob Dylan is 32.5
+Length of Blonde on Blonde is 35.0
 ```
 
 And scroll to the bottom of the output.
-Here, you can see the code ended without any
-errors, and I get the album lengths back,
-from executing my function this way.
-The length of Bob Dylan is 32.5, and the length
-of blonde on blonde is 35.0.
-What are the curly braces here, and why did
-this work?
-Without the curly braces, the JDBC driver
-interprets the string literally, so it wants
-to execute a call command, on the database.
-But in most databases, you don't execute stored
-functions, using the call keyword, like you
-would for a stored procedure.
-Because it thinks you're calling a stored
-procedure, the starting question mark is simply ignored.
-That's why we got the error in the first try,
-the parameter number 1 is not an out parameter,
-because the driver didn't factor in the first question mark.
-Using the curly braces informs the JDBC driver,
-that you want it to perform extra processing,
-or translation.
-These curly braces are called an escape sequence,
-and they're supported in special cases.
-JDBC Escape sequences provide a way to execute
-database-specific operations, in a more consistent
-and portable manner, across different database
-systems.
-They're enclosed in curly braces {},and are
-used within SQL statements.
-There are certain things that aren't database
-agnostic.
-This includes Date, time, and timestamp literals.
-You saw this, when I gave you a specific format for the date,
-in MySQL, in a challenge.
-The default date format is different, depending on the database.
-Scalar functions such as
-numeric, string, and data type conversion
-functions may differ. For example, the function
-to transform a string to upper case, may have
-a different name in various databases. Escape
-characters for wildcards used in LIKE clauses
-may be different between databases. And the
-execution ofStored procedures and functions
-may be performed with either a call, or execute
-method, or some other key word. Similarly,
-the execution of a function may be performed
-differently across databases.
-For these features, and a few others, you
-can use an escape sequence, usually with special
-syntax specified.
-In the case of stored functions, the key is,
-the question mark equals CALL, part of the
-string.
-This informs the JDBC driver, that you want
-it to prepare the code, to execute a function.
-The other items listed on this slide, have
-special indicators as well, and you can find
-these by googling JDBC escape sequences, if
-you're interested.
-You might be wondering why I didn't need the
-escape sequence for the stored procedures
-we looked at, in the last video.
-In general the key word call, is supported
-by most databases for stored procedures.
-This means I could go over to the MySQL workbench,
-and execute the call command, with the procedure
-name and specified parameters, in a SQL Query editor.
-I could do the same in most RDBMS's, so the
-use of the escape sequences in a stored procedure
-call, is often optional.
-The execute of a function isn't done with
-the command call, in MySQL, so as you saw,
-we needed to escape this string, which allowed
-it to run successfully.
+Here, you can see the code ended without any errors, 
+and I get the album lengths back from executing my function this way.
+The length of Bob Dylan is 32.5, and the length of blonde on blonde is 35.0.
+What are the curly braces here, and why did this work?
 
-```html  
-
+```java  
+CallableStatement csf = connection.prepareCall("{ ? = CALL music.calcAlbumLength(?) }");
+csf.registerOutParameter(1, Types.DOUBLE);
 ```
 
-Stored procedures are designed for executing
-multiple operations, modifying data, and enforcing
-business logic.
-In contrast, stored functions are primarily
-used for calculations and data transformations.
-Both enhance code reusability, improve performance,
-and promote encapsulation of complex database
-operations.
-And even better, they simplify the JDBC code
-you have to write.
-Now that you're a little familiar with stored
-procedures and stored functions, I've got
-a challenge for you coming up next.
-So I'll see you in the next video for that challenge.
+Without the curly braces, the JDBC driver interprets the string literally, 
+so it wants to execute a _call_ command on the database.
+But in most databases, you don't execute stored functions, 
+using the _call_ keyword, like you would for a stored procedure.
+Because it thinks you're calling a stored procedure, 
+the starting question mark is simply ignored.
+That's why we got the error in the first try,
+_the parameter number `1` is not an out parameter_,
+because the driver didn't factor in the first question mark.
+Using the curly braces informs the JDBC driver
+that you want it to perform extra processing or translation.
+These curly braces are called an **escape sequence**,
+and they're supported in special cases.
 
+**JDBC Escape sequences** provide a way to execute database-specific operations, 
+in a more consistent and portable manner, across different database systems.
+They're enclosed in curly braces `{}`, and are used within SQL statements.
+There are certain things that aren't database agnostic.
+
+* This includes date, time, and timestamp literals.
+You saw this, when I gave you a specific format for the date, in MySQL, in a challenge.
+The default date format is different, depending on the database.
+* Scalar functions such as numeric, string, and data type conversion functions may differ. 
+For example, the function to transform a string 
+to uppercase may have a different name in various databases. 
+* Escape characters for wildcards used in _LIKE_ clauses may be different between databases. 
+* And the execution of stored procedures and functions may be performed with either a _call_, 
+or _execute_ method, or some other keyword. 
+Similarly, the execution of a function may be performed differently across databases.
+For these features, and a few others, you can use an escape sequence, 
+usually with special syntax specified.
+In the case of stored functions, the key is the question mark equals _CALL_, 
+part of the string.
+This informs the JDBC driver that you want it to prepare the code, to execute a function.
+
+The other items listed on this list have special indicators as well, 
+and you can find these by googling JDBC escape sequences, if you're interested.
+You might be wondering why I didn't need the escape sequence 
+for the stored procedures we looked at.
+In general, the keyword _call_ is supported by most databases for stored procedures.
+This means I could go over to the MySQL workbench,
+and execute the _call_ command with the procedure name 
+and specified parameters in a SQL Query editor.
+I could do the same in most RDBMS's, 
+so the use of the escape sequences in a stored procedure _call_ is often optional.
+To execute of a function isn't done with the command _call_ in MySQL, 
+so as you saw, we needed to escape this string, which allowed it to run successfully.
+
+Stored procedures are designed for executing multiple operations, 
+modifying data, and enforcing business logic.
+In contrast, stored functions are primarily used for calculations and data transformations.
+Both enhance code reusability, improve performance, 
+and promote encapsulation of complex database operations.
+And even better, they simplify the JDBC code you have to write.
+Now that you're a little familiar with stored procedures and stored functions, 
+I've got a challenge for you coming up next.
 </div>
 
 ## [l. CallableStatement Challenge]()
 <div align="justify">
+
+In this challenge, I want you to revisit the _storefront_ database, 
+which you've worked on for the other challenges in previous sections.
+You'll be creating a stored procedure named _addOrder_.
+Alternatively, you can load the procedure included 
+in the package folder, in a file called `addOrder.sql`.
+The stored procedure has four parameters.
+Two are input parameters: 
+
+* There's _OrderDate_, a **DATETIME** parameter.  
+* And also, _OrderDetails_, a **JSON** parameter, 
+which should contain an array of json strings, 
+that each have the item description and quantity.
+
+Two are output parameters:
+
+* There's the _OrderId_, an **INT** parameter, 
+which will contain the order id of the inserted order. 
+* And the second is, _InsertedRecords_, another **INT** parameter, 
+which returns then number of detail records, inserted for that order.
+
+This stored procedure inserts the order and its details, 
+if it can't find an existing order, for the date time specified.
+You can use the _addAlbum_ procedure in the _music_ schema, 
+which we used in a previous section, as a starting point, 
+if you do want to try to create this procedure, on your own.
+Again, this procedure is in the package folder
+if you don't want this additional SQL challenge.
+
+Your Java code should use a _CallableStatement_ to call the _addOrder_ procedure.
+You'll pass a `java.sql.TimeStamp` as the first parameter.
+
+
+
+A TimeStamp and DateTime field are
+often interchangeable in many databases.
+For this, you'll need to transform
+a string, into a java.sql.TimeStamp.
+You can do this with a DateTimeFormatter,
+and the use of LocalDateTime.
+Next, you'll pass a string
+as the second parameter.
+This will be the json string,
+representing an array of order details.
+The input for the array of details, as a json
+string, should look as shown on this slide.
+Finally, you'll need to register two output
+parameters, both ints, for the order id,
+and the number of order detail records inserted.
+Make sure you delete the orders in a
+MySQL Workbench session, which were
+inserted in the previous challenge.
+The SQL code shown on this slide shows you
+how to delete the order, and it's details.
+Remember, we have a cascade delete set up, so
+deleting the order, will delete any related
+records, in the order detail table as well
+I'm also showing the DDL statements, which
+will reset the auto increment to 1 on both tables.
+You can execute these statements, if you want your
+first order to have an id of 1 again.
+The DDL statements are optional.
+Earlier in the course, in a previous challenge,
+the File Writing Challenge, in the Input &amp; Output
+(I/O), Working with Files in Java, we created
+a toString, Intelli J template, and called it
+JsonBuilder, which used the StringJoiner.
+You could leverage this to create the JSON
+string parameter, if you walked through
+that exercise with me, and also created
+this template in your IntelliJ environment.
+This means, you can go through the process to
+add a to string method, but select
+the JsonBuilder template instead,
+adding this to the order detail record.
+Alternately, you could just write
+your own method to do this.
+Use the DateTimeFormatter,
+with the pattern shown on this slide.
+You'll notice that I'm using a U, where I normally
+would use a Y, for the digits in the year.
+I haven't really covered Using the u pattern,
+versus the y pattern, for
+the year in a date pattern.
+This is actually kind of a complicated
+subject, so I've included a link to an
+interesting stackoverflow.com discussion, if you
+want to learn more, and dig into the complexities.
+Https://stackoverflow.com/questions/41177442/uuuu-versus-yyyy-in-datetimeformatter-formatting-pattern-codes-in-java
+I'm suggesting you use the u pattern in this
+challenge, because it causes the parsing to fail,
+with an exception, on the one bad date in our
+data, when using what's called strict parsing.
+I'll talk about this more in a bit.
+I'll show you what happens in both cases
+when I walk through my own code.
+You can create a LocalDateTime,
+using the DateTimeFormatter, and then
+transform it to a SQL TimeStamp type.
+A TimeStamp field, can be used for
+a SQL parameter of type DateTime.
+So pause the video, and go
+away, and give that a try.
+When you get that done, or if you get
+stuck, come back, and we can walk through
+my solution together.
+Ok, so how'd you do?
+Were you able to write some java
+code that called a store procedure?
+Did you get the orders inserted,
+that were in the orders.csv file?
+So let's walk through one solution together.
+Before I do anything else, I'll open my
+developer session in MySQL Workbench.
+I'll select the second icon on the tool
+bar menu that executes a SQL Script,
+and I'll pick the addOrder.sql file, which
+you can download from the resources folder.
+Once this script loads, I'll execute
+it using the lightning bolt icon.
+Refreshing the schema panel, I'll see this
+procedure under the stored procedures node.
+You can open this up, using the tool
+icon, and examine the structure.
+You'll see that it includes two input
+parameters and two output parameters,
+as I described on the challenge slide.
+I won't get into how this code works,
+except to say it's similar to the addAlbum
+procedure I walked through previously.
+In this case, it reads from a Jayson
+Object this time, not just a Jayson Array.
+A stored procedure is a black box in most
+cases, to the person writing the JDBC code,
+and how it works is less important,
+than what parameters are required.
+Now that I've got the stored procedure
+ready to use, I'll get back to Intelli
+J and open up the JDBCChallenges Project.
+I'll be changing code in the Challenge2 class.
+You might remember that in this class's
+source file, I also included two records,
+the Order and the OrderDetail record.
+First, I'll add my JSON method, using the
+toString functionality, to the OrderDetail record.
+I'll put my cursor after the constructor,
+but before the class's closing brace.
+And I'll press the key combination,
+alt insert, to generate code.
+From this menu, I'll select toString()
+I'll select the drop down
+option on the template field.
+And I'll scroll to the bottom of the list shown.
+If you followed along in that earlier video,
+you'll have the json Builder
+template we created back then.
+I'll select that, which
+prompts me with another dialog.
+Here, I just want to output item Description
+and quantity, so I'll select those two fields.
+This inserts a to Jayson method.
+I'll remove the override annotation.
+It was included there, because it thinks
+we're overriding a toString method,
+but we aren't really, so I do want to remove it.
+If you don't have this template available,
+pause the video here, and you can
+copy this code as I'm showing it here.
+Next, I'll add a method on the Order record.
+I'll call it getDetailsJson.
+I'll make this method public, and have it return
+a string. Next, I'll create a string joiner
+variable, joining with a comma, and starting with
+a square bracket, and also ending with a square
+bracket. I'll loop through the order details,
+and use the add method on the stringjoiner,
+adding the json string I get back, from calling
+my two Jayson method, on each order detail record.
+Finally, I'll return this string.
+In the main method, I'll comment
+out the add orders call, which was the
+previous way we inserted the orders.
+After this line, I'll add code,
+to loop through the orders.
+I'll start by first just printing the
+json string, for the order details.
+I'll quick run this, to test out what
 
 ```java  
 
@@ -8468,6 +8845,204 @@ So I'll see you in the next video for that challenge.
 
 ```
 
+my jayson detail strings look like.
+The readData method prints out the order
+details, but after that, you can see the
+json array strings that were created.
+It's an array, so in square brackets,
+and each element in this array, has an item
+description and a quantity, so that's good.
+Now, I'll set up my CallableStatement variable.
+I'll insert this before looping through all the
+orders, because I want to reuse this callable
+statement, for each record in my data.
+I'll assign the variable, the result of calling
+prepareCall on the connection object. Here,
+I'll use an escape sequence in the string I'll
+pass to it. You'll remember this is optional,
+but I did want to demonstrate it here.
+This stored procedure has four parameters,
+so those get populated with the placeholders,
+which are just question marks. I'll also set up
+my DateTimeFormatter object before the loop,
+using the pattern I showed you on the slide.
+ok now it's time to set up the
+parameters, on the callable statement.
+FIrst, I'll remove the System.out
+println statement in the for loop .
+I'll start with a try block next. This means,
+if I get an exception on any one order, the
+code will continue to process the other orders.
+I'll set up a local date time variable, which
+was one of my hints on the slide. I'll create
+this, by calling the parse method, and passing
+the datestring, and the formatter. I can then get
+a java.sql.Timestamp, using the Timestamp.valueOf
+method, passing it the local date time. The
+first parameter in the procedure is the datetime
+parameter, but the Callable statement doesn't
+have a set DateTime method. instead we use set
+Timestamp. Next, I'll set the second parameter,
+to the jayson string coming out of the method I
+created, on the order, so get Details Jayson.
+I'll catch any kind of Exception here, because
+I know I might have bad dates in my data. And if I
+get an exception, I'll print out that there was a
+problem, with both the date and the error message.
+Ok, so now I've set up the input parameters,
+but not the output parameters yet.
+You'll remember, if I want to retrieve
+the data, I need to register the out parameters.
+Both are integers, so I'll register parameter
+three as an Integer. And the same for parameter
+4.
+Now, I'll execute the callable statement. After
+the execution, I'll print out the number
+of records inserted, and the order id,
+as well as the date string, using a formatted
+string, Passing that, the number of records,
+which I get from parameter 4. And The order
+id, I can get from parameter 3. In both cases
+I use the getInt method. And to print the date,
+I'll just pass the date string on the order.
+And we are done.
+Before I run this,
+
+```java  
+
+```
+
+```html  
+
+```
+
+I'll go back to the MySQL Workbench
+session I had open, and delete the orders.
+For good measure, I'll also set the AUTO
+INCREMENT value back to 1, on both tables.
+I'll execute these statements.
+Then switching back to IntelliJ, I'll run my code.
+
+```java  
+
+```
+
+```html  
+
+```
+
+You can see the last 5 lines of
+output, are the result of the new code.
+All five orders were inserted successfully,
+but make sure you look at the 4th statement.
+Maybe you'll remember that
+this order has an invalid date,
+and you can see it in this output, November 31
+isn't a valid date, so why did this even work?
+I'll go back to MySQL Workbench, and query the
+order table, so select all from storefront.order.
+If I execute that:
+Note that the date
+on order id four is November 30th,
+Not only did Java's LocalDateTime.parse method
+not throw an error, it actually changed the date.
+This is due to a JDK 8 feature called a Resolver.
+This too is a bit complicated, but there
+are three ways the parse method could
+resolve a date, strict, smart, and lenient.
+By default, the setting is smart, which means,
+Java will adjust the date accordingly,
+under certain circumstances, but not all.
+The circumstances aren't perfectly
+straightforward, but here,
+we benefited (if you think this date change was
+actually a benefit) from this smart resolver,
+because it adjusted the date to November
+30, which you can see in this grid.
+Parsing a text string occurs in two phases.
+Phase 1 is a basic text parse according to
+the fields added to the builder.
+Phase 2 resolves the parsed
+field-value pairs into date and/or time objects.
+Phase 2 resolving can be changed, from its default
+value of SMART, to either STRICT or LENIENT.
+I'll take a minute here, to explore this
+a little bit more, for those of
+you who are curious about this.
+It may be you really don't want Java to
+adjust your dates, smartly, and you want
+to investigate invalid dates further, or
+just log them or process them differently.
+First, I'll remove the semi-colon,
+after the of Pattern method.
+Now, I'll chain a method, on the next line.
+The method name is with ResolverStyle,
+and I'll pass a value from the enum
+ResolverStyle, in this case STRICT.
+I'll again clean out my orders in MySQL
+WorkBench, running the same three statements.
+
+```java  
+
+```
+
+```html  
+
+```
+
+Now, back to IntelliJ, I'll re-run my code.
+In this case, you can see that an exception
+was thrown, and the order with the
+November 31 date, wasn't inserted.
+Again, this may be something you want to control,
+so you might not want to use Smart resolving.
+If I query MySQL Workbench again.
+I will see that only 4 orders were
+inserted this time, which confirms
+what we saw, in the Intelli J output.
+Getting back to IntelliJ, I want to take an extra
+minute here, just to show you one more thing.
+I'll change my format from u u u u to y y y y.
+Going back to MySQL Workbench,
+I'll delete my orders.
+And back to Intelli J,
+I'll run the code with this one minor change.
+
+```java  
+
+```
+
+```html  
+
+```
+
+Now, I've got an error on every order,
+that the string could not be parsed.
+The message shows what was parsed,
+and unfortunately doesn't give you
+much of a hint about what is wrong.
+As it turns out, in strict mode, if you use the
+y y y y pattern, you need to specify the era.
+I can do this easily enough in this example, by
+adding the pattern G, at the start of my pattern.
+I also have to include the
+era, AD in my date string.
+I'm not going to change the file, but I
+can just pre-pend AD to the string I pass,
+to the parse method.
+I'll rerun my code.
+The code now acts the same as if I'd used u u u u.
+This is really more of a cautionary tale,
+to make sure you test your date parsing
+code thoroughly, with good and bad dates,
+so you know what to expect.
+Smart parsing is the default,
+but it may not actually have the desired effect.
+Ok, so that's the end of this challenge,
+and I hope you got a lot out of that.
+Next, I want to talk to you about a
+concept called Object Relational Mapping or
+O R M, so I'll see you in that next video.
 </div>
 
 ## [m. Introduction to JPA and ORM]()

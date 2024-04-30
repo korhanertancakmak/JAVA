@@ -7,7 +7,7 @@ DROP function IF EXISTS `music`.`calcAlbumLength`;
 
 DELIMITER $$
 USE `music`$$
-CREATE DEFINER=`devuser`@`localhost` FUNCTION `calcAlbumLength`(albumName TEXT) RETURNS DOUBLE
+CREATE DEFINER=`devUser`@`localhost` FUNCTION `calcAlbumLength`(albumName TEXT) RETURNS DOUBLE
     READS SQL DATA
 BEGIN
 	DECLARE length DOUBLE DEFAULT 0.0;

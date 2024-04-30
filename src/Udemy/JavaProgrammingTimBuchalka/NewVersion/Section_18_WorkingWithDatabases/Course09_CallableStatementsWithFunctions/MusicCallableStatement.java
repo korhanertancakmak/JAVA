@@ -19,7 +19,9 @@ public class MusicCallableStatement {
 
         Map<String, Map<String, String>> albums = null;
 
-        try (var lines = Files.lines(Path.of("NewAlbums.csv"))) {
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course09_CallableStatementsWithFunctions/NewAlbums.csv";
+        try (var lines = Files.lines(Path.of(pathName))) {
 
             albums = lines.map(s -> s.split(","))
                     .collect(Collectors.groupingBy(s -> s[ARTIST_COLUMN],
@@ -50,6 +52,7 @@ public class MusicCallableStatement {
                 System.getenv("MYSQL_USER"),
                 System.getenv("MYSQL_PASS"));
         ) {
+
 /*
             CallableStatement cs = connection.prepareCall(
                     "CALL music.addAlbumInOutCounts(?,?,?,?)");
@@ -79,6 +82,7 @@ public class MusicCallableStatement {
             ResultSet resultSet = ps.executeQuery();
             Main.printRecords(resultSet);
 
+            //CallableStatement csf = connection.prepareCall(" ? = CALL music.calcAlbumLength(?) ");
             CallableStatement csf = connection.prepareCall("{ ? = CALL music.calcAlbumLength(?) }");
             csf.registerOutParameter(1, Types.DOUBLE);
 
