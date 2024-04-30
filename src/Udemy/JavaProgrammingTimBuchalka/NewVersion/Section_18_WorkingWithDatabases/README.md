@@ -6721,7 +6721,7 @@ I'll explain these parameters a bit more later,
 as we explore how to use the _CallableStatement_.
 First, we need access to one.
 
-```html  
+~~~~sql  
 USE `music`;
 DROP procedure IF EXISTS `addAlbum`;
 
@@ -6774,7 +6774,7 @@ BEGIN
 END$$
 
 DELIMITER ;
-```
+~~~~
 
 I've included a DDL script in the package folder of this section, 
 named `addAlbumSongs.SQL`.
@@ -6810,19 +6810,19 @@ but they do support **json** objects, which can include **arrays**.
 In this case, this is a way to pass an array of **text**, 
 which will be an array of _songTitles_ to this stored procedure.
 
-```html  
+~~~~sql  
 IF val_artist_id IS NULL THEN
     -- Insert a new order
     INSERT INTO artists (artist_name) VALUES (artistName);
     -- Get artist_id of last artist inserted
     SELECT LAST_INSERT_ID() INTO val_artist_id;
 END IF;
-```
+~~~~  
 
 This code will add the artist if it's not in the database, 
 or get the artist id if it is.
 
-```html  
+~~~~sql  
 IF val_album_id IS NULL THEN
     -- Insert a new album
     INSERT INTO albums (artist_id, album_name) VALUES (val_artist_id, albumName);
@@ -6840,7 +6840,7 @@ IF val_album_id IS NULL THEN
     
     END WHILE;
 END IF;
-```
+~~~~  
 
 It'll then add the album if it's not there,
 then inserts all the songs associated with that album, 
@@ -6858,9 +6858,9 @@ Before we get back to IntelliJ,
 let's make sure we've removed any _Bob Dylan_ records in the music data set.
 I'll open another SQL edit panel, and type in a delete statement.
 
-```html  
+~~~~sql  
 delete from music.artists where artist_name='Bob Dylan';
-```
+~~~~
 
 In this case, I'm using all lowercases for the SQL keywords as I type it in,
 since this is just an adhoc query.
