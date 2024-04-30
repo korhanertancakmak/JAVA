@@ -6,7 +6,7 @@ DROP procedure IF EXISTS `music`.`addAlbum`;
 
 DELIMITER $$
 USE `music`$$
-CREATE DEFINER=`devuser`@`localhost` PROCEDURE `addAlbum`(artistName TEXT, albumName TEXT, songTitles JSON)
+CREATE DEFINER=`devUser`@`localhost` PROCEDURE `addAlbum`(artistName TEXT, albumName TEXT, songTitles JSON)
 BEGIN
 	DECLARE val_artist_id INT DEFAULT NULL;
     DECLARE val_album_id INT DEFAULT NULL;

@@ -2,716 +2,587 @@ WEBVTT
 Kind: captions
 Language: en
 
-00:00:05.400 --> 00:00:10.235
-There are many challenges and concerns, when
-you're working with databases via JDBC.
+00:00:05.480 --> 00:00:10.680
+In the last video, I showed you how to execute
+a procedure, stored on the database server, from
 
+00:00:10.680 --> 00:00:16.320
+Java using JDBC, and the Callable Statement.
+This is often a preferred approach,
 
-00:00:11.080 --> 00:00:12.394
-I've listed many of them here.
+00:00:16.320 --> 00:00:21.720
+for many enterprise organizations.
+In the last example, we passed a set of
 
-00:00:13.320 --> 00:00:17.828
-This can be a daunting list for a Java
-developer, whose not an expert in databases.
+00:00:21.720 --> 00:00:26.440
+data to the stored procedure, which in turn
+managed inserting that data appropriately,
 
+00:00:26.440 --> 00:00:31.880
+into related tables in the music database.
+In addition to passing data as parameters
 
-00:00:18.720 --> 00:00:22.640
-If you're working in an environment that's
-using an enterprise database, you've probably
+00:00:31.880 --> 00:00:35.302
+into a procedure, there are a
+couple of ways to get data back.
 
-00:00:22.640 --> 00:00:26.840
-got people on your team, who have a lot more
-knowledge about many of these issues than you do,
 
-00:00:26.840 --> 00:00:31.680
-or can hope to learn in a short time.
-For this reason, the best place to deal
+00:00:36.258 --> 00:00:40.623
+First,MySQL has three different types
+of parameter types for it's procedures.
 
-00:00:31.680 --> 00:00:35.141
-with many of these issues, is
-on the database server itself.
 
+00:00:41.600 --> 00:00:46.640
+The in Parameter is a read only parameter, and
+the default type, meaning we don't have to specify
 
-00:00:36.080 --> 00:00:42.162
-If you've got Database Administrators or DBAs, and
-S Q L Developers, your job will get a lot easier.
+00:00:46.640 --> 00:00:51.983
+the keyword, in, in our MySQL procedures,
+if this the type of parameter you want.
 
 
-00:00:42.960 --> 00:00:48.120
-They'll tackle many of these issues with database
-server features, like indices, constraints,
+00:00:52.960 --> 00:00:56.364
+This is data you pass to the procedure,
+and it doesn't get modified.
 
-00:00:48.120 --> 00:00:52.600
-triggers, and stored procedures.
-They'll puzzle over explain plans
 
-00:00:52.600 --> 00:00:56.515
-for performance issues, and write all
-kinds of monitoring and logging code.
+00:00:57.280 --> 00:01:02.364
+The OUT parameter is a write only parameter.
+You must specify the OUT type for this one.
 
 
-00:00:57.360 --> 00:01:01.000
-They're often experts in tuning queries,
-so who better to write your queries than
+00:01:03.320 --> 00:01:07.360
+The in, OUT parameter is a hybrid
+parameter, so you can pass data in,
 
-00:01:01.000 --> 00:01:04.720
-this impressive group of people.
-Even if you don't have access to
+00:01:07.360 --> 00:01:13.320
+which the procedure can modify, and return.
+These types are specific to MySQL,
 
-00:01:04.720 --> 00:01:08.720
-this talent pool, You should consider
-addressing, at least some of the problems
+00:01:13.320 --> 00:01:17.562
+but many vendors have similar types, the
+syntax just might be slightly different.
 
-00:01:08.720 --> 00:01:14.480
-listed on this slide, with server solutions.
-This is often done with functions and routines,
 
-00:01:14.480 --> 00:01:20.127
-written in SQL, or transactional or procedural
-languages, that integrate easily with SQL.
+00:01:18.600 --> 00:01:23.520
+This is where JDBC is an advantage, because
+you, as a developer, don't really need to
 
+00:01:23.520 --> 00:01:27.960
+worry about the syntax, just the concepts,
+and how to interact with code that has these
 
-00:01:21.043 --> 00:01:25.840
-These items are often called stored procedures as
-a category, though there are two separate database
+00:01:27.960 --> 00:01:31.760
+different parameter types.
+I'll start first, with an
 
-00:01:25.840 --> 00:01:32.160
-artifacts, the procedure and the function.
-Stored procedures are a way to encapsulate
+00:01:31.760 --> 00:01:37.160
+example of the out parameter.
+To set this up, I'll open up my
 
-00:01:32.160 --> 00:01:37.040
-complex SQL logic, and data
-manipulation, into reusable modules,
+00:01:37.160 --> 00:01:39.666
+development session on My SQL Workbench.
 
-00:01:37.040 --> 00:01:41.600
-that can be called from within the database.
-They can help to improve application
+00:01:44.387 --> 00:01:46.285
+I'll expand the Stored Procedures,
 
-00:01:41.600 --> 00:01:48.320
-performance, modularity, and security.
-They're precompiled queries, or segments of code,
+00:01:46.320 --> 00:01:49.758
+and click on the add Album procedure
+there, and select the tool icon.
 
-00:01:48.320 --> 00:01:54.440
-that are stored as just another database object.
-Your JDBC code can be simplified quite a bit,
 
-00:01:54.440 --> 00:01:57.242
-if you're able to take
-advantage of stored procedures.
+00:01:51.040 --> 00:01:56.760
+This opens the edit window, and I can edit this.
+I'll add a new line after the localhost value,
 
+00:01:56.760 --> 00:02:01.800
+in the CREATE DEFINER statement.
+The use of CREATE DEFINER is important,
 
-00:01:58.040 --> 00:02:03.200
-A stored procedure can also be written
-externally, in Java, Python, or c, and
+00:02:01.800 --> 00:02:05.484
+in situations where you want to control
+who can execute this procedure.
 
-00:02:03.200 --> 00:02:07.842
-stored with a wrapping procedure in the database,
-which means that code will run on the server.
 
+00:02:06.400 --> 00:02:10.862
+In this case, this means the procedure will
+get executed with dev user's privileges.
 
-00:02:08.640 --> 00:02:12.640
-I won't be covering this last bit, but
-you should know that some databases,
 
-00:02:12.640 --> 00:02:17.651
-like S Q L Lite and H2, only support these
-external types of stored procedures.
+00:02:11.778 --> 00:02:14.720
+Right now, you don't have to worry
+about too much about this statement,
 
+00:02:14.720 --> 00:02:18.680
+or the code in this procedure.
+This first bit, is added
 
-00:02:18.520 --> 00:02:22.564
-I'll be covering functions in a later video,
-and will explain the differences later.
+00:02:18.680 --> 00:02:23.920
+automatically if you create a new procedure.
+What I want to do here is, change the procedure
 
+00:02:23.920 --> 00:02:29.840
+name, from addAlbum to addAlbumReturn Counts.
+By doing this, I'll actually be creating a new
 
-00:02:24.560 --> 00:02:29.440
-It's very common in an enterprise environment, to
-protect access to the database, and to restrict
+00:02:29.840 --> 00:02:33.240
+procedure with this name.
+Before I save this though,
 
-00:02:29.440 --> 00:02:33.960
-what your clients are allowed to do.
-Because of this, you might find that
+00:02:33.240 --> 00:02:37.080
+I'll add a fourth parameter.
+I'll start with the key word OUT,
 
-00:02:33.960 --> 00:02:39.360
-most of your JDBC work, will be done
-with requests to stored procedures.
+00:02:37.080 --> 00:02:41.856
+and by convention this is upper case, my parameter
+name will be count, and it's type is int.
 
 
-00:02:39.360 --> 00:02:44.920
-Java supports the execution, and retrieval of
-results, from these code segments, with a special
+00:02:43.240 --> 00:02:48.746
+I could also change my other 3 parameters, and
+include the key word, In, and I'll do this.
 
-00:02:44.920 --> 00:02:50.720
-kind of statement, named the CallableStatement.
-Like a PreparedStatement, this first takes a
 
-00:02:50.720 --> 00:02:55.480
-parameterized string, when you get an instance.
-The object referenced will already
+00:02:51.880 --> 00:02:56.055
+It's usually best practice, to explicitly
+specify the in parameter type,
 
-00:02:55.480 --> 00:03:00.680
-be compiled in the database server.
-Like a method in Java, you pass in data with
+00:02:56.055 --> 00:03:00.187
+though not required, as you saw.
+I'll hit the Apply button.
 
-00:03:00.680 --> 00:03:07.160
-parameters, and you may or may not get data back.
-Depending on your database, the data coming back
 
-00:03:07.160 --> 00:03:09.760
-might be a result returned
-from a function, or it could
+00:03:01.240 --> 00:03:03.844
+That will popup the DDL
+script that'll get executed.
 
-00:03:09.760 --> 00:03:15.960
-be returned with declared output parameters.
-Some databases also support a hybrid parameter,
 
-00:03:15.960 --> 00:03:19.120
-an input output parameter, which
-lets you pass data which may be
+00:03:04.760 --> 00:03:07.780
+I'll hit apply again.
+Then finish.
 
-00:03:19.120 --> 00:03:25.120
-modified by the procedure, and passed back.
-I'll explain these parameters a bit more later,
 
-00:03:25.120 --> 00:03:30.332
-as we explore how to use the CallableStatement.
-First, we need access to one.
+00:03:10.080 --> 00:03:13.164
+I'll refresh the schema panel, and I
+should see my new procedure there.
 
 
-00:03:32.680 --> 00:03:38.148
-I've included a DDL script in the resources folder
-of this lecture, named add Album Songs dot S Q L.
+00:03:14.120 --> 00:03:16.640
+So I created an OUT Parameter,
+but I didn't actually do
 
+00:03:16.640 --> 00:03:22.000
+anything with this parameter, in my code.
+I still have the procedure up in the edit window,
 
-00:03:39.040 --> 00:03:42.960
-You should download that script, and put
-it somewhere on your local file system,
+00:03:22.000 --> 00:03:27.360
+so I'll scroll to the end of this code.
+Right after the commit, I'll set the count
 
-00:03:42.960 --> 00:03:47.800
-where you can access it easily.
-Next, open MySQL Workbench, to your
+00:03:27.360 --> 00:03:31.756
+variable, to the value in the eye variable,
+which will tell me how many songs got inserted.
 
-00:03:47.800 --> 00:03:49.162
-development connection.
 
-00:03:55.150 --> 00:03:58.512
-In this case,you'll select the second SQL Editor icon,
+00:03:33.160 --> 00:03:36.443
+I'll say again, don't get too stressed
+about the code in this procedure.
 
-00:04:00.954 --> 00:04:03.338
-which will prompt you to open an S Q L script.
 
+00:03:37.440 --> 00:03:41.600
+If you follow along with me, this should
+compile fine, and you don't really need to
 
-00:04:04.160 --> 00:04:07.707
-Find the script you downloaded, and
-select it, and hit the open button.
+00:03:41.600 --> 00:03:46.640
+understand all the details about how this works.
+I've also included this procedure's script in
 
+00:03:46.640 --> 00:03:52.720
+the resources folder, if you have any troubles.
+You can drop your version, and import the script,
 
-00:04:09.280 --> 00:04:14.760
-That should load this script in your edit panel.
-Now, you just want to execute this script, so the
+00:03:52.720 --> 00:03:56.024
+like I showed you, with the first
+procedure in a previous video.
 
-00:04:14.760 --> 00:04:21.080
-first lightning bolt icon there, will do it.
-If you refresh the schema panel, you should
 
-00:04:21.080 --> 00:04:26.167
-confirm that you see this new procedure, named
-add Album, under the Stored Procedures listing.
+00:03:56.960 --> 00:04:00.734
+For now, I'll again Apply that,
+twice, and then hit finish.
 
 
-00:04:27.200 --> 00:04:29.788
-Click on that, and select the
-wrench or tool icon there.
+00:04:02.240 --> 00:04:06.142
+I'll open an S Q L edit panel, and
+delete all my data for Bob Dylan again.
 
 
-00:04:31.240 --> 00:04:36.240
-This will load up the stored procedure's code.
-I won't get into this code too much,
+00:04:07.160 --> 00:04:11.040
+So that's delete from music.artists,
+where artist_name equals,
 
-00:04:36.240 --> 00:04:40.000
-but what you do need to know, is what
-the parameters are, to this routine.
+00:04:11.040 --> 00:04:12.806
+and Bob Dylan in single quotes.
 
 
-00:04:40.920 --> 00:04:46.560
-There's three of them, an artist name,
-a text field, an album name, also text,
+00:04:17.039 --> 00:04:19.400
+Now, let's get back to IntelliJ,
 
-00:04:46.560 --> 00:04:52.320
-and the last is songs, a jayson type.
-MySQL stored procedures don't currently
+00:04:19.400 --> 00:04:23.560
+to the PreparedStatement project from the
+last video, and to the class I was using
 
-00:04:52.320 --> 00:04:56.917
-support arrays, but they do support
-jayson objects, which can include arrays.
+00:04:23.560 --> 00:04:28.400
+previously, MusicCallableStatement.
+In this code, I'll change the name of
 
+00:04:28.400 --> 00:04:32.075
+the stored procedure that gets called,
+in the callable statement code here.
 
-00:04:57.880 --> 00:05:01.800
-In this case, this is a way to pass an
-array of text, which will be an array
 
-00:05:01.800 --> 00:05:06.480
-of song titles to this stored procedure.
-This code will add the artist if it's not in
+00:04:33.520 --> 00:04:36.232
+I'll run this now, executing
+the new stored procedure.
 
-00:05:06.480 --> 00:05:13.040
-the database, or get the artist id if it is.
-It'll then add the album if it's not there,
 
-00:05:13.040 --> 00:05:17.680
-then inserts all the songs associated with that
-album, looping through the songs parameter,
+00:04:38.919 --> 00:04:43.520
+This time, I get an error for each
+attempt, that the parameter, named count,
 
-00:05:17.680 --> 00:05:22.560
-using MySQL JSON functions.
-All three of these parameters
+00:04:43.520 --> 00:04:48.522
+is not registered as an output parameter.
+There are a couple of problems here actually.
 
-00:05:22.560 --> 00:05:25.985
-are input parameters.
-How do I know?
 
+00:04:49.560 --> 00:04:53.320
+First, I need another question
+mark, as a parameter placeholder,
 
-00:05:26.760 --> 00:05:32.200
-If you don't see one of the keywords, in, OUT, or
-in OUT, then the parameter is by default an input
+00:04:53.320 --> 00:04:57.436
+in the call to this stored procedure.
+So I'll quickly add that.
 
-00:05:32.200 --> 00:05:37.120
-parameter, so the keyword in, is implied.
-This is important to know,
 
-00:05:37.120 --> 00:05:41.680
-for the callable statement.
-Before we get back to IntelliJ,
+00:04:58.840 --> 00:05:05.485
+And I'll try running this again.
+And now this works, and data gets added.
 
-00:05:41.680 --> 00:05:45.435
-let's make sure we've removed any Bob
-Dylan records in the music data set.
 
+00:05:06.360 --> 00:05:09.286
+So registering an out parameter,
+isn't actually required.
 
-00:05:46.280 --> 00:05:49.804
-I'll open another SQL edit panel,
-and type in a delete statement.
 
+00:05:10.120 --> 00:05:13.284
+You register the out parameter,
+if you want to get the data back.
 
-00:05:50.720 --> 00:05:56.637
-So delete from music.artists, where artist name,
-equals Bob Dylan, with his name in single quotes.
 
+00:05:14.200 --> 00:05:17.400
+Since I do want the result, that
+gets passed back in that parameter,
 
-00:05:57.600 --> 00:06:02.200
-In this case, I'm using all lower case
-for the SQL keywords as I type it in,
+00:05:17.400 --> 00:05:22.384
+I'll show you how to do that next.
+To get that data, there are two steps.
 
-00:06:02.200 --> 00:06:07.520
-since this is just an adhoc query.
-I told you to use uppercase for SQL keywords,
 
-00:06:07.520 --> 00:06:11.470
-and I know I haven't always been consistent,
-and will sometimes forget to do it myself.
+00:05:23.320 --> 00:05:27.440
+Before the execute method, I need to call
+register out parameter, specifying the
 
+00:05:27.440 --> 00:05:33.307
+index as 4. The second parameter is the data
+type, and I'll set that to Types dot integer.
 
-00:06:12.480 --> 00:06:17.268
-There's a beautify reformat option in this SQL
-Edit panel, and that's the little broom icon.
 
+00:05:35.240 --> 00:05:40.240
+Types is a class in the java.sql package,
+which defines constants used to identify
 
-00:06:18.160 --> 00:06:22.800
-I'll click that.
-I don't always like the way it reformats it, but
+00:05:40.240 --> 00:05:46.102
+generic SQL types, called JDBC types,
+which will be translated to java types.
 
-00:06:22.800 --> 00:06:28.160
-it does change the keywords, to be upper case.
-Sometimes I just want my query to be on a
 
-00:06:28.160 --> 00:06:31.247
-single line and quickly execute
-it, so I may not beautify it.
+00:05:47.120 --> 00:05:51.321
+That's the first thing that needs to be done,
+to get data returned on the Callable Statement.
 
 
-00:06:32.280 --> 00:06:36.320
-But if I am using the code in a JDBC
-statement, or a stored procedure,
+00:05:52.298 --> 00:05:56.004
+The next part is to retrieve this data
+from the statement, after it's executed.
 
-00:06:36.320 --> 00:06:38.627
-I do try to be more disciplined.
-At any rate, I'll execute this statement.
 
+00:05:56.920 --> 00:06:03.320
+I'll print the number of songs, and the album
+name. I can get the output parameter's value,
 
-00:06:39.590 --> 00:06:43.867
-I'll execute that, so that the music
-database won't have any data for Bob Dylan,
+00:06:03.320 --> 00:06:07.870
+by calling get Int, and passing the
+appropriate index, so the index is four here.
 
-00:06:43.867 --> 00:06:49.120
-when we first execute this procedure.
-You'll hopefully remember, that we added cascade
 
-00:06:49.120 --> 00:06:54.195
-deletes on the albums and songs, so this single
-statement, will clean up all that related data.
+00:06:09.498 --> 00:06:14.200
+Before I run this, I want to again delete the
+data for Bob Dylan, so I'll jump back to the
 
+00:06:14.200 --> 00:06:18.528
+MySQL Workbench session, and re execute
+the delete artists statement there.
 
-00:06:55.040 --> 00:06:59.400
-Switching back to IntelliJ, I'll reopen
-the PreparedStatement project again.
 
+00:06:20.400 --> 00:06:23.478
+And now, back to IntelliJ, I'll run my code.
 
-00:07:01.400 --> 00:07:05.887
-I'll create a new class in the dev lpa package,
-which I'll call MusicCallableStatement,
 
-00:07:10.560 --> 00:07:15.781
-and it'll have a main method.
-I'll start by setting up a couple of constants.
+00:06:27.975 --> 00:06:29.833
+Before all the records are printed,
 
+00:06:29.960 --> 00:06:35.520
+notice the two statements there.
+13 songs were added for the album, Bob Dylan,
 
-00:07:16.720 --> 00:07:20.924
-These constants just represent the column
-index of the data, in the csv file.
+00:06:35.520 --> 00:06:40.840
+and 14 songs were added for Blonde on Blonde.
+So that's a demonstration, of two way
 
+00:06:40.840 --> 00:06:45.960
+communication with a stored procedure.
+Next, I'll create a third procedure,
 
-00:07:21.840 --> 00:07:27.080
-So the artist name is in the first column,
-so artist column equals zero. The Album's
+00:06:45.960 --> 00:06:50.520
+in MySQL Workbench.
+This script will be in the resources folder as
 
-00:07:27.080 --> 00:07:33.077
-in the next column, index 1. The song
-title's in column 4, so index 3 here.
+00:06:50.520 --> 00:06:55.604
+well, if you encounter any problems, just editing
+the current procedure, which I'll do here now.
 
-00:07:34.040 --> 00:07:40.000
-I'm not going to use track number in this case.
-The stored procedure will assign the track number
 
-00:07:40.000 --> 00:07:45.040
-in order, based on the order of the songs.
-I'll be setting this up as a Map,
+00:06:56.520 --> 00:07:00.960
+I'll be creating this manually, by editing
+another procedure, so I'll open the add Album
 
-00:07:45.040 --> 00:07:52.680
-keyed by string, with a nested map as the value.
-I'll set up my map variable. It's value is a map,
+00:07:00.960 --> 00:07:03.725
+Return Counts procedure, using the tool icon.
 
-00:07:52.680 --> 00:07:58.357
-keyed by string, with a value of string. I'll
-call this albums and initialize it to null.
+00:07:11.235 --> 00:07:14.537
+I'll change the name to add Album, In, Out, Counts,
 
+00:07:14.632 --> 00:07:19.182
+and I'll change that fourth parameter
+from an out parameter, to an In, out, parameter.
 
-00:08:00.200 --> 00:08:04.034
-I'll show you another way to read the
-song data, from the NewAlbums.csv.
 
+00:07:20.098 --> 00:07:27.640
+Before I apply these changes, I'll scroll to
+the bottom, and add an if statement, around the
 
-00:08:05.000 --> 00:08:08.881
-This time, I'll use the lines method,
-which returns a stream of string.
+00:07:27.640 --> 00:07:33.040
+code that sets the value of the count parameter.
+In this case, I'll check if the number of records
 
+00:07:33.040 --> 00:07:38.920
+that got inserted, equals the count, passed
+as a parameter. If this were a real scenario,
 
-00:08:09.880 --> 00:08:14.400
-All of this is a good review, of streams,
-and it'll actually make passing the data,
+00:07:38.920 --> 00:07:43.800
+I might do something additional, like log the
+information, or pass data to an audit table,
 
-00:08:14.400 --> 00:08:20.560
-to the stored procedure, a bit easier.
-Just a reminder, that when you call Files.lines,
+00:07:43.800 --> 00:07:45.323
+or raise some kind of error.
 
-00:08:20.560 --> 00:08:26.797
-you should do it in a try with resources, so the
-stream is automatically closed. I'll do that here.
 
-00:08:27.643 --> 00:08:34.400
-Inside the try clause, I'll set up a variable,
-simply called lines. I'll call Files.lines,
 
-00:08:34.400 --> 00:08:41.879
-with a Path, to the new albums.csv file, in the
-project folder. That returns a stream of strings.
+00:07:47.093 --> 00:07:48.279
+I'll hit apply again,
 
+00:07:51.149 --> 00:07:52.050
+then finish.
 
-00:08:43.640 --> 00:08:47.575
-I've got an error on the lines method, because I
-need to include a catch clause,
+00:07:53.280 --> 00:07:57.880
+I'll refresh the schema panel.
+I'll see my third stored procedure there,
 
-00:08:47.575 --> 00:08:50.930
-so I'll hover over that error, and pick, add catch clause.
+00:07:57.880 --> 00:08:03.320
+and now I can use it in my JDBC code.
+I'll again go to an S Q L editing panel,
 
-00:08:54.805 --> 00:08:57.697
-Inside the try block, I'll set up the stream pipeline.
+00:08:03.320 --> 00:08:07.480
+and delete the data for Bob Dylan.
+Getting back to my Java code in
 
-00:08:59.552 --> 00:09:02.467
-So the first thing I'll do is, split each line by the comma.
+00:08:07.480 --> 00:08:13.280
+IntelliJ, I'll make two changes to my code.
+First I'll change the name of the procedure I'm
 
-00:09:03.524 --> 00:09:08.320
-I do this with the map operation,
-and a lambda that splits the string. This means
+00:08:13.280 --> 00:08:17.570
+calling, so fromaddAlbumReturnCounts,
+toaddAlbum, InOutCounts.
 
-00:09:08.320 --> 00:09:14.080
-my stream goes from a stream of strings, to a
-stream of arrays of strings. I'll collect this
 
-00:09:14.080 --> 00:09:21.400
-data into a map, with Collectors.grouping by.
-The first level is grouped by the artist. Now,
+00:08:18.720 --> 00:08:24.080
+Next, I'll pass an initial value to parameter 4.
+Normally, this would be the record count
 
-00:09:21.400 --> 00:09:27.200
-my file only has Bob Dylan as an artist, but let's
-just say we didn't know that. The first level of
+00:08:24.080 --> 00:08:28.424
+you expect to be inserted, but I'll just
+set it to an arbitrary number, like 10.
 
-00:09:27.200 --> 00:09:33.560
-the mapping, is the artist. The next grouping is
-the album, I'll call Collectors.grouping By again,
 
-00:09:33.560 --> 00:09:39.745
-and pass the value in the album column. Then, I
-need to get at the song column to collect the song titles.
+00:08:29.360 --> 00:08:34.133
+I'll call set int here, and parameter
+is 4, and the value of count is 10.
 
-00:09:40.543 --> 00:09:46.920
-I'll do this with mapping, returning only
-the song title. Next, I'll use collectors.joining,
 
-00:09:46.920 --> 00:09:52.160
-which ultimately uses StringJoiner. The goal
-here is to make this look like a jayson array,
-
-00:09:52.160 --> 00:09:57.240
-which really just looks like a printed array.
-The delimiter is a comma, but I also need to
-
-00:09:57.240 --> 00:10:01.560
-wrap each song title in double quotes, so I
-escape that with a back slash, on either side
-
-00:10:01.560 --> 00:10:06.600
-of the comma. and that'll be wrapped in square
-brackets, which will be my prefix and suffix
-
-00:10:06.600 --> 00:10:12.840
-elements. I need the starting double quote
-as well, for the prefix. The same goes for
-
-00:10:12.840 --> 00:10:19.405
-the closing double quote, and closing bracket.
-I'll print this out, so you can see the result.
-
-
-00:10:20.720 --> 00:10:24.480
-I'll loop through the albums, the key was
-the artist name, and the value is that
-
-00:10:24.480 --> 00:10:31.440
-artist's albums. Next, I'll loop through the
-nested map's data. The key is the album name,
-
-00:10:31.440 --> 00:10:36.500
-and the value is the string value, the
-array of songs. I'll print that out.
-
-
-00:10:40.680 --> 00:10:41.781
+00:08:35.680 --> 00:08:40.720
 I'll run this.
+So even though I passed
 
-00:10:45.703 --> 00:10:47.703
-And you can see this file has two albums,
+00:08:40.720 --> 00:08:45.240
+in 10 as the count, to parameter 4, you can
+see that I'm getting the actual count back,
 
-00:10:47.703 --> 00:10:50.640
-and I've got all the
-songs in a single comma delimited string,
+00:08:45.240 --> 00:08:51.640
+13 and 14 songs inserted there.
+If I rerun it immediately,
 
-00:10:50.640 --> 00:10:53.672
-each song title enclosed, in double quotes.
+00:08:51.640 --> 00:08:58.600
+without first deleting the data,
+You can see that 0 records were inserted,
 
+00:08:58.600 --> 00:09:03.680
+which is what you'd expect in this case.
+Now I'll switch over to MySQL Workbench, and
 
-00:10:58.087 --> 00:11:01.092
-Next, I'll go over to the Main class from a previous video,
+00:09:03.680 --> 00:09:08.807
+once again execute my delete statement.
+And now, right back to IntelliJ.
 
-00:11:01.092 --> 00:11:03.737
-and I basically want
-to copy the entire main method.
 
+00:09:09.960 --> 00:09:14.240
+Before I run the code again, I'll first comment
+out the line, where I'm setting the fourth
 
-00:11:07.800 --> 00:11:10.538
-And I'll paste that at the end of
-the main method in the Main class.
+00:09:14.240 --> 00:09:19.913
+parameter, to an initial value, 10 in this case.
+I'll see if I can run it this way,
 
 
-00:11:15.000 --> 00:11:18.040
-I'll remove the code that sets
-the continue batch on error flag,
+00:09:22.640 --> 00:09:27.805
+and yes, you can see this does actually run.
+But the results are misleading.
 
-00:11:18.040 --> 00:11:23.520
-so that first pasted try catch block.
-I don't need to worry about this now,
 
-00:11:23.520 --> 00:11:26.501
-because my stored procedure will
-handle the entire transaction.
+00:09:28.538 --> 00:09:33.023
+Notice that I do get data back, when I
+just deleted it, before running this code.
 
 
-00:11:27.440 --> 00:11:30.237
-I'll also remove the call to the
-add data from File method there.
+00:09:34.000 --> 00:09:39.705
+This means this code must have added the data.
+But it says 0 songs were added for each album.
 
 
-00:11:33.360 --> 00:11:37.280
-I'll keep the select statement there, and the
-prepared statement that uses that, just to
+00:09:40.600 --> 00:09:43.521
+There's a couple of things going
+on here, I want to talk about.
 
-00:11:37.280 --> 00:11:42.120
-confirm that data does really get added.
-Here is a case where I missed making an SQL
 
-00:11:42.120 --> 00:11:46.493
-keyword uppercase, so I'll change the case
-of the where clause, in this statement.
+00:09:44.640 --> 00:09:47.600
+First, even if I don't set the
+in out parameter to a value,
 
+00:09:47.600 --> 00:09:52.979
+it will get initialized to a default value,
+depending on the data type, and the DBMS vendor.
 
-00:11:48.560 --> 00:11:52.748
-I've got a compiler error on printRecords,
-because that method's on the Main class.
 
+00:09:54.037 --> 00:09:57.561
+Here, count wasn't initialized to
+zero, it was initialized to null.
 
-00:11:53.640 --> 00:11:58.040
-I'll open the Main class, and change the
-modifier from private to public on that method.
 
+00:09:58.640 --> 00:10:03.624
+And null has unexpected and sometimes confusing
+results in S Q L code, if you're new to it.
 
-00:11:59.003 --> 00:12:04.120
-Now, back to the MusicCallableStatement class,
-I can just prefix the method printRecords,
 
-00:12:04.120 --> 00:12:11.160
-with the class name, Main.
-Ok, so now that this code compiles,
+00:10:04.560 --> 00:10:08.160
+In this stored procedure, I first
+check if count is not equal to eye,
 
-00:12:11.160 --> 00:12:16.371
-I'll add some code, at the start of this try
-block, before my first S Q L statement there.
+00:10:08.160 --> 00:10:12.400
+and if it's not, I'll set count.
+The reason this returns false
 
+00:10:12.400 --> 00:10:16.223
+when value is NULL, is because the NULL
+variable represents an unknown value.
 
-00:12:17.240 --> 00:12:20.668
-I'll be executing the stored
-procedure, using a Callable Statement.
 
+00:10:17.200 --> 00:10:21.520
+In databases, avariable or parameter
+that's null isn't equal to, and it's
 
-00:12:21.560 --> 00:12:25.680
-You get a callable statement, much in the
-same way as a preparedStatement, but you
+00:10:21.520 --> 00:10:26.640
+also not equal to, another value.
+This had an unexpected result here,
 
-00:12:25.680 --> 00:12:32.760
-invoke prepare call. And you pass that an S Q L
-string. To execute a procedure in the database,
+00:10:26.640 --> 00:10:31.963
+and could produce unexpected results, if a null
+parameter value is used in S Q L statements.
 
-00:12:32.760 --> 00:12:38.800
-you usually use the keyword call, followed by the
-procedure name. Again, I'll prefix that with the
 
-00:12:38.800 --> 00:12:46.080
-schema name. And like a prepared statement, I use
-a question mark for parameters. In this case, the
+00:10:32.858 --> 00:10:38.279
+The moral of the story here is, that you should
+always initialize your in and inOUT parameters.
 
-00:12:46.080 --> 00:12:51.920
-stored procedure has three parameters, so I'll put
-three question marks there. A CallableStatement
 
-00:12:51.920 --> 00:12:55.952
-also gets parsed and compiled, which means
-I can re use this statement efficiently.
+00:10:39.378 --> 00:10:44.004
+This way, you can avoid any unexpected behavior
+that could arise, as we're seeing here.
 
 
-00:12:59.483 --> 00:13:04.484
-Next, I'll use my albums map, looping through
-the keys and values, with a for each method.
+00:10:44.920 --> 00:10:47.860
+I'll uncomment that line there,
+so this code is operational.
 
 
-00:13:05.400 --> 00:13:12.400
-The key is the artist, and the value is the nested
-map. I'll again use for each, and now the key is
+00:10:48.816 --> 00:10:52.503
+Ok, so those are the two ways to get
+data back from a stored procedure.
 
-00:13:12.400 --> 00:13:18.720
-the album, and the value is the songs array, a
-string, a jayson array. I have to include a try
 
-00:13:18.720 --> 00:13:24.560
-catch in this lambda expression. Like a prepared
-statement, I set the values for the placeholders,
+00:10:53.480 --> 00:10:57.280
+There's another way to get data back
+from stored code in the database server,
 
-00:13:24.560 --> 00:13:31.065
-so first the artist, then the album, And next
-is the jayson, which is really just a string ultimately.
+00:10:57.280 --> 00:11:01.884
+and that's by using Callable statement, but
+executing a function, rather than a procedure.
 
-00:13:31.957 --> 00:13:36.920
-I can run this, using the execute
-method. This stored procedure doesn't return any
 
-00:13:36.920 --> 00:13:43.266
-data back. If I get an exception, I'll print the
-more specific vendor error code and the message.
+00:11:02.840 --> 00:11:07.742
+A function's purpose is to return a value, usually
+the result of some calculation or formula.
 
 
-00:13:48.080 --> 00:13:52.040
-And that's all I need.
-Before I run this, I have to set up
+00:11:08.800 --> 00:11:13.440
+In contrast, a stored procedure is often
+used for performing a sequence of operations,
 
-00:13:52.040 --> 00:13:57.000
-my system environment variables, as usual.
-I know for the challenge video,
+00:11:13.440 --> 00:11:17.163
+data manipulation, or enforcing
+business rules within the database.
 
-00:13:57.000 --> 00:14:00.254
-I used environment variable names
-that didn't include the underscores.
 
+00:11:18.160 --> 00:11:19.840
+So I'll continue in the next video,
 
-00:14:01.240 --> 00:14:06.200
-I hope that didn't confuse you. It doesn't
-really matter what the variable names really are,
-
-00:14:06.200 --> 00:14:10.000
-butI'll switch back here, and continue
-with these names, moving forward.
-
-
-00:14:10.960 --> 00:14:15.833
-That's done in the run configuration.
-Once I have that set up, I'll run this code.
-
-
-00:14:20.483 --> 00:14:24.680
-Here, you can see the data in the album view,
-which confirms that I successfully added the
-
-00:14:24.680 --> 00:14:30.120
-artist, the two albums, and all the related
-songs in that csv file, with just two method
-
-00:14:30.120 --> 00:14:35.880
-calls, to code stored in the database.
-Some database vendors do support arrays,
-
-00:14:35.880 --> 00:14:39.710
-but MySQL is not one of them, so that's
-why I used the jayson workaround.
-
-
-00:14:40.720 --> 00:14:44.868
-As I've said, it's important to understand
-what features your RDMBS supports.
-
-
-00:14:45.760 --> 00:14:49.040
-If you're using callable statements,
-it's less likely you're concerned about
-
-00:14:49.040 --> 00:14:54.880
-being database agnostic with your JDBC code.
-So In this instance, I showed you an example
-
-00:14:54.880 --> 00:14:59.877
-of a stored procedure, that took three input
-parameters, and didn't return any data back.
-
-
-00:15:00.840 --> 00:15:04.743
-In the next video, I'll cover in, and
-out, parameters, and how to use them.
-
-
-00:15:05.800 --> 00:15:08.560
-Ok let's move on, andI'll
-see you in that next video.
+00:11:19.840 --> 00:11:24.560
+and look at MySQL functions, and how to
+execute and use them with JDBC code.

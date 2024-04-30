@@ -16,6 +16,32 @@ public class MusicCallableStatement {
     private static final int SONG_COLUMN = 3;
 
     public static void main(String[] args) {
+/*
+        Map<String, Map<String, String>> albums = null;
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course08_CallableStatements/NewAlbums.csv";
+        try (var lines = Files.lines(Path.of(pathName))) {
+
+            albums = lines.map(s -> s.split(","))
+                    .collect(Collectors.groupingBy(s -> s[ARTIST_COLUMN],
+                            Collectors.groupingBy(s -> s[ALBUM_COLUMN],
+                                    Collectors.mapping(s -> s[SONG_COLUMN],
+                                            Collectors.joining(
+                                                    "\",\"",
+                                                    "[\"",
+                                                    "\"]"
+                                            )))));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        albums.forEach((artist, artistAlbums) -> {
+            artistAlbums.forEach((key, value) -> {
+                System.out.println(key + " : " + value);
+            });
+        });
+*/
+
 
         Map<String, Map<String, String>> albums = null;
 
@@ -75,5 +101,6 @@ public class MusicCallableStatement {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 }

@@ -6782,121 +6782,262 @@ You should download that script and put it somewhere on your local file system,
 where you can access it easily.
 Next, open MySQL Workbench to your _development_ connection.
 
-
+![image68](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image68.png?raw=true)
 
 In this case, you'll select the second SQL Editor icon,
 which will prompt you to open an SQL script.
 Find the script you downloaded, and select it, and hit the open button.
 That should load this script in your edit panel.
+
+![image69](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image69.png?raw=true)
+
 Now, you want to execute this script, 
-so the first lightning bolt icon there, will do it.
+so the first lightning bolt icon there will do it.
 If you refresh the schema panel, 
 you should confirm that you see this new procedure, 
-named addAlbum, under the Stored Procedures listing.
+named _addAlbum_, under the _Stored Procedures_ listing.
 Click on that, and select the wrench or tool icon there.
+
+![image70](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image70.png?raw=true)
+
 This will load up the stored procedure's code.
 I won't get into this code too much,
 but what you do need to know is what the parameters are to this routine.
-There's three of them, an artist name,
-a text field, an album name, also text,
-and the last is songs, a json type.
-MySQL stored procedures don't currently support arrays,
-but they do support json objects, which can include arrays.
-In this case, this is a way to pass an array of text, 
-which will be an array of song titles to this stored procedure.
+There's three of them, an _artistName_, a **text** field, 
+an _albumName_, also **text**, and the last is _songTitles_, a **json** type.
+MySQL stored procedures don't currently support **arrays**,
+but they do support **json** objects, which can include **arrays**.
+In this case, this is a way to pass an array of **text**, 
+which will be an array of _songTitles_ to this stored procedure.
+
+```html  
+IF val_artist_id IS NULL THEN
+    -- Insert a new order
+    INSERT INTO artists (artist_name) VALUES (artistName);
+    -- Get artist_id of last artist inserted
+    SELECT LAST_INSERT_ID() INTO val_artist_id;
+END IF;
+```
+
 This code will add the artist if it's not in the database, 
 or get the artist id if it is.
+
+```html  
+IF val_album_id IS NULL THEN
+    -- Insert a new album
+    INSERT INTO albums (artist_id, album_name) VALUES (val_artist_id, albumName);
+    -- Get album_id of last artist inserted
+    SELECT LAST_INSERT_ID() INTO val_album_id;
+    
+    -- Loop through the JSON Song Titles Array
+    WHILE i < num_items DO
+        -- JSON functions extract the right element, and unquote it
+        SET song_title = JSON_UNQUOTE(JSON_EXTRACT(songTitles, CONCAT('$[', i, ']')));
+        -- Insert a new song, track number is assigned here.
+        INSERT INTO songs (album_id, track_number, song_title)
+        VALUES (val_album_id, i + 1, song_title);
+        SET i = i + 1;
+    
+    END WHILE;
+END IF;
+```
+
 It'll then add the album if it's not there,
 then inserts all the songs associated with that album, 
-looping through the songs parameter,
+looping through the _songs_ parameter,
 using MySQL JSON functions.
-All three of these parameters are input parameters.
+
+All three of these parameters, 
+_artistName_, _albumName_, _songTitles_, are input parameters.
 How do I know?
-If you don't see one of the keywords, in, OUT, or in OUT, 
+If you don't see one of the keywords, _in_, _out_, or _in-out_, 
 then the parameter is by default an input parameter, 
-so the keyword in, is implied.
+so the keyword _in_ is implied.
 This is important to know, for the callable statement.
 Before we get back to IntelliJ,
 let's make sure we've removed any _Bob Dylan_ records in the music data set.
 I'll open another SQL edit panel, and type in a delete statement.
-So delete from `music.artists`, where artist name, equals _Bob Dylan_, 
-with his name in single quotes.
+
+```html  
+delete from music.artists where artist_name='Bob Dylan';
+```
+
 In this case, I'm using all lowercases for the SQL keywords as I type it in,
 since this is just an adhoc query.
 I told you to use uppercase for SQL keywords,
 and I know I haven't always been consistent,
 and will sometimes forget to do it myself.
-There's a beautify reformat option in this SQL Edit panel, 
+
+![image71](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image71.png?raw=true)
+
+There's a beautify reformat option in this _SQL Edit_ panel, 
 and that's the little broom icon.
 I'll click that.
+
+![image72](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image72.png?raw=true)
+
 I don't always like the way it reformats it, 
-but it does change the keywords, to be uppercase.
+but it does change the keywords to be uppercase.
 Sometimes I just want my query to be on a single line and quickly execute
 it, so I may not beautify it.
 But if I am using the code in a JDBC statement, or a stored procedure,
-I do try to be more disciplined.
-At any rate, I'll execute this statement.
+I do try to be more disciplined at any rate. 
+I'll execute this statement.
 I'll execute that, so that the music database won't have any data for _Bob Dylan_,
 when we first execute this procedure.
-You'll hopefully remember that 
-we added _cascade deletes_ on the albums and songs, 
+You'll hopefully remember that we added _cascade deletes_ on the albums and songs, 
 so this single statement will clean up all that related data.
-Switching back to IntelliJ, I'll reopen the PreparedStatement project again.
-I'll create a new class in the dev lpa package,
-which I'll call MusicCallableStatement, and it'll have a _main_ method.
+Switching back to IntelliJ, I'll create a new class,
+which I'll call **MusicCallableStatement**, and it'll have a _main_ method.
+
+```java  
+public class MusicCallableStatement {
+
+    private static final int ARTIST_COLUMN = 0;
+    private static final int ALBUM_COLUMN = 1;
+    private static final int SONG_COLUMN = 3;
+
+    public static void main(String[] args) {
+
+    }
+}
+```
+
 I'll start by setting up a couple of constants.
-These constants just represent the column index of the data, in the csv file.
-So the artist name is in the first column, so artist column equals zero. 
-The Album's in the next column, index 1.
-The song title's in column 4, so index 3 here.
+These constants just represent the column index of the data in the csv file.
+So the artist name is in the first column, so `ARTIST_COLUMN = 0`.
+The Album's in the next column, index `1`.
+The song title's in column 4, so index `3` here.
 I'm not going to use track number in this case.
 The stored procedure will assign the track number in order, 
 based on the order of the songs.
-I'll be setting this up as a Map, keyed by string, 
-with a nested map as the value.
+I'll be setting this up as a **Map**, 
+keyed by **string**, with a nested **map** as the value.
 I'll set up my map variable. 
-It's value is a map, keyed by string, with a value of string. 
-I'll call this albums and initialize it to null.
+
+```java  
+public class MusicCallableStatement {
+
+    private static final int ARTIST_COLUMN = 0;
+    private static final int ALBUM_COLUMN = 1;
+    private static final int SONG_COLUMN = 3;
+
+    public static void main(String[] args) {
+      
+        Map<String, Map<String, String>> albums = null;
+    }
+}
+```
+
+Its value is a **map**, keyed by **string**, with a value of **string**. 
+I'll call this _albums_ and initialize it to **null**.
 I'll show you another way to read the song data, from the `NewAlbums.csv`.
-This time, I'll use the lines method,
-which returns a stream of string.
+This time, I'll use the lines method, which returns a stream of string.
 All of this is a good review, of streams,
 and it'll actually make passing the data, to the stored procedure, a bit easier.
 Just a reminder, that when you call `Files.lines`,
-you should do it in a try with resources, 
+you should do it in a _try-with-resources_, 
 so the stream is automatically closed. 
 I'll do that here. 
+
+```java  
+public class MusicCallableStatement {
+
+    private static final int ARTIST_COLUMN = 0;
+    private static final int ALBUM_COLUMN = 1;
+    private static final int SONG_COLUMN = 3;
+
+    public static void main(String[] args) {
+      
+        Map<String, Map<String, String>> albums = null;
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course08_CallableStatements/NewAlbums.csv";
+        try (var lines = Files.lines(Path.of(pathName))) {          // Stream<String>
+
+            albums = lines.map(s -> s.split(","))
+                    .collect(Collectors.groupingBy(s -> s[ARTIST_COLUMN], 
+                            Collectors.groupingBy(s -> s[ALBUM_COLUMN], 
+                                    Collectors.mapping(s -> s[SONG_COLUMN], 
+                                            Collectors.joining(
+                                                    "\",\"",
+                                                    "[\"",
+                                                    "\"]"
+                                            )))));
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+    }
+}
+```
+
 Inside the _try_ clause, I'll set up a variable, simply called lines. 
-I'll call `Files.lines` with a **Path** to the new `albums.csv` file 
-in the project folder. 
-That returns a stream of strings.
-I've got an error on the lines method, because I need to include a _catch_ clause,
+I'll call `Files.lines` with a **Path** 
+to the `NewAlbums.csv` file in the package folder. 
+That returns a stream of **strings**.
+I've got an error on the lines method, 
+because I need to include a _catch_ clause,
 so I'll hover over that error, and pick, add _catch_ clause.
 Inside the _try_ block, I'll set up the stream pipeline.
 So the first thing I'll do is, split each line by the comma.
 I do this with the _map_ operation, and a lambda that splits the string. 
 This means my stream goes from a stream of strings, 
 to a stream of arrays of strings. 
-I'll collect this data into a map, with `Collectors.groupingBy`.
+I'll collect this data into a map with `Collectors.groupingBy`.
 The first level is grouped by the artist. 
 Now, my file only has _Bob Dylan_ as an artist, 
 but let's say we did not know that. 
-The first level of the mapping, is the artist. 
+The first level of the mapping is the artist. 
 The next grouping is the album, I'll call `Collectors.groupingBy` again,
-and pass the value in the album column.
-Then, I need to get at the song column to collect the song titles.
+and pass the value on the _ALBUM_COLUMN_.
+Then, I need to get at the _SONG_COLUMN_ to collect the song titles.
 I'll do this with mapping, returning only the song title. 
 Next, I'll use `collectors.joining`, which ultimately uses _StringJoiner_. 
-The goal here is to make this look like a json array, 
+The goal here is to make this look like a **json** array, 
 which really just looks like a printed array.
 The delimiter is a comma, but I also need to wrap each song title in double quotes, 
-so I escape that with a back slash, on either side of the comma. 
-And that'll be wrapped in square brackets, 
-which will be my prefix and suffix elements. 
+so I escape that with a backslash, on either side of the comma. 
+And that'll be wrapped in square brackets, which will be my prefix and suffix elements. 
 I need the starting double quote as well, for the prefix. 
 The same goes for the closing double quote, and closing bracket.
 I'll print this out, so you can see the result.
-I'll loop through the albums, the key was the artist name, 
+
+```java  
+public class MusicCallableStatement {
+
+    private static final int ARTIST_COLUMN = 0;
+    private static final int ALBUM_COLUMN = 1;
+    private static final int SONG_COLUMN = 3;
+
+    public static void main(String[] args) {
+      
+        Map<String, Map<String, String>> albums = null;
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course08_CallableStatements/NewAlbums.csv";
+        try (var lines = Files.lines(Path.of(pathName))) {          // Stream<String>
+
+            albums = lines.map(s -> s.split(","))
+                    .collect(Collectors.groupingBy(s -> s[ARTIST_COLUMN], 
+                            Collectors.groupingBy(s -> s[ALBUM_COLUMN], 
+                                    Collectors.mapping(s -> s[SONG_COLUMN], 
+                                            Collectors.joining(
+                                                    "\",\"",
+                                                    "[\"",
+                                                    "\"]"
+                                            )))));
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+
+        albums.forEach((artist, artistAlbums) -> {
+            artistAlbums.forEach((key, value) -> {
+                System.out.println(key + " : " + value);
+            });
+        });
+    }
+}
+```
+
+I'll loop through the albums, the key was the artist's name, 
 and the value is that artist's albums. 
 Next, I'll loop through the nested map's data. 
 The key is the album name, and the value is the string value, the array of songs. 
@@ -6904,117 +7045,541 @@ I'll print that out.
 I'll run this.
 
 ```html  
-
+Bob Dylan : ["You're No Good","Talkin' New York","In My Time of Dyin'","Man of Constant Sorrow","Fixin' to Die","Pretty Peggy-O","Highway 51 Blues","Gospel Plow","Baby Let Me Follow You Down","House of the Risin' Sun","Freight Train Blues","Song to Woody","See That My Grave Is Kept Clean"]
+Blonde on Blonde : ["Rainy Day Women","Pledging My Time","Visions of Johanna","One of Us Must Know (Sooner or Later)","I Want You","Stuck Inside of Mobile with the Memphis Blues Again","Leopard-Skin Pill-Box Hat","Just Like a Woman","Most Likely You Go Your Way (And I'll Go Mine)","Temporary Like Achilles","Absolutely Sweet Marie","Fourth Time Around","Obviously Five Believers","Sad-Eyed Lady of the Lowlands"]
 ```
 
 And you can see this file has two albums,
-and I've got all the
-songs in a single comma delimited string,
+and I've got all the songs in a single comma delimited string,
 each song title enclosed, in double quotes.
-Next, I'll go over to the Main class from a previous video,
-and I basically want
-to copy the entire main method.
-And I'll paste that at the end of
-the main method in the Main class.
-I'll remove the code that sets
-the continue batch on error flag,
-so that first pasted try catch block.
+Next, I'll go over to the **Main** class from a previous section,
+and I basically want to copy the entire _main_ method.
+And I'll paste that at the end of the _main_ method in the **MusicCallableStatement** class.
+
+```java  
+public class MusicCallableStatement {
+
+    private static final int ARTIST_COLUMN = 0;
+    private static final int ALBUM_COLUMN = 1;
+    private static final int SONG_COLUMN = 3;
+
+    public static void main(String[] args) {
+      
+        Map<String, Map<String, String>> albums = null;
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course08_CallableStatements/NewAlbums.csv";
+        try (var lines = Files.lines(Path.of(pathName))) {          // Stream<String>
+
+            albums = lines.map(s -> s.split(","))
+                    .collect(Collectors.groupingBy(s -> s[ARTIST_COLUMN], 
+                            Collectors.groupingBy(s -> s[ALBUM_COLUMN], 
+                                    Collectors.mapping(s -> s[SONG_COLUMN], 
+                                            Collectors.joining(
+                                                    "\",\"",
+                                                    "[\"",
+                                                    "\"]"
+                                            )))));
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+
+        albums.forEach((artist, artistAlbums) -> {
+            artistAlbums.forEach((key, value) -> {
+                System.out.println(key + " : " + value);
+            });
+        });
+
+        var dataSource = new MysqlDataSource();
+  
+        dataSource.setServerName("localhost");
+        dataSource.setPort(3335);
+        dataSource.setDatabaseName("music");
+        
+/*
+        try {
+            dataSource.setContinueBatchOnError(false);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+*/
+
+        try (Connection connection = dataSource.getConnection(System.getenv("MYSQL_USER"), System.getenv("MYSQL_PASS"));) {
+          
+            //addDataFromFile(connection);
+
+            //String sql = "SELECT * FROM music.albumview where artist_name = ?";
+            String sql = "SELECT * FROM music.albumview WHERE artist_name = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, "Bob Dylan");
+            ResultSet resultSet = ps.executeQuery();
+            //printRecords(resultSet);
+            Main.printRecords(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+I'll remove the code that _setContinueBatchOnError_ flag,
+so that first pasted _try-catch_ block.
 I don't need to worry about this now,
-because my stored procedure will
-handle the entire transaction.
-I'll also remove the call to the
-add data from File method there.
-I'll keep the select statement there, and the
-prepared statement that uses that, just to
-confirm that data does really get added.
-Here is a case where I missed making an SQL
-keyword uppercase, so I'll change the case
-of the where clause, in this statement.
-I've got a compiler error on printRecords,
-because that method's on the Main class.
-I'll open the Main class, and change the
-modifier from private to public on that method.
-Now, back to the MusicCallableStatement class,
-I can just prefix the method printRecords,
-with the class name, Main.
-Ok, so now that this code compiles,
-I'll add some code, at the start of this try
-block, before my first S Q L statement there.
-I'll be executing the stored
-procedure, using a Callable Statement.
-You get a callable statement, much in the
-same way as a preparedStatement, but you
-invoke prepare call. And you pass that an S Q L
-string. To execute a procedure in the database,
-you usually use the keyword call, followed by the
-procedure name. Again, I'll prefix that with the
-schema name. And like a prepared statement, I use
-a question mark for parameters. In this case, the
-stored procedure has three parameters, so I'll put
-three question marks there. A CallableStatement
-also gets parsed and compiled, which means
-I can re use this statement efficiently.
-Next, I'll use my albums map, looping through
-the keys and values, with a for each method.
-The key is the artist, and the value is the nested
-map. I'll again use for each, and now the key is
-the album, and the value is the songs array, a
-string, a jayson array. I have to include a try
-catch in this lambda expression. Like a prepared
-statement, I set the values for the placeholders,
-so first the artist, then the album, And next
-is the jayson, which is really just a string ultimately.
-I can run this, using the execute
+because my stored procedure will handle the entire transaction.
+I'll also remove the call to _addDataFromFile_ method there.
+I'll keep the select statement there, 
+and the prepared statement that uses that, 
+just to confirm that data does really get added.
+Here is a case _where_ I missed making an SQL keyword uppercase, 
+so I'll change the case of the _where_ clause, in this statement.
+I've got a compiler error on _printRecords_,
+because that method's on the **Main** class.
+I'll open the **Main** class, and change the modifier 
+from **private** to **public** on that method.
+Now, back to the **MusicCallableStatement** class,
+I can just prefix the method _printRecords_,
+with the class name, `Main.`.
+Ok, so now that this code compiles.
+I'll add some code, at the start of this _try_ block, 
+before my first SQL statement there.
+I'll be executing the stored procedure, using a **CallableStatement**.
 
-```html  
+```java  
+public class MusicCallableStatement {
 
+    private static final int ARTIST_COLUMN = 0;
+    private static final int ALBUM_COLUMN = 1;
+    private static final int SONG_COLUMN = 3;
+
+    public static void main(String[] args) {
+      
+        Map<String, Map<String, String>> albums = null;
+
+        String pathName = "./src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course08_CallableStatements/NewAlbums.csv";
+        try (var lines = Files.lines(Path.of(pathName))) {          // Stream<String>
+
+            albums = lines.map(s -> s.split(","))
+                    .collect(Collectors.groupingBy(s -> s[ARTIST_COLUMN], 
+                            Collectors.groupingBy(s -> s[ALBUM_COLUMN], 
+                                    Collectors.mapping(s -> s[SONG_COLUMN], 
+                                            Collectors.joining(
+                                                    "\",\"",
+                                                    "[\"",
+                                                    "\"]"
+                                            )))));
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+
+        albums.forEach((artist, artistAlbums) -> {
+            artistAlbums.forEach((key, value) -> {
+                System.out.println(key + " : " + value);
+            });
+        });
+
+        var dataSource = new MysqlDataSource();
+  
+        dataSource.setServerName("localhost");
+        dataSource.setPort(3335);
+        dataSource.setDatabaseName("music");
+
+        try (Connection connection = dataSource.getConnection(System.getenv("MYSQL_USER"), System.getenv("MYSQL_PASS"));) {
+
+            CallableStatement cs = connection.prepareCall("CALL music.addAlbum(?,?,?)");
+          
+            albums.forEach((artist, albumMap) -> {
+                albumMap.forEach((album, songs) -> {
+                    try {
+                        cs.setString(1, artist);
+                        cs.setString(2, album);
+                        cs.setString(3, songs);
+                        cs.execute();
+  
+                    } catch (SQLException e) {
+                        System.err.println(e.getErrorCode() + " " + e.getMessage());
+                    }
+                });
+            });
+
+            String sql = "SELECT * FROM music.albumview WHERE artist_name = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, "Bob Dylan");
+            ResultSet resultSet = ps.executeQuery();
+            Main.printRecords(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
 ```
 
-method. This stored procedure doesn't return any
-data back. If I get an exception, I'll print the
-more specific vendor error code and the message.
+You get a callable statement, much in the same way as a **preparedStatement**, 
+but you invoke prepare call. 
+And you pass that an SQL string. 
+To execute a procedure in the database,
+you usually use the keyword _call_, followed by the procedure name. 
+Again, I'll prefix that with the schema name. 
+And like a prepared statement, I use a question mark for parameters. 
+In this case, the stored procedure has three parameters, 
+so I'll put three question marks there. 
+A _CallableStatement_ also gets parsed and compiled, 
+which means I can re-use this statement efficiently.
+Next, I'll use my _albums_ map, 
+looping through the keys and values, with a for each method.
+The key is the _artist_, and the value is the _nested map_. 
+I'll again use _forEach_, and now the key is the album, 
+and the value is the _songs_ array, a **string**, a **json** array. 
+I have to include a _try-catch_ in this lambda expression. 
+Like a prepared statement, I set the values for the placeholders,
+so first the _artist_, then the _album_, and next is the _json_, 
+which is really just a **string** ultimately.
+I can run this, using the _execute_ method. 
+This stored procedure doesn't return any data. 
+If I get an exception, 
+I'll print the more specific vendor error code and the message.
 And that's all I need.
-Before I run this, I have to set up
-
-```html  
-
-```
-
-my system environment variables, as usual.
-I know for the challenge video,
-I used environment variable names
-that didn't include the underscores.
-I hope that didn't confuse you. It doesn't
-really matter what the variable names really are,
-butI'll switch back here, and continue
-with these names, moving forward.
+Before I run this, I have to set up my system environment variables, as usual.
 That's done in the run configuration.
-Once I have that set up, I'll run this code.
+Once I have that set up, I'll run this code:
+
+```html  
+Bob Dylan : ["You're No Good","Talkin' New York","In My Time of Dyin'","Man of Constant Sorrow","Fixin' to Die","Pretty Peggy-O","Highway 51 Blues","Gospel Plow","Baby Let Me Follow You Down","House of the Risin' Sun","Freight Train Blues","Song to Woody","See That My Grave Is Kept Clean"]
+Blonde on Blonde : ["Rainy Day Women","Pledging My Time","Visions of Johanna","One of Us Must Know (Sooner or Later)","I Want You","Stuck Inside of Mobile with the Memphis Blues Again","Leopard-Skin Pill-Box Hat","Just Like a Woman","Most Likely You Go Your Way (And I'll Go Mine)","Temporary Like Achilles","Absolutely Sweet Marie","Fourth Time Around","Obviously Five Believers","Sad-Eyed Lady of the Lowlands"]
+===================
+ALBUM_NAME     ARTIST_NAME    TRACK_NUMBER   SONG_TITLE     
+Blonde on BlondeBob Dylan      1              Rainy Day Women
+Blonde on BlondeBob Dylan      2              Pledging My Time
+Blonde on BlondeBob Dylan      3              Visions of Johanna
+Blonde on BlondeBob Dylan      4              One of Us Must Know (Sooner or Later)
+Blonde on BlondeBob Dylan      5              I Want You     
+Blonde on BlondeBob Dylan      6              Stuck Inside of Mobile with the Memphis Blues Again
+Blonde on BlondeBob Dylan      7              Leopard-Skin Pill-Box Hat
+Blonde on BlondeBob Dylan      8              Just Like a Woman
+Blonde on BlondeBob Dylan      9              Most Likely You Go Your Way (And I'll Go Mine)
+Blonde on BlondeBob Dylan      10             Temporary Like Achilles
+Blonde on BlondeBob Dylan      11             Absolutely Sweet Marie
+Blonde on BlondeBob Dylan      12             Fourth Time Around
+Blonde on BlondeBob Dylan      13             Obviously Five Believers
+Blonde on BlondeBob Dylan      14             Sad-Eyed Lady of the Lowlands
+Bob Dylan      Bob Dylan      1              You're No Good 
+Bob Dylan      Bob Dylan      2              Talkin' New York
+Bob Dylan      Bob Dylan      3              In My Time of Dyin'
+Bob Dylan      Bob Dylan      4              Man of Constant Sorrow
+Bob Dylan      Bob Dylan      5              Fixin' to Die  
+Bob Dylan      Bob Dylan      6              Pretty Peggy-O 
+Bob Dylan      Bob Dylan      7              Highway 51 Blues
+Bob Dylan      Bob Dylan      8              Gospel Plow    
+Bob Dylan      Bob Dylan      9              Baby Let Me Follow You Down
+Bob Dylan      Bob Dylan      10             House of the Risin' Sun
+Bob Dylan      Bob Dylan      11             Freight Train Blues
+Bob Dylan      Bob Dylan      12             Song to Woody  
+Bob Dylan      Bob Dylan      13             See That My Grave Is Kept Clean
+```
+
+Here, you can see the data in the _albumview_, 
+which confirms that I successfully added the artist, 
+the two albums, and all the related songs in that csv file, 
+with just two method calls, to code stored in the database.
+Some database vendors do support arrays, but MySQL is not one of them, 
+so that's why I used the json workaround.
+As I've said, it's important to understand what features your _RDMBS_ supports.
+If you're using callable statements, 
+it's less likely you're concerned about being database agnostic with your JDBC code.
+So in this instance, I showed you an example of a stored procedure, 
+that took three input parameters, and didn't return any data.
+
+Executing a procedure stored on the database server 
+from Java using JDBC and the **CallableStatement** is often a preferred approach
+for many enterprise organizations.
+That's why we passed a set of data to the stored procedure, 
+which in turn managed inserting that data appropriately,
+into related tables in the _music_ database.
+In addition to passing data as parameters into a procedure, 
+there are a couple of ways to get data back.
+First, MySQL has three different types of parameter types for its procedures.
+
+| Parameter Type | Description                                                                                                    | Read? | Write? |
+|----------------|----------------------------------------------------------------------------------------------------------------|-------|--------|
+| IN             | Used to pass values to the stored procedure. If a type is not specified, than it is implicitly an IN parameter | Y     | N      |
+| OUT            | Used to return values from the stored procedure to the calling program.                                        | N     | Y      |
+| INOUT          | Used to pass values to the stored procedure, which can modify the values and return the modified values back.  | Y     | Y      |
+
+The in Parameter is a read-only parameter, and the default type, 
+meaning we don't have to specify the keyword, _IN_ in our MySQL procedures,
+if this is the type of parameter you want.
+This is data you pass to the procedure, and it doesn't get modified.
+The _OUT_ parameter is a write-only parameter.
+You must specify the _OUT_ type for this one.
+The _INOUT_ parameter is a hybrid parameter, so you can pass data in,
+which the procedure can modify, and return.
+These types are specific to MySQL,
+but many vendors have similar types, 
+the syntax just might be slightly different.
+This is where JDBC is an advantage, because you, as a developer, 
+don't really need to worry about the syntax, just the concepts,
+and how to interact with code that has these different parameter types.
+I'll start first, with an example of the _OUT_ parameter.
+To set this up, I'll open up my _development_ session on MySQL Workbench.
+I'll expand the _Stored Procedures_, 
+and click on the _addAlbum_ procedure there, and select the _tool_ icon.
+This opens the _edit_ window, and I can edit this.
+I'll add a new line 
+after the localhost value in the _CREATE DEFINER_ statement.
+The use of _CREATE DEFINER_ is important in situations 
+where you want to control who can execute this procedure.
+
+
+
+In this case, this means the procedure will get executed with _devUser_'s privileges.
+Right now, you don't have to worry about too much about this statement,
+or the code in this procedure.
+This first bit is added automatically if you create a new procedure.
+What I want to do here is, change the procedure name, 
+from _addAlbum_ to _addAlbumReturnCounts_.
+By doing this, I'll actually be creating a new procedure with this name.
+Before I save this though,
+I'll add a fourth parameter.
+I'll start with the key word OUT,
+and by convention this is upper case, my parameter
+name will be count, and it's type is int.
+I could also change my other 3 parameters, and
+include the key word, In, and I'll do this.
+It's usually best practice, to explicitly
+specify the in parameter type,
+though not required, as you saw.
+I'll hit the Apply button.
+That will popup the DDL
+script that'll get executed.
+I'll hit apply again.
+Then finish.
+I'll refresh the schema panel, and I
+should see my new procedure there.
+So I created an OUT Parameter,
+but I didn't actually do
+anything with this parameter, in my code.
+I still have the procedure up in the edit window,
+so I'll scroll to the end of this code.
+Right after the commit, I'll set the count
+variable, to the value in the eye variable,
+which will tell me how many songs got inserted.
+I'll say again, don't get too stressed
+about the code in this procedure.
+If you follow along with me, this should
+compile fine, and you don't really need to
+understand all the details about how this works.
+I've also included this procedure's script in
+the resources folder, if you have any troubles.
+You can drop your version, and import the script,
+like I showed you, with the first
+procedure in a previous video.
+For now, I'll again Apply that,
+twice, and then hit finish.
+I'll open an S Q L edit panel, and
+delete all my data for Bob Dylan again.
+So that's delete from music.artists,
+where artist_name equals,
+and Bob Dylan in single quotes.
+Now, let's get back to IntelliJ,
+to the PreparedStatement project from the
+last video, and to the class I was using
+previously, MusicCallableStatement.
+In this code, I'll change the name of
+the stored procedure that gets called,
+in the callable statement code here.
+I'll run this now, executing
 
 ```html  
 
 ```
 
-Here, you can see the data in the album view,
-which confirms that I successfully added the
-artist, the two albums, and all the related
-songs in that csv file, with just two method
-calls, to code stored in the database.
-Some database vendors do support arrays,
-but MySQL is not one of them, so that's
-why I used the jayson workaround.
-As I've said, it's important to understand
-what features your RDMBS supports.
-If you're using callable statements,
-it's less likely you're concerned about
-being database agnostic with your JDBC code.
-So In this instance, I showed you an example
-of a stored procedure, that took three input
-parameters, and didn't return any data back.
-In the next video, I'll cover in, and
-out, parameters, and how to use them.
-Ok let's move on, andI'll
-see you in that next video.
+the new stored procedure.
+This time, I get an error for each
+attempt, that the parameter, named count,
+is not registered as an output parameter.
+There are a couple of problems here actually.
+First, I need another question
+mark, as a parameter placeholder,
+in the call to this stored procedure.
+So I'll quickly add that.
+And I'll try running this again.
+
+```html  
+
+```
+
+And now this works, and data gets added.
+So registering an out parameter,
+isn't actually required.
+You register the out parameter,
+if you want to get the data back.
+Since I do want the result, that
+gets passed back in that parameter,
+I'll show you how to do that next.
+To get that data, there are two steps.
+Before the execute method, I need to call
+register out parameter, specifying the
+index as 4. The second parameter is the data
+type, and I'll set that to Types dot integer.
+Types is a class in the java.sql package,
+which defines constants used to identify
+generic SQL types, called JDBC types,
+which will be translated to java types.
+That's the first thing that needs to be done,
+to get data returned on the Callable Statement.
+The next part is to retrieve this data
+from the statement, after it's executed.
+I'll print the number of songs, and the album
+name. I can get the output parameter's value,
+by calling get Int, and passing the
+appropriate index, so the index is four here.
+Before I run this, I want to again delete the
+
+```html  
+
+```
+
+data for Bob Dylan, so I'll jump back to the
+MySQL Workbench session, and re execute
+the delete artists statement there.
+And now, back to IntelliJ, I'll run my code.
+
+```html  
+
+```
+
+Before all the records are printed,
+notice the two statements there.
+13 songs were added for the album, Bob Dylan,
+and 14 songs were added for Blonde on Blonde.
+So that's a demonstration, of two way
+communication with a stored procedure.
+Next, I'll create a third procedure,
+in MySQL Workbench.
+This script will be in the resources folder as
+well, if you encounter any problems, just editing
+the current procedure, which I'll do here now.
+I'll be creating this manually, by editing
+another procedure, so I'll open the add Album
+Return Counts procedure, using the tool icon.
+I'll change the name to add Album, In, Out, Counts,
+and I'll change that fourth parameter
+from an out parameter, to an In, out, parameter.
+Before I apply these changes, I'll scroll to
+the bottom, and add an if statement, around the
+code that sets the value of the count parameter.
+In this case, I'll check if the number of records
+that got inserted, equals the count, passed
+as a parameter. If this were a real scenario,
+I might do something additional, like log the
+information, or pass data to an audit table,
+or raise some kind of error.
+I'll hit apply again,
+then finish.
+I'll refresh the schema panel.
+I'll see my third stored procedure there,
+and now I can use it in my JDBC code.
+I'll again go to an S Q L editing panel,
+and delete the data for Bob Dylan.
+Getting back to my Java code in
+IntelliJ, I'll make two changes to my code.
+First I'll change the name of the procedure I'm
+calling, so fromaddAlbumReturnCounts,
+toaddAlbum, InOutCounts.
+Next, I'll pass an initial value to parameter 4.
+Normally, this would be the record count
+you expect to be inserted, but I'll just
+set it to an arbitrary number, like 10.
+I'll call set int here, and parameter
+is 4, and the value of count is 10.
+I'll run this.
+
+```html  
+
+```
+
+So even though I passed
+in 10 as the count, to parameter 4, you can
+see that I'm getting the actual count back,
+13 and 14 songs inserted there.
+If I rerun it immediately,
+without first deleting the data,
+You can see that 0 records were inserted,
+which is what you'd expect in this case.
+Now I'll switch over to MySQL Workbench, and
+once again execute my delete statement.
+And now, right back to IntelliJ.
+Before I run the code again, I'll first comment
+
+```html  
+
+```
+
+out the line, where I'm setting the fourth
+parameter, to an initial value, 10 in this case.
+I'll see if I can run it this way,
+
+```html  
+
+```
+
+and yes, you can see this does actually run.
+
+```html  
+
+```
+
+But the results are misleading.
+Notice that I do get data back, when I
+just deleted it, before running this code.
+
+```html  
+
+```
+
+This means this code must have added the data.
+But it says 0 songs were added for each album.
+There's a couple of things going
+on here, I want to talk about.
+First, even if I don't set the
+in out parameter to a value,
+it will get initialized to a default value,
+depending on the data type, and the DBMS vendor.
+Here, count wasn't initialized to
+zero, it was initialized to null.
+And null has unexpected and sometimes confusing
+results in S Q L code, if you're new to it.
+In this stored procedure, I first
+check if count is not equal to eye,
+and if it's not, I'll set count.
+The reason this returns false
+when value is NULL, is because the NULL
+variable represents an unknown value.
+In databases, avariable or parameter
+that's null isn't equal to, and it's
+also not equal to, another value.
+This had an unexpected result here,
+and could produce unexpected results, if a null
+parameter value is used in S Q L statements.
+The moral of the story here is, that you should
+always initialize your in and inOUT parameters.
+This way, you can avoid any unexpected behavior
+that could arise, as we're seeing here.
+I'll uncomment that line there,
+so this code is operational.
+Ok, so those are the two ways to get
+data back from a stored procedure.
+There's another way to get data back
+from stored code in the database server,
+and that's by using Callable statement, but
+executing a function, rather than a procedure.
+A function's purpose is to return a value, usually
+the result of some calculation or formula.
+In contrast, a stored procedure is often
+used for performing a sequence of operations,
+data manipulation, or enforcing
+business rules within the database.
+So I'll continue in the next video,
+and look at MySQL functions, and how to
+execute and use them with JDBC code.
 </div>
 
 ## [l. CallableStatement Challenge]()
