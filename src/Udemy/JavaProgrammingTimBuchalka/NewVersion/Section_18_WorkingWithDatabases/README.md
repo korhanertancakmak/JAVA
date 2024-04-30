@@ -8092,6 +8092,337 @@ A function's purpose is to return a value,
 usually the result of some calculation or formula.
 In contrast, a stored procedure is often used for performing a sequence of operations,
 data manipulation, or enforcing business rules within the database.
+
+So far, we looked at stored procedures, how to call them, 
+and also how in some cases we can get data back.
+As already discussed, Stored procedures are designed 
+to execute a sequence of SQL statements,
+and can perform multiple operations within a single call.
+They can modify the state of the database,
+meaning they can create, update, or delete data, 
+as the _addAlbum_ series of procedures did.
+Procedures can also control transaction management,
+ensuring data consistency and integrity.
+
+In relational database management systems, like MySQL, 
+precompiled collections of SQL statements can be either a stored procedure
+or a stored function.
+Both are stored in the database, and both can be executed as a single unit.
+While each may encapsulate common database operations, they are different.
+Specifically, stored functions are designed to **perform a specific calculation**, 
+or data manipulation, and **return a single value**.
+The key characteristics of a stored function are:
+
+1. As I just stated, it **Returns a value**.
+Stored functions are expected to return a single value, 
+such as an integer, string, date, or a result set. 
+2. A stored function **is Immutable**.
+Stored functions are generally designed to be deterministic, 
+and should not have side effects. 
+This means that calling a function with the same inputs should always produce the same output, 
+and functions should not modify data in the database. 
+3. Lastly, a stored function **can be used inSQL expressions**.
+This means you can use it directly in _SELECT_ statements, _WHERE_ clauses, or _JOIN_ conditions,
+to compute values used in queries.
+
+| Stored Function     | Stored Procedure              |
+|---------------------|-------------------------------|
+| Data Validation     | Data Modification             |
+| Data Conversion     | ETL(Extract, Transform, Load) |
+| Complex Expressions | Business Logic                |
+| Calculations        | Batch Processing              |
+
+This table lists some of the use cases for each of these stored objects.
+You can think of a function as a targeted and individual unit of work.
+It can be used for validating data before insertion or updating.
+A stored function can be used for converting data, from one format, to another.
+It can be used to reuse complex expressions that are used frequently.
+Finally, a stored function is often used to perform some calculation or formula.
+On the other hand, a stored procedure is like a mini program in the database, 
+and has much broader goals.
+Use a stored procedure for data modifications, like inserting, updating or deleting records.
+Stored procedures are often used to extract, transform and load data (making use of functions)
+to load data from one table to another.
+Or maybe you've got some business logic, 
+these rules can be encapsulated in a stored procedure.
+And we've already seen that a stored procedure can be used 
+for batch and transactional processing.
+You might be less likely to call a stored function from your _CallableStatement_, 
+than you would a Stored Procedure, but I still want to cover it.
+There are a couple of differences.
+The first is that the SQL string will always start with a placeholder,
+so a question mark for the returned result.
+The second is that MySQL stored functions only support _IN_ parameters. 
+This isn't true for other vendors.
+This just means you don't specify parameter types 
+in the parameter declarations of the stored function, in MySQL.
+
+First, let's get started by loading and examining a simple function in MySQL Workbench.
+First, download the file called calcAlbumLength.sql from the package folder of this section.
+Open MySQL Workbench, and use the development session we've been using all along.
+Make sure you have the _schemas_ panel open.
+Select the second icon from the menu of icons, which is, open a SQL script from a file.
+Browse to the file you downloaded, and select that.
+I'll select the first lightning icon and that will execute this script.
+If I refresh the _schema_ panel, I can open the _Functions_ node.
+And there I can see the new stored function there, _calcAlbumLength_.
+I'll select the tool icon.
+
+
+
+What you'll notice is that this looks a lot like a stored procedure.
+It has the keyword FUNCTION instead of PROCEDURE,
+but it has parameters defined in a similar
+fashion.
+One thing I want to show you is, if I now
+decide to declare the input type explicitly,
+by adding the keyword, In, before album
+name.
+Notice, that this is an error in this case.
+This is one difference, that you don't have
+the option to specify the parameter type in
+your stored function, because all parameters
+are by default, type in Parameters.
+I'll revert that change, removing IN from
+the parameter declaration.
+The next thing you'll notice is that this
+function returns a double.
+And then notice the next line, that says READS
+SQL DATA.
+I'm going to remove this for a minute.
+I'll apply this change.
+And hit apply a second time.
+Now, I've got a problem.
+There was an error while applying the SQL
+script to the database.
+I'll scroll down a bit, until I see Error
+1 4 1 8.
+Here, the statement says, this function has
+none of, DETERMINISTIC, NO SQL, or READS SQL
+DATA, in its declaration.
+You might remember, in my introductory slides,
+I mentioned that functions should be immutable,
+or deterministic.
+Deterministic means that running the code,
+
+```html  
+
+```
+
+with the same input, should result in the
+same output each time.
+And they should never have side effects, like
+altering the database state.
+I should specify at least one of these statements
+in my function, or if none of these is the case,
+I can pursue another option, which I
+won't get into in this course.
+I'll cancel out of this, and now in my code,
+I'll type DETERMINISTIC, where I originally
+had READS SQL DATA.
+And I'll try to apply that.
+This time it works, meaning it got saved and
+compiled, without any errors.
+Although this may work, it doesn't really
+make sense in this case, unless the data in
+the tables, will never change.
+If the data can change, than it won't be deterministic.
+So I'll revert this code back to the way it
+was.
+This is a really simple function
+It first counts the number of records in the
+album view for a single album.
+Then the code multiplies this, by the static
+value, 2.5.
+If song length were part of our songs table,
+then we'd sum up those values.
+So here, I'm just mocking up an average length
+of 2.5 minutes per song.
+That is selected into the length variable,
+which gets returned from this function.
+What's kind of nice about functions is that
+we can use them in select statements, and
+where clauses.
+I'll show you this in the workbench, so I'll
+open a SQL tab.
+I'll select the distinct album name just in
+case this data has duplicates, and now, instead
+of adding another column name, I can call
+my function, passing it the album name column name.
+This means this function will get called,
+for every record, with that record's album
+name, to calculate the album length.
+I'll select from the albums table, and order
+by album name.
+I'll execute this.
+And you'll see a grid displayed, first my
+album names,
+listed alphabetically, and then
+the result of my function, a double value,
+representing the length, in minutes, of each
+album.
+This gives you an idea of relative length,
+if all the songs were a uniform recording size.
+Now, let's see how we'd use this in Java code.
+I'll go back to my prepared statement project
+in Intelli J.
+I'll be adding code to call this function,
+in the MusicCallableStatement class.
+First, I'll comment out the code that calls
+the stored procedure.
+I'll use a block comment here, blocking out
+everything from the CallableStatement declaration,
+down to the end of the forEach looping.
+I'm going to call my function after the data is printed out,
+so after Main.printRecords.
+Whether you're calling a stored procedure,
+or a stored function, you still call prepareCall,
+on the connection. This time I'll assign it
+to a callable statement variable, named c
+s f. I'll pass the string that calls the calc
+album length function. In this case, I start
+with a question mark and equals sign, followed
+by the keyword call, then the stored function,
+music.calcAlbumLength, and that takes one parameter.
+The first question mark is for the result
+of the function.
+I only need to register the result once,
+and this is done just like an output parameter.
+The returned result is index 1.
+I'll use the java.sql.Types class, to specify the type
+as a double.
+Next, I'll loop through my data in the Map,
+so through the key, the artist, and the nested
+map, which has all the new album data. I'll
+loop through album map, but just the album name keys.
+I'll include a try clause. I'll
+set the function's parameter, index 2, to
+the album Name. What this means is, I'll be
+calling the calc album length for each of
+the bob dylan albums in my map. Next, I'll
+call execute on the c s f statement.
+I can get the result from the statement, by simply
+calling one of the get methods on index 1.
+I'll print this data out, so length of %s,
+that'll be the album name, is percent dot
+1f, that'll be the record length. And next,
+the usual catch clause.
+Ok so this code is similar to calling a stored
+procedure.
+I'll run this now.
+
+```html  
+
+```
+
+But for this, I'm getting an error, parameter number 1 is not an out parameter.
+This error's a bit confusing, if you don't
+understand the problem.
+I'm going to go up to the prepareCall method,
+and make a minor change.
+I'll start and end the text that's in quotes,
+with an opening and closing curly brace.
+I'll run the code again.
+
+```html  
+
+```
+
+And scroll to the bottom of the output.
+Here, you can see the code ended without any
+errors, and I get the album lengths back,
+from executing my function this way.
+The length of Bob Dylan is 32.5, and the length
+of blonde on blonde is 35.0.
+What are the curly braces here, and why did
+this work?
+Without the curly braces, the JDBC driver
+interprets the string literally, so it wants
+to execute a call command, on the database.
+But in most databases, you don't execute stored
+functions, using the call keyword, like you
+would for a stored procedure.
+Because it thinks you're calling a stored
+procedure, the starting question mark is simply ignored.
+That's why we got the error in the first try,
+the parameter number 1 is not an out parameter,
+because the driver didn't factor in the first question mark.
+Using the curly braces informs the JDBC driver,
+that you want it to perform extra processing,
+or translation.
+These curly braces are called an escape sequence,
+and they're supported in special cases.
+JDBC Escape sequences provide a way to execute
+database-specific operations, in a more consistent
+and portable manner, across different database
+systems.
+They're enclosed in curly braces {},and are
+used within SQL statements.
+There are certain things that aren't database
+agnostic.
+This includes Date, time, and timestamp literals.
+You saw this, when I gave you a specific format for the date,
+in MySQL, in a challenge.
+The default date format is different, depending on the database.
+Scalar functions such as
+numeric, string, and data type conversion
+functions may differ. For example, the function
+to transform a string to upper case, may have
+a different name in various databases. Escape
+characters for wildcards used in LIKE clauses
+may be different between databases. And the
+execution ofStored procedures and functions
+may be performed with either a call, or execute
+method, or some other key word. Similarly,
+the execution of a function may be performed
+differently across databases.
+For these features, and a few others, you
+can use an escape sequence, usually with special
+syntax specified.
+In the case of stored functions, the key is,
+the question mark equals CALL, part of the
+string.
+This informs the JDBC driver, that you want
+it to prepare the code, to execute a function.
+The other items listed on this slide, have
+special indicators as well, and you can find
+these by googling JDBC escape sequences, if
+you're interested.
+You might be wondering why I didn't need the
+escape sequence for the stored procedures
+we looked at, in the last video.
+In general the key word call, is supported
+by most databases for stored procedures.
+This means I could go over to the MySQL workbench,
+and execute the call command, with the procedure
+name and specified parameters, in a SQL Query editor.
+I could do the same in most RDBMS's, so the
+use of the escape sequences in a stored procedure
+call, is often optional.
+The execute of a function isn't done with
+the command call, in MySQL, so as you saw,
+we needed to escape this string, which allowed
+it to run successfully.
+
+```html  
+
+```
+
+Stored procedures are designed for executing
+multiple operations, modifying data, and enforcing
+business logic.
+In contrast, stored functions are primarily
+used for calculations and data transformations.
+Both enhance code reusability, improve performance,
+and promote encapsulation of complex database
+operations.
+And even better, they simplify the JDBC code
+you have to write.
+Now that you're a little familiar with stored
+procedures and stored functions, I've got
+a challenge for you coming up next.
+So I'll see you in the next video for that challenge.
+
 </div>
 
 ## [l. CallableStatement Challenge]()

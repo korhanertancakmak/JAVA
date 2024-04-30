@@ -1,4 +1,4 @@
-package dev.lpa;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course09_CallableStatementsWithFunctions;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
@@ -11,20 +11,16 @@ import java.util.List;
 
 public class Main {
 
-    private static String ARTIST_INSERT =
-            "INSERT INTO music.artists (artist_name) VALUES (?)";
-    private static String ALBUM_INSERT =
-            "INSERT INTO music.albums (artist_id, album_name) VALUES (?, ?)";
-    private static String SONG_INSERT =
-            "INSERT INTO music.songs (album_id, track_number, song_title) " +
-                    "VALUES (?, ?, ?)";
+    private static String ARTIST_INSERT = "INSERT INTO music.artists (artist_name) VALUES (?)";
+    private static String ALBUM_INSERT = "INSERT INTO music.albums (artist_id, album_name) VALUES (?, ?)";
+    private static String SONG_INSERT = "INSERT INTO music.songs (album_id, track_number, song_title) VALUES (?, ?, ?)";
 
     public static void main(String[] args) {
 
         var dataSource = new MysqlDataSource();
 
         dataSource.setServerName("localhost");
-        dataSource.setPort(3306);
+        dataSource.setPort(3335);
         dataSource.setDatabaseName("music");
 
         try {
@@ -71,8 +67,7 @@ public class Main {
         return foundData;
     }
 
-    private static int addArtist(PreparedStatement ps, Connection conn,
-                                 String artistName) throws SQLException {
+    private static int addArtist(PreparedStatement ps, Connection conn, String artistName) throws SQLException {
 
         int artistId = -1;
         ps.setString(1, artistName);
@@ -87,8 +82,7 @@ public class Main {
         return artistId;
     }
 
-    private static int addAlbum(PreparedStatement ps, Connection conn, int artistId,
-                                String albumName) throws SQLException {
+    private static int addAlbum(PreparedStatement ps, Connection conn, int artistId, String albumName) throws SQLException {
 
         int albumId = -1;
         ps.setInt(1, artistId);
@@ -104,8 +98,7 @@ public class Main {
         return albumId;
     }
 
-    private static void addSong(PreparedStatement ps, Connection conn, int albumId,
-                                int trackNo, String songTitle) throws SQLException {
+    private static void addSong(PreparedStatement ps, Connection conn, int albumId, int trackNo, String songTitle) throws SQLException {
 
         ps.setInt(1, albumId);
         ps.setInt(2, trackNo);
@@ -126,12 +119,9 @@ public class Main {
         String lastArtist = null;
         int artistId = -1;
         int albumId = -1;
-        try (PreparedStatement psArtist = conn.prepareStatement(ARTIST_INSERT,
-                Statement.RETURN_GENERATED_KEYS);
-             PreparedStatement psAlbum = conn.prepareStatement(ALBUM_INSERT,
-                     Statement.RETURN_GENERATED_KEYS);
-             PreparedStatement psSong = conn.prepareStatement(SONG_INSERT,
-                     Statement.RETURN_GENERATED_KEYS);
+        try (PreparedStatement psArtist = conn.prepareStatement(ARTIST_INSERT, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement psAlbum = conn.prepareStatement(ALBUM_INSERT, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement psSong = conn.prepareStatement(SONG_INSERT, Statement.RETURN_GENERATED_KEYS);
         ) {
             conn.setAutoCommit(false);
 

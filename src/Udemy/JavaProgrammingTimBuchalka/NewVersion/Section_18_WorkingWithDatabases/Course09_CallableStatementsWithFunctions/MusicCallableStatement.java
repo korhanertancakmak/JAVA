@@ -1,4 +1,4 @@
-package dev.lpa;
+package Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course09_CallableStatementsWithFunctions;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
@@ -43,7 +43,7 @@ public class MusicCallableStatement {
         var dataSource = new MysqlDataSource();
 
         dataSource.setServerName("localhost");
-        dataSource.setPort(3306);
+        dataSource.setPort(3335);
         dataSource.setDatabaseName("music");
 
         try (Connection connection = dataSource.getConnection(
@@ -70,7 +70,8 @@ public class MusicCallableStatement {
                         System.err.println(e.getErrorCode() + " " + e.getMessage());
                     }
                 });
-            }); */
+            });
+*/
 
             String sql = "SELECT * FROM music.albumview WHERE artist_name = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -78,8 +79,7 @@ public class MusicCallableStatement {
             ResultSet resultSet = ps.executeQuery();
             Main.printRecords(resultSet);
 
-            CallableStatement csf = connection.prepareCall(
-                    "{ ? = CALL music.calcAlbumLength(?) }");
+            CallableStatement csf = connection.prepareCall("{ ? = CALL music.calcAlbumLength(?) }");
             csf.registerOutParameter(1, Types.DOUBLE);
 
             albums.forEach((artist, albumMap) -> {
