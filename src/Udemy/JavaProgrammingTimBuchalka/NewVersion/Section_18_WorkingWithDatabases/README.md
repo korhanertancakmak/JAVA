@@ -8168,106 +8168,138 @@ If I refresh the _schema_ panel, I can open the _Functions_ node.
 And there I can see the new stored function there, _calcAlbumLength_.
 I'll select the tool icon.
 
-
+![immage74](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image74.png?raw=true)
 
 What you'll notice is that this looks a lot like a stored procedure.
-It has the keyword FUNCTION instead of PROCEDURE,
-but it has parameters defined in a similar
-fashion.
-One thing I want to show you is, if I now
-decide to declare the input type explicitly,
-by adding the keyword, In, before album
-name.
-Notice, that this is an error in this case.
-This is one difference, that you don't have
-the option to specify the parameter type in
-your stored function, because all parameters
-are by default, type in Parameters.
-I'll revert that change, removing IN from
-the parameter declaration.
-The next thing you'll notice is that this
-function returns a double.
-And then notice the next line, that says READS
-SQL DATA.
+It has the keyword _FUNCTION_ instead of _PROCEDURE_,
+but it has parameters defined in a similar fashion.
+
+~~~~sql  
+CREATE DEFINER=`devuser`@`localhost` FUNCTION `calcAlbumLength`(albumName TEXT) RETURNS double
+    READS SQL DATA
+BEGIN
+	DECLARE length DOUBLE DEFAULT 0.0;
+
+	SELECT 
+    COUNT(*) * 2.5
+INTO length FROM
+    music.albumview
+WHERE
+    album_name = albumName;
+        
+	RETURN length;
+END
+~~~~
+
+One thing I want to show you is, if I now decide to declare the input type explicitly,
+by adding the keyword _IN_, before _albumName_.
+
+~~~~sql  
+CREATE DEFINER=`devuser`@`localhost` FUNCTION `calcAlbumLength`(IN albumName TEXT) RETURNS double
+    READS SQL DATA
+BEGIN
+	DECLARE length DOUBLE DEFAULT 0.0;
+
+	SELECT 
+    COUNT(*) * 2.5
+INTO length FROM
+    music.albumview
+WHERE
+    album_name = albumName;
+        
+	RETURN length;
+END
+~~~~
+
+Notice that this is an error in this case.
+This is one difference that you can't specify the parameter type _IN_ your stored function, 
+because all parameters are by default, type _IN_ Parameters.
+I'll revert that change, removing _IN_ from the parameter declaration.
+The next thing you'll notice is that this function returns a double.
+And then notice the next line, that says _READS SQL DATA_.
 I'm going to remove this for a minute.
 I'll apply this change.
-And hit apply a second time.
+And hit _apply_ a second time.
+
+![immage75](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image75.png?raw=true)
+
 Now, I've got a problem.
-There was an error while applying the SQL
-script to the database.
-I'll scroll down a bit, until I see Error
-1 4 1 8.
-Here, the statement says, this function has
-none of, DETERMINISTIC, NO SQL, or READS SQL
-DATA, in its declaration.
-You might remember, in my introductory slides,
-I mentioned that functions should be immutable,
-or deterministic.
-Deterministic means that running the code,
-
-```html  
-
-```
-
-with the same input, should result in the
-same output each time.
-And they should never have side effects, like
-altering the database state.
-I should specify at least one of these statements
-in my function, or if none of these is the case,
-I can pursue another option, which I
-won't get into in this course.
+There was an error while applying the SQL script to the database.
+I'll scroll down a bit, until I see `Error 1418`.
+Here, the statement says, 
+_this function has none of DETERMINISTIC, NO SQL, or READS SQL DATA in its declaration_.
+You might remember I mentioned that functions should be immutable or deterministic.
+Deterministic means that running the code with the same input
+should result in the same output each time.
+And they should never have side effects, like altering the database state.
+I should specify at least one of these statements in my function, 
+or if none of these is the case, I can pursue another option, 
+which I won't get into in this course.
 I'll cancel out of this, and now in my code,
-I'll type DETERMINISTIC, where I originally
-had READS SQL DATA.
+I'll type `DETERMINISTIC`, where I originally had `READS SQL DATA`.
+
+~~~~sql  
+CREATE DEFINER=`devuser`@`localhost` FUNCTION `calcAlbumLength`(albumName TEXT) RETURNS double
+    DETERMINISTIC
+BEGIN
+	DECLARE length DOUBLE DEFAULT 0.0;
+
+	SELECT 
+    COUNT(*) * 2.5
+INTO length FROM
+    music.albumview
+WHERE
+    album_name = albumName;
+        
+	RETURN length;
+END
+~~~~
+
 And I'll try to apply that.
-This time it works, meaning it got saved and
-compiled, without any errors.
-Although this may work, it doesn't really
-make sense in this case, unless the data in
-the tables, will never change.
-If the data can change, than it won't be deterministic.
-So I'll revert this code back to the way it
-was.
-This is a really simple function
-It first counts the number of records in the
-album view for a single album.
-Then the code multiplies this, by the static
-value, 2.5.
-If song length were part of our songs table,
-then we'd sum up those values.
-So here, I'm just mocking up an average length
-of 2.5 minutes per song.
-That is selected into the length variable,
-which gets returned from this function.
-What's kind of nice about functions is that
-we can use them in select statements, and
-where clauses.
-I'll show you this in the workbench, so I'll
-open a SQL tab.
-I'll select the distinct album name just in
-case this data has duplicates, and now, instead
-of adding another column name, I can call
-my function, passing it the album name column name.
-This means this function will get called,
-for every record, with that record's album
-name, to calculate the album length.
-I'll select from the albums table, and order
-by album name.
-I'll execute this.
-And you'll see a grid displayed, first my
-album names,
-listed alphabetically, and then
-the result of my function, a double value,
-representing the length, in minutes, of each
-album.
-This gives you an idea of relative length,
-if all the songs were a uniform recording size.
+This time it works, meaning it got saved and compiled without any errors.
+Although this may work, it doesn't really make sense in this case 
+unless the data in the tables will never change. 
+If the data can change, then it won't be deterministic.
+So I'll revert this code back to the way it was.
+This is a really simple function It first counts 
+the number of records in the _albumview_ for a single album.
+Then the code multiplies this, by the static value, `2.5`.
+If song length were part of our songs table, then we'd sum up those values.
+So here, `COUNT(*) * 2.5`, 
+I'm just mocking up an average length of 2.5 minutes per song.
+That is selected into the length variable, which gets returned from this function.
+What's kind of nice about functions is that 
+we can use them in _select_ statements, and _where_ clauses.
+I'll show you this in the workbench, so I'll open a SQL tab.
+I'll select the distinct album name just in case this data has duplicates, 
+and now, instead of adding another column name, 
+I can call my function, passing it the album name column name.
+
+~~~~sql  
+SELECT distinct
+    album_name, calcAlbumLength(album_name)
+FROM
+    music.albums
+ORDER BY album_name;
+~~~~
+
+This means this function will get called for every record, 
+with that record's album name, to calculate the album length.
+I'll select from the _albums_ table, and order by album name.
+I'll execute this:
+
+![immage76](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image76.png?raw=true)
+
+And you'll see a grid displayed, first my album names listed alphabetically, 
+and then the result of my function, a double value, representing the length, 
+in minutes, of each album.
+This gives you an idea of relative length if all the songs were a uniform recording size.
 Now, let's see how we'd use this in Java code.
-I'll go back to my prepared statement project
-in Intelli J.
-I'll be adding code to call this function,
-in the MusicCallableStatement class.
+I'll go back to my prepared statement project in IntelliJ.
+I'll be adding code to call this function in the **MusicCallableStatement** class.
+
+
+
 First, I'll comment out the code that calls
 the stored procedure.
 I'll use a block comment here, blocking out
