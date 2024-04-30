@@ -7327,7 +7327,47 @@ after the localhost value in the _CREATE DEFINER_ statement.
 The use of _CREATE DEFINER_ is important in situations 
 where you want to control who can execute this procedure.
 
+~~~~sql  
+CREATE DEFINER=`devUser`@`localhost` PROCEDURE `addAlbum`(artistName TEXT, albumName TEXT, songTitles JSON)
+BEGIN
 
+    DECLARE val_artist_id INT DEFAULT NULL;
+    DECLARE val_album_id INT DEFAULT NULL;
+    DECLARE i INT DEFAULT 0;
+    DECLARE num_items INT;
+    DECLARE song_title VARCHAR(255);
+    SET num_items = JSON_LENGTH(songTitles);
+    
+    SELECT artist_id INTO val_artist_id FROM artists WHERE  artist_name = artistName;
+
+    START TRANSACTION;
+    IF val_artist_id IS NULL THEN
+        -- Insert a new order
+        INSERT INTO artists (artist_name) VALUES (artistName);
+        -- Get artist_id of last artist inserted
+        SELECT LAST_INSERT_ID() INTO val_artist_id;
+    END IF;
+
+    SELECT album_id INTO val_album_id FROM albums WHERE album_name = albumName AND artist_id = val_artist_id;
+        
+    IF val_album_id IS NULL THEN
+        -- Insert a new album
+        INSERT INTO albums (artist_id, album_name) VALUES (val_artist_id, albumName);
+        -- Get album_id of last artist inserted
+        SELECT LAST_INSERT_ID() INTO val_album_id;
+        
+        -- Loop through the JSON Song Titles Array
+        WHILE i < num_items DO
+            -- JSON functions extract the right element, and unquote it
+            SET song_title = JSON_UNQUOTE(JSON_EXTRACT(songTitles, CONCAT('$[', i, ']')));	
+            -- Insert a new song, track number is assigned here.
+            INSERT INTO songs (album_id, track_number, song_title) VALUES (val_album_id, i + 1, song_title); 
+            SET i = i + 1;
+        END WHILE;
+    END IF;    
+    COMMIT;
+END
+~~~~
 
 In this case, this means the procedure will get executed with _devUser_'s privileges.
 Right now, you don't have to worry about too much about this statement,
@@ -7335,24 +7375,68 @@ or the code in this procedure.
 This first bit is added automatically if you create a new procedure.
 What I want to do here is, change the procedure name, 
 from _addAlbum_ to _addAlbumReturnCounts_.
+
+~~~~sql  
+CREATE DEFINER=`devUser`@`localhost` 
+PROCEDURE `addAlbumReturnCounts`(IN artistName TEXT, IN albumName TEXT, IN songTitles JSON, OUT count INT)
+BEGIN
+
+    DECLARE val_artist_id INT DEFAULT NULL;
+    DECLARE val_album_id INT DEFAULT NULL;
+    DECLARE i INT DEFAULT 0;
+    DECLARE num_items INT;
+    DECLARE song_title VARCHAR(255);
+    SET num_items = JSON_LENGTH(songTitles);
+    
+    SELECT artist_id INTO val_artist_id FROM artists WHERE  artist_name = artistName;
+
+    START TRANSACTION;
+    IF val_artist_id IS NULL THEN
+        -- Insert a new order
+        INSERT INTO artists (artist_name) VALUES (artistName);
+        -- Get artist_id of last artist inserted
+        SELECT LAST_INSERT_ID() INTO val_artist_id;
+    END IF;
+
+    SELECT album_id INTO val_album_id FROM albums WHERE album_name = albumName AND artist_id = val_artist_id;
+        
+    IF val_album_id IS NULL THEN
+        -- Insert a new album
+        INSERT INTO albums (artist_id, album_name) VALUES (val_artist_id, albumName);
+        -- Get album_id of last artist inserted
+        SELECT LAST_INSERT_ID() INTO val_album_id;
+        
+        -- Loop through the JSON Song Titles Array
+        WHILE i < num_items DO
+            -- JSON functions extract the right element, and unquote it
+            SET song_title = JSON_UNQUOTE(JSON_EXTRACT(songTitles, CONCAT('$[', i, ']')));	
+            -- Insert a new song, track number is assigned here.
+            INSERT INTO songs (album_id, track_number, song_title) VALUES (val_album_id, i + 1, song_title); 
+            SET i = i + 1;
+        END WHILE;
+    END IF;    
+    COMMIT;
+END
+~~~~
+
 By doing this, I'll actually be creating a new procedure with this name.
-Before I save this though,
-I'll add a fourth parameter.
-I'll start with the key word OUT,
-and by convention this is upper case, my parameter
-name will be count, and it's type is int.
-I could also change my other 3 parameters, and
-include the key word, In, and I'll do this.
-It's usually best practice, to explicitly
-specify the in parameter type,
+Before I save this though, I'll add a fourth parameter.
+I'll start with the keyword **OUT**,
+and by convention this is uppercase, 
+my parameter name will be _count_, and it's type is **int**.
+I could also change my other three parameters, 
+and include the keyword, **IN**, and I'll do this.
+It's usually best practice to explicitly specify the **IN** parameter type,
 though not required, as you saw.
-I'll hit the Apply button.
-That will popup the DDL
-script that'll get executed.
-I'll hit apply again.
+I'll hit the _Apply_ button.
+That will pop up the DDL script that'll get executed.
+I'll hit _apply_ again.
 Then finish.
-I'll refresh the schema panel, and I
-should see my new procedure there.
+I'll refresh the schema panel,
+and I should see my new procedure there.
+
+
+
 So I created an OUT Parameter,
 but I didn't actually do
 anything with this parameter, in my code.
@@ -7387,9 +7471,7 @@ the stored procedure that gets called,
 in the callable statement code here.
 I'll run this now, executing
 
-```html  
 
-```
 
 the new stored procedure.
 This time, I get an error for each
