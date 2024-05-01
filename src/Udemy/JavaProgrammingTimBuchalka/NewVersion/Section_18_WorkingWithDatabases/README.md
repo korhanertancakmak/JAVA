@@ -8647,7 +8647,7 @@ Now that you're a little familiar with stored procedures and stored functions,
 I've got a challenge for you coming up next.
 </div>
 
-## [l. CallableStatement Challenge]()
+## [l. CallableStatement Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course10_CallableStatementChallenge/README.md#callablestatement-challenge)
 <div align="justify">
 
 In this challenge, I want you to revisit the _storefront_ database, 
@@ -8753,11 +8753,345 @@ A **TimeStamp** field can be used for a SQL parameter of type **DateTime**.
 
 ```
 
+So far, in this section of the course, I've focused on JDBC as the means for communicating with a database.
+This is for good reason, since it's part of Java's Standard Edition implementation, 
+or core Java in other words.
+We've walked through writing SQL statements, and executing them for the usual _CRUD_ functionality.
+I've also demonstrated that this work can be more tightly-knit to the database server,
+by using stored procedures that have been written, to do some work for you.
+Even so, you're still in the business of having to write some database interaction code.
 
-```html  
+The alternative is something called the **Java Persistence API**, or **JPA** for short.
+JPA is a specification.
+There's no default implementation of the specification,
+provided in Java's Standard Edition.
+That being said, I still want to cover the topic briefly.
+There's a great chance, you'll be working on an application that uses some form of it.
+Some popular implementations are **Hibernate**, **Spring JPA**, and **EclipseLink**, 
+to name a few.
+These are called **JPA Providers**.
+In 2019, the _Java Persistence API_ officially changed its name to _Jakarta Persistence API_.
+It was previously part of Java's Enterprise Edition, which has since become open source.
+_The Persistence API_ became one of the Jakarta projects.
+The link [here](https://jakarta.ee/specifications/persistence/3.1/apidocs/jakarta.persistence/module-summary.html) 
+is Jakarta's API documentation for JPA, 
+and unless you're supporting legacy code, you should start here.
 
-```
+A few of the key concepts of the JPA specification include:
 
+* A technique known as **Object-Relational Mapping, or ORM**. 
+* **The Entity** (which is the mapped object), 
+and the **Entity Manager** which manages lifecycles of these entities.
+* **The Persistence Context** is a special cached area where the entities exist.
+
+You can think of JPA as an extra layer of functionality, 
+between your application code and the JDBC code you saw in the last sections.
+**Object-Relational Mapping** is a method of mapping database tables defined by columns, 
+to a class with correlated fields, and setters and getters.
+A record in a table then becomes an instance of one of these classes.
+**ORM** frameworks often automate the process of object relational mapping.
+
+* They **Simplify code**, reducing the need to write boilerplate classes. 
+* They **Simplify database operations**, hiding the complexities of SQL queries, 
+and handling database interactions for you.
+* They **Provide code portability** across different database systems.
+* _ORM_ Frameworks also **Encourage a more structured and organized approach** to data access.
+
+Typically, an **Entity** is a class that represents a table in a relational database.
+
+
+
+Each Entity instance corresponds
+to a row in that table.
+Each entity is annotated with metadata, to
+instruct JPA providers, how to map its fields to
+a table's columns, relationships to other tables,
+and lifecycle management techniques to use.
+The example on this slide is a relatively
+simple one, of an annotated class, Artist,
+which would be an entity for our artists table, in
+the music database, that we've been working with.
+In this example, the annotation Entity,
+describes this class as the Entity type.
+A framework implementing JPA, will
+identify entities by this annotation.
+The annotation that follows next is
+table, further describes the table name,
+so that is artists in this case.
+Next the fields in this class
+also have annotations which describe
+their database correlated information.
+So I have an Id, and that's the artist id.
+I include the column annotation,
+which specifies the ID's column name.
+Next, I describe the field, artist Name,
+as mapping to the column
+name, artist underscore name.
+After this, I've declared a
+list of albums, for this artist.
+Above this field, I specify
+information about the relationship.
+I use the one to many annotation, then
+the join column, with the joined id,
+so album underscore id.
+The entity manager is
+implemented by the JPA Provider.
+An entity can exist in a managed
+state, managed by the Entity Manager.
+Or it can exist in a detached state,
+outside of an Entity Manager.
+A detached entity can then be merged
+into an EntityManager, if a commit
+is needed to a persistence layer..
+There are some key methods on the
+EntityManager interface to know,
+that line up with the CRUD operations
+The persist method makes a detached
+instance managed, and it's this instance's
+state will get persisted on a commit..
+The find method searches for an
+entity of the specified class using
+the primary key, in the persistent layer.
+It returns an instance that will be managed,
+and automatically persisted.
+If an entity is managed,
+updates will be propagated automatically
+to the persistence layer, on a commit.
+If the entity is not yet managed, a merge
+method will make the entity managed.
+The remove method removes the entity instance
+from management, and executes a delete on the
+persistence layer.
+I'll be walking
+through examples of these methods coming up.
+The persistence context has multiple purposes.
+It tracks the lifecycle state of managed entities.
+These states include new, managed, detached,
+and removed, reflecting any changes you make to
+their properties. It synchronizes changes made to
+managed entities with the database. This happens
+automatically when a transaction is committed
+or flushed, ensuring the database state reflects
+the state of your in-memory objects. It performs
+identity management, ensuring unique entity
+identity within a transaction. Even if you create
+duplicate objects with the same identifier, the
+persistence context recognizes and manages them
+as a single entity. It acts as a cache, reducing
+database roundtrips by keeping frequently accessed
+entities in memory, for faster retrieval.
+The objective of this lecture and the ones that
+follow, aren't to give you a deep dive into JPA.
+Instead, I want to give you a simple introduction
+to this architecture, which
+is used by so many frameworks.
+Let's get back to some code, and start exploring
+these concepts a little bit, in a concrete way.
+I've created a new project, called
+JPA, with the usual Main class set up.
+Before I do anything, I need to include
+some additional libraries in my project.
+So I'll go to Module Settings.
+I'll select Libraries.
+First, I'll need to add the jdbc
+driver for MySQL, which I've done
+in several projects, so I'll quickly do this.
+I'll navigate to that jar file, and select it,
+and accept all the default settings there.
+If you've updated Intelli J recently,
+you may get an additional dialog,
+It's titled Detected Roots,
+and says Choose Roots, and for this you just want
+to hit the OK button, assuming a root is selected,
+which it should be, by default.
+The next dialog lets me select
+which module it should be added to, and since
+I've only got one option, I'll click ok on that.
+Next, I need the jakarta JPA module.
+I could get this module from Maven,
+but I also need a JPA Provider.
+For the provider, I'll use Hibernate,
+and that comes packaged with the JPA,
+so I can just include that one module.
+I'll get this module from Maven.
+In the next section of the course,
+I'll be talking more about Maven,
+so just follow along with me here.
+I'll type in org.hibernate. ORM, and press enter.
+I'll get this error but will give it a moment,
+and a list should popup.
+Rather than scroll down and look for
+what I want, I can continue to type in this field,
+so I'll add colon, hibernate, dash, core in this
+input field, after the org.hibernate.orm.
+It's important that you don't have any
+spaces before or after the colon.
+Now I'll see the versions of this
+module listed, and I want to make sure I get
+one that's the latest version, 6 or higher.
+For me, at the time of this
+recording, its 6.4.1 Final.
+I'll select that.
+Another dialog pops up.
+I'll make sure transitive dependencies
+is checked in that dialog, and click ok.
+Now, it's important to examine the classes in the
+version you picked, to verify that you have the
+jakarta.persistence dash api in this set of
+classes, and that it's at least version 3.1.
+In addition, you want to verify that the
+module you pick has hibernate-core there,
+and it's at least version 6.
+Make sure you apply these changes on this
+screen, by selecting the ok or apply button.
+If you aren't seeing jakarta's persistence
+3.1 jar there, you should try these
+steps again, or alternately manually
+add jakarta's persistence api 3.1 or higher.
+Since things change more than they stay the same,
+let me just quickly show you how
+to add that module separately.
+If you've verified this package in your
+module, you don't need to do this next step,
+and can skip adding this module.
+Again, I'll open the module settings,
+with Libraries selected, and click the + button.
+And select From Maven.
+I'll type jakarta.persistence colon in there.
+I could hit enter here, which gives me that
+error, or optionally I can do a search.
+When you press enter, it's expecting a
+fully qualified coordinate, or module identifier,
+and in these cases, we're supplying only a part.
+The search is a bit more friendly, and
+that's the search icon next to this field.
+Hitting that rather than enter, doesn't give
+me an error, and it displays information about
+how many matches it found, and after
+a slight pause, will display them.
+Now I see the different versions of this
+package, and I'll pick the 3.1 point 0 version.
+You probably don't want to pick any
+version with M or B in the suffix,
+these are milestone and beta versions,
+which may not be the most stable versions.
+RC stands for release candidate, so again,
+I'd just stick to one without those suffixes.
+This module has a single jar file in it and
+you'll see that displayed in the classes list,
+after you add this.
+Again, click OK or apply.
+In my case, I don't need this jar file in my
+dependencies twice, so I'll simply open module
+settings again to the Library section, and
+remove this jakarta.persistence module here.
+Again, it's part of the hibernate module I
+included, so for me, it's not necessary.
+The purpose of Maven is to help us sort
+these dependencies out, but again, I'll
+cover that in a later section of the course.
+Now that we've got the libraries we need,
+we can get back to coding.
+I'll start with creating a
+couple of entities for the music database.
+There are tools, including a Hibernate plugin
+for Intelli J, that will generate entities
+for you, based on your database schema.
+This plugin's not available however, for
+the community edition, which we're using.
+Since we only have three tables, I'll
+create these manually, which is a good
+exercise anyway, as you're learning.
+So first, I'll create the Artist,
+in the dev.lpa.music package.
+To make this an entity,
+I simply use the annotation, Entity.
+Intelli J should be able to resolve
+this annotation, and include an import. For
+me though, I have to select Entity by double
+clicking and it adds the import.
+This is part of the package,
+jakarta.persistence, which is included in the
+hibernate core package, as I mentioned before.
+If I hover over the entity annotation,
+I can see how Intelli J resolved it.
+If you don't see jakarta.persistence, then you
+should go back to the installation of the module.
+Specifically, you really don't
+want to see javax.persistence.
+This jakarta.persistence contains all
+the annotations, and the interfaces
+for the JPA specification.
+An entity usually has a
+relationship to a table, so I'll set that up.
+I'll add the Table annotation, after Entity,
+but before the class declaration. Here
+I'll specify the name of the table
+in the music schema which is artists
+You can see the import was not added
+automatically, so I'll just click it and
+do an ALT-ENTER and ensure I choose the
+jakarta.persistence Table like this.
+My artist table only has two columns,
+artist id and artist name, so I'll set up two
+fields on this class, to represent those columns.
+I'll start with the annotation, Id. Every
+database entity requires this on one field,
+which represents the primary key. I'll map the
+field to the column name, artist underscore id,
+which is the primary key for artists. I'll fix
+the imports in a bit. And here I'll have my
+declaration for the field name, so private int
+artist id. And again, I'll map the next field,
+this time to the artist_name column. I'll declare
+this field as a string, and call it artistName.
+As you saw, the imports for Id and
+Column were added automatically for me.
+I need some constructors and getters
+and setters, so I'll generate these,
+starting with the constructors.
+All JPA entities are required to have
+a no args constructor, so I'll add that first.
+I'll pick constructor from the Generate menu.
+I'll click on the select None button at
+the bottom of this dialog, as the option.
+That generates my no args constructor.
+I'll repeat this process for a second
+constructor, but in this case, I'll
+select artist name in the dialog,
+and click OK to create a one argument constructor.
+That generates a constructor with the
+artist name as the only parameter.
+I'll repeat this one last time, so again
+picking constructor from the generate menu.
+In this case, I'll select both
+fields, then click the ok button.
+That's my third and last
+constructor for this class.
+Now, I'll add a getter and setter,
+selecting that combo from the generate menu.
+I'll pick just the artist name, since
+I don't need these methods for the id.
+Intelli J generates the getArtistName
+and setArtistName methods for me.
+Finally, I'll include a toString method, and
+again I'll generate that, using Alt Insert,
+and picking toString from the Generate Menu shown.
+The template might be set to the JSON Builder
+template, from the last
+challenge, as it was for me.
+I'll instead choose the String concat
+template, from the select list here
+I'll select both fields in
+the next dialog, and hit ok.
+And we are done.
+I've created my first JPA Entity.
+It's really just an annotated pojo.
+I'll close this video here,
+before it gets too long.
+In the next video, we'll use this
+entity to communicate with the artist table in
+the database, so I'll see you in that next video.
 </div>
 
 ## [n. JPA in Action]()
