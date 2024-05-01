@@ -2,722 +2,727 @@ WEBVTT
 Kind: captions
 Language: en
 
-00:00:05.320 --> 00:00:06.320
-In this challenge, I&nbsp;&nbsp;
-
-00:00:06.320 --> 00:00:09.360
-want you to revisit the storefront&nbsp;
-database, which you've worked on for&nbsp;&nbsp;
-
-00:00:09.360 --> 00:00:13.960
-the other challenges in this section.
-You'll be creating a stored procedure&nbsp;&nbsp;
-
-00:00:13.960 --> 00:00:20.240
-(if you want to try this), named add Order.
-Alternatively, you can simply load the procedure,&nbsp;&nbsp;
-
-00:00:20.240 --> 00:00:25.680
-that's included in the resources&nbsp;
-folder, in a file called add Order.sql.&nbsp;
-
-00:00:25.680 --> 00:00:30.520
-If you're confused about how to do this, refer to&nbsp;
-the first CallableStatement lecture which walks&nbsp;&nbsp;
-
-00:00:30.520 --> 00:00:36.800
-you through the process for another procedure.
-The stored procedure has four parameters.&nbsp;
-
-00:00:36.800 --> 00:00:43.040
-Two are input parameters
-There's OrderDate, a DATETIME parameter. ; and&nbsp;&nbsp;
-
-00:00:43.040 --> 00:00:48.880
-also, OrderDetails, A JSON parameter, which should&nbsp;
-contain an array of json strings, that each have&nbsp;&nbsp;
-
-00:00:48.880 --> 00:00:54.440
-the item description and quantity.
-Two are output parameters&nbsp;
-
-00:00:54.440 --> 00:00:58.880
-There's the OrderId, an INT parameter, which&nbsp;
-will contain the order id of the inserted&nbsp;&nbsp;
-
-00:00:58.880 --> 00:01:05.040
-order. And the second is, InsertedRecords,&nbsp;
-another INT parameter, which returns then&nbsp;&nbsp;
-
-00:01:05.040 --> 00:01:11.040
-number of detail records, inserted for that order.
-This stored procedure inserts the order and it's&nbsp;&nbsp;
-
-00:01:11.040 --> 00:01:16.320
-details, if it can't find an existing&nbsp;
-order, for the date time specified.&nbsp;
-
-00:01:16.320 --> 00:01:20.840
-You can use the addAlbum procedure in the music&nbsp;
-schema, which we used in a previous video,&nbsp;&nbsp;
-
-00:01:20.840 --> 00:01:26.240
-as a starting point, if you do want to&nbsp;
-try to create this procedure, on your own.&nbsp;
-
-00:01:26.240 --> 00:01:33.400
-Again, this procedure is in the resources folder,&nbsp;
-if you don't want this additional SQL challenge.&nbsp;
-
-00:01:33.400 --> 00:01:38.440
-Your Java code should use a CallableStatement,&nbsp;
-to call the addOrder procedure.&nbsp;
-
-00:01:38.440 --> 00:01:42.960
-You'll pass a java.sql.TimeStamp&nbsp;
-as the first parameter.&nbsp;
-
-00:01:42.960 --> 00:01:47.760
-A TimeStamp and DateTime field are&nbsp;
-often interchangeable in many databases.&nbsp;
-
-00:01:47.760 --> 00:01:53.880
-For this, you'll need to transform&nbsp;
-a string, into a java.sql.TimeStamp.&nbsp;
-
-00:01:53.880 --> 00:01:58.320
-You can do this with a DateTimeFormatter,&nbsp;
-and the use of LocalDateTime.&nbsp;
+00:00:05.280 --> 00:00:09.760
+So far, in this section of the course,&nbsp;
+I've focused on JDBC as the means for&nbsp;&nbsp;
 
-00:01:58.320 --> 00:02:01.920
-Next, you'll pass a string&nbsp;
-as the second parameter.&nbsp;
+00:00:09.760 --> 00:00:13.800
+communicating with a database.
+This is for good reason,&nbsp;&nbsp;
 
-00:02:01.920 --> 00:02:06.560
-This will be the json string,&nbsp;
-representing an array of order details.&nbsp;
+00:00:13.800 --> 00:00:19.920
+since it's part of Java's Standard Edition&nbsp;
+implementation, or core Java in other words.&nbsp;
 
-00:02:06.560 --> 00:02:12.560
-The input for the array of details, as a json&nbsp;
-string, should look as shown on this slide.&nbsp;
+00:00:19.920 --> 00:00:25.480
+We've walked through writing SQL statements, and&nbsp;
+executing them for the usual CRUD functionality.&nbsp;
 
-00:02:12.560 --> 00:02:18.000
-Finally, you'll need to register two output&nbsp;
-parameters, both ints, for the order id,&nbsp;&nbsp;
+00:00:25.480 --> 00:00:29.520
+I've also demonstrated that this work can&nbsp;
+be more tightly knit to the database server,&nbsp;&nbsp;
 
-00:02:18.000 --> 00:02:24.040
-and the number of order detail records inserted.
-Make sure you delete the orders in a&nbsp;&nbsp;
+00:00:29.520 --> 00:00:34.400
+by utilizing stored procedures that have&nbsp;
+been written, to do some of the work for you.&nbsp;
 
-00:02:24.040 --> 00:02:28.880
-MySQL Workbench session, which were&nbsp;
-inserted in the previous challenge.&nbsp;
+00:00:34.400 --> 00:00:39.520
+Even so, you're still in the business of&nbsp;
+having to write some database interaction code.&nbsp;
 
-00:02:28.880 --> 00:02:34.360
-The SQL code shown on this slide shows you&nbsp;
-how to delete the order, and it's details.&nbsp;
+00:00:39.520 --> 00:00:45.800
+The alternative is something called the&nbsp;
+Java Persistence API, or JPA for short.&nbsp;
 
-00:02:34.360 --> 00:02:39.400
-Remember, we have a cascade delete set up, so&nbsp;
-deleting the order, will delete any related&nbsp;&nbsp;
+00:00:45.800 --> 00:00:49.440
+JPA is a specification.
+There's no default&nbsp;&nbsp;
 
-00:02:39.400 --> 00:02:45.240
-records, in the order detail table as well
-I'm also showing the DDL statements, which&nbsp;&nbsp;
+00:00:49.440 --> 00:00:54.560
+implementation of the specification,&nbsp;
+provided in Java's Standard Edition.&nbsp;
 
-00:02:45.240 --> 00:02:50.880
-will reset the auto increment to 1 on both tables.
-You can execute these statements, if you want your&nbsp;&nbsp;
+00:00:54.560 --> 00:00:58.400
+That being said, I still want&nbsp;
+to cover the topic briefly.&nbsp;
 
-00:02:50.880 --> 00:02:57.600
-first order to have an id of 1 again.
-The DDL statements are optional.&nbsp;
+00:00:58.400 --> 00:01:03.480
+There's a very good chance, you'll be working&nbsp;
+on an application that uses some form of it.&nbsp;
 
-00:02:57.600 --> 00:03:02.920
-Earlier in the course, in a previous challenge,&nbsp;
-the File Writing Challenge, in the Input &amp; Output&nbsp;&nbsp;
+00:01:03.480 --> 00:01:09.960
+Some popular implementations are Hibernate,&nbsp;
+Spring JPA, and EclipseLink, to name a few.&nbsp;
 
-00:03:02.920 --> 00:03:08.960
-(I/O), Working with Files in Java, we created&nbsp;
-a toString, Intelli J template, and called it&nbsp;&nbsp;
+00:01:09.960 --> 00:01:16.040
+These are called JPA Providers.
+In 2019, the Java Persistence API officially&nbsp;&nbsp;
 
-00:03:08.960 --> 00:03:13.920
-JsonBuilder, which used the StringJoiner.
-You could leverage this to create the JSON&nbsp;&nbsp;
+00:01:16.040 --> 00:01:22.160
+changed its name, to Jakarta Persistence API.
+It was previously part of Java's Enterprise&nbsp;&nbsp;
 
-00:03:13.920 --> 00:03:18.120
-string parameter, if you walked through&nbsp;
-that exercise with me, and also created&nbsp;&nbsp;
+00:01:22.160 --> 00:01:26.960
+Edition, which has since become open source.
+The Persistence API became&nbsp;&nbsp;
 
-00:03:18.120 --> 00:03:23.640
-this template in your IntelliJ environment.
-This means, you can go through the process to&nbsp;&nbsp;
+00:01:26.960 --> 00:01:31.640
+one of the Jakarta projects.
+The link shown on this slide, is Jakarta's&nbsp;&nbsp;
 
-00:03:23.640 --> 00:03:27.680
-add a to string method, but select&nbsp;
-the JsonBuilder template instead,&nbsp;&nbsp;
+00:01:31.640 --> 00:01:37.880
+API documentation for JPA, and unless you're&nbsp;
+supporting legacy code, you should start here.&nbsp;
 
-00:03:27.680 --> 00:03:32.160
-adding this to the order detail record.
-Alternately, you could just write&nbsp;&nbsp;
+00:01:37.880 --> 00:01:39.120
+https://jakarta.ee/specifications/persistence/3.1/apidocs/jakarta.persistence/module-summary.html&nbsp;
 
-00:03:32.160 --> 00:03:37.000
-your own method to do this.
-Use the DateTimeFormatter,&nbsp;&nbsp;
+00:01:39.120 --> 00:01:42.800
+A few of the key concepts of&nbsp;
+the JPA specification include&nbsp;
 
-00:03:37.000 --> 00:03:41.840
-with the pattern shown on this slide.
-You'll notice that I'm using a U, where I normally&nbsp;&nbsp;
+00:01:42.800 --> 00:01:49.400
+A technique known as Object-Relational Mapping,&nbsp;
+or ORM. The Entity (which is the mapped object),&nbsp;&nbsp;
 
-00:03:41.840 --> 00:03:47.400
-would use a Y, for the digits in the year.
-I haven't really covered Using the u pattern,&nbsp;&nbsp;
+00:01:49.400 --> 00:01:51.920
+and the Entity Manager which manages lifecycles of&nbsp;&nbsp;
+
+00:01:51.920 --> 00:01:58.440
+these entities. The Persistence Context is a&nbsp;
+special cached area where the entities exist.&nbsp;
+
+00:01:58.440 --> 00:02:03.200
+You can think of JPA as an extra layer of&nbsp;
+functionality, between your application code,&nbsp;&nbsp;
+
+00:02:03.200 --> 00:02:10.040
+and the JDBC code you saw in the last lectures.
+Object-Relational Mapping is a method of mapping&nbsp;&nbsp;
+
+00:02:10.040 --> 00:02:16.560
+database tables defined by columns, to a class&nbsp;
+with correlated fields, and setters and getters.&nbsp;
+
+00:02:16.560 --> 00:02:21.600
+A record in a table then becomes an&nbsp;
+instance. of one of these classes.&nbsp;
+
+00:02:21.600 --> 00:02:25.800
+ORM frameworks often automate the&nbsp;
+process of object relational mapping.&nbsp;
+
+00:02:25.800 --> 00:02:31.480
+They Simplify code, reducing the need to&nbsp;
+write boilerplate classes. They Simplify&nbsp;&nbsp;
+
+00:02:31.480 --> 00:02:36.880
+database operations, hiding the complexities of&nbsp;
+SQL queries, and handling database interactions&nbsp;&nbsp;
+
+00:02:36.880 --> 00:02:43.280
+for you. They Provide code portability&nbsp;
+across different database systems. ORM&nbsp;&nbsp;
+
+00:02:43.280 --> 00:02:49.400
+Frameworks also Encourage a more structured&nbsp;
+and organized approach, to data access.&nbsp;
+
+00:02:49.400 --> 00:02:54.680
+Typically, an Entity is a class that&nbsp;
+represents a table in a relational database.&nbsp;
+
+00:02:54.680 --> 00:02:58.520
+Each Entity instance corresponds&nbsp;
+to a row in that table.&nbsp;
+
+00:02:58.520 --> 00:03:03.760
+Each entity is annotated with metadata, to&nbsp;
+instruct JPA providers, how to map its fields to&nbsp;&nbsp;
+
+00:03:03.760 --> 00:03:10.360
+a table's columns, relationships to other tables,&nbsp;
+and lifecycle management techniques to use.&nbsp;
+
+00:03:10.360 --> 00:03:15.200
+The example on this slide is a relatively&nbsp;
+simple one, of an annotated class, Artist,&nbsp;&nbsp;
+
+00:03:15.200 --> 00:03:21.080
+which would be an entity for our artists table, in&nbsp;
+the music database, that we've been working with.&nbsp;
+
+00:03:21.080 --> 00:03:26.640
+In this example, the annotation Entity,&nbsp;
+describes this class as the Entity type.&nbsp;
+
+00:03:26.640 --> 00:03:31.920
+A framework implementing JPA, will&nbsp;
+identify entities by this annotation.&nbsp;
+
+00:03:31.920 --> 00:03:36.280
+The annotation that follows next is&nbsp;
+table, further describes the table name,&nbsp;&nbsp;
+
+00:03:36.280 --> 00:03:40.360
+so that is artists in this case.
+Next the fields in this class&nbsp;&nbsp;
+
+00:03:40.360 --> 00:03:45.000
+also have annotations which describe&nbsp;
+their database correlated information.&nbsp;
+
+00:03:45.000 --> 00:03:50.360
+So I have an Id, and that's the artist id.
+I include the column annotation,&nbsp;&nbsp;
+
+00:03:50.360 --> 00:03:56.120
+which specifies the ID's column name.
+Next, I describe the field, artist Name,&nbsp;&nbsp;
+
+00:03:56.120 --> 00:03:59.960
+as mapping to the column&nbsp;
+name, artist underscore name.&nbsp;
+
+00:03:59.960 --> 00:04:04.520
+After this, I've declared a&nbsp;
+list of albums, for this artist.&nbsp;
+
+00:04:04.520 --> 00:04:08.680
+Above this field, I specify&nbsp;
+information about the relationship.&nbsp;
+
+00:04:08.680 --> 00:04:13.080
+I use the one to many annotation, then&nbsp;
+the join column, with the joined id,&nbsp;&nbsp;
+
+00:04:13.080 --> 00:04:18.400
+so album underscore id.
+The entity manager is&nbsp;&nbsp;
+
+00:04:18.400 --> 00:04:22.760
+implemented by the JPA Provider.
+An entity can exist in a managed&nbsp;&nbsp;
+
+00:04:22.760 --> 00:04:27.720
+state, managed by the Entity Manager.
+Or it can exist in a detached state,&nbsp;&nbsp;
+
+00:04:27.720 --> 00:04:31.760
+outside of an Entity Manager.
+A detached entity can then be merged&nbsp;&nbsp;
+
+00:04:31.760 --> 00:04:37.360
+into an EntityManager, if a commit&nbsp;
+is needed to a persistence layer..&nbsp;
 
-00:03:47.400 --> 00:03:51.440
-versus the y pattern, for&nbsp;
-the year in a date pattern.&nbsp;
+00:04:37.360 --> 00:04:40.320
+There are some key methods on the&nbsp;
+EntityManager interface to know,&nbsp;&nbsp;
 
-00:03:51.440 --> 00:03:55.080
-This is actually kind of a complicated&nbsp;
-subject, so I've included a link to an&nbsp;&nbsp;
+00:04:40.320 --> 00:04:44.760
+that line up with the CRUD operations
+The persist method makes a detached&nbsp;&nbsp;
 
-00:03:55.080 --> 00:04:00.620
-interesting stackoverflow.com discussion, if you&nbsp;
-want to learn more, and dig into the complexities.&nbsp;
+00:04:44.760 --> 00:04:49.480
+instance managed, and it's this instance's&nbsp;
+state will get persisted on a commit..&nbsp;
 
-00:04:00.620 --> 00:04:01.560
-https://stackoverflow.com/questions/41177442/uuuu-versus-yyyy-in-datetimeformatter-formatting-pattern-codes-in-java&nbsp;
+00:04:49.480 --> 00:04:52.600
+The find method searches for an&nbsp;
+entity of the specified class using&nbsp;&nbsp;
 
-00:04:01.560 --> 00:04:06.040
-I'm suggesting you use the u pattern in this&nbsp;
-challenge, because it causes the parsing to fail,&nbsp;&nbsp;
+00:04:52.600 --> 00:04:57.880
+the primary key, in the persistent layer.
+It returns an instance that will be managed,&nbsp;&nbsp;
 
-00:04:06.040 --> 00:04:11.880
-with an exception, on the one bad date in our&nbsp;
-data, when using what's called strict parsing.&nbsp;
+00:04:57.880 --> 00:05:01.840
+and automatically persisted.
+If an entity is managed,&nbsp;&nbsp;
 
-00:04:11.880 --> 00:04:15.720
-I'll talk about this more in a bit.
-I'll show you what happens in both cases&nbsp;&nbsp;
+00:05:01.840 --> 00:05:06.680
+updates will be propagated automatically&nbsp;
+to the persistence layer, on a commit.&nbsp;
 
-00:04:15.720 --> 00:04:20.880
-when I walk through my own code.
-You can create a LocalDateTime,&nbsp;&nbsp;
+00:05:06.680 --> 00:05:11.560
+If the entity is not yet managed, a merge&nbsp;
+method will make the entity managed.&nbsp;
 
-00:04:20.880 --> 00:04:26.280
-using the DateTimeFormatter, and then&nbsp;
-transform it to a SQL TimeStamp type.&nbsp;
+00:05:11.560 --> 00:05:15.760
+The remove method removes the entity instance&nbsp;
+from management, and executes a delete on the&nbsp;&nbsp;
 
-00:04:26.280 --> 00:04:31.400
-A TimeStamp field, can be used for&nbsp;
-a SQL parameter of type DateTime.&nbsp;
+00:05:15.760 --> 00:05:18.240
+persistence layer.
+I'll be walking&nbsp;&nbsp;
 
-00:04:31.400 --> 00:04:35.600
-So pause the video, and go&nbsp;
-away, and give that a try.&nbsp;
+00:05:18.240 --> 00:05:26.080
+through examples of these methods coming up.
+The persistence context has multiple purposes.&nbsp;
 
-00:04:35.600 --> 00:04:39.640
-When you get that done, or if you get&nbsp;
-stuck, come back, and we can walk through&nbsp;&nbsp;
+00:05:26.080 --> 00:05:32.720
+It tracks the lifecycle state of managed entities.&nbsp;
+These states include new, managed, detached,&nbsp;&nbsp;
 
-00:04:39.640 --> 00:04:40.939
-my solution together.
+00:05:32.720 --> 00:05:38.600
+and removed, reflecting any changes you make to&nbsp;
+their properties. It synchronizes changes made to&nbsp;&nbsp;
 
-00:04:45.270 --> 00:04:47.004
-Ok, so how'd you do?
+00:05:38.600 --> 00:05:43.800
+managed entities with the database. This happens&nbsp;
+automatically when a transaction is committed&nbsp;&nbsp;
 
-00:04:47.800 --> 00:04:51.840
-Were you able to write some java&nbsp;
-code that called a store procedure?&nbsp;
+00:05:43.800 --> 00:05:49.720
+or flushed, ensuring the database state reflects&nbsp;
+the state of your in-memory objects. It performs&nbsp;&nbsp;
 
-00:04:51.840 --> 00:04:56.520
-Did you get the orders inserted,&nbsp;
-that were in the orders.csv file?&nbsp;
+00:05:49.720 --> 00:05:55.400
+identity management, ensuring unique entity&nbsp;
+identity within a transaction. Even if you create&nbsp;&nbsp;
 
-00:04:56.520 --> 00:04:59.560
-So let's walk through one solution together.&nbsp;
+00:05:55.400 --> 00:06:00.400
+duplicate objects with the same identifier, the&nbsp;
+persistence context recognizes and manages them&nbsp;&nbsp;
 
-00:04:59.560 --> 00:05:10.360
-Before I do anything else, I'll open my&nbsp;
-developer session in MySQL Workbench.&nbsp;
+00:06:00.400 --> 00:06:06.680
+as a single entity. It acts as a cache, reducing&nbsp;
+database roundtrips by keeping frequently accessed&nbsp;&nbsp;
 
-00:05:10.360 --> 00:05:15.960
-I'll select the second icon on the tool&nbsp;
-bar menu that executes a SQL Script,&nbsp;
+00:06:06.680 --> 00:06:11.840
+entities in memory, for faster retrieval.
+The objective of this lecture and the ones that&nbsp;&nbsp;
 
-00:05:15.960 --> 00:05:22.520
-and I'll pick the addOrder.sql file, which&nbsp;
-you can download from the resources folder.&nbsp;
+00:06:11.840 --> 00:06:17.960
+follow, aren't to give you a deep dive into JPA.
+Instead, I want to give you a simple introduction&nbsp;&nbsp;
 
-00:05:22.520 --> 00:05:29.760
-Once this script loads, I'll execute&nbsp;
-it using the lightning bolt icon.&nbsp;
+00:06:17.960 --> 00:06:22.160
+to this architecture, which&nbsp;
+is used by so many frameworks.&nbsp;
 
-00:05:29.760 --> 00:05:34.880
-Refreshing the schema panel, I'll see this&nbsp;
-procedure under the stored procedures node.&nbsp;
+00:06:22.160 --> 00:06:29.520
+Let's get back to some code, and start exploring&nbsp;
+these concepts a little bit, in a concrete way.&nbsp;
 
-00:05:34.880 --> 00:05:42.080
-You can open this up, using the tool&nbsp;
-icon, and examine the structure.&nbsp;
+00:06:29.520 --> 00:06:34.880
+I've created a new project, called&nbsp;
+JPA, with the usual Main class set up.&nbsp;
 
-00:05:42.080 --> 00:05:45.800
-You'll see that it includes two input&nbsp;
-parameters and two output parameters,&nbsp;&nbsp;
+00:06:34.880 --> 00:06:38.712
+Before I do anything, I need to include&nbsp;
+some additional libraries in my project.&nbsp;
 
-00:05:45.800 --> 00:05:50.520
-as I described on the challenge slide.
-I won't get into how this code works,&nbsp;&nbsp;
+00:06:39.701 --> 00:06:41.748
+So I'll go to Module Settings.
 
-00:05:50.520 --> 00:05:54.960
-except to say it's similar to the addAlbum&nbsp;
-procedure I walked through previously.&nbsp;
+00:06:44.131 --> 00:06:45.632
+I'll select Libraries.
 
-00:05:54.960 --> 00:05:59.480
-In this case, it reads from a Jayson&nbsp;
-Object this time, not just a Jayson Array.&nbsp;
+00:06:46.459 --> 00:06:50.440
+First, I'll need to add the jdbc&nbsp;
+driver for MySQL, which I've done&nbsp;&nbsp;
 
-00:05:59.480 --> 00:06:06.080
-A stored procedure is a black box in most&nbsp;
-cases, to the person writing the JDBC code,&nbsp;&nbsp;
+00:06:50.440 --> 00:06:53.191
+in several projects, so I'll quickly do this.
 
-00:06:06.080 --> 00:06:10.600
-and how it works is less important,&nbsp;
-than what parameters are required.&nbsp;
+00:06:55.069 --> 00:06:58.880
+I'll navigate to that jar file, and select it,
 
-00:06:10.600 --> 00:06:14.240
-Now that I've got the stored procedure&nbsp;
-ready to use, I'll get back to Intelli&nbsp;&nbsp;
+00:06:58.880 --> 00:07:04.000
+and accept all the default settings there.
+If you've updated Intelli J recently,&nbsp;&nbsp;
 
-00:06:14.240 --> 00:06:21.400
-J and open up the JDBCChallenges Project.
-I'll be changing code in the Challenge2 class.&nbsp;
+00:07:04.000 --> 00:07:08.440
+you may get an additional dialog,
+It's titled Detected Roots,&nbsp;&nbsp;
 
-00:06:21.400 --> 00:06:25.680
-You might remember that in this class's&nbsp;
-source file, I also included two records,&nbsp;&nbsp;
+00:07:08.440 --> 00:07:14.040
+and says Choose Roots, and for this you just want&nbsp;
+to hit the OK button, assuming a root is selected,&nbsp;&nbsp;
 
-00:06:25.680 --> 00:06:30.960
-the Order and the OrderDetail record.
-First, I'll add my JSON method, using the&nbsp;&nbsp;
+00:07:14.040 --> 00:07:15.892
+which it should be, by default.
 
-00:06:30.960 --> 00:06:36.880
-toString functionality, to the OrderDetail record.
-I'll put my cursor after the constructor,&nbsp;&nbsp;
+00:07:20.052 --> 00:07:21.400
+The next dialog lets me select
 
-00:06:36.880 --> 00:06:41.720
-but before the class's closing brace.
-And I'll press the key combination,&nbsp;&nbsp;
+00:07:21.400 --> 00:07:27.800
+which module it should be added to, and since&nbsp;
+I've only got one option, I'll click ok on that.&nbsp;
 
-00:06:41.720 --> 00:06:48.560
-alt insert, to generate code.
-From this menu, I'll select toString()&nbsp;
+00:07:27.800 --> 00:07:32.800
+Next, I need the jakarta JPA module.&nbsp;
+I could get this module from Maven,&nbsp;&nbsp;
 
-00:06:48.560 --> 00:06:52.000
-I'll select the drop down&nbsp;
-option on the template field.&nbsp;
+00:07:32.800 --> 00:07:37.760
+but I also need a JPA Provider.
+For the provider, I'll use Hibernate,&nbsp;&nbsp;
 
-00:06:52.000 --> 00:06:56.880
-And I'll scroll to the bottom of the list shown.
-If you followed along in that earlier video,&nbsp;&nbsp;
+00:07:37.760 --> 00:07:42.600
+and that comes packaged with the JPA,&nbsp;
+so I can just include that one module.&nbsp;
 
-00:06:56.880 --> 00:07:00.760
-you'll have the json Builder&nbsp;
-template we created back then.&nbsp;
+00:07:42.600 --> 00:07:46.920
+I'll get this module from Maven.
+In the next section of the course,&nbsp;&nbsp;
 
-00:07:00.760 --> 00:07:05.280
-I'll select that, which&nbsp;
-prompts me with another dialog.&nbsp;
+00:07:46.920 --> 00:07:51.120
+I'll be talking more about Maven,&nbsp;
+so just follow along with me here.&nbsp;
 
-00:07:05.280 --> 00:07:13.240
-Here, I just want to output item Description&nbsp;
-and quantity, so I'll select those two fields.&nbsp;
+00:07:51.120 --> 00:07:58.040
+I'll type in org.hibernate. ORM, and press enter.
+I'll get this error but will give it a moment,&nbsp;&nbsp;
 
-00:07:13.240 --> 00:07:19.880
-This inserts a to Jayson method.
-I'll remove the override annotation.&nbsp;
+00:07:58.040 --> 00:08:02.280
+and a list should popup.
+Rather than scroll down and look for&nbsp;&nbsp;
 
-00:07:19.880 --> 00:07:23.560
-It was included there, because it thinks&nbsp;
-we're overriding a toString method,&nbsp;&nbsp;
+00:08:02.280 --> 00:08:09.120
+what I want, I can continue to type in this field,
+so I'll add colon, hibernate, dash, core in this&nbsp;&nbsp;
 
-00:07:23.560 --> 00:07:28.680
-but we aren't really, so I do want to remove it.
-If you don't have this template available,&nbsp;&nbsp;
+00:08:09.120 --> 00:08:15.240
+input field, after the org.hibernate.orm.
+It's important that you don't have any&nbsp;&nbsp;
 
-00:07:28.680 --> 00:07:33.200
-pause the video here, and you can&nbsp;
-copy this code as I'm showing it here.&nbsp;
+00:08:15.240 --> 00:08:19.120
+spaces before or after the colon.
+Now I'll see the versions of this&nbsp;&nbsp;
 
-00:07:33.200 --> 00:07:39.640
-Next, I'll add a method on the Order record.
-I'll call it getDetailsJson.&nbsp;
+00:08:19.120 --> 00:08:24.560
+module listed, and I want to make sure I get&nbsp;
+one that's the latest version, 6 or higher.&nbsp;
 
-00:07:39.640 --> 00:07:45.080
-I'll make this method public, and have it return&nbsp;
-a string. Next, I'll create a string joiner&nbsp;&nbsp;
+00:08:24.560 --> 00:08:29.640
+For me, at the time of this&nbsp;
+recording, its 6.4.1 Final.&nbsp;
 
-00:07:45.080 --> 00:07:50.080
-variable, joining with a comma, and starting with&nbsp;
-a square bracket, and also ending with a square&nbsp;&nbsp;
+00:08:29.640 --> 00:08:34.160
+I'll select that.
+Another dialog pops up.&nbsp;
 
-00:07:50.080 --> 00:07:55.240
-bracket. I'll loop through the order details,&nbsp;
-and use the add method on the stringjoiner,&nbsp;&nbsp;
+00:08:34.160 --> 00:08:45.120
+I'll make sure transitive dependencies&nbsp;
+is checked in that dialog, and click ok.&nbsp;
 
-00:07:55.240 --> 00:08:02.000
-adding the json string I get back, from calling&nbsp;
-my two Jayson method, on each order detail record.&nbsp;&nbsp;
+00:08:45.120 --> 00:08:49.400
+Now, it's important to examine the classes in the&nbsp;
+version you picked, to verify that you have the&nbsp;&nbsp;
 
-00:08:02.000 --> 00:08:03.919
-Finally, I'll return this string.
+00:08:49.400 --> 00:08:55.640
+jakarta.persistence dash api in this set of&nbsp;
+classes, and that it's at least version 3.1.&nbsp;
 
-00:08:05.778 --> 00:08:07.320
-In the main method, I'll comment
+00:08:55.640 --> 00:08:59.480
+In addition, you want to verify that the&nbsp;
+module you pick has hibernate-core there,&nbsp;&nbsp;
 
-00:08:07.320 --> 00:08:12.000
-out the add orders call, which was the&nbsp;
-previous way we inserted the orders.&nbsp;
+00:08:59.480 --> 00:09:03.680
+and it's at least version 6.
+Make sure you apply these changes on this&nbsp;&nbsp;
 
-00:08:12.000 --> 00:08:16.320
-After this line, I'll add code,&nbsp;
-to loop through the orders.&nbsp;
+00:09:03.680 --> 00:09:06.771
+screen, by selecting the ok or apply button.
 
-00:08:16.320 --> 00:08:22.880
-I'll start by first just printing the&nbsp;
-json string, for the order details.&nbsp;
+00:09:09.235 --> 00:09:10.760
+If you aren't seeing jakarta's persistence
 
-00:08:22.880 --> 00:08:28.920
-I'll quick run this, to test out what&nbsp;
-my jayson detail strings look like.&nbsp;
+00:09:10.800 --> 00:09:14.960
+3.1 jar there, you should try these&nbsp;
+steps again, or alternately manually&nbsp;&nbsp;
 
-00:08:28.920 --> 00:08:32.840
-The readData method prints out the order&nbsp;
-details, but after that, you can see the&nbsp;&nbsp;
+00:09:14.960 --> 00:09:21.320
+add jakarta's persistence api 3.1 or higher.
+Since things change more than they stay the same,&nbsp;&nbsp;
 
-00:08:32.840 --> 00:08:38.200
-json array strings that were created.
-It's an array, so in square brackets,&nbsp;&nbsp;
+00:09:21.320 --> 00:09:25.240
+let me just quickly show you how&nbsp;
+to add that module separately.&nbsp;
 
-00:08:38.200 --> 00:08:45.800
-and each element in this array, has an item&nbsp;
-description and a quantity, so that's good.&nbsp;
+00:09:25.240 --> 00:09:29.160
+If you've verified this package in your&nbsp;
+module, you don't need to do this next step,&nbsp;&nbsp;
 
-00:08:45.800 --> 00:08:50.760
-Now, I'll set up my CallableStatement variable.
-I'll insert this before looping through all the&nbsp;&nbsp;
+00:09:29.160 --> 00:09:33.840
+and can skip adding this module.
+Again, I'll open the module settings,&nbsp;&nbsp;
 
-00:08:50.760 --> 00:08:56.120
-orders, because I want to reuse this callable&nbsp;
-statement, for each record in my data.&nbsp;
+00:09:33.840 --> 00:09:41.040
+with Libraries selected, and click the + button.
+And select From Maven.&nbsp;
 
-00:08:56.120 --> 00:09:02.000
-I'll assign the variable, the result of calling&nbsp;
-prepareCall on the connection object. Here,&nbsp;&nbsp;
+00:09:41.040 --> 00:09:46.120
+I'll type jakarta.persistence colon in there.
+I could hit enter here, which gives me that&nbsp;&nbsp;
 
-00:09:02.000 --> 00:09:07.320
-I'll use an escape sequence in the string I'll&nbsp;
-pass to it. You'll remember this is optional,&nbsp;&nbsp;
+00:09:46.120 --> 00:09:51.240
+error, or optionally I can do a search.
+When you press enter, it's expecting a&nbsp;&nbsp;
 
-00:09:07.320 --> 00:09:12.160
-but I did want to demonstrate it here.&nbsp;
-This stored procedure has four parameters,&nbsp;&nbsp;
+00:09:51.240 --> 00:09:58.120
+fully qualified coordinate, or module identifier,&nbsp;
+and in these cases, we're supplying only a part.&nbsp;
 
-00:09:12.160 --> 00:09:17.840
-so those get populated with the placeholders,&nbsp;
-which are just question marks. I'll also set up&nbsp;&nbsp;
+00:09:58.120 --> 00:10:03.000
+The search is a bit more friendly, and&nbsp;
+that's the search icon next to this field.&nbsp;
 
-00:09:17.840 --> 00:09:25.200
-my DateTimeFormatter object before the loop,&nbsp;
-using the pattern I showed you on the slide.&nbsp;
+00:10:03.000 --> 00:10:07.360
+Hitting that rather than enter, doesn't give&nbsp;
+me an error, and it displays information about&nbsp;&nbsp;
 
-00:09:25.200 --> 00:09:29.480
-ok now it's time to set up the&nbsp;
-parameters, on the callable statement.&nbsp;
+00:10:07.360 --> 00:10:12.160
+how many matches it found, and after&nbsp;
+a slight pause, will display them.&nbsp;
 
-00:09:29.480 --> 00:09:34.600
-FIrst, I'll remove the System.out&nbsp;
-println statement in the for loop .&nbsp;
+00:10:12.160 --> 00:10:17.640
+Now I see the different versions of this&nbsp;
+package, and I'll pick the 3.1 point 0 version.&nbsp;
 
-00:09:34.600 --> 00:09:40.680
-I'll start with a try block next. This means,&nbsp;
-if I get an exception on any one order, the&nbsp;&nbsp;
+00:10:17.640 --> 00:10:20.880
+You probably don't want to pick any&nbsp;
+version with M or B in the suffix,&nbsp;&nbsp;
 
-00:09:40.680 --> 00:09:46.000
-code will continue to process the other orders.&nbsp;
-I'll set up a local date time variable, which&nbsp;&nbsp;
+00:10:20.880 --> 00:10:25.920
+these are milestone and beta versions,&nbsp;
+which may not be the most stable versions.&nbsp;
 
-00:09:46.000 --> 00:09:52.000
-was one of my hints on the slide. I'll create&nbsp;
-this, by calling the parse method, and passing&nbsp;&nbsp;
+00:10:25.920 --> 00:10:32.800
+RC stands for release candidate, so again,&nbsp;
+I'd just stick to one without those suffixes.&nbsp;
 
-00:09:52.000 --> 00:09:59.480
-the datestring, and the formatter. I can then get&nbsp;
-a java.sql.Timestamp, using the Timestamp.valueOf&nbsp;&nbsp;
+00:10:32.800 --> 00:10:37.080
+This module has a single jar file in it and&nbsp;
+you'll see that displayed in the classes list,&nbsp;&nbsp;
 
-00:09:59.480 --> 00:10:05.320
-method, passing it the local date time. The&nbsp;
-first parameter in the procedure is the datetime&nbsp;&nbsp;
+00:10:37.080 --> 00:10:38.225
+after you add this.
 
-00:10:05.320 --> 00:10:10.800
-parameter, but the Callable statement doesn't&nbsp;
-have a set DateTime method. instead we use set&nbsp;&nbsp;
+00:10:41.254 --> 00:10:43.632
+Again, click OK or apply.
 
-00:10:10.800 --> 00:10:16.640
-Timestamp. Next, I'll set the second parameter,&nbsp;
-to the jayson string coming out of the method I&nbsp;&nbsp;
+00:10:44.520 --> 00:10:49.720
+In my case, I don't need this jar file in my&nbsp;
+dependencies twice, so I'll simply open module&nbsp;&nbsp;
 
-00:10:16.640 --> 00:10:23.880
-created, on the order, so get Details Jayson.&nbsp;
-I'll catch any kind of Exception here, because&nbsp;&nbsp;
+00:10:49.720 --> 00:10:58.560
+settings again to the Library section, and&nbsp;
+remove this jakarta.persistence module here.&nbsp;
 
-00:10:23.880 --> 00:10:29.480
-I know I might have bad dates in my data. And if I&nbsp;
-get an exception, I'll print out that there was a&nbsp;&nbsp;
+00:10:58.560 --> 00:11:04.960
+Again, it's part of the hibernate module I&nbsp;
+included, so for me, it's not necessary.&nbsp;
 
-00:10:29.480 --> 00:10:31.964
-problem, with both the date and the error message.
+00:11:04.960 --> 00:11:09.160
+The purpose of Maven is to help us sort&nbsp;
+these dependencies out, but again, I'll&nbsp;&nbsp;
 
-00:10:35.579 --> 00:10:38.280
-Ok, so now I've set up the input parameters,
+00:11:09.160 --> 00:11:13.960
+cover that in a later section of the course.
+Now that we've got the libraries we need,&nbsp;&nbsp;
 
-00:10:38.280 --> 00:10:42.440
-but not the output parameters yet.
-You'll remember, if I want to retrieve&nbsp;&nbsp;
+00:11:13.960 --> 00:11:17.360
+we can get back to coding.
+I'll start with creating a&nbsp;&nbsp;
 
-00:10:42.440 --> 00:10:48.320
-the data, I need to register the out parameters.
-Both are integers, so I'll register parameter&nbsp;&nbsp;
+00:11:17.360 --> 00:11:22.880
+couple of entities for the music database.
+There are tools, including a Hibernate plugin&nbsp;&nbsp;
 
-00:10:48.320 --> 00:10:52.108
-three as an Integer. And the same for parameter&nbsp;
-4.
+00:11:22.880 --> 00:11:28.480
+for Intelli J, that will generate entities&nbsp;
+for you, based on your database schema.&nbsp;
 
-00:10:54.621 --> 00:10:58.440
-Now, I'll execute the callable statement. After
+00:11:28.480 --> 00:11:33.640
+This plugin's not available however, for&nbsp;
+the community edition, which we're using.&nbsp;
 
-00:10:58.440 --> 00:11:03.240
-the execution, I'll print out the number&nbsp;
-of records inserted, and the order id,&nbsp;&nbsp;
+00:11:33.640 --> 00:11:37.600
+Since we only have three tables, I'll&nbsp;
+create these manually, which is a good&nbsp;&nbsp;
 
-00:11:03.240 --> 00:11:08.400
-as well as the date string, using a formatted&nbsp;
-string, Passing that, the number of records,&nbsp;&nbsp;
+00:11:37.600 --> 00:11:42.640
+exercise anyway, as you're learning.
+So first, I'll create the Artist,&nbsp;&nbsp;
 
-00:11:08.400 --> 00:11:16.000
-which I get from parameter 4. And The order&nbsp;
-id, I can get from parameter 3. In both cases&nbsp;&nbsp;
+00:11:42.640 --> 00:11:45.163
+in the dev.lpa.music package.
 
-00:11:16.000 --> 00:11:23.280
-I use the getInt method. And to print the date,&nbsp;
-I'll just pass the date string on the order.&nbsp;
+00:11:49.787 --> 00:11:50.940
+To make this an entity,
 
-00:11:23.280 --> 00:11:26.440
+00:11:50.960 --> 00:11:56.120
+I simply use the annotation, Entity.
+Intelli J should be able to resolve&nbsp;&nbsp;
+
+00:11:56.120 --> 00:12:01.480
+this annotation, and include an import. For&nbsp;
+me though, I have to select Entity by double&nbsp;&nbsp;
+
+00:12:01.480 --> 00:12:05.240
+clicking and it adds the import.
+This is part of the package,&nbsp;&nbsp;
+
+00:12:05.240 --> 00:12:11.560
+jakarta.persistence, which is included in the&nbsp;
+hibernate core package, as I mentioned before.&nbsp;
+
+00:12:11.560 --> 00:12:16.360
+If I hover over the entity annotation,&nbsp;
+I can see how Intelli J resolved it.&nbsp;
+
+00:12:16.360 --> 00:12:21.920
+If you don't see jakarta.persistence, then you&nbsp;
+should go back to the installation of the module.&nbsp;
+
+00:12:21.920 --> 00:12:26.280
+Specifically, you really don't&nbsp;
+want to see javax.persistence.&nbsp;
+
+00:12:26.280 --> 00:12:30.160
+This jakarta.persistence contains all&nbsp;
+the annotations, and the interfaces&nbsp;&nbsp;
+
+00:12:30.160 --> 00:12:34.040
+for the JPA specification.
+An entity usually has a&nbsp;&nbsp;
+
+00:12:34.040 --> 00:12:40.160
+relationship to a table, so I'll set that up.
+I'll add the Table annotation, after Entity,&nbsp;&nbsp;
+
+00:12:40.160 --> 00:12:44.560
+but before the class declaration. Here&nbsp;
+I'll specify the name of the table&nbsp;&nbsp;
+
+00:12:44.560 --> 00:12:48.720
+in the music schema which is artists
+You can see the import was not added&nbsp;&nbsp;
+
+00:12:48.720 --> 00:12:53.840
+automatically, so I'll just click it and&nbsp;
+do an ALT-ENTER and ensure I choose the&nbsp;&nbsp;
+
+00:12:53.840 --> 00:13:00.320
+jakarta.persistence Table like this.
+My artist table only has two columns,&nbsp;&nbsp;
+
+00:13:00.320 --> 00:13:06.800
+artist id and artist name, so I'll set up two&nbsp;
+fields on this class, to represent those columns.&nbsp;
+
+00:13:06.800 --> 00:13:12.320
+I'll start with the annotation, Id. Every&nbsp;
+database entity requires this on one field,&nbsp;&nbsp;
+
+00:13:12.320 --> 00:13:18.280
+which represents the primary key. I'll map the&nbsp;
+field to the column name, artist underscore id,&nbsp;&nbsp;
+
+00:13:18.280 --> 00:13:24.240
+which is the primary key for artists. I'll fix&nbsp;
+the imports in a bit. And here I'll have my&nbsp;&nbsp;
+
+00:13:24.240 --> 00:13:31.280
+declaration for the field name, so private int&nbsp;
+artist id. And again, I'll map the next field,&nbsp;&nbsp;
+
+00:13:31.280 --> 00:13:39.320
+this time to the artist_name column. I'll declare&nbsp;
+this field as a string, and call it artistName.&nbsp;
+
+00:13:39.320 --> 00:13:44.240
+As you saw, the imports for Id and&nbsp;
+Column were added automatically for me.&nbsp;
+
+00:13:44.240 --> 00:13:47.840
+I need some constructors and getters&nbsp;
+and setters, so I'll generate these,&nbsp;&nbsp;
+
+00:13:47.840 --> 00:13:51.880
+starting with the constructors.
+All JPA entities are required to have&nbsp;&nbsp;
+
+00:13:51.880 --> 00:13:58.720
+a no args constructor, so I'll add that first.
+I'll pick constructor from the Generate menu.&nbsp;
+
+00:13:58.720 --> 00:14:05.200
+I'll click on the select None button at&nbsp;
+the bottom of this dialog, as the option.&nbsp;
+
+00:14:05.200 --> 00:14:11.040
+That generates my no args constructor.
+I'll repeat this process for a second&nbsp;&nbsp;
+
+00:14:11.040 --> 00:14:15.040
+constructor, but in this case, I'll&nbsp;
+select artist name in the dialog,&nbsp;&nbsp;
+
+00:14:15.040 --> 00:14:18.920
+and click OK to create a one argument constructor.&nbsp;
+
+00:14:18.920 --> 00:14:23.240
+That generates a constructor with the&nbsp;
+artist name as the only parameter.&nbsp;
+
+00:14:23.240 --> 00:14:28.200
+I'll repeat this one last time, so again&nbsp;
+picking constructor from the generate menu.&nbsp;
+
+00:14:28.200 --> 00:14:34.120
+In this case, I'll select both&nbsp;
+fields, then click the ok button.&nbsp;
+
+00:14:34.120 --> 00:14:38.080
+That's my third and last&nbsp;
+constructor for this class.&nbsp;
+
+00:14:38.080 --> 00:14:43.160
+Now, I'll add a getter and setter,&nbsp;
+selecting that combo from the generate menu.&nbsp;
+
+00:14:43.160 --> 00:14:48.040
+I'll pick just the artist name, since&nbsp;
+I don't need these methods for the id.&nbsp;
+
+00:14:48.040 --> 00:14:52.600
+Intelli J generates the getArtistName&nbsp;
+and setArtistName methods for me.&nbsp;
+
+00:14:52.600 --> 00:14:57.560
+Finally, I'll include a toString method, and&nbsp;
+again I'll generate that, using Alt Insert,&nbsp;&nbsp;
+
+00:14:57.560 --> 00:15:03.840
+and picking toString from the Generate Menu shown.
+The template might be set to the JSON Builder&nbsp;&nbsp;
+
+00:15:03.840 --> 00:15:07.640
+template, from the last&nbsp;
+challenge, as it was for me.&nbsp;
+
+00:15:07.640 --> 00:15:12.480
+I'll instead choose the String concat&nbsp;
+template, from the select list here&nbsp;
+
+00:15:12.480 --> 00:15:17.920
+I'll select both fields in&nbsp;
+the next dialog, and hit ok.&nbsp;
+
+00:15:17.920 --> 00:15:22.840
 And we are done.
-Before I run this,&nbsp;&nbsp;
+I've created my first JPA Entity.&nbsp;
 
-00:11:26.440 --> 00:11:33.080
-I'll go back to the MySQL Workbench&nbsp;
-session I had open, and delete the orders.&nbsp;
+00:15:22.840 --> 00:15:27.280
+It's really just an annotated pojo.
+I'll close this video here,&nbsp;&nbsp;
 
-00:11:33.080 --> 00:11:39.960
-For good measure, I'll also set the AUTO&nbsp;
-INCREMENT value back to 1, on both tables.&nbsp;
+00:15:27.280 --> 00:15:30.840
+before it gets too long.
+In the next video, we'll use this&nbsp;&nbsp;
 
-00:11:39.960 --> 00:11:42.000
-I'll execute these statements.
-
-00:11:46.635 --> 00:11:49.670
-Then switching back to IntelliJ, I'll run my code.
-
-00:11:51.856 --> 00:11:56.320
-You can see the last 5 lines of&nbsp;
-output, are the result of the new code.&nbsp;
-
-00:11:56.320 --> 00:12:01.600
-All five orders were inserted successfully,&nbsp;
-but make sure you look at the 4th statement.&nbsp;
-
-00:12:01.600 --> 00:12:04.400
-Maybe you'll remember that&nbsp;
-this order has an invalid date,&nbsp;&nbsp;
-
-00:12:04.400 --> 00:12:10.720
-and you can see it in this output, November 31&nbsp;
-isn't a valid date, so why did this even work?&nbsp;
-
-00:12:10.720 --> 00:12:16.431
-I'll go back to MySQL Workbench, and query the&nbsp;
-order table, so select all from storefront.order.&nbsp;
-
-00:12:17.280 --> 00:12:18.463
-If I execute that:
-
-00:12:21.568 --> 00:12:22.220
-Note that the date
-
-00:12:22.220 --> 00:12:28.440
-on order id four is November 30th,
-Not only did Java's LocalDateTime.parse method&nbsp;&nbsp;
-
-00:12:28.440 --> 00:12:35.800
-not throw an error, it actually changed the date.
-This is due to a JDK 8 feature called a Resolver.&nbsp;
-
-00:12:35.800 --> 00:12:39.480
-This too is a bit complicated, but there&nbsp;
-are three ways the parse method could&nbsp;&nbsp;
-
-00:12:39.480 --> 00:12:47.080
-resolve a date, strict, smart, and lenient.
-By default, the setting is smart, which means,&nbsp;&nbsp;
-
-00:12:47.080 --> 00:12:52.720
-Java will adjust the date accordingly,&nbsp;
-under certain circumstances, but not all.&nbsp;
-
-00:12:52.720 --> 00:12:56.120
-The circumstances aren't perfectly&nbsp;
-straightforward, but here,&nbsp;&nbsp;
-
-00:12:56.120 --> 00:13:01.440
-we benefited (if you think this date change was&nbsp;
-actually a benefit) from this smart resolver,&nbsp;&nbsp;
-
-00:13:01.440 --> 00:13:06.320
-because it adjusted the date to November&nbsp;
-30, which you can see in this grid.&nbsp;
-
-00:13:06.320 --> 00:13:12.040
-Parsing a text string occurs in two phases.
-Phase 1 is a basic text parse according to&nbsp;&nbsp;
-
-00:13:12.040 --> 00:13:16.040
-the fields added to the builder.
-Phase 2 resolves the parsed&nbsp;&nbsp;
-
-00:13:16.040 --> 00:13:22.400
-field-value pairs into date and/or time objects.
-Phase 2 resolving can be changed, from its default&nbsp;&nbsp;
-
-00:13:22.400 --> 00:13:28.120
-value of SMART, to either STRICT or LENIENT.
-I'll take a minute here, to explore this&nbsp;&nbsp;
-
-00:13:28.120 --> 00:13:31.500
-a little bit more, for those of&nbsp;
-you who are curious about this.&nbsp;
-
-00:13:31.500 --> 00:13:36.000
-It may be you really don't want Java to&nbsp;
-adjust your dates, smartly, and you want&nbsp;&nbsp;
-
-00:13:36.000 --> 00:13:41.360
-to investigate invalid dates further, or&nbsp;
-just log them or process them differently.&nbsp;
-
-00:13:41.360 --> 00:13:45.600
-First, I'll remove the semi-colon,&nbsp;
-after the of Pattern method.&nbsp;
-
-00:13:45.600 --> 00:13:50.920
-Now, I'll chain a method, on the next line.
-The method name is with ResolverStyle,&nbsp;&nbsp;
-
-00:13:50.920 --> 00:13:56.640
-and I'll pass a value from the enum&nbsp;
-ResolverStyle, in this case STRICT.&nbsp;
-
-00:13:56.640 --> 00:14:02.240
-I'll again clean out my orders in MySQL&nbsp;
-WorkBench, running the same three statements.&nbsp;
-
-00:14:02.240 --> 00:14:05.385
-Now, back to IntelliJ, I'll re-run my code.
-
-00:14:07.898 --> 00:14:10.000
-In this case, you can see that an exception
-
-00:14:10.000 --> 00:14:15.320
-was thrown, and the order with the&nbsp;
-November 31 date, wasn't inserted.&nbsp;
-
-00:14:15.320 --> 00:14:20.560
-Again, this may be something you want to control,&nbsp;
-so you might not want to use Smart resolving.&nbsp;
-
-00:14:20.560 --> 00:14:26.040
-If I query MySQL Workbench again.
-I will see that only 4 orders were&nbsp;&nbsp;
-
-00:14:26.040 --> 00:14:31.440
-inserted this time, which confirms&nbsp;
-what we saw, in the Intelli J output.&nbsp;
-
-00:14:31.440 --> 00:14:37.040
-Getting back to IntelliJ, I want to take an extra&nbsp;
-minute here, just to show you one more thing.&nbsp;
-
-00:14:37.040 --> 00:14:42.920
-I'll change my format from u u u u to y y y y.
-Going back to MySQL Workbench,&nbsp;&nbsp;
-
-00:14:42.920 --> 00:14:47.800
-I'll delete my orders.
-And back to Intelli J,&nbsp;&nbsp;
-
-00:14:47.800 --> 00:14:54.120
-I'll run the code with this one minor change.
-Now, I've got an error on every order,&nbsp;&nbsp;
-
-00:14:54.120 --> 00:14:58.440
-that the string could not be parsed.
-The message shows what was parsed,&nbsp;&nbsp;
-
-00:14:58.440 --> 00:15:02.440
-and unfortunately doesn't give you&nbsp;
-much of a hint about what is wrong.&nbsp;
-
-00:15:02.440 --> 00:15:09.240
-As it turns out, in strict mode, if you use the&nbsp;
-y y y y pattern, you need to specify the era.&nbsp;
-
-00:15:09.240 --> 00:15:15.280
-I can do this easily enough in this example, by&nbsp;
-adding the pattern G, at the start of my pattern.&nbsp;
-
-00:15:15.280 --> 00:15:19.240
-I also have to include the&nbsp;
-era, AD in my date string.&nbsp;
-
-00:15:19.240 --> 00:15:23.520
-I'm not going to change the file, but I&nbsp;
-can just pre-pend AD to the string I pass,&nbsp;&nbsp;
-
-00:15:23.520 --> 00:15:28.600
-to the parse method.
-I'll rerun my code.&nbsp;
-
-00:15:29.400 --> 00:15:35.240
-The code now acts the same as if I'd used u u u u.
-This is really more of a cautionary tale,&nbsp;&nbsp;
-
-00:15:35.240 --> 00:15:39.480
-to make sure you test your date parsing&nbsp;
-code thoroughly, with good and bad dates,&nbsp;&nbsp;
-
-00:15:39.480 --> 00:15:43.560
-so you know what to expect.
-Smart parsing is the default,&nbsp;&nbsp;
-
-00:15:43.560 --> 00:15:48.840
-but it may not actually have the desired effect.
-Ok, so that's the end of this challenge,&nbsp;&nbsp;
-
-00:15:48.840 --> 00:15:52.760
-and I hope you got a lot out of that.
-Next, I want to talk to you about a&nbsp;&nbsp;
-
-00:15:52.760 --> 00:15:57.360
-concept called Object Relational Mapping or&nbsp;
-O R M, so I'll see you in that next video.
+00:15:30.840 --> 00:15:35.680
+entity to communicate with the artist table in&nbsp;
+the database, so I'll see you in that next video.

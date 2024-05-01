@@ -8722,323 +8722,28 @@ but select the **JsonBuilder** template instead,
 adding this to the order detail record.
 Alternately, you could write your own method to do this.
 
-Use the **DateTimeFormatter**,
-with the pattern shown on this slide.
-You'll notice that I'm using a U, where I normally
-would use a Y, for the digits in the year.
-I haven't really covered Using the u pattern,
-versus the y pattern, for
-the year in a date pattern.
-This is actually kind of a complicated
-subject, so I've included a link to an
-interesting stackoverflow.com discussion, if you
-want to learn more, and dig into the complexities.
-Https://stackoverflow.com/questions/41177442/uuuu-versus-yyyy-in-datetimeformatter-formatting-pattern-codes-in-java
-I'm suggesting you use the u pattern in this
-challenge, because it causes the parsing to fail,
-with an exception, on the one bad date in our
-data, when using what's called strict parsing.
-I'll talk about this more in a bit.
+![image80](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image80.png?raw=true)
+
+Use the **DateTimeFormatter** with the pattern shown here.
+You'll notice that I'm using a _U_, 
+where I normally would use a _Y_, for the digits in the year.
+I haven't really covered Using the _u_ pattern, versus the _y_ pattern, 
+for the year in a date pattern.
+This is actually kind of a complicated subject, 
+so I've included a link to an interesting `stackoverflow.com` discussion, 
+if you want to learn more, and dig into the complexities, 
+[here](https://stackoverflow.com/questions/41177442/uuuu-versus-yyyy-in-datetimeformatter-formatting-pattern-codes-in-java).
+I'm suggesting you use the _u_ pattern in this challenge, 
+because it causes the parsing to fail with an exception, 
+on the one bad date in our data, when using what's called strict parsing.
 I'll show you what happens in both cases
 when I walk through my own code.
-You can create a LocalDateTime,
-using the DateTimeFormatter, and then
-transform it to a SQL TimeStamp type.
-A TimeStamp field, can be used for
-a SQL parameter of type DateTime.
-So pause the video, and go
-away, and give that a try.
-When you get that done, or if you get
-stuck, come back, and we can walk through
-my solution together.
-Ok, so how'd you do?
-Were you able to write some java
-code that called a store procedure?
-Did you get the orders inserted,
-that were in the orders.csv file?
-So let's walk through one solution together.
-Before I do anything else, I'll open my
-developer session in MySQL Workbench.
-I'll select the second icon on the tool
-bar menu that executes a SQL Script,
-and I'll pick the addOrder.sql file, which
-you can download from the resources folder.
-Once this script loads, I'll execute
-it using the lightning bolt icon.
-Refreshing the schema panel, I'll see this
-procedure under the stored procedures node.
-You can open this up, using the tool
-icon, and examine the structure.
-You'll see that it includes two input
-parameters and two output parameters,
-as I described on the challenge slide.
-I won't get into how this code works,
-except to say it's similar to the addAlbum
-procedure I walked through previously.
-In this case, it reads from a Jayson
-Object this time, not just a Jayson Array.
-A stored procedure is a black box in most
-cases, to the person writing the JDBC code,
-and how it works is less important,
-than what parameters are required.
-Now that I've got the stored procedure
-ready to use, I'll get back to Intelli
-J and open up the JDBCChallenges Project.
-I'll be changing code in the Challenge2 class.
-You might remember that in this class's
-source file, I also included two records,
-the Order and the OrderDetail record.
-First, I'll add my JSON method, using the
-toString functionality, to the OrderDetail record.
-I'll put my cursor after the constructor,
-but before the class's closing brace.
-And I'll press the key combination,
-alt insert, to generate code.
-From this menu, I'll select toString()
-I'll select the drop down
-option on the template field.
-And I'll scroll to the bottom of the list shown.
-If you followed along in that earlier video,
-you'll have the json Builder
-template we created back then.
-I'll select that, which
-prompts me with another dialog.
-Here, I just want to output item Description
-and quantity, so I'll select those two fields.
-This inserts a to Jayson method.
-I'll remove the override annotation.
-It was included there, because it thinks
-we're overriding a toString method,
-but we aren't really, so I do want to remove it.
-If you don't have this template available,
-pause the video here, and you can
-copy this code as I'm showing it here.
-Next, I'll add a method on the Order record.
-I'll call it getDetailsJson.
-I'll make this method public, and have it return
-a string. Next, I'll create a string joiner
-variable, joining with a comma, and starting with
-a square bracket, and also ending with a square
-bracket. I'll loop through the order details,
-and use the add method on the stringjoiner,
-adding the json string I get back, from calling
-my two Jayson method, on each order detail record.
-Finally, I'll return this string.
-In the main method, I'll comment
-out the add orders call, which was the
-previous way we inserted the orders.
-After this line, I'll add code,
-to loop through the orders.
-I'll start by first just printing the
-json string, for the order details.
-I'll quick run this, to test out what
 
-```java  
+![image81](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image81.png?raw=true)
 
-```
-
-```html  
-
-```
-
-my jayson detail strings look like.
-The readData method prints out the order
-details, but after that, you can see the
-json array strings that were created.
-It's an array, so in square brackets,
-and each element in this array, has an item
-description and a quantity, so that's good.
-Now, I'll set up my CallableStatement variable.
-I'll insert this before looping through all the
-orders, because I want to reuse this callable
-statement, for each record in my data.
-I'll assign the variable, the result of calling
-prepareCall on the connection object. Here,
-I'll use an escape sequence in the string I'll
-pass to it. You'll remember this is optional,
-but I did want to demonstrate it here.
-This stored procedure has four parameters,
-so those get populated with the placeholders,
-which are just question marks. I'll also set up
-my DateTimeFormatter object before the loop,
-using the pattern I showed you on the slide.
-ok now it's time to set up the
-parameters, on the callable statement.
-FIrst, I'll remove the System.out
-println statement in the for loop .
-I'll start with a try block next. This means,
-if I get an exception on any one order, the
-code will continue to process the other orders.
-I'll set up a local date time variable, which
-was one of my hints on the slide. I'll create
-this, by calling the parse method, and passing
-the datestring, and the formatter. I can then get
-a java.sql.Timestamp, using the Timestamp.valueOf
-method, passing it the local date time. The
-first parameter in the procedure is the datetime
-parameter, but the Callable statement doesn't
-have a set DateTime method. instead we use set
-Timestamp. Next, I'll set the second parameter,
-to the jayson string coming out of the method I
-created, on the order, so get Details Jayson.
-I'll catch any kind of Exception here, because
-I know I might have bad dates in my data. And if I
-get an exception, I'll print out that there was a
-problem, with both the date and the error message.
-Ok, so now I've set up the input parameters,
-but not the output parameters yet.
-You'll remember, if I want to retrieve
-the data, I need to register the out parameters.
-Both are integers, so I'll register parameter
-three as an Integer. And the same for parameter
-4.
-Now, I'll execute the callable statement. After
-the execution, I'll print out the number
-of records inserted, and the order id,
-as well as the date string, using a formatted
-string, Passing that, the number of records,
-which I get from parameter 4. And The order
-id, I can get from parameter 3. In both cases
-I use the getInt method. And to print the date,
-I'll just pass the date string on the order.
-And we are done.
-Before I run this,
-
-```java  
-
-```
-
-```html  
-
-```
-
-I'll go back to the MySQL Workbench
-session I had open, and delete the orders.
-For good measure, I'll also set the AUTO
-INCREMENT value back to 1, on both tables.
-I'll execute these statements.
-Then switching back to IntelliJ, I'll run my code.
-
-```java  
-
-```
-
-```html  
-
-```
-
-You can see the last 5 lines of
-output, are the result of the new code.
-All five orders were inserted successfully,
-but make sure you look at the 4th statement.
-Maybe you'll remember that
-this order has an invalid date,
-and you can see it in this output, November 31
-isn't a valid date, so why did this even work?
-I'll go back to MySQL Workbench, and query the
-order table, so select all from storefront.order.
-If I execute that:
-Note that the date
-on order id four is November 30th,
-Not only did Java's LocalDateTime.parse method
-not throw an error, it actually changed the date.
-This is due to a JDK 8 feature called a Resolver.
-This too is a bit complicated, but there
-are three ways the parse method could
-resolve a date, strict, smart, and lenient.
-By default, the setting is smart, which means,
-Java will adjust the date accordingly,
-under certain circumstances, but not all.
-The circumstances aren't perfectly
-straightforward, but here,
-we benefited (if you think this date change was
-actually a benefit) from this smart resolver,
-because it adjusted the date to November
-30, which you can see in this grid.
-Parsing a text string occurs in two phases.
-Phase 1 is a basic text parse according to
-the fields added to the builder.
-Phase 2 resolves the parsed
-field-value pairs into date and/or time objects.
-Phase 2 resolving can be changed, from its default
-value of SMART, to either STRICT or LENIENT.
-I'll take a minute here, to explore this
-a little bit more, for those of
-you who are curious about this.
-It may be you really don't want Java to
-adjust your dates, smartly, and you want
-to investigate invalid dates further, or
-just log them or process them differently.
-First, I'll remove the semi-colon,
-after the of Pattern method.
-Now, I'll chain a method, on the next line.
-The method name is with ResolverStyle,
-and I'll pass a value from the enum
-ResolverStyle, in this case STRICT.
-I'll again clean out my orders in MySQL
-WorkBench, running the same three statements.
-
-```java  
-
-```
-
-```html  
-
-```
-
-Now, back to IntelliJ, I'll re-run my code.
-In this case, you can see that an exception
-was thrown, and the order with the
-November 31 date, wasn't inserted.
-Again, this may be something you want to control,
-so you might not want to use Smart resolving.
-If I query MySQL Workbench again.
-I will see that only 4 orders were
-inserted this time, which confirms
-what we saw, in the Intelli J output.
-Getting back to IntelliJ, I want to take an extra
-minute here, just to show you one more thing.
-I'll change my format from u u u u to y y y y.
-Going back to MySQL Workbench,
-I'll delete my orders.
-And back to Intelli J,
-I'll run the code with this one minor change.
-
-```java  
-
-```
-
-```html  
-
-```
-
-Now, I've got an error on every order,
-that the string could not be parsed.
-The message shows what was parsed,
-and unfortunately doesn't give you
-much of a hint about what is wrong.
-As it turns out, in strict mode, if you use the
-y y y y pattern, you need to specify the era.
-I can do this easily enough in this example, by
-adding the pattern G, at the start of my pattern.
-I also have to include the
-era, AD in my date string.
-I'm not going to change the file, but I
-can just pre-pend AD to the string I pass,
-to the parse method.
-I'll rerun my code.
-The code now acts the same as if I'd used u u u u.
-This is really more of a cautionary tale,
-to make sure you test your date parsing
-code thoroughly, with good and bad dates,
-so you know what to expect.
-Smart parsing is the default,
-but it may not actually have the desired effect.
-Ok, so that's the end of this challenge,
-and I hope you got a lot out of that.
-Next, I want to talk to you about a
-concept called Object Relational Mapping or
-O R M, so I'll see you in that next video.
+You can create a **LocalDateTime**, using the **DateTimeFormatter**, 
+and then transform it to a SQL **TimeStamp** type.
+A **TimeStamp** field can be used for a SQL parameter of type **DateTime**.
 </div>
 
 ## [m. Introduction to JPA and ORM]()
@@ -9047,6 +8752,7 @@ O R M, so I'll see you in that next video.
 ```java  
 
 ```
+
 
 ```html  
 
