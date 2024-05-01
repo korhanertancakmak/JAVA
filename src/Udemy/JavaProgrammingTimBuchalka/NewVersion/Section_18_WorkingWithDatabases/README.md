@@ -8168,7 +8168,7 @@ If I refresh the _schema_ panel, I can open the _Functions_ node.
 And there I can see the new stored function there, _calcAlbumLength_.
 I'll select the tool icon.
 
-![immage74](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image74.png?raw=true)
+![image74](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image74.png?raw=true)
 
 What you'll notice is that this looks a lot like a stored procedure.
 It has the keyword _FUNCTION_ instead of _PROCEDURE_,
@@ -8221,7 +8221,7 @@ I'm going to remove this for a minute.
 I'll apply this change.
 And hit _apply_ a second time.
 
-![immage75](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image75.png?raw=true)
+![image75](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image75.png?raw=true)
 
 Now, I've got a problem.
 There was an error while applying the SQL script to the database.
@@ -8288,7 +8288,7 @@ with that record's album name, to calculate the album length.
 I'll select from the _albums_ table, and order by album name.
 I'll execute this:
 
-![immage76](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image76.png?raw=true)
+![image76](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image76.png?raw=true)
 
 And you'll see a grid displayed, first my album names listed alphabetically, 
 and then the result of my function, a double value, representing the length, 
@@ -8658,7 +8658,7 @@ in the package folder, in a file called `addOrder.sql`.
 The stored procedure has four parameters.
 Two are input parameters: 
 
-* There's _OrderDate_, a **DATETIME** parameter.  
+* There's _OrderDate_, a **DATETIME** parameter. 
 * And also, _OrderDetails_, a **JSON** parameter, 
 which should contain an array of json strings, 
 that each have the item description and quantity.
@@ -8666,7 +8666,7 @@ that each have the item description and quantity.
 Two are output parameters:
 
 * There's the _OrderId_, an **INT** parameter, 
-which will contain the order id of the inserted order. 
+which will contain the order id of the inserted order.
 * And the second is, _InsertedRecords_, another **INT** parameter, 
 which returns then number of detail records, inserted for that order.
 
