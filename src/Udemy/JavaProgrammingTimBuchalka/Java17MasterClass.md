@@ -241,12 +241,9 @@ What we will learn from this Path:
 ### [j. PreparedStatement Challenge]()
 ### [k. CallableStatement]()
 ### [l. CallableStatement Challenge]()
-### [m. Introduction to JPA and ORM]()
-### [n. JPA in Action]()
-### [o. JPA with Related Tables]()
-### [p. JPA Queries]()
-### [q. JPA Challenge]()
-### [r. JPA Bonus Challenge]()
+### [m. Java Persistence API]()
+### [n. JPA Challenge]()
+### [o. JPA Bonus Challenge]()
 
 ## [Section-19. JavaFX]()
 

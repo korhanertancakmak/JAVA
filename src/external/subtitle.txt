@@ -2,727 +2,638 @@ WEBVTT
 Kind: captions
 Language: en
 
-00:00:05.280 --> 00:00:09.760
-So far, in this section of the course,
-I've focused on JDBC as the means for
-
-00:00:09.760 --> 00:00:13.800
-communicating with a database.
-This is for good reason,
-
-00:00:13.800 --> 00:00:19.920
-since it's part of Java's Standard Edition
-implementation, or core Java in other words.
-
-00:00:19.920 --> 00:00:25.480
-We've walked through writing SQL statements, and
-executing them for the usual CRUD functionality.
-
-00:00:25.480 --> 00:00:29.520
-I've also demonstrated that this work can
-be more tightly knit to the database server,
-
-00:00:29.520 --> 00:00:34.400
-by utilizing stored procedures that have
-been written, to do some of the work for you.
-
-00:00:34.400 --> 00:00:39.520
-Even so, you're still in the business of
-having to write some database interaction code.
-
-00:00:39.520 --> 00:00:45.800
-The alternative is something called the
-Java Persistence API, or JPA for short.
-
-00:00:45.800 --> 00:00:49.440
-JPA is a specification.
-There's no default
-
-00:00:49.440 --> 00:00:54.560
-implementation of the specification,
-provided in Java's Standard Edition.
-
-00:00:54.560 --> 00:00:58.400
-That being said, I still want
-to cover the topic briefly.
-
-00:00:58.400 --> 00:01:03.480
-There's a very good chance, you'll be working
-on an application that uses some form of it.
-
-00:01:03.480 --> 00:01:09.960
-Some popular implementations are Hibernate,
-Spring JPA, and EclipseLink, to name a few.
-
-00:01:09.960 --> 00:01:16.040
-These are called JPA Providers.
-In 2019, the Java Persistence API officially
-
-00:01:16.040 --> 00:01:22.160
-changed its name, to Jakarta Persistence API.
-It was previously part of Java's Enterprise
-
-00:01:22.160 --> 00:01:26.960
-Edition, which has since become open source.
-The Persistence API became
-
-00:01:26.960 --> 00:01:31.640
-one of the Jakarta projects.
-The link shown on this slide, is Jakarta's
-
-00:01:31.640 --> 00:01:37.880
-API documentation for JPA, and unless you're
-supporting legacy code, you should start here.
-
-00:01:37.880 --> 00:01:39.120
-https://jakarta.ee/specifications/persistence/3.1/apidocs/jakarta.persistence/module-summary.html
-
-00:01:39.120 --> 00:01:42.800
-A few of the key concepts of
-the JPA specification include
-
-00:01:42.800 --> 00:01:49.400
-A technique known as Object-Relational Mapping,
-or ORM. The Entity (which is the mapped object),
-
-00:01:49.400 --> 00:01:51.920
-and the Entity Manager which manages lifecycles of
-
-00:01:51.920 --> 00:01:58.440
-these entities. The Persistence Context is a
-special cached area where the entities exist.
-
-00:01:58.440 --> 00:02:03.200
-You can think of JPA as an extra layer of
-functionality, between your application code,
-
-00:02:03.200 --> 00:02:10.040
-and the JDBC code you saw in the last lectures.
-Object-Relational Mapping is a method of mapping
-
-00:02:10.040 --> 00:02:16.560
-database tables defined by columns, to a class
-with correlated fields, and setters and getters.
-
-00:02:16.560 --> 00:02:21.600
-A record in a table then becomes an
-instance. of one of these classes.
-
-00:02:21.600 --> 00:02:25.800
-ORM frameworks often automate the
-process of object relational mapping.
-
-00:02:25.800 --> 00:02:31.480
-They Simplify code, reducing the need to
-write boilerplate classes. They Simplify
-
-00:02:31.480 --> 00:02:36.880
-database operations, hiding the complexities of
-SQL queries, and handling database interactions
-
-00:02:36.880 --> 00:02:43.280
-for you. They Provide code portability
-across different database systems. ORM
-
-00:02:43.280 --> 00:02:49.400
-Frameworks also Encourage a more structured
-and organized approach, to data access.
-
-00:02:49.400 --> 00:02:54.680
-Typically, an Entity is a class that
-represents a table in a relational database.
-
-00:02:54.680 --> 00:02:58.520
-Each Entity instance corresponds
-to a row in that table.
-
-00:02:58.520 --> 00:03:03.760
-Each entity is annotated with metadata, to
-instruct JPA providers, how to map its fields to
-
-00:03:03.760 --> 00:03:10.360
-a table's columns, relationships to other tables,
-and lifecycle management techniques to use.
-
-00:03:10.360 --> 00:03:15.200
-The example on this slide is a relatively
-simple one, of an annotated class, Artist,
-
-00:03:15.200 --> 00:03:21.080
-which would be an entity for our artists table, in
-the music database, that we've been working with.
-
-00:03:21.080 --> 00:03:26.640
-In this example, the annotation Entity,
-describes this class as the Entity type.
-
-00:03:26.640 --> 00:03:31.920
-A framework implementing JPA, will
-identify entities by this annotation.
-
-00:03:31.920 --> 00:03:36.280
-The annotation that follows next is
-table, further describes the table name,
-
-00:03:36.280 --> 00:03:40.360
-so that is artists in this case.
-Next the fields in this class
-
-00:03:40.360 --> 00:03:45.000
-also have annotations which describe
-their database correlated information.
-
-00:03:45.000 --> 00:03:50.360
-So I have an Id, and that's the artist id.
-I include the column annotation,
-
-00:03:50.360 --> 00:03:56.120
-which specifies the ID's column name.
-Next, I describe the field, artist Name,
-
-00:03:56.120 --> 00:03:59.960
-as mapping to the column
-name, artist underscore name.
-
-00:03:59.960 --> 00:04:04.520
-After this, I've declared a
-list of albums, for this artist.
-
-00:04:04.520 --> 00:04:08.680
-Above this field, I specify
-information about the relationship.
-
-00:04:08.680 --> 00:04:13.080
-I use the one to many annotation, then
-the join column, with the joined id,
-
-00:04:13.080 --> 00:04:18.400
-so album underscore id.
-The entity manager is
-
-00:04:18.400 --> 00:04:22.760
-implemented by the JPA Provider.
-An entity can exist in a managed
-
-00:04:22.760 --> 00:04:27.720
-state, managed by the Entity Manager.
-Or it can exist in a detached state,
-
-00:04:27.720 --> 00:04:31.760
-outside of an Entity Manager.
-A detached entity can then be merged
-
-00:04:31.760 --> 00:04:37.360
-into an EntityManager, if a commit
-is needed to a persistence layer..
-
-00:04:37.360 --> 00:04:40.320
-There are some key methods on the
-EntityManager interface to know,
-
-00:04:40.320 --> 00:04:44.760
-that line up with the CRUD operations
-The persist method makes a detached
-
-00:04:44.760 --> 00:04:49.480
-instance managed, and it's this instance's
-state will get persisted on a commit..
-
-00:04:49.480 --> 00:04:52.600
-The find method searches for an
-entity of the specified class using
-
-00:04:52.600 --> 00:04:57.880
-the primary key, in the persistent layer.
-It returns an instance that will be managed,
-
-00:04:57.880 --> 00:05:01.840
-and automatically persisted.
-If an entity is managed,
-
-00:05:01.840 --> 00:05:06.680
-updates will be propagated automatically
-to the persistence layer, on a commit.
-
-00:05:06.680 --> 00:05:11.560
-If the entity is not yet managed, a merge
-method will make the entity managed.
-
-00:05:11.560 --> 00:05:15.760
-The remove method removes the entity instance
-from management, and executes a delete on the
-
-00:05:15.760 --> 00:05:18.240
-persistence layer.
-I'll be walking
-
-00:05:18.240 --> 00:05:26.080
-through examples of these methods coming up.
-The persistence context has multiple purposes.
-
-00:05:26.080 --> 00:05:32.720
-It tracks the lifecycle state of managed entities.
-These states include new, managed, detached,
-
-00:05:32.720 --> 00:05:38.600
-and removed, reflecting any changes you make to
-their properties. It synchronizes changes made to
-
-00:05:38.600 --> 00:05:43.800
-managed entities with the database. This happens
-automatically when a transaction is committed
-
-00:05:43.800 --> 00:05:49.720
-or flushed, ensuring the database state reflects
-the state of your in-memory objects. It performs
-
-00:05:49.720 --> 00:05:55.400
-identity management, ensuring unique entity
-identity within a transaction. Even if you create
-
-00:05:55.400 --> 00:06:00.400
-duplicate objects with the same identifier, the
-persistence context recognizes and manages them
-
-00:06:00.400 --> 00:06:06.680
-as a single entity. It acts as a cache, reducing
-database roundtrips by keeping frequently accessed
-
-00:06:06.680 --> 00:06:11.840
-entities in memory, for faster retrieval.
-The objective of this lecture and the ones that
-
-00:06:11.840 --> 00:06:17.960
-follow, aren't to give you a deep dive into JPA.
-Instead, I want to give you a simple introduction
-
-00:06:17.960 --> 00:06:22.160
-to this architecture, which
-is used by so many frameworks.
-
-00:06:22.160 --> 00:06:29.520
-Let's get back to some code, and start exploring
-these concepts a little bit, in a concrete way.
-
-00:06:29.520 --> 00:06:34.880
-I've created a new project, called
-JPA, with the usual Main class set up.
-
-00:06:34.880 --> 00:06:38.712
-Before I do anything, I need to include
-some additional libraries in my project.
-
-00:06:39.701 --> 00:06:41.748
-So I'll go to Module Settings.
-
-00:06:44.131 --> 00:06:45.632
-I'll select Libraries.
-
-00:06:46.459 --> 00:06:50.440
-First, I'll need to add the jdbc
-driver for MySQL, which I've done
-
-00:06:50.440 --> 00:06:53.191
-in several projects, so I'll quickly do this.
-
-00:06:55.069 --> 00:06:58.880
-I'll navigate to that jar file, and select it,
-
-00:06:58.880 --> 00:07:04.000
-and accept all the default settings there.
-If you've updated Intelli J recently,
-
-00:07:04.000 --> 00:07:08.440
-you may get an additional dialog,
-It's titled Detected Roots,
-
-00:07:08.440 --> 00:07:14.040
-and says Choose Roots, and for this you just want
-to hit the OK button, assuming a root is selected,
-
-00:07:14.040 --> 00:07:15.892
-which it should be, by default.
-
-00:07:20.052 --> 00:07:21.400
-The next dialog lets me select
-
-00:07:21.400 --> 00:07:27.800
-which module it should be added to, and since
-I've only got one option, I'll click ok on that.
-
-00:07:27.800 --> 00:07:32.800
-Next, I need the jakarta JPA module.
-I could get this module from Maven,
-
-00:07:32.800 --> 00:07:37.760
-but I also need a JPA Provider.
-For the provider, I'll use Hibernate,
-
-00:07:37.760 --> 00:07:42.600
-and that comes packaged with the JPA,
-so I can just include that one module.
-
-00:07:42.600 --> 00:07:46.920
-I'll get this module from Maven.
-In the next section of the course,
-
-00:07:46.920 --> 00:07:51.120
-I'll be talking more about Maven,
-so just follow along with me here.
-
-00:07:51.120 --> 00:07:58.040
-I'll type in org.hibernate. ORM, and press enter.
-I'll get this error but will give it a moment,
-
-00:07:58.040 --> 00:08:02.280
-and a list should popup.
-Rather than scroll down and look for
-
-00:08:02.280 --> 00:08:09.120
-what I want, I can continue to type in this field,
-so I'll add colon, hibernate, dash, core in this
-
-00:08:09.120 --> 00:08:15.240
-input field, after the org.hibernate.orm.
-It's important that you don't have any
-
-00:08:15.240 --> 00:08:19.120
-spaces before or after the colon.
-Now I'll see the versions of this
-
-00:08:19.120 --> 00:08:24.560
-module listed, and I want to make sure I get
-one that's the latest version, 6 or higher.
-
-00:08:24.560 --> 00:08:29.640
-For me, at the time of this
-recording, its 6.4.1 Final.
-
-00:08:29.640 --> 00:08:34.160
-I'll select that.
-Another dialog pops up.
-
-00:08:34.160 --> 00:08:45.120
-I'll make sure transitive dependencies
-is checked in that dialog, and click ok.
-
-00:08:45.120 --> 00:08:49.400
-Now, it's important to examine the classes in the
-version you picked, to verify that you have the
-
-00:08:49.400 --> 00:08:55.640
-jakarta.persistence dash api in this set of
-classes, and that it's at least version 3.1.
-
-00:08:55.640 --> 00:08:59.480
-In addition, you want to verify that the
-module you pick has hibernate-core there,
-
-00:08:59.480 --> 00:09:03.680
-and it's at least version 6.
-Make sure you apply these changes on this
-
-00:09:03.680 --> 00:09:06.771
-screen, by selecting the ok or apply button.
-
-00:09:09.235 --> 00:09:10.760
-If you aren't seeing jakarta's persistence
-
-00:09:10.800 --> 00:09:14.960
-3.1 jar there, you should try these
-steps again, or alternately manually
-
-00:09:14.960 --> 00:09:21.320
-add jakarta's persistence api 3.1 or higher.
-Since things change more than they stay the same,
-
-00:09:21.320 --> 00:09:25.240
-let me just quickly show you how
-to add that module separately.
-
-00:09:25.240 --> 00:09:29.160
-If you've verified this package in your
-module, you don't need to do this next step,
-
-00:09:29.160 --> 00:09:33.840
-and can skip adding this module.
-Again, I'll open the module settings,
-
-00:09:33.840 --> 00:09:41.040
-with Libraries selected, and click the + button.
-And select From Maven.
-
-00:09:41.040 --> 00:09:46.120
-I'll type jakarta.persistence colon in there.
-I could hit enter here, which gives me that
-
-00:09:46.120 --> 00:09:51.240
-error, or optionally I can do a search.
-When you press enter, it's expecting a
-
-00:09:51.240 --> 00:09:58.120
-fully qualified coordinate, or module identifier,
-and in these cases, we're supplying only a part.
-
-00:09:58.120 --> 00:10:03.000
-The search is a bit more friendly, and
-that's the search icon next to this field.
-
-00:10:03.000 --> 00:10:07.360
-Hitting that rather than enter, doesn't give
-me an error, and it displays information about
-
-00:10:07.360 --> 00:10:12.160
-how many matches it found, and after
-a slight pause, will display them.
-
-00:10:12.160 --> 00:10:17.640
-Now I see the different versions of this
-package, and I'll pick the 3.1 point 0 version.
-
-00:10:17.640 --> 00:10:20.880
-You probably don't want to pick any
-version with M or B in the suffix,
-
-00:10:20.880 --> 00:10:25.920
-these are milestone and beta versions,
-which may not be the most stable versions.
-
-00:10:25.920 --> 00:10:32.800
-RC stands for release candidate, so again,
-I'd just stick to one without those suffixes.
-
-00:10:32.800 --> 00:10:37.080
-This module has a single jar file in it and
-you'll see that displayed in the classes list,
-
-00:10:37.080 --> 00:10:38.225
-after you add this.
-
-00:10:41.254 --> 00:10:43.632
-Again, click OK or apply.
-
-00:10:44.520 --> 00:10:49.720
-In my case, I don't need this jar file in my
-dependencies twice, so I'll simply open module
-
-00:10:49.720 --> 00:10:58.560
-settings again to the Library section, and
-remove this jakarta.persistence module here.
-
-00:10:58.560 --> 00:11:04.960
-Again, it's part of the hibernate module I
-included, so for me, it's not necessary.
-
-00:11:04.960 --> 00:11:09.160
-The purpose of Maven is to help us sort
-these dependencies out, but again, I'll
-
-00:11:09.160 --> 00:11:13.960
-cover that in a later section of the course.
-Now that we've got the libraries we need,
-
-00:11:13.960 --> 00:11:17.360
-we can get back to coding.
-I'll start with creating a
-
-00:11:17.360 --> 00:11:22.880
-couple of entities for the music database.
-There are tools, including a Hibernate plugin
-
-00:11:22.880 --> 00:11:28.480
-for Intelli J, that will generate entities
-for you, based on your database schema.
-
-00:11:28.480 --> 00:11:33.640
-This plugin's not available however, for
-the community edition, which we're using.
-
-00:11:33.640 --> 00:11:37.600
-Since we only have three tables, I'll
-create these manually, which is a good
-
-00:11:37.600 --> 00:11:42.640
-exercise anyway, as you're learning.
-So first, I'll create the Artist,
-
-00:11:42.640 --> 00:11:45.163
-in the dev.lpa.music package.
-
-00:11:49.787 --> 00:11:50.940
-To make this an entity,
-
-00:11:50.960 --> 00:11:56.120
-I simply use the annotation, Entity.
-Intelli J should be able to resolve
-
-00:11:56.120 --> 00:12:01.480
-this annotation, and include an import. For
-me though, I have to select Entity by double
-
-00:12:01.480 --> 00:12:05.240
-clicking and it adds the import.
-This is part of the package,
-
-00:12:05.240 --> 00:12:11.560
-jakarta.persistence, which is included in the
-hibernate core package, as I mentioned before.
-
-00:12:11.560 --> 00:12:16.360
-If I hover over the entity annotation,
-I can see how Intelli J resolved it.
-
-00:12:16.360 --> 00:12:21.920
-If you don't see jakarta.persistence, then you
-should go back to the installation of the module.
-
-00:12:21.920 --> 00:12:26.280
-Specifically, you really don't
-want to see javax.persistence.
-
-00:12:26.280 --> 00:12:30.160
-This jakarta.persistence contains all
-the annotations, and the interfaces
-
-00:12:30.160 --> 00:12:34.040
-for the JPA specification.
-An entity usually has a
-
-00:12:34.040 --> 00:12:40.160
-relationship to a table, so I'll set that up.
-I'll add the Table annotation, after Entity,
-
-00:12:40.160 --> 00:12:44.560
-but before the class declaration. Here
-I'll specify the name of the table
-
-00:12:44.560 --> 00:12:48.720
-in the music schema which is artists
-You can see the import was not added
-
-00:12:48.720 --> 00:12:53.840
-automatically, so I'll just click it and
-do an ALT-ENTER and ensure I choose the
-
-00:12:53.840 --> 00:13:00.320
-jakarta.persistence Table like this.
-My artist table only has two columns,
-
-00:13:00.320 --> 00:13:06.800
-artist id and artist name, so I'll set up two
-fields on this class, to represent those columns.
-
-00:13:06.800 --> 00:13:12.320
-I'll start with the annotation, Id. Every
-database entity requires this on one field,
-
-00:13:12.320 --> 00:13:18.280
-which represents the primary key. I'll map the
-field to the column name, artist underscore id,
-
-00:13:18.280 --> 00:13:24.240
-which is the primary key for artists. I'll fix
-the imports in a bit. And here I'll have my
-
-00:13:24.240 --> 00:13:31.280
-declaration for the field name, so private int
-artist id. And again, I'll map the next field,
-
-00:13:31.280 --> 00:13:39.320
-this time to the artist_name column. I'll declare
-this field as a string, and call it artistName.
-
-00:13:39.320 --> 00:13:44.240
-As you saw, the imports for Id and
-Column were added automatically for me.
-
-00:13:44.240 --> 00:13:47.840
-I need some constructors and getters
-and setters, so I'll generate these,
-
-00:13:47.840 --> 00:13:51.880
-starting with the constructors.
-All JPA entities are required to have
-
-00:13:51.880 --> 00:13:58.720
-a no args constructor, so I'll add that first.
-I'll pick constructor from the Generate menu.
-
-00:13:58.720 --> 00:14:05.200
-I'll click on the select None button at
-the bottom of this dialog, as the option.
-
-00:14:05.200 --> 00:14:11.040
-That generates my no args constructor.
-I'll repeat this process for a second
-
-00:14:11.040 --> 00:14:15.040
-constructor, but in this case, I'll
-select artist name in the dialog,
-
-00:14:15.040 --> 00:14:18.920
-and click OK to create a one argument constructor.
-
-00:14:18.920 --> 00:14:23.240
-That generates a constructor with the
-artist name as the only parameter.
-
-00:14:23.240 --> 00:14:28.200
-I'll repeat this one last time, so again
-picking constructor from the generate menu.
-
-00:14:28.200 --> 00:14:34.120
-In this case, I'll select both
-fields, then click the ok button.
-
-00:14:34.120 --> 00:14:38.080
-That's my third and last
-constructor for this class.
-
-00:14:38.080 --> 00:14:43.160
-Now, I'll add a getter and setter,
-selecting that combo from the generate menu.
-
-00:14:43.160 --> 00:14:48.040
-I'll pick just the artist name, since
-I don't need these methods for the id.
-
-00:14:48.040 --> 00:14:52.600
-Intelli J generates the getArtistName
-and setArtistName methods for me.
-
-00:14:52.600 --> 00:14:57.560
-Finally, I'll include a toString method, and
-again I'll generate that, using Alt Insert,
-
-00:14:57.560 --> 00:15:03.840
-and picking toString from the Generate Menu shown.
-The template might be set to the JSON Builder
-
-00:15:03.840 --> 00:15:07.640
-template, from the last
-challenge, as it was for me.
-
-00:15:07.640 --> 00:15:12.480
-I'll instead choose the String concat
-template, from the select list here
-
-00:15:12.480 --> 00:15:17.920
-I'll select both fields in
-the next dialog, and hit ok.
-
-00:15:17.920 --> 00:15:22.840
-And we are done.
-I've created my first JPA Entity.
-
-00:15:22.840 --> 00:15:27.280
-It's really just an annotated pojo.
-I'll close this video here,
-
-00:15:27.280 --> 00:15:30.840
-before it gets too long.
-In the next video, we'll use this
-
-00:15:30.840 --> 00:15:35.680
-entity to communicate with the artist table in
-the database, so I'll see you in that next video.
+00:00:05.160 --> 00:00:10.200
+Up until now, I've used JPA to map a database
+record to a special type of object, called an
+
+00:00:10.200 --> 00:00:16.000
+entity, using Hibernate as the JPA Provider.
+This was great, when working with a single
+
+00:00:16.000 --> 00:00:21.240
+targeted record, and it's associated data.
+You'll probably at some point still need to
+
+00:00:21.240 --> 00:00:28.200
+query the database, for a set of records.
+To do this, you can use a JPA query.
+
+00:00:28.200 --> 00:00:32.960
+You know by now that a query in the database,
+is often a select statement of some kind, but
+
+00:00:32.960 --> 00:00:40.040
+can also be an update, insert or delete statement.
+In JPA, you have three options to execute a query,
+
+00:00:40.040 --> 00:00:43.840
+all of which still rely on the
+existence of an entity class.
+
+00:00:43.840 --> 00:00:50.680
+You can use a JPA Query, using a special query
+language, named JPQL. There's something called a
+
+00:00:50.680 --> 00:00:57.000
+Criteria Builder, which is a more programmatic way
+to put together the selection request. ; Finally,
+
+00:00:57.000 --> 00:01:00.480
+if you're comfortable in SQL, or
+maybe you have a special need,
+
+00:01:00.480 --> 00:01:07.920
+to increase performance for example, you can
+still use a Native Query, which relies on SQL.
+
+00:01:07.920 --> 00:01:14.360
+The Java Persistence Query Language, or
+JPQL, is an object-oriented query language.
+
+00:01:14.360 --> 00:01:20.040
+It's specifically designed to work with
+entities, in Java applications that use JPA.
+
+00:01:20.040 --> 00:01:23.480
+It provides a way to query data
+stored in relational databases,
+
+00:01:23.480 --> 00:01:28.600
+without needing to understand the details,
+of how the data is actually structured there.
+
+00:01:28.600 --> 00:01:36.240
+Let's start by looking at JPQL, in some code.
+I'll be using the same project from the last
+
+00:01:36.240 --> 00:01:40.320
+couple of lectures, so I've
+got the JPA Project open.
+
+00:01:40.320 --> 00:01:44.720
+Using this project means, I can continue
+to use the entities, Artist and Album,
+
+00:01:44.720 --> 00:01:49.040
+that I set up previously.
+To use JPQL, you actually
+
+00:01:49.040 --> 00:01:56.080
+query entities, and not tables specifically.
+I'll create a new class, in the dev lpa package,
+
+00:01:56.080 --> 00:02:03.840
+and I'll call this class, MainQuery.
+I'll include a main method,
+
+00:02:03.840 --> 00:02:07.880
+using the PSVM shortcut.
+Before I add any code to the
+
+00:02:07.880 --> 00:02:14.080
+main method in this class, I'll first create
+a private static method, also in this class.
+
+00:02:14.080 --> 00:02:19.040
+This method is going to return a List of
+Artist entity types, based on some query.
+
+00:02:19.040 --> 00:02:23.840
+So I'll start with private, static, then
+List, with Artist declared in angle brackets,
+
+00:02:23.840 --> 00:02:29.760
+so my List will only have artist entities in it.
+I'll name this method get Artists JPQL.
+
+00:02:29.760 --> 00:02:35.240
+It will have two parameters. First, an
+EntityManager, which I'll be creating
+
+00:02:35.240 --> 00:02:41.240
+and managing, in the main method, and passing
+to this method. I'll also include a string,
+
+00:02:41.240 --> 00:02:48.200
+which I'll call matchedValue. So next, I'll create
+a variable, a string for my query statement. I'll
+
+00:02:48.200 --> 00:02:56.960
+call this JPQL, and I'll set that to a string
+literal. Select a, from artist, a. This looks
+
+00:02:56.960 --> 00:03:04.840
+a lot like SQL. The letter a, in this case is a
+variable, as well as a table alias. Notice that
+
+00:03:04.840 --> 00:03:12.360
+I'm selecting, not from artists, or music.artists,
+so not from the table name. Instead, I select from
+
+00:03:12.360 --> 00:03:19.960
+Artist, with a capital A, which actually refers to
+my Artist entity, the Artist class in other words.
+
+00:03:19.960 --> 00:03:24.000
+I can execute this query, using
+a method on the EntityManager.
+
+00:03:24.000 --> 00:03:29.480
+I'll use Local Variable type inference, to set up
+the next variable, so var as the type, and query
+
+00:03:29.480 --> 00:03:35.120
+as the variable name. I'll make that equal to the
+value I get back, when I execute createQuery on
+
+00:03:35.120 --> 00:03:41.000
+the EM method argument, which is really an Entity
+manager. This method takes two arguments, first
+
+00:03:41.000 --> 00:03:48.000
+is a string, that contains JPQL, so I'll pass my
+variable for that. The second argument specifies
+
+00:03:48.000 --> 00:03:54.800
+the class name, of the entity that's being
+queried, so here, I need to pass Artist.class.
+
+00:03:54.800 --> 00:04:01.280
+Finally, the query object I get back, has a
+method called getResultList on it. In this case,
+
+00:04:01.280 --> 00:04:07.360
+it'll return a List of Artists, so I can just
+return that directly here, from this method.
+
+00:04:07.360 --> 00:04:10.000
+And that's it.
+These three lines
+
+00:04:10.000 --> 00:04:15.280
+of code will get all the artists, from
+the music schema, from the artists table.
+
+00:04:15.280 --> 00:04:19.160
+Before I run this, notice,
+from Intelli J's inlay hint,
+
+00:04:19.160 --> 00:04:26.080
+the type that's inferred, for the query variable.
+It's a TypedQuery, a generic type, an interface in
+
+00:04:26.080 --> 00:04:32.680
+this case, that has a type argument of Artist.
+I can control click on that hint.
+
+00:04:32.680 --> 00:04:36.760
+This opens up a decompiled
+class file, in a new tab.
+
+00:04:36.760 --> 00:04:41.160
+There are tools that'll take a class file, and
+decompile it into source code, which can show
+
+00:04:41.160 --> 00:04:47.200
+you quite a bit of the implementation details.
+In this case, I can see this is a typed interface,
+
+00:04:47.200 --> 00:04:50.600
+that extends Query.
+If I hover over the name,
+
+00:04:50.600 --> 00:04:56.080
+TypedQuery, I can see that this interface
+is part of the jakarta.persistence package.
+
+00:04:56.080 --> 00:04:59.560
+I'll pull this interface
+up, in the Jakarta API docs.
+
+00:05:01.640 --> 00:05:06.600
+To find this link on your own, just google
+the terms, jakarta and TypedQuery together,
+
+00:05:06.600 --> 00:05:10.600
+to find the latest version, or
+most current version you can.
+
+00:05:10.600 --> 00:05:14.240
+I'll scroll down a bit on this page,
+so you can see the list of methods,
+
+00:05:14.240 --> 00:05:18.240
+declared on this interface.
+You'll see at the top of the list,
+
+00:05:18.240 --> 00:05:22.480
+there's the getResultList method,
+which I'll be executing in this code.
+
+00:05:22.480 --> 00:05:27.480
+This is followed by getResultStream,
+which returns a stream of the entity type.
+
+00:05:27.480 --> 00:05:32.520
+You know I like streams, so this method could be
+particularly useful, for using stream operations
+
+00:05:32.520 --> 00:05:36.760
+we've become pretty familiar with.
+This will let us quickly investigate,
+
+00:05:36.760 --> 00:05:42.120
+or manipulate query results.
+Let me give you a word of caution though.
+
+00:05:42.120 --> 00:05:46.640
+You want to avoid, if you can, using
+a stream to filter or limit results,
+
+00:05:46.640 --> 00:05:50.080
+though it might seem simpler.
+It's usually a good idea to
+
+00:05:50.080 --> 00:05:54.280
+limit data going across a network.
+If you can add the criteria to the
+
+00:05:54.280 --> 00:05:58.720
+where clause of the JPQL query that gets executed
+on the server, you'll be better off than trying
+
+00:05:58.720 --> 00:06:03.400
+to filter the stream on the client side..
+But you can imagine using the stream result
+
+00:06:03.400 --> 00:06:07.880
+to create some sort of Mapped collection,
+based on column values in a table (as their
+
+00:06:07.880 --> 00:06:11.600
+translated to entity fields).
+I'll be showing you an example
+
+00:06:11.600 --> 00:06:15.040
+of this in a little bit.
+There's also getSingleResult,
+
+00:06:15.040 --> 00:06:19.680
+so maybe you only care about one entity,
+though several might match your query.
+
+00:06:19.680 --> 00:06:24.400
+For example, if you've got a sorted query,
+you might only want the first record,
+
+00:06:24.400 --> 00:06:29.400
+sometimes called the top, and this method
+limits the data returned, to a single record.
+
+00:06:30.040 --> 00:06:34.360
+There's a couple of useful set methods,
+and then a whole series of set Parameter
+
+00:06:34.360 --> 00:06:38.520
+methods, as you can see.
+Getting back to the code,
+
+00:06:38.520 --> 00:06:43.080
+I'll run my first JPA query.
+To do this, I need to add some
+
+00:06:43.080 --> 00:06:46.360
+code in the main method.
+I'll set up a variable,
+
+00:06:46.360 --> 00:06:52.880
+for the results from the getArtistsJPQL method, so
+a List of Artists, and I'll initialize it to null.
+
+00:06:52.880 --> 00:06:57.960
+Like I did previously, I'll first instantiate an
+Entity Manager Factory from the Persistence type,
+
+00:06:57.960 --> 00:07:02.760
+within a try with resources declaration.
+I'll pass that the name of my persistence
+
+00:07:02.760 --> 00:07:09.880
+unit. Hopefully you'll remember, I set this
+up in the persistence.xml file. In this case,
+
+00:07:09.880 --> 00:07:17.560
+the persistence unit is named, dev dot lpa dot
+music. Next, I create an Entity Manager instance,
+
+00:07:17.560 --> 00:07:23.400
+using a method on the factory, again this is still
+in the try with resources declaration. I'll get
+
+00:07:23.400 --> 00:07:28.240
+back to the code that goes in the try block,
+in a second. I'll just complete the statement
+
+00:07:28.240 --> 00:07:33.560
+with a catch block, Printing the stack trace of
+any error I get, ignoring Intelli J's warning,
+
+00:07:33.560 --> 00:07:40.040
+that this isn't very robust handling of a problem.
+My variable, artists, will get set to the result
+
+00:07:40.040 --> 00:07:45.960
+of calling my get Artists JPQL method.
+When using JPA Queries, it's a good idea
+
+00:07:45.960 --> 00:07:52.120
+to wrap the queries in a transaction. I'll
+get a transaction from the entity manager.
+
+00:07:52.120 --> 00:07:58.440
+I'll call transaction begin next. I need to pass
+the entity manager variable, and then a string,
+
+00:07:58.440 --> 00:08:03.080
+and I'll just set that to an empty literal
+string to start. You might have noticed,
+
+00:08:03.080 --> 00:08:09.440
+I never used the second parameter, in my method's
+code block. I plan to change that code shortly,
+
+00:08:09.440 --> 00:08:15.840
+to use it. Finally, I'll print the results I
+get back. I can use for each on the artists
+
+00:08:15.840 --> 00:08:21.720
+list variable, and a method reference, to print
+each artist, that's in this resulting list.
+
+00:08:21.720 --> 00:08:30.920
+I'll call transaction commit here at the end.
+You might be wondering why you need a transaction
+
+00:08:30.920 --> 00:08:35.560
+when you're just querying records.
+This is kind of a complicated subject
+
+00:08:35.560 --> 00:08:40.000
+and has to do with lazy loading vs eager
+fetching of dependent tables, as well as
+
+00:08:40.000 --> 00:08:45.520
+transactional integrity between related tables.
+If you do have problems with your queries,
+
+00:08:45.520 --> 00:08:50.640
+and you're not including them in a transaction
+block, let me recommend trying this to start.
+
+00:08:50.640 --> 00:08:56.320
+Now I'll run this code.
+So you'll see, in the output,
+
+00:08:56.320 --> 00:09:02.240
+all of the artists in the table, in my
+case that's 202 artists, that get printed.
+
+00:09:02.240 --> 00:09:05.400
+Each record contains all the
+row data in each artist record,
+
+00:09:05.400 --> 00:09:10.400
+so that's just artist id and artist name.
+Notice though, that each record also
+
+00:09:10.400 --> 00:09:19.520
+includes, all the artist's album records.
+In my JPQL statement, when I specified, select a,
+
+00:09:19.520 --> 00:09:25.560
+from artist, I didn't specify what data I wanted,
+meaning what fields that mapped to columns.
+
+00:09:25.560 --> 00:09:29.160
+So it returned all the data for
+all the fields on this entity.
+
+00:09:29.160 --> 00:09:33.720
+You'll recall that I set up the entities, by
+declaring a relationship on the albums field,
+
+00:09:33.720 --> 00:09:39.600
+a list, declared in artist, to the album entity.
+All of the underlying database querying,
+
+00:09:39.600 --> 00:09:45.560
+with the appropriate joins was done seamlessly
+by the JPA Provider, in this case hibernate.
+
+00:09:45.560 --> 00:09:50.720
+This means, I'm able to write a very simple,
+generic query against an Artist entity class,
+
+00:09:50.720 --> 00:09:55.680
+to get related data, in this
+case albums, for each artist.
+
+00:09:55.680 --> 00:10:00.600
+This doesn't require the developer retrieving
+data, to know anything about inner or outer joins,
+
+00:10:00.600 --> 00:10:06.360
+or foreign keys, or any other specific
+implementation details of the database.
+
+00:10:06.360 --> 00:10:09.640
+It also doesn't require
+views, on the database server,
+
+00:10:09.640 --> 00:10:15.160
+for simpler querying of a normalized schema.
+You may still want to employ those techniques,
+
+00:10:15.160 --> 00:10:20.320
+but in this case, none of that is
+necessary, in the operation of this query.
+
+00:10:20.320 --> 00:10:25.400
+This might be a welcome relief, if you
+don't want to deal with databases directly.
+
+00:10:25.400 --> 00:10:31.480
+Now, I'll alter the query slightly, this time
+just getting artists whose name contains S T E V.
+
+00:10:31.480 --> 00:10:37.360
+First, I'll change my select statement.
+I'll add a where clause, so I'll append the text,
+
+00:10:37.360 --> 00:10:44.360
+where, a.artistName, like, colon partialName.
+In this case, you can see I'm using the attribute
+
+00:10:44.360 --> 00:10:50.160
+name on the Artist entity, and not the column name
+in the table, which is artist underscore name.
+
+00:10:50.160 --> 00:10:55.840
+My placeholder parameter, which is called a named
+parameter in this case, is specified by a colon,
+
+00:10:55.840 --> 00:11:00.880
+followed by any variable name I want.
+So here, I'm calling it partial Name,
+
+00:11:00.880 --> 00:11:05.760
+since I'll match on part of the artist's name.
+Next I need to actually pass a value,
+
+00:11:05.760 --> 00:11:09.360
+to this placeholder parameter.
+So I'll add a call to a
+
+00:11:09.360 --> 00:11:15.800
+setParameter method, on the query variable.
+One version of this method takes two strings.
+
+00:11:15.800 --> 00:11:21.480
+The first is the named parameter, so I'll pass
+partialName as a string literal. The literal value
+
+00:11:21.480 --> 00:11:27.320
+should match the named parameter, used in your
+JPQL statement. The second argument to the set
+
+00:11:27.320 --> 00:11:32.320
+parameter method, is the value to be used, so I'll
+pass it the matched Value, the method argument
+
+00:11:32.320 --> 00:11:36.520
+that contains the criteria to match on.
+Back In the main method,
+
+00:11:36.520 --> 00:11:41.160
+I'll change how I invoke this method.
+Instead of passing an empty string literal,
+
+00:11:41.160 --> 00:11:47.400
+I'll pass a pattern, an S Q L pattern I mean.
+Let me set this up, so first I include a percent
+
+00:11:47.400 --> 00:11:55.400
+sign, then S T E and V, and another percent sign.
+The percent sign is the S Q L wildcard specifier,
+
+00:11:55.400 --> 00:12:03.040
+in a pattern, that's used by a LIKE clause in SQL.
+It means match on zero, or many characters.
+
+00:12:03.040 --> 00:12:08.840
+Java's regular expression specifier to do
+something similar, you'll remember, is a dot.
+
+00:12:08.840 --> 00:12:13.960
+Because I'm starting with a percent sign, this
+will match the contiguous letters, S T E V,
+
+00:12:13.960 --> 00:12:19.480
+in any part of the album name.
+I'll run that.
+
+00:12:19.480 --> 00:12:23.880
+You can see I get only 6 artists that matched
+that, most of them start with the first name,
+
+00:12:23.880 --> 00:12:28.600
+Steve, but there's also Seasick
+Steve, and Stevie Ray Vaughan.
+
+00:12:28.600 --> 00:12:33.480
+I could change my pattern, if I wanted only
+artists whose names started with S T E V, by
+
+00:12:33.480 --> 00:12:38.120
+removing the first percent sign.
+That would eliminate Seasick Steve,
+
+00:12:38.120 --> 00:12:43.600
+which you can try on your own, if you want to.
+JPQL doesn't eliminate the need to understand
+
+00:12:43.600 --> 00:12:50.080
+all SQL constructs, as this example demonstrates.
+In this code, you still needed to understand the
+
+00:12:50.080 --> 00:12:54.400
+LIKE clause and valid patterns,
+to use it effectively here.
+
+00:12:54.400 --> 00:12:58.840
+In addition to named parameters, you can use
+placement parameters in the query string.
+
+00:12:59.480 --> 00:13:02.520
+This is similar to the question
+mark place holder which we saw,
+
+00:13:02.520 --> 00:13:07.520
+in the prepared and callable statements.
+In this case, in addition to the question
+
+00:13:07.520 --> 00:13:14.360
+mark, you have to include a numeric value.
+Numeric placeholder specifiers must start at 1.
+
+00:13:14.360 --> 00:13:17.520
+But they don't have to be in sequential
+order, and you can reuse a numeric
+
+00:13:17.520 --> 00:13:23.600
+placeholder, in a single JPQL string.
+I'll change my getArtistsPLQL method,
+
+00:13:23.600 --> 00:13:28.840
+replacing colon matched value, with a
+question mark, followed by the number 1.
+
+00:13:28.840 --> 00:13:34.320
+I'll next change the setParameter method,
+passing in the number 1, as the first argument.
+
+00:13:34.320 --> 00:13:39.360
+If I run the code this way,
+I'll get the same results,
+
+00:13:39.360 --> 00:13:44.360
+as I did with a named parameter.
+Named placeholders make more readable code,
+
+00:13:44.360 --> 00:13:48.520
+in my opinion, but it's up to you,
+or maybe the framework you're using,
+
+00:13:48.520 --> 00:13:53.640
+which kind of placeholder type you'll use.
+In this video, I've given you your first taste of
+
+00:13:53.640 --> 00:14:00.600
+using JPQL, with a very simple select statement.
+The first brought back all data for all records,
+
+00:14:00.600 --> 00:14:04.760
+and the second query brought back all
+data, for a limited set of records,
+
+00:14:04.760 --> 00:14:11.080
+matching criteria on the artist name.
+I'll end this video here, before it gets too long.
+
+00:14:11.080 --> 00:14:14.800
+In the next video, I'll continue using
+this project and this class's method,
+
+00:14:14.800 --> 00:14:19.440
+and show you slightly more complex JPQL
+queries, so let's move on to that video.

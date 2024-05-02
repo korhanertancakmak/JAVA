@@ -8746,12 +8746,10 @@ and then transform it to a SQL **TimeStamp** type.
 A **TimeStamp** field can be used for a SQL parameter of type **DateTime**.
 </div>
 
-## [m. Introduction to JPA and ORM]()
+## [m. Java Persistence API]()
+
+### Introduction to JPA and ORM
 <div align="justify">
-
-```java  
-
-```
 
 So far, in this section of the course, I've focused on JDBC as the means for communicating with a database.
 This is for good reason, since it's part of Java's Standard Edition implementation, 
@@ -8799,302 +8797,2130 @@ and handling database interactions for you.
 
 Typically, an **Entity** is a class that represents a table in a relational database.
 
+![image82](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image82.png?raw=true)
 
-
-Each Entity instance corresponds
-to a row in that table.
-Each entity is annotated with metadata, to
-instruct JPA providers, how to map its fields to
-a table's columns, relationships to other tables,
+Each **Entity** instance corresponds to a row in that table.
+Each entity is annotated with metadata, to instruct JPA providers, 
+how to map its fields to a table's columns, relationships to other tables,
 and lifecycle management techniques to use.
-The example on this slide is a relatively
-simple one, of an annotated class, Artist,
-which would be an entity for our artists table, in
-the music database, that we've been working with.
-In this example, the annotation Entity,
-describes this class as the Entity type.
-A framework implementing JPA, will
-identify entities by this annotation.
-The annotation that follows next is
-table, further describes the table name,
-so that is artists in this case.
-Next the fields in this class
-also have annotations which describe
-their database correlated information.
-So I have an Id, and that's the artist id.
-I include the column annotation,
-which specifies the ID's column name.
-Next, I describe the field, artist Name,
-as mapping to the column
-name, artist underscore name.
-After this, I've declared a
-list of albums, for this artist.
-Above this field, I specify
-information about the relationship.
-I use the one to many annotation, then
-the join column, with the joined id,
-so album underscore id.
-The entity manager is
-implemented by the JPA Provider.
-An entity can exist in a managed
-state, managed by the Entity Manager.
-Or it can exist in a detached state,
-outside of an Entity Manager.
-A detached entity can then be merged
-into an EntityManager, if a commit
-is needed to a persistence layer..
-There are some key methods on the
-EntityManager interface to know,
-that line up with the CRUD operations
-The persist method makes a detached
-instance managed, and it's this instance's
-state will get persisted on a commit..
-The find method searches for an
-entity of the specified class using
-the primary key, in the persistent layer.
-It returns an instance that will be managed,
-and automatically persisted.
-If an entity is managed,
-updates will be propagated automatically
-to the persistence layer, on a commit.
-If the entity is not yet managed, a merge
-method will make the entity managed.
-The remove method removes the entity instance
-from management, and executes a delete on the
-persistence layer.
-I'll be walking
-through examples of these methods coming up.
-The persistence context has multiple purposes.
-It tracks the lifecycle state of managed entities.
-These states include new, managed, detached,
-and removed, reflecting any changes you make to
-their properties. It synchronizes changes made to
-managed entities with the database. This happens
-automatically when a transaction is committed
-or flushed, ensuring the database state reflects
-the state of your in-memory objects. It performs
-identity management, ensuring unique entity
-identity within a transaction. Even if you create
-duplicate objects with the same identifier, the
-persistence context recognizes and manages them
-as a single entity. It acts as a cache, reducing
-database roundtrips by keeping frequently accessed
-entities in memory, for faster retrieval.
-The objective of this lecture and the ones that
-follow, aren't to give you a deep dive into JPA.
-Instead, I want to give you a simple introduction
-to this architecture, which
-is used by so many frameworks.
-Let's get back to some code, and start exploring
-these concepts a little bit, in a concrete way.
-I've created a new project, called
-JPA, with the usual Main class set up.
-Before I do anything, I need to include
-some additional libraries in my project.
-So I'll go to Module Settings.
-I'll select Libraries.
-First, I'll need to add the jdbc
-driver for MySQL, which I've done
-in several projects, so I'll quickly do this.
-I'll navigate to that jar file, and select it,
-and accept all the default settings there.
-If you've updated Intelli J recently,
-you may get an additional dialog,
-It's titled Detected Roots,
-and says Choose Roots, and for this you just want
-to hit the OK button, assuming a root is selected,
-which it should be, by default.
-The next dialog lets me select
-which module it should be added to, and since
-I've only got one option, I'll click ok on that.
+The example above is relatively simple of an annotated class **Artist**,
+which would be an _entity_ for our **artists** table in the _music_ database, 
+that we've been working with.
+In this example, the annotation **Entity** describes this class as the **Entity** type.
+A framework implementing JPA, will identify entities by this annotation.
+The annotation that follows next is table, further describes the table name,
+so that is _artists_ in this case.
+Next, the fields in this class also have annotations 
+which describe their database correlated information.
+So I have _Id_ and that's the _artist_id_.
+I include the column annotation, which specifies the ID's column name.
+Next, I describe the field, _artistName_, as mapping to the column name, _artist_name_.
+After this, I've declared a list of _albums_, for this artist.
+Above this field, I specify information about the relationship.
+I use the _one to many_ annotation, then the _join column_,
+with the joined id so _album_id_.
+
+The **JPA Provider** implements the _entity manager_.
+An _entity_ can exist in a managed state, managed by the **Entity Manager**.
+Or it can exist in a detached state outside an **Entity Manager**.
+A detached entity can then be merged into an **EntityManager**
+if a commit is needed to a persistence layer.
+
+| Operation  | Method   | Description                                                                                                                                                                                                     |
+|------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| create     | persist  | Makes a detached instance managed and persistent.                                                                                                                                                               |
+| read       | find     | This method searches for an entity of the specified class and primary key, and returns an instance that will be managed and persistent                                                                          |
+| update     | merge    | If an entity is managed, updates will be propagated automatically to the persistence layer, on a commit. If the entity is not yet managed, a merge method will make the entity managed and persist the changes. |
+| delete     | remove   | Removes the entity instance from management, and executes a delete on the persistence layer if the instance is managed (not detached).                                                                          |
+
+There are some key methods on the **EntityManager** interface to know,
+that line up with the _CRUD_ operations.
+The _persist_ method makes a detached instance managed, 
+and it's this instance's state will get persisted on a commit.
+The _find_ method searches for an entity of the specified class 
+using the primary key, in the persistent layer.
+It returns an instance that will be managed and automatically persisted.
+If an entity is managed, updates will be propagated automatically to the persistence layer, on a commit.
+If the entity is not yet managed, a _merge_ method will make the entity managed.
+The _remove_ method removes the entity instance from management,
+and executes a _delete_ on the persistence layer.
+I'll be walking through examples of these methods coming up.
+
+The persistence context has multiple purposes:
+
+* It tracks the lifecycle state of managed entities.
+These states include new, managed, detached, and removed, 
+reflecting any changes you make to their properties. 
+* It synchronizes changes made to managed entities with the database. 
+This happens automatically when a transaction is committed or flushed, 
+ensuring the database state reflects the state of your in-memory objects. 
+* It performs identity management, ensuring unique entity identity within a transaction. 
+Even if you create duplicate objects with the same identifier,
+the persistence context recognizes and manages them as a single entity. 
+* It acts as a cache, reducing database roundtrips 
+by keeping frequently accessed entities in memory for faster retrieval.
+
+The objective of this section and the ones that follow aren't to give you 
+a deep dive into _JPA_.
+Instead, I want to give you a simple introduction to this architecture, 
+which is used by so many frameworks.
+Let's get back to some code, and start exploring these concepts a little bit, 
+in a concrete way.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+    }
+}
+```
+
+I've created the usual **Main** class set up.
 Next, I need the jakarta JPA module.
-I could get this module from Maven,
-but I also need a JPA Provider.
-For the provider, I'll use Hibernate,
-and that comes packaged with the JPA,
+I could get this module from **Maven**, but I also need a _JPA Provider_.
+For the provider, I'll use **Hibernate**, and that comes packaged with the JPA,
 so I can just include that one module.
-I'll get this module from Maven.
-In the next section of the course,
-I'll be talking more about Maven,
+I'll get this module from **Maven**.
+In the next section of the course I'll be talking more about **Maven**,
 so just follow along with me here.
-I'll type in org.hibernate. ORM, and press enter.
-I'll get this error but will give it a moment,
-and a list should popup.
-Rather than scroll down and look for
-what I want, I can continue to type in this field,
-so I'll add colon, hibernate, dash, core in this
-input field, after the org.hibernate.orm.
-It's important that you don't have any
-spaces before or after the colon.
-Now I'll see the versions of this
-module listed, and I want to make sure I get
-one that's the latest version, 6 or higher.
-For me, at the time of this
-recording, its 6.4.1 Final.
+I'll type in `org.hibernate.orm`, and press enter.
+I'll get this error but will give it a moment, and a list should pop up.
+Rather than scroll down and look for what I want, 
+I can continue to type in this field, 
+so I'll add `:hibernate-core` in this input field, 
+after the `org.hibernate.orm`.
+It's important that you don't have any spaces before or after the colon.
+Now I'll see the versions of this module listed, 
+and I want to make sure I get one that's the latest version, 6 or higher.
+For me, at the time of this recording, its **6.5.0 Final**.
 I'll select that.
 Another dialog pops up.
-I'll make sure transitive dependencies
-is checked in that dialog, and click ok.
-Now, it's important to examine the classes in the
-version you picked, to verify that you have the
-jakarta.persistence dash api in this set of
-classes, and that it's at least version 3.1.
-In addition, you want to verify that the
-module you pick has hibernate-core there,
-and it's at least version 6.
-Make sure you apply these changes on this
-screen, by selecting the ok or apply button.
-If you aren't seeing jakarta's persistence
-3.1 jar there, you should try these
-steps again, or alternately manually
-add jakarta's persistence api 3.1 or higher.
-Since things change more than they stay the same,
-let me just quickly show you how
-to add that module separately.
-If you've verified this package in your
-module, you don't need to do this next step,
-and can skip adding this module.
-Again, I'll open the module settings,
-with Libraries selected, and click the + button.
-And select From Maven.
-I'll type jakarta.persistence colon in there.
-I could hit enter here, which gives me that
-error, or optionally I can do a search.
-When you press enter, it's expecting a
-fully qualified coordinate, or module identifier,
+I'll make sure transitive dependencies are checked in that dialog and click ok.
+Now, it's important to examine the classes in the version you picked, 
+to verify that you have the `jakarta.persistence-api` in this set of classes, 
+and that it's at least version `3.1`.
+In addition, you want to verify that the module you pick has _hibernate-core_ there,
+and it's at least version `6`.
+Make sure you apply these changes on this screen, by selecting the ok or apply button.
+If you aren't seeing jakarta's persistence `3.1` jar there, you should try these steps again,
+or alternately manually add jakarta's persistence api 3.1 or higher.
+Since things change more than they stay the same, let me just quickly show you 
+how to add that module separately.
+If you've verified this package in your module, 
+you don't need to do this next step and can skip adding this module.
+Again, I'll open the module settings, with Libraries selected, and click the `+` button.
+And select _From Maven_.
+I'll type `jakarta.persistence:` in there.
+I could hit enter here, which gives me that error, or optionally I can do a search.
+When you press enter, it's expecting a fully qualified coordinate, or module identifier,
 and in these cases, we're supplying only a part.
-The search is a bit more friendly, and
-that's the search icon next to this field.
-Hitting that rather than enter, doesn't give
-me an error, and it displays information about
-how many matches it found, and after
-a slight pause, will display them.
-Now I see the different versions of this
-package, and I'll pick the 3.1 point 0 version.
-You probably don't want to pick any
-version with M or B in the suffix,
-these are milestone and beta versions,
-which may not be the most stable versions.
-RC stands for release candidate, so again,
-I'd just stick to one without those suffixes.
-This module has a single jar file in it and
-you'll see that displayed in the classes list,
+The search is a bit more friendly, and that's the search icon next to this field.
+Hitting that rather than enter doesn't give me an error, 
+and it displays information about how many matches it found, 
+and after a slight pause, will display them.
+Now I see the different versions of this package, and I'll pick the `3.1.0` version.
+You probably don't want to pick any version with **M** or **B** in the suffix,
+these are milestone and beta versions, which may not be the most stable versions.
+**RC** stands for **release candidate**, so again, I'd just stick to one without those suffixes.
+This module has a single jar file in it, and you'll see that displayed in the classes list,
 after you add this.
 Again, click OK or apply.
-In my case, I don't need this jar file in my
-dependencies twice, so I'll simply open module
-settings again to the Library section, and
-remove this jakarta.persistence module here.
-Again, it's part of the hibernate module I
-included, so for me, it's not necessary.
-The purpose of Maven is to help us sort
-these dependencies out, but again, I'll
-cover that in a later section of the course.
-Now that we've got the libraries we need,
-we can get back to coding.
-I'll start with creating a
-couple of entities for the music database.
-There are tools, including a Hibernate plugin
-for Intelli J, that will generate entities
-for you, based on your database schema.
-This plugin's not available however, for
-the community edition, which we're using.
-Since we only have three tables, I'll
-create these manually, which is a good
-exercise anyway, as you're learning.
-So first, I'll create the Artist,
-in the dev.lpa.music package.
+In my case, I don't need this jar file in my dependencies twice, 
+so I'll simply open module settings again to the _Library_ section, 
+and remove this `jakarta.persistence` module here.
+Again, it's part of the hibernate module I included, so for me, it's not necessary.
+The purpose of **Maven** is to help us sort these dependencies out, but again, 
+I'll cover that in a later section of the course.
+Now that we've got the libraries we need, we can get back to coding.
+I'll start with creating a couple of entities for the _music_ database.
+There are tools, including a **Hibernate** plugin for IntelliJ, 
+that will generate entities for you, based on your database schema.
+This plugin's not available however, for the community edition, which we're using.
+Since we only have three tables, I'll create these manually, 
+which is a good exercise anyway, as you're learning.
+
+```java  
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "artists")
+public class Artist { 
+    
+    @Id
+    @Column(name="artist_id")
+    private int artistId;
+  
+    @Column(name="artist_name")
+    private String artistName;
+  
+    public Artist() {
+    }
+}
+```
+
+So first, I'll create the **Artist** in the same package.
 To make this an entity,
-I simply use the annotation, Entity.
-Intelli J should be able to resolve
-this annotation, and include an import. For
-me though, I have to select Entity by double
-clicking and it adds the import.
-This is part of the package,
-jakarta.persistence, which is included in the
-hibernate core package, as I mentioned before.
-If I hover over the entity annotation,
-I can see how Intelli J resolved it.
-If you don't see jakarta.persistence, then you
-should go back to the installation of the module.
-Specifically, you really don't
-want to see javax.persistence.
-This jakarta.persistence contains all
-the annotations, and the interfaces
-for the JPA specification.
-An entity usually has a
-relationship to a table, so I'll set that up.
-I'll add the Table annotation, after Entity,
-but before the class declaration. Here
-I'll specify the name of the table
-in the music schema which is artists
-You can see the import was not added
-automatically, so I'll just click it and
-do an ALT-ENTER and ensure I choose the
-jakarta.persistence Table like this.
-My artist table only has two columns,
-artist id and artist name, so I'll set up two
-fields on this class, to represent those columns.
-I'll start with the annotation, Id. Every
-database entity requires this on one field,
-which represents the primary key. I'll map the
-field to the column name, artist underscore id,
-which is the primary key for artists. I'll fix
-the imports in a bit. And here I'll have my
-declaration for the field name, so private int
-artist id. And again, I'll map the next field,
-this time to the artist_name column. I'll declare
-this field as a string, and call it artistName.
-As you saw, the imports for Id and
-Column were added automatically for me.
-I need some constructors and getters
-and setters, so I'll generate these,
-starting with the constructors.
-All JPA entities are required to have
-a no args constructor, so I'll add that first.
-I'll pick constructor from the Generate menu.
-I'll click on the select None button at
-the bottom of this dialog, as the option.
+I simply use the annotation, **Entity**.
+IntelliJ should be able to resolve this annotation and include an import. 
+For me, though, I have to select **Entity** by double-clicking, and it adds the import.
+This is part of the package, `jakarta.persistence`, 
+which is included in the **hibernate core** package, as I mentioned before.
+If I hover over the entity annotation, I can see how IntelliJ resolved it.
+If you don't see `jakarta.persistence`, then you should go back to the installation of the module.
+Specifically, you really don't want to see `javax.persistence`.
+This `jakarta.persistence` contains all the annotations, 
+and the interfaces for the JPA specification.
+An entity usually has a relationship to a table, so I'll set that up.
+I'll add the **Table** annotation, after **Entity**,
+but before the class declaration. 
+Here I'll specify the name of the table in the music schema which is _artists_.
+You can see the import was not added automatically, 
+so I'll just click it and do an ALT-ENTER 
+and ensure I choose the `jakarta.persistence.Table` like this.
+My artist table only has two columns,_artist_id_ and _artist_name_, 
+so I'll set up two fields on this class, to represent those columns.
+I'll start with the annotation, _Id_.
+Every database entity requires this on one field, which represents the primary key. 
+I'll map the field to the column name, _artist_id_, 
+which is the primary key for _artists_. 
+I'll fix the imports in a bit. 
+And here I'll have my declaration for the field name, so private `int artistId`.
+And again, I'll map the next field, this time to the _artist_name_ column.
+I'll declare this field as a **string**, and call it _artistName_.
+As you saw, the imports for _Id_ and _Column_ were added automatically for me.
+I need some constructors and getters and setters, 
+so I'll generate these, starting with the constructors.
+All JPA entities are required to have a no args constructor, so I'll add that first.
+I'll pick constructor from the _Generate_ menu.
+
+```java  
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "artists")
+public class Artist { 
+    @Id
+    @Column(name="artist_id")
+    private int artistId;
+  
+    @Column(name="artist_name")
+    private String artistName;
+  
+    public Artist() {
+    }
+  
+    public Artist(String artistName) {
+        this.artistName = artistName;
+    }
+  
+    public Artist(int artistId, String artistName) {
+        this.artistId = artistId;
+        this.artistName = artistName;
+    }
+  
+    public String getArtistName() {
+        return artistName;
+    }
+  
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
+  
+    @Override
+    public String toString() {
+        return "Artist{" + 
+                "artistId=" + artistId + 
+                ", artistName='" + artistName + '\'' + 
+                '}';
+    }
+}
+```
+
+I'll click on the select _None_ button at the bottom of this dialog, as the option.
 That generates my no args constructor.
-I'll repeat this process for a second
-constructor, but in this case, I'll
-select artist name in the dialog,
-and click OK to create a one argument constructor.
-That generates a constructor with the
-artist name as the only parameter.
-I'll repeat this one last time, so again
-picking constructor from the generate menu.
-In this case, I'll select both
-fields, then click the ok button.
-That's my third and last
-constructor for this class.
-Now, I'll add a getter and setter,
-selecting that combo from the generate menu.
-I'll pick just the artist name, since
-I don't need these methods for the id.
-Intelli J generates the getArtistName
-and setArtistName methods for me.
-Finally, I'll include a toString method, and
-again I'll generate that, using Alt Insert,
-and picking toString from the Generate Menu shown.
-The template might be set to the JSON Builder
-template, from the last
-challenge, as it was for me.
-I'll instead choose the String concat
-template, from the select list here
-I'll select both fields in
-the next dialog, and hit ok.
+I'll repeat this process for a second constructor, but in this case, 
+I'll select _artistName_ in the dialog, and click _OK_ to create a one argument constructor.
+That generates a constructor with the _artistName_ as the only parameter.
+I'll repeat this one last time, so again picking constructor from the _Generate_ menu.
+In this case, I'll select both fields, then click the ok button.
+That's my third and last constructor for this class.
+Now, I'll add a getter and setter, selecting that combo from the _Generate_ menu.
+I'll pick just the _artistName_, since I don't need these methods for _id_.
+IntelliJ generates the _getArtistName_ and _setArtistName_ methods for me.
+Finally, I'll include a _toString_ method, and again I'll generate that, 
+using Alt+Insert, and picking toString from the _Generate Menu_ shown.
+The template might be set to the **JSONBuilder** template, 
+from the last challenge, as it was for me.
+I'll instead choose the **String concat** template, 
+from the select list here I'll select both fields in the next dialog, and hit ok.
 And we are done.
 I've created my first JPA Entity.
 It's really just an annotated pojo.
-I'll close this video here,
-before it gets too long.
-In the next video, we'll use this
-entity to communicate with the artist table in
-the database, so I'll see you in that next video.
+In the next section, we'll use this entity 
+to communicate with the artist table in the database.
 </div>
 
-## [n. JPA in Action]()
+### JPA in Action
+<div align="justify">
+
+I've created the first **Entity**, the **Artist** class,
+which mirrors the table in the _music_ schema, and has an ID and an artist name.
+Before I can use the entity, I need to do a little setup with my JPA provider.
+The **Hibernate** documentation provides samples for different types of setups.
+In this case, I want to use the JPA version of Hibernate, 
+so I'll be creating a `persistence.xml` file, in a `META-INF` folder,
+which needs to be on the class path.
+The xml properties set in this file will define information 
+to create a persistence context.
+This context gets created by **Hibernate**, 
+and you can think of this as a special managed storage place for entities,
+that includes a connection to the database.
+The `META-INF` folder is usually at the root of a web application's folder.
+In this case, I'll just add it under the package folder for testing.
+What I'll do is create the file which will initially be empty, 
+and then paste the contents in. 
+Either method will work. 
+Selecting the package folder in the project panel, 
+I'll select _New File_, then enter `META-INF/persistence.xml`.
+I'll paste the xml code in there.
+
+~~~~sql  
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+    <persistence-unit name="Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music">
+
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+            <property name="jakarta.persistence.jdbc.url"    value="jdbc:mysql://localhost:3335/music" />
+            <property name="jakarta.persistence.jdbc.user"   value="devUser" />
+            <property name="jakarta.persistence.jdbc.password" value="your-password" />
+        </properties>
+
+    </persistence-unit>
+</persistence>
+~~~~
+
+The first thing you'll see is that the root node of this xml document is persistence,
+and there are some namespaces and xml specifications set up there.
+This is just part of the standard configuration for this type of xml document.
+Next, a child node is included, and it's named _persistence-unit_.
+A persistence unit needs a unique name, 
+so I've called this one the same as my package
+
+`Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music`
+
+But it can be anything you want there.
+Next, as part of this unit, I need the properties that will set up the connection to the data.
+In my case, this will consist of connection details to the MySQL driver.
+Notice that the property names are specifically referring to `jakarta.persistence.jdbc` keys.
+This is to avoid conflict with legacy code, 
+which might use key names like `connection.driver` as an example.
+These are the recommended key names for Jakarta's JPA.
+So the first is the driver, and the value in this case is the MySQL driver,
+that came with the jdbc driver jar file we included in this project, in the last section.
+After this, I've got name and value pairs for the database url, the username, and the password.
+Make sure you change the password in this file to be the one you created for your devUser.
+You might wonder why it's ok to include the password in this file.
+This file usually will be behind a firewall on a server node, 
+with access controlled by the operating system privileges.
+This means it's less of a concern than hard-coding a password in java source code, for example.
+I'll save this and close it.
+This file needs to be on the class path, 
+so I'll edit the run configuration for my **Main** class.
+The easiest way to do this is right-click the run arrow in the gutter, 
+next to the _main_ method.
+There I'll see _Modify Run Configuration_ as an option, and I can select that.
+From this screen, there's a bit of text on the right of the build 
+and run pane, and it says _Modify Options_. 
+I can click that. 
+From the menu of options that's displayed, I'll select _modify classpath_.
+After selecting this, I'll now see the _Modify classpath_ section on the edit configuration form.
+I'll select the _plus_ sign on this section's embedded menu bar, then I'll select _Include_, 
+to include a new path on the classpath, and I'll navigate to
+the `META-INF` folder under the source directory.
+And I'll hit ok, I should now see that directory in the classpath options.
+I'll hit ok to close this dialog.
+Now, it's time to put all these pieces together.
+Getting back to the _main_ method in the **Main** class,
+I'll start with a _try-with-resources_ statement.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+      String persistenceUnitName = "Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music";
+      try (var sessionFactory =
+                   Persistence.createEntityManagerFactory(persistenceUnitName);
+           EntityManager entityManager = sessionFactory.createEntityManager();
+      ) {
+
+        var transaction = entityManager.getTransaction();
+        transaction.begin();
+        entityManager.persist(new Artist("Muddy Water"));
+        transaction.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+}
+```
+
+The first thing I need is an **EntityManagerFactory**.
+This serves as a factory for producing **EntityManager** instances. 
+I get this, by calling _createEntityManagerFactory_ on a **Persistence** class 
+passing it the _persistenceUnitName_, that I declared in my `persistence.xml` file.
+This process creates the persistence context, that establishes database connections, 
+and manages connection pools for efficient resource usage.
+Once I have this factory class, I can get an **EntityManager** from that object, 
+by calling _createEntityManager_ on that.
+Both the _EntityManagerFactory_, and the **EntityManager** are auto-closeable,
+so putting them in the _try-with-resources_ block means they'll be closed automatically. 
+I'll be adding the code in the block in a moment. 
+For now, I'll complete this with a _catch_ block.
+And print the stacktrace of any exception.
+You might be thinking at this point that 
+this code doesn't really feel simpler, than JDBC code.
+Frameworks usually take a little bit of work up front, to get them configured, 
+but you'll see many advantages, once you get that work behind you.
+Inside the _try_ block, I'll get a _transaction_ from the _entityManager_.
+It's a good idea to include any changes to a managed entity, within a transaction,
+giving you the opportunity to test the results, 
+and roll back if the results aren't what you expect.
+Once I have a _transaction_ instance, I can call _begin_ on that.
+Next, I'll call _persist_ on my entity manager, 
+and pass it a new instance of the **Artist** class, 
+using the constructor that takes artist name. 
+In this case, I'll pass `Muddy Water`. 
+I'm purposely entering a typo in the name,
+it should really be `Muddy Waters`, 
+and that's so I can demonstrate an update in a little bit. 
+Lastly, I want to commit the transaction.
+In this code, there's no reference to any SQL code, 
+and no explicit reference to database interactivity.
+Before I run this, I want to open a MySQL Workbench session, 
+using the development session I've used throughout this section.
+In the sql edit pane, I'll write a select query 
+that will list the artists by descending artist id.
+
+~~~~sql  
+SELECT * FROM music.artists ORDER BY artist_id DESC;
+~~~~
+
+I'll execute that.
+My last two artists are two that I added previously, `Bob Dylan`, and `Neil Young`, 
+and then I'll have the `Chemical Brothers`, with _artist_id_ `201`.
+Your own list may be a bit different, based on the number of times you executed code, 
+or if you explored a bit on your own.
+To get back on the same page, let's delete all the artists we added,
+that have an id greater than `201`.
+
+~~~~sql  
+DELETE FROM music.artists WHERE artist_id > 201;
+~~~~
+
+I'll type in a delete statement that deletes from `music.artists`,
+where _artist_id_ is greater than `201`.
+I can execute that statement by highlighting it and clicking the lightning bolt.
+After executing it, I'll delete it from my SQL edit panel here.
+I'll rerun the select statement, 
+and now `Chemical Brothers` should be my last artist.
+To make sure my next id will be `202`, 
+I'll execute a DDL statement to alter the auto increment.
+I'm doing this because it's likely it's been updated, 
+because of the adds and deletes we did over the course of several sections.
+I really just don't want any gaps in my IDs,
+and it'd be nice if we were all on the same page.
+
+~~~~sql  
+ALTER TABLE music.artists AUTO_INCREMENT = 202;
+~~~~
+
+I'll ALTER The table `music.artists` and make _AUTO_INCREMENT_ equals `202`.
+I can highlight just this one statement, and execute just this, which I'll do now.
+I'll see that in the action output.
+I'll remove that statement from my edit pane here, 
+so I don't accidentally execute it again.
+If I did have a record with an ID greater than this number, 
+it wouldn't work, but since my last id was `201`, 
+so this shouldn't be a problem in this case.
+I'll jump back over to IntelliJ, and run my code there:
+
+```html  
+May 01, 2024 11:07:13 PM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: Section_18_WorkingWithDatabases.Course11_IntroductionJPA.music]
+May 01, 2024 11:07:13 PM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.5.0.Final
+May 01, 2024 11:07:14 PM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+May 01, 2024 11:07:14 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+May 01, 2024 11:07:14 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+May 01, 2024 11:07:14 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3335/music]
+May 01, 2024 11:07:14 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=devUser}
+May 01, 2024 11:07:14 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+May 01, 2024 11:07:14 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+May 01, 2024 11:07:15 PM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+May 01, 2024 11:07:15 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState stop
+INFO: HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3335/music]
+```
+
+I'll get a bunch of **hibernate** messages printed out.
+About midway down, you'll see the connection properties, 
+with the password masked with asterisks, and the username, devUser.
+Then you'll see _Autocommit_ mode is **false**, connection pool size is `20`.
+All of this is automatically created and set up for you by **hibernate**.
+What I don't see is any real confirmation that data was inserted.
+
+~~~~sql  
+SELECT * FROM music.artists ORDER BY artist_id DESC;
+~~~~
+
+I'll switch back over to MySQL Workbench and re-execute my select query.
+And there at the top of the result grid with an _artist_id_ of `202`, is _Muddy Water_.
+This confirms that the hibernate code executed an insert, 
+and this artist was persisted successfully.
+And I didn't have to write a single line of SQL code in my Java code to make it happen.
+If I changed databases, I'd just need to update the `persistence.xml` file, 
+and that would be it.
+I'm going to edit this file, so I'll again go back to IntelliJ.
+I'll open that xml file up, and I'll add another property in the persistence unit section.
+
+~~~~sql  
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+    <persistence-unit name="Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music">
+
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+            <property name="jakarta.persistence.jdbc.url"    value="jdbc:mysql://localhost:3335/music" />
+            <property name="jakarta.persistence.jdbc.user"   value="devUser" />
+            <property name="jakarta.persistence.jdbc.password" value="abc123" />
+            <property name="hibernate.show_sql" value="true" />
+        </properties>
+
+    </persistence-unit>
+</persistence>
+~~~~
+
+Here, the property name is `hibernate.show_sql`, and the _value_ is **true**,
+which will show the SQL code in the output.
+I'll save that and rerun my code:
+
+```html  
+May 01, 2024 11:11:56 PM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: Section_18_WorkingWithDatabases.Course11_IntroductionJPA.music]
+May 01, 2024 11:11:56 PM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.5.0.Final
+May 01, 2024 11:11:56 PM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+May 01, 2024 11:11:56 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+May 01, 2024 11:11:56 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+May 01, 2024 11:11:56 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3335/music]
+May 01, 2024 11:11:56 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=devUser}
+May 01, 2024 11:11:56 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+May 01, 2024 11:11:56 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+May 01, 2024 11:11:57 PM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: insert into artists (artist_name,artist_id) values (?,?)
+May 01, 2024 11:11:57 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState stop
+INFO: HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3335/music]
+```
+
+Notice, the third from the last statement.
+In my case, the text is a different color from the others.
+It starts with Hibernate colon, then it shows me the insert statement
+that this _persist_ method used.
+Now I'll have two _Muddy Water_ artists in my table, 
+which I can confirm by switching to MySQL workbench,
+and executing that select statement again.
+I don't really want two _muddy water_ artists in my database, 
+so I'll delete artist ID `203`.
+This time, though, I'll use **Hibernate's JPA** code to do it.
+Back to IntelliJ, I'll first comment out the persist statement.
+Next, I want to retrieve the artist from the database, whose id is `203`.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+      String persistenceUnitName = "Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music";
+      try (var sessionFactory =
+                   Persistence.createEntityManagerFactory(persistenceUnitName);
+           EntityManager entityManager = sessionFactory.createEntityManager();
+      ) {
+
+        var transaction = entityManager.getTransaction();
+        transaction.begin();
+        
+        Artist artist = entityManager.find(Artist.class, 203);
+        System.out.println(artist);
+        //entityManager.persist(new Artist("Muddy Water"));
+        transaction.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+}
+```
+
+I do this with the _find_ method on **EntityManager**.
+This method takes at least two arguments,
+the first is the entity class, and the second is the id.
+So I'll pass `Artist.class`, and `2O3` as the arguments. 
+I'll print the instance I get back, running this code:
+
+```html  
+May 01, 2024 11:17:07 PM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: Section_18_WorkingWithDatabases.Course11_IntroductionJPA.music]
+May 01, 2024 11:17:07 PM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.5.0.Final
+May 01, 2024 11:17:07 PM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+May 01, 2024 11:17:07 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+May 01, 2024 11:17:07 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+May 01, 2024 11:17:07 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3335/music]
+May 01, 2024 11:17:07 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=devUser}
+May 01, 2024 11:17:07 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+May 01, 2024 11:17:07 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+May 01, 2024 11:17:08 PM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_id=?
+Artist{artistId=203, artistName='Muddy Water'}
+May 01, 2024 11:17:08 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState stop
+INFO: HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3335/music]
+```
+
+There are a couple of output statements, 
+again near the last lines of this **hibernate** output, that I want you to see.
+I should see the sql statement used to retrieve the data,
+followed by the artist entity printed out.
+And you can see it there, a _select_ statement.
+This statement is using something called an alias, 
+which is just a temporary name given to the table, 
+but it's selecting the _artist_id_ and _artist_name_ from the _artists_ table, 
+based on an _artist_id_ parameter.
+This is followed by the artist's _toString_ method.
+So that confirms, I was able to read artist 2O3's data from the database, 
+using the _find_ method.
+Now, I'll delete this artist, using the _remove_ method.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+      String persistenceUnitName = "Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music";
+      try (var sessionFactory =
+                   Persistence.createEntityManagerFactory(persistenceUnitName);
+           EntityManager entityManager = sessionFactory.createEntityManager();
+      ) {
+
+        var transaction = entityManager.getTransaction();
+        transaction.begin();
+        
+        Artist artist = entityManager.find(Artist.class, 203);
+        System.out.println(artist);
+        entityManager.remove(artist);
+        //entityManager.persist(new Artist("Muddy Water"));
+        transaction.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+}
+```
+
+I just pass the artist instance to that method.
+I'll run the code with this change.
+
+```html  
+May 01, 2024 11:22:09 PM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: Section_18_WorkingWithDatabases.Course11_IntroductionJPA.music]
+May 01, 2024 11:22:09 PM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.5.0.Final
+May 01, 2024 11:22:09 PM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+May 01, 2024 11:22:10 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+May 01, 2024 11:22:10 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+May 01, 2024 11:22:10 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3335/music]
+May 01, 2024 11:22:10 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=devUser}
+May 01, 2024 11:22:10 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+May 01, 2024 11:22:10 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+May 01, 2024 11:22:11 PM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_id=?
+Artist{artistId=203, artistName='Muddy Water'}
+Hibernate: delete from artists where artist_id=?
+May 01, 2024 11:22:11 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState stop
+INFO: HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3335/music]
+```
+
+I've got the additional delete sql statement printed out, after the artist _toString_.
+If I pop back over to MySQL Workbench, and execute the select, 
+I should have only one _Muddy Water_ record, for artist id `202`.
+This query confirms that the **hibernate** code deleted artist id `2O3`.
+I really want the artist's name to be _Muddy Waters_ with an _s_, 
+on the end of _Water_, so I next want to update artist `2O2`.
+Back to IntelliJ, I'll again edit my code in the _main_ method.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+      String persistenceUnitName = "Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music";
+      try (var sessionFactory =
+                   Persistence.createEntityManagerFactory(persistenceUnitName);
+           EntityManager entityManager = sessionFactory.createEntityManager();
+      ) {
+
+        var transaction = entityManager.getTransaction();
+        transaction.begin();
+        
+        //Artist artist = entityManager.find(Artist.class, 203);
+        Artist artist = entityManager.find(Artist.class, 202);
+        System.out.println(artist);
+        artist.setArtistName("Muddy Waters");
+        //entityManager.remove(artist);
+        //entityManager.persist(new Artist("Muddy Water"));
+        transaction.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+}
+```
+
+This time I'll change the find method, to find artist id `2O2`,
+And I'll comment out the _remove_ method here.
+I'll update the name of the artist object, using my _setter_ method on **artist**.
+So I'll add this statement after the `System.out.println` statement.
+I'll run this:
+
+```html  
+May 01, 2024 11:25:55 PM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: Section_18_WorkingWithDatabases.Course11_IntroductionJPA.music]
+May 01, 2024 11:25:55 PM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.5.0.Final
+May 01, 2024 11:25:55 PM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+May 01, 2024 11:25:55 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+May 01, 2024 11:25:55 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+May 01, 2024 11:25:55 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3335/music]
+May 01, 2024 11:25:55 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=devUser}
+May 01, 2024 11:25:55 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+May 01, 2024 11:25:55 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+May 01, 2024 11:25:56 PM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_id=?
+Artist{artistId=202, artistName='Muddy Water'}
+Hibernate: update artists set artist_name=? where artist_id=?
+May 01, 2024 11:25:56 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState stop
+INFO: HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3335/music]
+```
+
+Now, you'll see the update statement in the output.
+I'll switch again to MySQL Workbench, and confirm that change was really committed correctly,
+by again executing my select statement.
+And there, you can see that artist id `202`, has the name _Muddy Waters_ now.
+Switching back to IntelliJ, I want to look at this code a little more closely.
+Are you wondering, how did this really work?
+I'm just calling a _setter_ on a Java object.
+How did that get persisted to the database?
+Maybe you were expecting a call to an _update_ method, for example.
+Well, the _find_ method not only retrieved the record from the database.
+It populated the **entity** _artist_, but importantly it also set it to a managed state.
+This means changes made to the **entity**, 
+the java object, will get persisted on a _commit_ statement.
+The entity manager identifies state changes between 
+what's in the database and the data in the _entity_ object, 
+and builds appropriate SQL queries to keep the database in sync with the java object.
+That's the beauty of using a JPA provider, which monitors and manages the entity's state,
+and keeps the data synchronized to the data layer.
+It's all done seamlessly for you.
+How would I do this if I didn't want to first query the database?
+I'll show you that next.
+I'll comment out the _find_ statement, and also the _setArtistName_ method.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+      String persistenceUnitName = "Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music";
+      try (var sessionFactory =
+                   Persistence.createEntityManagerFactory(persistenceUnitName);
+           EntityManager entityManager = sessionFactory.createEntityManager();
+      ) {
+
+        var transaction = entityManager.getTransaction();
+        transaction.begin();
+        
+        //Artist artist = entityManager.find(Artist.class, 203);
+        //Artist artist = entityManager.find(Artist.class, 202);
+        Artist artist = new Artist(202, "Muddy Water");
+        System.out.println(artist);
+        //artist.setArtistName("Muddy Waters");
+        //entityManager.remove(artist);
+        //entityManager.persist(new Artist("Muddy Water"));
+        transaction.commit();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+}
+```
+
+Instead of calling find, I'll just create a new instance of **Artist**, 
+using the constructor that takes id, and artist name.
+I'll pass 2O2, an id I know is in the data, and the name _Muddy Water_.
+If I run this code the way it is:
+
+```html  
+May 01, 2024 11:32:50 PM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: Section_18_WorkingWithDatabases.Course11_IntroductionJPA.music]
+May 01, 2024 11:32:50 PM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.5.0.Final
+May 01, 2024 11:32:50 PM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+May 01, 2024 11:32:50 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+May 01, 2024 11:32:50 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+May 01, 2024 11:32:50 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3335/music]
+May 01, 2024 11:32:50 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=devUser}
+May 01, 2024 11:32:50 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+May 01, 2024 11:32:50 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+May 01, 2024 11:32:51 PM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Artist{artistId=202, artistName='Muddy Water'}
+May 01, 2024 11:32:51 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState stop
+INFO: HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3335/music]
+```
+
+Notice, there are no generated SQL statements in the output.
+Nothing persisted. 
+I just have my output statement printed there, with the new name, 
+_Muddy Water_, but this wasn't saved to the database.
+Because I created the **Artist Entity** manually,
+it's not managed by the **Entity Manager**, 
+until I call either a _persist_ or _merge_ method.
+I use _merge_ if I'm specifying an id, as I'm doing here.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String persistenceUnitName = "Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music";
+        try (var sessionFactory =
+                     Persistence.createEntityManagerFactory(persistenceUnitName);
+             EntityManager entityManager = sessionFactory.createEntityManager();
+        ) {
+  
+          var transaction = entityManager.getTransaction();
+          transaction.begin();
+          
+          Artist artist = new Artist(202, "Muddy Water");
+          System.out.println(artist);
+          entityManager.merge(artist);
+          
+          transaction.commit();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+    }
+}
+```
+
+I'll insert a call to _merge_, passing it _artist_, just before the _commit_ statement.
+I'll rerun my code:
+
+```html  
+May 01, 2024 11:35:36 PM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: Section_18_WorkingWithDatabases.Course11_IntroductionJPA.music]
+May 01, 2024 11:35:36 PM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.5.0.Final
+May 01, 2024 11:35:36 PM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+May 01, 2024 11:35:36 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+May 01, 2024 11:35:36 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+May 01, 2024 11:35:36 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3335/music]
+May 01, 2024 11:35:36 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=devUser}
+May 01, 2024 11:35:36 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+May 01, 2024 11:35:36 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+May 01, 2024 11:35:37 PM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Artist{artistId=202, artistName='Muddy Water'}
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_id=?
+Hibernate: update artists set artist_name=? where artist_id=?
+May 01, 2024 11:35:37 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState stop
+INFO: HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3335/music]
+```
+
+Here, in this output, you can see a _select_ statement was generated by hibernate, 
+as well as an _update_ statement.
+**Hibernate** figured out that the current state of the managed entity, 
+when compared to the data in the persistence layer, was different,
+and determined an _update_ was needed.
+This _update_ took place on the _commit_ statement.
+I'll confirm it once again in MySQL workbench,
+running the select statement there.
+And artist id 202, is back to _Muddy Water_ without the _s_ on the end.
+Getting back to IntelliJ, I'll take a minute here to revert those last few changes.
+So I'll revert the _merge_ method call, 
+as well as the statement with the artist constructor.
+
+```java  
+public class Main {
+
+    public static void main(String[] args) {
+
+        String persistenceUnitName = "Udemy.JavaProgrammingTimBuchalka.NewVersion.Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music";
+        try (var sessionFactory =
+                     Persistence.createEntityManagerFactory(persistenceUnitName);
+             EntityManager entityManager = sessionFactory.createEntityManager();
+        ) {
+  
+          var transaction = entityManager.getTransaction();
+          transaction.begin();
+          
+          Artist artist = entityManager.find(Artist.class, 202);
+          //Artist artist = new Artist(202, "Muddy Water");
+          artist.setArtistName("Muddy Water");
+          System.out.println(artist);
+          //entityManager.merge(artist);
+          
+          transaction.commit();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+    }
+}
+```
+
+I'll get back the call to the setter, and finally revert back a comment line, 
+so the code is calling the _find_ method, for `artist_id=202`.
+I'll run this once again, so that my artist is changed back to _Muddy Waters_.
+
+```html  
+May 01, 2024 11:42:30 PM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: Section_18_WorkingWithDatabases.Course11_IntroductionJPA.music]
+May 01, 2024 11:42:30 PM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.5.0.Final
+May 01, 2024 11:42:30 PM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+May 01, 2024 11:42:31 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+May 01, 2024 11:42:31 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+May 01, 2024 11:42:31 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3335/music]
+May 01, 2024 11:42:31 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=devUser}
+May 01, 2024 11:42:31 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+May 01, 2024 11:42:31 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+May 01, 2024 11:42:32 PM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_id=?
+Artist{artistId=202, artistName='Muddy Waters'}
+Hibernate: update artists set artist_name=? where artist_id=?
+May 01, 2024 11:42:32 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState stop
+INFO: HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3335/music]
+```
+
+So in this code, we've used **Hibernate** as our _JPA Provider_ 
+to insert a new record into the **artists** table, 
+using the `EntityManager.persist` method.
+We retrieved a record with the _find_ method,
+which required the entity class as the first argument, 
+and the entity id as the second.
+We deleted a record with the _remove_ method.
+Updating data though was done automatically (if the entity was managed), 
+when the transaction ended with a _commit_.
+You saw that I could use _merge_, to use an existing entity, 
+with a valid id, to have it be managed and persisted, 
+after a manual creation of the entity.
+</div>
+
+### JPA with Related Tables
+<div align="justify">
+
+In this section, I'll continue to look at JPA, 
+but this time as it pertains to table relationships.
+I'll create a second **entity** class for the data that's in the **albums** table.
+To do this, I'll open the project panel, and highlight **Artist**, 
+and copy that from the context menu.
+I'll now highlight the _music_ node, and do a paste in windows.
+I'll change the name to **Album**.
+This will create the **Album** class, and open it in a new edit tab.
+Next I'll use IntelliJ's _replace_ functionality, with control+R, 
+making sure to match a case, so selecting the `Cc` icon there.
+Make sure it's selected.
+I'll first replace `artist` with a lower case `a` to `album`.
+I'll pick _replaceAll_ there.
+I'll repeat that for `Artist` with a capital `A`, 
+and `Album` with a capital `A`.
+And with that, I now have an operational entity for `Album`.
+
+```java
+@Entity
+@Table(name = "albums")
+public class Album {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="album_id")
+    private int albumId;
+
+    @Column(name="album_name")
+    private String albumName;
+
+    public Album() {
+    }
+
+    public Album(String albumName) {
+        this.albumName = albumName;
+    }
+
+    public Album(int albumId, String albumName) {
+        this.albumId = albumId;
+        this.albumName = albumName;
+    }
+
+    public String getAlbumName() {
+        return albumName;
+    }
+
+    public void setAlbumName(String albumName) {
+        this.albumName = albumName;
+    }
+
+    @Override
+    public String toString() {
+        return "Album{" +
+                "albumId=" + albumId +
+                ", albumName='" + albumName + '\'' +
+                '}';
+    }
+}
+```
+
+I'll edit this class, and include one additional annotation to _id_ field 
+on the **Album** entity.
+This is the _GeneratedValue_ annotation, which requires a strategy to be specified,
+so here I'll set that to `GenerationType.IDENTITY`.
+This informs the provider that the database is going to be assigning the _id_ value.
+You might ask why I didn't need it on the _ArtistId_.
+This is a JPA Provider specific requirement.
+It's here not really to ensure that the album id gets a valid auto incremented id.
+This happens in MySQL, remember, 
+because of the way we configured that table in that database server.
+This was confirmed with the **Artist** entity when a new artist was added, 
+it was given the _ID_ in the auto Increment field for that table.
+So why did I add it here?
+This annotation is required by this JPA Provider 
+to ensure that the parent id, the _artistID_ in other words, the foreign key, 
+is properly saved to the child, during the insertion of a new record.
+There are other means to enforce this, but this is the simplest way,
+for the example I'll be showing you.
+Again, it's not my intention to make you JPA experts.
+I just want you to have a starting point, with working code,
+for your own explorations into this topic. 
+To establish a relationship between the **Artist** and **Album**, 
+I'll switch to the **Artist** class, and add a field for albums, 
+after the artist name, and before the first constructor.
+
+```java
+@Entity
+@Table(name = "artists")
+public class Artist {
+
+    @Id
+    @Column(name="artist_id")
+    private int artistId;
+  
+    @Column(name="artist_name")
+    private String artistName;
+    
+    @OneToMany
+    @JoinColumn(name="artist_id")
+    private List<Album> albums = new ArrayList<>();
+    
+    public Artist() {
+    }
+  
+    public Artist(String artistName) {
+        this.artistName = artistName;
+    }
+  
+    public Artist(int artistId, String artistName) {
+        this.artistId = artistId;
+        this.artistName = artistName;
+    }
+  
+    public List<Album> getAlbums() {
+        return albums;
+    }
+    
+    public String getArtistName() {
+        return artistName;
+    }
+  
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
+  
+    @Override
+    public String toString() {
+        return "Artist{" +
+                "artistId=" + artistId +
+                ", artistName='" + artistName + '\'' +
+                ", albums =" + albums +
+                '}';
+    }
+}
+```
+
+So private **List**, typed with **album**. 
+I'll call it _albums_ and initialize it to a new **ArrayList**.
+I need to map this relationship with annotations.
+First, I need a relationship description, and in this case, 
+this will be `one-to-many`.
+Next, I need the `JoinColumn`, which is _artist_id_. 
+You'll remember that _artist_id_ is a foreign key column on the **album** table, 
+and this is how the two tables are joined together in a query.
+I'll generate a getter for this field, placing this method, 
+above the _getArtistName_ method.
+I'll use ALT+Insert key combination to do that, and just pick getter, 
+I don't need a setter for this field.
+Finally, I'll edit the Artist's _toString_ method, adding a statement,
+so that it prints out the _albums_ list.
+With these minor edits, I've now got two related **Entities**, 
+related by the _albums_ list, on **Artist**.
+Getting back to the **Main** class and the _main_ method, 
+I'll remove the _setArtistName_ statement.
+I'll change my id to `2O1`, which is the id for the `Chemical Brothers` group.
+I'll execute this code the way it is, 
+which means I'm just selecting `Chemical Brothers` from the database.
+
+```java
+public class Main {
+
+    public static void main(String[] args) {
+
+        String persistenceUnitName = "Section_18_WorkingWithDatabases.Course12_JPARelatedTables.music";
+    
+    
+        try (var sessionFactory =
+                     Persistence.createEntityManagerFactory(persistenceUnitName);
+             EntityManager entityManager = sessionFactory.createEntityManager();
+        ) {
+    
+            var transaction = entityManager.getTransaction();
+            transaction.begin();
+      
+            Artist artist = entityManager.find(Artist.class, 201);
+            System.out.println(artist);
+      
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+  
+  
+    }
+}
+```
+
+```html  
+May 02, 2024 4:09:56 AM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music]
+May 02, 2024 4:09:56 AM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.5.0.Final
+May 02, 2024 4:09:56 AM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+May 02, 2024 4:09:57 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+May 02, 2024 4:09:57 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+May 02, 2024 4:09:57 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3335/music]
+May 02, 2024 4:09:57 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=devUser}
+May 02, 2024 4:09:57 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+May 02, 2024 4:09:57 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+May 02, 2024 4:09:58 AM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=201, artistName='Chemical Brothers', albums =[Album{albumId=289, albumName='Push The Button'}, Album{albumId=728, albumName='Push The Button'}]}
+May 02, 2024 4:09:58 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState stop
+INFO: HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3335/music]
+```
+
+If I examine the output, I'll see two _select_ statements were executed by **hibernate**,
+the first got the **artist** record, 
+and the second got the **album** records associated with this **artist**.
+The **artist** entity is printed out, so artist id `2O1` is the `Chemical Brothers`,
+and this artist has two _albums_ in the data, `Push The Button`, and actually, 
+a duplicate, _albumId_ `728`, also named `Push the Button`.
+Maybe some of you have noticed this before, but my _music_ data is a bit flawed,
+and contains duplicate album names.
+This wasn't really by design, but I decided to keep it this way,
+as an opportunity for a future challenge.
+By adding a new annotated **Entity** for **Album**, 
+and a field on **Artist** with a list of these entities,
+**Hibernate** was able to properly join the tables.
+It returned the results to the **Artist** and **Album** instances.
+I hope you're starting to grasp some of the benefits 
+you can derive with this specification.
+Java developers don't have to know SQL, 
+or get bogged down in understanding relational databases to successfully retrieve data.
+So let's now deal with the duplicate albums, associated with this artist.
+I'll add a method to the artist entity 
+to remove duplicate albums if they have the same name.
+To do this, I first want the **Album** entity to implement **Comparable**.
+
+```java
+@Entity
+@Table(name = "albums")
+public class Album implements Comparable<Album> {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="album_id")
+    private int albumId;
+
+    @Column(name="album_name")
+    private String albumName;
+
+    public Album() {
+    }
+
+    public Album(String albumName) {
+        this.albumName = albumName;
+    }
+
+    public Album(int albumId, String albumName) {
+        this.albumId = albumId;
+        this.albumName = albumName;
+    }
+
+    public String getAlbumName() {
+        return albumName;
+    }
+
+    public void setAlbumName(String albumName) {
+        this.albumName = albumName;
+    }
+
+    @Override
+    public String toString() {
+        return "Album{" +
+                "albumId=" + albumId +
+                ", albumName='" + albumName + '\'' +
+                '}';
+    }
+
+    @Override
+    public int compareTo(Album o) {
+      ///return 0;
+      return this.albumName.compareTo(o.getAlbumName());
+    }
+}
+```
+
+I'll add this to the declaration, typing the **Comparable** interface with the **Album** entity.
+This won't compile, so I'll hover over the error, and I'll select _Implement methods_ there.
+This inserts a _compareTo_ method.
+I want to compare **Album** names in this code, so I'll replace the `return 0;` statement.
+I'll return the comparison of this instance's album name with that of the method parameter's.
+On the **Artist** class, I'll create a method called _removeDuplicates_.
+I'll insert this after the setter method for artist name.
+
+```java
+@Entity
+@Table(name = "artists")
+public class Artist {
+
+    @Id
+    @Column(name="artist_id")
+    private int artistId;
+  
+    @Column(name="artist_name")
+    private String artistName;
+    
+    @OneToMany
+    @JoinColumn(name="artist_id")
+    private List<Album> albums = new ArrayList<>();
+    
+    public Artist() {
+    }
+  
+    public Artist(String artistName) {
+        this.artistName = artistName;
+    }
+  
+    public Artist(int artistId, String artistName) {
+        this.artistId = artistId;
+        this.artistName = artistName;
+    }
+  
+    public List<Album> getAlbums() {
+        return albums;
+    }
+    
+    public String getArtistName() {
+        return artistName;
+    }
+  
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
+
+    public void removeDuplicates() {
+  
+        var set = new TreeSet<>(albums);
+        albums.clear();
+        albums.addAll(set);
+    }
+    
+    @Override
+    public String toString() {
+        return "Artist{" +
+                "artistId=" + artistId +
+                ", artistName='" + artistName + '\'' +
+                ", albums =" + albums +
+                '}';
+    }
+}
+```
+
+I'll make this public and void, and call it _removeDuplicates_. 
+I can deduce using a set, so I'll do that, 
+passing albums to a new instance of a **TreeSet**. 
+This will be ordered, and unique by album name. 
+Next, I'll clear the collection. 
+I'll repopulate the list with the elements in the set.
+Before I attempt to run this, I'll go back to MySQL Workbench, 
+and query these records in the **albums** table.
+I'll open a new SQL Tab for this.
+
+~~~~sql  
+SELECT * FROM music.albums WHERE album_id IN (289, 728);
+~~~~
+
+I want to select the albums using the album ID's I saw in my output, so album id 289, and 728.
+If I execute this, I'll see I have two records returned, both have `artist ID=201`, as you'd expect.
+I'll get back to IntelliJ, and the _main_ method, 
+and call my new _removeDuplicates_ method on the **artist** entity.
+
+```java
+public class Main {
+
+    public static void main(String[] args) {
+
+        String persistenceUnitName = "Section_18_WorkingWithDatabases.Course12_JPARelatedTables.music";
+    
+    
+        try (var sessionFactory =
+                     Persistence.createEntityManagerFactory(persistenceUnitName);
+             EntityManager entityManager = sessionFactory.createEntityManager();
+        ) {
+    
+            var transaction = entityManager.getTransaction();
+            transaction.begin();
+      
+            Artist artist = entityManager.find(Artist.class, 201);
+            System.out.println(artist);
+            artist.removeDuplicates();
+            System.out.println(artist);
+      
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+  
+  
+    }
+}
+```
+
+I'll insert this after I print what I got from the database. 
+I'll print out the _artist_ entity, a second time, after this change.
+I'll run this code:
+
+```html  
+May 02, 2024 4:28:21 AM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music]
+May 02, 2024 4:28:21 AM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.5.0.Final
+May 02, 2024 4:28:21 AM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+May 02, 2024 4:28:21 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+May 02, 2024 4:28:21 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+May 02, 2024 4:28:21 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3335/music]
+May 02, 2024 4:28:21 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=devUser}
+May 02, 2024 4:28:21 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+May 02, 2024 4:28:21 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+May 02, 2024 4:28:22 AM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=201, artistName='Chemical Brothers', albums =[Album{albumId=289, albumName='Push The Button'}, Album{albumId=728, albumName='Push The Button'}]}
+Artist{artistId=201, artistName='Chemical Brothers', albums =[Album{albumId=289, albumName='Push The Button'}]}
+Hibernate: update albums set artist_id=null where artist_id=? and album_id=?
+May 02, 2024 4:28:22 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState stop
+INFO: HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3335/music]
+```
+
+So you can see _artist_ before we removed the duplicate, as well as after,
+where our list only has `album Id = 289`.
+Now, this statement just shows us what the entity's state was, 
+at the time each `System.out.println` was executed.
+It's not really a confirmation that this is what it looks like in the database here.
+The other thing I want you to see from this output is that 
+an _update_ statement was executed on **albums**.
+I'll go back to MySQL Workbench, and re-execute my last query.
+
+| album_id | album_name      | artist_id |
+|----------|-----------------|-----------|
+| 289      | Push The Button | 201       |
+| 728      | Push The Button | NULL      |
+
+Notice that album id `728` still exists, 
+but it's not associated to an artist, because _artistID_ is **null**.
+This is called an orphaned record, and it's a pretty **undesirable** situation.
+Instead of deleting the **album** record, it simply updated the _artistID_ to **null**.
+That's not what I wanted to happen.
+I can change this behavior by including a couple of values 
+on the `One-To-Many` annotation on **Artist**.
+Before I go do that, I'll reset my data back to the way it was,
+while I'm still here, in MySQL Workbench.
+
+~~~~sql  
+UPDATE music.albums SET artist_id = 201 WHERE album_id = 728;
+
+SELECT * FROM music.albums WHERE album_id IN (289, 728);
+~~~~
+
+I'll insert this statement before the select statement, so in the same SQL tab.
+This statement will just put the album id back in that record.
+I can run this individually or run both scripts as a unit.
+I'll run both to confirm that my data was restored to the way it was.
+Both records should have artist id equal to `2O1` now.
+Ok, so back to IntelliJ, and the **Artist** class.
+I need to change the `One-To-Many` annotation 
+that I've declared above the _albums_ field declaration.
+
+```java
+@Entity
+@Table(name = "artists")
+public class Artist {
+
+    @Id
+    @Column(name="artist_id")
+    private int artistId;
+  
+    @Column(name="artist_name")
+    private String artistName;
+    
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name="artist_id")
+    private List<Album> albums = new ArrayList<>();
+    
+    public Artist() {
+    }
+  
+    public Artist(String artistName) {
+        this.artistName = artistName;
+    }
+  
+    public Artist(int artistId, String artistName) {
+        this.artistId = artistId;
+        this.artistName = artistName;
+    }
+  
+    public List<Album> getAlbums() {
+        return albums;
+    }
+    
+    public String getArtistName() {
+        return artistName;
+    }
+  
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
+
+    public void removeDuplicates() {
+  
+        var set = new TreeSet<>(albums);
+        albums.clear();
+        albums.addAll(set);
+    }
+    
+    @Override
+    public String toString() {
+        return "Artist{" +
+                "artistId=" + artistId +
+                ", artistName='" + artistName + '\'' +
+                ", albums =" + albums +
+                '}';
+    }
+}
+```
+
+In this case, I'm going to define some key value pairs or annotation members.
+The first key is _cascade_, and here, I'll specify that I want `CascadeType.ALL`.
+This means I want new child entities persisted, deleted child entities removed,
+updates to children persisted, and so forth.
+Basically, all changes to parent and child are kept in sync, 
+via the **entity** and its attributes.
+In addition to this, I'll include `orphanRemove = true`, 
+as the next key value pair.
+This instructs the persistence provider 
+to automatically delete child entities when they become orphaned.
+We really need both of these key value pairs to be declared
+for the behavior to be correct in this case.
+I'll rerun my code with this change.
+
+```html  
+May 02, 2024 4:48:32 AM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music]
+May 02, 2024 4:48:32 AM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.5.0.Final
+May 02, 2024 4:48:32 AM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+May 02, 2024 4:48:33 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+May 02, 2024 4:48:33 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+May 02, 2024 4:48:33 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3335/music]
+May 02, 2024 4:48:33 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=devUser}
+May 02, 2024 4:48:33 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+May 02, 2024 4:48:33 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+May 02, 2024 4:48:33 AM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=201, artistName='Chemical Brothers', albums =[Album{albumId=289, albumName='Push The Button'}, Album{albumId=728, albumName='Push The Button'}]}
+Artist{artistId=201, artistName='Chemical Brothers', albums =[Album{albumId=289, albumName='Push The Button'}]}
+Hibernate: update albums set artist_id=null where artist_id=? and album_id=?
+Hibernate: delete from albums where album_id=?
+May 02, 2024 4:48:34 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState stop
+INFO: HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3335/music]
+```
+
+Notice that in addition to the _update_ statement that's shown, 
+there's an additional _delete_ statement there, so `delete from albums`.
+Again, I'll switch over to MySQL Workbench, 
+and I'll execute just my select query for the two album records.
+I do this by highlighting only the _select_ statement, and executing it.
+
+| album_id | album_name      | artist_id |
+|----------|-----------------|-----------|
+| 289      | Push The Button | 201       |
+
+You can see why having an easy-to-use user interface like MySQL Workbench, 
+to verify your work on the database side is extremely helpful.
+This time, the duplicate album was actually removed from the **albums** table.
+So that's pretty handy.
+I've created two related entities, 
+and now I can remove albums from the database 
+by simply removing albums from the **Artist** instance's list.
+Let's now add a new album.
+So I'll get back to the **Artist** entity, 
+and I'll add an _addAlbum_ method, on the **Artist** entity class.
+I'll put this after the setter for artist name,
+and before the _removeDuplicates_ method.
+
+```java
+@Entity
+@Table(name = "artists")
+public class Artist {
+
+    @Id
+    @Column(name="artist_id")
+    private int artistId;
+  
+    @Column(name="artist_name")
+    private String artistName;
+    
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name="artist_id")
+    private List<Album> albums = new ArrayList<>();
+    
+    public Artist() {
+    }
+  
+    public Artist(String artistName) {
+        this.artistName = artistName;
+    }
+  
+    public Artist(int artistId, String artistName) {
+        this.artistId = artistId;
+        this.artistName = artistName;
+    }
+  
+    public List<Album> getAlbums() {
+        return albums;
+    }
+    
+    public String getArtistName() {
+        return artistName;
+    }
+  
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
+
+    public void addAlbum(String albumName) {
+        albums.add(new Album(albumName));
+    }
+    
+    public void removeDuplicates() {
+  
+        var set = new TreeSet<>(albums);
+        albums.clear();
+        albums.addAll(set);
+    }
+    
+    @Override
+    public String toString() {
+        return "Artist{" +
+                "artistId=" + artistId +
+                ", artistName='" + artistName + '\'' +
+                ", albums =" + albums +
+                '}';
+    }
+}
+```
+
+I'll make it public and void, and it'll have one parameter, the _albumName_. 
+And it'll simply add a `new Album` instance, 
+using the album name in the constructor, 
+adding that to the _albums_ list field.
+Getting back to the **Main** class's _main_ method:
+
+```java
+public class Main {
+
+    public static void main(String[] args) {
+
+        String persistenceUnitName = "Section_18_WorkingWithDatabases.Course12_JPARelatedTables.music";
+    
+    
+        try (var sessionFactory =
+                     Persistence.createEntityManagerFactory(persistenceUnitName);
+             EntityManager entityManager = sessionFactory.createEntityManager();
+        ) {
+    
+            var transaction = entityManager.getTransaction();
+            transaction.begin();
+      
+            Artist artist = entityManager.find(Artist.class, 202);
+            System.out.println(artist);
+            //artist.removeDuplicates();
+            artist.addAlbum("The Best of Muddy Waters");
+            System.out.println(artist);
+      
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+I'll change the id of the artist 
+I'm retrieving back to `2O2`, the `Muddy Waters` Id.
+I'll remove the code that _removesDuplicates_
+Instead, I'll call addAlbum, and pass it the
+string literal, the best of Muddy Waters.
+I'll rerun the code.
+
+```html  
+May 02, 2024 4:55:49 AM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music]
+May 02, 2024 4:55:49 AM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.5.0.Final
+May 02, 2024 4:55:49 AM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+May 02, 2024 4:55:49 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+May 02, 2024 4:55:49 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+May 02, 2024 4:55:49 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3335/music]
+May 02, 2024 4:55:49 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=devUser}
+May 02, 2024 4:55:49 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+May 02, 2024 4:55:49 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+May 02, 2024 4:55:50 AM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=202, artistName='Muddy Waters', albums =[]}
+Artist{artistId=202, artistName='Muddy Waters', albums =[Album{albumId=0, albumName='The Best of Muddy Waters'}]}
+Hibernate: insert into albums (album_name) values (?)
+Hibernate: update albums set artist_id=? where album_id=?
+May 02, 2024 4:55:50 AM org.hibernate.engine.jdbc.spi.SqlExceptionHelper logExceptions
+WARN: SQL Error: 0, SQLState: S0022
+May 02, 2024 4:55:50 AM org.hibernate.engine.jdbc.spi.SqlExceptionHelper logExceptions
+ERROR: Column 'album_id' not found.
+May 02, 2024 4:55:51 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState stop
+INFO: HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3335/music]
+```
+
+Here, you can see from the output that _muddy waters_ had no album data, as you'd expect,
+when we got it from the database.
+But you can see an _insert_ statement into albums, which is a good sign.
+That's followed by an _update_ to the albums record,
+which is setting the parent id, or artist id.
+I'll go back to MySQL Workbench and execute a new select statement.
+
+~~~~sql  
+UPDATE music.albums SET artist_id = 201 WHERE album_id = 728;
+
+SELECT * FROM music.albums WHERE album_id IN (289, 728);
+
+SELECT * FROM music.albums WHERE album_id = 202;
+~~~~
+
+Select star from music dot albums, where artist id equals `2O2`.
+I'll execute that _select_ statement, 
+and I'll see the new album there for artist id `202`.
+
+| album_id | album_name               | artist_id |
+|----------|--------------------------|-----------|
+| 905      | The Best of Muddy Waters | 202       |
+
+Your album id may be different from the way you see here, 
+but you should see a positive id in there, and not a zero or **null**.
+So again, this demonstrates how I can manipulate the state of a couple of Java objects, 
+and the changes get propagated to the database layer 
+with no additional code except a transactional commit.
+This is why JPA is such a popular framework.
+Java developers get to do what they're probably best at, 
+which is focusing on Object-Oriented techniques, 
+without having to become experts in relational databases.
+With a bit of initial configuration, and the use of a few annotations, 
+you can have a fully functioning database application without writing a single SQL statement.
+</div>
+
+### JPA Queries
+<div align="justify">
+
+Up until now, I've used JPA to map a database record to a special type of object, 
+called an entity, using Hibernate as the JPA Provider.
+This was great, when working with a single targeted record, and its associated data.
+You'll probably at some point still need to query the database for a set of records.
+To do this, you can use a JPA query.
+You know by now that a query in the database is often a _select_ statement of some kind, 
+but can also be an _update_, _insert_ or _delete_ statement.
+In JPA, you have three options to execute a query,
+all of which still rely on the existence of an **entity** class.
+You can use a **JPA Query**, using a special query language, named **JPQL**. 
+There's something called a **Criteria Builder**, 
+which is a more programmatic way to put together the selection request. 
+Finally, if you're comfortable in SQL, 
+or maybe you have a special need to increase performance, for example, 
+you can still use a Native Query, which relies on SQL.
+The **Java Persistence Query Language**, or JPQL, is an object-oriented query language.
+It's specifically designed to work with entities in Java applications that use JPA.
+It provides a way to query data stored in relational databases,
+without needing to understand the details of how the data is actually structured there.
+Let's start by looking at JPQL, in some code.
+I'll be using the same project from the last couple of sections.
+Using this project means I can continue to use the entities, 
+**Artist** and **Album**, that I set up previously.
+To use JPQL, you actually query entities, and not tables specifically.
+I'll create a new class, and I'll call this class, **MainQuery**.
+I'll include a _main_ method, using the PSVM shortcut.
+Before I add any code to the _main_ method in this class, 
+I'll first create a private static method, also in this class.
+
+```java  
+
+```
+
+This method is going to return a List of Artist entity types, based on some query.
+So I'll start with private, static, then
+List, with Artist declared in angle brackets,
+so my List will only have artist entities in it.
+I'll name this method get Artists JPQL.
+It will have two parameters. First, an
+EntityManager, which I'll be creating
+and managing, in the main method, and passing
+to this method. I'll also include a string,
+which I'll call matchedValue. So next, I'll create
+a variable, a string for my query statement. I'll
+call this JPQL, and I'll set that to a string
+literal. Select a, from artist, a. This looks
+a lot like SQL. The letter a, in this case is a
+variable, as well as a table alias. Notice that
+I'm selecting, not from artists, or music.artists,
+so not from the table name. Instead, I select from
+Artist, with a capital A, which actually refers to
+my Artist entity, the Artist class in other words.
+I can execute this query, using
+a method on the EntityManager.
+I'll use Local Variable type inference, to set up
+the next variable, so var as the type, and query
+as the variable name. I'll make that equal to the
+value I get back, when I execute createQuery on
+the EM method argument, which is really an Entity
+manager. This method takes two arguments, first
+is a string, that contains JPQL, so I'll pass my
+variable for that. The second argument specifies
+the class name, of the entity that's being
+queried, so here, I need to pass Artist.class.
+Finally, the query object I get back, has a
+method called getResultList on it. In this case,
+it'll return a List of Artists, so I can just
+return that directly here, from this method.
+And that's it.
+These three lines
+of code will get all the artists, from
+the music schema, from the artists table.
+Before I run this, notice,
+
+```html  
+
+```
+
+from Intelli J's inlay hint,
+the type that's inferred, for the query variable.
+It's a TypedQuery, a generic type, an interface in
+this case, that has a type argument of Artist.
+I can control click on that hint.
+This opens up a decompiled
+class file, in a new tab.
+There are tools that'll take a class file, and
+decompile it into source code, which can show
+you quite a bit of the implementation details.
+In this case, I can see this is a typed interface,
+that extends Query.
+If I hover over the name,
+TypedQuery, I can see that this interface
+is part of the jakarta.persistence package.
+I'll pull this interface
+up, in the Jakarta API docs.
+To find this link on your own, just google
+the terms, jakarta and TypedQuery together,
+to find the latest version, or
+most current version you can.
+I'll scroll down a bit on this page,
+so you can see the list of methods,
+declared on this interface.
+You'll see at the top of the list,
+there's the getResultList method,
+which I'll be executing in this code.
+This is followed by getResultStream,
+which returns a stream of the entity type.
+You know I like streams, so this method could be
+particularly useful, for using stream operations
+we've become pretty familiar with.
+This will let us quickly investigate,
+or manipulate query results.
+Let me give you a word of caution though.
+You want to avoid, if you can, using
+a stream to filter or limit results,
+though it might seem simpler.
+It's usually a good idea to
+limit data going across a network.
+If you can add the criteria to the
+where clause of the JPQL query that gets executed
+on the server, you'll be better off than trying
+to filter the stream on the client side..
+But you can imagine using the stream result
+to create some sort of Mapped collection,
+based on column values in a table (as their
+translated to entity fields).
+I'll be showing you an example
+of this in a little bit.
+There's also getSingleResult,
+so maybe you only care about one entity,
+though several might match your query.
+For example, if you've got a sorted query,
+you might only want the first record,
+sometimes called the top, and this method
+limits the data returned, to a single record.
+There's a couple of useful set methods,
+and then a whole series of set Parameter
+methods, as you can see.
+Getting back to the code,
+I'll run my first JPA query.
+
+```html  
+
+```
+
+To do this, I need to add some
+code in the main method.
+I'll set up a variable,
+for the results from the getArtistsJPQL method, so
+a List of Artists, and I'll initialize it to null.
+Like I did previously, I'll first instantiate an
+Entity Manager Factory from the Persistence type,
+within a try with resources declaration.
+I'll pass that the name of my persistence
+unit. Hopefully you'll remember, I set this
+up in the persistence.xml file. In this case,
+the persistence unit is named, dev dot lpa dot
+music. Next, I create an Entity Manager instance,
+using a method on the factory, again this is still
+in the try with resources declaration. I'll get
+back to the code that goes in the try block,
+in a second. I'll just complete the statement
+with a catch block, Printing the stack trace of
+any error I get, ignoring Intelli J's warning,
+that this isn't very robust handling of a problem.
+My variable, artists, will get set to the result
+of calling my get Artists JPQL method.
+When using JPA Queries, it's a good idea
+to wrap the queries in a transaction. I'll
+get a transaction from the entity manager.
+I'll call transaction begin next. I need to pass
+the entity manager variable, and then a string,
+and I'll just set that to an empty literal
+string to start. You might have noticed,
+I never used the second parameter, in my method's
+code block. I plan to change that code shortly,
+to use it. Finally, I'll print the results I
+get back. I can use for each on the artists
+list variable, and a method reference, to print
+each artist, that's in this resulting list.
+I'll call transaction commit here at the end.
+You might be wondering why you need a transaction
+when you're just querying records.
+This is kind of a complicated subject
+and has to do with lazy loading vs eager
+fetching of dependent tables, as well as
+transactional integrity between related tables.
+If you do have problems with your queries,
+and you're not including them in a transaction
+block, let me recommend trying this to start.
+Now I'll run this code.
+
+```html  
+
+```
+
+So you'll see, in the output,
+all of the artists in the table, in my
+case that's 202 artists, that get printed.
+Each record contains all the
+row data in each artist record,
+so that's just artist id and artist name.
+Notice though, that each record also
+includes, all the artist's album records.
+In my JPQL statement, when I specified, select a,
+from artist, I didn't specify what data I wanted,
+meaning what fields that mapped to columns.
+So it returned all the data for
+all the fields on this entity.
+You'll recall that I set up the entities, by
+declaring a relationship on the albums field,
+a list, declared in artist, to the album entity.
+All of the underlying database querying,
+with the appropriate joins was done seamlessly
+by the JPA Provider, in this case hibernate.
+This means, I'm able to write a very simple,
+generic query against an Artist entity class,
+to get related data, in this
+case albums, for each artist.
+This doesn't require the developer retrieving
+data, to know anything about inner or outer joins,
+or foreign keys, or any other specific
+implementation details of the database.
+It also doesn't require
+views, on the database server,
+for simpler querying of a normalized schema.
+You may still want to employ those techniques,
+but in this case, none of that is
+necessary, in the operation of this query.
+This might be a welcome relief, if you
+don't want to deal with databases directly.
+Now, I'll alter the query slightly, this time
+just getting artists whose name contains S T E V.
+First, I'll change my select statement.
+I'll add a where clause, so I'll append the text,
+where, a.artistName, like, colon partialName.
+In this case, you can see I'm using the attribute
+name on the Artist entity, and not the column name
+in the table, which is artist underscore name.
+My placeholder parameter, which is called a named
+parameter in this case, is specified by a colon,
+followed by any variable name I want.
+So here, I'm calling it partial Name,
+since I'll match on part of the artist's name.
+Next I need to actually pass a value,
+to this placeholder parameter.
+So I'll add a call to a
+setParameter method, on the query variable.
+One version of this method takes two strings.
+The first is the named parameter, so I'll pass
+partialName as a string literal. The literal value
+should match the named parameter, used in your
+JPQL statement. The second argument to the set
+parameter method, is the value to be used, so I'll
+pass it the matched Value, the method argument
+that contains the criteria to match on.
+Back In the main method,
+I'll change how I invoke this method.
+Instead of passing an empty string literal,
+I'll pass a pattern, an S Q L pattern I mean.
+Let me set this up, so first I include a percent
+sign, then S T E and V, and another percent sign.
+The percent sign is the S Q L wildcard specifier,
+in a pattern, that's used by a LIKE clause in SQL.
+It means match on zero, or many characters.
+Java's regular expression specifier to do
+something similar, you'll remember, is a dot.
+Because I'm starting with a percent sign, this
+will match the contiguous letters, S T E V,
+in any part of the album name.
+I'll run that.
+
+```html  
+
+```
+
+You can see I get only 6 artists that matched
+that, most of them start with the first name,
+Steve, but there's also Seasick
+Steve, and Stevie Ray Vaughan.
+I could change my pattern, if I wanted only
+artists whose names started with S T E V, by
+removing the first percent sign.
+That would eliminate Seasick Steve,
+which you can try on your own, if you want to.
+JPQL doesn't eliminate the need to understand
+all SQL constructs, as this example demonstrates.
+In this code, you still needed to understand the
+LIKE clause and valid patterns,
+to use it effectively here.
+In addition to named parameters, you can use
+placement parameters in the query string.
+This is similar to the question
+mark place holder which we saw,
+in the prepared and callable statements.
+In this case, in addition to the question
+mark, you have to include a numeric value.
+Numeric placeholder specifiers must start at 1.
+But they don't have to be in sequential
+order, and you can reuse a numeric
+placeholder, in a single JPQL string.
+I'll change my getArtistsPLQL method,
+replacing colon matched value, with a
+question mark, followed by the number 1.
+I'll next change the setParameter method,
+passing in the number 1, as the first argument.
+If I run the code this way,
+
+```html  
+
+```
+
+I'll get the same results,
+as I did with a named parameter.
+Named placeholders make more readable code,
+in my opinion, but it's up to you,
+or maybe the framework you're using,
+which kind of placeholder type you'll use.
+In this video, I've given you your first taste of
+using JPQL, with a very simple select statement.
+The first brought back all data for all records,
+and the second query brought back all
+data, for a limited set of records,
+matching criteria on the artist name.
+I'll end this video here, before it gets too long.
+In the next video, I'll continue using
+this project and this class's method,
+and show you slightly more complex JPQL
+queries, so let's move on to that video.
+
+
+~~~~sql  
+
+~~~~
+</div>
+
+## [n. JPA Challenge]()
 <div align="justify">
 
 ```java  
@@ -9107,46 +10933,7 @@ the database, so I'll see you in that next video.
 
 </div>
 
-## [o. JPA with Related Tables]()
-<div align="justify">
-
-```java  
-
-```
-
-```html  
-
-```
-
-</div>
-
-## [p. JPA Queries]()
-<div align="justify">
-
-```java  
-
-```
-
-```html  
-
-```
-
-</div>
-
-## [q. JPA Challenge]()
-<div align="justify">
-
-```java  
-
-```
-
-```html  
-
-```
-
-</div>
-
-## [r. JPA Bonus Challenge]()
+## [o. JPA Bonus Challenge]()
 <div align="justify">
 
 ```java  
