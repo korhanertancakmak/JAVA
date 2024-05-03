@@ -10581,339 +10581,1514 @@ With a bit of initial configuration, and the use of a few annotations,
 you can have a fully functioning database application without writing a single SQL statement.
 </div>
 
-### JPA Queries
+### JPA Queries - JPQL
 <div align="justify">
 
 Up until now, I've used JPA to map a database record to a special type of object, 
-called an entity, using Hibernate as the JPA Provider.
-This was great, when working with a single targeted record, and its associated data.
+called an **entity**, using **Hibernate** as the _JPA Provider_.
+This was great when working with a single targeted record, and its associated data.
 You'll probably at some point still need to query the database for a set of records.
 To do this, you can use a JPA query.
 You know by now that a query in the database is often a _select_ statement of some kind, 
 but can also be an _update_, _insert_ or _delete_ statement.
 In JPA, you have three options to execute a query,
 all of which still rely on the existence of an **entity** class.
-You can use a **JPA Query**, using a special query language, named **JPQL**. 
-There's something called a **Criteria Builder**, 
+
+* You can use a **JPA Query**, using a special query language, named **JPQL**. 
+* There's something called a **Criteria Builder**, 
 which is a more programmatic way to put together the selection request. 
-Finally, if you're comfortable in SQL, 
+* Finally, if you're comfortable in SQL, 
 or maybe you have a special need to increase performance, for example, 
 you can still use a Native Query, which relies on SQL.
+
 The **Java Persistence Query Language**, or JPQL, is an object-oriented query language.
 It's specifically designed to work with entities in Java applications that use JPA.
 It provides a way to query data stored in relational databases,
 without needing to understand the details of how the data is actually structured there.
 Let's start by looking at JPQL, in some code.
+
 I'll be using the same project from the last couple of sections.
 Using this project means I can continue to use the entities, 
 **Artist** and **Album**, that I set up previously.
 To use JPQL, you actually query entities, and not tables specifically.
 I'll create a new class, and I'll call this class, **MainQuery**.
-I'll include a _main_ method, using the PSVM shortcut.
+I'll include a _main_ method, using the **PSVM** shortcut.
 Before I add any code to the _main_ method in this class, 
 I'll first create a private static method, also in this class.
+This method is going to return a **List** of **Artist** entity types, 
+based on some query.
+
+```java  
+public class MainQuery {
+
+    public static void main(String[] args) {
+
+    }
+
+    private static List<Artist> getArtistsJPQL(EntityManager em, String matchedValue) {
+  
+        String jpql = "SELECT a FROM Artist a";
+        var query = em.createQuery(jpql, Artist.class);                         // TypedQuery<Artist>
+        return query.getResultList();
+    }
+}
+```
+
+So I'll start with private, static, then List, with **Artist** declared in angle brackets,
+so my **List** will only have artist entities in it.
+I'll name this method _getArtistsJPQL_.
+It will have two parameters. 
+First, an **EntityManager**, which I'll be creating and managing, in the _main_ method, 
+and passing to this method. 
+I'll also include a string, which I'll call _matchedValue_. 
+So next, I'll create a variable, 
+a string for my query statement, `SELECT a FROM Artist a`. 
+I'll call this JPQL, and I'll set that to a string literal. 
+This looks a lot like SQL. 
+The letter `a`, in this case is a variable, as well as a table alias.
+Notice that I'm selecting, not from `artists`, or `music.artists`,
+so not from the table name. 
+Instead, I select from `Artist`, with a capital `A`, 
+which actually refers to my **Artist** entity, the **Artist** class in other words.
+I can execute this query, using a method on the **EntityManager**.
+I'll use **Local Variable** type inference to set up the next variable, 
+so `var` as the type, and _query_ as the variable name. 
+I'll make that equal to the value I get back when I execute _createQuery_ 
+on the _em_ method argument, which is really an **EntityManager**. 
+This method takes two arguments, first is a string that contains _JPQL_, 
+so I'll pass my variable for that. 
+The second argument specifies the class name of the **entity** 
+that's being queried; so here, I need to pass `Artist.class`.
+Finally, the query object I get back, has a method called _getResultList_ on it. 
+In this case, it'll return a **List** of **Artists**, 
+so I can just return that directly here, from this method.
+And that's it.
+These three lines of code will get all the **artists** 
+from the **music** schema from the **artists** table.
+Before I run this, notice, from IntelliJ's inlay hint,
+the type that's inferred, for the _query_ variable.
+It's a **TypedQuery**, a generic type, an interface in this case, 
+that has a type argument of **Artist**.
+I can control click on that hint.
+This opens up a decompiled class file in a new tab.
+There are tools that'll take a class file and decompile it into source code,
+which can show you quite a bit of the implementation details.
+
+```java  
+package jakarta.persistence;
+public interface TypedQuery <X> extends jakarta.persistence.Query {
+  ...
+```
+
+In this case, I can see this is a typed interface that extends **Query**.
+If I hover over the name, **TypedQuery**, 
+I can see that this interface is part of the `jakarta.persistence` package.
+I'll pull this interface up in the **Jakarta API** docs.
+To find this link on your own, google the terms, 
+**jakarta** and **TypedQuery** together to find the latest version, 
+or most current version you can.
+I'll scroll down a bit on this page, 
+so you can see the list of methods declared on this interface.
+You'll see at the top of the list there's the _getResultList_ method,
+which I'll be executing in this code.
+This is followed by _getResultStream_, which returns a stream of the entity type.
+You know, I like streams, so this method could be particularly useful, 
+for using stream operations we've become pretty familiar with.
+This will let us quickly investigate or manipulate query results.
+Let me give you a word of caution, though.
+You want to avoid if you can, using a stream to filter or limit results,
+though it might seem simpler.
+It's usually a good idea to limit data going across a network.
+If you can add the criteria to the _where_ clause of the JPQL query 
+that gets executed on the server, 
+you'll be better off than trying to filter the stream on the client side.
+But you can imagine using the stream result 
+to create some sort of **Mapped** collection, based on column values in a table 
+(as their translated to entity fields).
+I'll be showing you an example of this in a little bit.
+There's also _getSingleResult_, so maybe you only care about one entity,
+though several might match your query.
+For example, if you've got a sorted query, you might only want the first record,
+sometimes called the top, and this method limits the data returned, to a single record.
+There's a couple of useful set methods, 
+and then a whole series of set **Parameter** methods, as you can see.
+Getting back to the code, I'll run my first JPA query.
+
+```java  
+public static void main(String[] args) {
+
+    String persistenceUnitName = "Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music";
+  
+    List<Artist> artists = null;
+    try (EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName); 
+         EntityManager em = emf.createEntityManager();
+         ) {
+  
+        var transaction = em.getTransaction();
+        transaction.begin();
+        
+        artists = getArtistsJPQL(em, "");
+        artists.forEach(System.out::println);
+        
+        transaction.commit();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+```
+
+To do this, I need to add some code in the _main_ method.
+I'll set up a variable for the results from the _getArtistsJPQL_ method, 
+so a **List** of **Artists**, and I'll initialize it to **null**.
+Like I did previously, I'll first instantiate an EntityManagerFactory 
+from the Persistence type, within a _try-with-resources_ declaration.
+I'll pass that the name of my persistence unit. 
+Hopefully you'll remember, I set this up in the `persistence.xml` file. 
+In this case, the persistence unit is named by _persistenceUnitName_ variable. 
+Next, I create an **EntityManager** instance, using a method in the factory again 
+this is still in the _try-with-resources_ declaration. 
+I'll get back to the code that goes in the _try_ block in a second. 
+I'll just complete the statement with a _catch_ block, 
+Printing the stack trace of any error I get, ignoring IntelliJ's warning,
+that this isn't very robust handling of a problem.
+My variable, _artists_, will get set to the result of calling my _getArtistsJPQL_ method.
+When using JPA Queries, it's a good idea to wrap the queries in a _transaction_. 
+I'll get a _transaction_ from the entity manager.
+I'll call _transaction_ begin next. 
+I need to pass the entity manager variable, and then a string,
+and I'll just set that to an empty literal string to start. 
+You might have noticed, I never used the second parameter in my method's code block. 
+I plan to change that code shortly to use it. 
+Finally, I'll print the results I get back. 
+I can use _forEach_ on the _artists_ list variable, and a method reference, 
+to print each artist, that's in this resulting list.
+I'll call `transaction.commit` here at the end.
+You might be wondering why you need a transaction
+when you're just querying records.
+This is kind of a complicated subject 
+and has to do with lazy loading vs eager fetching of dependent tables, 
+as well as transactional integrity between related tables.
+If you do have problems with your queries,
+and you're not including them in a transaction block, 
+let me recommend trying this to start.
+Now I'll run this code:
+
+```html  
+May 02, 2024 11:40:06 AM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music]
+May 02, 2024 11:40:06 AM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.5.0.Final
+May 02, 2024 11:40:07 AM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+May 02, 2024 11:40:07 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+May 02, 2024 11:40:07 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+May 02, 2024 11:40:07 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3335/music]
+May 02, 2024 11:40:07 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=devUser}
+May 02, 2024 11:40:07 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+May 02, 2024 11:40:07 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+May 02, 2024 11:40:08 AM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=1, artistName='Mahogany Rush', albums =[Album{albumId=140, albumName='Mahogany Rush Live'}, Album{albumId=210, albumName='Mahogany Rush IV'}, Album{albumId=579, albumName='Mahogany Rush Live'}, Album{albumId=649, albumName='Mahogany Rush IV'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=2, artistName='ELF', albums =[Album{albumId=176, albumName='Trying To Burn The Sun'}, Album{albumId=227, albumName='Carolina County Ball'}, Album{albumId=615, albumName='Trying To Burn The Sun'}, Album{albumId=666, albumName='Carolina County Ball'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=3, artistName='Mehitabel', albums =[Album{albumId=34, albumName='Demo'}, Album{albumId=173, albumName='You Know Who You Are'}, Album{albumId=473, albumName='Demo'}, Album{albumId=612, albumName='You Know Who You Are'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=4, artistName='Big Brother & The Holding Company', albums =[Album{albumId=413, albumName='Cheaper Thrills'}, Album{albumId=852, albumName='Cheaper Thrills'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=5, artistName='Roy Harper', albums =[Album{albumId=234, albumName='Folkjokeopus'}, Album{albumId=673, albumName='Folkjokeopus'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=6, artistName='Pat Benatar', albums =[Album{albumId=15, albumName='Crimes of Passion'}, Album{albumId=197, albumName='In The Heat of the Night'}, Album{albumId=454, albumName='Crimes of Passion'}, Album{albumId=636, albumName='In The Heat of the Night'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=7, artistName='Rory Gallagher', albums =[Album{albumId=231, albumName='Irish Tour'}, Album{albumId=670, albumName='Irish Tour'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=8, artistName='Iron Maiden', albums =[Album{albumId=236, albumName='The Number of the Beast'}, Album{albumId=412, albumName='Powerslave'}, Album{albumId=420, albumName='Seventh Son Of A Seventh Son'}, Album{albumId=675, albumName='The Number of the Beast'}, Album{albumId=851, albumName='Powerslave'}, Album{albumId=859, albumName='Seventh Son Of A Seventh Son'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=9, artistName='Blaster Bates', albums =[Album{albumId=142, albumName='Laughter With A Bang'}, Album{albumId=171, albumName='Watch Out For The Bits'}, Album{albumId=581, albumName='Laughter With A Bang'}, Album{albumId=610, albumName='Watch Out For The Bits'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=10, artistName='Procol Harum', albums =[Album{albumId=195, albumName='The Best of PROCOL HARUM Halcyon Daze'}, Album{albumId=634, albumName='The Best of PROCOL HARUM Halcyon Daze'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=11, artistName='1000 Maniacs', albums =[Album{albumId=124, albumName='Our Time in Eden'}, Album{albumId=563, albumName='Our Time in Eden'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=12, artistName='Wishbone Ash', albums =[Album{albumId=82, albumName='Argus'}, Album{albumId=327, albumName='Keeper Of The Light [Live In Chicago]'}, Album{albumId=414, albumName='Wishbone Four'}, Album{albumId=521, albumName='Argus'}, Album{albumId=766, albumName='Keeper Of The Light [Live In Chicago]'}, Album{albumId=853, albumName='Wishbone Four'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=13, artistName='Nazareth', albums =[Album{albumId=59, albumName='Razamanaz'}, Album{albumId=178, albumName='Rampant'}, Album{albumId=237, albumName='Narareth - Loud 'n' Proud'}, Album{albumId=298, albumName='Champions Of Rock'}, Album{albumId=306, albumName='The singles collection'}, Album{albumId=319, albumName='Hair of the Dog'}, Album{albumId=498, albumName='Razamanaz'}, Album{albumId=617, albumName='Rampant'}, Album{albumId=676, albumName='Narareth - Loud 'n' Proud'}, Album{albumId=737, albumName='Champions Of Rock'}, Album{albumId=745, albumName='The singles collection'}, Album{albumId=758, albumName='Hair of the Dog'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=14, artistName='Crosby Stills Nash & Young', albums =[Album{albumId=141, albumName='So Far'}, Album{albumId=580, albumName='So Far'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=15, artistName='George Thorogood & The Destroyers', albums =[Album{albumId=113, albumName='The Baddest Of George Thorogood & The Destroyers'}, Album{albumId=166, albumName='One Bourbon One Scotch One Beer'}, Album{albumId=310, albumName='Ride 'Til I Die'}, Album{albumId=552, albumName='The Baddest Of George Thorogood & The Destroyers'}, Album{albumId=605, albumName='One Bourbon One Scotch One Beer'}, Album{albumId=749, albumName='Ride 'Til I Die'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=16, artistName='Axel Rudi Pell', albums =[Album{albumId=1, albumName='Tales of the Crown'}, Album{albumId=2, albumName='The Masquerade Ball'}, Album{albumId=25, albumName='Mystica'}, Album{albumId=58, albumName='Between The Walls'}, Album{albumId=87, albumName='Magic'}, Album{albumId=116, albumName='Diamonds Unlocked'}, Album{albumId=148, albumName='Shadow Zone'}, Album{albumId=175, albumName='Kings and Queens'}, Album{albumId=225, albumName='Black Moon Pyramid'}, Album{albumId=229, albumName='Eternal Prisoner'}, Album{albumId=261, albumName='Oceans of time'}, Album{albumId=294, albumName='The Crest'}, Album{albumId=316, albumName='Nasty Reputation'}, Album{albumId=359, albumName='The Ballads IV'}, Album{albumId=434, albumName='Wild Obsession'}, Album{albumId=440, albumName='Tales of the Crown'}, Album{albumId=441, albumName='The Masquerade Ball'}, Album{albumId=464, albumName='Mystica'}, Album{albumId=497, albumName='Between The Walls'}, Album{albumId=526, albumName='Magic'}, Album{albumId=555, albumName='Diamonds Unlocked'}, Album{albumId=587, albumName='Shadow Zone'}, Album{albumId=614, albumName='Kings and Queens'}, Album{albumId=664, albumName='Black Moon Pyramid'}, Album{albumId=668, albumName='Eternal Prisoner'}, Album{albumId=700, albumName='Oceans of time'}, Album{albumId=733, albumName='The Crest'}, Album{albumId=755, albumName='Nasty Reputation'}, Album{albumId=798, albumName='The Ballads IV'}, Album{albumId=873, albumName='Wild Obsession'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=17, artistName='Leaf Hound', albums =[Album{albumId=284, albumName='Growers of Mushrooms'}, Album{albumId=723, albumName='Growers of Mushrooms'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=18, artistName='Budgie', albums =[Album{albumId=18, albumName='Nightflight'}, Album{albumId=191, albumName='Never Turn Your Back On A Friend'}, Album{albumId=330, albumName='Budgie'}, Album{albumId=360, albumName='If I Were Brittannia I'd Waive The Rules'}, Album{albumId=402, albumName='Squawk'}, Album{albumId=457, albumName='Nightflight'}, Album{albumId=630, albumName='Never Turn Your Back On A Friend'}, Album{albumId=769, albumName='Budgie'}, Album{albumId=799, albumName='If I Were Brittannia I'd Waive The Rules'}, Album{albumId=841, albumName='Squawk'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=19, artistName='Commitments', albums =[Album{albumId=303, albumName='Commitments'}, Album{albumId=742, albumName='Commitments'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=20, artistName='Enigma', albums =[Album{albumId=98, albumName='Le Roi Est Mort Vive Le Roi!'}, Album{albumId=125, albumName='MCMXC a.D'}, Album{albumId=131, albumName='The Cross Of Changes'}, Album{albumId=149, albumName='The Screen Behind The Mirror'}, Album{albumId=537, albumName='Le Roi Est Mort Vive Le Roi!'}, Album{albumId=564, albumName='MCMXC a.D'}, Album{albumId=570, albumName='The Cross Of Changes'}, Album{albumId=588, albumName='The Screen Behind The Mirror'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=21, artistName='Kevin Bloody Wilson', albums =[Album{albumId=74, albumName='Kev's Kristmas Album'}, Album{albumId=513, albumName='Kev's Kristmas Album'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=22, artistName='Pixies', albums =[Album{albumId=19, albumName='Doolittle'}, Album{albumId=338, albumName='Surfer Rosa'}, Album{albumId=458, albumName='Doolittle'}, Album{albumId=777, albumName='Surfer Rosa'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=23, artistName='ZZ Top', albums =[Album{albumId=22, albumName='Rio Grande Mud'}, Album{albumId=114, albumName='Antenna'}, Album{albumId=263, albumName='Recycler'}, Album{albumId=301, albumName='Mescalero'}, Album{albumId=309, albumName='Tres Hombres'}, Album{albumId=392, albumName='Degüello'}, Album{albumId=461, albumName='Rio Grande Mud'}, Album{albumId=553, albumName='Antenna'}, Album{albumId=702, albumName='Recycler'}, Album{albumId=740, albumName='Mescalero'}, Album{albumId=748, albumName='Tres Hombres'}, Album{albumId=831, albumName='Degüello'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=24, artistName='Pressgang', albums =[Album{albumId=159, albumName='Burning Boats'}, Album{albumId=194, albumName='Mappa Mundi'}, Album{albumId=598, albumName='Burning Boats'}, Album{albumId=633, albumName='Mappa Mundi'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=25, artistName='Hayseed Dixie', albums =[Album{albumId=110, albumName='Weapons Of Grass Destruction'}, Album{albumId=549, albumName='Weapons Of Grass Destruction'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=26, artistName='Paco De Lucia', albums =[Album{albumId=292, albumName='Gold'}, Album{albumId=731, albumName='Gold'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=27, artistName='Ted Nugent', albums =[Album{albumId=40, albumName='Ted Nugent'}, Album{albumId=67, albumName='Cat Scratch Fever'}, Album{albumId=479, albumName='Ted Nugent'}, Album{albumId=506, albumName='Cat Scratch Fever'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=28, artistName='Hawkwind', albums =[Album{albumId=11, albumName='Doremi Fasol Latido'}, Album{albumId=24, albumName='Warrior On The Edge Of Time'}, Album{albumId=160, albumName='Quark Strangeness And Charm'}, Album{albumId=164, albumName='In Search Of Space'}, Album{albumId=172, albumName='Hall Of The Mountain Grill'}, Album{albumId=266, albumName='Astounding Sounds Amazing Music'}, Album{albumId=334, albumName='P.X.R.5'}, Album{albumId=342, albumName='Silver Machine'}, Album{albumId=372, albumName='25 Years On'}, Album{albumId=450, albumName='Doremi Fasol Latido'}, Album{albumId=463, albumName='Warrior On The Edge Of Time'}, Album{albumId=599, albumName='Quark Strangeness And Charm'}, Album{albumId=603, albumName='In Search Of Space'}, Album{albumId=611, albumName='Hall Of The Mountain Grill'}, Album{albumId=705, albumName='Astounding Sounds Amazing Music'}, Album{albumId=773, albumName='P.X.R.5'}, Album{albumId=781, albumName='Silver Machine'}, Album{albumId=811, albumName='25 Years On'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=29, artistName='Status Quo', albums =[Album{albumId=102, albumName='Piledriver'}, Album{albumId=134, albumName='On the Level'}, Album{albumId=136, albumName='Quo & Blue For You'}, Album{albumId=318, albumName='Hello!'}, Album{albumId=333, albumName='Matchstickmen - The Pschedelic Years'}, Album{albumId=347, albumName='XS All Areas'}, Album{albumId=394, albumName='Under The Influence'}, Album{albumId=541, albumName='Piledriver'}, Album{albumId=573, albumName='On the Level'}, Album{albumId=575, albumName='Quo & Blue For You'}, Album{albumId=757, albumName='Hello!'}, Album{albumId=772, albumName='Matchstickmen - The Pschedelic Years'}, Album{albumId=786, albumName='XS All Areas'}, Album{albumId=833, albumName='Under The Influence'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=30, artistName='Dusty Springfield', albums =[Album{albumId=189, albumName='Just Dusty'}, Album{albumId=245, albumName='Dusty In Memphis'}, Album{albumId=628, albumName='Just Dusty'}, Album{albumId=684, albumName='Dusty In Memphis'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=31, artistName='Soundtracks', albums =[Album{albumId=66, albumName='The Mask'}, Album{albumId=70, albumName='Kill Bill'}, Album{albumId=196, albumName='Matrix'}, Album{albumId=253, albumName='The Fifth Element'}, Album{albumId=380, albumName='From Dusk Till Dawn'}, Album{albumId=505, albumName='The Mask'}, Album{albumId=509, albumName='Kill Bill'}, Album{albumId=635, albumName='Matrix'}, Album{albumId=692, albumName='The Fifth Element'}, Album{albumId=819, albumName='From Dusk Till Dawn'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=32, artistName='Dream Theater', albums =[Album{albumId=339, albumName='Live Scenes From New York'}, Album{albumId=778, albumName='Live Scenes From New York'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=33, artistName='Peter Gabriel', albums =[Album{albumId=106, albumName='Peter Gabriel 3'}, Album{albumId=155, albumName='Peter Gabriel 1'}, Album{albumId=545, albumName='Peter Gabriel 3'}, Album{albumId=594, albumName='Peter Gabriel 1'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=34, artistName='Imelda May', albums =[Album{albumId=57, albumName='More Mayhem'}, Album{albumId=496, albumName='More Mayhem'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=35, artistName='Dio', albums =[Album{albumId=100, albumName='Holy Diver'}, Album{albumId=539, albumName='Holy Diver'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=36, artistName='Black Sabbath', albums =[Album{albumId=39, albumName='Tyr'}, Album{albumId=48, albumName='Master Of Reality'}, Album{albumId=50, albumName='Paranoid'}, Album{albumId=94, albumName='Born Again'}, Album{albumId=111, albumName='Mob Rules'}, Album{albumId=143, albumName='Black Sabbath'}, Album{albumId=201, albumName='Sabbath Bloody Sabbath'}, Album{albumId=204, albumName='Black Sabbath Vol.4'}, Album{albumId=244, albumName='Never Say Die'}, Album{albumId=252, albumName='Forbidden'}, Album{albumId=271, albumName='Heaven and Hell'}, Album{albumId=272, albumName='Dehumanizer'}, Album{albumId=296, albumName='Seventh Star'}, Album{albumId=297, albumName='Cross Purposes'}, Album{albumId=358, albumName='The Eternal Idol'}, Album{albumId=365, albumName='Sabotage'}, Album{albumId=407, albumName='Technical Ecstasy'}, Album{albumId=419, albumName='Headless Cross'}, Album{albumId=478, albumName='Tyr'}, Album{albumId=487, albumName='Master Of Reality'}, Album{albumId=489, albumName='Paranoid'}, Album{albumId=533, albumName='Born Again'}, Album{albumId=550, albumName='Mob Rules'}, Album{albumId=582, albumName='Black Sabbath'}, Album{albumId=640, albumName='Sabbath Bloody Sabbath'}, Album{albumId=643, albumName='Black Sabbath Vol.4'}, Album{albumId=683, albumName='Never Say Die'}, Album{albumId=691, albumName='Forbidden'}, Album{albumId=710, albumName='Heaven and Hell'}, Album{albumId=711, albumName='Dehumanizer'}, Album{albumId=735, albumName='Seventh Star'}, Album{albumId=736, albumName='Cross Purposes'}, Album{albumId=797, albumName='The Eternal Idol'}, Album{albumId=804, albumName='Sabotage'}, Album{albumId=846, albumName='Technical Ecstasy'}, Album{albumId=858, albumName='Headless Cross'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=37, artistName='Dr Feelgood', albums =[Album{albumId=133, albumName='Sneakin' Suspicion'}, Album{albumId=260, albumName='Private Practice'}, Album{albumId=427, albumName='Malpractice'}, Album{albumId=572, albumName='Sneakin' Suspicion'}, Album{albumId=699, albumName='Private Practice'}, Album{albumId=866, albumName='Malpractice'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=38, artistName='Carole King', albums =[Album{albumId=415, albumName='Tapestry'}, Album{albumId=854, albumName='Tapestry'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=39, artistName='Heart', albums =[Album{albumId=29, albumName='Dreamboat Annie'}, Album{albumId=38, albumName='Little Queen'}, Album{albumId=308, albumName='Dog & Butterfly'}, Album{albumId=468, albumName='Dreamboat Annie'}, Album{albumId=477, albumName='Little Queen'}, Album{albumId=747, albumName='Dog & Butterfly'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=40, artistName='Chopyn', albums =[Album{albumId=305, albumName='Grand Slam'}, Album{albumId=744, albumName='Grand Slam'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=41, artistName='Darkness', albums =[Album{albumId=14, albumName='Permission To Land'}, Album{albumId=453, albumName='Permission To Land'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=42, artistName='Jimmy Page & Robert Plant', albums =[Album{albumId=147, albumName='Walking Into Clarksdale'}, Album{albumId=586, albumName='Walking Into Clarksdale'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=43, artistName='Vangelis', albums =[Album{albumId=307, albumName='Albedo 0.39'}, Album{albumId=746, albumName='Albedo 0.39'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=44, artistName='Black Oak Arkansas', albums =[Album{albumId=428, albumName='High On The Hog'}, Album{albumId=867, albumName='High On The Hog'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=45, artistName='Lou Reed', albums =[Album{albumId=431, albumName='Transformer'}, Album{albumId=870, albumName='Transformer'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=46, artistName='Oasis', albums =[Album{albumId=246, albumName='Don't Believe The Truth'}, Album{albumId=685, albumName='Don't Believe The Truth'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=47, artistName='Manfred Mann', albums =[Album{albumId=139, albumName='The Ascent Of Mann'}, Album{albumId=370, albumName='The Very Best Of'}, Album{albumId=578, albumName='The Ascent Of Mann'}, Album{albumId=809, albumName='The Very Best Of'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=48, artistName='Tomita', albums =[Album{albumId=137, albumName='Pictures at an Exhibition'}, Album{albumId=576, albumName='Pictures at an Exhibition'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=49, artistName='Mood Elevator', albums =[Album{albumId=188, albumName='Food For The Soul'}, Album{albumId=627, albumName='Food For The Soul'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=50, artistName='Warner E Hodges', albums =[Album{albumId=376, albumName='Gunslinger'}, Album{albumId=815, albumName='Gunslinger'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=51, artistName='Be Bop Deluxe', albums =[Album{albumId=269, albumName='Futurama'}, Album{albumId=388, albumName='Sunburst Finish'}, Album{albumId=708, albumName='Futurama'}, Album{albumId=827, albumName='Sunburst Finish'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=52, artistName='Ozric Tentacles', albums =[Album{albumId=20, albumName='Pungent Effulgent'}, Album{albumId=80, albumName='Strangeitude'}, Album{albumId=283, albumName='Afterswish'}, Album{albumId=459, albumName='Pungent Effulgent'}, Album{albumId=519, albumName='Strangeitude'}, Album{albumId=722, albumName='Afterswish'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=53, artistName='Florence And The Machine', albums =[Album{albumId=163, albumName='Florence And the Machine - Ceremonials'}, Album{albumId=220, albumName='Lungs'}, Album{albumId=602, albumName='Florence And the Machine - Ceremonials'}, Album{albumId=659, albumName='Lungs'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=54, artistName='Bon Jovi', albums =[Album{albumId=437, albumName='Cross Road - The Best Of'}, Album{albumId=876, albumName='Cross Road - The Best Of'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=55, artistName='Jefferson Airplane', albums =[Album{albumId=223, albumName='Surrealistic Pillow'}, Album{albumId=662, albumName='Surrealistic Pillow'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=56, artistName='Rolling Stones', albums =[Album{albumId=69, albumName='Live Licks'}, Album{albumId=128, albumName='Forty Licks'}, Album{albumId=508, albumName='Live Licks'}, Album{albumId=567, albumName='Forty Licks'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=57, artistName='Mountain', albums =[Album{albumId=198, albumName='Eruption Live In Europe'}, Album{albumId=637, albumName='Eruption Live In Europe'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=58, artistName='Guess Who', albums =[Album{albumId=286, albumName='Share The Land'}, Album{albumId=725, albumName='Share The Land'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=59, artistName='Vladimir Vysotsky', albums =[Album{albumId=262, albumName='Izbrannoye'}, Album{albumId=701, albumName='Izbrannoye'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=60, artistName='Frank Zappa Captain Beefheart & The Mothers', albums =[Album{albumId=429, albumName='Bongo Fury'}, Album{albumId=868, albumName='Bongo Fury'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=61, artistName='Steve Vai', albums =[Album{albumId=165, albumName='Sex & Religion'}, Album{albumId=604, albumName='Sex & Religion'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=62, artistName='Black River Project', albums =[Album{albumId=349, albumName='Those Whom'}, Album{albumId=788, albumName='Those Whom'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=63, artistName='Treatment', albums =[Album{albumId=386, albumName='Running With The Dogs'}, Album{albumId=825, albumName='Running With The Dogs'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=64, artistName='Led Zeppelin', albums =[Album{albumId=16, albumName='The Soundtrack from the film The Song Remains The Same'}, Album{albumId=121, albumName='Led Zeppelin IV'}, Album{albumId=192, albumName='Led Zeppelin II'}, Album{albumId=199, albumName='Led Zeppelin III'}, Album{albumId=249, albumName='Led Zeppelin'}, Album{albumId=343, albumName='BBC Sessions'}, Album{albumId=344, albumName='Coda'}, Album{albumId=348, albumName='Going To California'}, Album{albumId=375, albumName='Houses of the Holy'}, Album{albumId=379, albumName='Remasters'}, Album{albumId=396, albumName='In Through The Out Door'}, Album{albumId=397, albumName='How the West Was Won'}, Album{albumId=409, albumName='Presence'}, Album{albumId=432, albumName='Physical Graffiti'}, Album{albumId=455, albumName='The Soundtrack from the film The Song Remains The Same'}, Album{albumId=560, albumName='Led Zeppelin IV'}, Album{albumId=631, albumName='Led Zeppelin II'}, Album{albumId=638, albumName='Led Zeppelin III'}, Album{albumId=688, albumName='Led Zeppelin'}, Album{albumId=782, albumName='BBC Sessions'}, Album{albumId=783, albumName='Coda'}, Album{albumId=787, albumName='Going To California'}, Album{albumId=814, albumName='Houses of the Holy'}, Album{albumId=818, albumName='Remasters'}, Album{albumId=835, albumName='In Through The Out Door'}, Album{albumId=836, albumName='How the West Was Won'}, Album{albumId=848, albumName='Presence'}, Album{albumId=871, albumName='Physical Graffiti'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=65, artistName='Bruce Springsteen', albums =[Album{albumId=17, albumName='Greetings From Asbury Park N.J_'}, Album{albumId=456, albumName='Greetings From Asbury Park N.J_'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=66, artistName='AC DC', albums =[Album{albumId=90, albumName='For Those About To Rock (We Salute You)'}, Album{albumId=280, albumName='If You Want Blood You've Got It'}, Album{albumId=529, albumName='For Those About To Rock (We Salute You)'}, Album{albumId=719, albumName='If You Want Blood You've Got It'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=67, artistName='Velvet Underground', albums =[Album{albumId=157, albumName='The Velvet Underground & Nico'}, Album{albumId=596, albumName='The Velvet Underground & Nico'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=68, artistName='Man', albums =[Album{albumId=117, albumName='Be Good To Yourself At Least Once A Day'}, Album{albumId=311, albumName='Rhinos Winos and Lunatics'}, Album{albumId=556, albumName='Be Good To Yourself At Least Once A Day'}, Album{albumId=750, albumName='Rhinos Winos and Lunatics'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=69, artistName='Animals', albums =[Album{albumId=73, albumName='The Most Of The Animals'}, Album{albumId=512, albumName='The Most Of The Animals'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=70, artistName='Prokofiev', albums =[Album{albumId=126, albumName='Lietenant Kije Symphony 5'}, Album{albumId=565, albumName='Lietenant Kije Symphony 5'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+...
+Artist{artistId=200, artistName='Stevie Ray Vaughan', albums =[Album{albumId=373, albumName='Collections'}, Album{albumId=812, albumName='Collections'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=201, artistName='Chemical Brothers', albums =[Album{albumId=289, albumName='Push The Button'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=202, artistName='Muddy Waters', albums =[Album{albumId=905, albumName='The Best of Muddy Waters'}]}
+May 02, 2024 11:40:08 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState stop
+INFO: HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3335/music]
+```
+
+So you'll see, in the output, all _artists_ in the table, 
+in my case that's `202` _artists_, that get printed.
+Each record contains all the row data in each _artist_ record,
+so that's just artist id and artist name.
+Notice, though, that each record also includes, all the _artist_'s album records.
+In my JPQL statement, when I specified, 
+`select a from artist a`, I didn't specify what data I wanted,
+meaning what fields that mapped to columns.
+So it returned all the data for all the fields on this entity.
+You'll recall that I set up the entities, 
+by declaring a relationship on the albums field,
+a list, declared in artist, to the album entity.
+The JPA Provider did all underlying database querying 
+with the appropriate joins seamlessly, in this case **hibernate**.
+This means I'm able to write a basic,
+generic query against an **Artist** entity class,
+to get related data, in this case albums, for each artist.
+This doesn't require the developer retrieving data 
+to know anything about inner or outer joins, or foreign keys, 
+or any other specific implementation details of the database.
+It also doesn't require views on the database server,
+for simpler querying of a normalized schema.
+You may still want to use those techniques, but in this case, 
+none of that is necessary, in the operation of this query.
+This might be a welcome relief if you don't want to deal with databases directly.
+Now, I'll alter the query slightly, 
+this time just getting artists whose name contains `STEV`.
+First, I'll change my select statement.
+
+```java  
+private static List<Artist> getArtistsJPQL(EntityManager em, String matchedValue) {
+
+    //String jpql = "SELECT a FROM Artist a";
+    String jpql = "SELECT a FROM Artist a WHERE a.artistName LIKE :partialName";
+    var query = em.createQuery(jpql, Artist.class);                         // TypedQuery<Artist>
+    query.setParameter("partialName", matchedValue);
+    return query.getResultList();
+}
+```
+
+I'll add a _where_ clause, so I'll append the text, 
+`where a.artistName like :partialName`.
+In this case, you can see I'm using the attribute name on the **Artist** entity, 
+and not the column name in the table, which is _artist_name_.
+My placeholder parameter, which is called a named parameter in this case, 
+is specified by a colon, followed by any variable name I want.
+So here, I'm calling it _partialName_, since I'll match on part of the artist's name.
+Next, I need to actually pass a value to this placeholder parameter.
+So I'll add a call to a _setParameter_ method on the query variable.
+One version of this method takes two strings.
+The first is the named parameter, so I'll pass _partialName_ as a string literal. 
+The literal value should match the named parameter, used in your JPQL statement. 
+The second argument to the set parameter method is the value to be used, 
+so I'll pass it the _matchedValue_, 
+the method argument that contains the criteria to match on.
+Back In the _main_ method, I'll change how I invoke this method.
+
+```java  
+public static void main(String[] args) {
+
+    String persistenceUnitName = "Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music";
+  
+    List<Artist> artists = null;
+    try (EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName); 
+         EntityManager em = emf.createEntityManager();
+         ) {
+  
+        var transaction = em.getTransaction();
+        transaction.begin();
+        
+        //artists = getArtistsJPQL(em, "");
+        artists = getArtistsJPQL(em, "%Stev%");
+        artists.forEach(System.out::println);
+        
+        transaction.commit();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+```
+
+Instead of passing an empty string literal, I'll pass a pattern, an SQL pattern I mean.
+Let me set this up, so first I include a percent sign, 
+then `STEV`, and another percent sign.
+The percent sign is the SQL wildcard specifier, in a pattern; 
+that's used by a `LIKE` clause in SQL.
+It means match on zero, or many characters.
+Java's regular expression specifier to do something similar, 
+you'll remember, is a dot.
+Because I'm starting with a percent sign, 
+this will match the contiguous letters, `STEV`, in any part of the album name.
+I'll run that:
+
+```html  
+May 02, 2024 12:01:07 PM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music]
+May 02, 2024 12:01:07 PM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.5.0.Final
+May 02, 2024 12:01:07 PM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+May 02, 2024 12:01:07 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+May 02, 2024 12:01:07 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+May 02, 2024 12:01:07 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3335/music]
+May 02, 2024 12:01:07 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=devUser}
+May 02, 2024 12:01:07 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+May 02, 2024 12:01:07 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+May 02, 2024 12:01:08 PM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_name like ? escape ''
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=61, artistName='Steve Vai', albums =[Album{albumId=165, albumName='Sex & Religion'}, Album{albumId=604, albumName='Sex & Religion'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=170, artistName='Steve Harley & Cockney Rebel', albums =[Album{albumId=277, albumName='Live and Unleashed'}, Album{albumId=716, albumName='Live and Unleashed'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=173, artistName='Steve Hillage', albums =[Album{albumId=219, albumName='Motivation Radio'}, Album{albumId=658, albumName='Motivation Radio'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=175, artistName='Seasick Steve', albums =[Album{albumId=256, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=436, albumName='Man From Another Time'}, Album{albumId=695, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=875, albumName='Man From Another Time'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=180, artistName='Steve Hackett', albums =[Album{albumId=222, albumName='Voyage of the Acolyte'}, Album{albumId=243, albumName='Please Don't Touch!'}, Album{albumId=661, albumName='Voyage of the Acolyte'}, Album{albumId=682, albumName='Please Don't Touch!'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=200, artistName='Stevie Ray Vaughan', albums =[Album{albumId=373, albumName='Collections'}, Album{albumId=812, albumName='Collections'}]}
+May 02, 2024 12:01:08 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState stop
+INFO: HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3335/music]
+```
+
+You can see I get only 6 artists that matched that, 
+most of them start with the first name, `Steve`, 
+but there's also `Seasick Steve`, and `Stevie Ray Vaughan`.
+I could change my pattern if I wanted only artists 
+whose names started with `STEV`, by removing the first percent sign.
+That would eliminate `Seasick Steve`,
+which you can try on your own, if you want to.
+JPQL doesn't eliminate the need to understand all SQL constructs, 
+as this example demonstrates.
+In this code, you still need to understand the `LIKE` clause and valid patterns,
+to use it effectively here.
+In addition to named parameters, you can use placement parameters in the query string.
+This is similar to the question mark placeholder which we saw in the prepared 
+and callable statements.
+In this case, in addition to the question mark, you have to include a numeric value.
+Numeric placeholder specifiers must start at `1`.
+But they don't have to be in sequential order, 
+and you can reuse a numeric placeholder in a single JPQL string.
+I'll change my _getArtistsPLQL_ method:
+
+```java  
+private static List<Artist> getArtistsJPQL(EntityManager em, String matchedValue) {
+
+    //String jpql = "SELECT a FROM Artist a WHERE a.artistName LIKE :partialName";
+    String jpql = "SELECT a FROM Artist a WHERE a.artistName LIKE ?1";
+    var query = em.createQuery(jpql, Artist.class);                         // TypedQuery<Artist>
+    //query.setParameter("partialName", matchedValue);
+    query.setParameter(1, matchedValue);
+    return query.getResultList();
+}
+```
+
+Replacing colon matched value, with a question mark, followed by the number 1.
+I'll next change the _setParameter_ method, passing in the number 1, as the first argument.
+If I run the code this way:
+
+```html  
+May 03, 2024 2:42:28 AM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music]
+May 03, 2024 2:42:28 AM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.5.0.Final
+May 03, 2024 2:42:28 AM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+May 03, 2024 2:42:28 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+May 03, 2024 2:42:28 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+May 03, 2024 2:42:28 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3335/music]
+May 03, 2024 2:42:28 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=devUser}
+May 03, 2024 2:42:28 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+May 03, 2024 2:42:28 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+May 03, 2024 2:42:29 AM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_name like ? escape ''
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=61, artistName='Steve Vai', albums =[Album{albumId=165, albumName='Sex & Religion'}, Album{albumId=604, albumName='Sex & Religion'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=170, artistName='Steve Harley & Cockney Rebel', albums =[Album{albumId=277, albumName='Live and Unleashed'}, Album{albumId=716, albumName='Live and Unleashed'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=173, artistName='Steve Hillage', albums =[Album{albumId=219, albumName='Motivation Radio'}, Album{albumId=658, albumName='Motivation Radio'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=175, artistName='Seasick Steve', albums =[Album{albumId=256, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=436, albumName='Man From Another Time'}, Album{albumId=695, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=875, albumName='Man From Another Time'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=180, artistName='Steve Hackett', albums =[Album{albumId=222, albumName='Voyage of the Acolyte'}, Album{albumId=243, albumName='Please Don't Touch!'}, Album{albumId=661, albumName='Voyage of the Acolyte'}, Album{albumId=682, albumName='Please Don't Touch!'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=200, artistName='Stevie Ray Vaughan', albums =[Album{albumId=373, albumName='Collections'}, Album{albumId=812, albumName='Collections'}]}
+May 03, 2024 2:42:30 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState stop
+INFO: HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3335/music]
+```
+
+I'll get the same results, as I did with a named parameter.
+Named placeholders makes more readable code, in my opinion, 
+but it's up to you, or maybe the framework you're using,
+which kind of placeholder type you'll use.
+
+So far in this section, I demonstrated two simple JPQL queries.
+The first selected all records from the **artist** table with all the associated data.
+The second used a `where` clause, to limit the records returned, 
+to just those whose name contained some version of `Steve` in it.
+Let's say now I just really wanted a list of artist names, 
+and not all the data for an artist, so not the artist id or album names.
+Like SQL, I can specify the data to be returned to a subset of data available.
+Instead of specifying each column name in the query, 
+I specify the field name on the entity.
+To demonstrate this, I'll copy the _getArtistsJPQL_ method, pasting a copy just below it.
+
+```java  
+private static List<Artist> getArtistNames(EntityManager em, String matchedValue) {
+
+    //String jpql = "SELECT a FROM Artist a WHERE a.artistName LIKE ?1";
+    String jpql = "SELECT a.artistName FROM Artist a WHERE a.artistName LIKE ?1";
+    var query = em.createQuery(jpql, Artist.class);
+    query.setParameter(1, matchedValue);
+    return query.getResultList();
+}
+```
+
+First, I'll change the name on the pasted copy of this method, to _getArtistNames_.
+Next, in the JPQL statement, instead of specifying `select a` in my query,
+I'll instead specify `select a.artistName`.
+In the _main_ method: 
+
+```java  
+public static void main(String[] args) {
+
+    String persistenceUnitName = "Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music";
+  
+    List<Artist> artists = null;
+    try (EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName); 
+         EntityManager em = emf.createEntityManager();
+         ) {
+  
+        var transaction = em.getTransaction();
+        transaction.begin();
+        
+        artists = getArtistsJPQL(em, "%Stev%");
+        artists.forEach(System.out::println);
+        var names = getArtistNames(em, "%Stev%");
+        names.forEach(System.out::println);
+        
+        transaction.commit();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+```
+
+I'll set up a local variable, using the _var_ keyword.
+I'll call this variable names, and assign it to the result from my new method, 
+passing it the same arguments as I did with the previous method.
+I'll print each element in that list.
+I'll run this code:
+
+```html  
+May 03, 2024 2:57:44 AM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music]
+May 03, 2024 2:57:44 AM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.5.0.Final
+May 03, 2024 2:57:44 AM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+May 03, 2024 2:57:45 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+May 03, 2024 2:57:45 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+May 03, 2024 2:57:45 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3335/music]
+May 03, 2024 2:57:45 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=devUser}
+May 03, 2024 2:57:45 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+May 03, 2024 2:57:45 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+May 03, 2024 2:57:46 AM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_name like ? escape ''
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=61, artistName='Steve Vai', albums =[Album{albumId=165, albumName='Sex & Religion'}, Album{albumId=604, albumName='Sex & Religion'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=170, artistName='Steve Harley & Cockney Rebel', albums =[Album{albumId=277, albumName='Live and Unleashed'}, Album{albumId=716, albumName='Live and Unleashed'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=173, artistName='Steve Hillage', albums =[Album{albumId=219, albumName='Motivation Radio'}, Album{albumId=658, albumName='Motivation Radio'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=175, artistName='Seasick Steve', albums =[Album{albumId=256, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=436, albumName='Man From Another Time'}, Album{albumId=695, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=875, albumName='Man From Another Time'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=180, artistName='Steve Hackett', albums =[Album{albumId=222, albumName='Voyage of the Acolyte'}, Album{albumId=243, albumName='Please Don't Touch!'}, Album{albumId=661, albumName='Voyage of the Acolyte'}, Album{albumId=682, albumName='Please Don't Touch!'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=200, artistName='Stevie Ray Vaughan', albums =[Album{albumId=373, albumName='Collections'}, Album{albumId=812, albumName='Collections'}]}
+Hibernate: select a1_0.artist_name from artists a1_0 where a1_0.artist_name like ? escape ''
+java.lang.ClassCastException : class java.lang.String cannot be cast to class .music.Artist 
+    at java.base/java.util.ArrayList.forEach(ArrayList.java.1511)
+    at MainQuery.main()
+```
+
+I get an exception. It's a class cast exception, 
+and it says a _String cannot be cast to class music dot Artist_.
+So when you specify anything more than the entity alias itself, 
+you have to specify a different type as the return type.
+It doesn't just populate an artist entity with the fields you specified,
+which you might have expected.
+I'll change the return type of the _getArtistNames_ method, to a list of **String**.
+
+```java  
+//private static List<Artist> getArtistNames(EntityManager em, String matchedValue) {
+private static List<String> getArtistNames(EntityManager em, String matchedValue) {
+
+    String jpql = "SELECT a.artistName FROM Artist a WHERE a.artistName LIKE ?1";
+    //var query = em.createQuery(jpql, Artist.class);
+    var query = em.createQuery(jpql, String.class);
+    query.setParameter(1, matchedValue);
+    return query.getResultList();
+}
+```
+
+And actually, I also have to change the type specified in the _createQuery_ method, 
+changing that from `Artist.class` to `String.class`.
+I'll run the code now:
+
+```html  
+May 03, 2024 3:04:00 AM org.hibernate.jpa.internal.util.LogHelper logPersistenceUnitInformation
+INFO: HHH000204: Processing PersistenceUnitInfo [name: Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music]
+May 03, 2024 3:04:00 AM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate ORM core version 6.5.0.Final
+May 03, 2024 3:04:00 AM org.hibernate.cache.internal.RegionFactoryInitiator initiateService
+INFO: HHH000026: Second-level cache disabled
+May 03, 2024 3:04:00 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using built-in connection pool (not intended for production use)
+May 03, 2024 3:04:00 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: Loaded JDBC driver class: com.mysql.cj.jdbc.Driver
+May 03, 2024 3:04:00 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3335/music]
+May 03, 2024 3:04:00 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {password=****, user=devUser}
+May 03, 2024 3:04:00 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+May 03, 2024 3:04:00 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PooledConnections <init>
+INFO: HHH10001115: Connection pool size: 20 (min=1)
+May 03, 2024 3:04:01 AM org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator initiateService
+INFO: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_name like ? escape ''
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=61, artistName='Steve Vai', albums =[Album{albumId=165, albumName='Sex & Religion'}, Album{albumId=604, albumName='Sex & Religion'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=170, artistName='Steve Harley & Cockney Rebel', albums =[Album{albumId=277, albumName='Live and Unleashed'}, Album{albumId=716, albumName='Live and Unleashed'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=173, artistName='Steve Hillage', albums =[Album{albumId=219, albumName='Motivation Radio'}, Album{albumId=658, albumName='Motivation Radio'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=175, artistName='Seasick Steve', albums =[Album{albumId=256, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=436, albumName='Man From Another Time'}, Album{albumId=695, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=875, albumName='Man From Another Time'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=180, artistName='Steve Hackett', albums =[Album{albumId=222, albumName='Voyage of the Acolyte'}, Album{albumId=243, albumName='Please Don't Touch!'}, Album{albumId=661, albumName='Voyage of the Acolyte'}, Album{albumId=682, albumName='Please Don't Touch!'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=200, artistName='Stevie Ray Vaughan', albums =[Album{albumId=373, albumName='Collections'}, Album{albumId=812, albumName='Collections'}]}
+Hibernate: select a1_0.artist_name from artists a1_0 where a1_0.artist_name like ? escape ''
+Steve Vai
+Steve Harley & Cockney Rebel
+Steve Hillage
+Seasick Steve
+Steve Hackett
+Stevie Ray Vaughan
+May 03, 2024 3:04:01 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl$PoolState stop
+INFO: HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3335/music]
+```
+
+Now I can see just the artist names, but I've lost the association with the **Artist** entity.
+If you need to get multiple columns, this becomes even more complicated.
+Fortunately, you can use a _Tuple_ to retrieve these elements 
+and map them back to your **Artist** entity if you need to do that.
+
+Maybe you've heard of a _Tuple_ in other programming languages.
+In this case, A **JPA Tuple** is an ordered collection of values, 
+retrieved from a database query.
+It's like a lightweight data container, offering more flexibility, 
+than simply returning entire entities, or raw object arrays.
+You can think of it as a mini-record, 
+holding just the specific data you need from the database,
+without the overhead of full entity objects.
+I'll change the _getArtistNames_ method again.
+
+```java  
+//private static List<String> getArtistNames(EntityManager em, String matchedValue) {
+private static List<Tuple> getArtistNames(EntityManager em, String matchedValue) {
+
+    //String jpql = "SELECT a.artistName FROM Artist a WHERE a.artistName LIKE ?1";
+    String jpql = "SELECT a.artistId, a.artistName FROM Artist a WHERE a.artistName LIKE ?1";
+    //var query = em.createQuery(jpql, String.class);
+    var query = em.createQuery(jpql, Tuple.class);
+    query.setParameter(1, matchedValue);
+    return query.getResultList();
+}
+```
+
+This time, I'll return a **List** of **Tuple**.
+The **Tuple** class is part of the `jakarta.persistence` package.
+I'll change the type passed to the create query method, 
+from `String.class` to `Tuple.class`.
+I'll also change the statement in the JPQL variable, 
+adding `a.artistId` before the `a.artistName` there.
+I'll run this code:
+
+```html  
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_name like ? escape ''
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=61, artistName='Steve Vai', albums =[Album{albumId=165, albumName='Sex & Religion'}, Album{albumId=604, albumName='Sex & Religion'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=170, artistName='Steve Harley & Cockney Rebel', albums =[Album{albumId=277, albumName='Live and Unleashed'}, Album{albumId=716, albumName='Live and Unleashed'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=173, artistName='Steve Hillage', albums =[Album{albumId=219, albumName='Motivation Radio'}, Album{albumId=658, albumName='Motivation Radio'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=175, artistName='Seasick Steve', albums =[Album{albumId=256, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=436, albumName='Man From Another Time'}, Album{albumId=695, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=875, albumName='Man From Another Time'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=180, artistName='Steve Hackett', albums =[Album{albumId=222, albumName='Voyage of the Acolyte'}, Album{albumId=243, albumName='Please Don't Touch!'}, Album{albumId=661, albumName='Voyage of the Acolyte'}, Album{albumId=682, albumName='Please Don't Touch!'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=200, artistName='Stevie Ray Vaughan', albums =[Album{albumId=373, albumName='Collections'}, Album{albumId=812, albumName='Collections'}]}
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_name like ? escape ''
+[61, Steve Vai]
+[170, Steve Harley & Cockney Rebel]
+[173, Steve Hillage]
+[175, Seasick Steve]
+[180, Steve Hackett]
+[200, Stevie Ray Vaughan]
+```
+
+You can see the _artist_id_, and the _artist_name_ in this output.
+Now, I could have simply used an **Array** of **Object**, as the return type.
+But the **Tuple** has some nice built-in functionality.
+You saw that it's _toString_ method will print each element in the **Tuple**.
+In addition, each element in a **Tuple** has a name, 
+that allows you to access elements using meaningful names, improving code clarity.
+Tuples can be seamlessly integrated with the **Stream API** for efficient data processing
+and transformations, leveraging Java's functional programming capabilities.
+Let's take this example one step further, 
+and this time returns a **Stream** from the _getArtistNames_ method.
+This requires just two changes to the _getArtistNames_ method.
+
+```java  
+//private static List<Tuple> getArtistNames(EntityManager em, String matchedValue) {
+private static Stream<Tuple> getArtistNames(EntityManager em, String matchedValue) {
+
+    String jpql = "SELECT a.artistId, a.artistName FROM Artist a WHERE a.artistName LIKE ?1";
+    var query = em.createQuery(jpql, Tuple.class);
+    query.setParameter(1, matchedValue);
+    return query.getResultList();
+    return query.getResultStream();
+}
+```
+
+I'll change **List** to **Stream** in the method declaration,
+and I'll return `query.getResultStream`.
+If I run the code now:
+
+```html  
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_name like ? escape ''
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=61, artistName='Steve Vai', albums =[Album{albumId=165, albumName='Sex & Religion'}, Album{albumId=604, albumName='Sex & Religion'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=170, artistName='Steve Harley & Cockney Rebel', albums =[Album{albumId=277, albumName='Live and Unleashed'}, Album{albumId=716, albumName='Live and Unleashed'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=173, artistName='Steve Hillage', albums =[Album{albumId=219, albumName='Motivation Radio'}, Album{albumId=658, albumName='Motivation Radio'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=175, artistName='Seasick Steve', albums =[Album{albumId=256, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=436, albumName='Man From Another Time'}, Album{albumId=695, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=875, albumName='Man From Another Time'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=180, artistName='Steve Hackett', albums =[Album{albumId=222, albumName='Voyage of the Acolyte'}, Album{albumId=243, albumName='Please Don't Touch!'}, Album{albumId=661, albumName='Voyage of the Acolyte'}, Album{albumId=682, albumName='Please Don't Touch!'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=200, artistName='Stevie Ray Vaughan', albums =[Album{albumId=373, albumName='Collections'}, Album{albumId=812, albumName='Collections'}]}
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_name like ? escape ''
+[61, Steve Vai]
+[170, Steve Harley & Cockney Rebel]
+[173, Steve Hillage]
+[175, Seasick Steve]
+[180, Steve Hackett]
+[200, Stevie Ray Vaughan]
+```
+
+It works just the same as if I'd returned a **List**,
+because _forEach_ is a terminal operation on stream.
+Let's next map this **Tuple** to an **Artist** entity, in the _main_ method.
+
+```java  
+public static void main(String[] args) {
+
+    String persistenceUnitName = "Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music";
+  
+    List<Artist> artists = null;
+    try (EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName); 
+         EntityManager em = emf.createEntityManager();
+         ) {
+  
+        var transaction = em.getTransaction();
+        transaction.begin();
+        
+        artists = getArtistsJPQL(em, "%Stev%");
+        artists.forEach(System.out::println);
+        var names = getArtistNames(em, "%Stev%");
+        //names.forEach(System.out::println);
+        names.map(a -> new Artist(
+                a.get(0, Integer.class),
+                (String) a.get(1)))
+                .forEach(System.out::println);
+      
+        transaction.commit();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+```
+
+I'll remove the _forEach_ statement that's currently there.
+I'll start with the stream variable, which is called names. 
+I'll call _map_ on the stream, and for each **Tuple** in the stream, 
+I'll instantiate a new **Artist**. 
+I've got a constructor on **Artist**, that takes an artist id, and an artist name. 
+I can get elements from a **Tuple**, using the _get_ method,
+passing an _index_, and specific class that should be returned, 
+so I'll pass zero first, then `Integer.class` here, for the ID. 
+If I don't specify the class, an object is returned,
+and I can cast that, so I'll do that for the artist name in this case. 
+Now I'll just print each artist instance.
+I'll run this code:
+
+```html  
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_name like ? escape ''
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=61, artistName='Steve Vai', albums =[Album{albumId=165, albumName='Sex & Religion'}, Album{albumId=604, albumName='Sex & Religion'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=170, artistName='Steve Harley & Cockney Rebel', albums =[Album{albumId=277, albumName='Live and Unleashed'}, Album{albumId=716, albumName='Live and Unleashed'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=173, artistName='Steve Hillage', albums =[Album{albumId=219, albumName='Motivation Radio'}, Album{albumId=658, albumName='Motivation Radio'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=175, artistName='Seasick Steve', albums =[Album{albumId=256, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=436, albumName='Man From Another Time'}, Album{albumId=695, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=875, albumName='Man From Another Time'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=180, artistName='Steve Hackett', albums =[Album{albumId=222, albumName='Voyage of the Acolyte'}, Album{albumId=243, albumName='Please Don't Touch!'}, Album{albumId=661, albumName='Voyage of the Acolyte'}, Album{albumId=682, albumName='Please Don't Touch!'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=200, artistName='Stevie Ray Vaughan', albums =[Album{albumId=373, albumName='Collections'}, Album{albumId=812, albumName='Collections'}]}
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_name like ? escape ''
+Artist{artistId=61, artistName='Steve Vai', albums =[]}
+Artist{artistId=170, artistName='Steve Harley & Cockney Rebel', albums =[]}
+Artist{artistId=173, artistName='Steve Hillage', albums =[]}
+Artist{artistId=175, artistName='Seasick Steve', albums =[]}
+Artist{artistId=180, artistName='Steve Hackett', albums =[]}
+Artist{artistId=200, artistName='Stevie Ray Vaughan', albums =[]}
+```
+
+You can see from this output that I mapped my values to the **artist** entity,
+and I don't have any albums, in this case.
+If you want to retrieve data from a **Tuple** using a name, 
+your JPQL query needs to include field aliases.
+I'll add these next to the JPQL variable in my _getArtistNames_ method.
+
+```java  
+private static Stream<Tuple> getArtistNames(EntityManager em, String matchedValue) {
+
+    //String jpql = "SELECT a.artistId, a.artistName FROM Artist a WHERE a.artistName LIKE ?1";
+    String jpql = "SELECT a.artistId id, a.artistName as name FROM Artist a WHERE a.artistName LIKE ?1";
+    var query = em.createQuery(jpql, Tuple.class);
+    query.setParameter(1, matchedValue);
+    return query.getResultList();
+    return query.getResultStream();
+}
+```
+
+I'll use ID as the alias for artist ID and just name, for artist name.
+You can specify an alias simply by including it directly after the field name, 
+which I'll do for `id`.
+Alternately, you can use the keyword as to specify an alias, 
+which I'll do after `a.artistName`.
+In the _main_ method, I can now use the aliases, Id and name, in the get methods.
+
+```java  
+public static void main(String[] args) {
+
+    String persistenceUnitName = "Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music";
+  
+    List<Artist> artists = null;
+    try (EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName); 
+         EntityManager em = emf.createEntityManager();
+         ) {
+  
+        var transaction = em.getTransaction();
+        transaction.begin();
+        
+        artists = getArtistsJPQL(em, "%Stev%");
+        artists.forEach(System.out::println);
+        var names = getArtistNames(em, "%Stev%");
+/*
+        names.map(a -> new Artist(
+                a.get(0, Integer.class),
+                (String) a.get(1)))
+                .forEach(System.out::println);
+*/
+
+        names.map(a -> new Artist(
+                a.get("id", Integer.class),
+                (String) a.get("name")))
+                .forEach(System.out::println);
+      
+        transaction.commit();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+```
+
+I'll replace the number `0` with the text literal `id`.
+And I'll replace the number `1`, on the next line, with the text literal `name`.
+This makes the code a bit easier to understand, I think.
+I can rerun this code, and I'll get the same result as before.
+
+The Tuple is a simple collection mechanism that can be used with JPQL to return data,
+without relying on a specific entity class.
+You've seen that the elements can be named.
+Data types of the elements can also be queried 
+through methods on each **Tuple** element, if need be.
+I'm going to comment this code out right now, in the _main_ method, 
+because I want to get back to querying a full artist record.
+
+```java  
+public static void main(String[] args) {
+
+    String persistenceUnitName = "Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music";
+  
+    List<Artist> artists = null;
+    try (EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName); 
+         EntityManager em = emf.createEntityManager();
+         ) {
+  
+        var transaction = em.getTransaction();
+        transaction.begin();
+        
+        //artists = getArtistsJPQL(em, "%Stev%");
+        artists = getArtistsJPQL(em, "%Greatest Hits%");
+        artists.forEach(System.out::println);
+        
+        //var names = getArtistNames(em, "%Stev%");
+        //names.map(a -> new Artist(
+                //a.get("id", Integer.class),
+                //(String) a.get("name")))
+                //.forEach(System.out::println);
+      
+        transaction.commit();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+```
+
+In the next example, I'll get all the artists who have a `Greatest Hits` album.
+First, I'll change the regular expression in the _main_ method, 
+from `%STEV%`, to `%Greatest Hits%`.
+Since my JPQL statement is trying to match on artist name, 
+and not album name, I have to change that statement in the _getArtistsJPQL_ method.
+I need to include a join to query by album.
+Importantly, this is a JPQL join, and not an SQL join.
+First, I'll comment out the JPQL statement I now have in this method.
+
+```java  
+private static List<Artist> getArtistsJPQL(EntityManager em, String matchedValue) {
+
+    //String jpql = "SELECT a FROM Artist a WHERE a.artistName LIKE ?1";
+    String jpql = "SELECT a FROM Artist a JOIN albums album WHERE album.albumName LIKE ?1";
+    var query = em.createQuery(jpql, Artist.class);
+    query.setParameter(1, matchedValue);
+    return query.getResultList();
+}
+```
+
+I'll create a new JPQL string variable.
+And I'll start out the same way, so `SELECT a FROM Artist a`.
+But now I'll add a `JOIN`, joining not to the table, 
+but to the field I declared on the **artist** entity, 
+which I called `albums`.
+I'll use the word `album` in the singular, as my alias for this collection. 
+Next, the `where` clause will match on an album name, 
+so `WHERE album.albumName LIKE ?1`.
+So `album` is the **album** entity, and `albumName` is a field on that class. 
+At no time, do I directly reference a database table or columns.
+The **join** condition is set up in the annotations for the albums field in the **Artist** class, 
+so I don't have to include the joined fields here, as you can see.
+I'll run this code:
+
+```html  
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 join albums a2_0 on a1_0.artist_id=a2_0.artist_id where a2_0.album_name like ? escape ''
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=198, artistName='Tom Petty & The Heartbreakers', albums =[Album{albumId=47, albumName='Greatest Hits'}, Album{albumId=486, albumName='Greatest Hits'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=153, artistName='Troggs', albums =[Album{albumId=46, albumName='Athens Andover'}, Album{albumId=97, albumName='Wild Thing - The Greatest Hits'}, Album{albumId=422, albumName='Greatest Hits'}, Album{albumId=485, albumName='Athens Andover'}, Album{albumId=536, albumName='Wild Thing - The Greatest Hits'}, Album{albumId=861, albumName='Greatest Hits'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=92, artistName='Fleetwood Mac', albums =[Album{albumId=41, albumName='The Dance'}, Album{albumId=232, albumName='The Very Best Of'}, Album{albumId=238, albumName='Greatest Hits'}, Album{albumId=324, albumName='The Best of'}, Album{albumId=416, albumName='Rumours'}, Album{albumId=480, albumName='The Dance'}, Album{albumId=671, albumName='The Very Best Of'}, Album{albumId=677, albumName='Greatest Hits'}, Album{albumId=763, albumName='The Best of'}, Album{albumId=855, albumName='Rumours'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=188, artistName='Billy Joel', albums =[Album{albumId=345, albumName='Greatest Hits Vol. III'}, Album{albumId=784, albumName='Greatest Hits Vol. III'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=176, artistName='Billy Idol', albums =[Album{albumId=399, albumName='Greatest Hits'}, Album{albumId=838, albumName='Greatest Hits'}]}
+```
+
+In this case, five artists were found that have a `Greatest Hits` album in this query.
+And now, for good measure, I'll change this query slightly, so that next,
+I'll find any artist that has either a `Greatest Hits`, or a `Best of collection` album.
+To do this, I'll add an or statement in the **where** clause, 
+after the first parameter placeholder. 
+
+```java  
+private static List<Artist> getArtistsJPQL(EntityManager em, String matchedValue) {
+
+    //String jpql = "SELECT a FROM Artist a JOIN albums album WHERE album.albumName LIKE ?1";
+    String jpql = "SELECT a FROM Artist a JOIN albums album WHERE album.albumName LIKE ?1" +
+            "OR album.albumName LIKE ?2";
+    var query = em.createQuery(jpql, Artist.class);
+    query.setParameter(1, matchedValue);
+    query.setParameter(2, "%Best of%");
+    return query.getResultList();
+}
+```
+
+So I'll append the text, `OR album.albumName LIKE ?2`.
+Question mark 2 is my second numeric placeholder.
+Instead of passing the second matched value as another argument to this method, 
+I'll just hard code it in this code, for simplicity.
+So I'll _setParameter_ again on the query,
+and the first argument needs to be the number 2. 
+This will substitute the second placeholder, specified by question mark 2,
+with whatever I pass as the next argument.
+And for that, I'll pass a string literal, `%Best of%`. 
+This will match any album, with the text `Best of`, in any part of the album name.
+Rerunning this:
+
+```html  
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 join albums a2_0 on a1_0.artist_id=a2_0.artist_id where a2_0.album_name like ? escape '' or a2_0.album_name like ? escape ''
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=198, artistName='Tom Petty & The Heartbreakers', albums =[Album{albumId=47, albumName='Greatest Hits'}, Album{albumId=486, albumName='Greatest Hits'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=153, artistName='Troggs', albums =[Album{albumId=46, albumName='Athens Andover'}, Album{albumId=97, albumName='Wild Thing - The Greatest Hits'}, Album{albumId=422, albumName='Greatest Hits'}, Album{albumId=485, albumName='Athens Andover'}, Album{albumId=536, albumName='Wild Thing - The Greatest Hits'}, Album{albumId=861, albumName='Greatest Hits'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=10, artistName='Procol Harum', albums =[Album{albumId=195, albumName='The Best of PROCOL HARUM Halcyon Daze'}, Album{albumId=634, albumName='The Best of PROCOL HARUM Halcyon Daze'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=137, artistName='Doors', albums =[Album{albumId=202, albumName='Best Of The Doors'}, Album{albumId=641, albumName='Best Of The Doors'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=92, artistName='Fleetwood Mac', albums =[Album{albumId=41, albumName='The Dance'}, Album{albumId=232, albumName='The Very Best Of'}, Album{albumId=238, albumName='Greatest Hits'}, Album{albumId=324, albumName='The Best of'}, Album{albumId=416, albumName='Rumours'}, Album{albumId=480, albumName='The Dance'}, Album{albumId=671, albumName='The Very Best Of'}, Album{albumId=677, albumName='Greatest Hits'}, Album{albumId=763, albumName='The Best of'}, Album{albumId=855, albumName='Rumours'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=175, artistName='Seasick Steve', albums =[Album{albumId=256, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=436, albumName='Man From Another Time'}, Album{albumId=695, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=875, albumName='Man From Another Time'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=86, artistName='10cc', albums =[Album{albumId=320, albumName='The Best Of The Early Years'}, Album{albumId=759, albumName='The Best Of The Early Years'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=119, artistName='Bob Marley', albums =[Album{albumId=26, albumName='The Collection Volume One'}, Album{albumId=77, albumName='Natty Dread'}, Album{albumId=95, albumName='Stir it Up - Vol 4'}, Album{albumId=251, albumName='Soul Shakeddown Party - Vol 3'}, Album{albumId=315, albumName='The Collection Vol 2 (Riding High)'}, Album{albumId=323, albumName='The Very Best Of The Early Years 1968-74'}, Album{albumId=465, albumName='The Collection Volume One'}, Album{albumId=516, albumName='Natty Dread'}, Album{albumId=534, albumName='Stir it Up - Vol 4'}, Album{albumId=690, albumName='Soul Shakeddown Party - Vol 3'}, Album{albumId=754, albumName='The Collection Vol 2 (Riding High)'}, Album{albumId=762, albumName='The Very Best Of The Early Years 1968-74'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=148, artistName='Yardbirds', albums =[Album{albumId=328, albumName='The Very Best of the Yardbirds'}, Album{albumId=767, albumName='The Very Best of the Yardbirds'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=188, artistName='Billy Joel', albums =[Album{albumId=345, albumName='Greatest Hits Vol. III'}, Album{albumId=784, albumName='Greatest Hits Vol. III'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=47, artistName='Manfred Mann', albums =[Album{albumId=139, albumName='The Ascent Of Mann'}, Album{albumId=370, albumName='The Very Best Of'}, Album{albumId=578, albumName='The Ascent Of Mann'}, Album{albumId=809, albumName='The Very Best Of'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=176, artistName='Billy Idol', albums =[Album{albumId=399, albumName='Greatest Hits'}, Album{albumId=838, albumName='Greatest Hits'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=197, artistName='T.Rex', albums =[Album{albumId=404, albumName='The Very Best Of Marc Bolan And T. Rex'}, Album{albumId=843, albumName='The Very Best Of Marc Bolan And T. Rex'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=54, artistName='Bon Jovi', albums =[Album{albumId=437, albumName='Cross Road - The Best Of'}, Album{albumId=876, albumName='Cross Road - The Best Of'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=202, artistName='Muddy Waters', albums =[Album{albumId=905, albumName='The Best of Muddy Waters'}]}
+```
+
+I now get 16 matches for artists who've either got a `Greatest Hits` album, 
+or a `Best of` **Collection** of songs.
+You can see the last artist was the new one I recently added, `Muddy Waters`,
+and he's got an album, `The best of Muddy Waters`, that matched the criteria.
+
+OK, so this was a short introduction to JPQL, which I hope you found helpful.
+You can see why JPA and JPQL have become so popular in many Java frameworks.
+They certainly simplify some of the mechanisms needed 
+to query data from a database with a Java application.
+
+|                                                                                                  | Links                                                                                              |
+|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
+| Wiki books Java Persistence/JPQL                                                                 | [here](https://en.wikibooks.org/wiki-/Java_Persistence/JPQL)                                       |
+| Jakarta Persistence, Query Language                                                              | [here](https://jakarta.ee/specifications/persistence/3.0/jakarta-persistence-spec-3.0.html#a4665)  |
+| 2013 Oracle's The Java EE 6 Tutorial, Creating Queries Using the Java Persistence Query Language | [here](https://docs.oracle.com/javaee/6/tutorial/doc/bnbrg.html)                                   |
+
+
+I've listed a couple of useful links on this table 
+if you want to learn more about JPQL.
+**JPQL** is still a string that has to be interpreted and parsed into executable code.
+The **JPA Criteria Builder**, on the other hand, 
+is a more Object-Oriented approach to querying with entities.
+In the next section, I'll introduce you to the **Criteria Builder** class,
+and its related types, as an alternative to **JPQL**.
+</div>
+
+### JPA Queries—CriteriaBuilder and Native SQL
+<div align="justify">
+
+In the last two sections, I walked you through a couple of simple scenarios, 
+using **JPQL** to retrieve targeted information from the **music** database.
+In this section, I'll do something similar, but I'll use the **Criteria Builder**.
+
+The **Criteria Builder** interface describes a factory class, 
+for creating various type-safe query components.
+It provides methods for creating the different parts of a JPA query, 
+each described as an object, and not just part of a string.
+
+
+
+The Criteria Builder's methods are used to create specific instances, 
+both the criteria query object, and its parts,
+the specific criteria in other words, that make up the definition of the query.
+A query in it's simplest form consists of a
+command, as well as a source of some sort.
+A command might be select, update, or
+delete, and a source in SQL is usually a
+table or view, whereas in JPQL it's an entity.
+A query may also have many other clauses and
+specifics, which define what needs to be done.
+The Criteria Builder provides all the building
+blocks, as Java Objects, to
+fashion a specific query.
+It starts with the Criteria Query instance.
+You can think of this as the scaffolding,
+in which everything else is going to be placed.
+The scaffolding has specific slots, and these
+translate to methods on the Criteria Query.
+The building blocks fall into one of four
+categories, which include the Predicate,
+Expression, Selection, and Order types.
+The Criteria Builder isn't responsible for
+executing a query, or even putting all the
+parts together, it is just responsible for
+creating customizable components you'll need.
+The Criteria Query object will use the
+building block types, in its design,
+to construct a specific query.
+The Criteria Query is a bit like scaffolding.
+And a bit similar to a String
+Builder object, in that things get added,
+and the instance mutates and grows.
+Unlike the String Builder though, the
+additions to the Criteria Query object can be of
+multiple types, depending on the method selected.
+Pause the video here for just a moment, and
+take a little time to familiarize yourself,
+with some of the methods on this class.
+You'll notice that the methods on
+this class almost all represent specific
+clauses or expressions, in a select query.
+You've got the select method, the from method,
+a where method, as well as others like distinct,
+order by, having, group by, and so
+on, which should be familiar terms for
+anyone who has written SQL queries.
+Also notice, the arguments passed
+to these methods, which mostly consist
+of the four types I mentioned already,
+and which are displayed here as well.
+When you pass instances of these types to
+methods, you'll be using a CriteriaBuilder factory
+method, to get specific instances of these types.
+A Predicate represents a
+condition in a WHERE clause.
+An Expression represents a computed value.
+This can be a mathematical expression,
+a function call, or a field reference.
+An Order is used to represent sorting
+criteria for the ORDER BY clause.
+A Selection represents an attribute,
+expression, or result, used to define
+the selectable output of the query.
+Finally, notice the from, method on this class.
+This method is different from the
+rest and returns a root instance.
+The Root is a special type, and it's the bridge
+between the criteria query and your entity.
+It's the source of the query's data.
+It's more common to have just one root,
+but there's support for multiples.
+I also want you to see that other than the
+from method, all of these methods return
+an instance of Criteria Query.
+Like the String Builder object,
+the Criteria Query object is mutable, but
+each method returns a reference to itself.
+This means you can optionally chain these
+methods together, which provides the
+advantage of more concise and readable code.
+This slide summarizes how to use the Criteria
+Builder and Criteria Query types, to
+execute queries using JPA entities.
+First, you get an instance of
+Criteria Builder, using the get
+Criteria Builder method on an Entity Manager.
+Once you have a Criteria Builder, you then get
+a Criteria Query instance from that.
+You'll specify the root, or entity
+that the query will select its data from.
+You then specify additional information, or the
+details, about the query, like a where clause,
+an order by, or Group By clause for example.
+You'll invoke various methods on Criteria
+Query, while using the Criteria Builder to
+manufacture the appropriate pieces,
+which get passed as arguments.
+Once you've constructed the query's
+criteria, you create an executable query,
+like we did with the JPQL Typed Query, by
+calling create Query on the entity manager.
+This method returns a query instance, which is
+different, from the criteria query instance.
+You execute the query and retrieve results, using
+one of the several methods on the query instance.
+You'll remember these include get Result List, get
+Result Stream, and get Single Result, for example.
+Now that you've got a basic understanding
+of what this process consists of,
+let's work through it in some code.
+Getting back to my JPA project, and the Main Query
+class, I'll add another private static method.
+This time, I'll return a Stream of Artist
+instances. I'll call this method get
+Artists Builder, and it's parameters
+will be the same as the earlier method,
+so an Entity Manager first, and then a String,
+I'll again call matched Value. I start by
+creating a CriteriaBuilder variable, which
+I'll call builder. I get an instance of a criteria
+builder, from entity manager, using the method get
+Criteria Builder. Next, I'll set up a criteria
+query variable, with a type argument of Artist. I
+use the criteria builder method, create Query, to
+get an instance, and I pass that the Artist class.
+Next, I need something called a query root.
+This represents the starting point for
+constructing a query against a data
+set, represented as an entity class.
+So this has the Root type, with Artist as
+the type argument, I'll just call it root,
+and I can get this using criteria Query.from,
+and passing Artist.class to that method.
+You can think of the root
+as the from clause, in JPQL.
+So if I add nothing to the root, the
+entire table associated with this entity
+is the data set, that will be operated on.
+Next, I define the operation I want to execute
+on my criteria Query object, which in this case
+is select. I pass it the root instance. Finally,
+I can create the query, and call getResultStream.
+Now, moving back up to the main method,
+I'll insert the next segment of
+code, before the commented out code,
+that's currently in the try block.
+I'll include a separator line so
+I can distinguish the output from the earlier
+method call. I'll include a Stream of Artists,
+setting that to the value I get back from my new
+method, get Artists Builder. I'll pass that the
+entity manager variable, and for now an empty
+string literal. Because I get a stream back,
+I can use stream operations to manipulate the
+data further. I'm going to limit the results to
+10. A more refined query would have brought less
+    data back, which is a much better approach. I'm
+    really just including it here now, so I don't have
+    to look at 200 lines of output. Next, I'll collect
+    the data into a map, using Collectors.toMap.
+    The first argument specifies the function, to
+    get the key, so it's keyed by the artist name. The
+    next argument, is the function to get the value,
+    so that's just the number of albums. Next, I need
+    to specify a merge function, and I'll just use the
+    method reference for Integer sum there. I want a
+    tree map back, because it'll be ordered. Finally,
+    I want to print the artist name, and the
+    number of albums that artist has in the data.
+    I've no idea what happened with the
+    formatting. Let me reformat the code.
+    For some reason Tree Map did not
+    get imported. I'll add it manually.
+    All right, I fixed it.
+    I'll run this code.
+
+
+
+And now you see 10 artists, in artist name order,
+and the number of albums each of these has.
+This just printed the first 10 artists it got,
+because of the limit operation.
+The artists weren't ordered, in the stream,
+though they're ordered here.
+I'll next refine the query,
+to include an order by clause, so I'll go
+back to the get Artists Builder method.
+I start with criteria query, and call
+order by, passing another factory object,
+which I get by calling a method, A S C, which
+stands for ascending order. This method returns
+an Order instance. I pass root.get artist
+name in there, which defines how to sort.
+I'll rerun my code.
+I've got a different set of artists,
+so the first 10 alphabetically,
+starting with one thousand maniacs.
+I'm really still getting all 200 back,
+so I'll next include a where clause.
+Getting back to my get Artists Builder
+method, I'll insert another statement,
+between the where method, and the order by method.
+These don't really have to be in this order,
+but I'll just keep them in the
+logical order of a SQL statement.
+I start by invoking the where method on criteria
+query, I need to pass that a Predicate instance,
+which I can get from many methods on
+the CriteriaBuilder, but in this case
+I want to use the like method, passing that
+root.get artistname, and the matchedValue.
+Next, I'll scroll back up to the main method,
+where I'll next change the empty string literal,
+replacing that with the text, B L, percent sign.
+This means I want to get only artists whose names
+start with B L.
+I'll run this.
+
+
+
+I get matching records, so my where
+clause worked, and I'm only getting
+artists whose names start with B L.
+Before I move on, I'll just change the
+get Artists Builder method, one last time.
+The Criteria Query is a mutable object,
+which is why I don't need to reassign the
+instance, on each of these method calls.
+Each method outputs a reference
+to itself, which means I can
+chain methods together, so I'll do that.
+This creates a chain of three methods.
+I'll use IntelliJ to reformat this code.
+You can see this reads somewhat
+like stream operations.
+This is a lot easier to read in my opinion.
+I'll run that, and confirm I get the same
+
+
+
+results as before.
+And I do.
+In the interest of time, I won't be covering
+how to do joins in a Criteria Builder query
+here because I want to quickly show
+you how to execute a Native Query.
+Again, I'm not applying the
+same standard to teaching you
+JPA as I have been Java's core functionality.
+This foray into JPA was a bit of a courtesy,
+since it's increasingly becoming an
+industry standard, in some form or another.
+If you're curious about joins, be sure to see
+the Bonus section of the challenge that follows.
+Finally, I'll quickly demonstrate one last way to
+query using JPA, and that's by executing a native
+query, with the entity manager.
+I'll add another method.
+This is private, static, returns a Stream of
+Artist, and it'll be called get Artists SQL.
+This method will have the same parameters
+as the others, so an entity manager,
+and a string named matched value.
+I'll set up a local variable, called query,
+the result of calling create Native Query on
+the entity manager argument. This method takes
+a string, which is native SQL, but with one minor
+exception. This string can contain placeholders,
+either named or numeric, which I'll use here.
+I'll select from the table, and just to make
+it clearer, I'll include the schema, so select,
+star from music dot artists where artist_name,
+and this is the column name now, not the entity
+name, like, question mark 1. I still pass the
+Artist class as the second argument, because the
+JPA Provider will instantiate artist instances
+from the data, through JPA magic. I also still
+set the parameter, and that's parameter 1,
+that'll get set to the matched value.
+Finally, I'll return the results as a stream.
+Going back up to my main method, I'll change
+the code, that was calling get Artists Builder,
+and replace it with a call to
+this method, so get Artists SQL.
+I'll run that,
+
+
+
+and you can see,
+that again produces the same result
+as the Criteria Builder code, when it
+didn't include the order by clause.
+Which type of query you use, is
+dependent on a lot of different factors.
+This slide summarizes the three types
+of queries you can execute, using JPA.
+The Native Query Executes
+native SQL queries directly.
+This gives you full control over SQL syntax.
+It allows for performance optimizations for
+specific databases, and gives you
+access to vendor specific features.
+The Criteria Builder Query lets you build
+queries programmatically using Java objects.
+It's type safe, includes compile time checking,
+and allows for dynamic query construction.
+The JPQL query uses a SQL like syntax,
+which is tailored to JPA Entities. It's
+portable across JPA implementations.
+As you saw, it hides database implementation
+details, and is a more intuitive method for
+anyone with SQL experience.
+Ok, so this video ends the
+introduction to JPA, and is the end
+of the Database section of the course.
+In the next video, I've got
+a JPA challenge for you.
+Keep this project open, your challenge
+will use the entities and configuration
+that already exist in this project.
+I'll see you in that next video.
+
+
 
 ```java  
 
 ```
 
-This method is going to return a List of Artist entity types, based on some query.
-So I'll start with private, static, then
-List, with Artist declared in angle brackets,
-so my List will only have artist entities in it.
-I'll name this method get Artists JPQL.
-It will have two parameters. First, an
-EntityManager, which I'll be creating
-and managing, in the main method, and passing
-to this method. I'll also include a string,
-which I'll call matchedValue. So next, I'll create
-a variable, a string for my query statement. I'll
-call this JPQL, and I'll set that to a string
-literal. Select a, from artist, a. This looks
-a lot like SQL. The letter a, in this case is a
-variable, as well as a table alias. Notice that
-I'm selecting, not from artists, or music.artists,
-so not from the table name. Instead, I select from
-Artist, with a capital A, which actually refers to
-my Artist entity, the Artist class in other words.
-I can execute this query, using
-a method on the EntityManager.
-I'll use Local Variable type inference, to set up
-the next variable, so var as the type, and query
-as the variable name. I'll make that equal to the
-value I get back, when I execute createQuery on
-the EM method argument, which is really an Entity
-manager. This method takes two arguments, first
-is a string, that contains JPQL, so I'll pass my
-variable for that. The second argument specifies
-the class name, of the entity that's being
-queried, so here, I need to pass Artist.class.
-Finally, the query object I get back, has a
-method called getResultList on it. In this case,
-it'll return a List of Artists, so I can just
-return that directly here, from this method.
-And that's it.
-These three lines
-of code will get all the artists, from
-the music schema, from the artists table.
-Before I run this, notice,
-
 ```html  
 
 ```
-
-from Intelli J's inlay hint,
-the type that's inferred, for the query variable.
-It's a TypedQuery, a generic type, an interface in
-this case, that has a type argument of Artist.
-I can control click on that hint.
-This opens up a decompiled
-class file, in a new tab.
-There are tools that'll take a class file, and
-decompile it into source code, which can show
-you quite a bit of the implementation details.
-In this case, I can see this is a typed interface,
-that extends Query.
-If I hover over the name,
-TypedQuery, I can see that this interface
-is part of the jakarta.persistence package.
-I'll pull this interface
-up, in the Jakarta API docs.
-To find this link on your own, just google
-the terms, jakarta and TypedQuery together,
-to find the latest version, or
-most current version you can.
-I'll scroll down a bit on this page,
-so you can see the list of methods,
-declared on this interface.
-You'll see at the top of the list,
-there's the getResultList method,
-which I'll be executing in this code.
-This is followed by getResultStream,
-which returns a stream of the entity type.
-You know I like streams, so this method could be
-particularly useful, for using stream operations
-we've become pretty familiar with.
-This will let us quickly investigate,
-or manipulate query results.
-Let me give you a word of caution though.
-You want to avoid, if you can, using
-a stream to filter or limit results,
-though it might seem simpler.
-It's usually a good idea to
-limit data going across a network.
-If you can add the criteria to the
-where clause of the JPQL query that gets executed
-on the server, you'll be better off than trying
-to filter the stream on the client side..
-But you can imagine using the stream result
-to create some sort of Mapped collection,
-based on column values in a table (as their
-translated to entity fields).
-I'll be showing you an example
-of this in a little bit.
-There's also getSingleResult,
-so maybe you only care about one entity,
-though several might match your query.
-For example, if you've got a sorted query,
-you might only want the first record,
-sometimes called the top, and this method
-limits the data returned, to a single record.
-There's a couple of useful set methods,
-and then a whole series of set Parameter
-methods, as you can see.
-Getting back to the code,
-I'll run my first JPA query.
-
-```html  
-
-```
-
-To do this, I need to add some
-code in the main method.
-I'll set up a variable,
-for the results from the getArtistsJPQL method, so
-a List of Artists, and I'll initialize it to null.
-Like I did previously, I'll first instantiate an
-Entity Manager Factory from the Persistence type,
-within a try with resources declaration.
-I'll pass that the name of my persistence
-unit. Hopefully you'll remember, I set this
-up in the persistence.xml file. In this case,
-the persistence unit is named, dev dot lpa dot
-music. Next, I create an Entity Manager instance,
-using a method on the factory, again this is still
-in the try with resources declaration. I'll get
-back to the code that goes in the try block,
-in a second. I'll just complete the statement
-with a catch block, Printing the stack trace of
-any error I get, ignoring Intelli J's warning,
-that this isn't very robust handling of a problem.
-My variable, artists, will get set to the result
-of calling my get Artists JPQL method.
-When using JPA Queries, it's a good idea
-to wrap the queries in a transaction. I'll
-get a transaction from the entity manager.
-I'll call transaction begin next. I need to pass
-the entity manager variable, and then a string,
-and I'll just set that to an empty literal
-string to start. You might have noticed,
-I never used the second parameter, in my method's
-code block. I plan to change that code shortly,
-to use it. Finally, I'll print the results I
-get back. I can use for each on the artists
-list variable, and a method reference, to print
-each artist, that's in this resulting list.
-I'll call transaction commit here at the end.
-You might be wondering why you need a transaction
-when you're just querying records.
-This is kind of a complicated subject
-and has to do with lazy loading vs eager
-fetching of dependent tables, as well as
-transactional integrity between related tables.
-If you do have problems with your queries,
-and you're not including them in a transaction
-block, let me recommend trying this to start.
-Now I'll run this code.
-
-```html  
-
-```
-
-So you'll see, in the output,
-all of the artists in the table, in my
-case that's 202 artists, that get printed.
-Each record contains all the
-row data in each artist record,
-so that's just artist id and artist name.
-Notice though, that each record also
-includes, all the artist's album records.
-In my JPQL statement, when I specified, select a,
-from artist, I didn't specify what data I wanted,
-meaning what fields that mapped to columns.
-So it returned all the data for
-all the fields on this entity.
-You'll recall that I set up the entities, by
-declaring a relationship on the albums field,
-a list, declared in artist, to the album entity.
-All of the underlying database querying,
-with the appropriate joins was done seamlessly
-by the JPA Provider, in this case hibernate.
-This means, I'm able to write a very simple,
-generic query against an Artist entity class,
-to get related data, in this
-case albums, for each artist.
-This doesn't require the developer retrieving
-data, to know anything about inner or outer joins,
-or foreign keys, or any other specific
-implementation details of the database.
-It also doesn't require
-views, on the database server,
-for simpler querying of a normalized schema.
-You may still want to employ those techniques,
-but in this case, none of that is
-necessary, in the operation of this query.
-This might be a welcome relief, if you
-don't want to deal with databases directly.
-Now, I'll alter the query slightly, this time
-just getting artists whose name contains S T E V.
-First, I'll change my select statement.
-I'll add a where clause, so I'll append the text,
-where, a.artistName, like, colon partialName.
-In this case, you can see I'm using the attribute
-name on the Artist entity, and not the column name
-in the table, which is artist underscore name.
-My placeholder parameter, which is called a named
-parameter in this case, is specified by a colon,
-followed by any variable name I want.
-So here, I'm calling it partial Name,
-since I'll match on part of the artist's name.
-Next I need to actually pass a value,
-to this placeholder parameter.
-So I'll add a call to a
-setParameter method, on the query variable.
-One version of this method takes two strings.
-The first is the named parameter, so I'll pass
-partialName as a string literal. The literal value
-should match the named parameter, used in your
-JPQL statement. The second argument to the set
-parameter method, is the value to be used, so I'll
-pass it the matched Value, the method argument
-that contains the criteria to match on.
-Back In the main method,
-I'll change how I invoke this method.
-Instead of passing an empty string literal,
-I'll pass a pattern, an S Q L pattern I mean.
-Let me set this up, so first I include a percent
-sign, then S T E and V, and another percent sign.
-The percent sign is the S Q L wildcard specifier,
-in a pattern, that's used by a LIKE clause in SQL.
-It means match on zero, or many characters.
-Java's regular expression specifier to do
-something similar, you'll remember, is a dot.
-Because I'm starting with a percent sign, this
-will match the contiguous letters, S T E V,
-in any part of the album name.
-I'll run that.
-
-```html  
-
-```
-
-You can see I get only 6 artists that matched
-that, most of them start with the first name,
-Steve, but there's also Seasick
-Steve, and Stevie Ray Vaughan.
-I could change my pattern, if I wanted only
-artists whose names started with S T E V, by
-removing the first percent sign.
-That would eliminate Seasick Steve,
-which you can try on your own, if you want to.
-JPQL doesn't eliminate the need to understand
-all SQL constructs, as this example demonstrates.
-In this code, you still needed to understand the
-LIKE clause and valid patterns,
-to use it effectively here.
-In addition to named parameters, you can use
-placement parameters in the query string.
-This is similar to the question
-mark place holder which we saw,
-in the prepared and callable statements.
-In this case, in addition to the question
-mark, you have to include a numeric value.
-Numeric placeholder specifiers must start at 1.
-But they don't have to be in sequential
-order, and you can reuse a numeric
-placeholder, in a single JPQL string.
-I'll change my getArtistsPLQL method,
-replacing colon matched value, with a
-question mark, followed by the number 1.
-I'll next change the setParameter method,
-passing in the number 1, as the first argument.
-If I run the code this way,
-
-```html  
-
-```
-
-I'll get the same results,
-as I did with a named parameter.
-Named placeholders make more readable code,
-in my opinion, but it's up to you,
-or maybe the framework you're using,
-which kind of placeholder type you'll use.
-In this video, I've given you your first taste of
-using JPQL, with a very simple select statement.
-The first brought back all data for all records,
-and the second query brought back all
-data, for a limited set of records,
-matching criteria on the artist name.
-I'll end this video here, before it gets too long.
-In the next video, I'll continue using
-this project and this class's method,
-and show you slightly more complex JPQL
-queries, so let's move on to that video.
-
 
 ~~~~sql  
 
@@ -10931,6 +12106,9 @@ queries, so let's move on to that video.
 
 ```
 
+~~~~sql  
+
+~~~~
 </div>
 
 ## [o. JPA Bonus Challenge]()
