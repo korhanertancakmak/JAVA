@@ -12343,7 +12343,7 @@ As you saw, it hides database implementation details,
 and is a more intuitive method for anyone with SQL experience.
 </div>
 
-## [n. JPA Challenge]()
+## [n. JPA Challenge](https://github.com/korhanertancakmak/JAVA/tree/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/Course15_JPAChallenge/README.md#jpa-challenge)
 <div align="justify">
 
 In this challenge, you'll be working on your own
@@ -12418,14 +12418,205 @@ You'll want to use it to perform your joins.
 ## [o. JPA Bonus Challenge]()
 <div align="justify">
 
-```java  
+The bonus part of this challenge was to create a second method on song query, 
+that uses a criteria builder query, to produce the same results.
+I gave you a hint to use the multiselect method
+and to research the join method, on root to perform your joins.
+So let's jump right into some code for this.
+I've still got the JPA project open and the class
+I created in the last section called **SongQuery**.
+Instead of cutting and pasting a method from the main query class 
+as I did with the _JPQL_ method I'll create this method from scratch.
 
+```java  
+private static List<Object[]> getMatchedSongsBuilder(EntityManager entityManager, String matchedValue) {
+
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Object[]> query = builder.createQuery(Object[].class);
+  
+    Root<Artist> root = query.from(Artist.class);
+    Join<Artist, Album> albumJoin = root.join("albums", JoinType.INNER);
+    Join<Album, Song> songJoin = albumJoin.join("playList", JoinType.INNER);
+  
+    query.multiselect(
+                    root.get("artistName"),
+                    albumJoin.get("albumName"),
+                    songJoin.get("songTitle")
+            )
+            .where(builder.like(songJoin.get("songTitle"), matchedValue))
+            .orderBy(builder.asc(root.get("artistName")));
+  
+    return entityManager.createQuery(query).getResultList();
+}
 ```
+
+I'll start with a private static method that returns a list, but this time, 
+I'm going to have it return a list of object array. 
+I'll call it _getMatchedSongsBuilder_, 
+and the first parameter will be entity manager, just as before.
+The second parameter will be the string, _matchedValue_. 
+The next thing I need to do is _getCriteriaBuilder_ instance. 
+I'll call it _builder_ to save a little space,
+and I get that instance by calling `entityManager.getCriteriaBuilder`.
+From that I can get a criteria query instance.
+This will be typed to the object array. 
+I'll call it _query_ and that's equal to `builder.createQuery`. 
+Instead of `Artist.class`, I pass `Object[].class` declaration.
+So why am I returning an array of objects?
+Instead of returning every matching artist 
+with all the albums and songs associated to the artist,
+this method will simply return the song title, 
+the artist name and the album name as objects in an object array, 
+which will make processing the results a lot simpler.
+This also lets me show you how to select a specific column, using **CriteriaQuery**.
+Next I get the _root_, which still ultimately be the `Artist.class`.
+I don't really need _artist_ except I do want to get the _artistName_, 
+so in this case, I need all three entities. 
+I join albums to artist by creating a **join** variable, 
+typed with **artist**, and **album**. 
+I'll call this _albumJoin_ and I can get this by calling `root.join`, 
+passing _albums_, the field name on my **Artist** entity, and specifying a join type.
+In this case, the join type is `JoinType.INNER`. 
+The **JoinType** class is just a simple enum, 
+with _INNER_, left, and right as your options. 
+Left and right are different types of outer joins. 
+I'll do something very similar on this next line creating another join type,
+this time with **album** and **song**, which I'll call _songJoin_, 
+and I get that from the _albumJoin_ variable this time not the _root_. 
+I pass the field name, playlist, and again I want an inner join.
+Now that I have my root and joins set up. 
+I can start chaining methods on my **CriteriaQuery** variable, 
+which here I've called _query_.
+I first call _multiselect_ rather than _select_,
+which lets me pass a var args list of values.
+I'll select the _artistName_ from the _root_.
+Then I'll select the _albumName_ for the _albumJoin_ variable. 
+Finally, I can select _songTitle_ from the _songJoin_ variable.
+I'll chain a call to the _where_ method next. 
+Here I use **CriteriaBuilder** to get my _like_ component. 
+I'll pass that a _songTitle_ from the _songJoin_ variable and then _matchedValue_. 
+This sets up the _like_ clause.
+Next, I'll chain the _orderBy_ method because I want this data sorted by _artistName_. 
+I get an order instance by calling the method _ASC_, on the builder, 
+then pass the field I want the data sorted by, so `root.get("artistName")`. 
+This sets up the _orderBy_ clause.
+I'll use _entityManager_ to create a typed query passing it the **CriteriaQuery** instance, 
+and I'll chain _getResultList_ to that which is then returned.
+To test this, I'll scroll up to the _main_ method.
+First, I'll copy the two _printf_ statements that printed my formatted headers.
+
+```java  
+public static void main(String[] args) {
+
+    String persistenceUnitName = "Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music";
+
+
+    try (EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+         EntityManager em = emf.createEntityManager();
+    ) {
+  
+        String dashedString = "-".repeat(19);
+        //String word = "Storm";
+        String word = "Soul";
+        var matches = getMatchedSongs(em, "%" + word + "%");
+        System.out.printf("%-30s %-65s %s%n", "Artist", "Album", "Song Title");
+        System.out.printf("%1$-30s %1$-65s %1$s%n", dashedString);
+    
+        matches.forEach(a -> {
+            String artistName = a.getArtistName();
+            a.getAlbums().forEach(b -> {
+                String albumName = b.getAlbumName();
+                b.getPlayList().forEach(s -> {
+                    String songTitle = s.getSongTitle();
+                    if (songTitle.contains(word)) {
+                        System.out.printf("%-30s %-65s %s%n", artistName, albumName, songTitle);
+                    }
+                });
+            });
+        });
+  
+        System.out.printf("%-30s %-65s %s%n", "Artist", "Album", "Song Title");
+        System.out.printf("%1$-30s %1$-65s %1$s%n", dashedString);
+    
+        var bmatches = getMatchedSongsBuilder(em, "%" + word + "%");
+        bmatches.forEach(m -> System.out.printf("%-30s %-65s %s%n", (String) m[0], (String) m[1], (String) m[2]));
+  
+    } catch(Exception e) {
+        e.printStackTrace();
+    }
+}
+```
+
+I'll paste that before the _main_ method's _catch_ clause.
+Next I'll set up a variable for the results.
+I'll use _var_ for simplicity, and call the variable `bmatches`, 
+setting that equal to _getMatchedSongsBuilder_, 
+first passing the entity manager variable.
+Here again I'll pass the string used by the _like_ clause as the second argument.
+This time I can just call _forEach_ on the list I got back.
+I'll use the formatted string I used previously. 
+I'll use the indices, 0 through 2, to get each object from the array in the list 
+and cast each to a string. 
+And that's all I need to do this time.
+Before I run this, I'll scroll up a bit and change the word variable 
+to a different value, so from `Storm` to `Soul` there.
+I'll run this code:
 
 ```html  
-
+Artist                         Album                                                             Song Title
+-------------------            -------------------                                               -------------------
+David Bowie                    The Rise And Fall Of Ziggy Stardust and The Spiders From Mars     Soul Love
+David Bowie                    Aladdin Sane                                                      Lady Grinning Soul
+Nazareth                       Razamanaz                                                         Sold My Soul
+Split Whiskers                 Money Ain't Everything                                            Soul On Fire
+Mumford & Sons                 Sigh No More                                                      Awake My Soul
+Black Keys                     The Big Come Up                                                   Heavy Soul
+Axel Rudi Pell                 Tales of the Crown                                                Touching My Soul
+Axel Rudi Pell                 The Ballads IV                                                    Touching My Soul
+Bob Marley                     The Collection Volume One                                         Soul Rebel
+Bob Marley                     Soul Shakeddown Party - Vol 3                                     Soul Almighty
+Bob Marley                     Soul Shakeddown Party - Vol 3                                     Soul Shakedown Party
+Bob Marley                     Soul Shakeddown Party - Vol 3                                     Soul Captive
+Bob Marley                     The Very Best Of The Early Years 1968-74                          Soul Almighty
+Heart                          Dreamboat Annie                                                   Soul Of The Sea
+Aerosmith                      Nine Lives                                                        Hole In My Soul
+Yardbirds                      The Very Best of the Yardbirds                                    Heart Full of Soul
+Gorillaz                       Demon Days                                                        Last Living Souls
+Animals                        The Most Of The Animals                                           I Believe To My Soul
+Artist                         Album                                                             Song Title
+-------------------            -------------------                                               -------------------
+Aerosmith                      Nine Lives                                                        Hole In My Soul
+Animals                        The Most Of The Animals                                           I Believe To My Soul
+Axel Rudi Pell                 Tales of the Crown                                                Touching My Soul
+Axel Rudi Pell                 The Ballads IV                                                    Touching My Soul
+Black Keys                     The Big Come Up                                                   Heavy Soul
+Bob Marley                     Soul Shakeddown Party - Vol 3                                     Soul Almighty
+Bob Marley                     Soul Shakeddown Party - Vol 3                                     Soul Shakedown Party
+Bob Marley                     The Very Best Of The Early Years 1968-74                          Soul Almighty
+Bob Marley                     The Collection Volume One                                         Soul Rebel
+Bob Marley                     Soul Shakeddown Party - Vol 3                                     Soul Captive
+David Bowie                    The Rise And Fall Of Ziggy Stardust and The Spiders From Mars     Soul Love
+David Bowie                    Aladdin Sane                                                      Lady Grinning Soul
+Gorillaz                       Demon Days                                                        Last Living Souls
+Heart                          Dreamboat Annie                                                   Soul Of The Sea
+Mumford & Sons                 Sigh No More                                                      Awake My Soul
+Nazareth                       Razamanaz                                                         Sold My Soul
+Split Whiskers                 Money Ain't Everything                                            Soul On Fire
+Yardbirds                      The Very Best of the Yardbirds                                    Heart Full of Soul
 ```
 
+Both queries will print the same output, though the first isn't sorted by artist.
+The method to get the data was quite different in these two cases.
+The first used a JPQL query with joins defined in the string literal.
+The entire artist entity was returned, every album and every song, 
+if a song was found on any album for the artist.
+In the second example, I use **CriteriaBuilder** and **CriteriaQuery** 
+to build up a query with object instances.
+I select only the columns I'm interested in and pass back a list,
+where each element is an object array.
+There are a lot of different ways you could have coded this, 
+but I did want to show you these alternatives.
+So this ends the section on working with databases in java.
 </div>
 
 
