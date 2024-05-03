@@ -2,666 +2,687 @@ WEBVTT
 Kind: captions
 Language: en
 
-00:00:05.160 --> 00:00:10.680
-In the last two videos, I walked you through a
-couple of simple scenarios, using JPQL to retrieve
+00:00:05.280 --> 00:00:08.840
+Welcome to the JPA Challenge.
+In this challenge, you'll be
+
+00:00:08.840 --> 00:00:13.040
+working on your own but starting with
+the existing code in the JPA Project.
+
+00:00:13.040 --> 00:00:18.480
+You'll create a new JPA Entity to include
+song data when an Artist is retrieved.
+
+00:00:18.480 --> 00:00:23.040
+You'll also create a JPA Query using
+JPQL, to retrieve songs that have a
+
+00:00:23.040 --> 00:00:26.400
+specified word or phrase in them.
+The summary of steps you'll need
+
+00:00:26.400 --> 00:00:31.480
+to take are listed on this slide. I'll
+review these in more detail shortly.
+
+00:00:31.480 --> 00:00:38.200
+First Create a new Entity named Song for the music
+dot songs table. ; Next Edit the Album Entity
+
+00:00:38.200 --> 00:00:43.080
+adding a list of your Song entity as a field, with
+appropriate annotations and include this list in
+
+00:00:43.080 --> 00:00:49.600
+the toString output. You'll next Edit the Main
+class, retrieving a single artist by id confirming
+
+00:00:49.600 --> 00:00:54.960
+songs are now part of the artist data that's
+retrieved. After this I want you to Create a
+
+00:00:54.960 --> 00:01:00.760
+Song Query class that's similar to the Main Query
+class from the previous video. It should include
+
+00:01:00.760 --> 00:01:06.520
+a method to query the music data, returning any
+artist with an album with a song that contains
+
+00:01:06.520 --> 00:01:13.600
+matching text of your choice. For example, the
+words "Storm", "Dead", or "Soul" are in a variety
+
+00:01:13.600 --> 00:01:20.520
+of song titles in albums for different artists. ;
+Print the artist name, album name and the matching
+
+00:01:20.520 --> 00:01:26.760
+song title that contained the text.
+When creating the Song Entity
+
+00:01:26.760 --> 00:01:31.360
+You should include fields that line up with
+the columns in the songs table. ; Be sure to
+
+00:01:31.360 --> 00:01:36.600
+annotate the class and each field correctly. You
+can use the Album entity as your guide. ; You'll
+
+00:01:36.600 --> 00:01:41.240
+need to create at least one constructor. You'll
+want to generate some getters for fields your
+
+00:01:41.240 --> 00:01:47.080
+application might need access to. Finally you'll
+want to also override or generate a toString
+
+00:01:47.080 --> 00:01:53.120
+method that prints the fields of interest.
+For this to work properly with artist and
+
+00:01:53.120 --> 00:01:59.840
+album you'll need to edit the Album class.
+First add a list of songs to the Album Entity.
+
+00:02:00.520 --> 00:02:05.520
+Next use annotations to set up proper entity
+relationships for the new field. This should
+
+00:02:05.520 --> 00:02:10.280
+be the same type of relationship in the
+Artist class for the albums field. Since
+
+00:02:10.280 --> 00:02:14.880
+we're only reading data in this challenge
+you can skip the cascade instructions in the
+
+00:02:14.880 --> 00:02:21.080
+annotation. Lastly change the toString method
+on albums to first sort songs by track number
+
+00:02:21.080 --> 00:02:27.320
+then output each song on its own line.
+To test your entity I want you to edit
 
-00:00:10.680 --> 00:00:16.160
-targeted information, from the music database.
-In this video, I'll do something similar,
+00:02:27.320 --> 00:02:31.280
+the Main class and main method.
+Importantly make sure you test a
 
-00:00:16.160 --> 00:00:20.480
-but I'll use the Criteria Builder.
-The Criteria Builder interface
+00:02:31.280 --> 00:02:36.720
+different artist id than 202 as it's set up
+now because this artist's only album has no
 
-00:00:20.480 --> 00:00:25.880
-describes a factory class, for creating
-various type-safe query components.
+00:02:36.720 --> 00:02:44.200
+songs. ; Make sure you remove or comment out any
+code that inserts or adds data to the entities.
 
-00:00:25.880 --> 00:00:31.960
-It provides methods for creating the different
-parts of a JPA query, each described as an object,
+00:02:44.200 --> 00:02:51.120
+Finally run the main method and confirm you're now
+retrieving songs as well as the other artist data.
 
-00:00:31.960 --> 00:00:33.900
-and not just part of a string.
+00:02:51.120 --> 00:02:55.680
+Next you'll create a new class called
+SongQuery that has a main method.
 
-00:00:35.525 --> 00:00:37.047
-The Criteria Builder's methods
+00:02:55.680 --> 00:03:01.400
+In addition to the main method include another
+method that uses a JPA Query to select data from
 
-00:00:37.047 --> 00:00:42.640
-are used to create specific instances, both
-the criteria query object, and its parts,
+00:03:01.400 --> 00:03:08.000
+the music database. This method should use JPQL.
+This method should select song titles that contain
 
-00:00:42.640 --> 00:00:47.800
-the specific criteria in other words,
-that make up the definition of the query.
+00:03:08.000 --> 00:03:13.840
+a specific word or phrase which you should pass as
+a method parameter. At a minimum the data returned
 
-00:00:47.800 --> 00:00:52.600
-A query in it's simplest form consists of a
-command, as well as a source of some sort.
+00:03:13.840 --> 00:03:20.640
+should include artist name, album name and song
+title. Have your main method execute this method
 
-00:00:52.600 --> 00:00:57.720
-A command might be select, update, or
-delete, and a source in SQL is usually a
+00:03:20.640 --> 00:03:26.840
+printing the artist name, the album name and the
+song title of all matches. Finally if you want a
 
-00:00:57.720 --> 00:01:01.755
-table or view, whereas in JPQL it's an entity.
+00:03:26.840 --> 00:03:32.800
+bit of a bonus challenge create a second method
+to use a criteria builder query to produce the
 
-00:01:03.380 --> 00:01:05.727
-A query may also have many other clauses and
+00:03:32.800 --> 00:03:37.480
+same results. For this challenge you should try
+using the multi select method instead of select
 
-00:01:05.727 --> 00:01:08.720
-specifics, which define what needs to be done.
+00:03:37.480 --> 00:03:43.960
+on criteria query and research the join method on
+Root. You'll want to use it to perform your joins.
 
-00:01:09.532 --> 00:01:12.067
-The Criteria Builder provides all the building
+00:03:43.960 --> 00:03:46.080
+Ok, so give that a try.
+When you've built your
 
-00:01:12.067 --> 00:01:16.600
-blocks, as Java Objects, to
-fashion a specific query.
+00:03:46.080 --> 00:03:52.760
+solution or if you get stuck come back and
+we'll walk through my solution together.
 
-00:01:16.600 --> 00:01:21.680
-It starts with the Criteria Query instance.
-You can think of this as the scaffolding,
+00:03:52.760 --> 00:03:55.520
+So welcome back.
+How'd you do with this challenge?
 
-00:01:21.680 --> 00:01:26.800
-in which everything else is going to be placed.
-The scaffolding has specific slots, and these
+00:03:55.520 --> 00:03:58.480
+I hope you had some fun with this
+and you were able to include the
 
-00:01:26.800 --> 00:01:31.880
-translate to methods on the Criteria Query.
-The building blocks fall into one of four
+00:03:58.480 --> 00:04:04.080
+Song entity in your JPA application.
+I've got the JPA Project open and
 
-00:01:31.880 --> 00:01:36.800
-categories, which include the Predicate,
-Expression, Selection, and Order types.
+00:04:04.080 --> 00:04:11.000
+the first thing I'll do is create a new
+Song class in the dev lpa music package.
 
-00:01:36.800 --> 00:01:41.440
-The Criteria Builder isn't responsible for
-executing a query, or even putting all the
+00:04:11.000 --> 00:04:15.760
+I'll start by setting this class up
+as a simple plain old java Object.
 
-00:01:41.440 --> 00:01:46.720
-parts together, it is just responsible for
-creating customizable components you'll need.
+00:04:15.760 --> 00:04:20.280
+These include song ID, song
+title and track number.
 
-00:01:46.720 --> 00:01:51.360
-The Criteria Query object will use the
-building block types, in its design,
+00:04:20.280 --> 00:04:24.920
+I'll start with private int. Note that I'll
+make each of these private but not final.
 
-00:01:51.360 --> 00:01:53.535
-to construct a specific query.
+00:04:24.920 --> 00:04:28.960
+The JPA code will be setting the values on
+these classes so I don't want any of these
 
-00:01:55.296 --> 00:01:58.458
-The Criteria Query is a bit like scaffolding.
+00:04:28.960 --> 00:04:36.292
+to be final. Here I'll create an attribute
+called song ID. Next private string then songtitle.
 
-00:01:58.458 --> 00:02:02.200
-And a bit similar to a String
-Builder object, in that things get added,
+00:04:38.588 --> 00:04:41.148
+Finally an int, track number.
 
-00:02:02.200 --> 00:02:06.480
-and the instance mutates and grows.
-Unlike the String Builder though, the
+00:04:42.870 --> 00:04:46.933
+Next, I'll generate a constructor,
+a no args constructor.
 
-00:02:06.480 --> 00:02:12.680
-additions to the Criteria Query object can be of
-multiple types, depending on the method selected.
-
-00:02:12.680 --> 00:02:17.400
-Pause the video here for just a moment, and
-take a little time to familiarize yourself,
-
-00:02:17.400 --> 00:02:21.000
-with some of the methods on this class.
-You'll notice that the methods on
-
-00:02:21.000 --> 00:02:26.920
-this class almost all represent specific
-clauses or expressions, in a select query.
-
-00:02:26.920 --> 00:02:32.440
-You've got the select method, the from method,
-a where method, as well as others like distinct,
-
-00:02:32.440 --> 00:02:36.520
-order by, having, group by, and so
-on, which should be familiar terms for
-
-00:02:36.520 --> 00:02:42.240
-anyone who has written SQL queries.
-Also notice, the arguments passed
-
-00:02:42.240 --> 00:02:46.200
-to these methods, which mostly consist
-of the four types I mentioned already,
-
-00:02:46.200 --> 00:02:50.160
-and which are displayed here as well.
-When you pass instances of these types to
-
-00:02:50.160 --> 00:02:57.360
-methods, you'll be using a CriteriaBuilder factory
-method, to get specific instances of these types.
-
-00:02:57.360 --> 00:03:00.440
-A Predicate represents a
-condition in a WHERE clause.
-
-00:03:00.760 --> 00:03:05.320
-An Expression represents a computed value.
-This can be a mathematical expression,
-
-00:03:05.320 --> 00:03:10.840
-a function call, or a field reference.
-An Order is used to represent sorting
-
-00:03:10.840 --> 00:03:15.800
-criteria for the ORDER BY clause.
-A Selection represents an attribute,
+00:04:49.316 --> 00:04:51.280
+Hopefully you remembered that a no args
 
-00:03:15.800 --> 00:03:22.400
-expression, or result, used to define
-the selectable output of the query.
+00:04:51.280 --> 00:04:56.480
+constructor is required to exist for a JPA Entity.
+Then I'll generate getters for song
 
-00:03:22.400 --> 00:03:27.040
-Finally, notice the from, method on this class.
-This method is different from the
+00:04:56.480 --> 00:05:00.400
+title and track Number.
+I don't need one for song id
 
-00:03:27.040 --> 00:03:31.800
-rest and returns a root instance.
-The Root is a special type, and it's the bridge
+00:05:00.400 --> 00:05:09.640
+because I'm not going to be using it in my own
+code. If you included it though that's fine.
 
-00:03:31.800 --> 00:03:37.680
-between the criteria query and your entity.
-It's the source of the query's data.
+00:05:09.640 --> 00:05:16.960
+Finally I'll generate a toString
+method and output all three fields.
 
-00:03:37.680 --> 00:03:42.040
-It's more common to have just one root,
-but there's support for multiples.
+00:05:16.960 --> 00:05:21.200
+Now that I have a POJO I can turn
+it into an Entity with annotations.
 
-00:03:42.040 --> 00:03:46.080
-I also want you to see that other than the
-from method, all of these methods return
+00:05:21.200 --> 00:05:26.640
+Starting at the top, directly
+above the class declaration.
 
-00:03:46.080 --> 00:03:50.360
-an instance of Criteria Query.
-Like the String Builder object,
+00:05:26.640 --> 00:05:31.840
+The first annotation is simply Entity.
+Next I use the table annotation and in
 
-00:03:50.360 --> 00:03:56.840
-the Criteria Query object is mutable, but
-each method returns a reference to itself.
+00:05:31.840 --> 00:05:41.000
+parentheses I specify the name of the table
+this entity will be mapped to, so name = songs.
 
-00:03:56.840 --> 00:04:00.360
-This means you can optionally chain these
-methods together, which provides the
+00:05:41.000 --> 00:05:48.360
+I'll choose Jakarta dot persistence here.
+For each field I need at least one annotation.
 
-00:04:00.360 --> 00:04:07.160
-advantage of more concise and readable code.
-This slide summarizes how to use the Criteria
+00:05:48.360 --> 00:05:54.240
+First the song ID column requires the ID
+annotation. This tells JPA this is the primary
 
-00:04:07.160 --> 00:04:13.280
-Builder and Criteria Query types, to
-execute queries using JPA entities.
+00:05:54.240 --> 00:06:00.600
+key for this table. After this I'll add the column
+annotation and again in parentheses I specify name
 
-00:04:13.280 --> 00:04:16.520
-First, you get an instance of
-Criteria Builder, using the get
+00:06:00.600 --> 00:06:07.320
+equals and this time I need to put in the column
+name from the table and that's song underscore id.
 
-00:04:16.520 --> 00:04:21.720
-Criteria Builder method on an Entity Manager.
-Once you have a Criteria Builder, you then get
+00:06:07.320 --> 00:06:10.120
+In this case I'm not adding the
+Generated Value annotation which
 
-00:04:21.720 --> 00:04:26.920
-a Criteria Query instance from that.
-You'll specify the root, or entity
+00:06:10.120 --> 00:06:14.520
+I had on the Album entity's ID field.
+Since I won't be adding songs in this
 
-00:04:26.920 --> 00:04:32.080
-that the query will select its data from.
-You then specify additional information, or the
+00:06:14.520 --> 00:06:17.720
+challenge I don't really need it.
+If you added that, that's fine,
 
-00:04:32.080 --> 00:04:39.200
-details, about the query, like a where clause,
-an order by, or Group By clause for example.
+00:06:17.720 --> 00:06:22.720
+especially if you want to take this code a bit
+further on your own time and add or remove songs.
 
-00:04:39.200 --> 00:04:44.520
-You'll invoke various methods on Criteria
-Query, while using the Criteria Builder to
+00:06:22.720 --> 00:06:28.160
+But you should know if you're only reading data
+from tables some annotations aren't required.
 
-00:04:44.520 --> 00:04:48.880
-manufacture the appropriate pieces,
-which get passed as arguments.
+00:06:28.160 --> 00:06:31.280
+You can simplify your code by
+leaving them out if that's the case.
 
-00:04:48.880 --> 00:04:53.680
-Once you've constructed the query's
-criteria, you create an executable query,
+00:06:31.280 --> 00:06:34.840
+I'll finish the Entity by
+adding the column annotations.
 
-00:04:53.680 --> 00:04:59.200
-like we did with the JPQL Typed Query, by
-calling create Query on the entity manager.
+00:06:34.840 --> 00:06:40.560
+First to the song title field so ampersand
+column and in parentheses name equals
 
-00:04:59.200 --> 00:05:05.040
-This method returns a query instance, which is
-different, from the criteria query instance.
+00:06:40.560 --> 00:06:44.360
+song underscore title.
+Finally I need a
 
-00:05:05.040 --> 00:05:10.800
-You execute the query and retrieve results, using
-one of the several methods on the query instance.
+00:06:44.360 --> 00:06:48.320
+column annotation for track number.
+And that's the same except the column name
 
-00:05:10.800 --> 00:05:17.320
-You'll remember these include get Result List, get
-Result Stream, and get Single Result, for example.
+00:06:48.320 --> 00:06:51.194
+in the database is track underscore number.
 
-00:05:17.320 --> 00:05:21.320
-Now that you've got a basic understanding
-of what this process consists of,
+00:06:52.718 --> 00:06:54.401
+So that's it for the Song Entity.
 
-00:05:21.320 --> 00:05:23.314
-let's work through it in some code.
+00:06:54.440 --> 00:06:59.000
+This was a bit tedious, and you can see
+why code generation tools are useful to
 
-00:05:25.403 --> 00:05:28.567
-Getting back to my JPA project, and the Main Query
-
-00:05:28.567 --> 00:05:33.600
-class, I'll add another private static method.
-This time, I'll return a Stream of Artist
-
-00:05:33.600 --> 00:05:38.240
-instances. I'll call this method get
-Artists Builder, and it's parameters
-
-00:05:38.240 --> 00:05:43.040
-will be the same as the earlier method,
-so an Entity Manager first, and then a String,
-
-00:05:43.040 --> 00:05:48.800
-I'll again call matched Value. I start by
-creating a CriteriaBuilder variable, which
-
-00:05:48.800 --> 00:05:55.040
-I'll call builder. I get an instance of a criteria
-builder, from entity manager, using the method get
-
-00:05:55.040 --> 00:06:01.960
-Criteria Builder. Next, I'll set up a criteria
-query variable, with a type argument of Artist. I
-
-00:06:01.960 --> 00:06:11.040
-use the criteria builder method, create Query, to
-get an instance, and I pass that the Artist class.
+00:06:59.000 --> 00:07:05.880
+help mitigate this boilerplate part of the work.
+Moving on I'll edit the Albums entity class next.
 
-00:06:11.040 --> 00:06:15.200
-Next, I need something called a query root.
-This represents the starting point for
+00:07:05.880 --> 00:07:09.760
+I'll add another attribute, a LIst of
+Songs which I'm going to call playList.
 
-00:06:15.200 --> 00:06:20.960
-constructing a query against a data
-set, represented as an entity class.
+00:07:09.760 --> 00:07:13.480
+I'll insert that before the
+no args constructor on Album.
 
-00:06:20.960 --> 00:06:26.400
-So this has the Root type, with Artist as
-the type argument, I'll just call it root,
+00:07:13.480 --> 00:07:18.600
+It's again private and I'll
+initialize it to a new ArrayList.
 
-00:06:26.400 --> 00:06:33.480
-and I can get this using criteria Query.from,
-and passing Artist.class to that method.
+00:07:18.600 --> 00:07:24.560
+I'll add annotations to this.
+First the relationship one to many.
 
-00:06:33.480 --> 00:06:36.920
-You can think of the root
-as the from clause, in JPQL.
+00:07:24.560 --> 00:07:30.160
+An album will have many songs presumably. Again
+since I'll only read song data, I can omit any
 
-00:06:36.920 --> 00:06:41.480
-So if I add nothing to the root, the
-entire table associated with this entity
+00:07:30.160 --> 00:07:36.920
+cascade instructions which was included on Artist.
+Next the join column, so here, the tables, albums
 
-00:06:41.480 --> 00:06:46.680
-is the data set, that will be operated on.
-Next, I define the operation I want to execute
+00:07:36.920 --> 00:07:43.120
+and songs are joined by album underscore id.
+I need a getter for this so I'll set my cursor
 
-00:06:46.680 --> 00:06:54.080
-on my criteria Query object, which in this case
-is select. I pass it the root instance. Finally,
+00:07:43.120 --> 00:07:45.625
+just above the toString method and generate that.
 
-00:06:54.080 --> 00:07:01.000
-I can create the query, and call getResultStream.
-Now, moving back up to the main method,
+00:07:49.367 --> 00:07:52.106
+Finally I want to edit the toString
+method on this class.
 
-00:07:01.000 --> 00:07:04.440
-I'll insert the next segment of
-code, before the commented out code,
+00:07:55.016 --> 00:07:56.960
+First I'll sort the playList.
 
-00:07:04.440 --> 00:07:07.960
-that's currently in the try block.
-I'll include a separator line so
+00:07:56.960 --> 00:08:01.520
+There are different ways to do this, but the
+simplest I think is to call the sort method and
 
-00:07:07.960 --> 00:07:13.680
-I can distinguish the output from the earlier
-method call. I'll include a Stream of Artists,
+00:08:01.520 --> 00:08:07.720
+pass a comparator, derived from Song's get track
+number method. I'll initialize a String Builder
 
-00:07:13.680 --> 00:07:18.840
-setting that to the value I get back from my new
-method, get Artists Builder. I'll pass that the
+00:08:07.720 --> 00:08:13.720
+variable. I'll loop through each song in the
+playlist. Each song will be on its own line then
 
-00:07:18.840 --> 00:07:25.040
-entity manager variable, and for now an empty
-string literal. Because I get a stream back,
+00:08:13.720 --> 00:08:21.560
+indented with a tab then the song data will get
+printed. I'll end the song list with a new line.
 
-00:07:25.040 --> 00:07:30.240
-I can use stream operations to manipulate the
-data further. I'm going to limit the results to
+00:08:21.560 --> 00:08:25.680
+Lastly I'll include the string builder's value
+in the text that's returned from this method.
 
-00:07:30.240 --> 00:07:36.440
-10. A more refined query would have brought less
-data back, which is a much better approach. I'm
+00:08:25.680 --> 00:08:30.560
+So a comma then songs equal and I'll
+concatenate the string builder here.
 
-00:07:36.440 --> 00:07:41.840
-really just including it here now, so I don't have
-to look at 200 lines of output. Next, I'll collect
+00:08:30.560 --> 00:08:33.800
+This configuration will just
+make it easier to read the songs.
 
-00:07:41.840 --> 00:07:48.480
-the data into a map, using Collectors.toMap.
-The first argument specifies the function, to
+00:08:33.800 --> 00:08:36.600
+I've completed everything that's
+needed to get song data that's
 
-00:07:48.480 --> 00:07:54.480
-get the key, so it's keyed by the artist name. The
-next argument, is the function to get the value,
+00:08:36.600 --> 00:08:43.640
+related to an album when I retrieve an artist.
+To test this I'll switch over to the Main class.
 
-00:07:54.480 --> 00:07:59.840
-so that's just the number of albums. Next, I need
-to specify a merge function, and I'll just use the
+00:08:43.640 --> 00:08:48.000
+In the main method I want to first
+comment out artist.addAlbum there and
 
-00:07:59.840 --> 00:08:06.520
-method reference for Integer sum there. I want a
-tree map back, because it'll be ordered. Finally,
+00:08:48.000 --> 00:08:54.120
+the system dot out dot println that follows that.
+I'll change the artist id from 202 in this code
 
-00:08:06.520 --> 00:08:12.520
-I want to print the artist name, and the
-number of albums that artist has in the data.
+00:08:54.120 --> 00:08:59.040
+to any artist id that's not 202.
+You'll remember that 202 was Muddy
 
-00:08:12.520 --> 00:08:18.240
-I've no idea what happened with the
-formatting. Let me reformat the code.
+00:08:59.040 --> 00:09:04.560
+Waters and we inserted one album for that
+artist but the album had no related songs.
 
-00:08:18.240 --> 00:08:29.440
-For some reason Tree Map did not
-get imported. I'll add it manually.
+00:09:04.560 --> 00:09:09.080
+I'll just change this to 103 which
+is the artist id for Madonna.
 
-00:08:31.452 --> 00:08:33.233
-All right, I fixed it.
+00:09:09.080 --> 00:09:11.087
+I can run my Main class at this point.
 
-00:08:33.233 --> 00:08:35.231
-I'll run this code.
+00:09:13.502 --> 00:09:15.502
+This code runs
 
-00:08:36.570 --> 00:08:39.680
-And now you see 10 artists, in artist name order,
+00:09:15.560 --> 00:09:20.160
+And I can see the songs on the
+album Ray of Light listed there.
 
-00:08:39.680 --> 00:08:44.440
-and the number of albums each of these has.
-This just printed the first 10 artists it got,
+00:09:20.160 --> 00:09:24.600
+I can also see the duplicate album
+with no songs listed as well.
 
-00:08:44.440 --> 00:08:48.800
-because of the limit operation.
-The artists weren't ordered, in the stream,
+00:09:24.600 --> 00:09:28.840
+I talked about this problem in my
+music database in an earlier video.
 
-00:08:48.800 --> 00:08:52.720
-though they're ordered here.
-I'll next refine the query,
+00:09:28.840 --> 00:09:33.720
+I hope you can see how easy it is
+to add an entity in your hierarchy
 
-00:08:52.720 --> 00:08:59.440
-to include an order by clause, so I'll go
-back to the get Artists Builder method.
+00:09:33.720 --> 00:09:38.960
+and get data using these JPA entities.
+So now, the final part of the challenge
 
-00:09:00.280 --> 00:09:04.960
-I start with criteria query, and call
-order by, passing another factory object,
+00:09:38.960 --> 00:09:44.840
+was to create a new class that's similar to
+the Main Query class from the last video.
 
-00:09:04.960 --> 00:09:10.440
-which I get by calling a method, A S C, which
-stands for ascending order. This method returns
+00:09:44.840 --> 00:09:51.280
+I'll create a new class in dev
+lpa, and call it Song Query.
 
-00:09:10.440 --> 00:09:17.160
-an Order instance. I pass root.get artist
-name in there, which defines how to sort.
+00:09:51.280 --> 00:09:52.795
+I'll create a main method.
 
-00:09:17.160 --> 00:09:21.720
-I'll rerun my code.
-I've got a different set of artists,
+00:09:55.903 --> 00:09:57.280
+Before I start adding code to that
 
-00:09:21.720 --> 00:09:25.760
-so the first 10 alphabetically,
-starting with one thousand maniacs.
+00:09:57.280 --> 00:10:04.880
+I'll quickly go to the Main Query
+class and copy the get Artists JPQL method.
 
-00:09:25.760 --> 00:09:29.360
-I'm really still getting all 200 back,
-so I'll next include a where clause.
+00:10:04.880 --> 00:10:09.600
+I'll paste this method into my Song
+Query class below the main method.
 
-00:09:30.040 --> 00:09:34.240
-Getting back to my get Artists Builder
-method, I'll insert another statement,
+00:10:09.600 --> 00:10:14.000
+First, I'll change the name of
+this method to get Matched Songs.
 
-00:09:34.240 --> 00:09:38.920
-between the where method, and the order by method.
-These don't really have to be in this order,
+00:10:14.000 --> 00:10:17.160
+Now, I'll remove the first
+statement that's commented out.
 
-00:09:38.920 --> 00:09:43.040
-but I'll just keep them in the
-logical order of a SQL statement.
+00:10:17.160 --> 00:10:22.120
+After that I'll remove the OR
+condition in the WHERE clause.
 
-00:09:43.040 --> 00:09:48.600
-I start by invoking the where method on criteria
-query, I need to pass that a Predicate instance,
+00:10:22.120 --> 00:10:28.920
+So now I'll set up another join in this statement.
+After the album alias I'll type join playList.
 
-00:09:48.600 --> 00:09:52.000
-which I can get from many methods on
-the CriteriaBuilder, but in this case
+00:10:28.920 --> 00:10:33.080
+Remember we join to the collection field
+and not the table so that's the playlist.
 
-00:09:52.000 --> 00:09:58.960
-I want to use the like method, passing that
-root.get artistname, and the matchedValue.
+00:10:33.080 --> 00:10:39.040
+After that I'll give that an alias, the letter p.
+Aliases are required because the JPA provider uses
 
-00:09:58.960 --> 00:10:03.760
-Next, I'll scroll back up to the main method,
-where I'll next change the empty string literal,
+00:10:39.040 --> 00:10:41.680
+them as variable names.
+Finally in the WHERE
 
-00:10:03.760 --> 00:10:09.920
-replacing that with the text, B L, percent sign.
-This means I want to get only artists whose names
+00:10:41.680 --> 00:10:47.120
+clause I'll match to p.songTitle.
+That's all I need for this method.
 
-00:10:09.920 --> 00:10:14.840
-start with B L.
+00:10:47.120 --> 00:10:50.760
+It searches for artists whose albums
+have songs that contain the matched
+
+00:10:50.760 --> 00:10:55.640
+value passed to this method.
+Next I'll set up the main method.
+
+00:10:55.640 --> 00:11:00.560
+I'll start with a try with resources block.
+Inside the declaration I'll get an Entity
+
+00:11:00.560 --> 00:11:05.920
+Manager factory from the Persistence type,
+which you've seen me do a few times now.
+
+00:11:05.920 --> 00:11:11.400
+I need to use my persistence unit, and that's
+dev.lpa.music. If you forget what that value
+
+00:11:11.400 --> 00:11:17.200
+was you can find it in the persistence.xml
+file. Next I get the entity manager from
+
+00:11:17.200 --> 00:11:22.880
+the entity manager factory. I'll come back
+to complete the try block in just a second.
+
+00:11:22.880 --> 00:11:25.374
+I just want to add the usual catch clause here.
+
+00:11:27.472 --> 00:11:29.701
+And I just remembered something. I need to remove
+
+00:11:29.701 --> 00:11:35.280
+the second call to setParameter,
+which we don't need anymore.
+
+00:11:35.280 --> 00:11:36.413
+Right, moving on.
+
+00:11:38.689 --> 00:11:39.622
+I'll print this data out
+
+00:11:39.622 --> 00:11:45.080
+in tabular form so I'll do a little set up here.
+I want dashes to be printed under my headers so
+
+00:11:45.080 --> 00:11:51.240
+I'll just set up a dashed String. After this I'll
+set up a variable for the word I want to match on.
+
+00:11:51.240 --> 00:11:57.360
+I'll set that to Storm to start with. My results
+will go in a variable called matches. I'll call
+
+00:11:57.360 --> 00:12:02.680
+get Matched Songs, passing that my entity manager
+instance. My second parameter needs to be a string
+
+00:12:02.680 --> 00:12:07.640
+that has a pattern, because my query uses the
+like clause, so I'll surround my word variable
+
+00:12:07.640 --> 00:12:13.920
+with percent signs there. Next I'll print my
+header columns out, formatted each lined up
+
+00:12:13.920 --> 00:12:21.400
+in left justified columns. I'll print my dashes
+under those columns using the same placement.
+
+00:12:21.400 --> 00:12:25.480
+My query data gets returned and
+assigned to the matches variable.
+
+00:12:25.480 --> 00:12:29.160
+This data returns the matching artist with
+all of their albums and songs in the data,
+
+00:12:29.680 --> 00:12:33.680
+not just the matched album or song.
+In other words, it returns artists
+
+00:12:33.680 --> 00:12:38.640
+who have an album, that contains a
+song that contains the text Storm.
+
+00:12:38.640 --> 00:12:41.680
+Each artist still has their
+full set of data retrieved.
+
+00:12:41.680 --> 00:12:44.160
+This is important to know
+when processing the data.
+
+00:12:44.160 --> 00:12:49.640
+I'll do this with a series of FOR EACH LOOPS.
+First I loop through the list of artists I got
+
+00:12:49.640 --> 00:12:56.320
+back. I'll set a local variable to the artist
+name. I'll loop through each of the albums
+
+00:12:56.320 --> 00:13:02.680
+that matched. Here I'll set a variable for the
+album name this time. Now I'll loop through each
+
+00:13:02.680 --> 00:13:09.720
+album's playlist. I'll set another variable for
+the song title. So here I need to check if the
+
+00:13:09.720 --> 00:13:14.840
+song contains the word I used in the query.
+Remember the match was to the artist but all
+
+00:13:14.840 --> 00:13:21.200
+data for that artist still gets returned. Because
+of this I have to again test the song title, this
+
+00:13:21.200 --> 00:13:27.520
+time I can use the contains method to do it. I'll
+print the artist name, album name and song title,
+
+00:13:27.520 --> 00:13:33.080
+using PRINTF and the variables I set up.
+Before I run this I'm going to
+
+00:13:33.080 --> 00:13:36.099
+edit the persistence.xml file.
+
+
+00:13:38.177 --> 00:13:39.979
+I'll remove the last property there,
+
+00:13:39.979 --> 00:13:43.440
+which I had added in a previous video.
+Doing this will make the output a bit
+
+00:13:43.440 --> 00:13:50.560
+easier to read.
 I'll run this.
 
-00:10:14.840 --> 00:10:18.280
-I get matching records, so my where
-clause worked, and I'm only getting
+00:13:50.560 --> 00:13:55.760
+And oops I have an error
+here. Let me check the log.
 
-00:10:18.280 --> 00:10:22.760
-artists whose names start with B L.
-Before I move on, I'll just change the
+00:13:55.760 --> 00:13:59.920
+Ahh we have a problem resolving entity
+name play list. We defined that with
 
-00:10:22.760 --> 00:10:25.870
-get Artists Builder method, one last time.
+00:13:59.920 --> 00:14:06.120
+an uppercase L for list, and it's showing
+as lower case, so I need to change that.
 
-00:10:27.244 --> 00:10:30.269
-The Criteria Query is a mutable object,
+00:14:06.120 --> 00:14:10.520
+I'll take a look in Song
+Query and close this log file.
 
-00:10:30.280 --> 00:10:34.360
-which is why I don't need to reassign the
-instance, on each of these method calls.
+00:14:10.520 --> 00:14:18.120
+Yes its lowercase so I'll change that.
+And re-run it and it should work.
 
-00:10:34.360 --> 00:10:36.960
-Each method outputs a reference
-to itself, which means I can
+00:14:18.120 --> 00:14:22.040
+Here,in tabular form are all songs
+that have Storm in the name, with the
 
-00:10:36.960 --> 00:10:39.481
-chain methods together, so I'll do that.
+00:14:22.040 --> 00:14:27.480
+artist name, album name and song title printed.
+My formatting looks a little weird because I left
 
-00:10:48.515 --> 00:10:53.760
-This creates a chain of three methods.
-I'll use IntelliJ to reformat this code.
+00:14:27.480 --> 00:14:34.640
+a lot of space for the Album column, but if you
+re-run this code for the word Soul you'll see why.
 
-00:10:53.760 --> 00:10:56.400
-You can see this reads somewhat
-like stream operations.
+00:14:34.640 --> 00:14:38.200
+I'm going to end this video here.
+If you took the bonus challenge,
 
-00:10:56.400 --> 00:11:01.080
-This is a lot easier to read in my opinion.
-I'll run that, and confirm I get the same
+00:14:38.200 --> 00:14:42.240
+and wrote a Criteria Builder query
+I'll be demonstrating this next.
 
-00:11:01.080 --> 00:11:02.438
-results as before.
+00:14:42.240 --> 00:14:46.720
+This challenge was a little bit tricky because
+I never covered joins in this code with you.
 
-00:11:04.392 --> 00:11:05.726
-And I do.
+00:14:46.720 --> 00:14:50.840
+Part of the challenge was to have you
+research this and implement it on your own.
 
-00:11:05.726 --> 00:11:10.120
-In the interest of time, I won't be covering
-how to do joins in a Criteria Builder query
+00:14:50.840 --> 00:14:54.280
+If you want to see how my solution
+compares to yours or you're just
 
-00:11:10.120 --> 00:11:14.360
-here because I want to quickly show
-you how to execute a Native Query.
-
-00:11:14.360 --> 00:11:16.800
-Again, I'm not applying the
-same standard to teaching you
-
-00:11:16.800 --> 00:11:23.280
-JPA as I have been Java's core functionality.
-This foray into JPA was a bit of a courtesy,
-
-00:11:23.280 --> 00:11:27.800
-since it's increasingly becoming an
-industry standard, in some form or another.
-
-00:11:27.800 --> 00:11:33.240
-If you're curious about joins, be sure to see
-the Bonus section of the challenge that follows.
-
-00:11:33.240 --> 00:11:39.240
-Finally, I'll quickly demonstrate one last way to
-query using JPA, and that's by executing a native
-
-00:11:39.240 --> 00:11:44.080
-query, with the entity manager.
-I'll add another method.
-
-00:11:44.080 --> 00:11:50.040
-This is private, static, returns a Stream of
-Artist, and it'll be called get Artists SQL.
-
-00:11:50.040 --> 00:11:54.240
-This method will have the same parameters
-as the others, so an entity manager,
-
-00:11:54.240 --> 00:11:59.240
-and a string named matched value.
-I'll set up a local variable, called query,
-
-00:11:59.760 --> 00:12:05.240
-the result of calling create Native Query on
-the entity manager argument. This method takes
-
-00:12:05.240 --> 00:12:11.840
-a string, which is native SQL, but with one minor
-exception. This string can contain placeholders,
-
-00:12:11.840 --> 00:12:16.920
-either named or numeric, which I'll use here.
-I'll select from the table, and just to make
-
-00:12:16.920 --> 00:12:23.360
-it clearer, I'll include the schema, so select,
-star from music dot artists where artist_name,
-
-00:12:23.360 --> 00:12:29.480
-and this is the column name now, not the entity
-name, like, question mark 1. I still pass the
-
-00:12:29.480 --> 00:12:35.160
-Artist class as the second argument, because the
-JPA Provider will instantiate artist instances
-
-00:12:35.160 --> 00:12:41.080
-from the data, through JPA magic. I also still
-set the parameter, and that's parameter 1,
-
-00:12:41.080 --> 00:12:48.320
-that'll get set to the matched value.
-Finally, I'll return the results as a stream.
-
-00:12:48.320 --> 00:12:52.920
-Going back up to my main method, I'll change
-the code, that was calling get Artists Builder,
-
-00:12:52.920 --> 00:12:57.880
-and replace it with a call to
-this method, so get Artists SQL.
-
-00:12:57.880 --> 00:12:58.848
-I'll run that,
-
-00:13:01.634 --> 00:13:03.800
-and you can see,
-that again produces the same result
-
-00:13:03.800 --> 00:13:08.920
-as the Criteria Builder code, when it
-didn't include the order by clause.
-
-00:13:08.920 --> 00:13:14.560
-Which type of query you use, is
-dependent on a lot of different factors.
-
-00:13:14.560 --> 00:13:19.400
-This slide summarizes the three types
-of queries you can execute, using JPA.
-
-00:13:19.400 --> 00:13:23.320
-The Native Query Executes
-native SQL queries directly.
-
-00:13:23.320 --> 00:13:28.480
-This gives you full control over SQL syntax.
-It allows for performance optimizations for
-
-00:13:28.480 --> 00:13:33.640
-specific databases, and gives you
-access to vendor specific features.
-
-00:13:33.640 --> 00:13:40.000
-The Criteria Builder Query lets you build
-queries programmatically using Java objects.
-
-00:13:40.000 --> 00:13:43.000
-It's type safe, includes compile time checking,
-
-00:13:43.000 --> 00:13:48.960
-and allows for dynamic query construction.
-The JPQL query uses a SQL like syntax,
-
-00:13:48.960 --> 00:13:54.320
-which is tailored to JPA Entities. It's
-portable across JPA implementations.
-
-00:13:54.320 --> 00:13:59.200
-As you saw, it hides database implementation
-details, and is a more intuitive method for
-
-00:13:59.200 --> 00:14:03.200
-anyone with SQL experience.
-Ok, so this video ends the
-
-00:14:03.200 --> 00:14:08.520
-introduction to JPA, and is the end
-of the Database section of the course.
-
-00:14:08.520 --> 00:14:11.440
-In the next video, I've got
-a JPA challenge for you.
-
-00:14:11.440 --> 00:14:15.920
-Keep this project open, your challenge
-will use the entities and configuration
-
-00:14:15.920 --> 00:14:19.800
-that already exist in this project.
-I'll see you in that next video.
+00:14:54.280 --> 00:14:59.633
+curious how to include joins in a Criteria
+Builder query, then meet me in the next video.

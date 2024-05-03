@@ -8634,7 +8634,7 @@ and execute the _call_ command with the procedure name
 and specified parameters in a SQL Query editor.
 I could do the same in most RDBMS's, 
 so the use of the escape sequences in a stored procedure _call_ is often optional.
-To execute of a function isn't done with the command _call_ in MySQL, 
+To execute a function isn't done with the command _call_ in MySQL, 
 so as you saw, we needed to escape this string, which allowed it to run successfully.
 
 Stored procedures are designed for executing multiple operations, 
@@ -8699,7 +8699,7 @@ which were inserted in the previous challenge.
 
 This SQL code shows you how to _delete_ the order and its details.
 Remember, we have a _cascade delete_ set up, 
-so deleting the order, will delete any related records, 
+so deleting the order will delete any related records, 
 in the order detail table as well.
 I'm also showing the DDL statements, 
 which will reset the _AUTO_INCREMENT_ to `1` on both tables.
@@ -8754,7 +8754,7 @@ A **TimeStamp** field can be used for a SQL parameter of type **DateTime**.
 So far, in this section of the course, I've focused on JDBC as the means for communicating with a database.
 This is for good reason, since it's part of Java's Standard Edition implementation, 
 or core Java in other words.
-We've walked through writing SQL statements, and executing them for the usual _CRUD_ functionality.
+We've walked through writing SQL statements and executing them for the usual _CRUD_ functionality.
 I've also demonstrated that this work can be more tightly-knit to the database server,
 by using stored procedures that have been written, to do some work for you.
 Even so, you're still in the business of having to write some database interaction code.
@@ -8782,7 +8782,7 @@ A few of the key concepts of the JPA specification include:
 and the **Entity Manager** which manages lifecycles of these entities.
 * **The Persistence Context** is a special cached area where the entities exist.
 
-You can think of JPA as an extra layer of functionality, 
+You can think of JPA as an extra layer of functionality 
 between your application code and the JDBC code you saw in the last sections.
 **Object-Relational Mapping** is a method of mapping database tables defined by columns, 
 to a class with correlated fields, and setters and getters.
@@ -8912,7 +8912,7 @@ you don't need to do this next step and can skip adding this module.
 Again, I'll open the module settings, with Libraries selected, and click the `+` button.
 And select _From Maven_.
 I'll type `jakarta.persistence:` in there.
-I could hit enter here, which gives me that error, or optionally I can do a search.
+I could hit _enter_ here, which gives me that error, or optionally I can do a search.
 When you press enter, it's expecting a fully qualified coordinate, or module identifier,
 and in these cases, we're supplying only a part.
 The search is a bit more friendly, and that's the search icon next to this field.
@@ -10259,7 +10259,7 @@ but it's not associated to an artist, because _artistID_ is **null**.
 This is called an orphaned record, and it's a pretty **undesirable** situation.
 Instead of deleting the **album** record, it simply updated the _artistID_ to **null**.
 That's not what I wanted to happen.
-I can change this behavior by including a couple of values 
+I can change this behavior by including a couple of values
 on the `One-To-Many` annotation on **Artist**.
 Before I go do that, I'll reset my data back to the way it was,
 while I'm still here, in MySQL Workbench.
@@ -11751,7 +11751,7 @@ In the last two sections, I walked you through a couple of simple scenarios,
 using **JPQL** to retrieve targeted information from the **music** database.
 In this section, I'll do something similar, but I'll use the **CriteriaBuilder**.
 
-The **CriteriaBuilder** interface describes a factory class, 
+The **CriteriaBuilder** interface describes a factory class 
 for creating various type-safe query components.
 It provides methods for creating the different parts of a JPA query, 
 each described as an object, and not just part of a string.
@@ -12230,86 +12230,192 @@ and that's by executing a native query, with the entity manager.
 I'll add another method. 
 
 ```java  
-private static Stream<Artist> getArtistsBuilder(EntityManager em, String matchedValue) {
+private static Stream<Artist> getArtistsSQL(EntityManager em, String matchedValue) {
 
-            
-    return em.createQuery(criteriaQuery).getResultStream();
+    var query = em.createNativeQuery("SELECT * FROM music.artists where artist_name like ?1", Artist.class);
+    query.setParameter(1, matchedValue);
+    return query.getResultStream();
 }
 ```
 
-This is private, static, returns a Stream of
-Artist, and it'll be called get Artists SQL.
-This method will have the same parameters
-as the others, so an entity manager,
-and a string named matched value.
-I'll set up a local variable, called query,
-the result of calling create Native Query on
-the entity manager argument. This method takes
-a string, which is native SQL, but with one minor
-exception. This string can contain placeholders,
-either named or numeric, which I'll use here.
-I'll select from the table, and just to make
-it clearer, I'll include the schema, so select,
-star from music dot artists where artist_name,
-and this is the column name now, not the entity
-name, like, question mark 1. I still pass the
-Artist class as the second argument, because the
-JPA Provider will instantiate artist instances
-from the data, through JPA magic. I also still
-set the parameter, and that's parameter 1,
-that'll get set to the matched value.
+This is private, static, returns a **Stream** of **Artist**, 
+and it'll be called _getArtistsSQL_.
+This method will have the same parameters as the others,
+so an entity manager, and a string named matched value.
+I'll set up a local variable, called query, 
+the result of calling _createNativeQuery_ on the entity manager argument.
+This method takes a string, which is native SQL, 
+but with one minor exception. 
+This string can contain placeholders, either named or numeric, which I'll use here.
+I'll select from the table, and just to make it clearer, 
+I'll include the schema, so `SELECT * FROM music.artists where artist_name`,
+and this is the column name now, not the entity name, `like ?1`. 
+I still pass the `Artist.class` as the second argument, 
+because the _JPA Provider_ will instantiate artist instances from the data, through JPA magic.
+I also still set the parameter, and that's parameter 1, that'll get set to the matched value.
 Finally, I'll return the results as a stream.
-Going back up to my main method, I'll change
-the code, that was calling get Artists Builder,
-and replace it with a call to
-this method, so get Artists SQL.
-I'll run that,
+Going back up to my _main_ method, I'll change the code, 
+that was calling _getArtistsBuilder_:
 
-```html  
+```java  
+public static void main(String[] args) {
 
+    String persistenceUnitName = "Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music";
+  
+    List<Artist> artists = null;
+        
+        try (EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+             EntityManager em = emf.createEntityManager();
+        ) {
+
+            var transaction = em.getTransaction();
+            transaction.begin();
+
+            artists = getArtistsJPQL(em, "%Greatest Hits%");
+            artists.forEach(System.out::println);
+
+            System.out.println("------------------------------------");
+            //Stream<Artist> sartists = getArtistsBuilder(em, "Bl%");
+            Stream<Artist> sartists = getArtistsSQL(em, "Bl%");
+            var map = sartists
+                    .limit(10)
+                            .collect(Collectors.toMap(
+                                    Artist::getArtistName,
+                                    (a) -> a.getAlbums().size(),
+                                    Integer::sum,
+                                    TreeMap::new
+                            ));
+            map.forEach((k, v) -> System.out.println(k + " : " + v));
+            
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+}
 ```
 
-and you can see,
-that again produces the same result
-as the Criteria Builder code, when it
-didn't include the order by clause.
-Which type of query you use, is
-dependent on a lot of different factors.
-This slide summarizes the three types
-of queries you can execute, using JPA.
-The Native Query Executes
-native SQL queries directly.
+and replace it with a call to this method, so _getArtistsSQL_.
+I'll run that:
+
+```html  
+------------------------------------
+Hibernate: SELECT * FROM music.artists where artist_name like ?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Black Crowes : 2
+Black Keys : 8
+Black Oak Arkansas : 2
+Black River Project : 2
+Black Sabbath : 36
+Blackbeard's Tea Party : 6
+Blaster Bates : 4
+Blue Öyster Cult : 20
+```
+
+And you can see that again produces the same result as the **CriteriaBuilder** code, 
+when it didn't include the _orderBy_ clause.
+Which type of query you use is dependent on a lot of different factors.
+
+| **Type**                   | **Description**                                                     | **Advantages**                                                                                                                  |
+|----------------------------|---------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| **Native Query**           | Executes native SQL queries directly                                | * Full control over SQL syntax<br/>* Performance optimization for specific databases<br/>* Access to vendor-specific features   |
+| **CriteriaBuilder query**  | Builds queries programmatically using java objects and expressions  | * Type-safe<br/>* Compile-time checking<br/>* Dynamic query construction                                                        |
+| **JPQL query**             | Express queries using a SQL-like syntax tailored for entities       | * Portable across JPA implementations<br/>* Hides implementation-specific details<br/>* Intuitive for SQL-proficient developers |
+
+This table summarizes the three types of queries you can execute, using JPA.
+The **Native Query** executes native SQL queries directly.
 This gives you full control over SQL syntax.
-It allows for performance optimizations for
-specific databases, and gives you
-access to vendor specific features.
-The Criteria Builder Query lets you build
-queries programmatically using Java objects.
-It's type safe, includes compile time checking,
-and allows for dynamic query construction.
-The JPQL query uses a SQL like syntax,
-which is tailored to JPA Entities. It's
-portable across JPA implementations.
-As you saw, it hides database implementation
-details, and is a more intuitive method for
-anyone with SQL experience.
-Ok, so this video ends the
-introduction to JPA, and is the end
-of the Database section of the course.
-In the next video, I've got
-a JPA challenge for you.
-Keep this project open, your challenge
-will use the entities and configuration
-that already exist in this project.
-I'll see you in that next video.
-
-
-~~~~sql  
-
-~~~~
+It allows for performance optimizations for specific databases, 
+and gives you access to vendor-specific features.
+The **Criteria Builder query** lets you build queries programmatically using Java objects.
+It's type safe, includes compile time checking, and allows for dynamic query construction.
+The **JPQL query** uses a SQL-like syntax, which is tailored to JPA Entities. 
+It's portable across JPA implementations.
+As you saw, it hides database implementation details, 
+and is a more intuitive method for anyone with SQL experience.
 </div>
 
 ## [n. JPA Challenge]()
+<div align="justify">
+
+In this challenge, you'll be working on your own
+but starting with the existing code in the last sections.
+You'll create a new JPA Entity to include song data when an **Artist** is retrieved.
+You'll also create a JPA query using JPQL, 
+to retrieve songs that have a specified word or phrase in them.
+The summary of steps you'll need to take is listed here. 
+
+* First, create a new **Entity** named _Song_ for the `music.songs` table.  
+* Next, edit the **Album** entity adding a list of your **Song** entity as a field, 
+with appropriate annotations and include this list in the _toString_ output. 
+* You'll next edit the **Main** class, 
+retrieving a single artist by id confirming songs are 
+now part of the artist data that's retrieved. 
+* After this, I want you to create a **SongQuery** class 
+that's similar to the **MainQuery** class from the previous section. 
+It should include a method to query the music data, 
+returning any artist with an album with a song 
+that contains matching text of your choice. 
+For example, the words `Storm`, `Dead`, or `Soul` are 
+in a variety of song titles in albums for different artists.
+* Print the artist name, album name and the matching song title that contained the text.
+
+When creating the **Song** entity:
+
+* You should include fields that line up with the columns in the **songs** table.  
+* You should be sure to annotate the class and each field correctly. 
+You can use the **Album** entity as your guide.
+* You'll need to create at least one constructor. 
+* You'll want to generate some getters for fields your application might need access to. 
+* You'll want to also override or generate a _toString_ method that prints the fields of interest.
+
+For this to work properly with artist and album, you'll need to edit the **Album** class.
+
+* First, add a list of songs to the **Album** Entity.
+* Next, use annotations to set up proper entity relationships for the new field. 
+This should be the same type of relationship in the **Artist** class for the _albums_ field. 
+Since we're only reading data in this challenge, 
+you can skip the cascade instructions in the annotation. 
+* Lastly, change the _toString_ method on albums 
+to first sort songs by track number then output each song on its own line.
+
+To test your entity, I want you to edit the **Main** class and _main_ method.
+
+* Importantly, make sure you test a different artist id than 202 
+as it's set up now because this artist's only album has no songs. 
+* Make sure you remove or comment out any code that inserts or adds data to the entities.
+* Finally, run the main method and confirm you're now retrieving songs 
+as well as the other artist data.
+
+Next, you'll create a new class called **SongQuery** that has a _main_ method.
+
+* In addition to the _main_ method, include another method 
+that uses a JPA Query to select data from the **music** database. 
+* This method should use JPQL.
+* This method should select song titles that contain a specific word 
+or phrase which you should pass as a method parameter. 
+At a minimum, the data returned should include artist name, 
+album name and song title. 
+* Have your _main_ method execute this method printing the artist name,
+the album name and the song title of all matches. 
+* Finally, if you want a bit of a bonus challenge, create a second method
+to use a **CriteriaBuilder** query to produce the same results. 
+
+For this challenge, you should try using the multi select method 
+instead of select on a criteria query 
+and research the _join_ method on **Root**. 
+You'll want to use it to perform your joins.
+</div>
+
+## [o. JPA Bonus Challenge]()
 <div align="justify">
 
 ```java  
@@ -12320,12 +12426,9 @@ I'll see you in that next video.
 
 ```
 
-~~~~sql  
-
-~~~~
 </div>
 
-## [o. JPA Bonus Challenge]()
+
 <div align="justify">
 
 ```java  

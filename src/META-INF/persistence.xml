@@ -10,7 +10,6 @@
             <property name="jakarta.persistence.jdbc.url"    value="jdbc:mysql://localhost:3335/music" />
             <property name="jakarta.persistence.jdbc.user"   value="devUser" />
             <property name="jakarta.persistence.jdbc.password" value="KsKorteaGs1905." />
-            <property name="hibernate.show_sql"     value="true" />
         </properties>
 
     </persistence-unit>
