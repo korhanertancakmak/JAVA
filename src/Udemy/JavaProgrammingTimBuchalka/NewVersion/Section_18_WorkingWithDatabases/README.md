@@ -11749,273 +11749,494 @@ and its related types, as an alternative to **JPQL**.
 
 In the last two sections, I walked you through a couple of simple scenarios, 
 using **JPQL** to retrieve targeted information from the **music** database.
-In this section, I'll do something similar, but I'll use the **Criteria Builder**.
+In this section, I'll do something similar, but I'll use the **CriteriaBuilder**.
 
-The **Criteria Builder** interface describes a factory class, 
+The **CriteriaBuilder** interface describes a factory class, 
 for creating various type-safe query components.
 It provides methods for creating the different parts of a JPA query, 
 each described as an object, and not just part of a string.
 
+![image83](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image83.png?raw=true)
 
-
-The Criteria Builder's methods are used to create specific instances, 
+The **CriteriaBuilder**'s methods are used to create specific instances, 
 both the criteria query object, and its parts,
 the specific criteria in other words, that make up the definition of the query.
-A query in it's simplest form consists of a
-command, as well as a source of some sort.
-A command might be select, update, or
-delete, and a source in SQL is usually a
-table or view, whereas in JPQL it's an entity.
-A query may also have many other clauses and
-specifics, which define what needs to be done.
-The Criteria Builder provides all the building
-blocks, as Java Objects, to
-fashion a specific query.
-It starts with the Criteria Query instance.
-You can think of this as the scaffolding,
-in which everything else is going to be placed.
-The scaffolding has specific slots, and these
-translate to methods on the Criteria Query.
-The building blocks fall into one of four
-categories, which include the Predicate,
-Expression, Selection, and Order types.
-The Criteria Builder isn't responsible for
-executing a query, or even putting all the
-parts together, it is just responsible for
-creating customizable components you'll need.
-The Criteria Query object will use the
-building block types, in its design,
+A query in its simplest form consists of a command, as well as a source of some sort.
+A command might be _select_, _update_, or _delete_, 
+and a source in SQL is usually a table or view, whereas in JPQL it's an entity.
+A query may also have many other clauses and specifics, 
+which define what needs to be done.
+The **CriteriaBuilder** provides all the building blocks, as Java **Objects**, 
+to fashion a specific query.
+It starts with the **CriteriaQuery** instance.
+You can think of this as the scaffolding, in which everything else is going to be placed.
+The scaffolding has specific slots, and these translate to methods on the **CriteriaQuery**.
+The building blocks fall into one of four categories, which include the **Predicate**,
+**Expression**, **Selection**, and **Order** types.
+The **CriteriaBuilder** isn't responsible for executing a query, 
+or even putting all the parts together, 
+it is just responsible for creating customizable components you'll need.
+The **CriteriaQuery** object will use the building block types in its design,
 to construct a specific query.
-The Criteria Query is a bit like scaffolding.
-And a bit similar to a String
-Builder object, in that things get added,
+
+![image84](https://github.com/korhanertancakmak/JAVA/blob/master/src/Udemy/JavaProgrammingTimBuchalka/NewVersion/Section_18_WorkingWithDatabases/images/image84.png?raw=true)
+
+The **CriteriaQuery** is a bit like scaffolding.
+And a bit similar to a **StringBuilder** object, in that thing gets added,
 and the instance mutates and grows.
-Unlike the String Builder though, the
-additions to the Criteria Query object can be of
-multiple types, depending on the method selected.
-Pause the video here for just a moment, and
-take a little time to familiarize yourself,
-with some of the methods on this class.
-You'll notice that the methods on
-this class almost all represent specific
-clauses or expressions, in a select query.
-You've got the select method, the from method,
-a where method, as well as others like distinct,
-order by, having, group by, and so
-on, which should be familiar terms for
-anyone who has written SQL queries.
-Also notice, the arguments passed
-to these methods, which mostly consist
-of the four types I mentioned already,
+Unlike the **StringBuilder** though, 
+the additions to the **CriteriaQuery** object can be of multiple types, 
+depending on the method selected.
+You'll notice that the methods on this class 
+almost all represent specific clauses or expressions, in a _select_ query.
+You've got the _select_ method, the _from_ method, a _where_ method, 
+as well as others like _distinct_, _orderBy_, _having_, _groupBy_, 
+and so on, which should be familiar terms for anyone who has written SQL queries.
+Also notice, the arguments passed to these methods, 
+which mostly consist of the four types I mentioned already,
 and which are displayed here as well.
-When you pass instances of these types to
-methods, you'll be using a CriteriaBuilder factory
-method, to get specific instances of these types.
-A Predicate represents a
-condition in a WHERE clause.
-An Expression represents a computed value.
-This can be a mathematical expression,
-a function call, or a field reference.
-An Order is used to represent sorting
-criteria for the ORDER BY clause.
-A Selection represents an attribute,
-expression, or result, used to define
-the selectable output of the query.
-Finally, notice the from, method on this class.
-This method is different from the
-rest and returns a root instance.
-The Root is a special type, and it's the bridge
-between the criteria query and your entity.
+When you pass instances of these types to methods, 
+you'll be using a **CriteriaBuilder** factory method, 
+to get specific instances of these types.
+A **Predicate** represents a condition in a **WHERE** clause.
+An **Expression** represents a computed value.
+This can be a mathematical expression, a function call, or a field reference.
+An **Order** is used to represent sorting criteria for the **orderBy** clause.
+A **Selection** represents an attribute, expression, or result,
+used to define the selectable output of the query.
+Finally, notice the _from_, method on this class.
+This method is different from the rest and returns a **root** instance.
+The **Root** is a special type, 
+and it's the bridge between the criteria query and your entity.
 It's the source of the query's data.
 It's more common to have just one root,
 but there's support for multiples.
-I also want you to see that other than the
-from method, all of these methods return
-an instance of Criteria Query.
-Like the String Builder object,
-the Criteria Query object is mutable, but
-each method returns a reference to itself.
-This means you can optionally chain these
-methods together, which provides the
-advantage of more concise and readable code.
-This slide summarizes how to use the Criteria
-Builder and Criteria Query types, to
-execute queries using JPA entities.
-First, you get an instance of
-Criteria Builder, using the get
-Criteria Builder method on an Entity Manager.
-Once you have a Criteria Builder, you then get
-a Criteria Query instance from that.
-You'll specify the root, or entity
-that the query will select its data from.
-You then specify additional information, or the
-details, about the query, like a where clause,
-an order by, or Group By clause for example.
-You'll invoke various methods on Criteria
-Query, while using the Criteria Builder to
-manufacture the appropriate pieces,
+I also want you to see that other than the _from_ method, 
+all of these methods return an instance of **CriteriaQuery**.
+Like the **StringBuilder** object, the **CriteriaQuery** object is mutable, 
+but each method returns a reference to itself.
+This means you can optionally chain these methods together, 
+which provides the advantage of more concise and readable code.
+
+|   | Steps                                                                        | Method                                                                                                                         |
+|---|------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| 1 | Get an instance of CriteriaBuilder                                           | `entityManager.getCriteriaBuilder`                                                                                             |
+| 2 | Get an instance of CriteriaQuery                                             | `entityBuilder.createQuery`                                                                                                    |
+| 3 | Specify the entity (the query root)                                          | `entityQuery.from(Entity.class)`                                                                                               |
+| 4 | Select data                                                                  | `entityQuery.select(root)`                                                                                                     |
+| 5 | Add expressions, predicates, sorting criteria, and other parts to the query  | invoke various methods on criteriaQuery, using criteriaBuilder to manufacture the appropriate components passed as arguments.  |
+| 6 | Retrieve a query instance                                                    | `entityManager.createQuery(createQuery)`                                                                                       |
+| 7 | Execute and get results                                                      | `createQuery.getResultList`<br/>`createQuery.getResultStream`<br/>`createQuery.getSingleResult`                                |
+
+This table summarizes how to use the **CriteriaBuilder** and **CriteriaQuery** types, 
+to execute queries using JPA entities.
+First, you get an instance of **CriteriaBuilder**, 
+using the _getCriteriaBuilder_ method on an **Entity Manager**.
+Once you have a **CriteriaBuilder**, you then get a **CriteriaQuery** instance from that.
+You'll specify the root or entity that the query will select its data from.
+You then specify additional information or the details about the query, 
+like a **where** clause, an _orderBy_, or _groupBy_ clause, for example.
+You'll invoke various methods on **CriteriaQuery**, 
+while using the **CriteriaBuilder** to manufacture the appropriate pieces,
 which get passed as arguments.
-Once you've constructed the query's
-criteria, you create an executable query,
-like we did with the JPQL Typed Query, by
-calling create Query on the entity manager.
-This method returns a query instance, which is
-different, from the criteria query instance.
-You execute the query and retrieve results, using
-one of the several methods on the query instance.
-You'll remember these include get Result List, get
-Result Stream, and get Single Result, for example.
-Now that you've got a basic understanding
-of what this process consists of,
+Once you've constructed the query's criteria, you create an executable query,
+like we did with the JPQL **TypedQuery**, by calling _createQuery_ on the entity manager.
+This method returns a query instance, which is different, 
+from the criteria query instance.
+You execute the query and retrieve results, 
+using one of the several methods on the query instance.
+You'll remember these include _getResultList_, _getResultStream_, 
+and _getSingleResult_, for example.
+Now that you've got a basic understanding of what this process consists of,
 let's work through it in some code.
-Getting back to my JPA project, and the Main Query
-class, I'll add another private static method.
-This time, I'll return a Stream of Artist
-instances. I'll call this method get
-Artists Builder, and it's parameters
-will be the same as the earlier method,
-so an Entity Manager first, and then a String,
-I'll again call matched Value. I start by
-creating a CriteriaBuilder variable, which
-I'll call builder. I get an instance of a criteria
-builder, from entity manager, using the method get
-Criteria Builder. Next, I'll set up a criteria
-query variable, with a type argument of Artist. I
-use the criteria builder method, create Query, to
-get an instance, and I pass that the Artist class.
+
+Getting back to the **MainQuery** class, 
+I'll add another private static method.
+
+```java  
+private static Stream<Artist> getArtistsBuilder(EntityManager em, String matchedValue) {
+    
+    CriteriaBuilder builder = em.getCriteriaBuilder();
+    CriteriaQuery<Artist> criteriaQuery = builder.createQuery (Artist.class);
+    Root<Artist> root = criteriaQuery.from(Artist.class);
+    criteriaQuery.select(root);
+    return em.createQuery(criteriaQuery).getResultStream();
+}
+```
+
+This time, I'll return a **Stream** of **Artist** instances. 
+I'll call this method _getArtistsBuilder_, 
+and it's parameters will be the same as the earlier method,
+so an **EntityManager** first, and then a **String**,
+I'll again call _matchedValue_. 
+I start by creating a **CriteriaBuilder** variable, which I'll call _builder_. 
+I get an instance of a criteria builder, from entity manager, 
+using the method _getCriteriaBuilder_. 
+Next, I'll set up a criteria query variable with a type argument of **Artist**. 
+I use the criteria builder method, _createQuery_, 
+to get an instance, and I pass that the **Artist** class.
 Next, I need something called a query root.
-This represents the starting point for
-constructing a query against a data
-set, represented as an entity class.
-So this has the Root type, with Artist as
-the type argument, I'll just call it root,
-and I can get this using criteria Query.from,
-and passing Artist.class to that method.
-You can think of the root
-as the from clause, in JPQL.
-So if I add nothing to the root, the
-entire table associated with this entity
-is the data set, that will be operated on.
-Next, I define the operation I want to execute
-on my criteria Query object, which in this case
-is select. I pass it the root instance. Finally,
-I can create the query, and call getResultStream.
-Now, moving back up to the main method,
-I'll insert the next segment of
-code, before the commented out code,
-that's currently in the try block.
-I'll include a separator line so
-I can distinguish the output from the earlier
-method call. I'll include a Stream of Artists,
-setting that to the value I get back from my new
-method, get Artists Builder. I'll pass that the
-entity manager variable, and for now an empty
-string literal. Because I get a stream back,
-I can use stream operations to manipulate the
-data further. I'm going to limit the results to
-10. A more refined query would have brought less
-    data back, which is a much better approach. I'm
-    really just including it here now, so I don't have
-    to look at 200 lines of output. Next, I'll collect
-    the data into a map, using Collectors.toMap.
-    The first argument specifies the function, to
-    get the key, so it's keyed by the artist name. The
-    next argument, is the function to get the value,
-    so that's just the number of albums. Next, I need
-    to specify a merge function, and I'll just use the
-    method reference for Integer sum there. I want a
-    tree map back, because it'll be ordered. Finally,
-    I want to print the artist name, and the
-    number of albums that artist has in the data.
-    I've no idea what happened with the
-    formatting. Let me reformat the code.
-    For some reason Tree Map did not
-    get imported. I'll add it manually.
-    All right, I fixed it.
-    I'll run this code.
+This represents the starting point for constructing a query against a data set, 
+represented as an entity class.
+So this has the **Root** type, with **Artist** as the type argument, 
+I'll just call it _root_, and I can get this using `criteriaQuery.from`,
+and passing `Artist.class` to that method.
+You can think of the _root_ as the _from_ clause, in JPQL.
+So if I add nothing to the _root_, 
+the entire table associated with this entity is the data set 
+that will be operated on.
+Next, I define the operation I want to execute on my **criteriaQuery** object, 
+which in this case is _select_. 
+I pass it the **root** instance. 
+Finally, I can create the query and call _getResultStream_.
+Now, moving back up to the _main_ method,
+I'll insert the next segment of code, before the commented out code,
+that's currently in the _try_ block.
+
+```java  
+public static void main(String[] args) {
+
+    String persistenceUnitName = "Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music";
+  
+    List<Artist> artists = null;
+        
+        try (EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+             EntityManager em = emf.createEntityManager();
+        ) {
+
+            var transaction = em.getTransaction();
+            transaction.begin();
+
+            artists = getArtistsJPQL(em, "%Greatest Hits%");
+            artists.forEach(System.out::println);
+
+            System.out.println("------------------------------------");
+            Stream<Artist> sartists = getArtistsBuilder(em, "");
+            var map = sartists
+                    .limit(10)
+                            .collect(Collectors.toMap(
+                                    Artist::getArtistName,
+                                    (a) -> a.getAlbums().size(),
+                                    Integer::sum,
+                                    TreeMap::new
+                            ));
+            map.forEach((k, v) -> System.out.println(k + " : " + v));
+            
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
+}
+```
+
+I'll include a separator line, so I can distinguish the output 
+from the earlier method call. 
+I'll include a **Stream** of **Artists**, setting that to the value 
+I get back from my new method, _getArtistsBuilder_. 
+I'll pass that the entity manager variable, 
+and for now an empty string literal. 
+Because I get a stream back, I can use stream operations to manipulate the data further. 
+I'm going to limit the results to 10. 
+A more refined query would have brought less data back, 
+which is a much better approach. 
+I'm really just including it here now, 
+so I don't have to look at 200 lines of output. 
+Next, I'll collect the data into a map, using `Collectors.toMap`.
+The first argument specifies the function to get the key, 
+so it's keyed by the artist name. 
+The next argument is the function to get the value,
+so that's just the number of albums. 
+Next, I need to specify a merge function, 
+and I'll just use the method reference for `Integer::sum` there. 
+I want a tree map back because it'll be ordered.
+Finally, I want to print the artist's name, 
+and the number of albums that artist has in the data. 
+I'll run this code:
+
+```html  
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 join albums a2_0 on a1_0.artist_id=a2_0.artist_id where a2_0.album_name like ? escape '' or a2_0.album_name like ? escape ''
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=198, artistName='Tom Petty & The Heartbreakers', albums =[Album{albumId=47, albumName='Greatest Hits'}, Album{albumId=486, albumName='Greatest Hits'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=153, artistName='Troggs', albums =[Album{albumId=46, albumName='Athens Andover'}, Album{albumId=97, albumName='Wild Thing - The Greatest Hits'}, Album{albumId=422, albumName='Greatest Hits'}, Album{albumId=485, albumName='Athens Andover'}, Album{albumId=536, albumName='Wild Thing - The Greatest Hits'}, Album{albumId=861, albumName='Greatest Hits'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=10, artistName='Procol Harum', albums =[Album{albumId=195, albumName='The Best of PROCOL HARUM Halcyon Daze'}, Album{albumId=634, albumName='The Best of PROCOL HARUM Halcyon Daze'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=137, artistName='Doors', albums =[Album{albumId=202, albumName='Best Of The Doors'}, Album{albumId=641, albumName='Best Of The Doors'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=92, artistName='Fleetwood Mac', albums =[Album{albumId=41, albumName='The Dance'}, Album{albumId=232, albumName='The Very Best Of'}, Album{albumId=238, albumName='Greatest Hits'}, Album{albumId=324, albumName='The Best of'}, Album{albumId=416, albumName='Rumours'}, Album{albumId=480, albumName='The Dance'}, Album{albumId=671, albumName='The Very Best Of'}, Album{albumId=677, albumName='Greatest Hits'}, Album{albumId=763, albumName='The Best of'}, Album{albumId=855, albumName='Rumours'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=175, artistName='Seasick Steve', albums =[Album{albumId=256, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=436, albumName='Man From Another Time'}, Album{albumId=695, albumName='Walkin' Man The Best of Seasick Steve'}, Album{albumId=875, albumName='Man From Another Time'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=86, artistName='10cc', albums =[Album{albumId=320, albumName='The Best Of The Early Years'}, Album{albumId=759, albumName='The Best Of The Early Years'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=119, artistName='Bob Marley', albums =[Album{albumId=26, albumName='The Collection Volume One'}, Album{albumId=77, albumName='Natty Dread'}, Album{albumId=95, albumName='Stir it Up - Vol 4'}, Album{albumId=251, albumName='Soul Shakeddown Party - Vol 3'}, Album{albumId=315, albumName='The Collection Vol 2 (Riding High)'}, Album{albumId=323, albumName='The Very Best Of The Early Years 1968-74'}, Album{albumId=465, albumName='The Collection Volume One'}, Album{albumId=516, albumName='Natty Dread'}, Album{albumId=534, albumName='Stir it Up - Vol 4'}, Album{albumId=690, albumName='Soul Shakeddown Party - Vol 3'}, Album{albumId=754, albumName='The Collection Vol 2 (Riding High)'}, Album{albumId=762, albumName='The Very Best Of The Early Years 1968-74'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=148, artistName='Yardbirds', albums =[Album{albumId=328, albumName='The Very Best of the Yardbirds'}, Album{albumId=767, albumName='The Very Best of the Yardbirds'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=188, artistName='Billy Joel', albums =[Album{albumId=345, albumName='Greatest Hits Vol. III'}, Album{albumId=784, albumName='Greatest Hits Vol. III'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=47, artistName='Manfred Mann', albums =[Album{albumId=139, albumName='The Ascent Of Mann'}, Album{albumId=370, albumName='The Very Best Of'}, Album{albumId=578, albumName='The Ascent Of Mann'}, Album{albumId=809, albumName='The Very Best Of'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=176, artistName='Billy Idol', albums =[Album{albumId=399, albumName='Greatest Hits'}, Album{albumId=838, albumName='Greatest Hits'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=197, artistName='T.Rex', albums =[Album{albumId=404, albumName='The Very Best Of Marc Bolan And T. Rex'}, Album{albumId=843, albumName='The Very Best Of Marc Bolan And T. Rex'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=54, artistName='Bon Jovi', albums =[Album{albumId=437, albumName='Cross Road - The Best Of'}, Album{albumId=876, albumName='Cross Road - The Best Of'}]}
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Artist{artistId=202, artistName='Muddy Waters', albums =[Album{albumId=905, albumName='The Best of Muddy Waters'}]}
+------------------------------------
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Big Brother & The Holding Company : 2
+Blaster Bates : 4
+ELF : 4
+Iron Maiden : 6
+Mahogany Rush : 4
+Mehitabel : 4
+Pat Benatar : 4
+Procol Harum : 2
+Rory Gallagher : 2
+Roy Harper : 2
+```
 
 And now you see 10 artists, in artist name order,
 and the number of albums each of these has.
-This just printed the first 10 artists it got,
+This just printed the first 10 artists it got
 because of the limit operation.
-The artists weren't ordered, in the stream,
+The artists weren't ordered in the stream,
 though they're ordered here.
-I'll next refine the query,
-to include an order by clause, so I'll go
-back to the get Artists Builder method.
-I start with criteria query, and call
-order by, passing another factory object,
-which I get by calling a method, A S C, which
-stands for ascending order. This method returns
-an Order instance. I pass root.get artist
-name in there, which defines how to sort.
+I'll next refine the query to include an _orderBy_ clause, 
+so I'll go back to the _getArtistsBuilder_ method.
+
+```java  
+private static Stream<Artist> getArtistsBuilder(EntityManager em, String matchedValue) {
+    
+    CriteriaBuilder builder = em.getCriteriaBuilder();
+    CriteriaQuery<Artist> criteriaQuery = builder.createQuery (Artist.class);
+    Root<Artist> root = criteriaQuery.from(Artist.class);
+    criteriaQuery.select(root);
+    
+    criteriaQuery.orderBy(builder.asc(root.get("artistName")));
+    
+    return em.createQuery(criteriaQuery).getResultStream();
+}
+```
+
+I start with _criteriaQuery_, and call _orderBy_, 
+passing another factory object, which I get by calling a method, `ASC`, 
+which stands for ascending order. 
+This method returns an **Order** instance. 
+I pass `root.get("artistName")` in there, which defines how to sort.
 I'll rerun my code.
-I've got a different set of artists,
-so the first 10 alphabetically,
-starting with one thousand maniacs.
+
+```html  
+------------------------------------
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 order by a1_0.artist_name
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+1000 Maniacs : 2
+10cc : 2
+AC DC : 4
+Aerosmith : 26
+Alice Cooper : 4
+Allan Holdsworth : 2
+Animals : 2
+Arlo Guthrie : 2
+Axel Rudi Pell : 30
+B.B. King : 2
+```
+
+I've got a different set of artists, so the first 10 alphabetically,
+starting with `1000 Maniacs`.
 I'm really still getting all 200 back,
-so I'll next include a where clause.
-Getting back to my get Artists Builder
-method, I'll insert another statement,
-between the where method, and the order by method.
+so I'll next include a _where_ clause.
+Getting back to my _getArtistsBuilder_ method, 
+I'll insert another statement, between the _where_ method and the _orderBy_ method.
+
+```java  
+private static Stream<Artist> getArtistsBuilder(EntityManager em, String matchedValue) {
+    
+    CriteriaBuilder builder = em.getCriteriaBuilder();
+    CriteriaQuery<Artist> criteriaQuery = builder.createQuery (Artist.class);
+    Root<Artist> root = criteriaQuery.from(Artist.class);
+    criteriaQuery.select(root);
+    
+    criteriaQuery.where(builder.like(root.get("artistName"), matchedValue));
+    criteriaQuery.orderBy(builder.asc(root.get("artistName")));
+    
+    return em.createQuery(criteriaQuery).getResultStream();
+}
+```
+
 These don't really have to be in this order,
-but I'll just keep them in the
-logical order of a SQL statement.
-I start by invoking the where method on criteria
-query, I need to pass that a Predicate instance,
-which I can get from many methods on
-the CriteriaBuilder, but in this case
-I want to use the like method, passing that
-root.get artistname, and the matchedValue.
-Next, I'll scroll back up to the main method,
-where I'll next change the empty string literal,
-replacing that with the text, B L, percent sign.
-This means I want to get only artists whose names
-start with B L.
-I'll run this.
+but I'll just keep them in the logical order of a SQL statement.
+I start by invoking the _where_ method on criteria query, 
+I need to pass that a **Predicate** instance,
+which I can get from many methods on the **CriteriaBuilder**,
+but in this case, I want to use the _like_ method, 
+passing that `root.get("artistName")`, and the _matchedValue_.
+Next, I'll scroll back up to the _main_ method,
+where I'll next change the empty string literal:
+
+```java  
+public static void main(String[] args) {
+
+    String persistenceUnitName = "Section_18_WorkingWithDatabases.Course11_JavaPersistenceAnnotations.music";
+  
+    List<Artist> artists = null;
+        
+        try (EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+             EntityManager em = emf.createEntityManager();
+        ) {
+
+            var transaction = em.getTransaction();
+            transaction.begin();
+
+            artists = getArtistsJPQL(em, "%Greatest Hits%");
+            artists.forEach(System.out::println);
+
+            System.out.println("------------------------------------");
+            //Stream<Artist> sartists = getArtistsBuilder(em, "");
+            Stream<Artist> sartists = getArtistsBuilder(em, "Bl%");
+            var map = sartists
+                    .limit(10)
+                            .collect(Collectors.toMap(
+                                    Artist::getArtistName,
+                                    (a) -> a.getAlbums().size(),
+                                    Integer::sum,
+                                    TreeMap::new
+                            ));
+            map.forEach((k, v) -> System.out.println(k + " : " + v));
+            
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
+}
+```
 
-I get matching records, so my where
-clause worked, and I'm only getting
-artists whose names start with B L.
-Before I move on, I'll just change the
-get Artists Builder method, one last time.
-The Criteria Query is a mutable object,
-which is why I don't need to reassign the
-instance, on each of these method calls.
-Each method outputs a reference
-to itself, which means I can
-chain methods together, so I'll do that.
+Replacing that with the text, `BL%`.
+This means I want to get only artists whose names start with `BL`.
+I'll run this:
+
+```html  
+------------------------------------
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_name like ? escape '' order by a1_0.artist_name
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Black Crowes : 2
+Black Keys : 8
+Black Oak Arkansas : 2
+Black River Project : 2
+Black Sabbath : 36
+Blackbeard's Tea Party : 6
+Blaster Bates : 4
+Blue Öyster Cult : 20
+```
+
+I get matching records, so my _where_ clause worked, 
+and I'm only getting artists whose names start with `BL`.
+Before I move on, I'll just change the _getArtistsBuilder_ method, one last time.
+
+```java  
+private static Stream<Artist> getArtistsBuilder(EntityManager em, String matchedValue) {
+    
+    CriteriaBuilder builder = em.getCriteriaBuilder();
+    CriteriaQuery<Artist> criteriaQuery = builder.createQuery (Artist.class);
+    Root<Artist> root = criteriaQuery.from(Artist.class);
+/*
+    criteriaQuery.select(root);
+    criteriaQuery.where(builder.like(root.get("artistName"), matchedValue));
+    criteriaQuery.orderBy(builder.asc(root.get("artistName")));
+*/
+
+    criteriaQuery
+            .select(root)
+            .where(builder.like(root.get("artistName"), matchedValue))
+            .orderBy(builder.asc(root.get("artistName")));
+            
+    return em.createQuery(criteriaQuery).getResultStream();
+}
+```
+
+The **CriteriaQuery** is a mutable object,
+which is why I don't need to reassign the instance on each of these method calls.
+Each method outputs a reference to itself, 
+which means I can chain methods together, so I'll do that.
 This creates a chain of three methods.
-I'll use IntelliJ to reformat this code.
-You can see this reads somewhat
-like stream operations.
-This is a lot easier to read in my opinion.
-I'll run that, and confirm I get the same
+You can see this reads somewhat like stream operations.
+This is a lot easier to read, in my opinion.
+I'll run that and confirm I get the same results as before.
 
+```html  
+------------------------------------
+Hibernate: select a1_0.artist_id,a1_0.artist_name from artists a1_0 where a1_0.artist_name like ? escape '' order by a1_0.artist_name
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Hibernate: select a1_0.artist_id,a1_0.album_id,a1_0.album_name from albums a1_0 where a1_0.artist_id=?
+Black Crowes : 2
+Black Keys : 8
+Black Oak Arkansas : 2
+Black River Project : 2
+Black Sabbath : 36
+Blackbeard's Tea Party : 6
+Blaster Bates : 4
+Blue Öyster Cult : 20
+```
 
-
-results as before.
 And I do.
-In the interest of time, I won't be covering
-how to do joins in a Criteria Builder query
-here because I want to quickly show
-you how to execute a Native Query.
-Again, I'm not applying the
-same standard to teaching you
-JPA as I have been Java's core functionality.
+In the interest of time, 
+I won't be covering how to do joins in a **CriteriaBuilder** query here 
+because I want to quickly show you how to execute a native query.
+Again, I'm not applying the same standard to teaching you JPA 
+as I have been Java's core functionality.
 This foray into JPA was a bit of a courtesy,
-since it's increasingly becoming an
-industry standard, in some form or another.
-If you're curious about joins, be sure to see
-the Bonus section of the challenge that follows.
-Finally, I'll quickly demonstrate one last way to
-query using JPA, and that's by executing a native
-query, with the entity manager.
-I'll add another method.
+since it's increasingly becoming an industry standard, in some form or another.
+If you're curious about joins, 
+be sure to see the bonus section of the challenge that follows.
+Finally, I'll quickly demonstrate one last way to query using JPA, 
+and that's by executing a native query, with the entity manager.
+I'll add another method. 
+
+```java  
+private static Stream<Artist> getArtistsBuilder(EntityManager em, String matchedValue) {
+
+            
+    return em.createQuery(criteriaQuery).getResultStream();
+}
+```
+
 This is private, static, returns a Stream of
 Artist, and it'll be called get Artists SQL.
 This method will have the same parameters
@@ -12044,7 +12265,9 @@ and replace it with a call to
 this method, so get Artists SQL.
 I'll run that,
 
+```html  
 
+```
 
 and you can see,
 that again produces the same result
@@ -12080,15 +12303,6 @@ will use the entities and configuration
 that already exist in this project.
 I'll see you in that next video.
 
-
-
-```java  
-
-```
-
-```html  
-
-```
 
 ~~~~sql  
 
