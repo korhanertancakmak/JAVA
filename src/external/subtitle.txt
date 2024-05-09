@@ -1,0 +1,598 @@
+WEBVTT
+
+00:01.110 --> 00:03.000
+-: In this video, we'll get a demo
+
+00:03.000 --> 00:04.833
+of the Spring Boot Initializr.
+
+00:08.520 --> 00:10.380
+Earlier we discussed the Spring Initializr.
+
+00:10.380 --> 00:11.940
+It's a website where you can quickly
+
+00:11.940 --> 00:13.650
+create a starter Spring project.
+
+00:13.650 --> 00:16.020
+So, it's at start spring.io.
+
+00:16.020 --> 00:18.750
+We basically go here and select our dependencies.
+
+00:18.750 --> 00:21.750
+It'll actually create a Maven/Gradle project for us
+
+00:21.750 --> 00:23.790
+and then we can actually import that project
+
+00:23.790 --> 00:28.260
+into our IDE, like Eclipse, IntelliJ, NetBeans, and so on.
+
+00:28.260 --> 00:31.440
+And so, that's the basic idea of the Spring Initializr
+
+00:31.440 --> 00:34.383
+and we'll actually use this in this demo coming up here.
+
+00:38.040 --> 00:40.020
+Now let's have a quick word on Maven.
+
+00:40.020 --> 00:41.820
+When building your Java project
+
+00:41.820 --> 00:44.370
+you may need additional JAR files.
+
+00:44.370 --> 00:47.790
+For example, Spring, Hibernate, Commons Logging
+
+00:47.790 --> 00:49.503
+JSON and so forth.
+
+00:50.430 --> 00:53.040
+And one approaches to simply download the JAR files
+
+00:53.040 --> 00:55.110
+from each project website
+
+00:55.110 --> 00:57.000
+and then, manually add those JAR files
+
+00:57.000 --> 00:58.470
+to your build class path.
+
+00:58.470 --> 01:00.633
+And that's fine and that'll work okay.
+
+01:03.690 --> 01:06.390
+However, Maven provides a nice solution.
+
+01:06.390 --> 01:09.420
+We simply tell Maven the projects that you're working on
+
+01:09.420 --> 01:12.900
+the dependencies, like Spring, Hibernate, et cetera.
+
+01:12.900 --> 01:15.330
+Maven will go out and download the JAR files
+
+01:15.330 --> 01:16.980
+for those projects for you.
+
+01:16.980 --> 01:20.460
+And Maven will automatically make those JAR files available
+
+01:20.460 --> 01:22.470
+during compile and run.
+
+01:22.470 --> 01:24.030
+And you can kind of think of Maven
+
+01:24.030 --> 01:27.540
+as like your friendly helper or your personal shopper.
+
+01:27.540 --> 01:30.390
+You simply give Maven a shopping list, say, hey
+
+01:30.390 --> 01:33.360
+I need dependencies A, B, C, and D
+
+01:33.360 --> 01:36.360
+and Maven will go out, grab those jar files
+
+01:36.360 --> 01:37.710
+add them to your class path
+
+01:37.710 --> 01:39.990
+and make them available during compile and run.
+
+01:39.990 --> 01:40.980
+A really nice feature
+
+01:40.980 --> 01:42.960
+and we'll use Maven in this course.
+
+01:42.960 --> 01:45.630
+Now, we'll just kind of cover the basics at the moment.
+
+01:45.630 --> 01:47.460
+I have more information on Maven
+
+01:47.460 --> 01:49.890
+I'll give you later in the course, but for now
+
+01:49.890 --> 01:52.260
+just think of Maven as a nice utility
+
+01:52.260 --> 01:53.880
+that'll actually download the JAR files
+
+01:53.880 --> 01:55.950
+and make them available to your project
+
+01:55.950 --> 01:58.533
+like your friendly helper or your personal shopper.
+
+02:01.710 --> 02:04.110
+So for actual development process
+
+02:04.110 --> 02:06.240
+so the first thing we'll do is configure our project
+
+02:06.240 --> 02:09.840
+at the Spring Initializr website, start.spring.io.
+
+02:09.840 --> 02:12.690
+We'll download the actual zip file that it creates for us
+
+02:12.690 --> 02:14.790
+and then we'll actually unzip that file.
+
+02:14.790 --> 02:17.430
+And then finally, we'll import that Maven project
+
+02:17.430 --> 02:18.693
+into our IDE.
+
+02:19.680 --> 02:21.680
+All right, so let's go ahead and dive in
+
+02:22.589 --> 02:23.689
+and let's get started.
+
+02:28.510 --> 02:31.200
+Okay, so let's go ahead and open up a web browser.
+
+02:31.200 --> 02:33.330
+And so, the first step is configuring a project
+
+02:33.330 --> 02:35.343
+at the Spring Initializr website.
+
+02:36.480 --> 02:40.050
+So let's go ahead and visit start.spring.io
+
+02:40.050 --> 02:41.163
+in our web browser.
+
+02:44.910 --> 02:47.790
+All right, so we're here at the Spring Initializr website.
+
+02:47.790 --> 02:49.710
+We can generate different types of projects.
+
+02:49.710 --> 02:53.940
+Here, we'll select Maven, different languages here.
+
+02:53.940 --> 02:55.800
+I'll choose Java.
+
+02:55.800 --> 02:58.440
+And then also, as far as the Spring Boot version
+
+02:58.440 --> 03:01.320
+I'll choose this one listed here on the screen.
+
+03:01.320 --> 03:05.580
+So, choose the most recent version that they have here.
+
+03:05.580 --> 03:09.750
+Avoid the snapshot versions because they are alpha beta.
+
+03:09.750 --> 03:12.990
+So just choose the latest released version.
+
+03:12.990 --> 03:16.200
+I guarantee you the version that you see
+
+03:16.200 --> 03:18.030
+on your computer will be much different
+
+03:18.030 --> 03:20.620
+than what's recorded because new versions
+
+03:21.592 --> 03:23.730
+of Spring Boot are released on a very frequent basis.
+
+03:23.730 --> 03:26.913
+So simply just choose the latest released version.
+
+03:28.800 --> 03:29.970
+All right, so that's taken care of.
+
+03:29.970 --> 03:32.070
+We can move into our project metadata where we can set
+
+03:32.070 --> 03:33.600
+up our coordinates here.
+
+03:33.600 --> 03:35.580
+So I'll set up the group ID.
+
+03:35.580 --> 03:38.073
+Com love to code spring boot demo.
+
+03:42.060 --> 03:43.680
+And as far as the artifact ID
+
+03:43.680 --> 03:45.630
+this is the actual name of my application
+
+03:45.630 --> 03:47.280
+so I'll just call it my cool app.
+
+03:57.900 --> 03:59.100
+And for dependencies here
+
+03:59.100 --> 04:01.842
+this is where we go through and basically just
+
+04:01.842 --> 04:03.270
+choose the Spring Boot starters that we want
+
+04:03.270 --> 04:05.220
+or the actual dependencies that we want
+
+04:05.220 --> 04:06.053
+for our applications.
+
+04:06.053 --> 04:07.230
+So here, I'll just keep it simple.
+
+04:07.230 --> 04:08.940
+I'll just choose web.
+
+04:08.940 --> 04:11.610
+So this will give us the full stack web development
+
+04:11.610 --> 04:14.670
+with Tomcat and Spring MVC.
+
+04:14.670 --> 04:16.020
+So be sure to click that option
+
+04:16.020 --> 04:19.140
+and make sure it's selected and it appears here
+
+04:19.140 --> 04:21.183
+as far as selected dependency.
+
+04:28.590 --> 04:30.270
+And then from there, just go down to the bottom
+
+04:30.270 --> 04:33.813
+and download the zip file by clicking on generate project.
+
+04:35.610 --> 04:37.650
+So in the bottom corner there of your browser
+
+04:37.650 --> 04:39.690
+you'll see that the file was downloaded.
+
+04:39.690 --> 04:42.333
+So that's mycoolapp.zip.
+
+04:49.170 --> 04:50.820
+I can swing over to my file system
+
+04:50.820 --> 04:53.310
+and the next step is unzipping that file.
+
+04:53.310 --> 04:55.590
+So I'll just move into my downloads directory
+
+04:55.590 --> 04:56.610
+on my computer.
+
+04:56.610 --> 04:59.940
+And here's that mycoolapp.zip that was just created
+
+04:59.940 --> 05:01.470
+by the Spring Initializr website.
+
+05:01.470 --> 05:03.993
+I'll simply unzip it or uncompress it.
+
+05:06.780 --> 05:08.790
+And then, I'll basically just take this folder here
+
+05:08.790 --> 05:09.843
+and just copy it.
+
+05:26.957 --> 05:27.790
+So in my file system
+
+05:27.790 --> 05:30.030
+I have a directory here called Dev Spring Boot.
+
+05:30.030 --> 05:32.280
+This could be any directory on your computer.
+
+05:33.214 --> 05:34.260
+I'd just like to move things to a different directory
+
+05:34.260 --> 05:38.370
+because the downloads directory tends to get mangled.
+
+05:38.370 --> 05:41.850
+So I'll just paste this item here into Dev Spring Boot.
+
+05:41.850 --> 05:45.363
+Again, this could be any location on your file system.
+
+05:46.918 --> 05:48.270
+And so inside of here, we have this Pom file
+
+05:48.270 --> 05:50.585
+and some other files and source and so on.
+
+05:50.585 --> 05:52.493
+And we'll talk more about this in a bit.
+
+05:57.360 --> 05:58.680
+Okay, so let's go ahead and swing over
+
+05:58.680 --> 06:00.093
+to your favorite IDE.
+
+06:02.027 --> 06:04.533
+So I'll just import this Maven project.
+
+06:06.780 --> 06:08.400
+And now I just need to browse over
+
+06:08.400 --> 06:10.920
+to where the Maven Project is located.
+
+06:10.920 --> 06:14.580
+So, I know it's in this Dev Spring Boot directory
+
+06:14.580 --> 06:17.160
+that I'm using on my file system
+
+06:17.160 --> 06:19.563
+and it's in the my cool app directory.
+
+06:21.180 --> 06:22.473
+And I just hit open.
+
+06:30.420 --> 06:31.320
+So give it some time.
+
+06:31.320 --> 06:33.690
+It's gonna import the Maven Project and actually
+
+06:33.690 --> 06:36.150
+download all the appropriate Maven dependencies
+
+06:36.150 --> 06:38.730
+that's needed for this given item.
+
+06:38.730 --> 06:41.190
+So I'll go ahead and speed the video up a bit
+
+06:41.190 --> 06:44.643
+and make it past all of this wait time.
+
+06:50.100 --> 06:50.933
+All right, so there we go.
+
+06:50.933 --> 06:53.120
+So Maven is finished downloading the internet.
+
+06:54.180 --> 06:59.180
+And so now I have this my cool app as my Maven project here
+
+06:59.190 --> 07:01.763
+and there are a number of files that are in this project.
+
+07:02.940 --> 07:05.040
+So we have the Palm xml, that's the Maven file.
+
+07:05.040 --> 07:06.540
+We have some Maven W files.
+
+07:06.540 --> 07:08.190
+I'll talk more about those later.
+
+07:09.750 --> 07:13.653
+Then we also have this mycoolapplication.java.
+
+07:16.350 --> 07:18.180
+There's a resources directory
+
+07:18.180 --> 07:19.590
+and there's also a test directory.
+
+07:19.590 --> 07:21.150
+So in later videos
+
+07:21.150 --> 07:23.790
+we'll actually cover every file on this project.
+
+07:23.790 --> 07:24.623
+So don't worry.
+
+07:24.623 --> 07:26.250
+So we'll cover everything, so don't worry
+
+07:26.250 --> 07:27.800
+we'll go through this complete.
+
+07:29.280 --> 07:30.704
+But for right now
+
+07:30.704 --> 07:32.220
+let's just take a look at this Spring Boot application.
+
+07:32.220 --> 07:34.593
+It's called my cool application.
+
+07:41.670 --> 07:44.610
+We make use of a little fancy spring annotation up here
+
+07:44.610 --> 07:45.960
+for Spring Boot application.
+
+07:45.960 --> 07:47.430
+I'll talk more about that later.
+
+07:47.430 --> 07:48.750
+But basically says, hey
+
+07:48.750 --> 07:51.120
+we have this Spring Boot application
+
+07:51.120 --> 07:52.770
+and then we use this piece here to actually
+
+07:52.770 --> 07:54.930
+bootstrap the Spring Boot application.
+
+07:54.930 --> 07:56.730
+So we say springapplication.run
+
+07:56.730 --> 07:58.920
+and we give the actual class name that we're gonna run.
+
+07:58.920 --> 08:01.050
+So that's our my cool application.
+
+08:01.050 --> 08:03.330
+And again, I'll get into all the gory details
+
+08:03.330 --> 08:06.510
+on how this Spring Boot application annotation works
+
+08:06.510 --> 08:09.000
+and also, how the main method works.
+
+08:09.000 --> 08:10.260
+But for now, let's just try and run it
+
+08:10.260 --> 08:11.550
+just really quickly here.
+
+08:11.550 --> 08:13.560
+So it's important here when you run this
+
+08:13.560 --> 08:17.010
+that you run it as a Java application, not server
+
+08:17.010 --> 08:19.980
+because Spring Boot actually includes its own server
+
+08:19.980 --> 08:21.900
+so there's no need to run it on the server.
+
+08:21.900 --> 08:24.273
+Just run it as a Java application.
+
+08:32.117 --> 08:33.030
+And then if we review the logs here
+
+08:33.030 --> 08:35.100
+we'll see some interesting pieces of information.
+
+08:35.100 --> 08:37.563
+So it's starting our my cool application.
+
+08:39.420 --> 08:41.790
+And remember, Spring Boot includes an embedded server.
+
+08:41.790 --> 08:45.960
+So it says, ooh, Tomcat is initialized on port 8080, nice.
+
+08:45.960 --> 08:47.229
+I like that.
+
+08:47.229 --> 08:48.720
+That's really cool.
+
+08:48.720 --> 08:50.250
+And then at the bottom it'll say, hey
+
+08:50.250 --> 08:53.940
+Tomcat has been started on port 8080, so this is great.
+
+08:53.940 --> 08:56.640
+So our application is started up and running.
+
+08:56.640 --> 08:58.770
+So that means we have an application that's running
+
+08:58.770 --> 09:01.590
+at, that has an embedded Tomcat server with it.
+
+09:01.590 --> 09:03.423
+So this is really awesome.
+
+09:06.750 --> 09:10.000
+So if I swing over to my web browser here
+
+09:12.960 --> 09:14.760
+and I just open up a new tab
+
+09:14.760 --> 09:17.260
+and I simply go to local host 8080
+
+09:21.270 --> 09:23.910
+and oh, error page.
+
+09:23.910 --> 09:26.880
+Okay, well, this is okay for now.
+
+09:26.880 --> 09:30.000
+We haven't added any real code to our project yet
+
+09:30.000 --> 09:31.800
+so we haven't added any controllers
+
+09:31.800 --> 09:33.540
+no view pages and so on.
+
+09:33.540 --> 09:36.180
+We'll do that in later videos, but at least at this point
+
+09:36.180 --> 09:38.670
+we know that a server is up and running
+
+09:38.670 --> 09:40.530
+and we simply need to do some more coding
+
+09:40.530 --> 09:41.880
+or configuration for it.
+
+09:41.880 --> 09:45.390
+But again, we'll get into all those glory details in a bit.
+
+09:45.390 --> 09:47.610
+Okay, so we have the basics going
+
+09:47.610 --> 09:49.320
+but we still need to do a bit more work.
+
+09:49.320 --> 09:51.420
+And so we'll cover that in the next video.

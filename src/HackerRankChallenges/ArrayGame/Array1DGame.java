@@ -1,4 +1,4 @@
-package CourseCodes.HackerRankChallenges.ArrayGame;
+package HackerRankChallenges.ArrayGame;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

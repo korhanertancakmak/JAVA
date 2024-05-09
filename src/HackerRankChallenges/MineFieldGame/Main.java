@@ -1,4 +1,4 @@
-package CourseCodes.HackerRankChallenges.MineFieldGame;
+package HackerRankChallenges.MineFieldGame;
 
 import java.util.Random;
 import java.util.Scanner;

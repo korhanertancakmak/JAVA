@@ -1,4 +1,4 @@
-package CourseCodes.HackerRankChallenges.SumSubarrays;
+package HackerRankChallenges.SumSubarrays;
 import java.util.Scanner;
 
 /**
